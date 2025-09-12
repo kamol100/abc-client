@@ -34,7 +34,7 @@ export const DialogWrapper: FC<props> = ({
   const onClose = () => setOpen(false);
   const { t } = useTranslation();
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen} >
+    <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger === "Edit" ? (
           <div className="cursor-pointer">
@@ -54,8 +54,11 @@ export const DialogWrapper: FC<props> = ({
           )}
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {children && typeof children === "object" && "type" in children ? (
-            <children.type {...children?.props} onClose={onClose} />
+          {children &&
+          typeof children === "object" &&
+          "type" in (children as any) ? (
+            // @ts-expect-error: children may not be a valid React element, but we check above
+            <children.type {...(children as any)?.props} onClose={onClose} />
           ) : (
             children
           )}

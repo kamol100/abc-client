@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Controller, useFormContext } from "react-hook-form";
 import { z } from "zod";
+import Label from "../label";
 import { Input } from "../ui/input";
 
 type InputFieldProps = {
@@ -11,6 +12,9 @@ type InputFieldProps = {
   className?: string;
   validationSchema?: z.ZodType<any>; // Optional validation schema
   isDynamic?: boolean; // Indicates if the input field is dynamic
+  mandatory?: boolean;
+  tooltip?: string | null;
+  tooltipClass?: string;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -21,6 +25,9 @@ const InputField: React.FC<InputFieldProps> = ({
   className,
   validationSchema,
   isDynamic = false,
+  mandatory = false,
+  tooltip = null,
+  tooltipClass = "",
 }) => {
   const {
     control,
@@ -42,16 +49,17 @@ const InputField: React.FC<InputFieldProps> = ({
       </p>
     ) : null;
   };
-
   return (
     <div className={cn("flex flex-col gap-1", className)}>
       {label && (
-        <label
+        <Label
+          labelText={label}
+          mandatory={mandatory}
           htmlFor={name}
+          tooltip={tooltip}
+          tooltipClass={tooltipClass}
           className="text-sm mb-1 font-medium text-gray-900"
-        >
-          {label}
-        </label>
+        />
       )}
 
       <Controller

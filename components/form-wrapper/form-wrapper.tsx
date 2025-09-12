@@ -47,7 +47,6 @@ export default function FormWrapper({
     setValue,
     formState: { errors, isDirty },
   } = form;
-  console.log(data, "data");
   const { t } = useTranslation();
 
   const queryClient = useQueryClient();
@@ -75,7 +74,7 @@ export default function FormWrapper({
   const { data: getData, isLoading } = useQuery({
     queryKey: [queryKey],
     queryFn: fetchData,
-    enabled: false,
+    enabled: method === "GET",
     retry: 2,
   });
 
@@ -86,7 +85,6 @@ export default function FormWrapper({
         data: formData,
         method: mode === "edit" ? "PUT" : method,
       });
-      console.log(data, api, method);
       if (!data.success) {
         throw data;
       }

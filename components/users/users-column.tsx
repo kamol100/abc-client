@@ -13,9 +13,7 @@ export const UsersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="name" />
     ),
     cell: ({ row }) => (
-      <div className="w-[150px] capitalize">
-        {row.original.name}
-      </div>
+      <div className="w-[150px] capitalize">{row.original.name}</div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -165,7 +163,7 @@ export const UsersColumns: ColumnDef<User>[] = [
       const data = row.original;
       return (
         <>
-          <UserForm mode="edit" data={data} />
+          <UserForm mode="edit" data={data} api="/users" method="PUT" />
         </>
       );
     },

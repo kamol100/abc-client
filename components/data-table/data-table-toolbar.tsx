@@ -9,6 +9,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 // import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 import { CalendarDatePicker } from "@/components/calendar-date-picker";
 import { useState } from "react";
+import FormFilter from "../form-wrapper/form-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -98,6 +99,9 @@ export function DataTableToolbar<TData>({
             )
           );
         })}
+        {toolbarOptions?.filter && (
+          <FormFilter formSchema={toolbarOptions.filter} grids={3} />
+        )}
         {/* {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
@@ -121,6 +125,7 @@ export function DataTableToolbar<TData>({
           className="w-[250px] h-8"
           variant="outline"
         />
+        test
       </div>
       {toggleColumns && <DataTableViewOptions table={table} />}
     </div>

@@ -1,5 +1,6 @@
 "use client";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { DataTable } from "../data-table/data-table";
 import useListData from "../get-data/list-data";
 import UserForm from "./user-form";
@@ -16,10 +17,36 @@ const UserTable: FC = () => {
   // } = data;
   const users = data?.data?.data;
   const pagination = data?.data?.pagination;
+  const { t } = useTranslation();
 
   const toolbarOptions = {
     input_filter: "name",
     columns: ["status", "email"],
+    filter: [
+      {
+        type: "text",
+        label: t("username"),
+        name: "username",
+        placeholder: t("username"),
+        permission: true,
+      },
+      {
+        type: "text",
+        label: t("email"),
+        name: "email",
+        placeholder: t("email"),
+        permission: true,
+      },
+      {
+        type: "dropdown",
+        label: t("roles"),
+        name: "roles_id",
+        defaultValue: "roles",
+        placeholder: t("roles"),
+        permission: true,
+        api: "/dropdown-roles",
+      },
+    ],
   };
 
   return (
