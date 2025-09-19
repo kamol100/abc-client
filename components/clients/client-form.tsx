@@ -4,7 +4,7 @@ import { DialogWrapper } from "../dialog";
 import FormBuilder from "../form-wrapper/form-builder";
 import { AddPlus } from "../icon";
 import { UserSchema } from "../schema/user";
-import UserFormSchema from "./user-form-schema";
+import ClientFormSchema from "./client-form-schema";
 
 type props = {
   mode?: string;
@@ -13,13 +13,13 @@ type props = {
   data?: any;
 };
 
-const UserForm: FC<props> = ({
+const ClientForm: FC<props> = ({
   mode = "create",
   api = "/users",
   method = "POST",
   data = undefined,
 }) => {
-  console.log(data);
+  //console.log(data);
   return (
     <DialogWrapper
       title={mode === "create" ? "create_user" : "edit_user"}
@@ -27,7 +27,7 @@ const UserForm: FC<props> = ({
       Icon={AddPlus}
     >
       <FormBuilder
-        formSchema={UserFormSchema({ mode })}
+        formSchema={ClientFormSchema()}
         grids={2}
         data={data}
         api={api}
@@ -40,4 +40,4 @@ const UserForm: FC<props> = ({
   );
 };
 
-export default UserForm;
+export default ClientForm;

@@ -3,6 +3,7 @@
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -25,8 +26,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { cn } from "@/lib/utils";
+import { useSetting } from "@/lib/utils/user-setting";
+import { SettingSchema } from "../settings/setting-zod-schema";
 import { SkeletonLoader } from "../skeleton-loader";
-import { Spinner } from "../spinner";
+import { useSidebar } from "../ui/sidebar";
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
@@ -40,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   setCurrentPage?: (page: number) => void;
   isLoading?: boolean;
   isFetching?: boolean;
+  setFilter?: (x: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -48,10 +53,11 @@ export function DataTable<TData, TValue>({
   toolbar = true,
   toolbarOptions,
   toggleColumns = false,
-  pagination = undefined,
+  pagination: paginationData = undefined,
   setCurrentPage = () => {},
   isFetching = false,
   isLoading = false,
+  setFilter = () => {},
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -60,6 +66,10 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [pagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: paginationData?.per_page ?? 20,
+  });
 
   const table = useReactTable({
     data,
@@ -69,6 +79,7 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -83,83 +94,105 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const [topMargin, setTopMargin] = React.useState(
+    "[&>div]:max-h-[calc(100dvh-230px)]"
+  );
+  const setting = useSetting("settings") as SettingSchema;
+  React.useEffect(() => {
+    if (setting?.show_dashboard_header) {
+      setTopMargin("[&>div]:max-h-[calc(100dvh-295px)]");
+    } else {
+      setTopMargin("[&>div]:max-h-[calc(100dvh-230px)]");
+    }
+  }, [setting?.show_dashboard_header]);
+
   return (
-    <div className="space-y-4">
-      {isLoading && <SkeletonLoader options="table" />}
+    <div className="  border bottom-1 rounded-md">
       {toolbar && (
-        <DataTableToolbar
-          table={table}
-          toolbarOptions={toolbarOptions}
-          data={data}
-          toggleColumns={toggleColumns}
-        />
+        <div className="p-3">
+          <DataTableToolbar
+            table={table}
+            toolbarOptions={toolbarOptions}
+            data={data}
+            toggleColumns={toggleColumns}
+            setFilter={setFilter}
+          />
+        </div>
       )}
-      <div className="rounded-md border relative">
-        {isFetching && (
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Spinner
-              type="spinner"
-              width={40}
-              height={40}
-              className="text-primary z-50"
+      <div className={cn(`flex flex-col relative`, topMargin)}>
+        {isLoading || isFetching ? (
+          <div className="flex-1 overflow-auto">
+            <SkeletonLoader
+              rows={pagination?.pageSize}
+              columns={7}
+              options="table"
             />
           </div>
-        )}
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        ) : (
+          <Table>
+            <TableHeader className="bg-background/90 sticky top-0  backdrop-blur-xs bg-gray-50">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody className="flex-1 overflow-auto" tabIndex={0}>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row, rowIndex) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
-      {pagination && (
-        <DataTablePagination
-          table={table}
-          pagination={pagination}
-          setCurrentPage={setCurrentPage}
-        />
+      {paginationData && (
+        <div
+          className={cn(
+            "sticky bottom-0 border-t p-3 bg-white",
+            isMobile && "bottom-16"
+          )}
+        >
+          <DataTablePagination
+            table={table}
+            pagination={paginationData}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
       )}
     </div>
   );

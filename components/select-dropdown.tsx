@@ -1,7 +1,7 @@
 "use client";
 import { useFetch } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -9,7 +9,7 @@ import Label from "./label";
 
 type props = {
   name: string;
-  label?: string;
+  label?: string | null;
   api?: string | null;
   options?: any;
   isMulti?: boolean;
@@ -26,6 +26,7 @@ type props = {
   tooltip?: string | null;
   tooltipClass?: string | undefined;
   initialData?: any;
+  value?: "value | label";
   onChange?: (value: any) => void;
   onBlur?: (value: any) => void;
   onFocus?: (value: any) => void;
@@ -36,18 +37,19 @@ type props = {
 
 const SelectDropdown: FC<props> = ({
   name,
-  label = "status",
+  label = null,
   api = null,
   options: optionItems = undefined,
   isMulti = false,
   isDisabled = false,
   isLoading = false,
-  isClearable = false,
+  isClearable = true,
   isRtl = false,
   isSearchable = true,
   mandatory = false,
   placeholder = "select_option",
   className = "",
+  value = "value",
   defaultValue = null,
   tooltip,
   tooltipClass = "",
@@ -91,7 +93,9 @@ const SelectDropdown: FC<props> = ({
   });
 
   const handleChange = (option: any) => {
-    setValue(name, option?.value);
+    //console.log(option, "op");
+    setValue(name, option?.[value]);
+    onChange(option);
     if (option?.value) {
       clearErrors(name);
     }
@@ -111,16 +115,30 @@ const SelectDropdown: FC<props> = ({
     }
     return options?.find((option: any) => option?.value === defaultValue);
   };
+
+  useEffect(() => {
+    const defaultValue = defaultOption();
+    if (isMulti) {
+      const value = defaultValue?.map((item: any) => item.value);
+      setValue(name, value);
+    } else {
+      setValue(name, defaultValue?.value);
+    }
+  }, [defaultValue?.length]);
+
   return (
     <>
-      <div className="mb-2">
-        <Label
-          labelText={label}
-          mandatory={mandatory}
-          tooltip={tooltip}
-          tooltipClass={tooltipClass}
-        />
-      </div>
+      {label && (
+        <div className="mb-2">
+          <Label
+            labelText={label}
+            mandatory={mandatory}
+            tooltip={tooltip}
+            tooltipClass={tooltipClass}
+          />
+        </div>
+      )}
+
       <Select
         onChange={handleChange}
         defaultValue={defaultOption()}

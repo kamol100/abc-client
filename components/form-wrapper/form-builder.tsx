@@ -1,7 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 import FormWrapper from "../form-wrapper/form-wrapper";
 import InputField from "../form/input-field";
+import Switch from "../form/switch";
 import { FormBuilderType } from "./form-builder-type";
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
@@ -17,6 +19,7 @@ type props = {
   queryKey?: string;
   data: any;
   onClose?: () => void;
+  actionButton?: boolean;
 };
 
 const FormBuilder = ({
@@ -30,7 +33,9 @@ const FormBuilder = ({
   data,
   queryKey,
   onClose = () => {},
+  actionButton = true,
 }: props) => {
+  const [saveOnChange, setSaveOnChange] = useState(false);
   const renderInput = (field: FormBuilderType) => {
     if (field?.type === "text") {
       return (
@@ -65,6 +70,20 @@ const FormBuilder = ({
         />
       );
     }
+    if (field.type === "switch") {
+      return (
+        <div className="flex items-center space-x-2">
+          <Switch
+            name={field.name}
+            label={field?.label}
+            value={data?.[field?.name]}
+            onChange={(value) => {
+              setSaveOnChange(true);
+            }}
+          />
+        </div>
+      );
+    }
   };
   const gridStyle: { [key: number]: string } = {
     1: "md:grid-cols-1 lg:grid-cols-1 sm:grid-cols-1",
@@ -76,6 +95,7 @@ const FormBuilder = ({
     7: "md:grid-cols-7 lg:grid-cols-7 sm:grid-cols-4",
     8: "md:grid-cols-8 lg:grid-cols-8 sm:grid-cols-4",
   };
+
   return (
     <FormWrapper
       schema={schema}
@@ -85,6 +105,9 @@ const FormBuilder = ({
       queryKey={queryKey}
       data={data}
       onClose={onClose}
+      actionButton={actionButton}
+      saveOnChange={saveOnChange}
+      setSaveOnChange={setSaveOnChange}
     >
       <div
         className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}

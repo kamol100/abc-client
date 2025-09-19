@@ -25,7 +25,9 @@ export function LoginForm({
   });
   const { mutate: login, isPending } = useMutation({
     mutationFn: async (data: any) => {
-      const result: any = await authenticate(Object.assign(data, { host: window.location.hostname }));
+      const result: any = await authenticate(
+        Object.assign(data, { host: "localhost" })
+      );
       if (result?.error) {
         toast({
           title: result?.message,

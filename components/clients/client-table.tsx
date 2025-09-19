@@ -1,45 +1,51 @@
 "use client";
+import { useSetting } from "@/lib/utils/user-setting";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "../data-table/data-table";
 import useListData from "../get-data/list-data";
-import UserFilterSchema from "./user-filter-schema";
-import UserForm from "./user-form";
-import { UsersColumns } from "./users-column";
+import { SettingSchema } from "../settings/setting-zod-schema";
+import { ClientColumns } from "./client-column";
+import ClientFilterSchema from "./client-filter-schema";
+import ClientForm from "./client-form";
 
-const UserTable: FC = () => {
+const ClientTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
   const { data, isLoading, isFetching, setCurrentPage, currentPage } =
     useListData({
-      api: "users",
-      queryKey: "users",
+      api: "clients",
+      queryKey: "clients",
       filterValue: filterValue,
     });
 
   const users = data?.data?.data;
   const pagination = data?.data?.pagination;
   const { t } = useTranslation();
+  const setting = useSetting("settings") as SettingSchema;
 
   const toolbarOptions = {
-    input_filter: "name",
-    columns: ["status", "email"],
-    filter: [...UserFilterSchema()],
+    // input_filter: "name",
+    // columns: ["status", "email"],
+    filter: ClientFilterSchema(),
   };
 
   return (
     <>
-      <div className="flex justify-between mb-5">
-        <h1>Users</h1>
-        <div>
-          <UserForm />
+      {setting?.show_table_header && (
+        <div className="flex justify-between mb-5">
+          <h1>Users</h1>
+          <div>
+            <ClientForm />
+          </div>
         </div>
-      </div>
+      )}
+
       <div>
         {users && (
           <DataTable
             data={users}
             setFilter={setFilter}
-            columns={UsersColumns}
+            columns={ClientColumns}
             toolbarOptions={toolbarOptions}
             toggleColumns={true}
             pagination={pagination}
@@ -53,4 +59,4 @@ const UserTable: FC = () => {
   );
 };
 
-export default UserTable;
+export default ClientTable;

@@ -1,9 +1,4 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -14,14 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useNumberToArray } from "@/lib/helper/helper";
+import { usePagination } from "@/hooks/use-pagination";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
 } from "../ui/pagination";
+import { useSidebar } from "../ui/sidebar";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -34,115 +29,116 @@ export function DataTablePagination<TData>({
   pagination,
   setCurrentPage = () => {},
 }: DataTablePaginationProps<TData>) {
+  const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
+    currentPage: pagination.current_page,
+    totalPages: pagination.total_pages,
+    paginationItemsToDisplay: 5,
+  });
+  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  console.log(pagination, "pg", table.getPageCount(), pages);
   return (
-    <div className="flex items-center justify-between px-2">
-      {/* <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
-      <div className="flex items-center space-x-6 lg:space-x-8 justify-between  w-full">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
+    <div className="flex items-center justify-between gap-3 max-sm:flex-col">
+      {/* Page number information */}
+      {!isMobile && (
+        <p
+          className="text-muted-foreground flex-1 text-sm whitespace-nowrap"
+          aria-live="polite"
+        >
+          Page{" "}
+          <span className="text-foreground">{pagination.current_page}</span> of{" "}
+          <span className="text-foreground">{pagination.total_pages}</span>
+        </p>
+      )}
+
+      {/* Pagination buttons */}
+      <div className="grow">
+        <Pagination>
+          <PaginationContent>
+            {/* Previous page button */}
+            <PaginationItem>
+              <Button
+                size="icon"
+                variant="outline"
+                className="disabled:pointer-events-none disabled:opacity-50"
+                onClick={() => setCurrentPage(pagination.current_page - 1)}
+                disabled={pagination?.current_page <= 1}
+                aria-label="Go to previous page"
+              >
+                <ChevronLeftIcon aria-hidden="true" />
+              </Button>
+            </PaginationItem>
+
+            {/* Left ellipsis (...) */}
+            {showLeftEllipsis && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+
+            {/* Page number buttons */}
+            {pages.map((page) => {
+              const isActive = page === pagination?.current_page;
+              return (
+                <PaginationItem key={page}>
+                  <Button
+                    size="icon"
+                    variant={`${isActive ? "outline" : "ghost"}`}
+                    onClick={() => setCurrentPage(page)}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {page}
+                  </Button>
+                </PaginationItem>
+              );
+            })}
+
+            {/* Right ellipsis (...) */}
+            {showRightEllipsis && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+
+            {/* Next page button */}
+            <PaginationItem>
+              <Button
+                size="icon"
+                variant="outline"
+                className="disabled:pointer-events-none disabled:opacity-50"
+                onClick={() => setCurrentPage(pagination.current_page + 1)}
+                disabled={pagination.current_page === pagination.total_pages}
+                aria-label="Go to next page"
+              >
+                <ChevronRightIcon aria-hidden="true" />
+              </Button>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+
+      {/* Results per page */}
+      <div className="flex flex-1 justify-end">
+        <Select
+          value={table.getState().pagination.pageSize.toString()}
+          // onValueChange={(value) => {
+          //   table.setPageSize(Number(value));
+          // }}
+          aria-label="Results per page"
+        >
+          <SelectTrigger
+            id="results-per-page"
+            className="w-fit whitespace-nowrap"
           >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to first page</span>
-              <DoubleArrowLeftIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon className="h-4 w-4" />
-            </Button>
-            <Pagination>
-              <PaginationContent>
-                {pagination?.total_pages &&
-                  useNumberToArray(pagination?.total_pages as number).map(
-                    (page: number, index: number) => (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          className="cursor-pointer"
-                          onClick={() => setCurrentPage(page as number)}
-                          isActive={page === pagination?.current_page}
-                        >
-                          {index > 5 ? <PaginationEllipsis /> : <>{page}</>}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  )}
-                {/* <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem> */}
-              </PaginationContent>
-            </Pagination>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to last page</span>
-              <DoubleArrowRightIcon className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+            <SelectValue placeholder="Select number of results" />
+          </SelectTrigger>
+          <SelectContent>
+            {[5, 10, 25, 50].map((pageSize) => (
+              <SelectItem key={pageSize} value={pageSize.toString()}>
+                {pageSize} / page
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

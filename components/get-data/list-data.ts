@@ -2,7 +2,7 @@
 import { useFetch } from "@/app/actions";
 import { useParseError } from "@/lib/helper/helper";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 type UseListDataProps = {
@@ -13,6 +13,9 @@ type UseListDataProps = {
   retry?: number;
   currentPage?: number;
   refetchOnWindowFocus?: boolean;
+  isEnabled?: boolean
+  onSuccess?: (data: any) => void;
+  onError?: (error: any) => void;
 };
 
 export default function useListData({
@@ -22,6 +25,9 @@ export default function useListData({
   queryKey = "data",
   retry = 2,
   refetchOnWindowFocus = false,
+  isEnabled = true,
+  onSuccess,
+  onError,
 }: UseListDataProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -37,26 +43,43 @@ export default function useListData({
       url: endpoint,
     };
   };
-  console.log(buildApiEndpoint());
+  //console.log(buildApiEndpoint());
   const fetchData = async () => {
-    const get_data = await useFetch(buildApiEndpoint());
-    if (!get_data?.success) {
-      toast.error(useParseError(get_data));
+    try {
+      const get_data = await useFetch(buildApiEndpoint());
+      if (!get_data?.success) {
+        const errorMessage = useParseError(get_data);
+        toast.error(errorMessage);
+        onError?.(get_data);
+        return [];
+      }
+
+      onSuccess?.(get_data);
+      const data = get_data;
+      return data;
+    } catch (error) {
+      toast.error(useParseError(error));
+      onError?.(error);
       return [];
     }
-
-    const data = get_data;
-    return data;
   };
 
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: [queryKey, isPagination ? { currentPage } : {}],
     queryFn: fetchData,
-    enabled: true,
+    enabled: isEnabled,
     placeholderData: isPagination ? keepPreviousData : undefined,
     refetchOnWindowFocus: refetchOnWindowFocus,
     retry,
   });
+
+  useEffect(() => {
+    if (!filterValue?.includes("#")) {
+      setCurrentPage(1);
+      refetch();
+    }
+  }, [filterValue]);
+
   return {
     data,
     isLoading,

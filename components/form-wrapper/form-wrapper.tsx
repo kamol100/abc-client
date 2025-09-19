@@ -5,7 +5,7 @@ import { useParseError } from "@/lib/helper/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { ReactNode, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -23,6 +23,9 @@ type props = {
   isFormData?: boolean;
   queryKey?: string;
   onClose?: () => void;
+  actionButton?: boolean;
+  saveOnChange?: boolean;
+  setSaveOnChange?: (x: boolean) => void;
 };
 
 export default function FormWrapper({
@@ -35,6 +38,9 @@ export default function FormWrapper({
   isFormData = false,
   queryKey = "data",
   onClose = () => {},
+  actionButton = true,
+  saveOnChange: save = false,
+  setSaveOnChange = () => {},
 }: props) {
   const form = useForm<any>({
     resolver: zodResolver(schema),
@@ -51,7 +57,7 @@ export default function FormWrapper({
 
   const queryClient = useQueryClient();
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const submitRef = useRef<HTMLInputElement>(null);
   let api_route = `${api}`;
 
   if (mode === "edit") {
@@ -104,7 +110,8 @@ export default function FormWrapper({
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data, isFormData);
+    console.log(data, "submit");
+
     if (isFormData) {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
@@ -112,7 +119,6 @@ export default function FormWrapper({
       });
       submitForm(formData as any);
     } else {
-      console.log("test");
       submitForm(data);
     }
   };
@@ -120,23 +126,30 @@ export default function FormWrapper({
   const onError = async (data: any) => {
     console.log(data);
   };
+  useEffect(() => {
+    if (save) {
+      submitRef.current?.click();
+      setSaveOnChange(false);
+    }
+  }, [save]);
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         {isLoading && <Loader2 className="animate-spin" />}
         {children}
 
-        <input type="submit" className="hidden" ref={inputRef} />
-
-        <div className="flex justify-between mt-5">
-          <Button onClick={() => onClose()} type="button">
-            {t("cancel")}
-          </Button>
-          <Button type="submit">
-            {isPending && <Loader2 className="animate-spin" />}
-            {t("save")}
-          </Button>
-        </div>
+        <input type="submit" className="hidden" ref={submitRef} />
+        {actionButton && (
+          <div className="flex justify-between mt-5">
+            <Button onClick={() => onClose()} type="button">
+              {t("cancel")}
+            </Button>
+            <Button type="submit">
+              {isPending && <Loader2 className="animate-spin" />}
+              {t("save")}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   );

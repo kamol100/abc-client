@@ -1,15 +1,16 @@
 "use client";
 
+import { Form } from "@/components/ui/form";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 // import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
-import { CalendarDatePicker } from "@/components/calendar-date-picker";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import FormFilter from "../form-wrapper/form-filter";
+import InputField from "../form/input-field";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -17,6 +18,7 @@ interface DataTableToolbarProps<TData> {
   toolbarOptions?: any;
   toggleColumns?: boolean;
   data: TData[];
+  setFilter?: (x: string) => void;
 }
 
 export function DataTableToolbar<TData>({
@@ -24,8 +26,10 @@ export function DataTableToolbar<TData>({
   toolbarOptions,
   data,
   toggleColumns = false,
+  setFilter = () => {},
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const form = useForm<any>();
 
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: new Date(new Date().getFullYear(), 0, 1),
@@ -49,22 +53,24 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex flex-wrap items-center justify-between">
-      <div className="flex flex-1 flex-wrap items-center gap-2">
+      <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
         {toolbarOptions?.input_filter && (
-          <Input
-            placeholder="Filter labels..."
-            value={
-              (table
-                .getColumn(toolbarOptions.input_filter)
-                ?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) => {
-              table
-                .getColumn(toolbarOptions.input_filter)
-                ?.setFilterValue(event.target.value);
-            }}
-            className="h-8 w-[150px] lg:w-[250px]"
-          />
+          <Form {...form}>
+            <InputField
+              placeholder="Filter labels..."
+              name=""
+              // value={
+              //   (table
+              //     .getColumn(toolbarOptions.input_filter)
+              //     ?.getFilterValue() as string) ?? ""
+              // }
+              // onChange={(event) => {
+              //   table
+              //     .getColumn(toolbarOptions.input_filter)
+              //     ?.setFilterValue(event.target.value);
+              // }}
+            />
+          </Form>
         )}
         {/* {table.getColumn("category") && (
           <DataTableFacetedFilter
@@ -100,7 +106,12 @@ export function DataTableToolbar<TData>({
           );
         })}
         {toolbarOptions?.filter && (
-          <FormFilter formSchema={toolbarOptions.filter} grids={3} />
+          <FormFilter
+            formSchema={toolbarOptions.filter}
+            grids={toolbarOptions?.filter?.length}
+            setFilter={setFilter}
+            watchField={["name", "email", "username"]}
+          />
         )}
         {/* {table.getColumn("status") && (
           <DataTableFacetedFilter
@@ -119,13 +130,12 @@ export function DataTableToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
-        <CalendarDatePicker
+        {/* <CalendarDatePicker
           date={dateRange}
           onDateSelect={handleDateSelect}
           className="w-[250px] h-8"
           variant="outline"
-        />
-        test
+        /> */}
       </div>
       {toggleColumns && <DataTableViewOptions table={table} />}
     </div>

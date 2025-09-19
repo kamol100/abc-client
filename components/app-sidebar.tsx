@@ -25,14 +25,15 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Users } from "./icon";
+import { SettingContext } from "@/context/SettingsProvider";
+import useListData from "./get-data/list-data";
+import { UserIcon, Users } from "./icon";
 
 // This is sample data.
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
@@ -51,7 +52,37 @@ const data = {
       plan: "Free",
     },
   ],
+  users: [
+    {
+      name: "Design Engineering",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "#",
+      icon: PieChart,
+    },
+    {
+      name: "Travel",
+      url: "#",
+      icon: Map,
+    },
+  ],
+
   navMain: [
+    {
+      title: "users",
+      name: "Design Engineering",
+      url: "/users",
+      icon: UserIcon,
+    },
+    {
+      title: "client",
+      name: "Design Engineering",
+      url: "/clients",
+      icon: UserIcon,
+    },
     {
       title: "Playground",
       url: "#",
@@ -133,19 +164,19 @@ const data = {
       items: [
         {
           title: "General",
-          url: "#",
+          url: "/setting/general",
         },
         {
-          title: "Team",
-          url: "#",
+          title: "Theme",
+          url: "/setting/themes",
         },
         {
-          title: "Billing",
-          url: "#",
+          title: "Dashboard",
+          url: "/setting/dashboard",
         },
         {
-          title: "Limits",
-          url: "#",
+          title: "Table",
+          url: "/setting/table",
         },
       ],
     },
@@ -170,6 +201,17 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { setUserSetting }: any = React.useContext(SettingContext);
+  useListData({
+    api: "user-settings",
+    queryKey: "settings",
+    isPagination: false,
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      setUserSetting(data?.data);
+    },
+  });
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

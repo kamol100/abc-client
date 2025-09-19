@@ -20,6 +20,8 @@ export type FormBuilderType = {
     isClearable?: boolean;
     className?: string
     isShow?: boolean
+    switchValue?: string | boolean | number,
+    saveOnchange?: boolean
 
 
 };

@@ -1,5 +1,7 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import { useSidebar } from "./ui/sidebar";
 
 type props = {
   children: ReactNode;
@@ -7,5 +9,15 @@ type props = {
 };
 
 export default function PageWrapper({ children, className = "" }: props) {
-  return <main className={cn("min-h-[90vh] p-5", className)}>{children}</main>;
+  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  return (
+    <main className={cn("test min-h-[70vh] p-5", className)}>
+      <div className="">{children}</div>
+      {/* {isMobile && (
+        <div className="fixed bottom-0 h-[65px] w-full">
+          <MobileMenuBar />
+        </div>
+      )} */}
+    </main>
+  );
 }

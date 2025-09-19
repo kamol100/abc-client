@@ -1,15 +1,17 @@
-import { signOut } from "@/auth/auth";
-import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function Logout() {
   return (
-    <Button
+    <div
       onClick={async () => {
-        "use server";
         await signOut({ redirectTo: "/login" });
       }}
     >
-      Logout
-    </Button>
+      <div className="flex gap-2">
+        <LogOut />
+        <div>Logout</div>
+      </div>
+    </div>
   );
 }

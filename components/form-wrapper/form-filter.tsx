@@ -1,17 +1,24 @@
 "use client";
+import { Form } from "@/components/ui/form";
+import { objectToQueryString } from "@/lib/helper/helper";
 import dynamic from "next/dynamic";
-import FormWrapper from "../form-wrapper/form-wrapper";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
 import InputField from "../form/input-field";
+import { Close } from "../icon";
 import { FormBuilderType } from "./form-builder-type";
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
 
 type props = {
   formSchema: FormBuilderType[];
+  setFilter?: (x: string) => void;
+  watchField?: Array<string>;
   grids?: number;
   gridGap?: string;
   api?: string | undefined;
   queryKey?: string;
+  defaultFilter?: undefined;
 };
 
 const FormFilter = ({
@@ -20,18 +27,66 @@ const FormFilter = ({
   gridGap = "gap-4",
   api,
   queryKey,
+  defaultFilter,
+  setFilter = () => {},
+  watchField = [],
 }: props) => {
+  const form = useForm<any>();
+  const { watch, setValue, handleSubmit } = form;
+  const submitRef = useRef<HTMLInputElement>(null);
+
+  const getQuerySting = (params: any) => {
+    // console.log(params, "pr");
+    let query = objectToQueryString(params);
+    if (defaultFilter) {
+      query = `${query}&${defaultFilter}`;
+    }
+    setFilter(query);
+
+    return query;
+  };
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name && watchField?.includes(name) && value[name]?.length > 2) {
+        submitRef.current?.click();
+      }
+      if (name && watchField?.includes(name) && value[name]?.length === 0) {
+        submitRef.current?.click();
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  const clearInput = (inputName: string) => {
+    setValue(inputName, "");
+    submitRef.current?.click();
+  };
   const renderInput = (field: FormBuilderType) => {
     if (field?.type === "text") {
+      const fieldValue = form.watch(field?.name);
+      //console.log(fieldValue, "fd");
       return (
-        <InputField
-          name={field?.name}
-          placeholder={field?.placeholder}
-          mandatory={field?.mandatory}
-          tooltip={field?.tooltip}
-          tooltipClass={field?.tooltipClass}
-          type={field?.type}
-        />
+        <div className="relative">
+          <InputField
+            name={field?.name}
+            placeholder={field?.placeholder}
+            mandatory={field?.mandatory}
+            tooltip={field?.tooltip}
+            tooltipClass={field?.tooltipClass}
+            type={field?.type}
+          />
+          {fieldValue && (
+            <div
+              className="absolute top-1 right-0 cursor:pointer p-2 cursor-pointer"
+              onClick={() => clearInput(field?.name)}
+            >
+              <div className="text-gray-500">
+                <Close />
+              </div>
+            </div>
+          )}
+        </div>
       );
     }
     if (field.type === "dropdown") {
@@ -49,6 +104,9 @@ const FormFilter = ({
           isLoading={field?.isLoading}
           isClearable={field?.isClearable}
           className={field?.className}
+          onChange={(option) => {
+            submitRef.current?.click();
+          }}
         />
       );
     }
@@ -64,17 +122,22 @@ const FormFilter = ({
     8: "md:grid-cols-8 lg:grid-cols-8 sm:grid-cols-4",
   };
   return (
-    <FormWrapper schema={formSchema} api={api} queryKey={queryKey}>
-      <div
-        className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
-      >
-        {formSchema?.map((fieldName: FormBuilderType, index) => (
-          <div key={`${index}`}>
-            {fieldName?.permission ? renderInput(fieldName) : null}
+    <div className="w-full">
+      <Form {...form}>
+        <form onSubmit={handleSubmit(getQuerySting)}>
+          <div
+            className={`w-full grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
+          >
+            {formSchema?.map((fieldName: FormBuilderType, index) => (
+              <div key={`${index}`}>
+                {fieldName?.permission ? renderInput(fieldName) : null}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </FormWrapper>
+          <input className="opacity-0 hidden" type="submit" ref={submitRef} />
+        </form>
+      </Form>
+    </div>
   );
 };
 
