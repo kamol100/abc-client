@@ -10,16 +10,17 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { useSetting } from "@/lib/utils/user-setting";
 import { Separator } from "@radix-ui/react-separator";
 import { FC } from "react";
 
 export const TopNavbar: FC = () => {
   const setting = useSetting("settings") as SettingSchema;
+  const { isMobile } = useSidebar();
   return (
     <>
-      {setting?.show_dashboard_header && (
+      {setting?.show_dashboard_header && !isMobile && (
         <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
