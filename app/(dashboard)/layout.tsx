@@ -8,7 +8,7 @@ import { TopNavbar } from "./top-navbar";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const data = await useFetch({ url: "/user-settings" });
-  //console.log(data, "profile");
+  console.log(data, "profile");
   return (
     <SettingContextProvider initialUserSetting={data?.data}>
       <SidebarProvider>

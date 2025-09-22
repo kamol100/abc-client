@@ -17,7 +17,6 @@ async function getLogin(credentials: any): Promise<any> {
             body: JSON.stringify(credentials),
         });
         const data = await result.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -36,7 +35,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const data = await getLogin(parsedCredentials.data);
-                    console.log(data);
                     if (!data?.success) {
                         return null;
                     }

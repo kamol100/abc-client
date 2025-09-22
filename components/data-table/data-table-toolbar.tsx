@@ -7,10 +7,13 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 // import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
+import { FilterIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import ChangePagination from "../change-pagination";
 import FormFilter from "../form-wrapper/form-filter";
 import InputField from "../form/input-field";
+import { useSidebar } from "../ui/sidebar";
 import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
@@ -19,6 +22,8 @@ interface DataTableToolbarProps<TData> {
   toggleColumns?: boolean;
   data: TData[];
   setFilter?: (x: string) => void;
+  queryKey?: string;
+  form?: any;
 }
 
 export function DataTableToolbar<TData>({
@@ -27,9 +32,12 @@ export function DataTableToolbar<TData>({
   data,
   toggleColumns = false,
   setFilter = () => {},
+  queryKey,
+  form,
 }: DataTableToolbarProps<TData>) {
+  const FormComponent = form as unknown as React.ComponentType | undefined;
   const isFiltered = table.getState().columnFilters.length > 0;
-  const form = useForm<any>();
+  const dataForm = useForm<any>();
 
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: new Date(new Date().getFullYear(), 0, 1),
@@ -50,12 +58,13 @@ export function DataTableToolbar<TData>({
 
     return column;
   };
-
+  const { isMobile } = useSidebar();
+  const [showFilter, setShowFilter] = useState(isMobile ? false : true);
   return (
     <div className="flex flex-wrap items-center justify-between">
       <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
         {toolbarOptions?.input_filter && (
-          <Form {...form}>
+          <Form {...dataForm}>
             <InputField
               placeholder="Filter labels..."
               name=""
@@ -105,7 +114,18 @@ export function DataTableToolbar<TData>({
             )
           );
         })}
-        {toolbarOptions?.filter && (
+        {isMobile && (
+          <div className="flex justify-between w-full">
+            <div>
+              <ChangePagination queryKey={queryKey} />
+            </div>
+            <div>{FormComponent && <FormComponent />}</div>
+            <div onClick={() => setShowFilter(!showFilter)}>
+              <FilterIcon />
+            </div>
+          </div>
+        )}
+        {toolbarOptions?.filter && showFilter && (
           <FormFilter
             formSchema={toolbarOptions.filter}
             grids={toolbarOptions?.filter?.length}
@@ -137,7 +157,10 @@ export function DataTableToolbar<TData>({
           variant="outline"
         /> */}
       </div>
-      {toggleColumns && <DataTableViewOptions table={table} />}
+      <div className="flex items-center gap-2">
+        {!isMobile && FormComponent && <FormComponent />}
+        {toggleColumns && <DataTableViewOptions table={table} />}
+      </div>
     </div>
   );
 }

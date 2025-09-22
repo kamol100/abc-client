@@ -19,7 +19,6 @@ const UserForm: FC<props> = ({
   method = "POST",
   data = undefined,
 }) => {
-  console.log(data);
   return (
     <DialogWrapper
       title={mode === "create" ? "create_user" : "edit_user"}

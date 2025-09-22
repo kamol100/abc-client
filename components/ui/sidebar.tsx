@@ -143,7 +143,7 @@ const SidebarProvider = React.forwardRef<
             }
             className={cn(
               !isMobile &&
-              "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+                "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
               className
             )}
             ref={ref}
@@ -201,7 +201,7 @@ const Sidebar = React.forwardRef<
             data-sidebar="sidebar"
             aria-describedby=""
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden z-10"
+            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden z-10 test h-[94dvh]"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -210,7 +210,7 @@ const Sidebar = React.forwardRef<
             side={side}
           >
             <SheetTitle />
-            <div className="flex  w-full flex-col z-0 h-[90dvh]"> {children}</div>
+            <div className="flex  w-full flex-col h-full pb-5"> {children}</div>
           </SheetContent>
         </Sheet>
       );
@@ -631,7 +631,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}

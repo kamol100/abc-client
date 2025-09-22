@@ -11,7 +11,7 @@ type props = {
 export default function PageWrapper({ children, className = "" }: props) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
   return (
-    <main className={cn("test min-h-[70vh] p-5", className)}>
+    <main className={cn("test min-h-[100dvh] p-5", className)}>
       <div className="">{children}</div>
       {/* {isMobile && (
         <div className="fixed bottom-0 h-[65px] w-full">

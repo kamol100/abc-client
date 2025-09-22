@@ -38,7 +38,7 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
         const session: any = await auth();
         const token = session?.token;
         const api_url = `${BASE_URL}${version}${url}`;
-        //console.log(api_url, method)
+        console.log(api_url, method)
 
         const options: RequestInit = {
             method: method,
@@ -55,7 +55,7 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
 
         const result = await fetch(api_url, options);
         const responseData = await result.json();
-        //console.log(responseData, "responseData");
+        // console.log(responseData, "responseData");
         return responseData;
     } catch (errors: any) {
         const { response = null } = errors;

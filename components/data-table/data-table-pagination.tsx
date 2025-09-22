@@ -1,15 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { usePagination } from "@/hooks/use-pagination";
+import ChangePagination from "../change-pagination";
 import {
   Pagination,
   PaginationContent,
@@ -19,15 +12,15 @@ import {
 import { useSidebar } from "../ui/sidebar";
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>;
   pagination: Pagination;
   setCurrentPage?: (page: number) => void;
+  queryKey?: string;
 }
 
 export function DataTablePagination<TData>({
-  table,
   pagination,
   setCurrentPage = () => {},
+  queryKey,
 }: DataTablePaginationProps<TData>) {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage: pagination.current_page,
@@ -35,7 +28,6 @@ export function DataTablePagination<TData>({
     paginationItemsToDisplay: 5,
   });
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
-  console.log(pagination, "pg", table.getPageCount(), pages);
   return (
     <div className="flex items-center justify-between gap-3 max-sm:flex-col">
       {/* Page number information */}
@@ -117,29 +109,11 @@ export function DataTablePagination<TData>({
       </div>
 
       {/* Results per page */}
-      <div className="flex flex-1 justify-end">
-        <Select
-          value={table.getState().pagination.pageSize.toString()}
-          // onValueChange={(value) => {
-          //   table.setPageSize(Number(value));
-          // }}
-          aria-label="Results per page"
-        >
-          <SelectTrigger
-            id="results-per-page"
-            className="w-fit whitespace-nowrap"
-          >
-            <SelectValue placeholder="Select number of results" />
-          </SelectTrigger>
-          <SelectContent>
-            {[5, 10, 25, 50].map((pageSize) => (
-              <SelectItem key={pageSize} value={pageSize.toString()}>
-                {pageSize} / page
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {!isMobile && (
+        <div className="flex flex-1 justify-end">
+          <ChangePagination queryKey={queryKey} />
+        </div>
+      )}
     </div>
   );
 }

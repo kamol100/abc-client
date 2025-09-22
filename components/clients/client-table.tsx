@@ -52,6 +52,8 @@ const ClientTable: FC = () => {
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
+            queryKey={"clients"}
+            form={ClientForm}
           />
         )}
       </div>

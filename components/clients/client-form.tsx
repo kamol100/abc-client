@@ -15,7 +15,7 @@ type props = {
 
 const ClientForm: FC<props> = ({
   mode = "create",
-  api = "/users",
+  api = "/clients",
   method = "POST",
   data = undefined,
 }) => {
@@ -34,7 +34,7 @@ const ClientForm: FC<props> = ({
         mode={mode}
         schema={UserSchema}
         method={method}
-        queryKey="users"
+        queryKey="clients"
       />
     </DialogWrapper>
   );

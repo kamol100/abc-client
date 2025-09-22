@@ -45,6 +45,8 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   isFetching?: boolean;
   setFilter?: (x: string) => void;
+  queryKey?: string;
+  form?: any;
 }
 
 export function DataTable<TData, TValue>({
@@ -58,6 +60,8 @@ export function DataTable<TData, TValue>({
   isFetching = false,
   isLoading = false,
   setFilter = () => {},
+  queryKey,
+  form,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -108,7 +112,7 @@ export function DataTable<TData, TValue>({
   }, [setting?.show_dashboard_header]);
 
   return (
-    <div className="  border bottom-1 rounded-md">
+    <div className="border bottom-1 rounded-md h-auto flex flex-col">
       {toolbar && (
         <div className="p-3">
           <DataTableToolbar
@@ -117,10 +121,12 @@ export function DataTable<TData, TValue>({
             data={data}
             toggleColumns={toggleColumns}
             setFilter={setFilter}
+            queryKey={queryKey}
+            form={form}
           />
         </div>
       )}
-      <div className={cn(`flex flex-col relative`, topMargin)}>
+      <div className={cn(`flex flex-col relative flex-auto min-h-10`)}>
         {isLoading || isFetching ? (
           <div className="flex-1 overflow-auto">
             <SkeletonLoader
@@ -149,7 +155,10 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="flex-1 overflow-auto" tabIndex={0}>
+            <TableBody
+              className="flex-1 overflow-auto self-stretch"
+              tabIndex={0}
+            >
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow
@@ -188,9 +197,9 @@ export function DataTable<TData, TValue>({
           )}
         >
           <DataTablePagination
-            table={table}
             pagination={paginationData}
             setCurrentPage={setCurrentPage}
+            queryKey={queryKey}
           />
         </div>
       )}
