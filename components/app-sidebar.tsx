@@ -11,6 +11,9 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  Users,
+  User2
+
 } from "lucide-react";
 import * as React from "react";
 
@@ -24,10 +27,10 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { SettingContext } from "@/context/SettingsProvider";
 import useListData from "./get-data/list-data";
-import { UserIcon, Users } from "./icon";
 
 // This is sample data.
 const data = {
@@ -75,13 +78,13 @@ const data = {
       title: "users",
       name: "Design Engineering",
       url: "/users",
-      icon: UserIcon,
+      icon: Users,
     },
     {
       title: "client",
       name: "Design Engineering",
       url: "/clients",
-      icon: UserIcon,
+      icon: User2,
     },
     {
       title: "Playground",
@@ -211,9 +214,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       setUserSetting(data?.data);
     },
   });
-
+  const { isMobile } = useSidebar();
   return (
-    <Sidebar collapsible="icon" {...props}>
+
+    <Sidebar collapsible="icon" {...props} side={isMobile ? "right" : "left"}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>

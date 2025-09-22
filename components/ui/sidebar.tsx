@@ -8,7 +8,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
@@ -143,7 +143,7 @@ const SidebarProvider = React.forwardRef<
             }
             className={cn(
               !isMobile &&
-                "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+              "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
               className
             )}
             ref={ref}
@@ -168,7 +168,7 @@ const Sidebar = React.forwardRef<
 >(
   (
     {
-      side = "right",
+      side = "left",
       variant = "sidebar",
       collapsible = "offcanvas",
       className,
@@ -199,6 +199,7 @@ const Sidebar = React.forwardRef<
         <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
           <SheetContent
             data-sidebar="sidebar"
+            aria-describedby=""
             data-mobile="true"
             className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden z-10"
             style={
@@ -208,7 +209,8 @@ const Sidebar = React.forwardRef<
             }
             side={side}
           >
-            <div className="flex h-full w-full flex-col"> {children}</div>
+            <SheetTitle />
+            <div className="flex  w-full flex-col z-0 h-[90dvh]"> {children}</div>
           </SheetContent>
         </Sheet>
       );
@@ -337,7 +339,7 @@ const SidebarInset = React.forwardRef<
         {...props}
       />
       {isMobile && (
-        <div className="fixed bottom-0 h-[65px] w-full z-20">
+        <div className="fixed bottom-0 h-[65px] w-full z-50">
           <MobileMenuBar />
         </div>
       )}
@@ -388,7 +390,7 @@ const SidebarFooter = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="footer test"
-      className={cn("flex flex-col gap-2 p-2", className, isMobile && "mb-16")}
+      className={cn("flex flex-col gap-2 p-2", className)}
       {...props}
     />
   );
@@ -629,7 +631,7 @@ const SidebarMenuAction = React.forwardRef<
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
-          "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
+        "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground md:opacity-0",
         className
       )}
       {...props}
