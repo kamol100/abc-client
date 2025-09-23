@@ -21,22 +21,16 @@ const ClientForm: FC<props> = ({
 }) => {
   //console.log(data);
   return (
-    <DialogWrapper
-      title={mode === "create" ? "create_user" : "edit_user"}
-      trigger={mode === "create" ? "Add" : "Edit"}
-      Icon={AddPlus}
-    >
-      <FormBuilder
-        formSchema={ClientFormSchema()}
-        grids={2}
-        data={data}
-        api={api}
-        mode={mode}
-        schema={UserSchema}
-        method={method}
-        queryKey="clients"
-      />
-    </DialogWrapper>
+    <FormBuilder
+      formSchema={ClientFormSchema()}
+      grids={2}
+      data={data}
+      api={api}
+      mode={mode}
+      schema={UserSchema}
+      method={method}
+      queryKey="clients"
+    />
   );
 };
 

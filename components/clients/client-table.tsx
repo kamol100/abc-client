@@ -8,6 +8,7 @@ import { SettingSchema } from "../settings/setting-zod-schema";
 import { ClientColumns } from "./client-column";
 import ClientFilterSchema from "./client-filter-schema";
 import ClientForm from "./client-form";
+import { Button } from "../ui/button";
 
 const ClientTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
@@ -33,9 +34,9 @@ const ClientTable: FC = () => {
     <>
       {setting?.show_table_header && (
         <div className="flex justify-between mb-5">
-          <h1>Users</h1>
+          <h1>Clients</h1>
           <div>
-            <ClientForm />
+            <Button>Add</Button>
           </div>
         </div>
       )}
@@ -53,7 +54,6 @@ const ClientTable: FC = () => {
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey={"clients"}
-            form={ClientForm}
           />
         )}
       </div>
