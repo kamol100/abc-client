@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
   }, [setting?.show_dashboard_header]);
 
   return (
-    <div className="border bottom-1 rounded-md flex flex-col h-[calc(100dvh-40px)]">
+    <div className="border bottom-1 rounded-md">
       {toolbar && (
         <div className="p-3">
           <DataTableToolbar
@@ -135,7 +135,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
-      <div className={cn(`flex-1 overflow-y-auto`)}>
+      <div className={cn(`flex flex-col h-[calc(100dvh-170px)]`)}>
         {isLoading || isFetching ? (
           <div className="flex-1 overflow-auto">
             <SkeletonLoader
@@ -164,7 +164,7 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="" tabIndex={0}>
+            <TableBody className="flex-1 overflow-auto" tabIndex={0}>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow
