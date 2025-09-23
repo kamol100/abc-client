@@ -1,10 +1,9 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import PageWrapper from "@/components/page-wrapper";
+import PageContainer from "@/components/page-container";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SettingContextProvider from "@/context/SettingsProvider";
 import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
-import { TopNavbar } from "./top-navbar";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const data = await useFetch({ url: "/user-settings" });
@@ -14,8 +13,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <TopNavbar />
-          <PageWrapper>{children}</PageWrapper>
+          <PageContainer>{children}</PageContainer>
         </SidebarInset>
       </SidebarProvider>
     </SettingContextProvider>

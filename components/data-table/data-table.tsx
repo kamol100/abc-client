@@ -28,6 +28,8 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useSetting } from "@/lib/utils/user-setting";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { SettingSchema } from "../settings/setting-zod-schema";
 import { SkeletonLoader } from "../skeleton-loader";
 import { useSidebar } from "../ui/sidebar";
@@ -99,20 +101,27 @@ export function DataTable<TData, TValue>({
   });
 
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const queryClient = useQueryClient();
+
   const [topMargin, setTopMargin] = React.useState(
     "[&>div]:max-h-[calc(100dvh-230px)]"
   );
   const setting = useSetting("settings") as SettingSchema;
-  React.useEffect(() => {
+  useEffect(() => {
     if (setting?.show_dashboard_header) {
       setTopMargin("[&>div]:max-h-[calc(100dvh-295px)]");
     } else {
       setTopMargin("[&>div]:max-h-[calc(100dvh-230px)]");
     }
   }, [setting?.show_dashboard_header]);
+  useEffect(() => {
+    queryClient.setQueryData(["show_header"], {
+      show_dashboard_header: setting?.show_dashboard_header,
+    });
+  }, [setting?.show_dashboard_header]);
 
   return (
-    <div className="border bottom-1 rounded-md h-auto flex flex-col">
+    <div className="border bottom-1 rounded-md flex flex-col h-[calc(100dvh-40px)]">
       {toolbar && (
         <div className="p-3">
           <DataTableToolbar
@@ -126,7 +135,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
-      <div className={cn(`flex flex-col relative flex-auto min-h-10`)}>
+      <div className={cn(`flex-1 overflow-y-auto`)}>
         {isLoading || isFetching ? (
           <div className="flex-1 overflow-auto">
             <SkeletonLoader
@@ -155,10 +164,7 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody
-              className="flex-1 overflow-auto self-stretch"
-              tabIndex={0}
-            >
+            <TableBody className="" tabIndex={0}>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow

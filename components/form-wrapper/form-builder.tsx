@@ -1,6 +1,7 @@
 "use client";
+import { useQueryClient } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormWrapper from "../form-wrapper/form-wrapper";
 import InputField from "../form/input-field";
 import Switch from "../form/switch";
@@ -35,6 +36,7 @@ const FormBuilder = ({
   onClose = () => {},
   actionButton = true,
 }: props) => {
+  const queryClient = useQueryClient();
   const [saveOnChange, setSaveOnChange] = useState(false);
   const renderInput = (field: FormBuilderType) => {
     if (field?.type === "text") {
@@ -95,6 +97,10 @@ const FormBuilder = ({
     7: "md:grid-cols-7 lg:grid-cols-7 sm:grid-cols-4",
     8: "md:grid-cols-8 lg:grid-cols-8 sm:grid-cols-4",
   };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["show_header"] });
+  });
 
   return (
     <FormWrapper

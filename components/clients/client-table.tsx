@@ -1,14 +1,14 @@
 "use client";
 import { useSetting } from "@/lib/utils/user-setting";
+import Link from "next/link";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "../data-table/data-table";
 import useListData from "../get-data/list-data";
 import { SettingSchema } from "../settings/setting-zod-schema";
+import { Button } from "../ui/button";
 import { ClientColumns } from "./client-column";
 import ClientFilterSchema from "./client-filter-schema";
-import ClientForm from "./client-form";
-import { Button } from "../ui/button";
 
 const ClientTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
@@ -36,7 +36,9 @@ const ClientTable: FC = () => {
         <div className="flex justify-between mb-5">
           <h1>Clients</h1>
           <div>
-            <Button>Add</Button>
+            <Link href={"/clients/create"}>
+              <Button>Add</Button>
+            </Link>
           </div>
         </div>
       )}

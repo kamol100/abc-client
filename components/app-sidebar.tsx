@@ -11,9 +11,9 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  Table,
+  User2,
   Users,
-  User2
-
 } from "lucide-react";
 import * as React from "react";
 
@@ -85,6 +85,12 @@ const data = {
       name: "Design Engineering",
       url: "/clients",
       icon: User2,
+    },
+    {
+      title: "Test table",
+      name: "Design Engineering",
+      url: "/tables",
+      icon: Table,
     },
     {
       title: "Playground",
@@ -216,7 +222,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   });
   const { isMobile } = useSidebar();
   return (
-
     <Sidebar collapsible="icon" {...props} side={isMobile ? "right" : "left"}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />

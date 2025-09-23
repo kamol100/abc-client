@@ -1,5 +1,7 @@
 "use client";
 import { useFetch } from "@/app/actions";
+import { useThemeContext } from "@/context/theme-data-provider";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { FC, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -26,6 +28,7 @@ type props = {
   tooltip?: string | null;
   tooltipClass?: string | undefined;
   initialData?: any;
+  initHeight?: number;
   value?: "value | label";
   onChange?: (value: any) => void;
   onBlur?: (value: any) => void;
@@ -54,6 +57,7 @@ const SelectDropdown: FC<props> = ({
   tooltip,
   tooltipClass = "",
   initialData = null,
+  initHeight = 36,
   onChange = () => {},
   onBlur = () => {},
   onFocus = () => {},
@@ -62,6 +66,7 @@ const SelectDropdown: FC<props> = ({
   onMenuClose = () => {},
 }) => {
   const { t } = useTranslation();
+  const { themeColor, setThemeColor } = useThemeContext();
 
   const [options, setOption] = useState(optionItems);
 
@@ -126,6 +131,32 @@ const SelectDropdown: FC<props> = ({
     }
   }, [defaultValue?.length]);
 
+  const customStyles = {
+    control: (base: any, state: any) => ({
+      ...base,
+      minHeight: initHeight,
+      background: "white",
+      // borderColor: state.isFocused ? themeColor?.toLocaleLowerCase() : "gray",
+    }),
+    option: (base: any, state: any) => {
+      return {
+        ...base,
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        transition: "all 0.5s",
+        ":before": {
+          content: '""',
+          display: "inline-block",
+          width: "10px",
+          height: "10px",
+          borderRadius: "50%",
+          backgroundColor: state.data.color,
+        },
+      };
+    },
+  };
+
   return (
     <>
       {label && (
@@ -143,7 +174,7 @@ const SelectDropdown: FC<props> = ({
         onChange={handleChange}
         defaultValue={defaultOption()}
         options={options ?? []}
-        className="basic-single"
+        className={cn(`basic-single`)}
         classNamePrefix="select"
         isSearchable={isSearchable}
         isClearable={isClearable}
@@ -159,6 +190,41 @@ const SelectDropdown: FC<props> = ({
             ...theme.colors,
           },
         })}
+        classNames={{
+          control: ({ isFocused }) =>
+            [
+              `flex items-center rounded-md border bg-white px-2 text-sm shadow-sm`,
+              isFocused
+                ? "border-primary ring-0 ring-primary ring-offset-1"
+                : "border-gray-300",
+            ].join(" "),
+          valueContainer: () => "flex-1 gap-1",
+          placeholder: () => "text-gray-400",
+          singleValue: () => "text-gray-900",
+          input: () => cn("text-gray-900", `!h-[${initHeight}px]`),
+          indicatorsContainer: () => "flex gap-1",
+          dropdownIndicator: ({ isFocused }) =>
+            [
+              "p-1 transition-colors",
+              isFocused ? "text-primary" : "text-gray-500 hover:text-gray-700",
+            ].join(" "),
+          clearIndicator: () =>
+            "p-1 text-gray-400 hover:text-red-500 transition-colors",
+          menu: () =>
+            "mt-1 rounded border border-gray-200 bg-white shadow-lg text-sm",
+          menuList: () => "",
+          option: ({ isFocused, isSelected }) =>
+            [
+              "cursor-pointer rounded px-2 py-2",
+              isSelected
+                ? "bg-primary text-white"
+                : isFocused
+                ? "bg-secondary"
+                : "text-gray-900",
+            ].join(" "),
+          noOptionsMessage: () => "text-gray-500 p-2",
+        }}
+        unstyled
       />
       {errors?.[name] && (
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">

@@ -22,7 +22,7 @@
         "border": "20 5.9% 90%",
         "input": "20 5.9% 90%",
         "ring": "24.6 95% 53.1%",
-        "radius": "0.3rem",
+        "radius": "0.5rem",
         "buttonSize": "lg"
       },
       "dark": {
@@ -113,7 +113,7 @@
         "border": "240 5.9% 90%",
         "input": "240 5.9% 90%",
         "ring": "142.1 76.2% 36.3%",
-        "radius": "0.5rem"
+        "radius": "0rem"
       },
       "dark": {
         "background": "20 14.3% 4.1%",
@@ -203,7 +203,7 @@
         "border": "240 5.9% 90%",
         "input": "240 5.9% 90%",
         "ring": "346.8 77.2% 49.8%",
-        "radius": "0.5rem"
+        "radius": "1.0rem"
       },
       "dark": {
         "background": "20 14.3% 4.1%",
