@@ -1,5 +1,6 @@
 "use client";
 import { useSetting } from "@/lib/utils/user-setting";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +8,7 @@ import { DataTable } from "../data-table/data-table";
 import useListData from "../get-data/list-data";
 import { SettingSchema } from "../settings/setting-zod-schema";
 import { Button } from "../ui/button";
+import { useSidebar } from "../ui/sidebar";
 import { ClientColumns } from "./client-column";
 import ClientFilterSchema from "./client-filter-schema";
 
@@ -23,6 +25,7 @@ const ClientTable: FC = () => {
   const pagination = data?.data?.pagination;
   const { t } = useTranslation();
   const setting = useSetting("settings") as SettingSchema;
+  const { isMobile } = useSidebar();
 
   const toolbarOptions = {
     // input_filter: "name",
@@ -30,34 +33,44 @@ const ClientTable: FC = () => {
     filter: ClientFilterSchema(),
   };
 
+  const FormLink = () => (
+    <Link href={"/clients/create"}>
+      <Button>
+        {isMobile ? (
+          <Plus />
+        ) : (
+          <>
+            <Plus /> Add
+          </>
+        )}
+      </Button>
+    </Link>
+  );
+
+  const toolbarTitle = () => {
+    if (data?.data?.pagination?.total) {
+      return `Clients (${data?.data?.pagination?.total})`;
+    }
+    return `Clients`;
+  };
+
   return (
     <>
-      {setting?.show_table_header && (
-        <div className="flex justify-between mb-5">
-          <h1>Clients</h1>
-          <div>
-            <Link href={"/clients/create"}>
-              <Button>Add</Button>
-            </Link>
-          </div>
-        </div>
-      )}
-
       <div>
-        {users && (
-          <DataTable
-            data={users}
-            setFilter={setFilter}
-            columns={ClientColumns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
-            pagination={pagination}
-            setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            queryKey={"clients"}
-          />
-        )}
+        <DataTable
+          data={users}
+          setFilter={setFilter}
+          columns={ClientColumns}
+          toolbarOptions={toolbarOptions}
+          toggleColumns={true}
+          pagination={pagination}
+          setCurrentPage={setCurrentPage}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          queryKey={"clients"}
+          form={FormLink}
+          toolbarTitle={toolbarTitle()}
+        />
       </div>
     </>
   );

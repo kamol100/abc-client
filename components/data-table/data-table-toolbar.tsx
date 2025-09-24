@@ -7,7 +7,7 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 // import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
-import { FilterIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ChangePagination from "../change-pagination";
@@ -24,6 +24,8 @@ interface DataTableToolbarProps<TData> {
   setFilter?: (x: string) => void;
   queryKey?: string;
   form?: any;
+  toolbarTitle?: string | null;
+  toolbarTitleClass?: string;
 }
 
 export function DataTableToolbar<TData>({
@@ -31,9 +33,11 @@ export function DataTableToolbar<TData>({
   toolbarOptions,
   data,
   toggleColumns = false,
-  setFilter = () => { },
+  setFilter = () => {},
   queryKey,
   form,
+  toolbarTitle = null,
+  toolbarTitleClass = "",
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -58,16 +62,20 @@ export function DataTableToolbar<TData>({
     return column;
   };
   const { isMobile } = useSidebar();
-  const [showFilter, setShowFilter] = useState(isMobile ? false : true);
+  const [showFilter, setShowFilter] = useState(false);
   return (
-    <div className="flex flex-wrap items-center justify-between">
+    <div
+      className={cn(
+        !showFilter && "flex flex-wrap items-center justify-between"
+      )}
+    >
       <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
+        {toolbarTitle && !showFilter && !isMobile && (
+          <div className={toolbarTitleClass}>{toolbarTitle}</div>
+        )}
         {toolbarOptions?.input_filter && (
           <Form {...dataForm}>
-            <InputField
-              placeholder="Filter labels..."
-              name=""
-            />
+            <InputField placeholder="Filter labels..." name="" />
           </Form>
         )}
         {toolbarOptions?.columns?.map((column: string) => {
@@ -82,24 +90,12 @@ export function DataTableToolbar<TData>({
             )
           );
         })}
-        {isMobile && (
+        {isMobile && !showFilter && (
           <div className="flex justify-between w-full">
             <div>
               <ChangePagination queryKey={queryKey} />
             </div>
-            <div>{FormComponent && <FormComponent />} </div>
-            <div onClick={() => setShowFilter(!showFilter)}>
-              <FilterIcon />
-            </div>
           </div>
-        )}
-        {toolbarOptions?.filter && showFilter && (
-          <FormFilter
-            formSchema={toolbarOptions.filter}
-            grids={toolbarOptions?.filter?.length}
-            setFilter={setFilter}
-            watchField={["name", "email", "username"]}
-          />
         )}
         {isFiltered && (
           <Button
@@ -112,9 +108,28 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="flex items-center gap-2">
-        {!isMobile && FormComponent && <FormComponent />}
-        {toggleColumns && <DataTableViewOptions table={table} />}
+      <div
+        className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
+      >
+        {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
+
+        {FormComponent && !showFilter && <FormComponent />}
+        {/* <Button
+          variant={showFilter ? "default" : "outline"}
+          onClick={() => setShowFilter(!showFilter)}
+        >
+          <FilterIcon />
+        </Button> */}
+        {toolbarOptions?.filter && (
+          <FormFilter
+            formSchema={toolbarOptions.filter}
+            grids={toolbarOptions?.filter?.length}
+            setFilter={setFilter}
+            watchField={["name", "email", "username"]}
+            searchButton
+            setShowFilter={setShowFilter}
+          />
+        )}
       </div>
     </div>
   );

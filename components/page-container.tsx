@@ -36,7 +36,7 @@ export default function PageContainer({ children, className = "" }: props) {
         className
       )}
     >
-      {showHeader && !isMobile && <TopNavbar />}
+      {showHeader && <TopNavbar />}
       <div className="p-4">{children}</div>
     </div>
   );

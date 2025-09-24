@@ -49,6 +49,8 @@ interface DataTableProps<TData, TValue> {
   setFilter?: (x: string) => void;
   queryKey?: string;
   form?: any;
+  toolbarTitle?: string | null;
+  toolbarTitleClass?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -64,6 +66,8 @@ export function DataTable<TData, TValue>({
   setFilter = () => {},
   queryKey,
   form,
+  toolbarTitle = null,
+  toolbarTitleClass = "",
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -104,14 +108,14 @@ export function DataTable<TData, TValue>({
   const queryClient = useQueryClient();
 
   const [topMargin, setTopMargin] = React.useState(
-    "[&>div]:max-h-[calc(100dvh-230px)]"
+    "[&>div]:max-h-[calc(100dvh-170px)]"
   );
   const setting = useSetting("settings") as SettingSchema;
   useEffect(() => {
     if (setting?.show_dashboard_header) {
-      setTopMargin("[&>div]:max-h-[calc(100dvh-295px)]");
+      setTopMargin("[&>div]:max-h-[calc(100dvh-235px)]");
     } else {
-      setTopMargin("[&>div]:max-h-[calc(100dvh-230px)]");
+      setTopMargin("[&>div]:max-h-[calc(100dvh-170px)]");
     }
   }, [setting?.show_dashboard_header]);
   useEffect(() => {
@@ -132,10 +136,12 @@ export function DataTable<TData, TValue>({
             setFilter={setFilter}
             queryKey={queryKey}
             form={form}
+            toolbarTitle={toolbarTitle}
+            toolbarTitleClass={toolbarTitleClass}
           />
         </div>
       )}
-      <div className={cn(`flex flex-col h-[calc(100dvh-170px)]`)}>
+      <div className={cn(`flex flex-col`, topMargin)}>
         {isLoading || isFetching ? (
           <div className="flex-1 overflow-auto">
             <SkeletonLoader

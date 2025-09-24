@@ -1,11 +1,14 @@
 "use client";
 import { Form } from "@/components/ui/form";
 import { objectToQueryString } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
+import { FilterIcon, Search } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import InputField from "../form/input-field";
 import { Close } from "../icon";
+import { Button } from "../ui/button";
 import { FormBuilderType } from "./form-builder-type";
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
@@ -19,6 +22,9 @@ type props = {
   api?: string | undefined;
   queryKey?: string;
   defaultFilter?: undefined;
+  searchButton?: boolean;
+  showFilter?: boolean;
+  setShowFilter?: (x: boolean) => void;
 };
 
 const FormFilter = ({
@@ -28,9 +34,12 @@ const FormFilter = ({
   api,
   queryKey,
   defaultFilter,
-  setFilter = () => {},
+  setShowFilter = () => {},
   watchField = [],
+  searchButton = false,
+  setFilter = () => {},
 }: props) => {
+  const [isFilter, setOpenFilter] = useState(false);
   const form = useForm<any>();
   const { watch, setValue, handleSubmit } = form;
   const submitRef = useRef<HTMLInputElement>(null);
@@ -57,6 +66,9 @@ const FormFilter = ({
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+  useEffect(() => {
+    setShowFilter(isFilter);
+  }, [isFilter]);
 
   const clearInput = (inputName: string) => {
     setValue(inputName, "");
@@ -122,22 +134,52 @@ const FormFilter = ({
     8: "md:grid-cols-8 lg:grid-cols-8 sm:grid-cols-4",
   };
   return (
-    <div className="w-full">
-      <Form {...form}>
-        <form onSubmit={handleSubmit(getQuerySting)}>
-          <div
-            className={`w-full grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
-          >
-            {formSchema?.map((fieldName: FormBuilderType, index) => (
-              <div key={`${index}`}>
-                {fieldName?.permission ? renderInput(fieldName) : null}
-              </div>
-            ))}
+    <>
+      <div className="flex-none md:flex lg:flex gap-3">
+        {isFilter && (
+          <div className="w-full">
+            <Form {...form}>
+              <form
+                onSubmit={handleSubmit(getQuerySting)}
+                className="flex w-full"
+              >
+                <div
+                  className={`w-full grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
+                >
+                  {formSchema?.map((fieldName: FormBuilderType, index) => (
+                    <div key={`${index}`}>
+                      {fieldName?.permission ? renderInput(fieldName) : null}
+                    </div>
+                  ))}
+                </div>
+                <input
+                  className="opacity-0 hidden"
+                  type="submit"
+                  ref={submitRef}
+                />
+              </form>
+            </Form>
           </div>
-          <input className="opacity-0 hidden" type="submit" ref={submitRef} />
-        </form>
-      </Form>
-    </div>
+        )}
+        <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
+          {searchButton && isFilter && (
+            <Button
+              className="mt-2 md:mt-0 lg:mt-0"
+              onClick={() => submitRef.current?.click()}
+            >
+              <Search />
+            </Button>
+          )}
+          <Button
+            className={cn(isFilter && "mt-2 md:mt-0 lg:mt-0")}
+            variant={isFilter ? "default" : "outline"}
+            onClick={() => setOpenFilter(!isFilter)}
+          >
+            <FilterIcon />
+          </Button>
+        </div>
+      </div>
+    </>
   );
 };
 
