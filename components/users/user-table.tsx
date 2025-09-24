@@ -21,19 +21,20 @@ const UserTable: FC = () => {
   const { t } = useTranslation();
 
   const toolbarOptions = {
-    input_filter: "name",
-    columns: ["status", "email"],
+    // input_filter: "name",
+    // columns: ["status", "email"],
     filter: [...UserFilterSchema()],
+  };
+
+  const toolbarTitle = () => {
+    if (data?.data?.pagination?.total) {
+      return `Users (${data?.data?.pagination?.total})`;
+    }
+    return `Users`;
   };
 
   return (
     <>
-      <div className="flex justify-between mb-5">
-        <h1>Users</h1>
-        <div>
-          <UserForm />
-        </div>
-      </div>
       <div>
         {users && (
           <DataTable
@@ -47,6 +48,7 @@ const UserTable: FC = () => {
             isLoading={isLoading}
             isFetching={isFetching}
             form={UserForm}
+            toolbarTitle={toolbarTitle()}
           />
         )}
       </div>
