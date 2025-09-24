@@ -46,6 +46,7 @@ const UserTable: FC = () => {
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
+            form={UserForm}
           />
         )}
       </div>

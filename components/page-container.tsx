@@ -19,7 +19,7 @@ export default function PageContainer({ children, className = "" }: props) {
   const { data }: any = useQuery({
     queryKey: ["show_header"],
     queryFn: () => null, // not fetching from server, just acts as event holder
-    staleTime: 0,
+    staleTime: Infinity,
   });
   console.log(data, "qu", showHeader);
   useEffect(() => {

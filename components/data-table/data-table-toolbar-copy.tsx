@@ -31,7 +31,7 @@ export function DataTableToolbar<TData>({
   toolbarOptions,
   data,
   toggleColumns = false,
-  setFilter = () => { },
+  setFilter = () => {},
   queryKey,
   form,
 }: DataTableToolbarProps<TData>) {
@@ -46,6 +46,7 @@ export function DataTableToolbar<TData>({
 
   const handleDateSelect = ({ from, to }: { from: Date; to: Date }) => {
     setDateRange({ from, to });
+    // Filter table data based on selected date range
     table.getColumn("date")?.setFilterValue([from, to]);
   };
   const columns = (data: any[], option: string) => {
@@ -67,9 +68,40 @@ export function DataTableToolbar<TData>({
             <InputField
               placeholder="Filter labels..."
               name=""
+              // value={
+              //   (table
+              //     .getColumn(toolbarOptions.input_filter)
+              //     ?.getFilterValue() as string) ?? ""
+              // }
+              // onChange={(event) => {
+              //   table
+              //     .getColumn(toolbarOptions.input_filter)
+              //     ?.setFilterValue(event.target.value);
+              // }}
             />
           </Form>
         )}
+        {/* {table.getColumn("category") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("category")}
+            title="Category"
+            options={categories}
+          />
+        )}
+        {table.getColumn("type") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("type")}
+            title="Type"
+            options={incomeType}
+          />
+        )} */}
+        {/* {table.getColumn("roles") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("roles")}
+            title="roles"
+            options={roles}
+          />
+        )} */}
         {toolbarOptions?.columns?.map((column: string) => {
           return (
             table.getColumn(column) && (
@@ -87,7 +119,7 @@ export function DataTableToolbar<TData>({
             <div>
               <ChangePagination queryKey={queryKey} />
             </div>
-            <div>{FormComponent && <FormComponent />} </div>
+            <div>{FormComponent && <FormComponent />}</div>
             <div onClick={() => setShowFilter(!showFilter)}>
               <FilterIcon />
             </div>
@@ -101,6 +133,13 @@ export function DataTableToolbar<TData>({
             watchField={["name", "email", "username"]}
           />
         )}
+        {/* {table.getColumn("status") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("status")}
+            title="Status"
+            options={status}
+          />
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"
@@ -111,6 +150,12 @@ export function DataTableToolbar<TData>({
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}
+        {/* <CalendarDatePicker
+          date={dateRange}
+          onDateSelect={handleDateSelect}
+          className="w-[250px] h-8"
+          variant="outline"
+        /> */}
       </div>
       <div className="flex items-center gap-2">
         {!isMobile && FormComponent && <FormComponent />}
