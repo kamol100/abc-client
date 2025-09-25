@@ -77,19 +77,19 @@ const data = {
     {
       title: "users",
       name: "Design Engineering",
-      url: "/users",
+      url: "users",
       icon: Users,
     },
     {
       title: "client",
       name: "Design Engineering",
-      url: "/clients",
+      url: "clients",
       icon: User2,
     },
     {
       title: "Test table",
       name: "Design Engineering",
-      url: "/tables",
+      url: "tables",
       icon: Table,
     },
     {

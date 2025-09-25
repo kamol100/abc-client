@@ -25,3 +25,9 @@ export type FormBuilderType = {
 
 
 };
+
+export type AccordionFormBuilderType = {
+    name: string,
+    label?: string,
+    form: FormBuilderType[]
+}

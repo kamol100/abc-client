@@ -1,16 +1,19 @@
 "use client";
+import { cn } from "@/lib/utils";
+import { AccordionItem } from "@radix-ui/react-accordion";
 import { useQueryClient } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import FormWrapper from "../form-wrapper/form-wrapper";
 import InputField from "../form/input-field";
 import Switch from "../form/switch";
-import { FormBuilderType } from "./form-builder-type";
+import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
+import { AccordionFormBuilderType, FormBuilderType } from "./form-builder-type";
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
 
 type props = {
-  formSchema: FormBuilderType[];
+  formSchema: FormBuilderType[] | AccordionFormBuilderType[];
   grids?: number;
   gridGap?: string;
   schema: any;
@@ -21,6 +24,8 @@ type props = {
   data: any;
   onClose?: () => void;
   actionButton?: boolean;
+  actionButtonClass?: string;
+  accordion?: boolean;
 };
 
 const FormBuilder = ({
@@ -35,6 +40,8 @@ const FormBuilder = ({
   queryKey,
   onClose = () => {},
   actionButton = true,
+  actionButtonClass,
+  accordion = false,
 }: props) => {
   const queryClient = useQueryClient();
   const [saveOnChange, setSaveOnChange] = useState(false);
@@ -114,15 +121,56 @@ const FormBuilder = ({
       actionButton={actionButton}
       saveOnChange={saveOnChange}
       setSaveOnChange={setSaveOnChange}
+      actionButtonClass={actionButtonClass}
     >
       <div
-        className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
+        className={cn(
+          !accordion &&
+            `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
+        )}
       >
-        {formSchema?.map((fieldName: FormBuilderType, index) => (
-          <div key={`${index}`}>
-            {fieldName?.permission ? renderInput(fieldName) : null}
-          </div>
-        ))}
+        {accordion ? (
+          <>
+            <Accordion type="single" collapsible className="w-full">
+              {(formSchema as AccordionFormBuilderType[])?.map(
+                (accordion: AccordionFormBuilderType) => (
+                  <AccordionItem
+                    value={accordion.name}
+                    key={accordion.name}
+                    className="w-full"
+                  >
+                    <AccordionTrigger>
+                      {accordion.label || accordion.name}
+                    </AccordionTrigger>
+                    <AccordionContent
+                      className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
+                    >
+                      {accordion?.form?.map(
+                        (fieldName: FormBuilderType, index) => (
+                          <div key={`${index}`}>
+                            {fieldName?.permission
+                              ? renderInput(fieldName)
+                              : null}
+                          </div>
+                        )
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                )
+              )}
+            </Accordion>
+          </>
+        ) : (
+          <>
+            {(formSchema as FormBuilderType[])?.map(
+              (fieldName: FormBuilderType, index) => (
+                <div key={`${index}`}>
+                  {fieldName?.permission ? renderInput(fieldName) : null}
+                </div>
+              )
+            )}
+          </>
+        )}
       </div>
     </FormWrapper>
   );

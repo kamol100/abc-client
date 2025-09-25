@@ -2,13 +2,12 @@
 import { Form } from "@/components/ui/form";
 import { objectToQueryString } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
-import { FilterIcon, Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import ActionButton from "../action-button";
 import InputField from "../form/input-field";
 import { Close } from "../icon";
-import { Button } from "../ui/button";
 import { FormBuilderType } from "./form-builder-type";
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
@@ -163,20 +162,20 @@ const FormFilter = ({
         )}
         <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
           {searchButton && isFilter && (
-            <Button
+            <ActionButton
+              type="search"
+              size="default"
               className="mt-2 md:mt-0 lg:mt-0"
               onClick={() => submitRef.current?.click()}
-            >
-              <Search />
-            </Button>
+            ></ActionButton>
           )}
-          <Button
+          <ActionButton
+            type="filter"
+            size="default"
             className={cn(isFilter && "mt-2 md:mt-0 lg:mt-0")}
             variant={isFilter ? "default" : "outline"}
             onClick={() => setOpenFilter(!isFilter)}
-          >
-            <FilterIcon />
-          </Button>
+          ></ActionButton>
         </div>
       </div>
     </>

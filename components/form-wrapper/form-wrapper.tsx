@@ -2,6 +2,7 @@
 import { useFetch } from "@/app/actions";
 import { Form } from "@/components/ui/form";
 import { useParseError } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -9,7 +10,7 @@ import { ReactNode, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { Button } from "../ui/button";
+import ActionButton from "../action-button";
 
 type props = {
   children?: ReactNode;
@@ -26,6 +27,7 @@ type props = {
   actionButton?: boolean;
   saveOnChange?: boolean;
   setSaveOnChange?: (x: boolean) => void;
+  actionButtonClass?: string;
 };
 
 export default function FormWrapper({
@@ -41,6 +43,7 @@ export default function FormWrapper({
   actionButton = true,
   saveOnChange: save = false,
   setSaveOnChange = () => {},
+  actionButtonClass = "justify-between",
 }: props) {
   const form = useForm<any>({
     resolver: zodResolver(schema),
@@ -140,14 +143,23 @@ export default function FormWrapper({
 
         <input type="submit" className="hidden" ref={submitRef} />
         {actionButton && (
-          <div className="flex justify-between mt-5">
-            <Button onClick={() => onClose()} type="button">
-              {t("cancel")}
-            </Button>
-            <Button type="submit">
-              {isPending && <Loader2 className="animate-spin" />}
-              {t("save")}
-            </Button>
+          <div
+            className={cn("flex justify-center gap-4 mt-5", actionButtonClass)}
+          >
+            <ActionButton
+              type="cancel"
+              title={t("cancel")}
+              size="default"
+              onClick={() => onClose()}
+            />
+            <ActionButton
+              type="save"
+              title={t("save")}
+              size="default"
+              buttonType="submit"
+              variant={"default"}
+              loading={isPending}
+            />
           </div>
         )}
       </form>

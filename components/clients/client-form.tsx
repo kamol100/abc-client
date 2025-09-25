@@ -1,8 +1,7 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
-import { DialogWrapper } from "../dialog";
 import FormBuilder from "../form-wrapper/form-builder";
-import { AddPlus } from "../icon";
 import { UserSchema } from "../schema/user";
 import ClientFormSchema from "./client-form-schema";
 
@@ -20,17 +19,23 @@ const ClientForm: FC<props> = ({
   data = undefined,
 }) => {
   //console.log(data);
+  const router = useRouter();
   return (
-    <FormBuilder
-      formSchema={ClientFormSchema()}
-      grids={2}
-      data={data}
-      api={api}
-      mode={mode}
-      schema={UserSchema}
-      method={method}
-      queryKey="clients"
-    />
+    <div className="max-w-screen-lg mt-5 mx-auto overflow-y-auto pb-20">
+      <FormBuilder
+        formSchema={ClientFormSchema()}
+        grids={2}
+        data={data}
+        api={api}
+        mode={mode}
+        schema={UserSchema}
+        method={method}
+        queryKey="clients"
+        actionButtonClass="justify-center"
+        onClose={() => router.push("/clients")}
+        accordion
+      />
+    </div>
   );
 };
 

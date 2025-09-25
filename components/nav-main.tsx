@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Divide, type LucideIcon } from "lucide-react";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -16,8 +16,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function NavMain({
   items,
@@ -33,6 +36,9 @@ export function NavMain({
     }[];
   }[];
 }) {
+  const { setOpenMobile, openMobile } = useSidebar();
+  const pathname = usePathname();
+  const segment = pathname.split("/")[1];
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -46,8 +52,19 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <Link href={item.url}>
-                  <SidebarMenuButton tooltip={item.title}>
+                <Link href={`/${item.url}`}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    onClick={() => {
+                      if (!item?.items) {
+                        setOpenMobile(!openMobile);
+                      }
+                    }}
+                    className={cn(
+                      segment === item?.url &&
+                        "bg-primary text-white font-medium capitalize"
+                    )}
+                  >
                     {item.icon && (
                       <div>
                         <item.icon size={"20"} />
@@ -64,10 +81,23 @@ export function NavMain({
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubItem
+                        key={subItem.title}
+                        onClick={() => setOpenMobile(!openMobile)}
+                        className={cn(
+                          segment === subItem?.url &&
+                            "bg-primary !text-white rounded-md"
+                        )}
+                      >
                         <SidebarMenuSubButton asChild>
                           <Link href={subItem.url}>
-                            <span>{subItem.title}</span>
+                            <span
+                              className={cn(
+                                segment === subItem?.url && " !text-white"
+                              )}
+                            >
+                              {subItem.title}
+                            </span>
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

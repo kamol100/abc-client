@@ -1,33 +1,39 @@
-import { GalleryVerticalEnd } from "lucide-react";
+import { GalleryVerticalEnd, Users } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { FC } from "react";
+import { Button } from "./ui/button";
 import { useSidebar } from "./ui/sidebar";
 
 const MobileMenuBar: FC = () => {
   const { toggleSidebar } = useSidebar();
+  const pathname = usePathname();
+  const segment = pathname.split("/")[1];
+  const router = useRouter();
   return (
     <div className="flex w-full justify-between gap-4  bg-white border-t p-4">
-      <div
-        className="p-1.5 bg-primary rounded flex-1 text-white"
-        onClick={() => console.log("click")}
+      <Button
+        variant={segment === "clients" ? "default" : "outline"}
+        className="rounded-md flex-1 text-white"
+        onClick={() => router.push("/clients")}
       >
-        User
-      </div>
-      <div
-        className="p-1.5 bg-primary rounded flex-1 text-white"
+        <Users />
+      </Button>
+      <Button
+        className="rounded-md flex-1 text-white"
         onClick={() => console.log("test")}
       >
         User
-      </div>
-      <div className="p-1.5 bg-primary rounded flex-1 text-white">User</div>
-      <div className="p-1.5 bg-primary rounded flex-1 text-white">User</div>
-      <div
-        className="p-1.5 bg-primary rounded flex-1 text-white flex justify-center items-center z-50"
+      </Button>
+      <Button className="rounded-md flex-1 text-white">User</Button>
+      <Button className="rounded-md flex-1 text-white">User</Button>
+      <Button
+        className="rounded-md flex-1 text-white flex justify-center items-center z-50"
         onClick={() => {
           toggleSidebar();
         }}
       >
         <GalleryVerticalEnd />
-      </div>
+      </Button>
     </div>
   );
 };

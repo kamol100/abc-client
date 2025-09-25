@@ -2,11 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
+import ActionButton from "../action-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { User } from "../schema/user";
 import { Badge } from "../ui/badge";
-import ClientForm from "./client-form";
-import { Button } from "../ui/button";
 
 export const ClientColumns: ColumnDef<User>[] = [
   {
@@ -170,7 +169,7 @@ export const ClientColumns: ColumnDef<User>[] = [
       const data = row.original;
       return (
         <>
-          <Button>Edit</Button>
+          <ActionButton hover className={"px-2"} />
         </>
       );
     },
