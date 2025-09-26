@@ -26,6 +26,9 @@ type props = {
   actionButton?: boolean;
   actionButtonClass?: string;
   accordion?: boolean;
+  accordionClass?: string | null;
+  accordionTitleClass?: string | null;
+  accordionBodyClass?: string | null
 };
 
 const FormBuilder = ({
@@ -38,10 +41,13 @@ const FormBuilder = ({
   mode = "create",
   data,
   queryKey,
-  onClose = () => {},
+  onClose = () => { },
   actionButton = true,
   actionButtonClass,
   accordion = false,
+  accordionClass = null,
+  accordionBodyClass = null,
+  accordionTitleClass = null
 }: props) => {
   const queryClient = useQueryClient();
   const [saveOnChange, setSaveOnChange] = useState(false);
@@ -126,24 +132,24 @@ const FormBuilder = ({
       <div
         className={cn(
           !accordion &&
-            `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
+          `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
         )}
       >
         {accordion ? (
           <>
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" defaultValue={formSchema[0]?.name} collapsible className={cn("w-full  border rounded-md bg-gray-50", accordionClass && accordionClass)}>
               {(formSchema as AccordionFormBuilderType[])?.map(
                 (accordion: AccordionFormBuilderType) => (
                   <AccordionItem
                     value={accordion.name}
                     key={accordion.name}
-                    className="w-full"
+                    className={cn("w-full [&:not(:last-child)]:border-b decoration-transparent")}
                   >
-                    <AccordionTrigger>
-                      {accordion.label || accordion.name}
+                    <AccordionTrigger className={cn("px-3 font-semibold text-lg capitalize py-2", accordionTitleClass && accordionTitleClass)}>
+                      {accordion.name}
                     </AccordionTrigger>
                     <AccordionContent
-                      className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}
+                      className={cn(`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`, "bg-white p-3 rounded-md", accordionBodyClass && accordionBodyClass)}
                     >
                       {accordion?.form?.map(
                         (fieldName: FormBuilderType, index) => (

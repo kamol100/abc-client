@@ -21,7 +21,7 @@ const ClientForm: FC<props> = ({
   //console.log(data);
   const router = useRouter();
   return (
-    <div className="max-w-screen-lg mt-5 mx-auto overflow-y-auto pb-20">
+    <div className="max-w-screen-lg mt-3 mx-auto overflow-y-auto pb-20">
       <FormBuilder
         formSchema={ClientFormSchema()}
         grids={2}
