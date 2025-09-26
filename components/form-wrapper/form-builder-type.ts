@@ -1,6 +1,6 @@
 export type FormBuilderType = {
     name: string;
-    type: string;
+    type?: string;
     label?: string;
     placeholder?: string;
     schema?: string;
@@ -22,6 +22,8 @@ export type FormBuilderType = {
     isShow?: boolean
     switchValue?: string | boolean | number,
     saveOnchange?: boolean
+    direction?: "row" | "col"
+    order?: number
 
 
 };

@@ -8,6 +8,23 @@ type props = {
 export const UserFormSchema = (): AccordionFormBuilderType[] => {
     const { t } = useTranslation();
 
+    const paymentDeadLine = () => {
+        const label = (item: number): string => {
+            let label: string = "None";
+            if (item > 0 && item < 10) {
+                label = `0${item}`;
+            }
+            if (item > 9) {
+                label = item?.toString();
+            }
+            return label;
+        };
+        return Array.from(Array(31).keys()).map((item) => ({
+            value: item,
+            label: label(item),
+        }));
+    };
+
     return [
 
         {
@@ -17,34 +34,94 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                 {
                     type: "text",
                     name: "name",
-                    label: t('name'),
-                    placeholder: t('name'),
+                    label: t('client_name'),
+                    placeholder: t('client_name'),
                     mandatory: true,
-                    tooltip: t('name_tooltip'),
-                    permission: true
+                    permission: true,
+                    order: 2
                 },
                 {
                     type: "text",
-                    label: t('username'),
-                    name: "username",
-                    placeholder: t("username"),
+                    label: t('client_pppoe_id'),
+                    name: "pppoe_username",
+                    placeholder: t("pppoe_id"),
+                    permission: true,
+                    order: 1
+                },
+                {
+                    type: "text",
+                    label: t('password'),
+                    name: "pppoe_password",
+                    placeholder: t("password"),
+                    permission: true,
+                    order: 3
+                },
+                {
+                    type: "text",
+                    label: t('phone_number'),
+                    name: "phone",
+                    placeholder: t("ex:016772171.."),
+                    permission: true,
+                    order: 4
+                },
+                {
+                    type: "text",
+                    label: t('ip_address'),
+                    name: "ip_address",
+                    placeholder: t("ip_address"),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('email'),
-                    name: "email",
-                    placeholder: t("email"),
+                    label: t('discount'),
+                    name: "discount",
+                    placeholder: t("0.00"),
                     permission: true,
+                },
+                {
+                    type: "radio",
+                    label: t('send_welcome_sms'),
+                    name: "welcome_notification",
+                    permission: true,
+                    direction: "row",
+                    defaultValue: "0",
+                    options: [
+                        { label: "Yes", value: 1, disabled: false },
+                        { label: "No", value: 0, disabled: false },
+                    ]
                 },
                 {
                     type: "dropdown",
-                    label: t('roles'),
-                    name: "roles_id",
-                    defaultValue: "roles",
-                    placeholder: t("roles"),
+                    label: t('payment_deadline'),
+                    name: "payment_deadline",
+                    defaultValue: 10,
+                    placeholder: t("payment_deadline"),
                     permission: true,
-                    api: "/dropdown-roles"
+                    options: paymentDeadLine()
+                },
+                {
+                    type: "dropdown",
+                    label: t('payment_term'),
+                    name: "payment_term",
+                    defaultValue: 1,
+                    placeholder: t("payment_term"),
+                    permission: true,
+                    options: Array.from(Array(12).keys()).map((item) => ({
+                        value: item + 1,
+                        label: item + 1,
+                    }))
+                },
+                {
+                    type: "radio",
+                    label: t('billing_term'),
+                    name: "billing_term",
+                    permission: true,
+                    direction: "row",
+                    defaultValue: "prepaid",
+                    options: [
+                        { label: "Prepaid", value: "prepaid", disabled: false },
+                        { label: "Postpaid", value: "postpaid", disabled: false },
+                    ]
                 },
                 {
                     type: "text",

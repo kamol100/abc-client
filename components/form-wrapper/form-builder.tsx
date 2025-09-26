@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import FormWrapper from "../form-wrapper/form-wrapper";
 import InputField from "../form/input-field";
+import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
 import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
 import { AccordionFormBuilderType, FormBuilderType } from "./form-builder-type";
@@ -28,7 +29,7 @@ type props = {
   accordion?: boolean;
   accordionClass?: string | null;
   accordionTitleClass?: string | null;
-  accordionBodyClass?: string | null
+  accordionBodyClass?: string | null;
 };
 
 const FormBuilder = ({
@@ -41,13 +42,13 @@ const FormBuilder = ({
   mode = "create",
   data,
   queryKey,
-  onClose = () => { },
+  onClose = () => {},
   actionButton = true,
   actionButtonClass,
   accordion = false,
   accordionClass = null,
   accordionBodyClass = null,
-  accordionTitleClass = null
+  accordionTitleClass = null,
 }: props) => {
   const queryClient = useQueryClient();
   const [saveOnChange, setSaveOnChange] = useState(false);
@@ -76,12 +77,23 @@ const FormBuilder = ({
           tooltipClass={field?.tooltipClass}
           api={field?.api ?? null}
           options={field?.options ?? null}
-          defaultValue={data?.[field?.defaultValue]}
+          defaultValue={field?.defaultValue ?? data?.[field?.defaultValue]}
           isMulti={field?.isMulti}
           isDisabled={field?.isDisabled}
           isLoading={field?.isLoading}
           isClearable={field?.isClearable}
           className={field?.className}
+        />
+      );
+    }
+    if (field.type === "radio") {
+      return (
+        <RadioField
+          name={field?.name}
+          label={field?.label}
+          direction={field?.direction}
+          defaultValue={field?.defaultValue}
+          options={field?.options as any}
         />
       );
     }
@@ -115,6 +127,9 @@ const FormBuilder = ({
     queryClient.invalidateQueries({ queryKey: ["show_header"] });
   });
 
+  const order = (order: number | undefined, index: number) =>
+    order ? `order-${order}` : `order-${index + 1}`;
+
   return (
     <FormWrapper
       schema={schema}
@@ -132,28 +147,50 @@ const FormBuilder = ({
       <div
         className={cn(
           !accordion &&
-          `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
+            `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
         )}
       >
         {accordion ? (
           <>
-            <Accordion type="single" defaultValue={formSchema[0]?.name} collapsible className={cn("w-full  border rounded-md bg-gray-50", accordionClass && accordionClass)}>
+            <Accordion
+              type="single"
+              defaultValue={formSchema[0]?.name}
+              collapsible
+              className={cn(
+                "w-full  border rounded-md bg-gray-50",
+                accordionClass && accordionClass
+              )}
+            >
               {(formSchema as AccordionFormBuilderType[])?.map(
                 (accordion: AccordionFormBuilderType) => (
                   <AccordionItem
                     value={accordion.name}
                     key={accordion.name}
-                    className={cn("w-full [&:not(:last-child)]:border-b decoration-transparent")}
+                    className={cn(
+                      "w-full [&:not(:last-child)]:border-b decoration-transparent"
+                    )}
                   >
-                    <AccordionTrigger className={cn("px-3 font-semibold text-lg capitalize py-2", accordionTitleClass && accordionTitleClass)}>
+                    <AccordionTrigger
+                      className={cn(
+                        "px-3 font-semibold text-lg capitalize py-2",
+                        accordionTitleClass && accordionTitleClass
+                      )}
+                    >
                       {accordion.name}
                     </AccordionTrigger>
                     <AccordionContent
-                      className={cn(`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`, "bg-white p-3 rounded-md", accordionBodyClass && accordionBodyClass)}
+                      className={cn(
+                        `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`,
+                        "bg-white p-3 rounded-md",
+                        accordionBodyClass && accordionBodyClass
+                      )}
                     >
                       {accordion?.form?.map(
                         (fieldName: FormBuilderType, index) => (
-                          <div key={`${index}`}>
+                          <div
+                            key={`${index}`}
+                            className={order(fieldName?.order, index)}
+                          >
                             {fieldName?.permission
                               ? renderInput(fieldName)
                               : null}
@@ -170,7 +207,10 @@ const FormBuilder = ({
           <>
             {(formSchema as FormBuilderType[])?.map(
               (fieldName: FormBuilderType, index) => (
-                <div key={`${index}`}>
+                <div
+                  key={`${index}`}
+                  className={`order-${fieldName?.order ?? index + 1}`}
+                >
                   {fieldName?.permission ? renderInput(fieldName) : null}
                 </div>
               )

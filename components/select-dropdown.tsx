@@ -118,6 +118,7 @@ const SelectDropdown: FC<props> = ({
         label: item?.name,
       }));
     }
+    console.log(options, defaultValue);
     return options?.find((option: any) => option?.value === defaultValue);
   };
 

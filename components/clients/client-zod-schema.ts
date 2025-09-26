@@ -48,7 +48,7 @@ export const ClientSchema = z.object({
     nid: z.nullable(z.string().optional()),
     nid_front: z.nullable(z.string().optional()),
     nid_back: z.nullable(z.string().optional()),
-    billing_term: z.string().optional(),
+    billing_term: z.enum(["prepaid", "postpaid"]).optional(),
     discount: z.nullable(z.string().optional()),
     connection_date: z.nullable(z.string().optional()),
     connection_type: z.string().optional(),
