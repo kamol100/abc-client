@@ -8,6 +8,7 @@ import FormWrapper from "../form-wrapper/form-wrapper";
 import InputField from "../form/input-field";
 import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
+import TextareaField from "../form/textarea-field";
 import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
 import { AccordionFormBuilderType, FormBuilderType } from "./form-builder-type";
 
@@ -63,6 +64,18 @@ const FormBuilder = ({
           tooltip={field?.tooltip}
           tooltipClass={field?.tooltipClass}
           type={field?.type}
+        />
+      );
+    }
+    if (field?.type === "textarea") {
+      return (
+        <TextareaField
+          name={field?.name}
+          label={field?.label}
+          placeholder={field?.placeholder}
+          mandatory={field?.mandatory}
+          tooltip={field?.tooltip}
+          tooltipClass={field?.tooltipClass}
         />
       );
     }

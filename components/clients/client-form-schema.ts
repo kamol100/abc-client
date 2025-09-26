@@ -124,10 +124,10 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     ]
                 },
                 {
-                    type: "text",
-                    label: t('password'),
-                    name: "password",
-                    placeholder: t("password"),
+                    type: "textarea",
+                    label: t('current_address'),
+                    name: "current_address",
+                    placeholder: t("current_address"),
                     permission: true,
                 },
                 {
