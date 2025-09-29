@@ -131,6 +131,24 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     permission: true,
                 },
                 {
+                    type: "dropdown",
+                    label: t('zone'),
+                    name: "zone_id",
+                    defaultValue: "zone",
+                    placeholder: t("zone"),
+                    permission: true,
+                    api: "/dropdown-zones"
+                },
+                {
+                    type: "dropdown",
+                    label: t('sub_zone'),
+                    name: "sub_zone_id",
+                    defaultValue: "sub_zone",
+                    placeholder: t("sub_zone"),
+                    permission: true,
+                    api: "/dropdown-sub-zones"
+                },
+                {
                     type: "text",
                     label: t('confirm_password'),
                     name: "confirm",

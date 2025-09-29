@@ -10,7 +10,7 @@ export const ClientSchema = z.object({
         .string({
             required_error: i18n.t("name_required"),
         })
-        .min(2, { message: i18n.t("Client must have at least 2 character(s)") }),
+        .min(2, { message: i18n.t("name_must_have_at_least_two_character") }),
     zone_id: z.nullable(z.coerce.number()).optional(),
     device_id: z.nullable(z.coerce.number()).optional(),
     device: z.nullable(z.record(z.coerce.string())).optional(),
@@ -54,10 +54,10 @@ export const ClientSchema = z.object({
     connection_type: z.string().optional(),
     connection_mode: z.string().optional(),
     pppoe_username: z.string().min(1, {
-        message: "PPPoE ID must have at least 1  character(s)",
+        message: "pppoe_id_must_have_at_least_one_character",
     }),
     pppoe_password: z.string().min(1, {
-        message: "Password field is required",
+        message: "password_field_is_required",
     }),
     status: z.coerce.number().optional(),
     note: z.nullable(z.string().optional()),
