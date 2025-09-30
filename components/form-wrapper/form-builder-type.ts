@@ -23,7 +23,7 @@ export type FormBuilderType = {
     switchValue?: string | boolean | number,
     saveOnchange?: boolean
     direction?: "row" | "col"
-    order?: number
+    order?: number | string
 
 
 };

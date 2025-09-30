@@ -43,7 +43,7 @@ const FormBuilder = ({
   mode = "create",
   data,
   queryKey,
-  onClose = () => {},
+  onClose = () => { },
   actionButton = true,
   actionButtonClass,
   accordion = false,
@@ -157,80 +157,72 @@ const FormBuilder = ({
       setSaveOnChange={setSaveOnChange}
       actionButtonClass={actionButtonClass}
     >
-      <div
-        className={cn(
-          !accordion &&
-            `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`
-        )}
-      >
-        {accordion ? (
-          <>
-            <Accordion
-              type="single"
-              defaultValue={formSchema[0]?.name}
-              collapsible
-              className={cn(
-                "w-full  border rounded-md bg-gray-50",
-                accordionClass && accordionClass
-              )}
-            >
-              {(formSchema as AccordionFormBuilderType[])?.map(
-                (accordion: AccordionFormBuilderType) => (
-                  <AccordionItem
-                    value={accordion.name}
-                    key={accordion.name}
+      {accordion ? (
+        <>
+          <Accordion
+            type="single"
+            defaultValue={formSchema[0]?.name}
+            collapsible
+            className={cn(
+              "w-full  border rounded-md bg-gray-50",
+              accordionClass && accordionClass
+            )}
+          >
+            {(formSchema as AccordionFormBuilderType[])?.map(
+              (accordion: AccordionFormBuilderType) => (
+                <AccordionItem
+                  value={accordion.name}
+                  key={accordion.name}
+                  className={cn(
+                    "w-full [&:not(:last-child)]:border-b decoration-transparent"
+                  )}
+                >
+                  <AccordionTrigger
                     className={cn(
-                      "w-full [&:not(:last-child)]:border-b decoration-transparent"
+                      "px-3 font-semibold text-lg capitalize py-2",
+                      accordionTitleClass && accordionTitleClass
                     )}
                   >
-                    <AccordionTrigger
-                      className={cn(
-                        "px-3 font-semibold text-lg capitalize py-2",
-                        accordionTitleClass && accordionTitleClass
-                      )}
-                    >
-                      {accordion.name}
-                    </AccordionTrigger>
-                    <AccordionContent
-                      className={cn(
-                        `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`,
-                        "bg-white p-3 rounded-md",
-                        accordionBodyClass && accordionBodyClass
-                      )}
-                    >
-                      {accordion?.form?.map(
-                        (fieldName: FormBuilderType, index) => (
-                          <div
-                            key={`${index}`}
-                            className={order(fieldName?.order, index)}
-                          >
-                            {fieldName?.permission
-                              ? renderInput(fieldName)
-                              : null}
-                          </div>
-                        )
-                      )}
-                    </AccordionContent>
-                  </AccordionItem>
-                )
-              )}
-            </Accordion>
-          </>
-        ) : (
-          <>
-            {(formSchema as FormBuilderType[])?.map(
-              (fieldName: FormBuilderType, index) => (
-                <div
-                  key={`${index}`}
-                  className={`order-${fieldName?.order ?? index + 1}`}
-                >
-                  {fieldName?.permission ? renderInput(fieldName) : null}
-                </div>
+                    {accordion.name}
+                  </AccordionTrigger>
+                  <AccordionContent
+                    className={cn(
+                      `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`,
+                      "bg-white p-3 rounded-md",
+                      accordionBodyClass && accordionBodyClass
+                    )}
+                  >
+                    {accordion?.form?.map(
+                      (fieldName: FormBuilderType, index) => (
+                        <div
+                          key={`${index}`}
+                        >
+                          {fieldName?.permission
+                            ? renderInput(fieldName)
+                            : null}
+                        </div>
+                      )
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
               )
             )}
-          </>
-        )}
-      </div>
+          </Accordion>
+        </>
+      ) : (
+        <div className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}>
+          {(formSchema as FormBuilderType[])?.map(
+            (fieldName: FormBuilderType, index) => (
+              <div
+                key={`${index}`}
+                className={`${fieldName?.order ?? index + 1}`}
+              >
+                {fieldName?.permission ? renderInput(fieldName) : null}
+              </div>
+            )
+          )}
+        </div>
+      )}
     </FormWrapper>
   );
 };

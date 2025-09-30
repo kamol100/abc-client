@@ -23,7 +23,7 @@ const ClientForm: FC<props> = ({
   return (
     <div className="max-w-screen-lg mt-3 mx-auto overflow-y-auto pb-20">
       <FormBuilder
-        formSchema={ClientFormSchema()}
+        formSchema={ClientFormSchema({ mode })}
         grids={2}
         data={data}
         api={api}

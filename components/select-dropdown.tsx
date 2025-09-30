@@ -22,6 +22,7 @@ type props = {
   isSearchable?: boolean;
   isOptionDisabled?: boolean;
   mandatory?: boolean;
+  menuPosition?: string;
   placeholder?: string;
   className?: string;
   defaultValue?: any;
@@ -52,18 +53,19 @@ const SelectDropdown: FC<props> = ({
   mandatory = false,
   placeholder = "select_option",
   className = "",
+  menuPosition = "fixed",
   value = "value",
   defaultValue = null,
   tooltip,
   tooltipClass = "",
   initialData = null,
   initHeight = 36,
-  onChange = () => {},
-  onBlur = () => {},
-  onFocus = () => {},
-  onInputChange = () => {},
-  onMenuOpen = () => {},
-  onMenuClose = () => {},
+  onChange = () => { },
+  onBlur = () => { },
+  onFocus = () => { },
+  onInputChange = () => { },
+  onMenuOpen = () => { },
+  onMenuClose = () => { },
 }) => {
   const { t } = useTranslation();
   const { themeColor, setThemeColor } = useThemeContext();
@@ -184,6 +186,7 @@ const SelectDropdown: FC<props> = ({
         isRtl={isRtl}
         isMulti={isMulti}
         name={name}
+        menuPosition={menuPosition}
         placeholder={t(placeholder)}
         theme={(theme) => ({
           ...theme,
@@ -220,8 +223,8 @@ const SelectDropdown: FC<props> = ({
               isSelected
                 ? "bg-primary text-white"
                 : isFocused
-                ? "bg-secondary"
-                : "text-gray-900",
+                  ? "bg-secondary"
+                  : "text-gray-900",
             ].join(" "),
           noOptionsMessage: () => "text-gray-500 p-2",
         }}

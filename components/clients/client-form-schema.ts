@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import { AccordionFormBuilderType } from "../form-wrapper/form-builder-type";
 
 type props = {
-    mode: string
+    mode?: string
 }
 
-export const UserFormSchema = (): AccordionFormBuilderType[] => {
+export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuilderType[] => {
     const { t } = useTranslation();
 
     const paymentDeadLine = () => {
@@ -38,23 +38,6 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     placeholder: t('client_name'),
                     mandatory: true,
                     permission: true,
-                    order: 2
-                },
-                {
-                    type: "text",
-                    label: t('client_pppoe_id'),
-                    name: "pppoe_username",
-                    placeholder: t("pppoe_id"),
-                    permission: true,
-                    order: 1
-                },
-                {
-                    type: "text",
-                    label: t('password'),
-                    name: "pppoe_password",
-                    placeholder: t("password"),
-                    permission: true,
-                    order: 3
                 },
                 {
                     type: "text",
@@ -62,7 +45,20 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     name: "phone",
                     placeholder: t("ex:016772171.."),
                     permission: true,
-                    order: 4
+                },
+                {
+                    type: "text",
+                    label: t('client_pppoe_id'),
+                    name: "pppoe_username",
+                    placeholder: t("pppoe_id"),
+                    permission: true,
+                },
+                {
+                    type: "text",
+                    label: t('password'),
+                    name: "pppoe_password",
+                    placeholder: t("password"),
+                    permission: true,
                 },
                 {
                     type: "text",
@@ -79,25 +75,13 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     permission: true,
                 },
                 {
-                    type: "radio",
-                    label: t('send_welcome_sms'),
-                    name: "welcome_notification",
-                    permission: true,
-                    direction: "row",
-                    defaultValue: "0",
-                    options: [
-                        { label: "Yes", value: 1, disabled: false },
-                        { label: "No", value: 0, disabled: false },
-                    ]
-                },
-                {
                     type: "dropdown",
                     label: t('payment_deadline'),
                     name: "payment_deadline",
                     defaultValue: 10,
                     placeholder: t("payment_deadline"),
                     permission: true,
-                    options: paymentDeadLine()
+                    options: paymentDeadLine(),
                 },
                 {
                     type: "dropdown",
@@ -109,26 +93,7 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     options: Array.from(Array(12).keys()).map((item) => ({
                         value: item + 1,
                         label: item + 1,
-                    }))
-                },
-                {
-                    type: "radio",
-                    label: t('billing_term'),
-                    name: "billing_term",
-                    permission: true,
-                    direction: "row",
-                    defaultValue: "prepaid",
-                    options: [
-                        { label: "Prepaid", value: "prepaid", disabled: false },
-                        { label: "Postpaid", value: "postpaid", disabled: false },
-                    ]
-                },
-                {
-                    type: "textarea",
-                    label: t('current_address'),
-                    name: "current_address",
-                    placeholder: t("current_address"),
-                    permission: true,
+                    })),
                 },
                 {
                     type: "dropdown",
@@ -137,7 +102,7 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     defaultValue: "zone",
                     placeholder: t("zone"),
                     permission: true,
-                    api: "/dropdown-zones"
+                    api: "/dropdown-zones",
                 },
                 {
                     type: "dropdown",
@@ -146,7 +111,7 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                     defaultValue: "sub_zone",
                     placeholder: t("sub_zone"),
                     permission: true,
-                    api: "/dropdown-sub-zones"
+                    api: "/dropdown-sub-zones",
                 },
                 {
                     type: "dropdown",
@@ -166,15 +131,75 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
                 },
                 {
                     type: "dropdown",
+                    label: t('device'),
+                    name: "device_id",
+                    placeholder: t("device"),
+                    api: "/dropdown-devices",
+                    permission: true,
+                },
+                {
+                    type: "text",
+                    label: t('latitude'),
+                    name: "adr_latitude",
+                    placeholder: t("latitude"),
+                    permission: true,
+                },
+                {
+                    type: "text",
+                    label: t('longitude'),
+                    name: "longitude",
+                    placeholder: t("longitude"),
+                    permission: true,
+                },
+                {
+                    type: "dropdown",
                     label: t('status'),
                     name: "status",
                     defaultValue: "status",
                     placeholder: t("status"),
-                    permission: true,
+                    permission: mode === "create",
                     options: [
                         { value: 1, label: "Active" },
                         { value: 0, label: "Inactive" },
-                    ]
+                    ],
+                },
+                {
+                    type: "radio",
+                    label: t('send_welcome_sms'),
+                    name: "welcome_notification",
+                    permission: true,
+                    direction: "row",
+                    defaultValue: "0",
+                    options: [
+                        { label: "Yes", value: 1, disabled: false },
+                        { label: "No", value: 0, disabled: false },
+                    ],
+                },
+                {
+                    type: "radio",
+                    label: t('billing_term'),
+                    name: "billing_term",
+                    permission: true,
+                    direction: "row",
+                    defaultValue: "prepaid",
+                    options: [
+                        { label: "Prepaid", value: "prepaid", disabled: false },
+                        { label: "Postpaid", value: "postpaid", disabled: false },
+                    ],
+                },
+                {
+                    type: "textarea",
+                    label: t('current_address'),
+                    name: "current_address",
+                    placeholder: t("current_address"),
+                    permission: true,
+                },
+                {
+                    type: "textarea",
+                    label: t('note'),
+                    name: "note",
+                    placeholder: t("note"),
+                    permission: true,
                 },
             ]
         },
@@ -197,4 +222,4 @@ export const UserFormSchema = (): AccordionFormBuilderType[] => {
 
 
 };
-export default UserFormSchema;
+export default ClientFormSchema;
