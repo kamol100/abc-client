@@ -1,23 +1,17 @@
+import { FieldConfig } from "../form-wrapper/form-builder-type";
 
-import { useTranslation } from "react-i18next";
-import { FormBuilderType } from "../form-wrapper/form-builder-type";
-
-
-export const DashboardFormSchema = (): FormBuilderType[] => {
-    const { t } = useTranslation();
-
-    const schema = [
+export const DashboardFormSchema = (): FieldConfig[] => {
+    const schema: FieldConfig[] = [
         {
             type: "switch",
             name: "show_dashboard_header",
-            label: 'show_dashboard_header',
-            switchValue: 1,
+            label: { labelText: "show_dashboard_header" },
             permission: true,
-            saveOnChange: true
+            saveOnChange: true,
         },
     ];
 
     return schema;
-
 };
+
 export default DashboardFormSchema;

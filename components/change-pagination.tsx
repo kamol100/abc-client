@@ -34,7 +34,7 @@ const ChangePagination: FC<Props> = ({ queryKey = "users" }) => {
       console.log(queryKey);
       queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
-    onError: () => {},
+    onError: () => { },
   });
 
   const updateItemPerPage = (page: number | string) => {

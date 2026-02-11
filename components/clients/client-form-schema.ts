@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { AccordionFormBuilderType } from "../form-wrapper/form-builder-type";
+import { AccordionSection } from "../form-wrapper/form-builder-type";
 
-type props = {
-    mode?: string
-}
+type Props = {
+    mode?: "create" | "edit";
+};
 
-export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuilderType[] => {
+export const ClientFormSchema = ({ mode = "create" }: Props): AccordionSection[] => {
     const { t } = useTranslation();
 
     const paymentDeadLine = () => {
@@ -15,7 +15,7 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 label = `0${item}`;
             }
             if (item > 9) {
-                label = item?.toString();
+                label = item.toString();
             }
             return label;
         };
@@ -26,96 +26,89 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
     };
 
     return [
-
         {
             name: "test",
             form: [
-
                 {
                     type: "text",
                     name: "name",
-                    label: t('client_name'),
+                    label: { labelText: t('client_name'), mandatory: true },
                     placeholder: t('client_name'),
-                    mandatory: true,
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('phone_number'),
+                    label: { labelText: t('phone_number') },
                     name: "phone",
                     placeholder: t("ex:016772171.."),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('client_pppoe_id'),
+                    label: { labelText: t('client_pppoe_id') },
                     name: "pppoe_username",
                     placeholder: t("pppoe_id"),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('password'),
+                    label: { labelText: t('password') },
                     name: "pppoe_password",
                     placeholder: t("password"),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('ip_address'),
+                    label: { labelText: t('ip_address') },
                     name: "ip_address",
                     placeholder: t("ip_address"),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('discount'),
+                    label: { labelText: t('discount') },
                     name: "discount",
                     placeholder: t("0.00"),
                     permission: true,
                 },
                 {
                     type: "dropdown",
-                    label: t('payment_deadline'),
+                    label: { labelText: t('payment_deadline') },
                     name: "payment_deadline",
-                    defaultValue: 10,
                     placeholder: t("payment_deadline"),
                     permission: true,
                     options: paymentDeadLine(),
                 },
                 {
                     type: "dropdown",
-                    label: t('payment_term'),
+                    label: { labelText: t('payment_term') },
                     name: "payment_term",
-                    defaultValue: 1,
                     placeholder: t("payment_term"),
                     permission: true,
                     options: Array.from(Array(12).keys()).map((item) => ({
                         value: item + 1,
-                        label: item + 1,
+                        label: String(item + 1),
                     })),
                 },
                 {
                     type: "dropdown",
-                    label: t('zone'),
+                    label: { labelText: t('zone') },
                     name: "zone_id",
-                    defaultValue: "zone",
                     placeholder: t("zone"),
                     permission: true,
                     api: "/dropdown-zones",
                 },
                 {
                     type: "dropdown",
-                    label: t('sub_zone'),
+                    label: { labelText: t('sub_zone') },
                     name: "sub_zone_id",
-                    defaultValue: "sub_zone",
                     placeholder: t("sub_zone"),
                     permission: true,
                     api: "/dropdown-sub-zones",
                 },
                 {
                     type: "dropdown",
-                    label: t('network'),
+                    label: { labelText: t('network') },
                     name: "network_id",
                     placeholder: t("network"),
                     api: "/dropdown-networks",
@@ -123,7 +116,7 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "dropdown",
-                    label: t('network_package'),
+                    label: { labelText: t('network_package') },
                     name: "package_id",
                     placeholder: t("network_package"),
                     api: "/dropdown-network-packages",
@@ -131,7 +124,7 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "dropdown",
-                    label: t('device'),
+                    label: { labelText: t('device') },
                     name: "device_id",
                     placeholder: t("device"),
                     api: "/dropdown-devices",
@@ -139,23 +132,22 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "text",
-                    label: t('latitude'),
+                    label: { labelText: t('latitude') },
                     name: "adr_latitude",
                     placeholder: t("latitude"),
                     permission: true,
                 },
                 {
                     type: "text",
-                    label: t('longitude'),
+                    label: { labelText: t('longitude') },
                     name: "longitude",
                     placeholder: t("longitude"),
                     permission: true,
                 },
                 {
                     type: "dropdown",
-                    label: t('status'),
+                    label: { labelText: t('status') },
                     name: "status",
-                    defaultValue: "status",
                     placeholder: t("status"),
                     permission: mode === "create",
                     options: [
@@ -165,7 +157,7 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "radio",
-                    label: t('send_welcome_sms'),
+                    label: { labelText: t('send_welcome_sms') },
                     name: "welcome_notification",
                     permission: true,
                     direction: "row",
@@ -177,7 +169,7 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "radio",
-                    label: t('billing_term'),
+                    label: { labelText: t('billing_term') },
                     name: "billing_term",
                     permission: true,
                     direction: "row",
@@ -189,37 +181,33 @@ export const ClientFormSchema = ({ mode = "create" }: props): AccordionFormBuild
                 },
                 {
                     type: "textarea",
-                    label: t('current_address'),
+                    label: { labelText: t('current_address') },
                     name: "current_address",
                     placeholder: t("current_address"),
                     permission: true,
                 },
                 {
                     type: "textarea",
-                    label: t('note'),
+                    label: { labelText: t('note') },
                     name: "note",
                     placeholder: t("note"),
                     permission: true,
                 },
-            ]
+            ],
         },
         {
             name: "test2",
             form: [
-
                 {
                     type: "text",
-                    label: t('confirm_password'),
+                    label: { labelText: t('confirm_password') },
                     name: "confirm",
                     placeholder: t("confirm_password"),
                     permission: true,
                 },
-            ]
-        }
-
-
+            ],
+        },
     ];
-
-
 };
+
 export default ClientFormSchema;

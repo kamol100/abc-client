@@ -4,6 +4,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import SettingContextProvider from "@/context/SettingsProvider";
 import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const data = await useFetch({ url: "/user-settings" });
@@ -13,9 +14,13 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <PageContainer>{children}</PageContainer>
+          <PageContainer>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </PageContainer>
         </SidebarInset>
       </SidebarProvider>
-    </SettingContextProvider>
+    </SettingContextProvider >
   );
 }

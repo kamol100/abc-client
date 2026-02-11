@@ -1,0 +1,80 @@
+---
+alwaysApply: true
+---
+
+# Project Structure - shadcn-isp-client
+
+Next.js 16+ App Router project using shadcn/ui, TypeScript, and TailwindCSS.
+
+## Root Structure
+
+```
+├── app/                 # Next.js App Router pages and API routes
+├── auth/                # NextAuth configuration
+├── components/          # React components
+├── context/             # React context providers
+├── data/                # Static JSON data files
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility functions and API helpers
+├── public/              # Static assets
+├── types/               # TypeScript type definitions
+```
+
+## Key Directories
+
+### `/app` - Pages & Routes
+- `(dashboard)/` - Dashboard route group with layouts
+  - `clients/` - Client management pages
+  - `users/` - User management pages
+  - `setting/` - Settings pages (dashboard, general, table, themes)
+  - `tables/` - Data table pages
+- `api/` - API routes (auth, theme)
+- `login/` - Authentication page
+
+### `/components` - UI Components
+- `ui/` - shadcn/ui base components (button, input, dialog, etc.)
+- `form/` - Form field components (input-field, checkbox, radio, switch, textarea)
+- `form-wrapper/` - Form builder and wrapper utilities
+- `data-table/` - Data table with pagination, filtering, sorting
+- `table/` - Simplified table components
+- `clients/` - Client-specific components and schemas
+- `users/` - User-specific components and schemas
+- `settings/` - Settings page components
+- `customizer/` - Theme customizer components
+- `schema/` - Zod validation schemas
+
+### `/context` - Providers
+- `AuthProvider.tsx` - Authentication context
+- `SettingsProvider.tsx` - App settings context
+- `theme-provider.tsx` - Theme context (light/dark)
+- `theme-data-provider.tsx` - Theme data context
+- `tanstack-provider.tsx` - TanStack Query provider
+- `I18nProvider.tsx` - Internationalization
+
+### `/lib` - Utilities
+- `api/api.ts` - API client functions
+- `auth/auth-token.ts` - Token management
+- `helper/helper.ts` - General helpers
+- `utils/fetch.ts` - Fetch utilities
+- `utils.ts` - cn() and common utilities
+
+### `/hooks` - Custom Hooks
+- `use-mobile.tsx` - Mobile detection
+- `use-pagination.ts` - Pagination logic
+- `use-toast.ts` - Toast notifications
+
+## Important Files
+
+- `middleware.ts` - Next.js middleware for auth protection
+- `tailwind.config.ts` - TailwindCSS configuration
+- `components.json` - shadcn/ui configuration
+- `next.config.ts` - Next.js configuration
+- `auth/auth.ts` & `auth/auth.config.ts` - NextAuth setup
+
+## Conventions
+
+- Feature components go in `/components/{feature}/`
+- Zod schemas paired with forms: `*-zod-schema.ts`, `*-form-schema.ts`
+- Column definitions for tables: `*-column.tsx`
+- Form components: `*-form.tsx`
+- Table components: `*-table.tsx`

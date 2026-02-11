@@ -7,50 +7,41 @@ import {
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { InfoQuestion } from "./icon";
+import { LabelProps } from "./form-wrapper/form-builder-type";
 
 type props = {
-  labelText?: any;
-  className?: string;
-  labelClass?: string;
-  mandatory?: boolean;
-  htmlFor?: string;
-  tooltip?: string | null;
-  tooltipClass?: string;
+  label?: LabelProps;
 };
 const Label = ({
-  className,
-  labelText,
-  labelClass,
-  mandatory = false,
-  htmlFor,
-  tooltip = null,
-  tooltipClass = "",
+  label = {
+    labelText: "",
+    className: "",
+    labelClass: "",
+    mandatory: false,
+    tooltip: null,
+    tooltipClass: "",
+  },
 }: props) => {
   const { t } = useTranslation();
   return (
     <LabelUI
-      className={cn("text-sm mb-1 font-medium text-gray-900", className)}
-      htmlFor={htmlFor}
+      className={cn("text-sm mb-1 font-medium text-gray-900 dark:text-white dark:bg-gray-900", label?.className)}
+      htmlFor={label?.labelText?.toString()}
     >
-      {tooltip ? (
-        <Tooltip>
-          <TooltipTrigger className="flex gap-3">
-            <div className={`capitalize ${labelClass}`}>{t(labelText)}</div>
-            {mandatory && <div className="text-red-600 ml-1"> *</div>}
-            <InfoQuestion />
-          </TooltipTrigger>
-          <TooltipContent>
-            <div className={tooltipClass}>{t(tooltip)}</div>
-          </TooltipContent>
-        </Tooltip>
-      ) : (
-        <>
-          <div className="flex">
-            <div className={`capitalize ${labelClass}`}>{t(labelText)}</div>
-            {mandatory && <div className="text-red-600 ml-1"> *</div>}
-          </div>
-        </>
-      )}
+      <div className="flex gap-2">
+        <div className={`capitalize ${label?.labelClass}`}>{t(label?.labelText || "") as string}</div>
+        {label?.mandatory && <div className="text-red-600 ml-1"> *</div>}
+        {label?.tooltip && (
+          <Tooltip>
+            <TooltipTrigger>
+              <InfoQuestion />
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className={label?.tooltipClass}>{t(label?.tooltip || "")}</div>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </div>
     </LabelUI>
   );
 };

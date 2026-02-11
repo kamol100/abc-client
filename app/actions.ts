@@ -38,7 +38,7 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
         const session: any = await auth();
         const token = session?.token;
         const api_url = `${BASE_URL}${version}${url}`;
-        console.log(api_url, method)
+        console.log(api_url, method, data)
 
         const options: RequestInit = {
             method: method,

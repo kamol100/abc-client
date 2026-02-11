@@ -16,7 +16,7 @@ type props = {
   title?: string | null;
   type?: string;
   url?: string | null;
-  size?: "default" | "sm" | "xs" | "lg" | "icon";
+  size?: "default" | "sm" | "lg" | "icon";
   variant?: any;
   onClick?: () => void;
   buttonType?: "button" | "submit" | "reset";
@@ -33,7 +33,7 @@ const ActionButton: FC<props> = ({
   type = "edit",
   size = "sm",
   variant = "outline",
-  onClick = () => {},
+  onClick = () => { },
   buttonType = "button",
   loading = false,
   hover = false,

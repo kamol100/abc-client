@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import FormBuilder from "../form-wrapper/form-builder";
-import { UserSchema } from "../schema/user";
+import { UserSchema } from "../users/user-type";
 import ClientFormSchema from "./client-form-schema";
 
 type props = {

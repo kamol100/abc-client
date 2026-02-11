@@ -1,23 +1,17 @@
+import { FieldConfig } from "../form-wrapper/form-builder-type";
 
-import { useTranslation } from "react-i18next";
-import { FormBuilderType } from "../form-wrapper/form-builder-type";
-
-
-export const TableFormSchema = (): FormBuilderType[] => {
-    const { t } = useTranslation();
-
-    const schema = [
+export const TableFormSchema = (): FieldConfig[] => {
+    const schema: FieldConfig[] = [
         {
             type: "switch",
             name: "show_table_header",
-            label: 'show_table_header',
-            switchValue: 1,
+            label: { labelText: "show_table_header" },
             permission: true,
-            saveOnChange: true
+            saveOnChange: true,
         },
     ];
 
     return schema;
-
 };
+
 export default TableFormSchema;

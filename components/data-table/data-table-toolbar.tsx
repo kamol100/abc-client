@@ -33,7 +33,7 @@ export function DataTableToolbar<TData>({
   toolbarOptions,
   data,
   toggleColumns = false,
-  setFilter = () => {},
+  setFilter = () => { },
   queryKey,
   form,
   toolbarTitle = null,

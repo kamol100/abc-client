@@ -3,10 +3,10 @@
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { User } from "../schema/user";
+import { UserRow, Role, getUserStatusLabel } from "./user-type";
 import UserForm from "./user-form";
 
-export const UsersColumns: ColumnDef<User>[] = [
+export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -28,7 +28,7 @@ export const UsersColumns: ColumnDef<User>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate capitalize font-medium">
-            {user.roles?.map((role: Role) => role.name).join(", ")}
+            {user.roles?.map((role) => role.name).join(", ")}
           </span>
         </div>
       );
@@ -60,7 +60,7 @@ export const UsersColumns: ColumnDef<User>[] = [
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate capitalize font-medium">
-            {user.company.domain}
+            {user.domain ?? user.company?.domain ?? ""}
           </span>
         </div>
       );
@@ -74,8 +74,8 @@ export const UsersColumns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       return (
-        <div className="flex w-[100px] items-center">
-          <span className="capitalize"> {user.email}</span>
+        <div className="flex line-clamp-1 truncate items-center">
+          {user.email}
         </div>
       );
     },
@@ -111,8 +111,8 @@ export const UsersColumns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const user: any = row.original;
-      const status = user.status;
+      const user = row.original;
+      const status = user.status as 0 | 1;
       return (
         <div className="flex w-[100px] items-center">
           <span
@@ -121,7 +121,7 @@ export const UsersColumns: ColumnDef<User>[] = [
               status === 1 ? "text-green-500" : "text-red-500"
             )}
           >
-            {status === 1 ? "Active" : "Inactive"}
+            {getUserStatusLabel(status)}
           </span>
         </div>
       );

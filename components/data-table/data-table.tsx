@@ -60,10 +60,10 @@ export function DataTable<TData, TValue>({
   toolbarOptions,
   toggleColumns = false,
   pagination: paginationData = undefined,
-  setCurrentPage = () => {},
+  setCurrentPage = () => { },
   isFetching = false,
   isLoading = false,
-  setFilter = () => {},
+  setFilter = () => { },
   queryKey,
   form,
   toolbarTitle = null,
@@ -152,8 +152,8 @@ export function DataTable<TData, TValue>({
           </div>
         ) : (
           <Table>
-            <TableHeader className="bg-background/90 sticky top-0  backdrop-blur-xs bg-gray-50">
-              {table.getHeaderGroups().map((headerGroup) => (
+            <TableHeader className="bg-background/90 sticky top-0  backdrop-blur-xs bg-gray-50 dark:bg-gray-900">
+              {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
@@ -161,9 +161,9 @@ export function DataTable<TData, TValue>({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
@@ -171,8 +171,8 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
             <TableBody className="flex-1 overflow-auto" tabIndex={0}>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, rowIndex) => (
+              {table?.getRowModel().rows?.length ? (
+                table?.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
@@ -204,7 +204,7 @@ export function DataTable<TData, TValue>({
       {paginationData && (
         <div
           className={cn(
-            "sticky bottom-0 border-t p-3 bg-white",
+            "sticky bottom-0 border-t p-3 bg-white dark:bg-gray-900",
             isMobile && "bottom-16"
           )}
         >

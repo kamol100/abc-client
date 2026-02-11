@@ -1,29 +1,105 @@
 "use client";
+
 import { cn } from "@/lib/utils";
 import { AccordionItem } from "@radix-ui/react-accordion";
-import { useQueryClient } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import FormWrapper from "../form-wrapper/form-wrapper";
+import { ReactNode, useMemo, useState } from "react";
+import { z } from "zod";
+import FormWrapper from "./form-wrapper";
+import CheckboxField from "../form/checkbox-field";
+import DatePicker from "../form/DatePicker";
 import InputField from "../form/input-field";
 import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
 import TextareaField from "../form/textarea-field";
 import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
-import { AccordionFormBuilderType, FormBuilderType } from "./form-builder-type";
+import {
+  AccordionSection,
+  CheckboxFieldConfig,
+  DateFieldConfig,
+  DateRangeFieldConfig,
+  DropdownFieldConfig,
+  FieldConfig,
+  GRID_STYLES,
+  RadioFieldConfig,
+  SwitchFieldConfig,
+  TextareaFieldConfig,
+} from "./form-builder-type";
+
+const parseDateForForm = (v: unknown): Date | undefined => {
+  if (!v) return undefined;
+  if (v instanceof Date) return v;
+  if (typeof v === "string") return new Date(v);
+  return undefined;
+};
+
+const parseDateRangeForForm = (v: unknown): { from: Date; to?: Date } | undefined => {
+  if (!v || typeof v !== "object") return undefined;
+  const obj = v as { from?: unknown; to?: unknown };
+  const from = parseDateForForm(obj.from);
+  if (!from) return undefined;
+  return { from, to: parseDateForForm(obj.to) ?? undefined };
+};
+
+const transformDataToFormValues = (
+  data: Record<string, unknown>,
+  formSchema: FieldConfig[]
+): Record<string, unknown> => {
+  if (!data) return {};
+  const formValues: Record<string, unknown> = { ...data };
+
+  formSchema.forEach((field) => {
+    if (field.type === "date") {
+      const key = field.valueKey ?? field.name;
+      const parsed = parseDateForForm(data[key]);
+      if (parsed) formValues[field.name] = parsed;
+    }
+    if (field.type === "dateRange") {
+      const key = field.valueKey ?? field.name;
+      const parsed = parseDateRangeForForm(data[key]);
+      if (parsed) formValues[field.name] = parsed;
+    }
+    if (field.type === "dropdown") {
+      const sourceKey = field.valueKey || field.name;
+      const sourceValue = data[sourceKey];
+
+      if (sourceValue !== undefined && sourceValue !== null) {
+        if (field.valueMapping) {
+          const { idKey = "id" } = field.valueMapping;
+          if (field.isMulti && Array.isArray(sourceValue)) {
+            formValues[field.name] = sourceValue.map(
+              (item: unknown) =>
+                typeof item === "object" && item !== null
+                  ? (item as Record<string, unknown>)[idKey]
+                  : item
+            );
+          } else if (typeof sourceValue === "object" && !Array.isArray(sourceValue)) {
+            formValues[field.name] = (sourceValue as Record<string, unknown>)[idKey];
+          } else {
+            formValues[field.name] = sourceValue;
+          }
+        } else {
+          formValues[field.name] = sourceValue;
+        }
+      }
+    }
+  });
+
+  return formValues;
+};
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
 
-type props = {
-  formSchema: FormBuilderType[] | AccordionFormBuilderType[];
+type FormBuilderProps = {
+  formSchema: FieldConfig[] | AccordionSection[];
   grids?: number;
   gridGap?: string;
-  schema: any;
-  api?: string | undefined;
-  method: string;
-  mode: string;
+  schema: z.ZodType;
+  api?: string;
+  method: "GET" | "POST" | "PUT";
+  mode: "create" | "edit";
   queryKey?: string;
-  data: any;
+  data?: Record<string, unknown>;
   onClose?: () => void;
   actionButton?: boolean;
   actionButtonClass?: string;
@@ -50,98 +126,107 @@ const FormBuilder = ({
   accordionClass = null,
   accordionBodyClass = null,
   accordionTitleClass = null,
-}: props) => {
-  const queryClient = useQueryClient();
+}: FormBuilderProps) => {
   const [saveOnChange, setSaveOnChange] = useState(false);
-  const renderInput = (field: FormBuilderType) => {
-    if (field?.type === "text") {
-      return (
-        <InputField
-          name={field?.name}
-          label={field?.label}
-          placeholder={field?.placeholder}
-          mandatory={field?.mandatory}
-          tooltip={field?.tooltip}
-          tooltipClass={field?.tooltipClass}
-          type={field?.type}
-        />
-      );
+
+  const transformedData = useMemo(() => {
+    if (mode === "edit" && data) {
+      return transformDataToFormValues(data, formSchema as FieldConfig[]);
     }
-    if (field?.type === "textarea") {
-      return (
-        <TextareaField
-          name={field?.name}
-          label={field?.label}
-          placeholder={field?.placeholder}
-          mandatory={field?.mandatory}
-          tooltip={field?.tooltip}
-          tooltipClass={field?.tooltipClass}
-        />
-      );
-    }
-    if (field.type === "dropdown") {
+    return data;
+  }, [data, mode, formSchema]);
+
+  const FIELD_RENDERERS: Record<FieldConfig["type"], (f: FieldConfig) => ReactNode> = {
+    text: (f) => <InputField name={f.name} label={f.label} placeholder={f.placeholder} type={f.type} />,
+    email: (f) => <InputField name={f.name} label={f.label} placeholder={f.placeholder} type={f.type} />,
+    password: (f) => <InputField name={f.name} label={f.label} placeholder={f.placeholder} type={f.type} />,
+    number: (f) => <InputField name={f.name} label={f.label} placeholder={f.placeholder} type={f.type} />,
+    textarea: (f) => {
+      const cfg = f as TextareaFieldConfig;
+      return <TextareaField name={cfg.name} label={cfg.label} placeholder={cfg.placeholder} rows={cfg.rows} />;
+    },
+    dropdown: (f) => {
+      const cfg = f as DropdownFieldConfig;
       return (
         <SelectDropdown
-          name={field?.name}
-          label={field?.label}
-          placeholder={field?.placeholder}
-          mandatory={field?.mandatory}
-          tooltip={field?.tooltip}
-          tooltipClass={field?.tooltipClass}
-          api={field?.api ?? null}
-          options={field?.options ?? null}
-          defaultValue={field?.defaultValue ?? data?.[field?.defaultValue]}
-          isMulti={field?.isMulti}
-          isDisabled={field?.isDisabled}
-          isLoading={field?.isLoading}
-          isClearable={field?.isClearable}
-          className={field?.className}
+          name={cfg.name}
+          label={cfg.label}
+          placeholder={cfg.placeholder}
+          api={cfg.api}
+          options={cfg.options}
+          isMulti={cfg.isMulti}
+          isDisabled={cfg.isDisabled}
+          isLoading={cfg.isLoading}
+          isClearable={cfg.isClearable}
         />
       );
-    }
-    if (field.type === "radio") {
+    },
+    radio: (f) => {
+      const cfg = f as RadioFieldConfig;
       return (
         <RadioField
-          name={field?.name}
-          label={field?.label}
-          direction={field?.direction}
-          defaultValue={field?.defaultValue}
-          options={field?.options as any}
+          name={cfg.name}
+          label={cfg.label}
+          direction={cfg.direction}
+          defaultValue={cfg.defaultValue}
+          options={cfg.options}
         />
       );
-    }
-    if (field.type === "switch") {
+    },
+    switch: (f) => {
+      const cfg = f as SwitchFieldConfig;
       return (
         <div className="flex items-center space-x-2">
           <Switch
-            name={field.name}
-            label={field?.label}
-            value={data?.[field?.name]}
-            onChange={(value) => {
-              setSaveOnChange(true);
-            }}
+            name={cfg.name}
+            label={cfg.label}
+            onValueChange={cfg.saveOnChange ? () => setSaveOnChange(true) : undefined}
           />
         </div>
       );
-    }
-  };
-  const gridStyle: { [key: number]: string } = {
-    1: "md:grid-cols-1 lg:grid-cols-1 sm:grid-cols-1",
-    2: "md:grid-cols-2 lg:grid-cols-2 sm:grid-cols-2",
-    3: "md:grid-cols-3 lg:grid-cols-3 sm:grid-cols-3",
-    4: "md:grid-cols-4 lg:grid-cols-4 sm:grid-cols-4",
-    5: "md:grid-cols-5 lg:grid-cols-5 sm:grid-cols-4",
-    6: "md:grid-cols-6 lg:grid-cols-6 sm:grid-cols-4",
-    7: "md:grid-cols-7 lg:grid-cols-7 sm:grid-cols-4",
-    8: "md:grid-cols-8 lg:grid-cols-8 sm:grid-cols-4",
+    },
+    checkbox: (f) => {
+      const cfg = f as CheckboxFieldConfig;
+      return (
+        <CheckboxField
+          name={cfg.name}
+          label={cfg.label}
+          options={cfg.options}
+          direction={cfg.direction}
+          single={cfg.single}
+        />
+      );
+    },
+    date: (f) => {
+      const cfg = f as DateFieldConfig;
+      return (
+        <DatePicker
+          name={cfg.name}
+          label={cfg.label}
+          placeholder={cfg.placeholder}
+          mode="single"
+          required={cfg.required}
+          dateFormat={cfg.dateFormat}
+        />
+      );
+    },
+    dateRange: (f) => {
+      const cfg = f as DateRangeFieldConfig;
+      return (
+        <DatePicker
+          name={cfg.name}
+          label={cfg.label}
+          placeholder={cfg.placeholder}
+          mode="range"
+          required={cfg.required}
+          dateFormat={cfg.dateFormat}
+          rangeDateFormat={cfg.dateFormat}
+        />
+      );
+    },
   };
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["show_header"] });
-  });
-
-  const order = (order: number | undefined, index: number) =>
-    order ? `order-${order}` : `order-${index + 1}`;
+  const renderField = (field: FieldConfig) => FIELD_RENDERERS[field.type]?.(field) ?? null;
 
   return (
     <FormWrapper
@@ -150,7 +235,7 @@ const FormBuilder = ({
       method={method}
       mode={mode}
       queryKey={queryKey}
-      data={data}
+      data={transformedData}
       onClose={onClose}
       actionButton={actionButton}
       saveOnChange={saveOnChange}
@@ -158,69 +243,46 @@ const FormBuilder = ({
       actionButtonClass={actionButtonClass}
     >
       {accordion ? (
-        <>
-          <Accordion
-            type="single"
-            defaultValue={formSchema[0]?.name}
-            collapsible
-            className={cn(
-              "w-full  border rounded-md bg-gray-50",
-              accordionClass && accordionClass
-            )}
-          >
-            {(formSchema as AccordionFormBuilderType[])?.map(
-              (accordion: AccordionFormBuilderType) => (
-                <AccordionItem
-                  value={accordion.name}
-                  key={accordion.name}
-                  className={cn(
-                    "w-full [&:not(:last-child)]:border-b decoration-transparent"
-                  )}
-                >
-                  <AccordionTrigger
-                    className={cn(
-                      "px-3 font-semibold text-lg capitalize py-2",
-                      accordionTitleClass && accordionTitleClass
-                    )}
-                  >
-                    {accordion.name}
-                  </AccordionTrigger>
-                  <AccordionContent
-                    className={cn(
-                      `grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`,
-                      "bg-white p-3 rounded-md",
-                      accordionBodyClass && accordionBodyClass
-                    )}
-                  >
-                    {accordion?.form?.map(
-                      (fieldName: FormBuilderType, index) => (
-                        <div
-                          key={`${index}`}
-                        >
-                          {fieldName?.permission
-                            ? renderInput(fieldName)
-                            : null}
-                        </div>
-                      )
-                    )}
-                  </AccordionContent>
-                </AccordionItem>
-              )
-            )}
-          </Accordion>
-        </>
-      ) : (
-        <div className={`grid ${gridGap} m-auto ${gridStyle[grids]} dark:bg-gray-800 w-full`}>
-          {(formSchema as FormBuilderType[])?.map(
-            (fieldName: FormBuilderType, index) => (
-              <div
-                key={`${index}`}
-                className={`${fieldName?.order ?? index + 1}`}
+        <Accordion
+          type="single"
+          defaultValue={formSchema[0]?.name}
+          collapsible
+          className={cn("w-full border rounded-md bg-gray-50", accordionClass)}
+        >
+          {(formSchema as AccordionSection[]).map((section) => (
+            <AccordionItem
+              value={section.name}
+              key={section.name}
+              className="w-full [&:not(:last-child)]:border-b decoration-transparent dark:bg-gray-900"
+            >
+              <AccordionTrigger
+                className={cn("px-3 font-semibold text-lg capitalize py-2", accordionTitleClass)}
               >
-                {fieldName?.permission ? renderInput(fieldName) : null}
-              </div>
-            )
-          )}
+                {section.name}
+              </AccordionTrigger>
+              <AccordionContent
+                className={cn(
+                  `grid ${gridGap} m-auto ${GRID_STYLES[grids]} dark:bg-gray-900 w-full`,
+                  "bg-white p-3 rounded-md",
+                  accordionBodyClass
+                )}
+              >
+                {section.form.map((field, index) => (
+                  <div key={index}>
+                    {field.permission ? renderField(field) : null}
+                  </div>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      ) : (
+        <div className={`grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`}>
+          {(formSchema as FieldConfig[]).map((field, index) => (
+            <div key={index}>
+              {field.permission ? renderField(field) : null}
+            </div>
+          ))}
         </div>
       )}
     </FormWrapper>

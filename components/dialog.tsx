@@ -46,17 +46,17 @@ export const DialogWrapper: FC<props> = ({
           </div>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] lg:max-w-[600px] md:max-w-[500px]">
+      <DialogContent className="sm:max-w-[425px] lg:max-w-[600px] md:max-w-[500px] dark:bg-gray-900">
         <DialogHeader>
           <DialogTitle>{t(title)}</DialogTitle>
           {description && (
             <DialogDescription>{t(description)}</DialogDescription>
           )}
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 dark:text-white dark:bg-gray-900">
           {children &&
-          typeof children === "object" &&
-          "type" in (children as any) ? (
+            typeof children === "object" &&
+            "type" in (children as any) ? (
             // @ts-expect-error: children may not be a valid React element, but we check above
             <children.type {...(children as any)?.props} onClose={onClose} />
           ) : (

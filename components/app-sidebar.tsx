@@ -8,8 +8,10 @@ import {
   Frame,
   GalleryVerticalEnd,
   Map,
+  MapPinHouse,
   PieChart,
   Settings2,
+  ShoppingCart,
   SquareTerminal,
   Table,
   User2,
@@ -85,6 +87,21 @@ const data = {
       name: "Design Engineering",
       url: "clients",
       icon: User2,
+    },
+    {
+      title: "Zone",
+      url: "#",
+      icon: MapPinHouse,
+      items: [
+        {
+          title: "Zone",
+          url: "zone",
+        },
+        {
+          title: "Sub Zone",
+          url: "sub-zone",
+        },
+      ]
     },
     {
       title: "Test table",

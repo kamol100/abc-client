@@ -1,241 +1,228 @@
 "use client";
+
 import { useFetch } from "@/app/actions";
-import { useThemeContext } from "@/context/theme-data-provider";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { FC, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { FC, useMemo } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import Select from "react-select";
+import Select, { MultiValue, SingleValue } from "react-select";
+import type {
+  LabelProps,
+  SelectOption,
+} from "./form-wrapper/form-builder-type";
+import FieldError from "./form/field-error";
 import Label from "./label";
 
-type props = {
+type SelectDropdownProps = {
   name: string;
-  label?: string | null;
-  api?: string | null;
-  options?: any;
+  label?: LabelProps;
+  api?: string;
+  options?: SelectOption[];
   isMulti?: boolean;
   isDisabled?: boolean;
   isLoading?: boolean;
   isClearable?: boolean;
-  isRtl?: boolean;
   isSearchable?: boolean;
-  isOptionDisabled?: boolean;
-  mandatory?: boolean;
-  menuPosition?: string;
   placeholder?: string;
-  className?: string;
-  defaultValue?: any;
-  tooltip?: string | null;
-  tooltipClass?: string | undefined;
-  initialData?: any;
-  initHeight?: number;
-  value?: "value | label";
-  onChange?: (value: any) => void;
-  onBlur?: (value: any) => void;
-  onFocus?: (value: any) => void;
-  onInputChange?: (value: any) => void;
-  onMenuOpen?: (value: any) => void;
-  onMenuClose?: (value: any) => void;
+  onValueChange?: (value: unknown) => void;
 };
 
-const SelectDropdown: FC<props> = ({
+const SelectDropdown: FC<SelectDropdownProps> = ({
   name,
-  label = null,
-  api = null,
-  options: optionItems = undefined,
+  label,
+  api,
+  options: staticOptions,
   isMulti = false,
   isDisabled = false,
   isLoading = false,
   isClearable = true,
-  isRtl = false,
   isSearchable = true,
-  mandatory = false,
   placeholder = "select_option",
-  className = "",
-  menuPosition = "fixed",
-  value = "value",
-  defaultValue = null,
-  tooltip,
-  tooltipClass = "",
-  initialData = null,
-  initHeight = 36,
-  onChange = () => { },
-  onBlur = () => { },
-  onFocus = () => { },
-  onInputChange = () => { },
-  onMenuOpen = () => { },
-  onMenuClose = () => { },
+  onValueChange,
 }) => {
   const { t } = useTranslation();
-  const { themeColor, setThemeColor } = useThemeContext();
-
-  const [options, setOption] = useState(optionItems);
-
   const {
-    setValue,
+    control,
     formState: { errors },
-    clearErrors,
   } = useFormContext();
-  const getDropdownList = async () => {
-    const result = await useFetch({ url: api as string });
-    const data = result?.data?.map((item: any) => ({
-      value: item.id,
-      label: item.name,
-    }));
-    setOption(data);
-    return data;
-  };
 
-  const {
-    data: dropdownList,
-    isLoading: loading,
-    refetch,
-  } = useQuery({
-    queryKey: [`${name}-dropdown`],
-    queryFn: () => getDropdownList(),
+  const { data: apiOptions, isLoading: isApiLoading } = useQuery({
+    queryKey: [`${name}-dropdown`, api],
+    queryFn: async (): Promise<SelectOption[]> => {
+      const result = await useFetch({ url: api as string });
+      return (
+        result?.data?.map((item: { id: string | number; name: string }) => ({
+          value: item.id,
+          label: item.name,
+        })) ?? []
+      );
+    },
+    enabled: !!api,
     retry: 0,
-    enabled: api ? true : false,
-    initialData: initialData,
   });
 
-  const handleChange = (option: any) => {
-    //console.log(option, "op");
-    setValue(name, option?.[value]);
-    onChange(option);
-    if (option?.value) {
-      clearErrors(name);
-    }
-  };
+  const options = useMemo(() => {
+    if (api && apiOptions) return apiOptions;
+    return staticOptions ?? [];
+  }, [api, apiOptions, staticOptions]);
 
-  const defaultOption = () => {
-    if (typeof defaultValue === "object" && !isMulti) {
-      return defaultValue
-        ?.map((item: any) => ({ value: item.id, label: item?.name }))
-        .at(0);
-    }
-    if (typeof defaultValue === "object" && isMulti) {
-      return defaultValue?.map((item: any) => ({
-        value: item.id,
-        label: item?.name,
-      }));
-    }
-    console.log(options, defaultValue);
-    return options?.find((option: any) => option?.value === defaultValue);
-  };
-
-  useEffect(() => {
-    const defaultValue = defaultOption();
-    if (isMulti) {
-      const value = defaultValue?.map((item: any) => item.value);
-      setValue(name, value);
-    } else {
-      setValue(name, defaultValue?.value);
-    }
-  }, [defaultValue?.length]);
-
-  const customStyles = {
-    control: (base: any, state: any) => ({
-      ...base,
-      minHeight: initHeight,
-      background: "white",
-      // borderColor: state.isFocused ? themeColor?.toLocaleLowerCase() : "gray",
-    }),
-    option: (base: any, state: any) => {
-      return {
-        ...base,
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        transition: "all 0.5s",
-        ":before": {
-          content: '""',
-          display: "inline-block",
-          width: "10px",
-          height: "10px",
-          borderRadius: "50%",
-          backgroundColor: state.data.color,
-        },
-      };
-    },
-  };
+  const error = errors[name];
 
   return (
-    <>
+    <div className="flex flex-col gap-1">
       {label && (
         <div className="mb-2">
-          <Label
-            labelText={label}
-            mandatory={mandatory}
-            tooltip={tooltip}
-            tooltipClass={tooltipClass}
-          />
+          <Label label={label} />
         </div>
       )}
 
-      <Select
-        onChange={handleChange}
-        defaultValue={defaultOption()}
-        options={options ?? []}
-        className={cn(`basic-single`)}
-        classNamePrefix="select"
-        isSearchable={isSearchable}
-        isClearable={isClearable}
-        isDisabled={isDisabled}
-        isLoading={isLoading || loading}
-        isRtl={isRtl}
-        isMulti={isMulti}
+      <Controller
         name={name}
-        menuPosition={menuPosition}
-        placeholder={t(placeholder)}
-        theme={(theme) => ({
-          ...theme,
-          colors: {
-            ...theme.colors,
-          },
-        })}
-        classNames={{
-          control: ({ isFocused }) =>
-            [
-              `flex items-center rounded-md border bg-white px-2 text-sm shadow-sm`,
-              isFocused
-                ? "border-primary ring-0 ring-primary ring-offset-1"
-                : "border-gray-300",
-            ].join(" "),
-          valueContainer: () => "flex-1 gap-1",
-          placeholder: () => "text-gray-400",
-          singleValue: () => "text-gray-900",
-          input: () => cn("text-gray-900", `!h-[${initHeight}px]`),
-          indicatorsContainer: () => "flex gap-1",
-          dropdownIndicator: ({ isFocused }) =>
-            [
-              "p-1 transition-colors",
-              isFocused ? "text-primary" : "text-gray-500 hover:text-gray-700",
-            ].join(" "),
-          clearIndicator: () =>
-            "p-1 text-gray-400 hover:text-red-500 transition-colors",
-          menu: () =>
-            "mt-1 rounded border border-gray-200 bg-white shadow-lg text-sm",
-          menuList: () => "",
-          option: ({ isFocused, isSelected }) =>
-            [
-              "cursor-pointer rounded px-2 py-2",
-              isSelected
-                ? "bg-primary text-white"
-                : isFocused
-                  ? "bg-secondary"
-                  : "text-gray-900",
-            ].join(" "),
-          noOptionsMessage: () => "text-gray-500 p-2",
+        control={control}
+        render={({ field: { value, onChange } }) => {
+          const selectedOption = (() => {
+            if (value === undefined || value === null || value === "")
+              return null;
+            if (isMulti && Array.isArray(value)) {
+              return options.filter((opt) => value.includes(opt.value));
+            }
+            return options.find((opt) => opt.value === value) ?? null;
+          })();
+
+          return (
+            <Select<SelectOption, boolean>
+              className={cn("basic-single")}
+              classNamePrefix="select"
+              isSearchable={isSearchable}
+              isClearable={isClearable}
+              isDisabled={isDisabled}
+              isLoading={isLoading || isApiLoading}
+              placeholder={t(placeholder)}
+              isMulti={isMulti}
+              name={name}
+              options={options}
+              value={selectedOption}
+              onChange={(newValue) => {
+                if (isMulti) {
+                  const values = (newValue as MultiValue<SelectOption>).map(
+                    (o) => o.value,
+                  );
+                  onChange(values);
+                  onValueChange?.(values);
+                } else {
+                  const val =
+                    (newValue as SingleValue<SelectOption>)?.value ?? null;
+                  onChange(val);
+                  onValueChange?.(val);
+                }
+              }}
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderColor: error
+                    ? `hsl(var(--destructive))`
+                    : state.isFocused
+                      ? `hsl(var(--ring))`
+                      : `hsl(var(--input))`,
+                  boxShadow: state.isFocused
+                    ? error
+                      ? `0 0 0 1px hsl(var(--destructive))`
+                      : `0 0 0 1px hsl(var(--ring))`
+                    : "none",
+                  backgroundColor: "transparent",
+                  color: `hsl(var(--foreground))`,
+                  transition: "colors 200ms ease",
+                  "&:hover": {
+                    borderColor: error
+                      ? `hsl(var(--destructive))`
+                      : state.isFocused
+                        ? `hsl(var(--ring))`
+                        : `hsl(var(--input))`,
+                  },
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: `hsl(var(--muted-foreground))`,
+                  opacity: 1,
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: `hsl(var(--foreground))`,
+                }),
+                multiValue: (base) => ({
+                  ...base,
+                  backgroundColor: `hsl(var(--primary) / 0.1)`,
+                }),
+                multiValueLabel: (base) => ({
+                  ...base,
+                  color: `hsl(var(--foreground))`,
+                }),
+                multiValueRemove: (base) => ({
+                  ...base,
+                  color: `hsl(var(--foreground))`,
+                  "&:hover": {
+                    backgroundColor: `hsl(var(--destructive))`,
+                    color: `hsl(var(--destructive-foreground))`,
+                  },
+                }),
+                dropdownIndicator: (base) => ({
+                  ...base,
+                  color: `hsl(var(--muted-foreground))`,
+                  "&:hover": {
+                    color: `hsl(var(--foreground))`,
+                  },
+                }),
+                clearIndicator: (base) => ({
+                  ...base,
+                  color: `hsl(var(--muted-foreground))`,
+                  "&:hover": {
+                    color: `hsl(var(--foreground))`,
+                  },
+                }),
+                menuList: (base) => ({
+                  ...base,
+                  backgroundColor: `hsl(var(--popover))`,
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  backgroundColor: state.isSelected
+                    ? `hsl(var(--primary))`
+                    : state.isFocused
+                      ? `hsl(var(--primary) / 0.1)`
+                      : `hsl(var(--popover))`,
+                  color: state.isSelected
+                    ? `hsl(var(--primary-foreground))`
+                    : `hsl(var(--foreground))`,
+                  "&:active": {
+                    backgroundColor: `hsl(var(--primary))`,
+                    color: `hsl(var(--primary-foreground))`,
+                  },
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary: `hsl(var(--primary))`,
+                  primary75: `hsl(var(--primary) / 0.75)`,
+                  primary50: `hsl(var(--primary) / 0.5)`,
+                  primary25: `hsl(var(--primary) / 0.1)`,
+                  neutral0: `hsl(var(--popover))`,
+                  neutral5: `hsl(var(--popover))`,
+                  neutral10: `hsl(var(--input))`,
+                  neutral20: `hsl(var(--input))`,
+                  neutral30: `hsl(var(--border))`,
+                  neutral80: `hsl(var(--foreground))`,
+                },
+              })}
+            />
+          );
         }}
-        unstyled
       />
-      {errors?.[name] && (
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          <span className="text-red-600">{t(`${name}_field_is_required`)}</span>
-        </p>
-      )}
-    </>
+
+      <FieldError name={name} />
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import ActionButton from "../action-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { User } from "../schema/user";
+import { User } from "../users/user-type";
 import { Badge } from "../ui/badge";
 
 export const ClientColumns: ColumnDef<User>[] = [

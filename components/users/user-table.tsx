@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "../data-table/data-table";
 import useListData from "../get-data/list-data";
+import { UserRow } from "./user-type";
 import UserFilterSchema from "./user-filter-schema";
 import UserForm from "./user-form";
 import { UsersColumns } from "./users-column";
@@ -16,7 +17,7 @@ const UserTable: FC = () => {
       filterValue: filterValue,
     });
 
-  const users = data?.data?.data;
+  const users = (data?.data?.data ?? []) as UserRow[];
   const pagination = data?.data?.pagination;
   const { t } = useTranslation();
 
@@ -36,7 +37,7 @@ const UserTable: FC = () => {
   return (
     <>
       <div>
-        {users && (
+        {users.length > 0 && (
           <DataTable
             data={users}
             setFilter={setFilter}
