@@ -1,5 +1,5 @@
 import { useFetch } from "@/app/actions";
-import { useSetting } from "@/lib/utils/user-setting";
+import { useProfile } from "@/context/app-provider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
 import {
@@ -16,12 +16,12 @@ type Props = {
 
 const ChangePagination: FC<Props> = ({ queryKey = "users" }) => {
   const queryClient = useQueryClient();
-  const profile = useSetting("profile") as any;
-  const [pageSize, setPageSize] = useState(
-    profile?.staff?.item_per_page ?? "10"
+  const { profile } = useProfile();
+  const [pageSize, setPageSize] = useState<string>(
+    String(profile?.staff?.item_per_page ?? 10)
   );
 
-  const { mutate: updatePagination } = useMutation<any>({
+  const { mutate: updatePagination } = useMutation<unknown>({
     mutationFn: async (formData) => {
       const { data } = await useFetch({
         url: `/staffs/item-per-page/${profile?.staff?.id}`,
@@ -30,27 +30,21 @@ const ChangePagination: FC<Props> = ({ queryKey = "users" }) => {
       });
       return data;
     },
-    onSuccess: async (data: any) => {
-      console.log(queryKey);
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
     onError: () => { },
   });
 
-  const updateItemPerPage = (page: number | string) => {
+  const updateItemPerPage = (page: string) => {
     setPageSize(page);
-    const data = {
-      item_per_page: page,
-    };
-    updatePagination(data as any);
+    updatePagination({ item_per_page: page } as never);
   };
 
   return (
     <Select
-      value={pageSize as string}
-      onValueChange={(value) => {
-        updateItemPerPage(value);
-      }}
+      value={pageSize}
+      onValueChange={updateItemPerPage}
       aria-label="Results per page"
     >
       <SelectTrigger id="results-per-page" className="w-fit whitespace-nowrap">

@@ -3,9 +3,11 @@
 import { FC } from "react";
 import { DialogWrapper } from "../dialog";
 import FormBuilder from "../form-wrapper/form-builder";
-import { AddPlus } from "../icon";
+import { AddPlus, EditIcon } from "../icon";
 import { getUserFormSchema, UserRow } from "./user-type";
 import UserFormSchema from "./user-form-schema";
+import { Button } from "../ui/button";
+import ActionButton from "../action-button";
 
 type Props = {
     mode?: "create" | "edit";
@@ -23,8 +25,18 @@ const UserForm: FC<Props> = ({
     return (
         <DialogWrapper
             title={mode === "create" ? "create_user" : "edit_user"}
-            trigger={mode === "create" ? "Add" : "Edit"}
-            Icon={AddPlus}
+            trigger={
+                mode === "create" ? (
+                    <Button>
+                        <AddPlus /> Add
+                    </Button>
+                ) : (
+                    <ActionButton
+                        action="edit"
+                        icon={true}
+                    />
+                )
+            }
         >
             <FormBuilder
                 formSchema={UserFormSchema({ mode })}

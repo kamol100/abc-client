@@ -1,9 +1,9 @@
 "use client";
 
-import { useSetting } from "@/lib/utils/user-setting";
+import { useSettings } from "@/context/app-provider";
 
 export default function table() {
-  const setting = useSetting("settings");
+  const { settings: setting } = useSettings();
   return (
     <div className="flex flex-col h-[calc(100vh-40px)]">
       {/* Header (can be shown/hidden dynamically) */}

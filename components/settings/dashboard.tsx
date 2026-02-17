@@ -1,13 +1,12 @@
 "use client";
-import { useSetting } from "@/lib/utils/user-setting";
+import { useSettings } from "@/context/app-provider";
 import { FC } from "react";
 import FormBuilder from "../form-wrapper/form-builder";
 import DashboardFormSchema from "./dashboard-form-schema";
 import { settings } from "./setting-zod-schema";
-import { z } from "zod";
 
 const DashboardSetting: FC = () => {
-  const setting = useSetting("settings");
+  const { settings: setting } = useSettings();
   return (
     <>
       <div>

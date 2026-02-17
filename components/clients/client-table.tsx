@@ -1,5 +1,5 @@
 "use client";
-import { useSetting } from "@/lib/utils/user-setting";
+import { useSettings } from "@/context/app-provider";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { FC, useState } from "react";
@@ -24,7 +24,7 @@ const ClientTable: FC = () => {
   const users = data?.data?.data;
   const pagination = data?.data?.pagination;
   const { t } = useTranslation();
-  const setting = useSetting("settings") as SettingSchema;
+  const { settings: setting } = useSettings();
   const { isMobile } = useSidebar();
 
   const toolbarOptions = {

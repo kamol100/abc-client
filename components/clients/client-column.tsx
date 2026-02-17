@@ -169,7 +169,7 @@ export const ClientColumns: ColumnDef<User>[] = [
       const data = row.original;
       return (
         <>
-          <ActionButton hover className={"px-2"} />
+          <ActionButton className="hover:bg-primary hover:text-primary-foreground px-2" action="edit" />
         </>
       );
     },

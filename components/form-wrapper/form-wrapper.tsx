@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import ActionButton from "../action-button";
+import { useDialogClose } from "../dialog";
 
 type FormWrapperProps = {
     children?: ReactNode;
@@ -41,12 +42,15 @@ export default function FormWrapper({
     api,
     isFormData = false,
     queryKey = "data",
-    onClose = () => { },
+    onClose,
     actionButton = true,
     saveOnChange: save = false,
     setSaveOnChange = () => { },
     actionButtonClass = "justify-between",
 }: FormWrapperProps) {
+    const dialogClose = useDialogClose();
+    const handleClose = onClose ?? dialogClose ?? (() => { });
+
     const form = useForm<FieldValues>({
         resolver: zodResolver(schema as unknown as Parameters<typeof zodResolver<FieldValues, unknown, FieldValues>>[0]),
         mode: "onChange",
@@ -94,7 +98,7 @@ export default function FormWrapper({
             if (responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
-            if (onClose) onClose();
+            handleClose();
         },
         onError: (error: unknown) => {
             toast.error(t(String(useParseError(error))));
@@ -130,16 +134,16 @@ export default function FormWrapper({
                 {actionButton && (
                     <div className={cn("flex justify-center gap-4 mt-5", actionButtonClass)}>
                         <ActionButton
-                            type="cancel"
+                            action="cancel"
                             title={t("cancel")}
                             size="default"
-                            onClick={() => onClose()}
+                            onClick={handleClose}
                         />
                         <ActionButton
-                            type="save"
+                            action="save"
                             title={t("save")}
                             size="default"
-                            buttonType="submit"
+                            type="submit"
                             variant="default"
                             loading={isPending}
                         />

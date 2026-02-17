@@ -3,8 +3,9 @@
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { UserRow, Role, getUserStatusLabel } from "./user-type";
+import { UserRow, getUserStatusLabel } from "./user-type";
 import UserForm from "./user-form";
+import { DeleteModal } from "../delete-modal";
 
 export const UsersColumns: ColumnDef<UserRow>[] = [
   {
@@ -162,9 +163,16 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <>
+        <div className="flex items-center gap-2">
           <UserForm mode="edit" data={data} api="/users" method="PUT" />
-        </>
+          <DeleteModal
+            api_url={`/users/${data.id}`}
+            keys="users"
+            confirmMessage="delete_user_confirmation"
+            buttonText="confirm_delete"
+          >
+          </DeleteModal>
+        </div>
       );
     },
   },

@@ -31,7 +31,8 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { SettingContext } from "@/context/SettingsProvider";
+import { useSettings, useProfile, usePermissions } from "@/context/app-provider";
+import type { AppData } from "@/types/app";
 import useListData from "./get-data/list-data";
 
 // This is sample data.
@@ -227,14 +228,20 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { setUserSetting }: any = React.useContext(SettingContext);
+  const { setSettings } = useSettings();
+  const { setProfile } = useProfile();
+  const { setPermissions } = usePermissions();
+
   useListData({
     api: "user-settings",
     queryKey: "settings",
     isPagination: false,
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      setUserSetting(data?.data);
+    onSuccess: (res) => {
+      const appData = res?.data as AppData;
+      setSettings(appData.settings);
+      setProfile(appData.profile);
+      setPermissions(appData.permissions);
     },
   });
   const { isMobile } = useSidebar();

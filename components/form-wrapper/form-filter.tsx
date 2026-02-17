@@ -123,7 +123,7 @@ const FormFilter = ({
                             <div className={`w-full grid ${gridGap} m-auto ${GRID_STYLES[grids]} dark:bg-gray-800 w-full`}>
                                 {formSchema.map((field, index) => (
                                     <div key={index}>
-                                        {field.permission ? renderField(field) : null}
+                                        {field.permission !== false ? renderField(field) : null}
                                     </div>
                                 ))}
                             </div>
@@ -135,14 +135,14 @@ const FormFilter = ({
             <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
                 {searchButton && isFilter && (
                     <ActionButton
-                        type="search"
+                        action="search"
                         size="default"
                         className="mt-2 md:mt-0 lg:mt-0"
                         onClick={() => submitRef.current?.click()}
                     />
                 )}
                 <ActionButton
-                    type="filter"
+                    action="filter"
                     size="default"
                     className={cn(isFilter && "mt-2 md:mt-0 lg:mt-0")}
                     variant={isFilter ? "default" : "outline"}

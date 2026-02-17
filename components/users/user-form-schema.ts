@@ -18,7 +18,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
                 tooltip: t('name_tooltip'),
             },
             placeholder: t('name'),
-            permission: true,
         },
         {
             type: "text",
@@ -28,7 +27,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             },
             name: "username",
             placeholder: t("username"),
-            permission: true,
         },
         {
             type: "text",
@@ -38,7 +36,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             },
             name: "email",
             placeholder: t("email"),
-            permission: true,
         },
         {
             type: "dropdown",
@@ -48,7 +45,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             },
             name: "roles_id",
             placeholder: t("roles"),
-            permission: true,
             isMulti: true,
             api: "/dropdown-roles",
             valueKey: "roles",
@@ -85,7 +81,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             },
             name: "status",
             placeholder: t("status"),
-            permission: true,
             options: [
                 { value: 1, label: "Active" },
                 { value: 0, label: "Inactive" },
@@ -96,7 +91,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             name: "joined_at",
             label: { labelText: t("joined_at") ?? "Joined at", mandatory: false },
             placeholder: "Pick a date",
-            permission: true,
             valueKey: "joined_at",
             dateFormat: "PPP",
         },
@@ -105,7 +99,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             name: "contract_period",
             label: { labelText: t("contract_period") ?? "Contract period", mandatory: false },
             placeholder: "Pick a date range",
-            permission: true,
             valueKey: "contract_period",
             dateFormat: "PPP",
         },

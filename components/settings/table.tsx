@@ -1,12 +1,12 @@
 "use client";
-import { useSetting } from "@/lib/utils/user-setting";
+import { useSettings } from "@/context/app-provider";
 import { FC } from "react";
 import FormBuilder from "../form-wrapper/form-builder";
 import { settings } from "./setting-zod-schema";
 import TableFormSchema from "./table-form-schema";
 
 const TableSetting: FC = () => {
-  const setting = useSetting("settings");
+  const { settings: setting } = useSettings();
   return (
     <>
       <div>

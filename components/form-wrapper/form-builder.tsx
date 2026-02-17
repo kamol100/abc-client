@@ -100,7 +100,7 @@ type FormBuilderProps = {
   mode: "create" | "edit";
   queryKey?: string;
   data?: Record<string, unknown>;
-  onClose?: () => void;
+  onClose?: () => void | undefined;
   actionButton?: boolean;
   actionButtonClass?: string;
   accordion?: boolean;
@@ -119,7 +119,7 @@ const FormBuilder = ({
   mode = "create",
   data,
   queryKey,
-  onClose = () => { },
+  onClose,
   actionButton = true,
   actionButtonClass,
   accordion = false,
@@ -269,7 +269,7 @@ const FormBuilder = ({
               >
                 {section.form.map((field, index) => (
                   <div key={index}>
-                    {field.permission ? renderField(field) : null}
+                    {field.permission !== false ? renderField(field) : null}
                   </div>
                 ))}
               </AccordionContent>
@@ -280,7 +280,7 @@ const FormBuilder = ({
         <div className={`grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`}>
           {(formSchema as FieldConfig[]).map((field, index) => (
             <div key={index}>
-              {field.permission ? renderField(field) : null}
+              {field.permission !== false ? renderField(field) : null}
             </div>
           ))}
         </div>

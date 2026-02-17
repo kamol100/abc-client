@@ -21,7 +21,7 @@ type BaseFieldConfig = {
     name: string;
     label?: LabelProps;
     placeholder?: string;
-    permission: boolean;
+    permission?: boolean;
     className?: string;
     order?: number;
 };

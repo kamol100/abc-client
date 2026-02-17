@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/table";
 
 import { cn } from "@/lib/utils";
-import { useSetting } from "@/lib/utils/user-setting";
+import { useSettings } from "@/context/app-provider";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { SettingSchema } from "../settings/setting-zod-schema";
@@ -110,7 +110,7 @@ export function DataTable<TData, TValue>({
   const [topMargin, setTopMargin] = React.useState(
     "[&>div]:max-h-[calc(100dvh-170px)]"
   );
-  const setting = useSetting("settings") as SettingSchema;
+  const { settings: setting } = useSettings();
   useEffect(() => {
     if (setting?.show_dashboard_header) {
       setTopMargin("[&>div]:max-h-[calc(100dvh-235px)]");
