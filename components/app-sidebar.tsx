@@ -32,8 +32,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useSettings, useProfile, usePermissions } from "@/context/app-provider";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import type { AppData } from "@/types/app";
-import useListData from "./get-data/list-data";
 
 // This is sample data.
 const data = {
@@ -232,18 +232,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setProfile } = useProfile();
   const { setPermissions } = usePermissions();
 
-  useListData({
-    api: "user-settings",
-    queryKey: "settings",
-    isPagination: false,
-    refetchOnWindowFocus: false,
-    onSuccess: (res) => {
-      const appData = res?.data as AppData;
-      setSettings(appData.settings);
-      setProfile(appData.profile);
-      setPermissions(appData.permissions);
-    },
+  const { data: settingsResponse } = useApiQuery<ApiResponse<AppData>>({
+    queryKey: ["settings"],
+    url: "user-settings",
+    pagination: false,
   });
+
+  React.useEffect(() => {
+    if (settingsResponse?.data) {
+      setSettings(settingsResponse.data.settings);
+      setProfile(settingsResponse.data.profile);
+      setPermissions(settingsResponse.data.permissions);
+    }
+  }, [settingsResponse, setSettings, setProfile, setPermissions]);
   const { isMobile } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props} side={isMobile ? "right" : "left"}>

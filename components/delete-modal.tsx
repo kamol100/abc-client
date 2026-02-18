@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { useParseError } from "@/lib/helper/helper";
+import { parseApiError } from "@/lib/helper/helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -52,7 +52,7 @@ export function DeleteModal({
             toast.success(message ? t(message) : t("item_deleted_successfully"));
         },
         onError: (error: unknown) => {
-            const errorMsg = useParseError(error);
+            const errorMsg = parseApiError(error);
             toast.error(t(String(errorMsg || "delete_failed")));
         },
     });

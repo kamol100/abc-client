@@ -2,7 +2,7 @@
 
 import { useFetch } from "@/app/actions";
 import { Form } from "@/components/ui/form";
-import { useParseError } from "@/lib/helper/helper";
+import { parseApiError } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -69,7 +69,7 @@ export default function FormWrapper({
     const fetchData = async () => {
         const result = await useFetch({ url: apiRoute });
         if (!result?.success) {
-            toast.error(useParseError(result));
+            toast.error(parseApiError(result));
             return [];
         }
         return result;
@@ -101,7 +101,7 @@ export default function FormWrapper({
             handleClose();
         },
         onError: (error: unknown) => {
-            toast.error(t(String(useParseError(error))));
+            toast.error(t(String(parseApiError(error))));
         },
     });
 
