@@ -1,33 +1,59 @@
-import fs from "fs/promises";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import path from "path";
+import { z } from "zod";
 
-const filePath = path.join(process.cwd(), "data", "theme-settings.json");
+const themeSettingsSchema = z.object({
+  color: z.enum(["zinc", "rose", "blue", "green", "orange", "red"]),
+  density: z.enum(["compact", "comfortable", "large"]),
+  radius: z.enum(["0", "0.3", "0.5", "0.75", "1.0"]),
+});
+
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 export async function PUT(request: Request) {
-    try {
-        const form = await request.json();
-        const data = await fs.readFile(filePath, "utf-8");
-        const json = JSON.parse(data);
+  try {
+    const body = await request.json();
+    const result = themeSettingsSchema.safeParse(body);
 
-        json["colors"][form?.target]["light"][form?.key] = form.value;
-        await fs.truncate(filePath, 0); // Clears the file
-        await fs.writeFile(filePath, JSON.stringify(json, null, 2), "utf-8");
-
-        return NextResponse.json({ message: "Updated successfully", data: json });
-    } catch (error) {
-        return NextResponse.json({ error: "Failed to update JSON" }, { status: 500 });
+    if (!result.success) {
+      return NextResponse.json(
+        { error: "Invalid theme settings", details: result.error.flatten() },
+        { status: 400 }
+      );
     }
+
+    const { color, density, radius } = result.data;
+    const cookieOptions = { maxAge: COOKIE_MAX_AGE, path: "/", sameSite: "lax" as const };
+
+    const response = NextResponse.json({ success: true, data: result.data });
+    response.cookies.set("themeColor", color, cookieOptions);
+    response.cookies.set("density", density, cookieOptions);
+    response.cookies.set("radius", radius, cookieOptions);
+
+    return response;
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to update theme settings" },
+      { status: 500 }
+    );
+  }
 }
-export async function GET(request: Request) {
-    try {
-        const data = await fs.readFile(filePath, "utf-8");
-        const json = JSON.parse(data);
 
-        await fs.writeFile(filePath, JSON.stringify(json, null, 2), "utf-8");
+export async function GET() {
+  try {
+    const cookieStore = await cookies();
 
-        return NextResponse.json({ message: "Get successfully", data: json });
-    } catch (error) {
-        return NextResponse.json({ error: "Failed to  JSON" }, { status: 500 });
-    }
+    const settings = {
+      color: cookieStore.get("themeColor")?.value ?? "zinc",
+      density: cookieStore.get("density")?.value ?? "comfortable",
+      radius: cookieStore.get("radius")?.value ?? "0.5",
+    };
+
+    return NextResponse.json({ data: settings });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to read theme settings" },
+      { status: 500 }
+    );
+  }
 }

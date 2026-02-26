@@ -120,6 +120,8 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
               styles={{
                 control: (base, state) => ({
                   ...base,
+                  minHeight: "var(--space-9)",
+                  borderRadius: "var(--radius)",
                   borderColor: error
                     ? `hsl(var(--destructive))`
                     : state.isFocused
@@ -141,6 +143,15 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                         : `hsl(var(--input))`,
                   },
                 }),
+                valueContainer: (base) => ({
+                  ...base,
+                  padding: `var(--space-0_5) var(--space-2)`,
+                }),
+                input: (base) => ({
+                  ...base,
+                  margin: 0,
+                  padding: 0,
+                }),
                 placeholder: (base) => ({
                   ...base,
                   color: `hsl(var(--muted-foreground))`,
@@ -157,17 +168,24 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 multiValueLabel: (base) => ({
                   ...base,
                   color: `hsl(var(--foreground))`,
+                  padding: `var(--space-0_5) var(--space-1)`,
                 }),
                 multiValueRemove: (base) => ({
                   ...base,
                   color: `hsl(var(--foreground))`,
+                  padding: `0 var(--space-1)`,
                   "&:hover": {
                     backgroundColor: `hsl(var(--destructive))`,
                     color: `hsl(var(--destructive-foreground))`,
                   },
                 }),
+                indicatorsContainer: (base) => ({
+                  ...base,
+                  padding: `0 var(--space-1)`,
+                }),
                 dropdownIndicator: (base) => ({
                   ...base,
+                  padding: `var(--space-1) var(--space-2)`,
                   color: `hsl(var(--muted-foreground))`,
                   "&:hover": {
                     color: `hsl(var(--foreground))`,
@@ -175,17 +193,26 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 }),
                 clearIndicator: (base) => ({
                   ...base,
+                  padding: `var(--space-1) var(--space-2)`,
                   color: `hsl(var(--muted-foreground))`,
                   "&:hover": {
                     color: `hsl(var(--foreground))`,
                   },
                 }),
+                menu: (base) => ({
+                  ...base,
+                  borderRadius: "var(--radius)",
+                  border: `1px solid hsl(var(--border))`,
+                  overflow: "hidden",
+                }),
                 menuList: (base) => ({
                   ...base,
+                  padding: `var(--space-1) 0`,
                   backgroundColor: `hsl(var(--popover))`,
                 }),
                 option: (base, state) => ({
                   ...base,
+                  padding: `var(--space-2) var(--space-3)`,
                   backgroundColor: state.isSelected
                     ? `hsl(var(--primary))`
                     : state.isFocused

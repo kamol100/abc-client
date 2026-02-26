@@ -96,7 +96,7 @@ const DatePicker = ({
                                     onBlur={onBlur}
                                     disabled={disabled}
                                     className={cn(
-                                        "w-full justify-start text-left font-normal dark:bg-gray-900",
+                                        "w-full justify-start text-left font-normal bg-background",
                                         !parsed && "text-muted-foreground",
                                         errors[name] && "border-destructive"
                                     )}

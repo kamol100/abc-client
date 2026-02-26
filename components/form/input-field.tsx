@@ -23,7 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
     const { control, formState: { errors } } = useFormContext();
 
     return (
-        <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive dark:bg-gray-900", className)}>
+        <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
             {label && <Label label={label} />}
             <Controller
                 name={name}

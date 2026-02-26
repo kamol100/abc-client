@@ -152,7 +152,7 @@ export function DataTable<TData, TValue>({
           </div>
         ) : (
           <Table>
-            <TableHeader className="bg-background/90 sticky top-0  backdrop-blur-xs bg-gray-50 dark:bg-gray-900">
+            <TableHeader className="bg-muted/90 sticky top-0 backdrop-blur-xs">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -204,7 +204,7 @@ export function DataTable<TData, TValue>({
       {paginationData && (
         <div
           className={cn(
-            "sticky bottom-0 border-t p-3 bg-white dark:bg-gray-900",
+            "sticky bottom-0 border-t p-3 bg-background",
             isMobile && "bottom-16"
           )}
         >

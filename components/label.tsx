@@ -25,12 +25,12 @@ const Label = ({
   const { t } = useTranslation();
   return (
     <LabelUI
-      className={cn("text-sm mb-1 font-medium text-gray-900 dark:text-white dark:bg-gray-900", label?.className)}
+      className={cn("text-sm mb-1 font-medium text-foreground", label?.className)}
       htmlFor={label?.labelText?.toString()}
     >
       <div className="flex gap-2">
         <div className={`capitalize ${label?.labelClass}`}>{t(label?.labelText || "") as string}</div>
-        {label?.mandatory && <div className="text-red-600 ml-1"> *</div>}
+        {label?.mandatory && <div className="text-destructive ml-1"> *</div>}
         {label?.tooltip && (
           <Tooltip>
             <TooltipTrigger>

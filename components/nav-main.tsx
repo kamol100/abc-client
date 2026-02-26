@@ -62,7 +62,7 @@ export function NavMain({
                     }}
                     className={cn(
                       segment === item?.url &&
-                        "bg-primary text-white font-medium capitalize"
+                        "bg-primary text-primary-foreground font-medium capitalize"
                     )}
                   >
                     {item.icon && (
@@ -86,14 +86,14 @@ export function NavMain({
                         onClick={() => setOpenMobile(!openMobile)}
                         className={cn(
                           segment === subItem?.url &&
-                            "bg-primary !text-white rounded-md"
+                            "bg-primary text-primary-foreground rounded-md"
                         )}
                       >
                         <SidebarMenuSubButton asChild>
                           <Link href={subItem.url}>
                             <span
                               className={cn(
-                                segment === subItem?.url && " !text-white"
+                                segment === subItem?.url && "text-primary-foreground"
                               )}
                             >
                               {subItem.title}

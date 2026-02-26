@@ -88,7 +88,7 @@ const FormFilter = ({
                             className="absolute top-1 right-0 cursor-pointer p-2"
                             onClick={() => clearInput(field.name)}
                         >
-                            <div className="text-gray-500">
+                            <div className="text-muted-foreground">
                                 <Close />
                             </div>
                         </div>
@@ -120,7 +120,7 @@ const FormFilter = ({
                 <div className="w-full">
                     <Form {...form}>
                         <form onSubmit={handleSubmit(getQueryString)} className="flex w-full">
-                            <div className={`w-full grid ${gridGap} m-auto ${GRID_STYLES[grids]} dark:bg-gray-800 w-full`}>
+                            <div className={`w-full grid ${gridGap} m-auto ${GRID_STYLES[grids]}`}>
                                 {formSchema.map((field, index) => (
                                     <div key={index}>
                                         {field.permission !== false ? renderField(field) : null}

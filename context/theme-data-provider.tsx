@@ -1,47 +1,82 @@
 "use client";
-import setGlobalColorTheme from "@/lib/theme-colors";
-import { ThemeProviderProps, useTheme } from "next-themes";
-import { createContext, useContext, useEffect, useState } from "react";
 
-export const ThemeContext = createContext<ThemeColorStateParams>(
-  {} as ThemeColorStateParams
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+
+export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
+  color: "zinc",
+  density: "comfortable",
+  radius: "0.5",
+};
+
+export const THEME_RADII: ThemeRadius[] = ["0", "0.3", "0.5", "0.75", "1.0"];
+
+const ThemeSettingsContext = createContext<ThemeSettingsContextValue>(
+  {} as ThemeSettingsContextValue
 );
 
-export default function ThemeDataProvider({ children }: ThemeProviderProps) {
-  const getSavedThemeColor = () => {
-    try {
-      return (localStorage.getItem("themeColor") as ThemeColors) || "Zinc";
-    } catch (error) {
-      "Zinc" as ThemeColors;
-    }
-  };
+interface ThemeSettingsProviderProps {
+  children: React.ReactNode;
+  initialSettings?: Partial<ThemeSettings>;
+}
 
-  const [themeColor, setThemeColor] = useState<ThemeColors>(
-    getSavedThemeColor() as ThemeColors
-  );
-  const [isMounted, setIsMounted] = useState(false);
-  const { theme } = useTheme();
+export default function ThemeSettingsProvider({
+  children,
+  initialSettings,
+}: ThemeSettingsProviderProps) {
+  const [settings, setSettings] = useState<ThemeSettings>({
+    ...DEFAULT_THEME_SETTINGS,
+    ...initialSettings,
+  });
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
-    localStorage.setItem("themeColor", themeColor);
-    setGlobalColorTheme(theme as "light" | "dark", themeColor);
+    const root = document.documentElement;
+    root.dataset.themeColor = settings.color;
+    root.dataset.density = settings.density;
+    root.dataset.radius = settings.radius;
+  }, [settings]);
 
-    if (!isMounted) {
-      setIsMounted(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
     }
-  }, [themeColor, theme]);
 
-  if (!isMounted) {
-    return null;
-  }
+    const timer = setTimeout(() => {
+      fetch("/api/theme", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings),
+      });
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [settings]);
+
+  const setColor = useCallback((color: ThemeColor) => {
+    setSettings((prev) => ({ ...prev, color }));
+  }, []);
+
+  const setDensity = useCallback((density: ThemeDensity) => {
+    setSettings((prev) => ({ ...prev, density }));
+  }, []);
+
+  const setRadius = useCallback((radius: ThemeRadius) => {
+    setSettings((prev) => ({ ...prev, radius }));
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ settings, setColor, setDensity, setRadius }),
+    [settings, setColor, setDensity, setRadius]
+  );
 
   return (
-    <ThemeContext.Provider value={{ themeColor, setThemeColor }}>
+    <ThemeSettingsContext.Provider value={contextValue}>
       {children}
-    </ThemeContext.Provider>
+    </ThemeSettingsContext.Provider>
   );
 }
 
-export function useThemeContext() {
-  return useContext(ThemeContext);
+export function useThemeSettings() {
+  return useContext(ThemeSettingsContext);
 }

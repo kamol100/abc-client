@@ -2,11 +2,12 @@ import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/context/AuthProvider";
 import I18nProvider from "@/context/I18nProvider";
 import TanstackProvider from "@/context/tanstack-provider";
-import ThemeDataProvider from "@/context/theme-data-provider";
+import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { getPublicData } from "@/lib/api/api";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
@@ -32,8 +33,20 @@ export default async function RootLayout({
 }>) {
   const data = await getPublicData(`/api/v1/get-translations`, "translation");
   const translations = data?.data?.translations ?? [];
+
+  const cookieStore = await cookies();
+  const themeColor = (cookieStore.get("themeColor")?.value ?? "zinc") as ThemeColor;
+  const density = (cookieStore.get("density")?.value ?? "comfortable") as ThemeDensity;
+  const radius = (cookieStore.get("radius")?.value ?? "0.5") as ThemeRadius;
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-theme-color={themeColor}
+      data-density={density}
+      data-radius={radius}
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -46,9 +59,11 @@ export default async function RootLayout({
           <AuthProvider>
             <Toaster />
             <I18nProvider translations={translations}>
-              <ThemeDataProvider>
+              <ThemeSettingsProvider
+                initialSettings={{ color: themeColor, density, radius }}
+              >
                 <TanstackProvider>{children}</TanstackProvider>
-              </ThemeDataProvider>
+              </ThemeSettingsProvider>
             </I18nProvider>
             <ToastContainer
               position="bottom-right"

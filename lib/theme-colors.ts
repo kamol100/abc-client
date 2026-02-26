@@ -275,7 +275,7 @@
 
 export default async function setGlobalColorTheme(
     themeMode: "light" | "dark",
-    color: ThemeColors,
+    color: ThemeColor,
 ) {
     const response = await fetch("/api/theme", {
         method: "GET"

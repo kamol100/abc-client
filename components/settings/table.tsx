@@ -10,7 +10,7 @@ const TableSetting: FC = () => {
   return (
     <>
       <div>
-        <div className="font-bold bg-primary p-3 mb-4 text-white rounded-md">
+        <div className="font-bold bg-primary p-3 mb-4 text-primary-foreground rounded-md">
           Table settings
         </div>
       </div>
