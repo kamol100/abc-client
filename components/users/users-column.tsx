@@ -84,28 +84,6 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  //   {
-  //     accessorKey: "type",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Type" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       const type = row.getValue("type");
-  //       return (
-  //         <div className="flex w-[100px] items-center">
-  //           {type === "income" ? (
-  //             <TrendingUp size={20} className="mr-2 text-green-500" />
-  //           ) : (
-  //             <TrendingDown size={20} className="mr-2 text-red-500" />
-  //           )}
-  //           <span className="capitalize"> {row.getValue("type")}</span>
-  //         </div>
-  //       );
-  //     },
-  //     filterFn: (row, id, value) => {
-  //       return value.includes(row.getValue(id));
-  //     },
-  //   },
   {
     accessorKey: "status",
     header: ({ column }) => (
@@ -131,30 +109,6 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  //   {
-  //     accessorKey: "date",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Date" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       const date = new Date(row.getValue("date"));
-  //       const formattedDate = date.toLocaleDateString("en-US", {
-  //         day: "2-digit",
-  //         month: "short",
-  //         year: "numeric",
-  //       });
-  //       return (
-  //         <div className="flex w-[100px] items-center">
-  //           <span className="capitalize">{formattedDate}</span>
-  //         </div>
-  //       );
-  //     },
-  //     filterFn: (row, id, value) => {
-  //       const rowDate = new Date(row.getValue(id));
-  //       const [startDate, endDate] = value;
-  //       return rowDate >= startDate && rowDate <= endDate;
-  //     },
-  //   },
   {
     id: "actions",
     header: ({ column }) => (
@@ -164,7 +118,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
       const data = row.original;
       return (
         <div className="flex items-center gap-2">
-          <UserForm mode="edit" data={data} api="/users" method="PUT" />
+          <UserForm mode="edit" data={{ id: data.id }} api="/users" method="PUT" />
           <DeleteModal
             api_url={`/users/${data.id}`}
             keys="users"

@@ -13,7 +13,7 @@ type Props = {
     mode?: "create" | "edit";
     api?: string;
     method?: "GET" | "POST" | "PUT";
-    data?: UserRow;
+    data?: Partial<UserRow> & { id: number };
 };
 
 const UserForm: FC<Props> = ({
@@ -24,6 +24,7 @@ const UserForm: FC<Props> = ({
 }) => {
     return (
         <DialogWrapper
+            size="xl"
             title={mode === "create" ? "create_user" : "edit_user"}
             trigger={
                 mode === "create" ? (

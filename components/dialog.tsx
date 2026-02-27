@@ -20,6 +20,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import ActionButton from "./action-button";
 
 // --- Context: allows children (e.g. FormWrapper) to close the dialog ---
 const DialogCloseContext = createContext<(() => void) | null>(null);
@@ -68,8 +69,8 @@ interface DialogWrapperProps {
 
   // Render a fully custom footer, or pass ReactNode
   footer?:
-    | ReactNode
-    | ((props: { close: () => void; loading: boolean }) => ReactNode);
+  | ReactNode
+  | ((props: { close: () => void; loading: boolean }) => ReactNode);
 
   preventCloseOnLoading?: boolean;
   autoCloseOnSuccess?: boolean;
@@ -172,28 +173,28 @@ export function DialogWrapper({
             {typeof footer === "function"
               ? footer({ close, loading: isLoading })
               : footer ?? (
-                  <>
-                    <Button
-                      variant="outline"
-                      onClick={handleCancel}
+                <>
+                  <ActionButton
+                    variant="outline"
+                    onClick={handleCancel}
+                    disabled={isLoading}
+                  >
+                    {t(cancelText ?? "cancel")}
+                  </ActionButton>
+                  {onConfirm && (
+                    <ActionButton
+                      action="save"
+                      onClick={handleConfirm}
                       disabled={isLoading}
                     >
-                      {t(cancelText ?? "cancel")}
-                    </Button>
-                    {onConfirm && (
-                      <Button
-                        variant={confirmVariant}
-                        onClick={handleConfirm}
-                        disabled={isLoading}
-                      >
-                        {isLoading && (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {t(confirmText ?? "confirm")}
-                      </Button>
-                    )}
-                  </>
-                )}
+                      {isLoading && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t(confirmText ?? "confirm")}
+                    </ActionButton>
+                  )}
+                </>
+              )}
           </DialogFooter>
         )}
       </DialogContent>

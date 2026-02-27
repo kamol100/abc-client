@@ -1,3 +1,4 @@
+"use client";
 import { Label as LabelUI } from "@/components/ui/label";
 import {
   Tooltip,
@@ -33,8 +34,10 @@ const Label = ({
         {label?.mandatory && <div className="text-destructive ml-1"> *</div>}
         {label?.tooltip && (
           <Tooltip>
-            <TooltipTrigger>
-              <InfoQuestion />
+            <TooltipTrigger asChild>
+              <span className="inline-flex text-muted-foreground cursor-pointer">
+                <InfoQuestion />
+              </span>
             </TooltipTrigger>
             <TooltipContent>
               <div className={label?.tooltipClass}>{t(label?.tooltip || "")}</div>

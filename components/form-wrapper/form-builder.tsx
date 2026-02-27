@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import dynamic from "next/dynamic";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { z } from "zod";
 import FormWrapper from "./form-wrapper";
 import CheckboxField from "../form/checkbox-field";
@@ -21,10 +21,11 @@ import {
   DropdownFieldConfig,
   FieldConfig,
   GRID_STYLES,
+  HydratePolicy,
   RadioFieldConfig,
   SwitchFieldConfig,
   TextareaFieldConfig,
-} from "./form-builder-type";
+} from "@/components/form-wrapper/form-builder-type";
 
 const parseDateForForm = (v: unknown): Date | undefined => {
   if (!v) return undefined;
@@ -107,6 +108,7 @@ type FormBuilderProps = {
   accordionClass?: string | null;
   accordionTitleClass?: string | null;
   accordionBodyClass?: string | null;
+  hydrateOnEdit?: HydratePolicy;
 };
 
 const FormBuilder = ({
@@ -126,6 +128,7 @@ const FormBuilder = ({
   accordionClass = null,
   accordionBodyClass = null,
   accordionTitleClass = null,
+  hydrateOnEdit = "ifNeeded",
 }: FormBuilderProps) => {
   const [saveOnChange, setSaveOnChange] = useState(false);
 
@@ -135,6 +138,12 @@ const FormBuilder = ({
     }
     return data;
   }, [data, mode, formSchema]);
+
+  const transformCallback = useCallback(
+    (rawData: Record<string, unknown>) =>
+      transformDataToFormValues(rawData, formSchema as FieldConfig[]),
+    [formSchema]
+  );
 
   const FIELD_RENDERERS: Record<FieldConfig["type"], (f: FieldConfig) => ReactNode> = {
     text: (f) => <InputField name={f.name} label={f.label} placeholder={f.placeholder} type={f.type} />,
@@ -241,6 +250,10 @@ const FormBuilder = ({
       saveOnChange={saveOnChange}
       setSaveOnChange={setSaveOnChange}
       actionButtonClass={actionButtonClass}
+      hydrateOnEdit={hydrateOnEdit}
+      formSchema={formSchema}
+      transformToFormValues={transformCallback}
+      grids={grids}
     >
       {accordion ? (
         <Accordion

@@ -54,6 +54,8 @@ export const UserRowSchema = UserCoreSchema.extend({
 
 export type UserRow = z.infer<typeof UserRowSchema>;
 
+export type UserDetail = UserRow;
+
 const BaseUserFormSchema = UserCoreSchema.extend({
     roles_id: z.array(z.coerce.number(), {
         required_error: i18n.t("role_required"),
