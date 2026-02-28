@@ -26,15 +26,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { cn } from "@/lib/utils";
-import { useSettings } from "@/context/app-provider";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { SettingSchema } from "../settings/setting-zod-schema";
-import { SkeletonLoader } from "../skeleton-loader";
-import { useSidebar } from "../ui/sidebar";
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSidebar } from "@/components/ui/sidebar";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -51,6 +48,39 @@ interface DataTableProps<TData, TValue> {
   form?: any;
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
+}
+
+function DataTableSkeleton({
+  rows,
+  columns,
+}: {
+  rows: number;
+  columns: number;
+}) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {Array.from({ length: columns }).map((_, index) => (
+            <TableHead key={index}>
+              <Skeleton className="h-4 w-24" />
+            </TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {Array.from({ length: rows }).map((_, rowIndex) => (
+          <TableRow key={rowIndex}>
+            {Array.from({ length: columns }).map((_, colIndex) => (
+              <TableCell key={colIndex}>
+                <Skeleton className="h-4 w-full" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
 }
 
 export function DataTable<TData, TValue>({
@@ -104,13 +134,16 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { isMobile } = useSidebar();
+  const { isFixed } = useTableLayoutMode();
 
+  const showSkeleton = isLoading || (isFetching && data.length === 0);
+  const visibleColumnCount = table.getVisibleFlatColumns().length || columns.length;
 
   return (
-    <div>
+    <div className={cn("flex flex-col", isFixed && "flex-1 min-h-0")}>
       {toolbar && (
-        <div className="pb-3">
+        <div className="shrink-0 pb-3">
           <DataTableToolbar
             table={table}
             toolbarOptions={toolbarOptions}
@@ -124,38 +157,44 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
-      <div className={cn(`flex flex-col rounded-md border border-border`)}>
-        {isLoading || isFetching ? (
-          <div className="flex-1 overflow-auto">
-            <SkeletonLoader
-              rows={pagination?.pageSize}
-              columns={7}
-              options="table"
-            />
-          </div>
+
+      <div
+        className={cn(
+          "rounded-md border border-border",
+          isFixed ? "flex flex-col flex-1 min-h-0 overflow-auto" : "flex flex-col"
+        )}
+      >
+        {showSkeleton ? (
+          <DataTableSkeleton
+            rows={pagination.pageSize}
+            columns={visibleColumnCount}
+          />
         ) : (
-          <Table className="">
-            <TableHeader className="bg-muted/90 sticky top-0 backdrop-blur-xs">
-              {table?.getHeaderGroups().map((headerGroup) => (
+          <Table>
+            <TableHeader
+              className={cn(
+                "bg-muted/90 backdrop-blur-xs",
+                isFixed && "sticky top-0 z-10"
+              )}
+            >
+              {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} colSpan={header.colSpan}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      </TableHead>
-                    );
-                  })}
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} colSpan={header.colSpan}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+                  ))}
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="flex-1 overflow-auto" tabIndex={0}>
-              {table?.getRowModel().rows?.length ? (
-                table?.getRowModel().rows.map((row, rowIndex) => (
+            <TableBody tabIndex={0}>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
@@ -184,11 +223,13 @@ export function DataTable<TData, TValue>({
           </Table>
         )}
       </div>
+
       {paginationData && (
         <div
           className={cn(
-            "sticky bottom-0 p-3 bg-background",
-            isMobile && "bottom-16"
+            "shrink-0 py-3 bg-background",
+            isFixed && "sticky bottom-0",
+            isFixed && isMobile && "bottom-16"
           )}
         >
           <DataTablePagination

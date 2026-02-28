@@ -1,18 +1,19 @@
 "use client";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { FC, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { DataTable } from "../data-table/data-table";
-import { UserRow } from "./user-type";
-import UserFilterSchema from "./user-filter-schema";
-import UserForm from "./user-form";
-import { UsersColumns } from "./users-column";
+import { DataTable } from "@/components/data-table/data-table";
+import { UserRow } from "@/components/users/user-type";
+import UserFilterSchema from "@/components/users/user-filter-schema";
+import UserForm from "@/components/users/user-form";
+import { UsersColumns } from "@/components/users/users-column";
 
 const UserTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
-  const params = useMemo(() => filterValue
-    ? Object.fromEntries(new URLSearchParams(filterValue))
-    : undefined,
+  const params = useMemo(
+    () =>
+      filterValue
+        ? Object.fromEntries(new URLSearchParams(filterValue))
+        : undefined,
     [filterValue]
   );
 
@@ -35,23 +36,19 @@ const UserTable: FC = () => {
     : "Users";
 
   return (
-    <div>
-      {users.length > 0 && (
-        <DataTable
-          data={users}
-          setFilter={setFilter}
-          columns={UsersColumns}
-          toolbarOptions={toolbarOptions}
-          toggleColumns={true}
-          pagination={pagination}
-          setCurrentPage={setCurrentPage}
-          isLoading={isLoading}
-          isFetching={isFetching}
-          form={UserForm}
-          toolbarTitle={toolbarTitle}
-        />
-      )}
-    </div>
+    <DataTable
+      data={users}
+      setFilter={setFilter}
+      columns={UsersColumns}
+      toolbarOptions={toolbarOptions}
+      toggleColumns={true}
+      pagination={pagination}
+      setCurrentPage={setCurrentPage}
+      isLoading={isLoading}
+      isFetching={isFetching}
+      form={UserForm}
+      toolbarTitle={toolbarTitle}
+    />
   );
 };
 

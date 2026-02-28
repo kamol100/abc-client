@@ -4,11 +4,11 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DataTable } from "../data-table/data-table";
-import { Button } from "../ui/button";
-import { useSidebar } from "../ui/sidebar";
-import { ClientColumns } from "./client-column";
-import ClientFilterSchema from "./client-filter-schema";
+import { DataTable } from "@/components/data-table/data-table";
+import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
+import { ClientColumns } from "@/components/clients/client-column";
+import ClientFilterSchema from "@/components/clients/client-filter-schema";
 
 type ClientRow = Record<string, unknown>;
 
@@ -57,22 +57,20 @@ const ClientTable: FC = () => {
     : "Clients";
 
   return (
-    <div>
-      <DataTable
-        data={clients}
-        setFilter={setFilter}
-        columns={ClientColumns}
-        toolbarOptions={toolbarOptions}
-        toggleColumns={true}
-        pagination={pagination}
-        setCurrentPage={setCurrentPage}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        queryKey={"clients"}
-        form={FormLink}
-        toolbarTitle={toolbarTitle}
-      />
-    </div>
+    <DataTable
+      data={clients}
+      setFilter={setFilter}
+      columns={ClientColumns}
+      toolbarOptions={toolbarOptions}
+      toggleColumns={true}
+      pagination={pagination}
+      setCurrentPage={setCurrentPage}
+      isLoading={isLoading}
+      isFetching={isFetching}
+      queryKey={"clients"}
+      form={FormLink}
+      toolbarTitle={toolbarTitle}
+    />
   );
 };
 

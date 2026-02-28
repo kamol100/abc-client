@@ -25,7 +25,7 @@ export function DataTableViewOptions<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <ActionButton action="filter" size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
-          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
+          <MixerHorizontalIcon className="h-4 w-4" />
           <div className="hidden md:show lg:show">View</div>
         </ActionButton>
       </DropdownMenuTrigger>

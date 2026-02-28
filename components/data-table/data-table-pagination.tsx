@@ -19,7 +19,7 @@ interface DataTablePaginationProps<TData> {
 
 export function DataTablePagination<TData>({
   pagination,
-  setCurrentPage = () => {},
+  setCurrentPage = () => { },
   queryKey,
 }: DataTablePaginationProps<TData>) {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
@@ -29,21 +29,14 @@ export function DataTablePagination<TData>({
   });
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
   return (
-    <div className="flex items-center justify-between gap-3 max-sm:flex-col">
-      {/* Page number information */}
+    <div className="flex  justify-between gap-3 max-sm:flex-col">
       {!isMobile && (
-        <p
-          className="text-muted-foreground flex-1 text-sm whitespace-nowrap"
-          aria-live="polite"
-        >
-          Page{" "}
-          <span className="text-foreground">{pagination.current_page}</span> of{" "}
-          <span className="text-foreground">{pagination.total_pages}</span>
-        </p>
+        <div className=" flex-1 justify-start">
+          <ChangePagination queryKey={queryKey} />
+        </div>
       )}
-
       {/* Pagination buttons */}
-      <div className="grow">
+      <div className="flex justify-end">
         <Pagination>
           <PaginationContent>
             {/* Previous page button */}
@@ -109,11 +102,6 @@ export function DataTablePagination<TData>({
       </div>
 
       {/* Results per page */}
-      {!isMobile && (
-        <div className="flex flex-1 justify-end">
-          <ChangePagination queryKey={queryKey} />
-        </div>
-      )}
     </div>
   );
 }

@@ -85,7 +85,7 @@ const FormFilter = ({
   searchButton = false,
   defaultFilter,
   setFilter = () => { },
-  className = "h-10",
+  className = "h-9",
 }: FormFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
 

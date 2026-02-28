@@ -2,6 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import PageContainer from "@/components/page-container";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppProvider from "@/context/app-provider";
+import { TableLayoutProvider } from "@/context/table-layout-provider";
 import type { AppData } from "@/types/app";
 import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
@@ -12,16 +13,18 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
   const initialData = res?.data as AppData;
   return (
     <AppProvider initialData={initialData}>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <PageContainer>
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
-          </PageContainer>
-        </SidebarInset>
-      </SidebarProvider>
+      <TableLayoutProvider>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <PageContainer>
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+            </PageContainer>
+          </SidebarInset>
+        </SidebarProvider>
+      </TableLayoutProvider>
     </AppProvider>
   );
 }

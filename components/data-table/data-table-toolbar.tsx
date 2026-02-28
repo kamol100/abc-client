@@ -5,18 +5,18 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-// import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
+import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import ChangePagination from "../change-pagination";
+import ChangePagination from "@/components/change-pagination";
 import FormFilter from "@/components/form-wrapper/form-filter";
-import InputField from "../form/input-field";
-import { useSidebar } from "../ui/sidebar";
-import { DataTableViewOptions } from "./data-table-view-options";
-import ActionButton from "../action-button";
-import { Table2 } from "lucide-react";
+import InputField from "@/components/form/input-field";
+import { useSidebar } from "@/components/ui/sidebar";
+import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
+import ActionButton from "@/components/action-button";
+import { useTableLayoutMode } from "@/context/table-layout-provider";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -64,6 +64,7 @@ export function DataTableToolbar<TData>({
     return column;
   };
   const { isMobile } = useSidebar();
+  const { isFixed, toggleMode } = useTableLayoutMode();
   const [showFilter, setShowFilter] = useState(false);
   return (
     <div
@@ -104,7 +105,7 @@ export function DataTableToolbar<TData>({
             className="h-8 px-2 lg:px-3"
           >
             Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
+            <Cross2Icon className="h-4 w-4" />
           </ActionButton>
         )}
       </div>
@@ -113,8 +114,13 @@ export function DataTableToolbar<TData>({
       >
         {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
         {!showFilter && (
-          <ActionButton size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
-            <Table2 className="mr-2 h-4 w-4" />
+          <ActionButton
+            size="default"
+            variant="outline"
+            onClick={toggleMode}
+            aria-label={isFixed ? "Switch to full layout" : "Switch to fixed layout"}
+          >
+            {isFixed ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
           </ActionButton>
         )}
 
