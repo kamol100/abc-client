@@ -1,6 +1,8 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Collapsible,
@@ -19,73 +21,51 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import type { NavMenuItem } from "@/hooks/use-menu-items";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
-  const { setOpenMobile, openMobile } = useSidebar();
+function isPathActive(pathname: string, url: string): boolean {
+  if (url === "/") return pathname === "/";
+  return pathname === url || pathname.startsWith(url + "/");
+}
+
+export function NavMain({ items }: { items: NavMenuItem[] }) {
+  const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
-  const segment = pathname.split("/")[1];
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Menu</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <Collapsible
-            key={item.title}
-            asChild
-            defaultOpen={item.isActive}
-            className="group/collapsible"
-          >
-            <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <Link href={`/${item.url}`}>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    onClick={() => {
-                      if (!item?.items) {
-                        setOpenMobile(!openMobile);
-                      }
-                    }}
-                    className={cn(
-                      segment === item?.url &&
-                        "bg-primary text-primary-foreground font-medium capitalize"
-                    )}
-                  >
+        {items.map((item) =>
+          item.items ? (
+            <Collapsible
+              key={item.id}
+              asChild
+              defaultOpen={item.items.some((sub) =>
+                isPathActive(pathname, sub.url)
+              )}
+              className="group/collapsible"
+            >
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={item.title}>
                     {item.icon && (
                       <div>
-                        <item.icon size={"20"} />
+                        <item.icon size={20} />
                       </div>
                     )}
                     <span>{item.title}</span>
-                    {item.items && (
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                    )}
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
-                </Link>
-              </CollapsibleTrigger>
-              {item.items && (
+                </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items?.map((subItem) => (
+                    {item.items.map((subItem) => (
                       <SidebarMenuSubItem
-                        key={subItem.title}
-                        onClick={() => setOpenMobile(!openMobile)}
+                        key={subItem.url}
+                        onClick={() => setOpenMobile(false)}
                         className={cn(
-                          segment === subItem?.url &&
+                          isPathActive(pathname, subItem.url) &&
                             "bg-primary text-primary-foreground rounded-md"
                         )}
                       >
@@ -93,7 +73,8 @@ export function NavMain({
                           <Link href={subItem.url}>
                             <span
                               className={cn(
-                                segment === subItem?.url && "text-primary-foreground"
+                                isPathActive(pathname, subItem.url) &&
+                                  "text-primary-foreground"
                               )}
                             >
                               {subItem.title}
@@ -104,10 +85,31 @@ export function NavMain({
                     ))}
                   </SidebarMenuSub>
                 </CollapsibleContent>
-              )}
+              </SidebarMenuItem>
+            </Collapsible>
+          ) : (
+            <SidebarMenuItem key={item.id}>
+              <SidebarMenuButton
+                tooltip={item.title}
+                asChild
+                onClick={() => setOpenMobile(false)}
+                className={cn(
+                  isPathActive(pathname, item.url) &&
+                    "bg-primary text-primary-foreground font-medium"
+                )}
+              >
+                <Link href={item.url}>
+                  {item.icon && (
+                    <div>
+                      <item.icon size={20} />
+                    </div>
+                  )}
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
-          </Collapsible>
-        ))}
+          )
+        )}
       </SidebarMenu>
     </SidebarGroup>
   );

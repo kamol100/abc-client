@@ -3,41 +3,41 @@
 import { FC } from "react";
 import { DialogWrapper } from "@/components/dialog-wrapper";
 import FormBuilder from "@/components/form-wrapper/form-builder";
-import { getUserFormSchema, UserRow } from "@/components/users/user-type";
-import UserFormSchema from "@/components/users/user-form-schema";
+import { VendorFormSchema, VendorRow } from "@/components/vendors/vendor-type";
+import VendorFormFieldSchema from "@/components/vendors/vendor-form-schema";
 import FormTrigger from "@/components/form-trigger";
 
 type Props = {
     mode?: "create" | "edit";
     api?: string;
     method?: "GET" | "POST" | "PUT";
-    data?: Partial<UserRow> & { id: number };
+    data?: Partial<VendorRow> & { id: number };
 };
 
-const UserForm: FC<Props> = ({
+const VendorForm: FC<Props> = ({
     mode = "create",
-    api = "/users",
+    api = "/vendors",
     method = "POST",
     data = undefined,
 }) => {
     return (
         <DialogWrapper
             size="xl"
-            title={mode === "create" ? "create_user" : "edit_user"}
+            title={mode === "create" ? "create_vendor" : "edit_vendor"}
             trigger={<FormTrigger mode={mode} />}
         >
             <FormBuilder
-                formSchema={UserFormSchema({ mode })}
+                formSchema={VendorFormFieldSchema()}
                 grids={2}
                 data={data}
                 api={api}
                 mode={mode}
-                schema={getUserFormSchema(mode)}
+                schema={VendorFormSchema}
                 method={method}
-                queryKey="users"
+                queryKey="vendors"
             />
         </DialogWrapper>
     );
 };
 
-export default UserForm;
+export default VendorForm;

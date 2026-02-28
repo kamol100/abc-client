@@ -1,14 +1,12 @@
 "use client";
 
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { useFetch } from "@/app/actions";
-import { Button } from "@/components/ui/button";
+import useApiMutation from "@/hooks/use-api-mutation";
 import { Form } from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parseApiError } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactNode, useEffect, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -127,7 +125,6 @@ export default function FormWrapper({
     const dialogClose = useDialogClose();
     const handleClose = onClose ?? dialogClose ?? (() => { });
     const { t } = useTranslation();
-    const queryClient = useQueryClient();
     const submitRef = useRef<HTMLInputElement>(null);
 
     const entityId = (
@@ -198,26 +195,21 @@ export default function FormWrapper({
         apiRoute = `${api}/${entityId}`;
     }
 
-    const { mutate: submitForm, isPending } = useMutation({
-        mutationFn: async (formData: FieldValues | FormData) => {
-            const result = await useFetch({
-                url: apiRoute,
-                data: formData,
-                method: mode === "edit" ? "PUT" : method,
-            });
-            if (!result.success) throw result;
-            return result?.data;
-        },
-        onSuccess: (responseData: Record<string, unknown> | undefined) => {
+    const mutationMethod = mode === "edit" ? "PUT" : (method === "GET" ? "POST" : method);
+
+    const { mutate: submitForm, isPending } = useApiMutation<
+        { data?: Record<string, unknown>; message?: string },
+        FieldValues | FormData
+    >({
+        url: apiRoute,
+        method: mutationMethod as "POST" | "PUT" | "DELETE",
+        invalidateKeys: queryKey,
+        onSuccess: (responseData) => {
             reset();
-            queryClient.invalidateQueries({ queryKey: [queryKey] });
             if (responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
             handleClose();
-        },
-        onError: (error: unknown) => {
-            toast.error(t(String(parseApiError(error))));
         },
     });
 

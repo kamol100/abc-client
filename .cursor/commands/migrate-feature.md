@@ -66,6 +66,8 @@ Rules:
 - Reusable abstraction when possible
 - Never update shadcn core files like components/ui
 - For re-usable method/function update lib/helper/helper.ts 
+- Must follow theme setting
+- Ensure mobile first design
 
 -----------------------------------------
 STEP 3 — MIGRATION RULES
@@ -84,7 +86,7 @@ STEP 3 — MIGRATION RULES
    - Move fetch to server if possible
    - Add proper type inference
    - Add error boundary compatibility
-   - Support dark/light mode
+   - Support dark/light mode and theme setting
 
 3. Use:
    - React Hook Form + Zod resolver

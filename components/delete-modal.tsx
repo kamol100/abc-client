@@ -41,6 +41,11 @@ export function DeleteModal({
     redirectTo,
   });
 
+  const handleDelete = async (close: () => void) => {
+    await deleteItem();
+    close();
+  };
+
   return (
     <DialogWrapper
       trigger={children ?? <ActionButton action="delete" icon={true} />}
@@ -60,7 +65,7 @@ export function DeleteModal({
             action="delete"
             variant="default"
             size="default"
-            onClick={() => deleteItem()}
+            onClick={() => handleDelete(close)}
             disabled={loading}
             loading={loading}
             title={t(buttonText ?? "delete")}

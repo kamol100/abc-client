@@ -44,7 +44,7 @@ export default function useApiMutation<
         ...(variables !== undefined && { data: variables }),
       });
       if (!result?.success) throw result;
-      return result as TData;
+      return result?.data as TData;
     },
     onSuccess: (data) => {
       if (invalidateKeys) {
