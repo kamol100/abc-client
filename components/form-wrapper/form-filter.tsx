@@ -1,156 +1,177 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { objectToQueryString } from "@/lib/helper/helper";
+import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import ActionButton from "../action-button";
-import InputField from "../form/input-field";
-import { Close } from "../icon";
-import { FieldConfig, GRID_STYLES } from "./form-builder-type";
+import { useState } from "react";
+import ActionButton from "@/components/action-button";
+import InputField from "@/components/form/input-field";
+import { Close } from "@/components/icon";
+import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
 
-const SelectDropdown = dynamic(() => import("../select-dropdown"));
+const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
 type FormFilterProps = {
-    formSchema: FieldConfig[];
-    setFilter?: (x: string) => void;
-    watchField?: string[];
-    grids?: number;
-    gridGap?: string;
-    api?: string;
-    queryKey?: string;
-    defaultFilter?: string;
-    searchButton?: boolean;
-    showFilter?: boolean;
-    setShowFilter?: (x: boolean) => void;
+  formSchema: FieldConfig[];
+  setFilter?: (query: string) => void;
+  watchFields?: string[];
+  grids?: number;
+  gridGap?: string;
+  defaultFilter?: string;
+  searchButton?: boolean;
+  setShowFilter?: (show: boolean) => void;
+  className?: string;
 };
 
+function FilterTextField({
+  field,
+  onClear,
+  fieldValue,
+}: {
+  field: FieldConfig;
+  onClear: (name: string) => void;
+  fieldValue: string;
+}) {
+  return (
+    <div className="relative">
+      <InputField
+        name={field.name}
+        label={field.label}
+        placeholder={field.placeholder}
+        type={field.type}
+      />
+      {fieldValue && (
+        <button
+          type="button"
+          className="absolute top-1 right-0 cursor-pointer p-2 text-muted-foreground hover:text-foreground"
+          onClick={() => onClear(field.name)}
+        >
+          <Close />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function FilterDropdownField({
+  field,
+  onValueChange,
+}: {
+  field: FieldConfig & { type: "dropdown" };
+  onValueChange: () => void;
+}) {
+  return (
+    <SelectDropdown
+      name={field.name}
+      label={field.label}
+      placeholder={field.placeholder}
+      api={field.api}
+      options={field.options}
+      isMulti={field.isMulti}
+      isDisabled={field.isDisabled}
+      isClearable={field.isClearable}
+      onValueChange={onValueChange}
+    />
+  );
+}
+
 const FormFilter = ({
-    formSchema,
-    grids = 1,
-    gridGap = "gap-4",
-    setShowFilter = () => {},
-    watchField = [],
-    searchButton = false,
-    defaultFilter,
-    setFilter = () => {},
+  formSchema,
+  grids = 1,
+  gridGap = "gap-3",
+  setShowFilter = () => { },
+  watchFields,
+  searchButton = false,
+  defaultFilter,
+  setFilter = () => { },
+  className = "h-10",
 }: FormFilterProps) => {
-    const [isFilter, setOpenFilter] = useState(false);
-    const form = useForm<FieldValues>();
-    const { watch, setValue, handleSubmit } = form;
-    const submitRef = useRef<HTMLInputElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const getQueryString = (params: FieldValues) => {
-        let query = objectToQueryString(params);
-        if (defaultFilter) {
-            query = `${query}&${defaultFilter}`;
-        }
-        setFilter(query);
-        return query;
-    };
+  const {
+    form,
+    hasManualSearchFields,
+    triggerSubmit,
+    clearField,
+    submitFilter,
+  } = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
 
-    useEffect(() => {
-        const subscription = watch((value, { name }) => {
-            if (name && watchField.includes(name) && String(value[name] ?? "").length > 2) {
-                submitRef.current?.click();
-            }
-            if (name && watchField.includes(name) && String(value[name] ?? "").length === 0) {
-                submitRef.current?.click();
-            }
-        });
-        return () => subscription.unsubscribe();
-    }, [watch, watchField]);
+  const handleToggle = () => {
+    const next = !isOpen;
+    setIsOpen(next);
+    setShowFilter(next);
+  };
 
-    useEffect(() => {
-        setShowFilter(isFilter);
-    }, [isFilter, setShowFilter]);
+  const showSearchButton = searchButton && hasManualSearchFields && isOpen;
 
-    const clearInput = (inputName: string) => {
-        setValue(inputName, "");
-        submitRef.current?.click();
-    };
+  const renderField = (field: FieldConfig) => {
+    if (field.type === "text" || field.type === "email" || field.type === "number") {
+      return (
+        <FilterTextField
+          field={field}
+          onClear={clearField}
+          fieldValue={form.watch(field.name) ?? ""}
+        />
+      );
+    }
+    if (field.type === "dropdown") {
+      return (
+        <FilterDropdownField
+          field={field}
+          onValueChange={triggerSubmit}
+        />
+      );
+    }
+    return null;
+  };
 
-    const renderField = (field: FieldConfig) => {
-        if (field.type === "text" || field.type === "email" || field.type === "number") {
-            const fieldValue = form.watch(field.name);
-            return (
-                <div className="relative">
-                    <InputField
-                        name={field.name}
-                        label={field.label}
-                        placeholder={field.placeholder}
-                        type={field.type}
-                    />
-                    {fieldValue && (
-                        <div
-                            className="absolute top-1 right-0 cursor-pointer p-2"
-                            onClick={() => clearInput(field.name)}
-                        >
-                            <div className="text-muted-foreground">
-                                <Close />
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-        if (field.type === "dropdown") {
-            return (
-                <SelectDropdown
-                    name={field.name}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                    api={field.api}
-                    options={field.options}
-                    isMulti={field.isMulti}
-                    isDisabled={field.isDisabled}
-                    isClearable={field.isClearable}
-                    onValueChange={() => submitRef.current?.click()}
-                />
-            );
-        }
-        return null;
-    };
-
-    return (
-        <div className="flex-none md:flex lg:flex gap-3">
-            {isFilter && (
-                <div className="w-full">
-                    <Form {...form}>
-                        <form onSubmit={handleSubmit(getQueryString)} className="flex w-full">
-                            <div className={`w-full grid ${gridGap} m-auto ${GRID_STYLES[grids]}`}>
-                                {formSchema.map((field, index) => (
-                                    <div key={index}>
-                                        {field.permission !== false ? renderField(field) : null}
-                                    </div>
-                                ))}
-                            </div>
-                            <input className="opacity-0 hidden" type="submit" ref={submitRef} />
-                        </form>
-                    </Form>
-                </div>
-            )}
-            <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
-                {searchButton && isFilter && (
-                    <ActionButton
-                        action="search"
-                        size="default"
-                        className="mt-2 md:mt-0 lg:mt-0"
-                        onClick={() => submitRef.current?.click()}
-                    />
+  return (
+    <div className={cn("flex-none md:flex lg:flex gap-3", className)}>
+      {isOpen && (
+        <div className="w-full">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(submitFilter)}
+              className="flex w-full"
+            >
+              <div
+                className={cn(
+                  "w-full grid ",
+                  gridGap,
+                  GRID_STYLES[grids],
                 )}
-                <ActionButton
-                    action="filter"
-                    size="default"
-                    className={cn(isFilter && "mt-2 md:mt-0 lg:mt-0")}
-                    variant={isFilter ? "default" : "outline"}
-                    onClick={() => setOpenFilter(!isFilter)}
-                />
-            </div>
+              >
+                {formSchema.map((field, index) => (
+                  <div key={field.name ?? index}>
+                    {field.permission !== false ? renderField(field) : null}
+                  </div>
+                ))}
+              </div>
+            </form>
+          </Form>
         </div>
-    );
+      )}
+      <div>
+        <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
+          {showSearchButton && (
+            <ActionButton
+              action="search"
+              size="default"
+              onClick={triggerSubmit}
+            />
+          )}
+          <ActionButton
+            action="filter"
+            size="default"
+            variant={isOpen ? "default" : "outline"}
+            onClick={handleToggle}
+          />
+        </div>
+      </div>
+
+    </div>
+  );
 };
 
 export default FormFilter;

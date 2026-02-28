@@ -1,13 +1,13 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "../dialog";
-import FormBuilder from "../form-wrapper/form-builder";
-import { AddPlus, EditIcon } from "../icon";
-import { getUserFormSchema, UserRow } from "./user-type";
-import UserFormSchema from "./user-form-schema";
-import { Button } from "../ui/button";
-import ActionButton from "../action-button";
+import { DialogWrapper } from "@/components/dialog-wrapper";
+import FormBuilder from "@/components/form-wrapper/form-builder";
+import { AddPlus } from "@/components/icon";
+import { getUserFormSchema, UserRow } from "@/components/users/user-type";
+import UserFormSchema from "@/components/users/user-form-schema";
+import { Button } from "@/components/ui/button";
+import ActionButton from "@/components/action-button";
 
 type Props = {
     mode?: "create" | "edit";
@@ -28,9 +28,8 @@ const UserForm: FC<Props> = ({
             title={mode === "create" ? "create_user" : "edit_user"}
             trigger={
                 mode === "create" ? (
-                    <Button>
-                        <AddPlus /> Add
-                    </Button>
+                    <ActionButton action="create" size={"default"} variant="default" title="add">
+                    </ActionButton>
                 ) : (
                     <ActionButton
                         action="edit"

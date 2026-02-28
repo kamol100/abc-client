@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
+import { BadgeWrapper } from "@/components/badge-wrapper";
 import { UserRow, getUserStatusLabel } from "./user-type";
 import UserForm from "./user-form";
 import { DeleteModal } from "../delete-modal";
@@ -93,16 +93,13 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
       const user = row.original;
       const status = user.status as 0 | 1;
       return (
-        <div className="flex w-[100px] items-center">
-          <span
-            className={cn(
-              "capitalize",
-              status === 1 ? "text-green-500" : "text-red-500"
-            )}
-          >
-            {getUserStatusLabel(status)}
-          </span>
-        </div>
+        <BadgeWrapper
+          status={status === 1 ? "success" : "error"}
+          tooltip={status === 1 ? "User is active" : "User is inactive"}
+          className="capitalize"
+        >
+          {getUserStatusLabel(status)}
+        </BadgeWrapper>
       );
     },
     filterFn: (row, id, value) => {
@@ -112,12 +109,12 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="actions" />
+      <DataTableColumnHeader column={column} className="flex justify-end capitalize mr-3" title="actions" />
     ),
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-end justify-end gap-2 mr-3">
           <UserForm mode="edit" data={{ id: data.id }} api="/users" method="PUT" />
           <DeleteModal
             api_url={`/users/${data.id}`}

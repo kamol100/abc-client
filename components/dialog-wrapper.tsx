@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import {
@@ -20,61 +19,49 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "./action-button";
+import ActionButton from "@/components/action-button";
 
-// --- Context: allows children (e.g. FormWrapper) to close the dialog ---
 const DialogCloseContext = createContext<(() => void) | null>(null);
 
 export function useDialogClose() {
   return useContext(DialogCloseContext);
 }
 
-// --- Size variants ---
 const sizeClasses = {
   sm: "sm:max-w-sm",
   md: "sm:max-w-[500px]",
   lg: "sm:max-w-lg",
   xl: "sm:max-w-xl",
+  "2xl": "sm:max-w-2xl",
+  "3xl": "sm:max-w-3xl",
+  "4xl": "sm:max-w-4xl",
   fullscreen: "max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)]",
 } as const;
 
 type DialogSize = keyof typeof sizeClasses;
 type DialogVariant = "default" | "destructive";
 
-// --- Props ---
 interface DialogWrapperProps {
   title?: string;
   description?: string;
   children?: ReactNode;
-
   trigger?: ReactNode;
-
-  // Controlled or uncontrolled open state
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   defaultOpen?: boolean;
-
   size?: DialogSize;
   variant?: DialogVariant;
-
-  // Built-in actions (supports async with auto-loading)
   onConfirm?: () => void | Promise<void>;
   onCancel?: () => void;
   confirmText?: string;
   cancelText?: string;
   showFooter?: boolean;
-
-  // External loading override (e.g. from React Query isPending)
   loading?: boolean;
-
-  // Render a fully custom footer, or pass ReactNode
   footer?:
-  | ReactNode
-  | ((props: { close: () => void; loading: boolean }) => ReactNode);
-
+    | ReactNode
+    | ((props: { close: () => void; loading: boolean }) => ReactNode);
   preventCloseOnLoading?: boolean;
   autoCloseOnSuccess?: boolean;
-
   contentClassName?: string;
 }
 
@@ -129,7 +116,7 @@ export function DialogWrapper({
       }
       if (autoCloseOnSuccess) close();
     } catch {
-      // Error handling is delegated to the caller (e.g. toast in mutation onError)
+      // Error handling delegated to caller
     } finally {
       setAsyncLoading(false);
     }
@@ -142,19 +129,22 @@ export function DialogWrapper({
 
   const hasActions = onConfirm || onCancel;
   const shouldShowFooter = showFooter ?? (hasActions || !!footer);
-  const confirmVariant = variant === "destructive" ? "destructive" : "default";
 
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
 
       <DialogContent
-        className={cn(sizeClasses[size], contentClassName)}
+        className={cn(
+          sizeClasses[size],
+          "flex flex-col max-h-[90vh] gap-0",
+          contentClassName
+        )}
         onInteractOutside={isLoading ? (e) => e.preventDefault() : undefined}
         onEscapeKeyDown={isLoading ? (e) => e.preventDefault() : undefined}
       >
         {(title || description) && (
-          <DialogHeader>
+          <DialogHeader className="shrink-0 pb-4">
             {title && <DialogTitle>{t(title)}</DialogTitle>}
             {description && (
               <DialogDescription>{t(description)}</DialogDescription>
@@ -164,37 +154,39 @@ export function DialogWrapper({
 
         {children && (
           <DialogCloseContext.Provider value={close}>
-            <div className="grid gap-4 py-4">{children}</div>
+            <div className="flex-1 overflow-y-auto min-h-0 px-0.5">
+              {children}
+            </div>
           </DialogCloseContext.Provider>
         )}
 
         {shouldShowFooter && (
-          <DialogFooter>
+          <DialogFooter className="shrink-0 border-t pt-4 mt-4 flex-row justify-between sm:flex-row sm:justify-between sm:space-x-0 gap-2">
             {typeof footer === "function"
               ? footer({ close, loading: isLoading })
               : footer ?? (
-                <>
-                  <ActionButton
-                    variant="outline"
-                    onClick={handleCancel}
-                    disabled={isLoading}
-                  >
-                    {t(cancelText ?? "cancel")}
-                  </ActionButton>
-                  {onConfirm && (
+                  <>
                     <ActionButton
-                      action="save"
-                      onClick={handleConfirm}
+                      variant="outline"
+                      onClick={handleCancel}
                       disabled={isLoading}
                     >
-                      {isLoading && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {t(confirmText ?? "confirm")}
+                      {t(cancelText ?? "cancel")}
                     </ActionButton>
-                  )}
-                </>
-              )}
+                    {onConfirm && (
+                      <ActionButton
+                        action="save"
+                        onClick={handleConfirm}
+                        disabled={isLoading}
+                      >
+                        {isLoading && (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        )}
+                        {t(confirmText ?? "confirm")}
+                      </ActionButton>
+                    )}
+                  </>
+                )}
           </DialogFooter>
         )}
       </DialogContent>

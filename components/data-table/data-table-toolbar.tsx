@@ -11,10 +11,12 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ChangePagination from "../change-pagination";
-import FormFilter from "../form-wrapper/form-filter";
+import FormFilter from "@/components/form-wrapper/form-filter";
 import InputField from "../form/input-field";
 import { useSidebar } from "../ui/sidebar";
 import { DataTableViewOptions } from "./data-table-view-options";
+import ActionButton from "../action-button";
+import { Table2 } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -65,9 +67,7 @@ export function DataTableToolbar<TData>({
   const [showFilter, setShowFilter] = useState(false);
   return (
     <div
-      className={cn(
-        !showFilter && "flex flex-wrap items-center justify-between"
-      )}
+      className={cn(!showFilter && "flex flex-wrap items-center justify-between")}
     >
       <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
         {toolbarTitle && !showFilter && !isMobile && (
@@ -98,38 +98,37 @@ export function DataTableToolbar<TData>({
           </div>
         )}
         {isFiltered && (
-          <Button
+          <ActionButton
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
+          </ActionButton>
         )}
       </div>
       <div
         className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
       >
         {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
+        {!showFilter && (
+          <ActionButton size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
+            <Table2 className="mr-2 h-4 w-4" />
+          </ActionButton>
+        )}
 
-        {FormComponent && !showFilter && <FormComponent />}
-        {/* <Button
-          variant={showFilter ? "default" : "outline"}
-          onClick={() => setShowFilter(!showFilter)}
-        >
-          <FilterIcon />
-        </Button> */}
         {toolbarOptions?.filter && (
           <FormFilter
             formSchema={toolbarOptions.filter}
             grids={toolbarOptions?.filter?.length}
             setFilter={setFilter}
-            watchField={["name", "email", "username"]}
+            watchFields={toolbarOptions?.watchFields}
             searchButton
             setShowFilter={setShowFilter}
           />
         )}
+        {FormComponent && !showFilter && <FormComponent />}
       </div>
     </div>
   );

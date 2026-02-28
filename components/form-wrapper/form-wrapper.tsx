@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import ActionButton from "@/components/action-button";
-import { useDialogClose } from "@/components/dialog";
+import { useDialogClose } from "@/components/dialog-wrapper";
 import {
     AccordionSection,
     FieldConfig,
@@ -255,20 +255,15 @@ export default function FormWrapper({
                         fieldCount={visibleFieldCount || 4}
                     />
                 ) : hydrationFailed ? (
-                    <div className="flex flex-col items-center gap-4 py-8">
-                        <p className="text-sm text-destructive">
+                    <div className="flex flex-col items-center gap-3 py-10 text-center">
+                        <p className="text-sm font-medium text-destructive">
                             {t("failed_to_load_data")}
                         </p>
                         <div className="flex gap-2">
-                            <ActionButton
-                                action="cancel"
-                                onClick={handleClose}
-                            >
+                            <ActionButton action="cancel" onClick={handleClose}>
                                 {t("cancel")}
                             </ActionButton>
-                            <ActionButton
-                                onClick={() => retryHydration()}
-                            >
+                            <ActionButton onClick={() => retryHydration()}>
                                 {t("refresh")}
                             </ActionButton>
                         </div>
@@ -287,7 +282,7 @@ export default function FormWrapper({
                         {actionButton && (
                             <div
                                 className={cn(
-                                    "flex justify-center gap-4 mt-5",
+                                    "flex items-center gap-3 pt-4 mt-4 border-t sticky bottom-0 bg-background",
                                     actionButtonClass
                                 )}
                             >

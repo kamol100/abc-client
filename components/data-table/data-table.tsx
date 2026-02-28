@@ -105,29 +105,12 @@ export function DataTable<TData, TValue>({
   });
 
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
-  const queryClient = useQueryClient();
 
-  const [topMargin, setTopMargin] = React.useState(
-    "[&>div]:max-h-[calc(100dvh-170px)]"
-  );
-  const { settings: setting } = useSettings();
-  useEffect(() => {
-    if (setting?.show_dashboard_header) {
-      setTopMargin("[&>div]:max-h-[calc(100dvh-235px)]");
-    } else {
-      setTopMargin("[&>div]:max-h-[calc(100dvh-170px)]");
-    }
-  }, [setting?.show_dashboard_header]);
-  useEffect(() => {
-    queryClient.setQueryData(["show_header"], {
-      show_dashboard_header: setting?.show_dashboard_header,
-    });
-  }, [setting?.show_dashboard_header]);
 
   return (
-    <div className="border bottom-1 rounded-md">
+    <div>
       {toolbar && (
-        <div className="p-3">
+        <div className="pb-3">
           <DataTableToolbar
             table={table}
             toolbarOptions={toolbarOptions}
@@ -141,7 +124,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
-      <div className={cn(`flex flex-col`, topMargin)}>
+      <div className={cn(`flex flex-col rounded-md border border-border`)}>
         {isLoading || isFetching ? (
           <div className="flex-1 overflow-auto">
             <SkeletonLoader
@@ -151,7 +134,7 @@ export function DataTable<TData, TValue>({
             />
           </div>
         ) : (
-          <Table>
+          <Table className="">
             <TableHeader className="bg-muted/90 sticky top-0 backdrop-blur-xs">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -204,7 +187,7 @@ export function DataTable<TData, TValue>({
       {paginationData && (
         <div
           className={cn(
-            "sticky bottom-0 border-t p-3 bg-background",
+            "sticky bottom-0 p-3 bg-background",
             isMobile && "bottom-16"
           )}
         >

@@ -10,19 +10,6 @@ type props = {
 };
 
 export default function PageContainer({ children, className = "" }: props) {
-  const [showHeader, setShowHeader] = useState(true);
-  const { data }: any = useQuery({
-    queryKey: ["show_header"],
-    queryFn: () => null, // not fetching from server, just acts as event holder
-    staleTime: Infinity,
-  });
-  useEffect(() => {
-    if (!data || data?.show_dashboard_header) {
-      setShowHeader(true);
-    } else {
-      setShowHeader(false);
-    }
-  }, [data]);
   return (
     <div
       className={cn(
@@ -30,7 +17,7 @@ export default function PageContainer({ children, className = "" }: props) {
         className
       )}
     >
-      {showHeader && <TopNavbar />}
+      <TopNavbar />
       <div className="p-4">{children}</div>
     </div>
   );

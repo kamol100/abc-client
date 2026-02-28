@@ -70,7 +70,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   const error = errors[name];
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="">
       {label && (
         <div className="mb-2">
           <Label label={label} />
@@ -121,7 +121,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 control: (base, state) => ({
                   ...base,
                   minHeight: "var(--space-9)",
-                  borderRadius: "var(--radius)",
+                  borderRadius: "calc(var(--radius) - 2px)",
                   borderColor: error
                     ? `hsl(var(--destructive))`
                     : state.isFocused
@@ -201,7 +201,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 }),
                 menu: (base) => ({
                   ...base,
-                  borderRadius: "var(--radius)",
+                  borderRadius: "calc(var(--radius) - 2px)",
                   border: `1px solid hsl(var(--border))`,
                   overflow: "hidden",
                 }),

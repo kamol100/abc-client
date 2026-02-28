@@ -12,6 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import ActionButton from "../action-button";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -23,10 +24,10 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="ml-auto lg:flex">
+        <ActionButton action="filter" size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
           <MixerHorizontalIcon className="mr-2 h-4 w-4" />
           <div className="hidden md:show lg:show">View</div>
-        </Button>
+        </ActionButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>

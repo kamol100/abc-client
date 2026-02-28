@@ -47,7 +47,7 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
       unstyled = false,
       variant = "outline",
       size = "sm",
-      className = "hover:bg-primary hover:text-primary-foreground px-2.5",
+      className = "hover:bg-primary hover:text-primary-foreground",
       disabled,
       ...props
     },

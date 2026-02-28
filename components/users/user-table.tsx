@@ -10,11 +10,9 @@ import { UsersColumns } from "./users-column";
 
 const UserTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
-  const params = useMemo(
-    () =>
-      filterValue
-        ? Object.fromEntries(new URLSearchParams(filterValue))
-        : undefined,
+  const params = useMemo(() => filterValue
+    ? Object.fromEntries(new URLSearchParams(filterValue))
+    : undefined,
     [filterValue]
   );
 
@@ -27,7 +25,6 @@ const UserTable: FC = () => {
 
   const users = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
-  const { t } = useTranslation();
 
   const toolbarOptions = {
     filter: [...UserFilterSchema()],
