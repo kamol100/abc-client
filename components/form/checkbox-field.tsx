@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import Label from "../label";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import FieldError from "./field-error";
@@ -18,6 +18,8 @@ type CheckboxFieldProps = {
     className?: string;
     direction?: "row" | "col";
     single?: boolean;
+    control?: Control<FieldValues>;
+    rules?: RegisterOptions;
 };
 
 const CheckboxField: React.FC<CheckboxFieldProps> = ({
@@ -27,8 +29,11 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
     className,
     direction = "col",
     single = false,
+    control: controlProp,
+    rules,
 }) => {
-    const { control, formState: { errors } } = useFormContext();
+    const { control: ctxControl } = useFormContext();
+    const control = controlProp ?? ctxControl;
 
     return (
         <div className={cn("flex flex-col gap-1", className)}>
@@ -36,7 +41,8 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { value, onChange } }) => {
+                rules={rules}
+                render={({ field: { value, onChange }, fieldState: { error: fieldError } }) => {
                     if (single) {
                         return (
                             <div className="flex items-center space-x-2">
@@ -44,7 +50,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                     id={name}
                                     checked={!!value}
                                     onCheckedChange={onChange}
-                                    className={cn(errors[name] && "border-destructive")}
+                                    className={cn(fieldError && "border-destructive")}
                                 />
                                 <label htmlFor={name} className="text-sm text-foreground cursor-pointer">
                                     {label?.labelText}
@@ -57,7 +63,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                         <div className={cn(
                             "flex gap-4",
                             direction === "col" ? "flex-col" : "flex-row",
-                            errors[name] && "border-destructive rounded-md p-2"
+                            fieldError && "border-destructive rounded-md p-2"
                         )}>
                             {options?.map((opt, idx) => {
                                 const checked = Array.isArray(value) ? value.includes(opt.value) : false;
@@ -74,7 +80,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                                 }
                                             }}
                                             disabled={opt.disabled}
-                                            className={cn(errors[name] && "border-destructive")}
+                                            className={cn(fieldError && "border-destructive")}
                                         />
                                         <label
                                             htmlFor={`${name}-${opt.value}`}

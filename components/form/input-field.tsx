@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import Label from "../label";
 import { Input } from "../ui/input";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
@@ -11,6 +11,8 @@ type InputFieldProps = {
     placeholder?: string;
     type?: string;
     className?: string;
+    control?: Control<FieldValues>;
+    rules?: RegisterOptions;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,8 +21,11 @@ const InputField: React.FC<InputFieldProps> = ({
     placeholder,
     type = "text",
     className,
+    control: controlProp,
+    rules,
 }) => {
-    const { control, formState: { errors } } = useFormContext();
+    const { control: ctxControl } = useFormContext();
+    const control = controlProp ?? ctxControl;
 
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
@@ -28,7 +33,8 @@ const InputField: React.FC<InputFieldProps> = ({
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { value, onChange, onBlur, ref } }) => (
+                rules={rules}
+                render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Input
                         id={name}
                         placeholder={placeholder}
@@ -37,7 +43,7 @@ const InputField: React.FC<InputFieldProps> = ({
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
-                        className={cn(errors[name] && "border-destructive dark:border-destructive")}
+                        className={cn(error && "border-destructive dark:border-destructive")}
                     />
                 )}
             />

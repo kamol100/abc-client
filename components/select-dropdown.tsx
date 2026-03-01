@@ -4,7 +4,7 @@ import { useFetch } from "@/app/actions";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { FC, useMemo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Select, { MultiValue, SingleValue } from "react-select";
 import type {
@@ -26,6 +26,8 @@ type SelectDropdownProps = {
   isSearchable?: boolean;
   placeholder?: string;
   onValueChange?: (value: unknown) => void;
+  control?: Control<FieldValues>;
+  rules?: RegisterOptions;
 };
 
 const SelectDropdown: FC<SelectDropdownProps> = ({
@@ -40,12 +42,12 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   isSearchable = true,
   placeholder = "select_option",
   onValueChange,
+  control: controlProp,
+  rules,
 }) => {
   const { t } = useTranslation();
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
+  const { control: ctxControl } = useFormContext();
+  const control = controlProp ?? ctxControl;
 
   const { data: apiOptions, isLoading: isApiLoading } = useQuery({
     queryKey: [`${name}-dropdown`, api],
@@ -67,8 +69,6 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     return staticOptions ?? [];
   }, [api, apiOptions, staticOptions]);
 
-  const error = errors[name];
-
   return (
     <div className="">
       {label && (
@@ -80,7 +80,8 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
       <Controller
         name={name}
         control={control}
-        render={({ field: { value, onChange } }) => {
+        rules={rules}
+        render={({ field: { value, onChange }, fieldState: { error } }) => {
           const selectedOption = (() => {
             if (value === undefined || value === null || value === "")
               return null;

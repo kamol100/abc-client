@@ -1,3 +1,5 @@
+import type { RegisterOptions } from "react-hook-form";
+
 export type ValueMapping = {
     idKey: string;
     labelKey: string;
@@ -24,6 +26,7 @@ type BaseFieldConfig = {
     permission?: boolean;
     className?: string;
     order?: number;
+    rules?: RegisterOptions;
 };
 
 export type TextFieldConfig = BaseFieldConfig & {
@@ -92,10 +95,30 @@ export type FieldConfig =
     | DateFieldConfig
     | DateRangeFieldConfig;
 
+export type FieldArrayConfig = {
+    type: "fieldArray";
+    name: string;
+    label?: LabelProps;
+    permission?: boolean;
+    className?: string;
+    itemFields: FieldConfig[];
+    defaultItem: Record<string, unknown>;
+    allowAppend?: boolean;
+    allowRemove?: boolean;
+    allowReorder?: boolean;
+    minItems?: number;
+    maxItems?: number;
+    grids?: number;
+    gridGap?: string;
+    addButtonLabel?: string;
+};
+
+export type FormFieldConfig = FieldConfig | FieldArrayConfig;
+
 export type AccordionSection = {
     name: string;
     label?: string;
-    form: FieldConfig[];
+    form: FormFieldConfig[];
 };
 
 export type HydratePolicy = "never" | "ifNeeded" | "always";

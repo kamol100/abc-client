@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import Label from "../label";
 import { Textarea } from "../ui/textarea";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
@@ -11,6 +11,8 @@ type TextareaFieldProps = {
     placeholder?: string;
     className?: string;
     rows?: number;
+    control?: Control<FieldValues>;
+    rules?: RegisterOptions;
 };
 
 const TextareaField: React.FC<TextareaFieldProps> = ({
@@ -19,8 +21,11 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
     placeholder,
     className,
     rows = 4,
+    control: controlProp,
+    rules,
 }) => {
-    const { control, formState: { errors } } = useFormContext();
+    const { control: ctxControl } = useFormContext();
+    const control = controlProp ?? ctxControl;
 
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}>
@@ -28,7 +33,8 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { value, onChange, onBlur, ref } }) => (
+                rules={rules}
+                render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Textarea
                         id={name}
                         placeholder={placeholder}
@@ -37,7 +43,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
                         onBlur={onBlur}
                         ref={ref}
                         rows={rows}
-                        className={cn(errors[name] && "border-destructive dark:border-destructive")}
+                        className={cn(error && "border-destructive dark:border-destructive")}
                     />
                 )}
             />

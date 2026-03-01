@@ -4,22 +4,22 @@ overview: Refactor `FormBuilder` to support schema-driven dynamic arrays via `us
 todos:
   - id: types-fieldarray
     content: Extend `form-builder-type.ts` with `FieldArrayConfig` + optional `rules` (no breaking changes).
-    status: pending
+    status: completed
   - id: builder-renderer-refactor
     content: Refactor `form-builder.tsx` to render within RHF provider, add `FieldArrayRenderer` using `useFieldArray`, and switch to stable keys.
-    status: pending
+    status: completed
   - id: transform-and-defaults
     content: Implement recursive schema-driven `transformDataToFormValues` + schema defaults so create/edit handle arrays consistently.
-    status: pending
+    status: completed
   - id: hydrate-completeness
     content: Update `form-wrapper.tsx` hydration completeness logic to account for `fieldArray` (avoid skipping hydration on partial nested data).
-    status: pending
+    status: completed
   - id: custom-fields-rhf-props
     content: Update custom field components to accept `control/rules` and use `fieldState.error`/`getFieldState` so nested (array) errors propagate correctly.
-    status: pending
+    status: completed
   - id: verify-existing-forms
     content: Verify existing forms (client/vendor/zone/user/sub-zone) still behave unchanged; validate one `fieldArray` example for append/remove/reorder + edit reset.
-    status: pending
+    status: completed
 isProject: false
 ---
 

@@ -48,8 +48,8 @@ const AccordionFormBuilder = ({
                 accordionBodyClass
               )}
             >
-              {section.form.map((field, index) => (
-                <div key={index}>
+              {section.form.map((field) => (
+                <div key={field.name}>
                   {field.permission !== false ? renderField(field) : null}
                 </div>
               ))}

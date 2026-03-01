@@ -16,7 +16,7 @@ import ActionButton from "@/components/action-button";
 import { useDialogClose } from "@/components/dialog-wrapper";
 import {
     AccordionSection,
-    FieldConfig,
+    FormFieldConfig,
     GRID_STYLES,
     HydratePolicy,
 } from "@/components/form-wrapper/form-builder-type";
@@ -24,23 +24,24 @@ import {
 // --- Hydration helpers ---
 
 function flattenFields(
-    formSchema?: FieldConfig[] | AccordionSection[]
-): FieldConfig[] {
+    formSchema?: FormFieldConfig[] | AccordionSection[]
+): FormFieldConfig[] {
     if (!formSchema?.length) return [];
     if ("form" in formSchema[0]) {
         return (formSchema as AccordionSection[]).flatMap((s) => s.form);
     }
-    return formSchema as FieldConfig[];
+    return formSchema as FormFieldConfig[];
 }
 
-function getSourceKey(field: FieldConfig): string {
+function getSourceKey(field: FormFieldConfig): string {
+    if (field.type === "fieldArray") return field.name;
     if ("valueKey" in field && field.valueKey) return field.valueKey;
     return field.name;
 }
 
 function isDataComplete(
     data: Record<string, unknown> | undefined,
-    formSchema?: FieldConfig[] | AccordionSection[]
+    formSchema?: FormFieldConfig[] | AccordionSection[]
 ): boolean {
     if (!data) return false;
     if (!formSchema) return true;
@@ -96,7 +97,7 @@ type FormWrapperProps = {
     setSaveOnChange?: (x: boolean) => void;
     actionButtonClass?: string;
     hydrateOnEdit?: HydratePolicy;
-    formSchema?: FieldConfig[] | AccordionSection[];
+    formSchema?: FormFieldConfig[] | AccordionSection[];
     transformToFormValues?: (
         data: Record<string, unknown>
     ) => Record<string, unknown>;

@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import type { DateRange } from "react-day-picker";
 import Label from "../label";
 import { Button } from "../ui/button";
@@ -14,6 +14,7 @@ import {
     PopoverTrigger,
 } from "../ui/popover";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
+import FieldError from "./field-error";
 
 export type DatePickerMode = "single" | "range";
 
@@ -29,6 +30,8 @@ type DatePickerProps = {
     required?: boolean;
     dateFormat?: string;
     rangeDateFormat?: string;
+    control?: Control<FieldValues>;
+    rules?: RegisterOptions;
 };
 
 const parseValue = (
@@ -57,11 +60,12 @@ const DatePicker = ({
     required = false,
     dateFormat = "PPP",
     rangeDateFormat = "PPP",
+    control: controlProp,
+    rules: rulesProp,
 }: DatePickerProps) => {
-    const {
-        control,
-        formState: { errors },
-    } = useFormContext();
+    const { control: ctxControl } = useFormContext();
+    const control = controlProp ?? ctxControl;
+    const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
 
     const formatSingle = (date: Date | undefined) =>
         date ? format(date, dateFormat) : null;
@@ -84,8 +88,8 @@ const DatePicker = ({
             <Controller
                 name={name}
                 control={control}
-                rules={required ? { required: "This field is required" } : undefined}
-                render={({ field: { value, onChange, onBlur, ref } }) => {
+                rules={rules}
+                render={({ field: { value, onChange, onBlur, ref }, fieldState: { error: fieldError } }) => {
                     const parsed = parseValue(value, mode);
                     return (
                         <Popover>
@@ -98,7 +102,7 @@ const DatePicker = ({
                                     className={cn(
                                         "w-full justify-start text-left font-normal bg-background",
                                         !parsed && "text-muted-foreground",
-                                        errors[name] && "border-destructive"
+                                        fieldError && "border-destructive"
                                     )}
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -133,11 +137,7 @@ const DatePicker = ({
                     );
                 }}
             />
-            {errors[name] && (
-                <p className="text-sm text-destructive mt-1 dark:text-destructive">
-                    {errors[name]?.message?.toString() as string}
-                </p>
-            )}
+            <FieldError name={name} />
         </div>
     );
 };
