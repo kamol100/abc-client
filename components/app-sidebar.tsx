@@ -15,6 +15,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useSettings, useProfile, usePermissions } from "@/context/app-provider";
+import { useThemeSettings } from "@/context/theme-data-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useMenuItems } from "@/hooks/use-menu-items";
 import type { AppData } from "@/types/app";
@@ -63,10 +64,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, [settingsResponse, setSettings, setProfile, setPermissions]);
 
   const { isMobile } = useSidebar();
+  const { settings: themeSettings } = useThemeSettings();
   const menuItems = useMenuItems();
 
   return (
-    <Sidebar collapsible="icon" {...props} side={isMobile ? "right" : "left"}>
+    <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
       <SidebarHeader>
         <TeamSwitcher teams={sidebarConfig.teams} />
       </SidebarHeader>

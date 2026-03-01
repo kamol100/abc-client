@@ -1,35 +1,55 @@
-import { GalleryVerticalEnd, Users } from "lucide-react";
+"use client";
+
+import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Button } from "./ui/button";
 import { useSidebar } from "./ui/sidebar";
+import { useMenuItems, type NavMenuItem } from "@/hooks/use-menu-items";
+
+const MAX_PRIMARY_ITEMS = 4;
+
+function isPathActive(pathname: string, url: string): boolean {
+  if (url === "/") return pathname === "/";
+  return pathname === url || pathname.startsWith(url + "/");
+}
+
+function getPrimaryItems(items: NavMenuItem[]): NavMenuItem[] {
+  return items
+    .filter((item) => item.url !== "#" && !item.items)
+    .slice(0, MAX_PRIMARY_ITEMS);
+}
 
 const MobileMenuBar: FC = () => {
   const { toggleSidebar } = useSidebar();
   const pathname = usePathname();
-  const segment = pathname.split("/")[1];
   const router = useRouter();
+  const menuItems = useMenuItems();
+  const primaryItems = useMemo(() => getPrimaryItems(menuItems), [menuItems]);
+
   return (
-    <div className="flex w-full justify-between gap-4 bg-background border-t border-border p-4">
+    <div className="flex h-full w-full items-center justify-between gap-2 border-t border-border bg-background px-4">
+      {primaryItems.map((item) => {
+        const active = isPathActive(pathname, item.url);
+        return (
+          <Button
+            key={item.id}
+            variant={active ? "default" : "ghost"}
+            size="icon"
+            className="flex-1"
+            onClick={() => router.push(item.url)}
+          >
+            {item.icon && <item.icon className="size-5" />}
+          </Button>
+        );
+      })}
       <Button
-        variant={segment === "clients" ? "default" : "outline"}
-        className="rounded-md flex-1"
-        onClick={() => router.push("/clients")}
+        variant="ghost"
+        size="icon"
+        className="flex-1"
+        onClick={toggleSidebar}
       >
-        <Users />
-      </Button>
-      <Button className="rounded-md flex-1" onClick={() => console.log("test")}>
-        User
-      </Button>
-      <Button className="rounded-md flex-1">User</Button>
-      <Button className="rounded-md flex-1">User</Button>
-      <Button
-        className="rounded-md flex-1 flex justify-center items-center z-50"
-        onClick={() => {
-          toggleSidebar();
-        }}
-      >
-        <GalleryVerticalEnd />
+        <Menu className="size-5" />
       </Button>
     </div>
   );

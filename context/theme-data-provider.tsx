@@ -6,6 +6,7 @@ export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
   color: "zinc",
   density: "comfortable",
   radius: "0.5",
+  navDrawerSide: "right",
 };
 
 export const THEME_RADII: ThemeRadius[] = ["0", "0.3", "0.5", "0.75", "1.0"];
@@ -65,9 +66,13 @@ export default function ThemeSettingsProvider({
     setSettings((prev) => ({ ...prev, radius }));
   }, []);
 
+  const setNavDrawerSide = useCallback((navDrawerSide: ThemeNavDrawerSide) => {
+    setSettings((prev) => ({ ...prev, navDrawerSide }));
+  }, []);
+
   const contextValue = useMemo(
-    () => ({ settings, setColor, setDensity, setRadius }),
-    [settings, setColor, setDensity, setRadius]
+    () => ({ settings, setColor, setDensity, setRadius, setNavDrawerSide }),
+    [settings, setColor, setDensity, setRadius, setNavDrawerSide]
   );
 
   return (

@@ -38,6 +38,7 @@ export default async function RootLayout({
   const themeColor = (cookieStore.get("themeColor")?.value ?? "zinc") as ThemeColor;
   const density = (cookieStore.get("density")?.value ?? "comfortable") as ThemeDensity;
   const radius = (cookieStore.get("radius")?.value ?? "0.5") as ThemeRadius;
+  const navDrawerSide = (cookieStore.get("navDrawerSide")?.value ?? "right") as ThemeNavDrawerSide;
 
   return (
     <html
@@ -60,7 +61,7 @@ export default async function RootLayout({
             <Toaster />
             <I18nProvider translations={translations}>
               <ThemeSettingsProvider
-                initialSettings={{ color: themeColor, density, radius }}
+                initialSettings={{ color: themeColor, density, radius, navDrawerSide }}
               >
                 <TanstackProvider>{children}</TanstackProvider>
               </ThemeSettingsProvider>

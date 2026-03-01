@@ -26,6 +26,7 @@ const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
+const MOBILE_NAV_HEIGHT = "65px";
 
 type SidebarContext = {
   state: "expanded" | "collapsed";
@@ -138,12 +139,12 @@ const SidebarProvider = React.forwardRef<
               {
                 "--sidebar-width": SIDEBAR_WIDTH,
                 "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+                "--mobile-nav-height": MOBILE_NAV_HEIGHT,
                 ...style,
               } as React.CSSProperties
             }
             className={cn(
-              !isMobile &&
-                "group/sidebar-wrapper flex h-dvh overflow-hidden w-full has-[[data-variant=inset]]:bg-sidebar",
+              "group/sidebar-wrapper flex h-dvh overflow-hidden w-full has-[[data-variant=inset]]:bg-sidebar",
               className
             )}
             ref={ref}
@@ -201,16 +202,19 @@ const Sidebar = React.forwardRef<
             data-sidebar="sidebar"
             aria-describedby=""
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden z-10 test h-[94dvh]"
+            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden z-10"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
+                top: 0,
+                bottom: MOBILE_NAV_HEIGHT,
+                height: "auto",
               } as React.CSSProperties
             }
             side={side}
           >
             <SheetTitle />
-            <div className="flex  w-full flex-col h-full pb-5"> {children}</div>
+            <div className="flex w-full flex-col h-full pb-5">{children}</div>
           </SheetContent>
         </Sheet>
       );
@@ -326,21 +330,21 @@ const SidebarInset = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"main">
 >(({ className, ...props }, ref) => {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { isMobile } = useSidebar();
   return (
     <>
       <main
         ref={ref}
         className={cn(
           "relative flex flex-1 flex-col bg-background overflow-hidden",
-          isMobile && "h-dvh",
+          isMobile && "pb-[var(--mobile-nav-height)]",
           "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
           className
         )}
         {...props}
       />
       {isMobile && (
-        <div className="fixed bottom-0 h-[65px] w-full z-50">
+        <div className="fixed bottom-0 h-[var(--mobile-nav-height)] w-full z-50">
           <MobileMenuBar />
         </div>
       )}

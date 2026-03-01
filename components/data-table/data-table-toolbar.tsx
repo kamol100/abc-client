@@ -68,9 +68,9 @@ export function DataTableToolbar<TData>({
   const [showFilter, setShowFilter] = useState(false);
   return (
     <div
-      className={cn(!showFilter && "flex flex-wrap items-center justify-between")}
+      className={cn(!showFilter && "flex  justify-end")}
     >
-      <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
+      <div className="flex flex-1 flex-wrap items-center gap-x-2 w-full">
         {toolbarTitle && !showFilter && !isMobile && (
           <div className={toolbarTitleClass}>{toolbarTitle}</div>
         )}

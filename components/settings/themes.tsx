@@ -4,7 +4,7 @@ import { Checked } from "@/components/icon";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { THEME_RADII, useThemeSettings } from "@/context/theme-data-provider";
-import { Maximize, Minimize, Moon, Square, Sun } from "lucide-react";
+import { ArrowLeft, ArrowRight, Maximize, Minimize, Moon, Square, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const THEME_COLOR_OPTIONS: { value: ThemeColor; label: string; primary: string }[] = [
@@ -23,7 +23,7 @@ const DENSITY_OPTIONS: { value: ThemeDensity; label: string; icon: typeof Minimi
 ];
 
 export default function ThemeSettings() {
-  const { settings, setColor, setDensity, setRadius } = useThemeSettings();
+  const { settings, setColor, setDensity, setRadius, setNavDrawerSide } = useThemeSettings();
   const { setTheme, theme } = useTheme();
 
   return (
@@ -113,6 +113,31 @@ export default function ThemeSettings() {
             variant={theme === "dark" ? "default" : "outline"}
           >
             <Moon className="h-4 w-4" /> Dark
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
+      <div>
+        <Label className="text-sm font-medium">Mobile Drawer</Label>
+        <ToggleGroup
+          type="single"
+          value={settings.navDrawerSide}
+          onValueChange={(value) =>
+            value && setNavDrawerSide(value as ThemeNavDrawerSide)
+          }
+          className="flex gap-2 mt-2 justify-between"
+        >
+          <ToggleGroupItem
+            value="left"
+            variant={settings.navDrawerSide === "left" ? "default" : "outline"}
+          >
+            <ArrowLeft className="h-4 w-4" /> Left
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="right"
+            variant={settings.navDrawerSide === "right" ? "default" : "outline"}
+          >
+            <ArrowRight className="h-4 w-4" /> Right
           </ToggleGroupItem>
         </ToggleGroup>
       </div>

@@ -29,7 +29,6 @@ import {
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSidebar } from "@/components/ui/sidebar";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 
@@ -134,7 +133,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const { isMobile } = useSidebar();
   const { isFixed } = useTableLayoutMode();
 
   const showSkeleton = isLoading || (isFetching && data.length === 0);
@@ -228,8 +226,7 @@ export function DataTable<TData, TValue>({
         <div
           className={cn(
             "shrink-0 py-3 bg-background",
-            isFixed && "sticky bottom-0",
-            isFixed && isMobile && "bottom-16"
+            isFixed && "sticky bottom-0"
           )}
         >
           <DataTablePagination
