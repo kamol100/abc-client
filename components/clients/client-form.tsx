@@ -1,39 +1,38 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
-import FormBuilder from "../form-wrapper/form-builder";
-import { UserSchema } from "../users/user-type";
+import AccordionFormBuilder from "../form-wrapper/accordion-form-builder";
+import { ClientSchema } from "./client-zod-schema";
 import ClientFormSchema from "./client-form-schema";
 
-type props = {
-  mode?: string;
+type Props = {
+  mode?: "create" | "edit";
   api?: string;
-  method?: "GET | POST | PUT";
-  data?: any;
+  method?: "GET" | "POST" | "PUT";
+  data?: Record<string, unknown>;
 };
 
-const ClientForm: FC<props> = ({
+const ClientForm: FC<Props> = ({
   mode = "create",
   api = "/clients",
   method = "POST",
-  data = undefined,
+  data,
 }) => {
-  //console.log(data);
   const router = useRouter();
   return (
-    <div className="max-w-screen-lg mt-3 mx-auto overflow-y-auto pb-20">
-      <FormBuilder
+    <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
+      <AccordionFormBuilder
         formSchema={ClientFormSchema({ mode })}
         grids={2}
         data={data}
         api={api}
         mode={mode}
-        schema={UserSchema}
+        schema={ClientSchema}
         method={method}
         queryKey="clients"
+        fullPage
         actionButtonClass="justify-center"
         onClose={() => router.push("/clients")}
-        accordion
       />
     </div>
   );

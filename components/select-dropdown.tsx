@@ -204,6 +204,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                   borderRadius: "calc(var(--radius) - 2px)",
                   border: `1px solid hsl(var(--border))`,
                   overflow: "hidden",
+                  zIndex: 50,
                 }),
                 menuList: (base) => ({
                   ...base,

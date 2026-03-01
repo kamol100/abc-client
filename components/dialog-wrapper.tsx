@@ -58,8 +58,8 @@ interface DialogWrapperProps {
   showFooter?: boolean;
   loading?: boolean;
   footer?:
-    | ReactNode
-    | ((props: { close: () => void; loading: boolean }) => ReactNode);
+  | ReactNode
+  | ((props: { close: () => void; loading: boolean }) => ReactNode);
   preventCloseOnLoading?: boolean;
   autoCloseOnSuccess?: boolean;
   contentClassName?: string;
@@ -165,28 +165,29 @@ export function DialogWrapper({
             {typeof footer === "function"
               ? footer({ close, loading: isLoading })
               : footer ?? (
-                  <>
+                <>
+                  <ActionButton
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancel}
+                    disabled={isLoading}
+                  >
+                    {t(cancelText ?? "cancel")}
+                  </ActionButton>
+                  {onConfirm && (
                     <ActionButton
-                      variant="outline"
-                      onClick={handleCancel}
+                      action="save"
+                      onClick={handleConfirm}
                       disabled={isLoading}
                     >
-                      {t(cancelText ?? "cancel")}
+                      {isLoading && (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      )}
+                      {t(confirmText ?? "confirm")}
                     </ActionButton>
-                    {onConfirm && (
-                      <ActionButton
-                        action="save"
-                        onClick={handleConfirm}
-                        disabled={isLoading}
-                      >
-                        {isLoading && (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        )}
-                        {t(confirmText ?? "confirm")}
-                      </ActionButton>
-                    )}
-                  </>
-                )}
+                  )}
+                </>
+              )}
           </DialogFooter>
         )}
       </DialogContent>

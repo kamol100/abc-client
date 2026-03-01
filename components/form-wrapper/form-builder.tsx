@@ -1,7 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { AccordionItem } from "@radix-ui/react-accordion";
 import dynamic from "next/dynamic";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { z } from "zod";
@@ -12,7 +10,6 @@ import InputField from "../form/input-field";
 import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
 import TextareaField from "../form/textarea-field";
-import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
 import {
   AccordionSection,
   CheckboxFieldConfig,
@@ -42,14 +39,25 @@ const parseDateRangeForForm = (v: unknown): { from: Date; to?: Date } | undefine
   return { from, to: parseDateForForm(obj.to) ?? undefined };
 };
 
+export const flattenFormSchema = (
+  formSchema: FieldConfig[] | AccordionSection[]
+): FieldConfig[] => {
+  if (!formSchema.length) return [];
+  if ("form" in formSchema[0]) {
+    return (formSchema as AccordionSection[]).flatMap((s) => s.form);
+  }
+  return formSchema as FieldConfig[];
+};
+
 const transformDataToFormValues = (
   data: Record<string, unknown>,
-  formSchema: FieldConfig[]
+  formSchema: FieldConfig[] | AccordionSection[]
 ): Record<string, unknown> => {
   if (!data) return {};
+  const fields = flattenFormSchema(formSchema);
   const formValues: Record<string, unknown> = { ...data };
 
-  formSchema.forEach((field) => {
+  fields.forEach((field) => {
     if (field.type === "date") {
       const key = field.valueKey ?? field.name;
       const parsed = parseDateForForm(data[key]);
@@ -91,7 +99,7 @@ const transformDataToFormValues = (
 
 const SelectDropdown = dynamic(() => import("../select-dropdown"));
 
-type FormBuilderProps = {
+export type FormBuilderProps = {
   formSchema: FieldConfig[] | AccordionSection[];
   grids?: number;
   gridGap?: string;
@@ -104,11 +112,9 @@ type FormBuilderProps = {
   onClose?: () => void | undefined;
   actionButton?: boolean;
   actionButtonClass?: string;
-  accordion?: boolean;
-  accordionClass?: string | null;
-  accordionTitleClass?: string | null;
-  accordionBodyClass?: string | null;
   hydrateOnEdit?: HydratePolicy;
+  fullPage?: boolean;
+  children?: (renderField: (field: FieldConfig) => ReactNode) => ReactNode;
 };
 
 const FormBuilder = ({
@@ -124,24 +130,22 @@ const FormBuilder = ({
   onClose,
   actionButton = true,
   actionButtonClass,
-  accordion = false,
-  accordionClass = null,
-  accordionBodyClass = null,
-  accordionTitleClass = null,
   hydrateOnEdit = "ifNeeded",
+  fullPage = false,
+  children,
 }: FormBuilderProps) => {
   const [saveOnChange, setSaveOnChange] = useState(false);
 
   const transformedData = useMemo(() => {
     if (mode === "edit" && data) {
-      return transformDataToFormValues(data, formSchema as FieldConfig[]);
+      return transformDataToFormValues(data, formSchema);
     }
     return data;
   }, [data, mode, formSchema]);
 
   const transformCallback = useCallback(
     (rawData: Record<string, unknown>) =>
-      transformDataToFormValues(rawData, formSchema as FieldConfig[]),
+      transformDataToFormValues(rawData, formSchema),
     [formSchema]
   );
 
@@ -254,41 +258,10 @@ const FormBuilder = ({
       formSchema={formSchema}
       transformToFormValues={transformCallback}
       grids={grids}
+      fullPage={fullPage}
     >
-      {accordion ? (
-        <Accordion
-          type="single"
-          defaultValue={formSchema[0]?.name}
-          collapsible
-          className={cn("w-full border rounded-md bg-muted", accordionClass)}
-        >
-          {(formSchema as AccordionSection[]).map((section) => (
-            <AccordionItem
-              value={section.name}
-              key={section.name}
-              className="w-full [&:not(:last-child)]:border-b decoration-transparent bg-muted"
-            >
-              <AccordionTrigger
-                className={cn("px-3 font-semibold text-lg capitalize py-2", accordionTitleClass)}
-              >
-                {section.name}
-              </AccordionTrigger>
-              <AccordionContent
-                  className={cn(
-                  `grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`,
-                  "bg-background p-3 rounded-md",
-                  accordionBodyClass
-                )}
-              >
-                {section.form.map((field, index) => (
-                  <div key={index}>
-                    {field.permission !== false ? renderField(field) : null}
-                  </div>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      {children ? (
+        children(renderField)
       ) : (
         <div className={`grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`}>
           {(formSchema as FieldConfig[]).map((field, index) => (

@@ -101,6 +101,7 @@ type FormWrapperProps = {
         data: Record<string, unknown>
     ) => Record<string, unknown>;
     grids?: number;
+    fullPage?: boolean;
 };
 
 export default function FormWrapper({
@@ -121,6 +122,7 @@ export default function FormWrapper({
     formSchema,
     transformToFormValues,
     grids = 1,
+    fullPage = false,
 }: FormWrapperProps) {
     const dialogClose = useDialogClose();
     const handleClose = onClose ?? dialogClose ?? (() => { });
@@ -238,64 +240,74 @@ export default function FormWrapper({
         (f) => f.permission !== false
     ).length;
 
+    const formContent = isHydrating ? (
+        <FormSkeleton
+            grids={grids}
+            fieldCount={visibleFieldCount || 4}
+        />
+    ) : hydrationFailed ? (
+        <div className="flex flex-col items-center gap-3 py-10 text-center">
+            <p className="text-sm font-medium text-destructive">
+                {t("failed_to_load_data")}
+            </p>
+            <div className="flex gap-2">
+                <ActionButton action="cancel" onClick={handleClose}>
+                    {t("cancel")}
+                </ActionButton>
+                <ActionButton onClick={() => retryHydration()}>
+                    {t("refresh")}
+                </ActionButton>
+            </div>
+        </div>
+    ) : (
+        children
+    );
+
+    const actionButtons = !isHydrating && !hydrationFailed && (
+        <>
+            <input type="submit" className="hidden" ref={submitRef} />
+            {actionButton && (
+                <div
+                    className={cn(
+                        "flex items-center gap-3 pt-4 mt-4 border-t bg-background",
+                        fullPage ? "shrink-0" : "sticky bottom-0",
+                        actionButtonClass
+                    )}
+                >
+                    <ActionButton
+                        action="cancel"
+                        type="button"
+                        title={t("cancel")}
+                        size="default"
+                        onClick={handleClose}
+                    />
+                    <ActionButton
+                        action="save"
+                        title={t("save")}
+                        size="default"
+                        type="submit"
+                        variant="default"
+                        loading={isPending}
+                    />
+                </div>
+            )}
+        </>
+    );
+
     return (
         <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {isHydrating ? (
-                    <FormSkeleton
-                        grids={grids}
-                        fieldCount={visibleFieldCount || 4}
-                    />
-                ) : hydrationFailed ? (
-                    <div className="flex flex-col items-center gap-3 py-10 text-center">
-                        <p className="text-sm font-medium text-destructive">
-                            {t("failed_to_load_data")}
-                        </p>
-                        <div className="flex gap-2">
-                            <ActionButton action="cancel" onClick={handleClose}>
-                                {t("cancel")}
-                            </ActionButton>
-                            <ActionButton onClick={() => retryHydration()}>
-                                {t("refresh")}
-                            </ActionButton>
-                        </div>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
+            >
+                {fullPage ? (
+                    <div className="flex-1 min-h-0 overflow-y-auto">
+                        {formContent}
                     </div>
                 ) : (
-                    children
+                    formContent
                 )}
-
-                {!isHydrating && !hydrationFailed && (
-                    <>
-                        <input
-                            type="submit"
-                            className="hidden"
-                            ref={submitRef}
-                        />
-                        {actionButton && (
-                            <div
-                                className={cn(
-                                    "flex items-center gap-3 pt-4 mt-4 border-t sticky bottom-0 bg-background",
-                                    actionButtonClass
-                                )}
-                            >
-                                <ActionButton
-                                    action="cancel"
-                                    title={t("cancel")}
-                                    size="default"
-                                    onClick={handleClose}
-                                />
-                                <ActionButton
-                                    action="save"
-                                    title={t("save")}
-                                    size="default"
-                                    type="submit"
-                                    variant="default"
-                                    loading={isPending}
-                                />
-                            </div>
-                        )}
-                    </>
-                )}
+                {actionButtons}
             </form>
         </Form>
     );

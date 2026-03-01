@@ -18,16 +18,15 @@ export default function PageContainer({
   return (
     <div
       className={cn(
-        "page-container flex flex-col",
-        isFixed ? "h-dvh overflow-hidden" : "min-h-dvh",
+        "page-container flex flex-col flex-1 min-h-0 overflow-hidden",
         className
       )}
     >
       <TopNavbar />
       <div
         className={cn(
-          "flex flex-col p-4",
-          isFixed ? "flex-1 min-h-0 overflow-hidden" : "flex-1"
+          "flex flex-col flex-1 min-h-0 p-4",
+          isFixed ? "overflow-hidden" : "overflow-auto"
         )}
       >
         {children}
