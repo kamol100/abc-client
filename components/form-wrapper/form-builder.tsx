@@ -201,7 +201,7 @@ const FieldArrayRenderer = ({
       {config.label && <Label label={config.label} />}
 
       {fields.map((item, index) => (
-        <div key={item.id} className="relative border rounded-md p-4 space-y-3">
+        <div key={item.id} className="relative flex gap-3 border rounded-md p-3">
           <div className={`grid ${itemGridGap} ${GRID_STYLES[itemGrids]} w-full`}>
             {itemFields.map((itemField) => {
               if (itemField.permission === false) return null;
@@ -213,20 +213,19 @@ const FieldArrayRenderer = ({
             })}
           </div>
 
-          <div className="flex items-center gap-1 justify-end">
+          <div className="flex items-center gap-1 justify-end flex-1">
             {allowReorder && index > 0 && (
-              <ActionButton type="button" variant="ghost" size="icon" onClick={() => move(index, index - 1)}>
+              <ActionButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
                 <ArrowUp className="h-4 w-4" />
               </ActionButton>
             )}
             {allowReorder && index < fields.length - 1 && (
-              <ActionButton type="button" variant="ghost" size="icon" onClick={() => move(index, index + 1)}>
+              <ActionButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
                 <ArrowDown className="h-4 w-4" />
               </ActionButton>
             )}
             {canRemove && (
-              <ActionButton type="button" variant="ghost" size="icon" onClick={() => remove(index)}>
-                <Trash2 className="h-4 w-4 text-destructive" />
+              <ActionButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)}>
               </ActionButton>
             )}
           </div>
@@ -235,11 +234,10 @@ const FieldArrayRenderer = ({
 
       {canAppend && (
         <ActionButton
-          type="button"
-          variant="outline"
-          size="default"
+          icon={true}
+          action="create"
           onClick={() => append({ ...defaultItem })}
-          className="mt-2"
+          className="mt-2 hover:bg-primary hover:text-primary-foreground"
         >
           <Plus className="h-4 w-4 mr-1" />
           {addButtonLabel}

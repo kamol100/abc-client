@@ -21,6 +21,7 @@ const ACTION_ICONS = {
   search: Search,
   filter: FilterIcon,
   create: Plus,
+  add: Plus,
 } as const;
 
 type ActionType = keyof typeof ACTION_ICONS;

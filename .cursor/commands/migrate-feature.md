@@ -43,17 +43,24 @@ STEP 2 — DESIGN NEW ARCHITECTURE
 Design the new feature following this structure:
 
 /components/{feature}
-/components/{feature}/columns.tsx
-/components/{feature}/{feature}-form.tsx
-/components/{feature}/{feature}-schema.ts
-/components/{feature}/{feature}-types.ts
-/lib/api/{feature}.ts
+/components/{feature}/{feature}-type.ts        — Zod schemas + types (RowSchema, FormSchema, Refs)
+/components/{feature}/{feature}-form-schema.ts — UI form field config (AccordionSection[] / FormFieldConfig[])
+/components/{feature}/{feature}-form.tsx       — Form component (uses AccordionFormBuilder or FormBuilder)
+/components/{feature}/{feature}-column.tsx     — TanStack Table column definitions
+/components/{feature}/{feature}-table.tsx      — List page with DataTable + useApiQuery
+/components/{feature}/{feature}-filter-schema.ts — Filter field config (optional, if table has filters)
 /hooks/use-{feature}.ts (if needed)
 
 Rules:
 - Server Components by default
 - "use client" only where required
-- Extract types
+- Extract types into {feature}-type.ts following this structure:
+  - Ref schemas for nested objects (e.g. RoleRefSchema, UserRefSchema)
+  - Sub-schemas for reusable parts (e.g. SalaryItemSchema)
+  - RowSchema with .passthrough() for API list/table responses
+  - FormSchema for form validation only (no API response fields like id, relations)
+  - Export distinct types: {Feature}Row, {Feature}FormInput, {Feature}Payload
+  - Reference: zone-type.ts, sub-zone-type.ts
 - Use translation according i18next
 - Use Zod for validation
 - Use TanStack Query for fetching
@@ -68,6 +75,8 @@ Rules:
 - For re-usable method/function update lib/helper/helper.ts 
 - Must follow theme setting
 - Ensure mobile first design
+- Ensure using ActionButton (components/action-button.tsx) instead Button
+- Ensure the dynamic form UI looks clean and well-structured. For example, when multiple items are added by clicking the plus button, the delete (trash) icon should be properly aligned with each item in the list.
 
 -----------------------------------------
 STEP 3 — MIGRATION RULES
