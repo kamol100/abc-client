@@ -93,13 +93,13 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="actions" />
+      <DataTableColumnHeader column={column} title="actions" className="text-right mr-2" />
     ),
     cell: ({ row }) => {
       const staff = row.original;
       const staffId = String(staff.id);
       return (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center justify-end mr-2 gap-1">
           <ActionButton
             action="edit"
             url={`/staffs/edit/${staffId}`}

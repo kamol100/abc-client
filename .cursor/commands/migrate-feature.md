@@ -62,6 +62,7 @@ Rules:
   - Export distinct types: {Feature}Row, {Feature}FormInput, {Feature}Payload
   - Reference: zone-type.ts, sub-zone-type.ts
 - Use translation according i18next
+- Must use metadata title on page.tsx component
 - Use Zod for validation
 - Use TanStack Query for fetching
 - Replace Flowbite with shadcn components

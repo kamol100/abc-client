@@ -7,38 +7,38 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import { useSidebar } from "@/components/ui/sidebar";
-import { StaffColumns } from "./staff-column";
-import { StaffRow } from "./staff-type";
 import ActionButton from "../action-button";
+import { SalaryColumns } from "./salary-column";
+import { SalaryRow } from "./salary-type";
 
-const StaffTable: FC = () => {
+const SalaryTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
   const params = useMemo(
     () =>
       filterValue
         ? Object.fromEntries(new URLSearchParams(filterValue))
         : undefined,
-    [filterValue]
+    [filterValue],
   );
 
   const { data, isLoading, isFetching, setCurrentPage } =
-    useApiQuery<PaginatedApiResponse<StaffRow>>({
-      queryKey: ["staffs"],
-      url: "staffs",
+    useApiQuery<PaginatedApiResponse<SalaryRow>>({
+      queryKey: ["salaries"],
+      url: "salaries",
       params,
     });
 
-  const staffs = data?.data?.data ?? [];
+  const salaries = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
   const { t } = useTranslation();
   const { isMobile } = useSidebar();
 
   const toolbarTitle = pagination?.total
-    ? `${t("staffs")} (${pagination.total})`
-    : t("staffs");
+    ? `${t("salaries")} (${pagination.total})`
+    : t("salaries");
 
   const FormLink = () => (
-    <Link href="/staffs/create">
+    <Link href="/salaries/create">
       <ActionButton size={"default"} variant={"default"}>
         {isMobile ? <Plus /> : <><Plus /> {t("add")}</>}
       </ActionButton>
@@ -47,19 +47,19 @@ const StaffTable: FC = () => {
 
   return (
     <DataTable
-      data={staffs}
+      data={salaries}
       setFilter={setFilter}
-      columns={StaffColumns}
+      columns={SalaryColumns}
       toggleColumns
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      queryKey="staffs"
+      queryKey="salaries"
       form={FormLink}
       toolbarTitle={toolbarTitle}
     />
   );
 };
 
-export default StaffTable;
+export default SalaryTable;
