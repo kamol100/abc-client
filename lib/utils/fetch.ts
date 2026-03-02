@@ -25,11 +25,8 @@ export default async function getData(url: string, ...args: any) {
     console.log("server:data", data)
     return data;
 }
-export async function getPublicData(url: string, options: any = null) {
-    let api_url = `${BASE_URL}${url}`;
-    if (options === "translation") {
-        api_url = `${process.env.NEXT_PUBLIC_TRANSLATION}${url}`;
-    }
+export async function getPublicData(url: string) {
+    const api_url = `${BASE_URL}${url}`;
     const result = await fetch(api_url, {
         method: "GET",
         headers: {

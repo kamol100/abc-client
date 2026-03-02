@@ -10,7 +10,7 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="zone_name" />
+            <DataTableColumnHeader column={column} title="zone.name.label" />
         ),
         cell: ({ row }) => (
             <div className="capitalize">{row.original.name}</div>
@@ -21,7 +21,7 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
     {
         accessorKey: "name_bn",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="zone_name_bn" />
+            <DataTableColumnHeader column={column} title="zone.name_bn.label" />
         ),
         cell: ({ row }) => (
             <div>{row.original.name_bn ?? ""}</div>
@@ -30,7 +30,7 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
     {
         accessorKey: "subZone",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="sub_zones" />
+            <DataTableColumnHeader column={column} title="zone.sub_zones.label" />
         ),
         cell: ({ row }) => {
             const subZones = row.original.subZone;
@@ -48,7 +48,7 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
             <DataTableColumnHeader
                 column={column}
                 className="flex justify-end capitalize mr-3"
-                title="actions"
+                title="common.actions"
             />
         ),
         cell: ({ row }) => {
@@ -64,8 +64,8 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
                     <DeleteModal
                         api_url={`/zones/${zone.id}`}
                         keys="zones"
-                        confirmMessage="delete_zone_confirmation"
-                        buttonText="confirm_delete"
+                        confirmMessage="zone.delete_confirmation"
+                        buttonText="common.confirm_delete"
                     />
                 </div>
             );

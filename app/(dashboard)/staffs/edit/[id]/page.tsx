@@ -12,6 +12,6 @@ export default async function StaffEdit({ params }: Props) {
   return <StaffForm mode="edit" data={{ id }} />;
 }
 export const metadata: Metadata = {
-  title: i18n.t("edit_staff") || "Edit Staff",
-  description: i18n.t("edit_staff_description") || "Edit Staff Description",
+  title: i18n.t("staff.edit.title") || "Edit Staff",
+  description: i18n.t("staff.edit.title") || "Edit Staff",
 };

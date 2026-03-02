@@ -7,6 +7,6 @@ export default async function StaffCreate() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("create_staff"),
-  description: i18n.t("create_staff_description") || "Create Staff",
+  title: i18n.t("staff.create.title") || "Create Staff",
+  description: i18n.t("staff.create.title") || "Create Staff",
 };

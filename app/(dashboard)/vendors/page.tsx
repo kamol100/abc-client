@@ -7,6 +7,6 @@ export default async function Vendors() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("vendors") || "Vendors",
-    description: i18n.t("vendors_description") || "Vendors Description",
+    title: i18n.t("vendor.title") || "Vendors",
+    description: i18n.t("vendor.title") || "Vendors",
 };

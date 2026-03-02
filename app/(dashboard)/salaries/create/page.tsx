@@ -7,6 +7,6 @@ export default async function SalaryCreate() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("create_salary"),
-  description: i18n.t("create_salary_description") || "Create Salary",
+  title: i18n.t("salary.create.title") || "Create Salary",
+  description: i18n.t("salary.create.title") || "Create Salary",
 };

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import i18n from "i18next";
+import i18n from "@/i18n";
 
 export const VendorRowSchema = z.object({
     id: z.coerce.number(),
@@ -13,14 +13,14 @@ export type VendorRow = z.infer<typeof VendorRowSchema>;
 
 export const VendorFormSchema = z.object({
     name: z.string({
-        required_error: i18n.t("vendor_name_required"),
-        invalid_type_error: i18n.t("vendor_name_required"),
-    }).min(2, { message: i18n.t("vendor_name_min_2") }),
+        required_error: i18n.t("vendor.name.errors.required"),
+        invalid_type_error: i18n.t("vendor.name.errors.required"),
+    }).min(2, { message: i18n.t("vendor.name.errors.min") }),
     phone: z.string({
-        required_error: i18n.t("phone_required"),
-        invalid_type_error: i18n.t("phone_required"),
-    }).min(11, { message: i18n.t("phone_min_11") }),
-    email: z.string().email({ message: i18n.t("email_invalid") }).nullable().optional().default(""),
+        required_error: i18n.t("vendor.phone.errors.required"),
+        invalid_type_error: i18n.t("vendor.phone.errors.required"),
+    }).min(11, { message: i18n.t("vendor.phone.errors.min") }),
+    email: z.string().email({ message: i18n.t("vendor.email.errors.invalid") }).nullable().optional().default(""),
     address: z.string().nullable().optional().default(""),
 });
 

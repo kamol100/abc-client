@@ -34,13 +34,13 @@ const SalaryTable: FC = () => {
   const { isMobile } = useSidebar();
 
   const toolbarTitle = pagination?.total
-    ? `${t("salaries")} (${pagination.total})`
-    : t("salaries");
+    ? `${t("salary.title")} (${pagination.total})`
+    : t("salary.title");
 
   const FormLink = () => (
     <Link href="/salaries/create">
       <ActionButton size={"default"} variant={"default"}>
-        {isMobile ? <Plus /> : <><Plus /> {t("add")}</>}
+        {isMobile ? <Plus /> : <><Plus /> {t("common.add")}</>}
       </ActionButton>
     </Link>
   );

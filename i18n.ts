@@ -1,25 +1,22 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { DEFAULT_LANGUAGE, type Language } from "@/lib/i18n/languages";
+import { resources } from "@/lib/i18n/resources";
 
 let initialized = false;
 
-export const initializeI18n = (translations: any = {}) => {
-    if (initialized) return;
+export function initializeI18n(language: Language = DEFAULT_LANGUAGE) {
+  if (initialized) return;
 
-    i18n.use(initReactI18next).init({
-        resources: translations,
-        lng: "da",
-        fallbackLng: "en",
-        interpolation: {
-            escapeValue: false,
-        },
-    }).then((res) => {
-        console.log('I18n initialized', i18n?.language);
-    }).catch((error: any) => {
-        console.error('Error initializing i18n', error);
-    });
+  i18n.use(initReactI18next).init({
+    resources,
+    lng: language,
+    fallbackLng: DEFAULT_LANGUAGE,
+    interpolation: { escapeValue: false },
+    initImmediate: false,
+  });
 
-    initialized = true;
-};
+  initialized = true;
+}
 
 export default i18n;

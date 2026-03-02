@@ -7,6 +7,6 @@ export default async function SubZones() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("sub_zones") || "Sub Zones",
-    description: i18n.t("sub_zones_description") || "Sub Zones Description",
+    title: i18n.t("sub_zone.title") || "Sub Zones",
+    description: i18n.t("sub_zone.title") || "Sub Zones",
 };

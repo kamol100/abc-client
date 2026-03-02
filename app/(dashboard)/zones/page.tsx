@@ -7,6 +7,6 @@ export default async function Zones() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("zones") || "Zones",
-    description: i18n.t("zones_description") || "Zones Description",
+    title: i18n.t("zone.title") || "Zones",
+    description: i18n.t("zone.title") || "Zones",
 };

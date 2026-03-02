@@ -11,7 +11,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="name" />
+      <DataTableColumnHeader column={column} title="user.name.label" />
     ),
     cell: ({ row }) => (
       <div className="w-[150px] capitalize">{row.original.name}</div>
@@ -22,7 +22,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "roles",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Roles"} />
+      <DataTableColumnHeader column={column} title="user.roles.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -38,7 +38,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "company",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Company"} />
+      <DataTableColumnHeader column={column} title="user.company.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -54,7 +54,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "domain",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Domain"} />
+      <DataTableColumnHeader column={column} title="user.domain.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -70,7 +70,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="user.email.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -87,7 +87,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="user.status.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -109,7 +109,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} className="flex justify-end capitalize mr-3" title="actions" />
+      <DataTableColumnHeader column={column} className="flex justify-end capitalize mr-3" title="common.actions" />
     ),
     cell: ({ row }) => {
       const data = row.original;
@@ -119,8 +119,8 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
           <DeleteModal
             api_url={`/users/${data.id}`}
             keys="users"
-            confirmMessage="delete_user_confirmation"
-            buttonText="confirm_delete"
+            confirmMessage="user.delete_confirmation"
+            buttonText="common.confirm_delete"
           >
           </DeleteModal>
         </div>

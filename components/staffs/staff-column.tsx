@@ -19,7 +19,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="name" />
+      <DataTableColumnHeader column={column} title="staff.name.label" />
     ),
     cell: ({ row }) => (
       <div className="w-[150px] capitalize">{row.original.name}</div>
@@ -30,7 +30,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     accessorKey: "roles",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="role" />
+      <DataTableColumnHeader column={column} title="staff.roles.label" />
     ),
     cell: ({ row }) => {
       const roles = row.original.roles;
@@ -48,7 +48,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     accessorKey: "designation",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="designation" />
+      <DataTableColumnHeader column={column} title="staff.designation.label" />
     ),
     cell: ({ row }) => (
       <span className="capitalize">{row.original.designation}</span>
@@ -57,28 +57,28 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     accessorKey: "phone",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="phone" />
+      <DataTableColumnHeader column={column} title="staff.phone.label" />
     ),
     cell: ({ row }) => <span>{row.original.phone}</span>,
   },
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="email" />
+      <DataTableColumnHeader column={column} title="staff.email.label" />
     ),
     cell: ({ row }) => <span>{row.original.email}</span>,
   },
   {
     accessorKey: "join_date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="join_date" />
+      <DataTableColumnHeader column={column} title="staff.join_date.label" />
     ),
     cell: ({ row }) => <span>{row.original.join_date}</span>,
   },
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="status" />
+      <DataTableColumnHeader column={column} title="common.status" />
     ),
     cell: ({ row }) => {
       const status = String(row.original.status);
@@ -93,7 +93,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="actions" className="text-right mr-2" />
+      <DataTableColumnHeader column={column} title="common.actions" className="text-right mr-2" />
     ),
     cell: ({ row }) => {
       const staff = row.original;

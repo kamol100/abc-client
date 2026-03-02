@@ -9,34 +9,26 @@ export const ZoneFormFieldSchema = (): FieldConfig[] => {
             type: "text",
             name: "name",
             label: {
-                labelText: t("zone_name_en"),
+                labelText: t("zone.name.label"),
                 mandatory: true,
             },
-            placeholder: t("zone_name_en"),
-        },
-        {
-            type: "text",
-            name: "name_bn",
-            label: {
-                labelText: t("zone_name_bn"),
-            },
-            placeholder: t("zone_name_bn"),
+            placeholder: t("zone.name.placeholder"),
         },
         {
             type: "number",
             name: "lat",
             label: {
-                labelText: t("latitude"),
+                labelText: t("zone.latitude.label"),
             },
-            placeholder: t("latitude"),
+            placeholder: t("zone.latitude.placeholder"),
         },
         {
             type: "number",
             name: "lon",
             label: {
-                labelText: t("longitude"),
+                labelText: t("zone.longitude.label"),
             },
-            placeholder: t("longitude"),
+            placeholder: t("zone.longitude.placeholder"),
         },
     ];
 };

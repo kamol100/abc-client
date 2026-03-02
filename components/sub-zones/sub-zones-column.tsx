@@ -10,7 +10,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="sub_zone" />
+            <DataTableColumnHeader column={column} title="sub_zone.name.label" />
         ),
         cell: ({ row }) => (
             <div className="capitalize">{row.original.name}</div>
@@ -21,7 +21,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
     {
         accessorKey: "zone",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="zone" />
+            <DataTableColumnHeader column={column} title="sub_zone.zone.label" />
         ),
         cell: ({ row }) => (
             <div>{row.original.zone?.name ?? ""}</div>
@@ -31,7 +31,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
     {
         accessorKey: "location",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="location" />
+            <DataTableColumnHeader column={column} title="sub_zone.location.label" />
         ),
         cell: ({ row }) => (
             <div>{row.original.location ?? ""}</div>
@@ -40,7 +40,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
     {
         accessorKey: "network",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="network" />
+            <DataTableColumnHeader column={column} title="sub_zone.network.label" />
         ),
         cell: ({ row }) => (
             <div>{row.original.network?.name ?? ""}</div>
@@ -50,7 +50,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
     {
         accessorKey: "ports",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="ports" />
+            <DataTableColumnHeader column={column} title="sub_zone.ports.label" />
         ),
         cell: ({ row }) => (
             <div>{row.original.ports ?? ""}</div>
@@ -62,7 +62,7 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
             <DataTableColumnHeader
                 column={column}
                 className="flex justify-end capitalize mr-3"
-                title="actions"
+                title="common.actions"
             />
         ),
         cell: ({ row }) => {
@@ -78,8 +78,8 @@ export const SubZonesColumns: ColumnDef<SubZoneRow>[] = [
                     <DeleteModal
                         api_url={`/sub-zones/${subZone.id}`}
                         keys="sub-zones"
-                        confirmMessage="delete_sub_zone_confirmation"
-                        buttonText="confirm_delete"
+                        confirmMessage="sub_zone.delete_confirmation"
+                        buttonText="common.confirm_delete"
                     />
                 </div>
             );

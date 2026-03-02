@@ -61,7 +61,7 @@ Rules:
   - FormSchema for form validation only (no API response fields like id, relations)
   - Export distinct types: {Feature}Row, {Feature}FormInput, {Feature}Payload
   - Reference: zone-type.ts, sub-zone-type.ts
-- Use translation according i18next
+- Use translation via i18next — see STEP 4 (Translation Workflow)
 - Must use metadata title on page.tsx component
 - Use Zod for validation
 - Use TanStack Query for fetching
@@ -104,7 +104,93 @@ STEP 3 — MIGRATION RULES
    - Suspense when useful
 
 -----------------------------------------
-STEP 4 — OUTPUT FORMAT
+STEP 4 — TRANSLATION WORKFLOW (MANDATORY)
+-----------------------------------------
+
+Every migrated or new feature MUST have full translation coverage.
+No hardcoded user-facing strings inside components — always use `t()` from `useTranslation()`.
+
+1. Identify all translatable strings in the feature:
+   - Menu items and navigation titles
+   - Page titles and headings
+   - Form field labels, placeholders, and tooltips
+   - Validation error messages
+   - Button text (Submit, Cancel, Delete, etc.)
+   - Table column headers
+   - Toast/notification messages
+   - Empty states and status labels
+
+2. Add keys to BOTH language files:
+   - `public/lang/en.json` — English
+   - `public/lang/bn.json` — Bangla
+
+3. Key structure and naming conventions:
+
+   Menu items → nested under `menu`:
+   ```json
+   "menu": {
+     "{feature}": {
+       "title": "Feature Name",
+       "{sub_item}": { "title": "Sub Item" }
+     }
+   }
+   ```
+
+   Form fields → nested under `{feature}`:
+   ```json
+   "{feature}": {
+     "{field_name}": {
+       "label": "Field Label",
+       "tooltip": "Helper text",
+       "placeholder": "Placeholder text",
+       "errors": {
+         "required": "Field is required",
+         "min": "Must be at least N characters"
+       }
+     }
+   }
+   ```
+
+4. Key naming rules:
+   - Use snake_case for multi-word keys (e.g. `income_expense`, `device_type`)
+   - Group by feature at top level, then by field/section
+   - Keep nesting shallow — max 3–4 levels deep
+   - Every key in `en.json` MUST have a matching key in `bn.json` (and vice versa)
+
+5. Bangla translation rules:
+   - Use transliterated technical terms, NOT literal Bengali translations
+   - Examples:
+     - "Dashboard" → "ড্যাশবোর্ড" (NOT "পরিচালনা প্যানেল")
+     - "Invoice" → "ইনভয়েস", "Payment" → "পেমেন্ট"
+     - "Network" → "নেটওয়ার্ক", "Device" → "ডিভাইস"
+     - "Package" → "প্যাকেজ", "Settings" → "সেটিংস"
+   - For error messages, use natural Bangla phrasing:
+     - "Name is required" → "নাম আবশ্যক"
+     - "Enter the email address" → "ইমেইল ঠিকানা দিন"
+
+6. Usage in components:
+   ```tsx
+   const { t } = useTranslation();
+   // Labels & placeholders
+   <Label>{t("{feature}.{field}.label")}</Label>
+   // Menu titles
+   title: t("menu.{feature}.title")
+   // Error messages (in Zod or form-schema)
+   { required_error: t("{feature}.{field}.errors.required") }
+   ```
+
+7. If the feature adds a new menu item, update `hooks/use-menu-items.ts`
+   with the corresponding `t("menu.{feature}.title")` call.
+
+8. Validation checklist before completing migration:
+   - [ ] No hardcoded strings in any component
+   - [ ] All keys exist in both `en.json` and `bn.json`
+   - [ ] Key structure is identical between both files
+   - [ ] Bangla uses transliterated terms for technical words
+   - [ ] `useTranslation()` is imported and used in every client component with text
+
+-----------------------------------------
+STEP 5 — OUTPUT FORMAT
 -----------------------------------------
 
 Return:
@@ -114,7 +200,8 @@ Return:
 3. 🧾 All new TypeScript types
 4. 🧩 New shadcn components
 5. 🔄 Refactored API logic
-6. 🚀 Final improved version
+6. 🌐 Translation keys (en.json + bn.json additions)
+7. 🚀 Final improved version
 
 If something from the old feature is poorly designed,
 improve it instead of copying it.
@@ -129,6 +216,8 @@ IMPORTANT
 - Make it scalable and future-proof.
 - Keep UI consistent with shadcn theme.
 - Follow SOLID principles.
+- NEVER hardcode user-facing strings — always use translation keys.
+- ALWAYS update both en.json and bn.json with identical key structures.
 
 Wait for old feature files before starting.
 Before giving code, list the possible mistakes and confirm the rules. 

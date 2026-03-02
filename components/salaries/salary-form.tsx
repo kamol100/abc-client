@@ -122,7 +122,7 @@ const SalaryFormContent: FC<ContentProps> = ({
           <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">
-                {t("gross_amount")}:
+                {t("common.gross_amount")}:
               </span>
               <span className="font-medium">
                 ৳{formatMoney(totalItems)}
@@ -131,7 +131,7 @@ const SalaryFormContent: FC<ContentProps> = ({
             {totalDeductions > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
-                  {t("total_deductions")}:
+                  {t("common.total_deductions")}:
                 </span>
                 <span className="font-medium text-destructive">
                   -৳{formatMoney(totalDeductions)}
@@ -139,7 +139,7 @@ const SalaryFormContent: FC<ContentProps> = ({
               </div>
             )}
             <div className="flex justify-between border-t pt-2">
-              <span className="font-semibold">{t("net_salary")}:</span>
+              <span className="font-semibold">{t("common.net_salary")}:</span>
               <span className="font-bold text-primary text-lg">
                 ৳{formatMoney(netSalary)}
               </span>

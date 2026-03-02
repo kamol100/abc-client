@@ -10,7 +10,7 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="vendor_name" />
+            <DataTableColumnHeader column={column} title="vendor.name.label" />
         ),
         cell: ({ row }) => (
             <div className="capitalize">{row.original.name}</div>
@@ -21,7 +21,7 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
     {
         accessorKey: "phone",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="phone" />
+            <DataTableColumnHeader column={column} title="vendor.phone.label" />
         ),
         cell: ({ row }) => <div>{row.original.phone}</div>,
         enableSorting: false,
@@ -29,7 +29,7 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
     {
         accessorKey: "email",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="email" />
+            <DataTableColumnHeader column={column} title="vendor.email.label" />
         ),
         cell: ({ row }) => <div>{row.original.email ?? ""}</div>,
         enableSorting: false,
@@ -37,7 +37,7 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
     {
         accessorKey: "address",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="address" />
+            <DataTableColumnHeader column={column} title="vendor.address.label" />
         ),
         cell: ({ row }) => (
             <div className="max-w-[200px] truncate">{row.original.address ?? ""}</div>
@@ -50,7 +50,7 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
             <DataTableColumnHeader
                 column={column}
                 className="flex justify-end capitalize mr-3"
-                title="actions"
+                title="common.actions"
             />
         ),
         cell: ({ row }) => {
@@ -66,8 +66,8 @@ export const VendorsColumns: ColumnDef<VendorRow>[] = [
                     <DeleteModal
                         api_url={`/vendors/${vendor.id}`}
                         keys="vendors"
-                        confirmMessage="delete_vendor_confirmation"
-                        buttonText="confirm_delete"
+                        confirmMessage="vendor.delete_confirmation"
+                        buttonText="common.confirm_delete"
                     />
                 </div>
             );

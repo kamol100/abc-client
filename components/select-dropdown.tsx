@@ -40,7 +40,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   isLoading = false,
   isClearable = true,
   isSearchable = true,
-  placeholder = "select_option",
+  placeholder = "common.select_option",
   onValueChange,
   control: controlProp,
   rules,

@@ -5,6 +5,6 @@ export default async function Salaries() {
   return <SalaryTable />;
 }
 export const metadata: Metadata = {
-  title: i18n.t("salaries"),
-  description: i18n.t("salaries_description") || "Salaries",
+  title: i18n.t("salary.title") || "Salaries",
+  description: i18n.t("salary.title") || "Salaries",
 };

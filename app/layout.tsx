@@ -4,7 +4,7 @@ import I18nProvider from "@/context/I18nProvider";
 import TanstackProvider from "@/context/tanstack-provider";
 import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
-import { getPublicData } from "@/lib/api/api";
+import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
@@ -31,10 +31,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await getPublicData(`/api/v1/get-translations`, "translation");
-  const translations = data?.data?.translations ?? [];
-
   const cookieStore = await cookies();
+  const language = parseLanguage(cookieStore.get(LANGUAGE_COOKIE)?.value);
   const themeColor = (cookieStore.get("themeColor")?.value ?? "zinc") as ThemeColor;
   const density = (cookieStore.get("density")?.value ?? "comfortable") as ThemeDensity;
   const radius = (cookieStore.get("radius")?.value ?? "0.5") as ThemeRadius;
@@ -42,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang={language}
       suppressHydrationWarning
       data-theme-color={themeColor}
       data-density={density}
@@ -59,7 +57,7 @@ export default async function RootLayout({
         >
           <AuthProvider>
             <Toaster />
-            <I18nProvider translations={translations}>
+            <I18nProvider initialLanguage={language}>
               <ThemeSettingsProvider
                 initialSettings={{ color: themeColor, density, radius, navDrawerSide }}
               >

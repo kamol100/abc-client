@@ -50,7 +50,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
   return (
     <DialogWrapper
       trigger={<ActionButton action="search" />}
-      title="salary_details"
+      title="common.salary_details"
       size="2xl"
     >
       <div className="space-y-5">
@@ -69,18 +69,18 @@ const SalaryShow: FC<Props> = ({ salary }) => {
           <h4 className="font-semibold mb-3">{salary.staff?.name}</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-muted-foreground">{t("date")}</span>
+              <span className="text-muted-foreground">{t("common.date")}</span>
               <p className="font-medium">{salary.date || "N/A"}</p>
             </div>
             <div>
-              <span className="text-muted-foreground">{t("total_amount")}</span>
+              <span className="text-muted-foreground">{t("common.total_amount")}</span>
               <p className="text-xl font-bold text-primary">
                 ৳{formatMoney(salary.amount)}
               </p>
             </div>
             <div>
               <span className="text-muted-foreground">
-                {t("payment_method")}
+                {t("common.payment_method")}
               </span>
               <p className="font-medium">{salary.fund?.name || "N/A"}</p>
             </div>
@@ -90,7 +90,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
         {/* Salary Items */}
         {items.length > 0 && (
           <div className="space-y-2">
-            <h4 className="font-semibold text-sm">{t("salary_and_allowance")}</h4>
+            <h4 className="font-semibold text-sm">{t("common.salary_and_allowance")}</h4>
             <div className="rounded-lg border divide-y">
               {items.map((item, index) => (
                 <div
@@ -104,7 +104,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
                 </div>
               ))}
               <div className="flex justify-between items-center px-4 py-2.5 bg-muted/50 font-semibold text-sm">
-                <span>{t("total")}</span>
+                <span>{t("common.total")}</span>
                 <span>৳{formatMoney(totalItems)}</span>
               </div>
             </div>
@@ -114,7 +114,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
         {/* Salary Deductions */}
         {deductions.length > 0 && (
           <div className="space-y-2">
-            <h4 className="font-semibold text-sm">{t("salary_deductions")}</h4>
+            <h4 className="font-semibold text-sm">{t("common.salary_deductions")}</h4>
             <div className="rounded-lg border divide-y">
               {deductions.map((d, index) => (
                 <div
@@ -128,7 +128,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
                 </div>
               ))}
               <div className="flex justify-between items-center px-4 py-2.5 bg-muted/50 font-semibold text-sm">
-                <span>{t("total")}</span>
+                <span>{t("common.total")}</span>
                 <span className="text-destructive">
                   -৳{formatMoney(totalDeductions)}
                 </span>
@@ -144,7 +144,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
               {items.length > 0 && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {t("gross_amount")}:
+                    {t("common.gross_amount")}:
                   </span>
                   <span>৳{formatMoney(totalItems)}</span>
                 </div>
@@ -152,7 +152,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
               {deductions.length > 0 && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {t("total_deductions")}:
+                    {t("common.total_deductions")}:
                   </span>
                   <span className="text-destructive">
                     -৳{formatMoney(totalDeductions)}
@@ -160,7 +160,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
                 </div>
               )}
               <div className="flex justify-between border-t pt-2 mt-2">
-                <span className="font-semibold">{t("net_salary")}:</span>
+                <span className="font-semibold">{t("common.net_salary")}:</span>
                 <span className="font-bold text-primary text-lg">
                   ৳{formatMoney(salary.amount)}
                 </span>
@@ -172,7 +172,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
         {/* Note */}
         {salary.note && (
           <div className="space-y-2">
-            <h4 className="font-semibold text-sm">{t("note")}</h4>
+            <h4 className="font-semibold text-sm">{t("common.note")}</h4>
             <p className="text-sm text-muted-foreground rounded-lg border p-3">
               {salary.note}
             </p>

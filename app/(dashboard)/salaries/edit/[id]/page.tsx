@@ -13,6 +13,6 @@ export default async function SalaryEdit({ params }: Props) {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("edit_salary"),
-  description: i18n.t("edit_salary_description") || "Edit Salary",
+  title: i18n.t("salary.edit.title") || "Edit Salary",
+  description: i18n.t("salary.edit.title") || "Edit Salary",
 };

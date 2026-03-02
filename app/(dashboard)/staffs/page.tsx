@@ -7,6 +7,6 @@ export default async function Staffs() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("staffs") || "Staffs",
-  description: i18n.t("staffs_description") || "Staffs Description",
+  title: i18n.t("staff.title") || "Staffs",
+  description: i18n.t("staff.title") || "Staffs",
 };

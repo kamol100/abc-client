@@ -33,7 +33,7 @@ export const SalaryColumns: ColumnDef<SalaryRow>[] = [
   {
     accessorKey: "staff.name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="staff" />
+      <DataTableColumnHeader column={column} title="salary.staff.label" />
     ),
     cell: ({ row }) => (
       <div className="w-[120px] capitalize font-medium">
@@ -46,14 +46,14 @@ export const SalaryColumns: ColumnDef<SalaryRow>[] = [
   {
     accessorKey: "date",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="date" />
+      <DataTableColumnHeader column={column} title="common.date" />
     ),
     cell: ({ row }) => <span className="text-sm">{row.original.date}</span>,
   },
   {
     accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="amount" />
+      <DataTableColumnHeader column={column} title="salary.amount.label" />
     ),
     cell: ({ row }) => (
       <span className="font-semibold text-primary">
@@ -64,7 +64,7 @@ export const SalaryColumns: ColumnDef<SalaryRow>[] = [
   {
     accessorKey: "salary_type",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="salary_type" />
+      <DataTableColumnHeader column={column} title="salary.salary_type.label" />
     ),
     cell: ({ row }) => {
       const type = row.original.salary_type;
@@ -78,7 +78,7 @@ export const SalaryColumns: ColumnDef<SalaryRow>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="status" />
+      <DataTableColumnHeader column={column} title="common.status" />
     ),
     cell: ({ row }) => {
       const status = row.original.status;
@@ -92,7 +92,7 @@ export const SalaryColumns: ColumnDef<SalaryRow>[] = [
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="actions" className="flex justify-end mr-2" />
+      <DataTableColumnHeader column={column} title="common.actions" className="flex justify-end mr-2" />
     ),
     cell: ({ row }) => {
       const salary = row.original;

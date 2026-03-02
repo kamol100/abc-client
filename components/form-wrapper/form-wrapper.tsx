@@ -249,14 +249,14 @@ export default function FormWrapper({
     ) : hydrationFailed ? (
         <div className="flex flex-col items-center gap-3 py-10 text-center">
             <p className="text-sm font-medium text-destructive">
-                {t("failed_to_load_data")}
+                {t("common.failed_to_load_data")}
             </p>
             <div className="flex gap-2">
                 <ActionButton action="cancel" onClick={handleClose}>
-                    {t("cancel")}
+                    {t("common.cancel")}
                 </ActionButton>
                 <ActionButton onClick={() => retryHydration()}>
-                    {t("refresh")}
+                    {t("common.refresh")}
                 </ActionButton>
             </div>
         </div>
@@ -278,13 +278,13 @@ export default function FormWrapper({
                     <ActionButton
                         action="cancel"
                         type="button"
-                        title={t("cancel")}
+                        title={t("common.cancel")}
                         size="default"
                         onClick={handleClose}
                     />
                     <ActionButton
                         action="save"
-                        title={t("save")}
+                        title={t("common.save")}
                         size="default"
                         type="submit"
                         variant="default"

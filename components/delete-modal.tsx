@@ -36,8 +36,8 @@ export function DeleteModal({
     url: api_url,
     method: "DELETE",
     invalidateKeys: keys,
-    successMessage: message ?? "item_deleted_successfully",
-    defaultErrorMessage: "delete_failed",
+    successMessage: message ?? "common.item_deleted_successfully",
+    defaultErrorMessage: "common.delete_failed",
     redirectTo,
   });
 
@@ -59,7 +59,7 @@ export function DeleteModal({
             size="default"
             onClick={close}
             disabled={loading}
-            title={t("cancel")}
+            title={t("common.cancel")}
           />
           <ActionButton
             action="delete"
@@ -68,7 +68,7 @@ export function DeleteModal({
             onClick={() => handleDelete(close)}
             disabled={loading}
             loading={loading}
-            title={t(buttonText ?? "delete")}
+            title={t(buttonText ?? "common.delete")}
           />
         </>
       )}
@@ -79,7 +79,7 @@ export function DeleteModal({
         </div>
         <div className="space-y-2">
           <DialogTitle className="text-center">
-            {t("confirm_delete")}
+            {t("common.confirm_delete")}
           </DialogTitle>
           <DialogDescription className="text-center">
             {t(confirmMessage ?? "delete_confirmation_message")}

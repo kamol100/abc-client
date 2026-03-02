@@ -1,16 +1,11 @@
-
-
 import { z } from "zod";
-
-import i18n from "i18next";
+import i18n from "@/i18n";
 
 export const ClientSchema = z.object({
     id: z.nullable(z.coerce.string()).optional(),
-    name: z
-        .string({
-            required_error: i18n.t("name_required"),
-        })
-        .min(2, { message: i18n.t("name_must_have_at_least_two_character") }),
+    name: z.string({
+        required_error: i18n.t("client.name.errors.required"),
+    }).min(2, { message: i18n.t("client.name.errors.min") }),
     zone_id: z.nullable(z.coerce.number()).optional(),
     device_id: z.nullable(z.coerce.number()).optional(),
     device: z.nullable(z.record(z.coerce.string())).optional(),
@@ -30,9 +25,6 @@ export const ClientSchema = z.object({
     payment_term: z.coerce.number(),
     payments: z.nullable(z.array(z.coerce.string())).optional(),
     invoiceDue: z.nullable(z.array(z.coerce.string())).optional(),
-    // phone: z.string().min(11, {
-    //   message: "11 digits phone number must be required",
-    // }),
     phone: z.nullable(z.string()).optional(),
     alternate_phone1: z.nullable(z.string().optional()),
     father_name: z.nullable(z.string().optional()),
@@ -54,10 +46,10 @@ export const ClientSchema = z.object({
     connection_type: z.string().optional(),
     connection_mode: z.string().optional(),
     pppoe_username: z.string().min(1, {
-        message: "pppoe_id_must_have_at_least_one_character",
+        message: i18n.t("client.pppoe_username.errors.required"),
     }),
     pppoe_password: z.string().min(1, {
-        message: "password_field_is_required",
+        message: i18n.t("client.pppoe_password.errors.required"),
     }),
     status: z.coerce.number().optional(),
     note: z.nullable(z.string().optional()),
@@ -65,10 +57,7 @@ export const ClientSchema = z.object({
     reseller_id: z.coerce.string().optional(),
     type: z.coerce.string().optional(),
     cable_type: z.nullable(z.string()).optional(),
-    cable_length: z
-        .coerce.string()
-        .optional()
-        .default("0"),
+    cable_length: z.coerce.string().optional().default("0"),
     cable_id: z.nullable(z.coerce.string()).optional(),
     login_sms_notification: z.nullable(z.coerce.number()).optional(),
     cable_invoice: z.coerce.number().optional().default(0),

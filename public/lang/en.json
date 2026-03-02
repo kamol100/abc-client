@@ -1,0 +1,845 @@
+{
+    "common": {
+        "add": "Add",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "delete": "Delete",
+        "save": "Save",
+        "refresh": "Refresh",
+        "actions": "Actions",
+        "status": "Status",
+        "email": "Email",
+        "phone": "Phone",
+        "name": "Name",
+        "username": "Username",
+        "password": "Password",
+        "roles": "Roles",
+        "note": "Note",
+        "date": "Date",
+        "address": "Address",
+        "active": "Active",
+        "inactive": "Inactive",
+        "male": "Male",
+        "female": "Female",
+        "married": "Married",
+        "unmarried": "Unmarried",
+        "monthly": "Monthly",
+        "advance": "Advance",
+        "pending": "Pending",
+        "paid": "Paid",
+        "approved": "Approved",
+        "cancelled": "Cancelled",
+        "repay": "Repay",
+        "auto": "Auto",
+        "manual": "Manual",
+        "label": "Label",
+        "value": "Value",
+        "total": "Total",
+        "select_option": "Select option",
+        "failed_to_load_data": "Failed to load data",
+        "request_failed": "Request failed",
+        "confirm_delete": "Confirm Delete",
+        "delete_confirmation_message": "Are you sure you want to delete this item? This action cannot be undone.",
+        "optional_note": "Optional note",
+        "add_item": "Add Item",
+        "add_deduction": "Add Deduction",
+        "no_salary": "No Salary",
+        "basic_information": "Basic Information",
+        "salary_information": "Salary Information",
+        "salary_and_allowance": "Salary & Allowance",
+        "salary_deductions": "Salary Deductions",
+        "gross_amount": "Gross Amount",
+        "total_deductions": "Total Deductions",
+        "net_salary": "Net Salary",
+        "total_amount": "Total Amount",
+        "payment_method": "Payment Method",
+        "salary_details": "Salary Details",
+        "item_deleted_successfully": "Item deleted successfully",
+        "delete_failed": "Delete failed",
+        "prepaid": "Prepaid",
+        "postpaid": "Postpaid",
+        "yes": "Yes",
+        "no": "No"
+    },
+    "user": {
+        "name": {
+            "label": "User Name",
+            "tooltip": "Enter the full legal name of the user",
+            "placeholder": "Enter the full legal name of the user",
+            "errors": {
+                "required": "Name is required",
+                "min": "Name must be at least 3 characters long",
+                "invalid": "Invalid name"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "tooltip": "Enter the username of the user",
+            "placeholder": "Enter the username of the user",
+            "errors": {
+                "required": "Username is required",
+                "min": "Username must be at least 3 characters long",
+                "invalid": "Invalid username"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "tooltip": "Enter the password of the user",
+            "placeholder": "Enter the password of the user",
+            "errors": {
+                "required": "Password is required",
+                "min": "Password must be at least 8 characters long",
+                "invalid": "Invalid password"
+            }
+        },
+        "confirm_password": {
+            "label": "Confirm Password",
+            "tooltip": "Confirm the password of the user",
+            "placeholder": "Confirm the password of the user",
+            "errors": {
+                "required": "Confirm password is required",
+                "min": "Confirm password must be at least 8 characters long",
+                "invalid": "Invalid confirmation",
+                "not_match": "Passwords do not match"
+            }
+        },
+        "email": {
+            "label": "Email Address",
+            "tooltip": "We will send notifications to this email",
+            "placeholder": "Enter the email address",
+            "errors": {
+                "required": "Email is required",
+                "email": "Invalid email address",
+                "invalid": "Invalid email address",
+                "min": "Email must be at least 3 characters long"
+            }
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select the status",
+            "errors": {
+                "required": "Status is required"
+            }
+        },
+        "roles": {
+            "label": "Roles",
+            "placeholder": "Select the roles",
+            "errors": {
+                "required": "Roles are required",
+                "min": "At least one role is required"
+            }
+        },
+        "company": {
+            "label": "Company"
+        },
+        "domain": {
+            "label": "Domain"
+        },
+        "title": "Users",
+        "delete_confirmation": "Are you sure you want to delete this user?"
+    },
+    "zone": {
+        "name": {
+            "label": "Zone Name",
+            "tooltip": "Enter the name of the zone",
+            "placeholder": "Enter the name of the zone",
+            "errors": {
+                "required": "Zone name is required",
+                "min": "Zone name must be at least 2 characters long",
+                "invalid": "Invalid zone name"
+            }
+        },
+        "name_bn": {
+            "label": "Zone Name (Bangla)"
+        },
+        "latitude": {
+            "label": "Latitude",
+            "placeholder": "Enter the latitude of the zone"
+        },
+        "longitude": {
+            "label": "Longitude",
+            "placeholder": "Enter the longitude of the zone"
+        },
+        "sub_zones": {
+            "label": "Sub Zones"
+        },
+        "title": "Zones",
+        "delete_confirmation": "Are you sure you want to delete this zone?"
+    },
+    "sub_zone": {
+        "name": {
+            "label": "Sub Zone Name (English)",
+            "placeholder": "Enter sub zone name",
+            "errors": {
+                "required": "Sub zone name is required",
+                "min": "Sub zone name must be at least 2 characters long"
+            }
+        },
+        "name_bn": {
+            "label": "Sub Zone Name (Bangla)",
+            "placeholder": "Enter sub zone name in Bangla"
+        },
+        "zone": {
+            "label": "Zone",
+            "placeholder": "Select zone",
+            "errors": {
+                "required": "Zone is required"
+            }
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network"
+        },
+        "location": {
+            "label": "Location",
+            "placeholder": "Enter location"
+        },
+        "ports": {
+            "label": "Ports",
+            "placeholder": "Enter ports"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "title": "Sub Zones",
+        "delete_confirmation": "Are you sure you want to delete this sub zone?"
+    },
+    "staff": {
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter name",
+            "errors": {
+                "required": "Name is required",
+                "min": "Name must be at least 2 characters long"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "placeholder": "Enter username"
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter password"
+        },
+        "roles": {
+            "label": "Role & Permission",
+            "placeholder": "Select roles"
+        },
+        "designation": {
+            "label": "Designation",
+            "placeholder": "Enter designation"
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "min": "Phone number must be at least 11 digits"
+            }
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email"
+        },
+        "date_of_birth": {
+            "label": "Date of Birth",
+            "placeholder": "Select date of birth"
+        },
+        "join_date": {
+            "label": "Join Date",
+            "placeholder": "Select join date"
+        },
+        "salary_day": {
+            "label": "Salary Day",
+            "placeholder": "Select salary day"
+        },
+        "salary_generation_type": {
+            "label": "Salary Generation Type"
+        },
+        "father_name": {
+            "label": "Father's Name",
+            "placeholder": "Enter father's name"
+        },
+        "mother_name": {
+            "label": "Mother's Name",
+            "placeholder": "Enter mother's name"
+        },
+        "nid": {
+            "label": "NID",
+            "placeholder": "Enter NID"
+        },
+        "marital_status": {
+            "label": "Marital Status"
+        },
+        "gender": {
+            "label": "Gender",
+            "errors": {
+                "required": "Gender is required"
+            }
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status"
+        },
+        "present_address": {
+            "label": "Present Address",
+            "placeholder": "Enter present address"
+        },
+        "permanent_address": {
+            "label": "Permanent Address",
+            "placeholder": "Enter permanent address"
+        },
+        "job_experience": {
+            "label": "Job Experience",
+            "placeholder": "Enter job experience"
+        },
+        "social_media_address": {
+            "label": "Social Media",
+            "placeholder": "Enter social media address"
+        },
+        "title": "Staffs",
+        "create": {
+            "title": "Create Staff"
+        },
+        "edit": {
+            "title": "Edit Staff"
+        }
+    },
+    "salary": {
+        "salary_type": {
+            "label": "Salary Type",
+            "errors": {
+                "required": "Salary type is required"
+            }
+        },
+        "fund": {
+            "label": "Fund",
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Fund is required"
+            }
+        },
+        "staff": {
+            "label": "Staff",
+            "placeholder": "Select staff",
+            "errors": {
+                "required": "Staff is required"
+            }
+        },
+        "date": {
+            "label": "Date",
+            "placeholder": "Select date"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status",
+            "errors": {
+                "required": "Status is required"
+            }
+        },
+        "amount": {
+            "label": "Amount",
+            "placeholder": "Enter amount",
+            "errors": {
+                "required": "Amount is required"
+            }
+        },
+        "items_label": {
+            "errors": {
+                "required": "Item label is required"
+            }
+        },
+        "items_value": {
+            "errors": {
+                "required": "Item value is required"
+            }
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Optional note"
+        },
+        "title": "Salaries",
+        "create": {
+            "title": "Create Salary"
+        },
+        "edit": {
+            "title": "Edit Salary"
+        }
+    },
+    "vendor": {
+        "name": {
+            "label": "Vendor Name",
+            "placeholder": "Enter vendor name",
+            "errors": {
+                "required": "Vendor name is required",
+                "min": "Vendor name must be at least 2 characters long"
+            }
+        },
+        "phone": {
+            "label": "Phone",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "required": "Phone is required",
+                "min": "Phone must be at least 11 digits"
+            }
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email",
+            "errors": {
+                "invalid": "Invalid email address"
+            }
+        },
+        "address": {
+            "label": "Address",
+            "placeholder": "Enter address"
+        },
+        "title": "Vendors",
+        "delete_confirmation": "Are you sure you want to delete this vendor?"
+    },
+    "client": {
+        "name": {
+            "label": "Client Name",
+            "placeholder": "Enter client name",
+            "errors": {
+                "required": "Client name is required",
+                "min": "Name must be at least 2 characters long"
+            }
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Ex: 016772171..."
+        },
+        "pppoe_username": {
+            "label": "PPPoE ID",
+            "placeholder": "Enter PPPoE ID",
+            "errors": {
+                "required": "PPPoE ID is required"
+            }
+        },
+        "pppoe_password": {
+            "label": "Password",
+            "placeholder": "Enter password",
+            "errors": {
+                "required": "Password is required"
+            }
+        },
+        "ip_address": {
+            "label": "IP Address",
+            "placeholder": "Enter IP address"
+        },
+        "discount": {
+            "label": "Discount",
+            "placeholder": "0.00"
+        },
+        "payment_deadline": {
+            "label": "Payment Deadline",
+            "placeholder": "Select payment deadline"
+        },
+        "payment_term": {
+            "label": "Payment Term",
+            "placeholder": "Select payment term"
+        },
+        "zone": {
+            "label": "Zone",
+            "placeholder": "Select zone"
+        },
+        "sub_zone": {
+            "label": "Sub Zone",
+            "placeholder": "Select sub zone"
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network"
+        },
+        "package": {
+            "label": "Network Package",
+            "placeholder": "Select network package"
+        },
+        "device": {
+            "label": "Device",
+            "placeholder": "Select device"
+        },
+        "latitude": {
+            "label": "Latitude",
+            "placeholder": "Enter latitude"
+        },
+        "longitude": {
+            "label": "Longitude",
+            "placeholder": "Enter longitude"
+        },
+        "welcome_notification": {
+            "label": "Send Welcome SMS"
+        },
+        "billing_term": {
+            "label": "Billing Term"
+        },
+        "current_address": {
+            "label": "Current Address",
+            "placeholder": "Enter current address"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "confirm": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm password"
+        },
+        "roles": {
+            "label": "Roles"
+        },
+        "ip": {
+            "label": "IP"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email"
+        },
+        "title": "Clients"
+    },
+    "payment": {
+        "title_plural": "Payments",
+        "create_title": "Add Bill",
+        "edit_title": "Edit Payment",
+        "pay_title": "Make Payment",
+        "pid": {
+            "label": "PID"
+        },
+        "title": {
+            "label": "Payment Title",
+            "placeholder": "Enter payment title",
+            "errors": {
+                "required": "Payment title is required",
+                "min": "Payment title must be at least 2 characters"
+            }
+        },
+        "amount": {
+            "label": "Amount",
+            "placeholder": "Enter amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be at least 1"
+            }
+        },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client",
+            "errors": {
+                "required": "Client is required"
+            }
+        },
+        "fund": {
+            "label": "Payment Method",
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Payment method is required"
+            }
+        },
+        "payment_date": {
+            "label": "Payment Date",
+            "placeholder": "Select payment date"
+        },
+        "status": {
+            "placeholder": "Select status",
+            "errors": {
+                "required": "Status is required"
+            }
+        },
+        "discount": {
+            "label": "Discount",
+            "placeholder": "0.00"
+        },
+        "partial_amount": {
+            "label": "Partial Amount Paid",
+            "placeholder": "Enter partial payment amount"
+        },
+        "transaction_id": {
+            "label": "Transaction ID",
+            "placeholder": "Enter transaction ID"
+        },
+        "reference": {
+            "label": "Reference",
+            "placeholder": "Enter reference"
+        },
+        "confirmation_sms": {
+            "label": "Confirm SMS"
+        },
+        "payment_type": {
+            "label": "Bill Type",
+            "placeholder": "Select bill type"
+        },
+        "collect_by": {
+            "label": "Collect By"
+        },
+        "invoice_id": {
+            "placeholder": "Invoice ID"
+        },
+        "due": "Due",
+        "partial_paid": "Partial Paid",
+        "total_paid": "Total Paid",
+        "total_due": "Total Due",
+        "bill_due": "Bill Due",
+        "bill_created": "Bill Created",
+        "bill_deadline": "Bill Deadline",
+        "pppoe_id": "PPPoE ID",
+        "pay_now": "Pay Now",
+        "pay_success": "Payment completed successfully",
+        "delete_confirmation": "Are you sure you want to delete this payment?"
+    },
+    "expense": {
+        "title_plural": "Expenses",
+        "create_title": "Add Expense",
+        "edit_title": "Edit Expense",
+        "amount": {
+            "label": "Amount",
+            "placeholder": "Enter amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be at least 1"
+            }
+        },
+        "staff": {
+            "label": "Expense By",
+            "placeholder": "Select staff",
+            "errors": {
+                "required": "Staff is required"
+            }
+        },
+        "fund": {
+            "label": "Payment Method",
+            "placeholder": "Select fund"
+        },
+        "expense_type": {
+            "label": "Expense Type",
+            "placeholder": "Select expense type",
+            "errors": {
+                "required": "Expense type is required"
+            }
+        },
+        "zone": {
+            "label": "Zone",
+            "placeholder": "Select zone"
+        },
+        "voucher": {
+            "label": "Voucher",
+            "placeholder": "Enter voucher"
+        },
+        "expense_date": {
+            "label": "Expense Date",
+            "placeholder": "Select expense date"
+        },
+        "status": {
+            "placeholder": "Select status"
+        },
+        "approve": "Approve",
+        "decline": "Decline",
+        "declined": "Declined",
+        "status_updated": "Expense status updated successfully",
+        "delete_confirmation": "Are you sure you want to delete this expense?"
+    },
+    "menu": {
+        "dashboard": {
+            "title": "Dashboard"
+        },
+        "clients": {
+            "title": "Clients"
+        },
+        "reports": {
+            "title": "Reports",
+            "income_expense": {
+                "title": "Income & Expense"
+            },
+            "funds": {
+                "title": "Funds"
+            },
+            "invoices": {
+                "title": "Invoices"
+            },
+            "payments": {
+                "title": "Payments"
+            },
+            "expenses": {
+                "title": "Expenses"
+            },
+            "product_in": {
+                "title": "Product In"
+            },
+            "product_out": {
+                "title": "Product Out"
+            }
+        },
+        "tickets": {
+            "title": "Tickets"
+        },
+        "invoice": {
+            "title": "Invoice",
+            "type": {
+                "title": "Invoice Type"
+            }
+        },
+        "payment_due": {
+            "title": "Payment Due"
+        },
+        "payments": {
+            "title": "Payments"
+        },
+        "maps": {
+            "title": "Maps",
+            "client_maps": {
+                "title": "Client Maps"
+            },
+            "tj_box_maps": {
+                "title": "TJ Box Maps"
+            },
+            "tj_boxes": {
+                "title": "TJ Boxes"
+            }
+        },
+        "products": {
+            "title": "Products",
+            "reports": {
+                "title": "Product Reports"
+            },
+            "category": {
+                "title": "Product Category"
+            },
+            "unit_types": {
+                "title": "Unit Types"
+            }
+        },
+        "expense": {
+            "title": "Expense",
+            "category": {
+                "title": "Expense Category"
+            },
+            "types": {
+                "title": "Expense Types"
+            }
+        },
+        "support_tickets": {
+            "title": "Support Tickets",
+            "subjects": {
+                "title": "Subjects"
+            },
+            "tags": {
+                "title": "Tags"
+            }
+        },
+        "resellers": {
+            "title": "Resellers"
+        },
+        "communication": {
+            "title": "Communication",
+            "gateways": {
+                "title": "Gateways"
+            },
+            "queue": {
+                "title": "Queue"
+            },
+            "logs": {
+                "title": "Logs"
+            }
+        },
+        "sms": {
+            "title": "SMS",
+            "send": {
+                "title": "Send SMS"
+            },
+            "templates": {
+                "title": "SMS Templates"
+            }
+        },
+        "networks": {
+            "title": "Networks",
+            "devices": {
+                "title": "Devices"
+            },
+            "device_type": {
+                "title": "Device Types"
+            }
+        },
+        "mikrotik_commands": {
+            "title": "Mikrotik Commands"
+        },
+        "activity_logs": {
+            "title": "Activity Logs"
+        },
+        "history": {
+            "title": "History"
+        },
+        "zones": {
+            "title": "Zones",
+            "sub_zone": {
+                "title": "Sub Zones"
+            }
+        },
+        "packages": {
+            "title": "Packages",
+            "mikrotik_package": {
+                "title": "Mikrotik Package"
+            },
+            "client_package": {
+                "title": "Client Package"
+            },
+            "reseller_package": {
+                "title": "Reseller Package"
+            }
+        },
+        "vendors": {
+            "title": "Vendors"
+        },
+        "funds": {
+            "title": "Funds",
+            "transaction": {
+                "title": "Fund Transactions"
+            }
+        },
+        "staffs": {
+            "title": "Staffs",
+            "salaries": {
+                "title": "Salaries"
+            }
+        },
+        "wallets": {
+            "title": "Wallets",
+            "my_wallets": {
+                "title": "My Wallets"
+            },
+            "client_wallets": {
+                "title": "Client Wallets"
+            }
+        },
+        "users": {
+            "title": "Users"
+        },
+        "companies": {
+            "title": "Companies"
+        },
+        "mikrotik_sync": {
+            "title": "Mikrotik Sync",
+            "import": {
+                "title": "Import"
+            },
+            "re_sync": {
+                "title": "Re-Sync"
+            }
+        },
+        "role_permission": {
+            "title": "Role & Permission",
+            "roles": {
+                "title": "Roles"
+            },
+            "permissions": {
+                "title": "Permissions"
+            }
+        },
+        "settings": {
+            "title": "Settings"
+        }
+    }
+}

@@ -34,13 +34,13 @@ const StaffTable: FC = () => {
   const { isMobile } = useSidebar();
 
   const toolbarTitle = pagination?.total
-    ? `${t("staffs")} (${pagination.total})`
-    : t("staffs");
+    ? `${t("staff.title")} (${pagination.total})`
+    : t("staff.title");
 
   const FormLink = () => (
     <Link href="/staffs/create">
       <ActionButton size={"default"} variant={"default"}>
-        {isMobile ? <Plus /> : <><Plus /> {t("add")}</>}
+        {isMobile ? <Plus /> : <><Plus /> {t("common.add")}</>}
       </ActionButton>
     </Link>
   );

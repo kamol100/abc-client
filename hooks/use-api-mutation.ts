@@ -26,7 +26,7 @@ export default function useApiMutation<
   method = "POST",
   invalidateKeys,
   successMessage,
-  defaultErrorMessage = "request_failed",
+  defaultErrorMessage = "common.request_failed",
   redirectTo,
   onSuccess,
   onError,

@@ -7,6 +7,6 @@ export default async function Users() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("users") || "Users",
-  description: i18n.t("users_description") || "Users Description",
+  title: i18n.t("user.title") || "Users",
+  description: i18n.t("user.title") || "Users",
 };

@@ -11,7 +11,7 @@ export const ClientColumns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="name" />
+      <DataTableColumnHeader column={column} title="client.name.label" />
     ),
     cell: ({ row }) => (
       <div className="w-[150px] capitalize">{row.original.name}</div>
@@ -22,7 +22,7 @@ export const ClientColumns: ColumnDef<User>[] = [
   {
     accessorKey: "roles",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Roles"} />
+      <DataTableColumnHeader column={column} title="client.roles.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -38,7 +38,7 @@ export const ClientColumns: ColumnDef<User>[] = [
   {
     accessorKey: "address",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Address"} />
+      <DataTableColumnHeader column={column} title="client.address.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -54,7 +54,7 @@ export const ClientColumns: ColumnDef<User>[] = [
   {
     accessorKey: "ip_address",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title={"Ip"} />
+      <DataTableColumnHeader column={column} title="client.ip.label" />
     ),
     cell: ({ row }) => {
       const client = row.original;
@@ -70,7 +70,7 @@ export const ClientColumns: ColumnDef<User>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="client.email.label" />
     ),
     cell: ({ row }) => {
       const user = row.original;
@@ -84,32 +84,10 @@ export const ClientColumns: ColumnDef<User>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  //   {
-  //     accessorKey: "type",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Type" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       const type = row.getValue("type");
-  //       return (
-  //         <div className="flex w-[100px] items-center">
-  //           {type === "income" ? (
-  //             <TrendingUp size={20} className="mr-2 text-green-500" />
-  //           ) : (
-  //             <TrendingDown size={20} className="mr-2 text-red-500" />
-  //           )}
-  //           <span className="capitalize"> {row.getValue("type")}</span>
-  //         </div>
-  //       );
-  //     },
-  //     filterFn: (row, id, value) => {
-  //       return value.includes(row.getValue(id));
-  //     },
-  //   },
   {
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
+      <DataTableColumnHeader column={column} title="client.status.label" />
     ),
     cell: ({ row }) => {
       const user: any = row.original;
@@ -136,34 +114,10 @@ export const ClientColumns: ColumnDef<User>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  //   {
-  //     accessorKey: "date",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Date" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       const date = new Date(row.getValue("date"));
-  //       const formattedDate = date.toLocaleDateString("en-US", {
-  //         day: "2-digit",
-  //         month: "short",
-  //         year: "numeric",
-  //       });
-  //       return (
-  //         <div className="flex w-[100px] items-center">
-  //           <span className="capitalize">{formattedDate}</span>
-  //         </div>
-  //       );
-  //     },
-  //     filterFn: (row, id, value) => {
-  //       const rowDate = new Date(row.getValue(id));
-  //       const [startDate, endDate] = value;
-  //       return rowDate >= startDate && rowDate <= endDate;
-  //     },
-  //   },
   {
     id: "actions",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="actions" />
+      <DataTableColumnHeader column={column} title="common.actions" />
     ),
     cell: ({ row }) => {
       const data = row.original;

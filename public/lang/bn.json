@@ -1,0 +1,837 @@
+{
+    "common": {
+        "add": "যোগ",
+        "cancel": "বাতিল",
+        "confirm": "নিশ্চিত",
+        "delete": "মুছুন",
+        "save": "সংরক্ষণ",
+        "refresh": "রিফ্রেশ",
+        "actions": "অ্যাকশন",
+        "status": "অবস্থা",
+        "email": "ইমেইল",
+        "phone": "ফোন",
+        "name": "নাম",
+        "username": "ইউজারনেম",
+        "password": "পাসওয়ার্ড",
+        "roles": "রোলস",
+        "note": "নোট",
+        "date": "তারিখ",
+        "address": "ঠিকানা",
+        "active": "সক্রিয়",
+        "inactive": "নিষ্ক্রিয়",
+        "male": "পুরুষ",
+        "female": "মহিলা",
+        "married": "বিবাহিত",
+        "unmarried": "অবিবাহিত",
+        "monthly": "মাসিক",
+        "advance": "অ্যাডভান্স",
+        "pending": "পেন্ডিং",
+        "paid": "পেইড",
+        "approved": "অনুমোদিত",
+        "cancelled": "বাতিলকৃত",
+        "repay": "রিপে",
+        "auto": "অটো",
+        "manual": "ম্যানুয়াল",
+        "label": "লেবেল",
+        "value": "মান",
+        "total": "মোট",
+        "select_option": "অপশন নির্বাচন করুন",
+        "failed_to_load_data": "ডাটা লোড করতে ব্যর্থ",
+        "request_failed": "রিকুয়েস্ট ব্যর্থ",
+        "confirm_delete": "মুছে ফেলা নিশ্চিত করুন",
+        "delete_confirmation_message": "আপনি কি নিশ্চিত এই আইটেমটি মুছে ফেলতে চান? এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।",
+        "optional_note": "ঐচ্ছিক নোট",
+        "add_item": "আইটেম যোগ করুন",
+        "add_deduction": "কর্তন যোগ করুন",
+        "no_salary": "বেতন নেই",
+        "basic_information": "মৌলিক তথ্য",
+        "salary_information": "বেতন তথ্য",
+        "salary_and_allowance": "বেতন ও ভাতা",
+        "salary_deductions": "বেতন কর্তন",
+        "gross_amount": "মোট পরিমাণ",
+        "total_deductions": "মোট কর্তন",
+        "net_salary": "নেট বেতন",
+        "total_amount": "মোট টাকা",
+        "payment_method": "পেমেন্ট পদ্ধতি",
+        "salary_details": "বেতন বিবরণ",
+        "item_deleted_successfully": "আইটেম সফলভাবে মুছে ফেলা হয়েছে",
+        "delete_failed": "মুছে ফেলা ব্যর্থ",
+        "prepaid": "প্রিপেইড",
+        "postpaid": "পোস্টপেইড",
+        "yes": "হ্যাঁ",
+        "no": "না"
+    },
+    "user": {
+        "name": {
+            "label": "নাম",
+            "tooltip": "ব্যবহারকারীর সম্পূর্ণ নাম দিন",
+            "placeholder": "ব্যবহারকারীর সম্পূর্ণ নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ৩ অক্ষর হতে হবে",
+                "invalid": "অবৈধ নাম"
+            }
+        },
+        "username": {
+            "label": "ইউজারনেম",
+            "tooltip": "ইউজারনেম দিন",
+            "placeholder": "ইউজারনেম দিন",
+            "errors": {
+                "required": "ইউজারনেম আবশ্যক",
+                "min": "ইউজারনেম কমপক্ষে ৩ অক্ষর হতে হবে",
+                "invalid": "অবৈধ ইউজারনেম"
+            }
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "tooltip": "পাসওয়ার্ড দিন",
+            "placeholder": "পাসওয়ার্ড দিন",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক",
+                "min": "পাসওয়ার্ড কমপক্ষে ৮ অক্ষর হতে হবে",
+                "invalid": "অবৈধ পাসওয়ার্ড"
+            }
+        },
+        "confirm_password": {
+            "label": "পাসওয়ার্ড নিশ্চিত করুন",
+            "tooltip": "পাসওয়ার্ড নিশ্চিত করুন",
+            "placeholder": "পাসওয়ার্ড নিশ্চিত করুন",
+            "errors": {
+                "required": "পাসওয়ার্ড নিশ্চিত করুন আবশ্যক",
+                "min": "পাসওয়ার্ড নিশ্চিতকরণ কমপক্ষে ৮ অক্ষর হতে হবে",
+                "invalid": "অবৈধ নিশ্চিতকরণ",
+                "not_match": "পাসওয়ার্ড মিলছে না"
+            }
+        },
+        "email": {
+            "label": "ইমেইল",
+            "tooltip": "আমরা এই ইমেইলে বিজ্ঞপ্তি পাঠাব",
+            "placeholder": "ইমেইল ঠিকানা দিন",
+            "errors": {
+                "required": "ইমেইল আবশ্যক",
+                "email": "অবৈধ ইমেইল ঠিকানা",
+                "invalid": "অবৈধ ইমেইল ঠিকানা",
+                "min": "ইমেইল কমপক্ষে ৩ অক্ষর হতে হবে"
+            }
+        },
+        "status": {
+            "label": "অবস্থা",
+            "placeholder": "অবস্থা নির্বাচন করুন",
+            "errors": {
+                "required": "অবস্থা আবশ্যক"
+            }
+        },
+        "roles": {
+            "label": "রোলস",
+            "placeholder": "রোলস নির্বাচন করুন",
+            "errors": {
+                "required": "রোলস আবশ্যক",
+                "min": "কমপক্ষে একটি রোল আবশ্যক"
+            }
+        },
+        "company": {
+            "label": "কোম্পানি"
+        },
+        "domain": {
+            "label": "ডোমেইন"
+        },
+        "title": "ইউজার",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ইউজারটি মুছে ফেলতে চান?"
+    },
+    "zone": {
+        "name": {
+            "label": "জোনের নাম",
+            "tooltip": "জোনের নাম দিন",
+            "placeholder": "জোনের নাম দিন",
+            "errors": {
+                "required": "জোনের নাম আবশ্যক",
+                "min": "জোনের নাম কমপক্ষে ২ অক্ষর হতে হবে",
+                "invalid": "অবৈধ জোনের নাম"
+            }
+        },
+        "name_bn": {
+            "label": "জোনের নাম (বাংলা)"
+        },
+        "latitude": {
+            "label": "অক্ষাংশ",
+            "placeholder": "অক্ষাংশ দিন"
+        },
+        "longitude": {
+            "label": "দ্রাঘিমাংশ",
+            "placeholder": "দ্রাঘিমাংশ দিন"
+        },
+        "sub_zones": {
+            "label": "সাব জোন"
+        },
+        "title": "জোন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই জোনটি মুছে ফেলতে চান?"
+    },
+    "sub_zone": {
+        "name": {
+            "label": "সাব জোনের নাম (ইংরেজি)",
+            "placeholder": "সাব জোনের নাম দিন",
+            "errors": {
+                "required": "সাব জোনের নাম আবশ্যক",
+                "min": "সাব জোনের নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "name_bn": {
+            "label": "সাব জোনের নাম (বাংলা)",
+            "placeholder": "সাব জোনের নাম বাংলায় দিন"
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন",
+            "errors": {
+                "required": "জোন আবশ্যক"
+            }
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক নির্বাচন করুন"
+        },
+        "location": {
+            "label": "লোকেশন",
+            "placeholder": "লোকেশন দিন"
+        },
+        "ports": {
+            "label": "পোর্ট",
+            "placeholder": "পোর্ট দিন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "title": "সাব জোন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই সাব জোনটি মুছে ফেলতে চান?"
+    },
+    "staff": {
+        "name": {
+            "label": "নাম",
+            "placeholder": "নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "username": {
+            "label": "ইউজারনেম",
+            "placeholder": "ইউজারনেম দিন"
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "পাসওয়ার্ড দিন"
+        },
+        "roles": {
+            "label": "রোল ও পার্মিশন",
+            "placeholder": "রোল নির্বাচন করুন"
+        },
+        "designation": {
+            "label": "পদবি",
+            "placeholder": "পদবি দিন"
+        },
+        "phone": {
+            "label": "ফোন নম্বর",
+            "placeholder": "ফোন নম্বর দিন",
+            "errors": {
+                "min": "ফোন নম্বর কমপক্ষে ১১ ডিজিট হতে হবে"
+            }
+        },
+        "email": {
+            "label": "ইমেইল",
+            "placeholder": "ইমেইল দিন"
+        },
+        "date_of_birth": {
+            "label": "জন্ম তারিখ",
+            "placeholder": "জন্ম তারিখ নির্বাচন করুন"
+        },
+        "join_date": {
+            "label": "যোগদানের তারিখ",
+            "placeholder": "যোগদানের তারিখ নির্বাচন করুন"
+        },
+        "salary_day": {
+            "label": "বেতন দিবস",
+            "placeholder": "বেতন দিবস নির্বাচন করুন"
+        },
+        "salary_generation_type": {
+            "label": "বেতন জেনারেশন টাইপ"
+        },
+        "father_name": {
+            "label": "পিতার নাম",
+            "placeholder": "পিতার নাম দিন"
+        },
+        "mother_name": {
+            "label": "মাতার নাম",
+            "placeholder": "মাতার নাম দিন"
+        },
+        "nid": {
+            "label": "এনআইডি",
+            "placeholder": "এনআইডি দিন"
+        },
+        "marital_status": {
+            "label": "বৈবাহিক অবস্থা"
+        },
+        "gender": {
+            "label": "লিঙ্গ",
+            "errors": {
+                "required": "লিঙ্গ আবশ্যক"
+            }
+        },
+        "status": {
+            "label": "অবস্থা",
+            "placeholder": "অবস্থা নির্বাচন করুন"
+        },
+        "present_address": {
+            "label": "বর্তমান ঠিকানা",
+            "placeholder": "বর্তমান ঠিকানা দিন"
+        },
+        "permanent_address": {
+            "label": "স্থায়ী ঠিকানা",
+            "placeholder": "স্থায়ী ঠিকানা দিন"
+        },
+        "job_experience": {
+            "label": "চাকরির অভিজ্ঞতা",
+            "placeholder": "চাকরির অভিজ্ঞতা দিন"
+        },
+        "social_media_address": {
+            "label": "সোশ্যাল মিডিয়া",
+            "placeholder": "সোশ্যাল মিডিয়া ঠিকানা দিন"
+        },
+        "title": "স্টাফ",
+        "create": { "title": "স্টাফ তৈরি" },
+        "edit": { "title": "স্টাফ সম্পাদনা" }
+    },
+    "salary": {
+        "salary_type": {
+            "label": "বেতনের ধরন",
+            "errors": {
+                "required": "বেতনের ধরন আবশ্যক"
+            }
+        },
+        "fund": {
+            "label": "ফান্ড",
+            "placeholder": "ফান্ড নির্বাচন করুন",
+            "errors": {
+                "required": "ফান্ড আবশ্যক"
+            }
+        },
+        "staff": {
+            "label": "স্টাফ",
+            "placeholder": "স্টাফ নির্বাচন করুন",
+            "errors": {
+                "required": "স্টাফ আবশ্যক"
+            }
+        },
+        "date": {
+            "label": "তারিখ",
+            "placeholder": "তারিখ নির্বাচন করুন"
+        },
+        "status": {
+            "label": "অবস্থা",
+            "placeholder": "অবস্থা নির্বাচন করুন",
+            "errors": {
+                "required": "অবস্থা আবশ্যক"
+            }
+        },
+        "amount": {
+            "label": "পরিমাণ",
+            "placeholder": "পরিমাণ দিন",
+            "errors": {
+                "required": "পরিমাণ আবশ্যক"
+            }
+        },
+        "items_label": {
+            "errors": {
+                "required": "আইটেম লেবেল আবশ্যক"
+            }
+        },
+        "items_value": {
+            "errors": {
+                "required": "আইটেম মান আবশ্যক"
+            }
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "ঐচ্ছিক নোট"
+        },
+        "title": "স্যালারি",
+        "create": { "title": "স্যালারি তৈরি" },
+        "edit": { "title": "স্যালারি সম্পাদনা" }
+    },
+    "vendor": {
+        "name": {
+            "label": "ভেন্ডরের নাম",
+            "placeholder": "ভেন্ডরের নাম দিন",
+            "errors": {
+                "required": "ভেন্ডরের নাম আবশ্যক",
+                "min": "ভেন্ডরের নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "phone": {
+            "label": "ফোন",
+            "placeholder": "ফোন নম্বর দিন",
+            "errors": {
+                "required": "ফোন আবশ্যক",
+                "min": "ফোন কমপক্ষে ১১ ডিজিট হতে হবে"
+            }
+        },
+        "email": {
+            "label": "ইমেইল",
+            "placeholder": "ইমেইল দিন",
+            "errors": {
+                "invalid": "অবৈধ ইমেইল ঠিকানা"
+            }
+        },
+        "address": {
+            "label": "ঠিকানা",
+            "placeholder": "ঠিকানা দিন"
+        },
+        "title": "ভেন্ডর",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ভেন্ডরটি মুছে ফেলতে চান?"
+    },
+    "client": {
+        "name": {
+            "label": "ক্লায়েন্টের নাম",
+            "placeholder": "ক্লায়েন্টের নাম দিন",
+            "errors": {
+                "required": "ক্লায়েন্টের নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "phone": {
+            "label": "ফোন নম্বর",
+            "placeholder": "যেমন: ০১৬৭৭২১৭১..."
+        },
+        "pppoe_username": {
+            "label": "পিপিপিওই আইডি",
+            "placeholder": "পিপিপিওই আইডি দিন",
+            "errors": {
+                "required": "পিপিপিওই আইডি আবশ্যক"
+            }
+        },
+        "pppoe_password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "পাসওয়ার্ড দিন",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক"
+            }
+        },
+        "ip_address": {
+            "label": "আইপি অ্যাড্রেস",
+            "placeholder": "আইপি অ্যাড্রেস দিন"
+        },
+        "discount": {
+            "label": "ডিসকাউন্ট",
+            "placeholder": "০.০০"
+        },
+        "payment_deadline": {
+            "label": "পেমেন্ট ডেডলাইন",
+            "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন"
+        },
+        "payment_term": {
+            "label": "পেমেন্ট টার্ম",
+            "placeholder": "পেমেন্ট টার্ম নির্বাচন করুন"
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন"
+        },
+        "sub_zone": {
+            "label": "সাব জোন",
+            "placeholder": "সাব জোন নির্বাচন করুন"
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক নির্বাচন করুন"
+        },
+        "package": {
+            "label": "নেটওয়ার্ক প্যাকেজ",
+            "placeholder": "নেটওয়ার্ক প্যাকেজ নির্বাচন করুন"
+        },
+        "device": {
+            "label": "ডিভাইস",
+            "placeholder": "ডিভাইস নির্বাচন করুন"
+        },
+        "latitude": {
+            "label": "অক্ষাংশ",
+            "placeholder": "অক্ষাংশ দিন"
+        },
+        "longitude": {
+            "label": "দ্রাঘিমাংশ",
+            "placeholder": "দ্রাঘিমাংশ দিন"
+        },
+        "welcome_notification": {
+            "label": "স্বাগত এসএমএস পাঠান"
+        },
+        "billing_term": {
+            "label": "বিলিং টার্ম"
+        },
+        "current_address": {
+            "label": "বর্তমান ঠিকানা",
+            "placeholder": "বর্তমান ঠিকানা দিন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "confirm": {
+            "label": "পাসওয়ার্ড নিশ্চিত করুন",
+            "placeholder": "পাসওয়ার্ড নিশ্চিত করুন"
+        },
+        "roles": {
+            "label": "রোলস"
+        },
+        "ip": {
+            "label": "আইপি"
+        },
+        "status": {
+            "label": "অবস্থা",
+            "placeholder": "অবস্থা নির্বাচন করুন"
+        },
+        "email": {
+            "label": "ইমেইল",
+            "placeholder": "ইমেইল দিন"
+        },
+        "title": "ক্লায়েন্ট"
+    },
+    "payment": {
+        "title_plural": "পেমেন্ট",
+        "create_title": "বিল যোগ করুন",
+        "edit_title": "পেমেন্ট সম্পাদনা",
+        "pay_title": "পেমেন্ট করুন",
+        "pid": {
+            "label": "পিআইডি"
+        },
+        "title": {
+            "label": "পেমেন্ট টাইটেল",
+            "placeholder": "পেমেন্ট টাইটেল দিন",
+            "errors": {
+                "required": "পেমেন্ট টাইটেল আবশ্যক",
+                "min": "পেমেন্ট টাইটেল কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "amount": {
+            "label": "পরিমাণ",
+            "placeholder": "পরিমাণ দিন",
+            "errors": {
+                "required": "পরিমাণ আবশ্যক",
+                "min": "পরিমাণ কমপক্ষে ১ হতে হবে"
+            }
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "errors": {
+                "required": "ক্লায়েন্ট আবশ্যক"
+            }
+        },
+        "fund": {
+            "label": "পেমেন্ট পদ্ধতি",
+            "placeholder": "ফান্ড নির্বাচন করুন",
+            "errors": {
+                "required": "পেমেন্ট পদ্ধতি আবশ্যক"
+            }
+        },
+        "payment_date": {
+            "label": "পেমেন্ট তারিখ",
+            "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন"
+        },
+        "status": {
+            "placeholder": "অবস্থা নির্বাচন করুন",
+            "errors": {
+                "required": "অবস্থা আবশ্যক"
+            }
+        },
+        "discount": {
+            "label": "ডিসকাউন্ট",
+            "placeholder": "০.০০"
+        },
+        "partial_amount": {
+            "label": "আংশিক পেমেন্ট পরিমাণ",
+            "placeholder": "আংশিক পেমেন্ট পরিমাণ দিন"
+        },
+        "transaction_id": {
+            "label": "ট্রানজেকশন আইডি",
+            "placeholder": "ট্রানজেকশন আইডি দিন"
+        },
+        "reference": {
+            "label": "রেফারেন্স",
+            "placeholder": "রেফারেন্স দিন"
+        },
+        "confirmation_sms": {
+            "label": "কনফার্ম এসএমএস"
+        },
+        "payment_type": {
+            "label": "বিল টাইপ",
+            "placeholder": "বিল টাইপ নির্বাচন করুন"
+        },
+        "collect_by": {
+            "label": "কালেক্ট বাই"
+        },
+        "invoice_id": {
+            "placeholder": "ইনভয়েস আইডি"
+        },
+        "due": "ডিউ",
+        "partial_paid": "আংশিক পেইড",
+        "total_paid": "মোট পেইড",
+        "total_due": "মোট ডিউ",
+        "bill_due": "বিল ডিউ",
+        "bill_created": "বিল তৈরি",
+        "bill_deadline": "বিল ডেডলাইন",
+        "pppoe_id": "পিপিপিওই আইডি",
+        "pay_now": "পে করুন",
+        "pay_success": "পেমেন্ট সফলভাবে সম্পন্ন হয়েছে",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই পেমেন্টটি মুছে ফেলতে চান?"
+    },
+    "expense": {
+        "title_plural": "এক্সপেন্স",
+        "create_title": "এক্সপেন্স যোগ করুন",
+        "edit_title": "এক্সপেন্স সম্পাদনা",
+        "amount": {
+            "label": "পরিমাণ",
+            "placeholder": "পরিমাণ দিন",
+            "errors": {
+                "required": "পরিমাণ আবশ্যক",
+                "min": "পরিমাণ কমপক্ষে ১ হতে হবে"
+            }
+        },
+        "staff": {
+            "label": "এক্সপেন্স বাই",
+            "placeholder": "স্টাফ নির্বাচন করুন",
+            "errors": {
+                "required": "স্টাফ আবশ্যক"
+            }
+        },
+        "fund": {
+            "label": "পেমেন্ট পদ্ধতি",
+            "placeholder": "ফান্ড নির্বাচন করুন"
+        },
+        "expense_type": {
+            "label": "এক্সপেন্স টাইপ",
+            "placeholder": "এক্সপেন্স টাইপ নির্বাচন করুন",
+            "errors": {
+                "required": "এক্সপেন্স টাইপ আবশ্যক"
+            }
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন"
+        },
+        "voucher": {
+            "label": "ভাউচার",
+            "placeholder": "ভাউচার দিন"
+        },
+        "expense_date": {
+            "label": "এক্সপেন্স তারিখ",
+            "placeholder": "এক্সপেন্স তারিখ নির্বাচন করুন"
+        },
+        "status": {
+            "placeholder": "অবস্থা নির্বাচন করুন"
+        },
+        "approve": "অনুমোদন",
+        "decline": "প্রত্যাখ্যান",
+        "declined": "প্রত্যাখ্যাত",
+        "status_updated": "এক্সপেন্স স্ট্যাটাস সফলভাবে আপডেট হয়েছে",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই এক্সপেন্সটি মুছে ফেলতে চান?"
+    },
+    "menu": {
+        "dashboard": {
+            "title": "ড্যাশবোর্ড"
+        },
+        "clients": {
+            "title": "ক্লায়েন্ট"
+        },
+        "reports": {
+            "title": "রিপোর্ট",
+            "income_expense": {
+                "title": "আয় ও ব্যয়"
+            },
+            "funds": {
+                "title": "ফান্ড"
+            },
+            "invoices": {
+                "title": "ইনভয়েস"
+            },
+            "payments": {
+                "title": "পেমেন্ট"
+            },
+            "expenses": {
+                "title": "এক্সপেন্স"
+            },
+            "product_in": {
+                "title": "প্রোডাক্ট ইন"
+            },
+            "product_out": {
+                "title": "প্রোডাক্ট আউট"
+            }
+        },
+        "tickets": {
+            "title": "টিকেট"
+        },
+        "invoice": {
+            "title": "ইনভয়েস",
+            "type": {
+                "title": "ইনভয়েস টাইপ"
+            }
+        },
+        "payment_due": {
+            "title": "পেমেন্ট ডিউ"
+        },
+        "payments": {
+            "title": "পেমেন্ট"
+        },
+        "maps": {
+            "title": "ম্যাপ",
+            "client_maps": {
+                "title": "ক্লায়েন্ট ম্যাপ"
+            },
+            "tj_box_maps": {
+                "title": "টিজে বক্স ম্যাপ"
+            },
+            "tj_boxes": {
+                "title": "টিজে বক্স"
+            }
+        },
+        "products": {
+            "title": "প্রোডাক্ট",
+            "reports": {
+                "title": "প্রোডাক্ট রিপোর্ট"
+            },
+            "category": {
+                "title": "প্রোডাক্ট ক্যাটাগরি"
+            },
+            "unit_types": {
+                "title": "ইউনিট টাইপ"
+            }
+        },
+        "expense": {
+            "title": "এক্সপেন্স",
+            "category": {
+                "title": "এক্সপেন্স ক্যাটাগরি"
+            },
+            "types": {
+                "title": "এক্সপেন্স টাইপ"
+            }
+        },
+        "support_tickets": {
+            "title": "সাপোর্ট টিকেট",
+            "subjects": {
+                "title": "সাবজেক্ট"
+            },
+            "tags": {
+                "title": "ট্যাগ"
+            }
+        },
+        "resellers": {
+            "title": "রিসেলার"
+        },
+        "communication": {
+            "title": "কমিউনিকেশন",
+            "gateways": {
+                "title": "গেটওয়ে"
+            },
+            "queue": {
+                "title": "কিউ"
+            },
+            "logs": {
+                "title": "লগ"
+            }
+        },
+        "sms": {
+            "title": "এসএমএস",
+            "send": {
+                "title": "এসএমএস পাঠান"
+            },
+            "templates": {
+                "title": "এসএমএস টেমপ্লেট"
+            }
+        },
+        "networks": {
+            "title": "নেটওয়ার্ক",
+            "devices": {
+                "title": "ডিভাইস"
+            },
+            "device_type": {
+                "title": "ডিভাইস টাইপ"
+            }
+        },
+        "mikrotik_commands": {
+            "title": "মাইক্রোটিক কমান্ড"
+        },
+        "activity_logs": {
+            "title": "অ্যাক্টিভিটি লগ"
+        },
+        "history": {
+            "title": "হিস্ট্রি"
+        },
+        "zones": {
+            "title": "জোন",
+            "sub_zone": {
+                "title": "সাব জোন"
+            }
+        },
+        "packages": {
+            "title": "প্যাকেজ",
+            "mikrotik_package": {
+                "title": "মাইক্রোটিক প্যাকেজ"
+            },
+            "client_package": {
+                "title": "ক্লায়েন্ট প্যাকেজ"
+            },
+            "reseller_package": {
+                "title": "রিসেলার প্যাকেজ"
+            }
+        },
+        "vendors": {
+            "title": "ভেন্ডর"
+        },
+        "funds": {
+            "title": "ফান্ড",
+            "transaction": {
+                "title": "ফান্ড ট্রানজেকশন"
+            }
+        },
+        "staffs": {
+            "title": "স্টাফ",
+            "salaries": {
+                "title": "স্যালারি"
+            }
+        },
+        "wallets": {
+            "title": "ওয়ালেট",
+            "my_wallets": {
+                "title": "আমার ওয়ালেট"
+            },
+            "client_wallets": {
+                "title": "ক্লায়েন্ট ওয়ালেট"
+            }
+        },
+        "users": {
+            "title": "ইউজার"
+        },
+        "companies": {
+            "title": "কোম্পানি"
+        },
+        "mikrotik_sync": {
+            "title": "মাইক্রোটিক সিঙ্ক",
+            "import": {
+                "title": "ইমপোর্ট"
+            },
+            "re_sync": {
+                "title": "রি-সিঙ্ক"
+            }
+        },
+        "role_permission": {
+            "title": "রোল ও পার্মিশন",
+            "roles": {
+                "title": "রোল"
+            },
+            "permissions": {
+                "title": "পার্মিশন"
+            }
+        },
+        "settings": {
+            "title": "সেটিংস"
+        }
+    }
+}
