@@ -1,10 +1,12 @@
 import SalaryTable from "@/components/salaries/salary-table";
 import { Metadata } from "next";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
+
 export default async function Salaries() {
   return <SalaryTable />;
 }
+
 export const metadata: Metadata = {
-  title: i18n.t("salary.title") || "Salaries",
-  description: i18n.t("salary.title") || "Salaries",
+  title: t("salary.title"),
+  description: t("salary.title"),
 };

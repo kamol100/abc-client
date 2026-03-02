@@ -1,5 +1,5 @@
 import PaymentTable from "@/components/payments/payment-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function Payments() {
@@ -7,6 +7,6 @@ export default async function Payments() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("payment.title_plural"),
+    title: t("payment.title_plural"),
     description: "Payments",
 };

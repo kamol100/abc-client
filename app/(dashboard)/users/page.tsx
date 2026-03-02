@@ -1,5 +1,5 @@
 import UserTable from "@/components/users/user-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function Users() {
@@ -7,6 +7,6 @@ export default async function Users() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("user.title") || "Users",
-  description: i18n.t("user.title") || "Users",
+  title: t("user.title"),
+  description: t("user.title"),
 };

@@ -177,6 +177,8 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
    title: t("menu.{feature}.title")
    // Error messages (in Zod or form-schema)
    { required_error: t("{feature}.{field}.errors.required") }
+   //page.tsx title
+    title: i18n.t("expense_type.title_plural")
    ```
 
 7. If the feature adds a new menu item, update `hooks/use-menu-items.ts`

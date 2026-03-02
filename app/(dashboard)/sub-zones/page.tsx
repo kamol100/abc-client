@@ -1,5 +1,5 @@
 import SubZoneTable from "@/components/sub-zones/sub-zone-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function SubZones() {
@@ -7,6 +7,6 @@ export default async function SubZones() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("sub_zone.title") || "Sub Zones",
-    description: i18n.t("sub_zone.title") || "Sub Zones",
+    title: t("sub_zone.title"),
+    description: t("sub_zone.title"),
 };

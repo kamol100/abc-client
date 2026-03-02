@@ -1,5 +1,5 @@
 import StaffForm from "@/components/staffs/staff-form";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function StaffCreate() {
@@ -7,6 +7,6 @@ export default async function StaffCreate() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("staff.create.title") || "Create Staff",
-  description: i18n.t("staff.create.title") || "Create Staff",
+  title: t("staff.create.title"),
+  description: t("staff.create.title"),
 };

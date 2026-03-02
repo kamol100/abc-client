@@ -1,5 +1,5 @@
 import StaffTable from "@/components/staffs/staff-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function Staffs() {
@@ -7,6 +7,6 @@ export default async function Staffs() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("staff.title") || "Staffs",
-  description: i18n.t("staff.title") || "Staffs",
+  title: t("staff.title"),
+  description: t("staff.title"),
 };

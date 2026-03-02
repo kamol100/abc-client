@@ -1,5 +1,5 @@
 import PaymentForm from "@/components/payments/payment-form";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function PaymentCreate() {
@@ -7,6 +7,6 @@ export default async function PaymentCreate() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("payment.create_title"),
+    title: t("payment.create_title"),
     description: "Create Payment",
 };

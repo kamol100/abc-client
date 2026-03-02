@@ -1,5 +1,5 @@
 import StaffForm from "@/components/staffs/staff-form";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 type Props = {
@@ -11,7 +11,8 @@ export default async function StaffEdit({ params }: Props) {
 
   return <StaffForm mode="edit" data={{ id }} />;
 }
+
 export const metadata: Metadata = {
-  title: i18n.t("staff.edit.title") || "Edit Staff",
-  description: i18n.t("staff.edit.title") || "Edit Staff",
+  title: t("staff.edit.title"),
+  description: t("staff.edit.title"),
 };

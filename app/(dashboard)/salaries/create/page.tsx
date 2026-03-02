@@ -1,5 +1,5 @@
 import SalaryForm from "@/components/salaries/salary-form";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function SalaryCreate() {
@@ -7,6 +7,6 @@ export default async function SalaryCreate() {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("salary.create.title") || "Create Salary",
-  description: i18n.t("salary.create.title") || "Create Salary",
+  title: t("salary.create.title"),
+  description: t("salary.create.title"),
 };

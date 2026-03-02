@@ -1,5 +1,5 @@
 import SalaryForm from "@/components/salaries/salary-form";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 type Props = {
@@ -13,6 +13,6 @@ export default async function SalaryEdit({ params }: Props) {
 }
 
 export const metadata: Metadata = {
-  title: i18n.t("salary.edit.title") || "Edit Salary",
-  description: i18n.t("salary.edit.title") || "Edit Salary",
+  title: t("salary.edit.title"),
+  description: t("salary.edit.title"),
 };

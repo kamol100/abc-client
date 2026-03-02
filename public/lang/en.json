@@ -642,6 +642,59 @@
         "status_updated": "Expense status updated successfully",
         "delete_confirmation": "Are you sure you want to delete this expense?"
     },
+    "product_category": {
+        "title_plural": "Product Categories",
+        "create_title": "Add Product Category",
+        "edit_title": "Edit Product Category",
+        "delete_confirmation": "Are you sure you want to delete this product category?",
+        "name": {
+            "label": "Category Name",
+            "placeholder": "Enter category name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Enter description"
+        }
+    },
+    "expense_type": {
+        "title_plural": "Expense Types",
+        "create_title": "Add Expense Type",
+        "edit_title": "Edit Expense Type",
+        "delete_confirmation": "Are you sure you want to delete this expense type?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter expense type name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Enter description"
+        }
+    },
+    "unit_type": {
+        "title_plural": "Unit Types",
+        "create_title": "Add Unit Type",
+        "edit_title": "Edit Unit Type",
+        "delete_confirmation": "Are you sure you want to delete this unit type?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter unit type name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 2 characters"
+            }
+        }
+    },
     "menu": {
         "dashboard": {
             "title": "Dashboard"

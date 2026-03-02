@@ -1,5 +1,5 @@
 import PaymentPay from "@/components/payments/payment-pay";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 type Props = {
@@ -12,6 +12,6 @@ export default async function PaymentPayPage({ params }: Props) {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("payment.pay_title"),
+    title: t("payment.pay_title"),
     description: "Pay Payment",
 };

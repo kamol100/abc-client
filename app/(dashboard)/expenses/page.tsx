@@ -1,5 +1,5 @@
 import ExpenseTable from "@/components/expenses/expense-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function Expenses() {
@@ -7,6 +7,6 @@ export default async function Expenses() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("expense.title_plural"),
+    title: t("expense.title_plural"),
     description: "Expenses",
 };

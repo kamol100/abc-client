@@ -1,5 +1,5 @@
 import VendorTable from "@/components/vendors/vendor-table";
-import i18n from "i18next";
+import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function Vendors() {
@@ -7,6 +7,6 @@ export default async function Vendors() {
 }
 
 export const metadata: Metadata = {
-    title: i18n.t("vendor.title") || "Vendors",
-    description: i18n.t("vendor.title") || "Vendors",
+    title: t("vendor.title"),
+    description: t("vendor.title"),
 };
