@@ -399,6 +399,82 @@
         "title": "Vendors",
         "delete_confirmation": "Are you sure you want to delete this vendor?"
     },
+    "company": {
+        "name": {
+            "label": "Company Name",
+            "placeholder": "Enter company name",
+            "errors": {
+                "required": "Company name is required",
+                "invalid": "Invalid company name",
+                "min": "Company name must be at least 2 characters"
+            }
+        },
+        "domain": {
+            "label": "Domain",
+            "placeholder": "Enter domain",
+            "errors": {
+                "required": "Domain is required",
+                "min": "Domain must be at least 2 characters"
+            }
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "required": "Phone is required",
+                "min": "Phone must be at least 11 digits"
+            }
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email",
+            "errors": {
+                "invalid": "Invalid email address"
+            }
+        },
+        "address": {
+            "label": "Address",
+            "placeholder": "Enter address"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status",
+            "errors": {
+                "required": "Status is required"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "placeholder": "Enter username",
+            "errors": {
+                "required": "Username is required"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter password",
+            "errors": {
+                "required": "Password is required",
+                "min": "Password must be at least 6 characters",
+                "confirm_required": "Please confirm password",
+                "mismatch": "Passwords do not match"
+            }
+        },
+        "confirm_password": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm password"
+        },
+        "balance": {
+            "label": "Balance"
+        },
+        "clients": {
+            "label": "Clients"
+        },
+        "title_plural": "Companies",
+        "create_title": "Add Company",
+        "edit_title": "Edit Company",
+        "delete_confirmation": "Are you sure you want to delete this company?"
+    },
     "client": {
         "name": {
             "label": "Client Name",
@@ -976,6 +1052,25 @@
                 "invalid": "Name must be a string",
                 "min": "Name must be at least 2 characters"
             }
+        }
+    },
+    "device_type": {
+        "title_plural": "Device Types",
+        "create_title": "Add Device Type",
+        "edit_title": "Edit Device Type",
+        "delete_confirmation": "Are you sure you want to delete this device type?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter device type name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
         }
     },
     "network": {

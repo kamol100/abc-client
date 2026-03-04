@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const RefSchema = z.object({
     id: z.coerce.number(),
@@ -39,16 +38,16 @@ export type TicketMessage = z.infer<typeof TicketMessageSchema>;
 
 export const TicketCreateSchema = z.object({
     client_id: z.coerce.number({
-        required_error: i18n.t("ticket.client.errors.required"),
+        required_error: "ticket.client.errors.required",
     }),
     subject_id: z.coerce.number({
-        required_error: i18n.t("ticket.subject.errors.required"),
+        required_error: "ticket.subject.errors.required",
     }),
     tag_id: z.array(z.coerce.number()).optional(),
     assigned_to: z.coerce.number().nullable().optional(),
     message: z.string({
-        required_error: i18n.t("ticket.message.errors.required"),
-    }).min(2, { message: i18n.t("ticket.message.errors.min") }),
+        required_error: "ticket.message.errors.required",
+    }).min(2, { message: "ticket.message.errors.min" }),
     priority: z.enum(["low", "medium", "high"]).default("medium"),
     status: z.enum(["open", "in_progress", "resolved", "closed"]).default("open"),
 });
@@ -58,8 +57,8 @@ export type TicketCreatePayload = z.output<typeof TicketCreateSchema>;
 
 export const TicketReplySchema = z.object({
     message: z.string({
-        required_error: i18n.t("ticket.reply.errors.required"),
-    }).min(1, { message: i18n.t("ticket.reply.errors.required") }),
+        required_error: "ticket.reply.errors.required",
+    }).min(1, { message: "ticket.reply.errors.required" }),
 });
 
 export type TicketReplyInput = z.input<typeof TicketReplySchema>;

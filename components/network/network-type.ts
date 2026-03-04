@@ -1,4 +1,3 @@
-import i18n from "@/i18n";
 import { z } from "zod";
 
 export const NetworkRowSchema = z
@@ -23,27 +22,27 @@ export type NetworkRow = z.infer<typeof NetworkRowSchema>;
 export const NetworkFormSchema = z.object({
   name: z
     .string({
-      required_error: i18n.t("network.name.errors.required"),
-      invalid_type_error: i18n.t("network.name.errors.invalid"),
+      required_error: "network.name.errors.required",
+      invalid_type_error: "network.name.errors.invalid",
     })
-    .min(2, { message: i18n.t("network.name.errors.min") }),
+    .min(2, { message: "network.name.errors.min" }),
   ip_address: z
     .string({
-      required_error: i18n.t("network.ip_address.errors.required"),
-      invalid_type_error: i18n.t("network.ip_address.errors.invalid"),
+      required_error: "network.ip_address.errors.required",
+      invalid_type_error: "network.ip_address.errors.invalid",
     })
-    .min(5, { message: i18n.t("network.ip_address.errors.min") }),
+    .min(5, { message: "network.ip_address.errors.min" }),
   mikrotik_user: z
     .string({
-      required_error: i18n.t("network.mikrotik_user.errors.required"),
-      invalid_type_error: i18n.t("network.mikrotik_user.errors.invalid"),
+      required_error: "network.mikrotik_user.errors.required",
+      invalid_type_error: "network.mikrotik_user.errors.invalid",
     })
-    .min(2, { message: i18n.t("network.mikrotik_user.errors.min") }),
+    .min(2, { message: "network.mikrotik_user.errors.min" }),
   mikrotik_password: z
     .string({
-      invalid_type_error: i18n.t("network.mikrotik_password.errors.invalid"),
+      invalid_type_error: "network.mikrotik_password.errors.invalid",
     })
-    .min(5, { message: i18n.t("network.mikrotik_password.errors.min") })
+    .min(5, { message: "network.mikrotik_password.errors.min" })
     .optional()
     .or(z.literal("")),
   web_port: z.string().optional().nullable(),

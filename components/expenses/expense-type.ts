@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const StaffRefSchema = z.object({
     id: z.coerce.number(),
@@ -59,18 +58,18 @@ export type ExpenseRow = z.infer<typeof ExpenseRowSchema>;
 
 export const ExpenseFormSchema = z.object({
     amount: z.coerce.number({
-        required_error: i18n.t("expense.amount.errors.required"),
-        invalid_type_error: i18n.t("expense.amount.errors.required"),
-    }).min(1, { message: i18n.t("expense.amount.errors.min") }),
+        required_error: "expense.amount.errors.required",
+        invalid_type_error: "expense.amount.errors.required",
+    }).min(1, { message: "expense.amount.errors.min" }),
     staff_id: z.coerce.number({
-        required_error: i18n.t("expense.staff.errors.required"),
-        invalid_type_error: i18n.t("expense.staff.errors.required"),
-    }).min(1, { message: i18n.t("expense.staff.errors.required") }),
+        required_error: "expense.staff.errors.required",
+        invalid_type_error: "expense.staff.errors.required",
+    }).min(1, { message: "expense.staff.errors.required" }),
     fund_id: z.coerce.number().nullable().optional(),
     expense_type_id: z.coerce.number({
-        required_error: i18n.t("expense.expense_type.errors.required"),
-        invalid_type_error: i18n.t("expense.expense_type.errors.required"),
-    }).min(1, { message: i18n.t("expense.expense_type.errors.required") }),
+        required_error: "expense.expense_type.errors.required",
+        invalid_type_error: "expense.expense_type.errors.required",
+    }).min(1, { message: "expense.expense_type.errors.required" }),
     zone_id: z.coerce.number().nullable().optional(),
     voucher: z.string().nullable().optional().default(""),
     expense_date: z.coerce.string().nullable().optional(),

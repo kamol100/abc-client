@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const RoleRefSchema = z.object({
   id: z.coerce.number(),
@@ -15,13 +14,13 @@ export type RoleRef = z.infer<typeof RoleRefSchema>;
 export type UserRef = z.infer<typeof UserRefSchema>;
 
 const SalaryItemSchema = z.object({
-  items_label: z.string().min(1, { message: i18n.t("salary.items_label.errors.required") }),
-  items_value: z.coerce.number().min(1, { message: i18n.t("salary.items_value.errors.required") }),
+  items_label: z.string().min(1, { message: "salary.items_label.errors.required" }),
+  items_value: z.coerce.number().min(1, { message: "salary.items_value.errors.required" }),
 });
 
 const SalaryDeductionSchema = z.object({
-  deductions_label: z.string().min(1, { message: i18n.t("salary.items_label.errors.required") }),
-  deductions_value: z.coerce.number().min(1, { message: i18n.t("salary.items_value.errors.required") }),
+  deductions_label: z.string().min(1, { message: "salary.items_label.errors.required" }),
+  deductions_value: z.coerce.number().min(1, { message: "salary.items_value.errors.required" }),
 });
 
 export type SalaryItem = z.infer<typeof SalaryItemSchema>;
@@ -59,15 +58,15 @@ export type StaffRow = z.infer<typeof StaffRowSchema>;
 
 export const StaffFormSchema = z.object({
   name: z.string({
-    required_error: i18n.t("staff.name.errors.required"),
-    invalid_type_error: i18n.t("staff.name.errors.required"),
-  }).min(2, { message: i18n.t("staff.name.errors.min") }),
+    required_error: "staff.name.errors.required",
+    invalid_type_error: "staff.name.errors.required",
+  }).min(2, { message: "staff.name.errors.min" }),
   username: z.string().nullable().optional(),
   password: z.string().nullable().optional(),
   roles_id: z.array(z.coerce.number()).default([]),
   designation: z.string().nullable().optional().default(""),
   phone: z.string().min(11, {
-    message: i18n.t("staff.phone.errors.min"),
+    message: "staff.phone.errors.min",
   }),
   email: z.string().nullable().optional().default(""),
   date_of_birth: z.coerce.string().nullable().optional(),
@@ -78,7 +77,7 @@ export const StaffFormSchema = z.object({
   mother_name: z.string().nullable().optional().default(""),
   nid: z.string().nullable().optional().default(""),
   marital_status: z.string().nullable().optional().default("unmarred"),
-  gender: z.string().min(1, { message: i18n.t("staff.gender.errors.required") }),
+  gender: z.string().min(1, { message: "staff.gender.errors.required" }),
   status: z.coerce.string().default("active"),
   present_address: z.string().nullable().optional().default(""),
   permanent_address: z.string().nullable().optional().default(""),

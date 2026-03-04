@@ -1,49 +1,46 @@
-import { useTranslation } from "react-i18next";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
+const toggleOptions = [
+  { label: "common.yes", value: 1 },
+  { label: "common.no", value: 0 },
+];
+
 export const NetworkFormFieldSchema = (): FieldConfig[] => {
-  const { t } = useTranslation();
-
-  const toggleOptions = [
-    { label: t("common.yes"), value: 1 },
-    { label: t("common.no"), value: 0 },
-  ];
-
   return [
     {
       type: "text",
       name: "name",
-      label: { labelText: t("network.name.label"), mandatory: true },
-      placeholder: t("network.name.placeholder"),
+      label: { labelText: "network.name.label", mandatory: true },
+      placeholder: "network.name.placeholder",
     },
     {
       type: "text",
       name: "ip_address",
-      label: { labelText: t("network.ip_address.label"), mandatory: true },
-      placeholder: t("network.ip_address.placeholder"),
+      label: { labelText: "network.ip_address.label", mandatory: true },
+      placeholder: "network.ip_address.placeholder",
     },
     {
       type: "text",
       name: "mikrotik_user",
-      label: { labelText: t("network.mikrotik_user.label"), mandatory: true },
-      placeholder: t("network.mikrotik_user.placeholder"),
+      label: { labelText: "network.mikrotik_user.label", mandatory: true },
+      placeholder: "network.mikrotik_user.placeholder",
     },
     {
       type: "password",
       name: "mikrotik_password",
-      label: { labelText: t("network.mikrotik_password.label") },
-      placeholder: t("network.mikrotik_password.placeholder"),
+      label: { labelText: "network.mikrotik_password.label" },
+      placeholder: "network.mikrotik_password.placeholder",
     },
     {
       type: "text",
       name: "web_port",
-      label: { labelText: t("network.web_port.label") },
-      placeholder: t("network.web_port.placeholder"),
+      label: { labelText: "network.web_port.label" },
+      placeholder: "network.web_port.placeholder",
     },
     {
       type: "radio",
       name: "auto_client_mikrotik_status",
-      label: { labelText: t("network.auto_client_mikrotik_status.label") },
+      label: { labelText: "network.auto_client_mikrotik_status.label" },
       direction: "row",
       defaultValue: "0",
       options: toggleOptions,
@@ -51,7 +48,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
     {
       type: "radio",
       name: "auto_sync_status",
-      label: { labelText: t("network.auto_sync_status.label") },
+      label: { labelText: "network.auto_sync_status.label" },
       direction: "row",
       defaultValue: "0",
       options: toggleOptions,
@@ -59,7 +56,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
     {
       type: "radio",
       name: "graph_status",
-      label: { labelText: t("network.graph_status.label") },
+      label: { labelText: "network.graph_status.label" },
       direction: "row",
       defaultValue: "0",
       options: toggleOptions,
@@ -67,8 +64,8 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
     {
       type: "textarea",
       name: "notes",
-      label: { labelText: t("network.notes.label") },
-      placeholder: t("network.notes.placeholder"),
+      label: { labelText: "network.notes.label" },
+      placeholder: "network.notes.placeholder",
       rows: 3,
       className: "sm:col-span-2",
     },

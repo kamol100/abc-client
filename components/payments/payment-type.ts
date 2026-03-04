@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const ClientRefSchema = z.object({
     id: z.coerce.number(),
@@ -61,23 +60,23 @@ export type PaymentRow = z.infer<typeof PaymentRowSchema>;
 
 export const PaymentFormSchema = z.object({
     title: z.string({
-        required_error: i18n.t("payment.title.errors.required"),
-    }).min(2, { message: i18n.t("payment.title.errors.min") }),
+        required_error: "payment.title.errors.required",
+    }).min(2, { message: "payment.title.errors.min" }),
     amount: z.coerce.number({
-        required_error: i18n.t("payment.amount.errors.required"),
-        invalid_type_error: i18n.t("payment.amount.errors.required"),
-    }).min(1, { message: i18n.t("payment.amount.errors.min") }),
+        required_error: "payment.amount.errors.required",
+        invalid_type_error: "payment.amount.errors.required",
+    }).min(1, { message: "payment.amount.errors.min" }),
     client_id: z.coerce.number({
-        required_error: i18n.t("payment.client.errors.required"),
-        invalid_type_error: i18n.t("payment.client.errors.required"),
-    }).min(1, { message: i18n.t("payment.client.errors.required") }),
+        required_error: "payment.client.errors.required",
+        invalid_type_error: "payment.client.errors.required",
+    }).min(1, { message: "payment.client.errors.required" }),
     fund_id: z.coerce.number({
-        required_error: i18n.t("payment.fund.errors.required"),
-        invalid_type_error: i18n.t("payment.fund.errors.required"),
-    }).min(1, { message: i18n.t("payment.fund.errors.required") }),
+        required_error: "payment.fund.errors.required",
+        invalid_type_error: "payment.fund.errors.required",
+    }).min(1, { message: "payment.fund.errors.required" }),
     payment_date: z.coerce.string().nullable().optional(),
     status: z.string()
-        .min(1, { message: i18n.t("payment.status.errors.required") })
+        .min(1, { message: "payment.status.errors.required" })
         .default("paid"),
     partial_amount: z.coerce.number().nullable().optional(),
     discount: z.coerce.number().optional().default(0),
@@ -92,9 +91,9 @@ export type PaymentPayload = z.output<typeof PaymentFormSchema>;
 
 export const PaymentPaySchema = z.object({
     fund_id: z.coerce.number({
-        required_error: i18n.t("payment.fund.errors.required"),
-        invalid_type_error: i18n.t("payment.fund.errors.required"),
-    }).min(1, { message: i18n.t("payment.fund.errors.required") }),
+        required_error: "payment.fund.errors.required",
+        invalid_type_error: "payment.fund.errors.required",
+    }).min(1, { message: "payment.fund.errors.required" }),
     payment_date: z.coerce.string().nullable().optional(),
     discount: z.coerce.number().optional().default(0),
     confirmation_sms: z.coerce.number().optional().default(1),

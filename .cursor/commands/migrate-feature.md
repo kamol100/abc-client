@@ -170,13 +170,12 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
 
 6. Usage in components:
    ```tsx
-   const { t } = useTranslation();
    // Labels & placeholders
-   <Label>{t("{feature}.{field}.label")}</Label>
+   <Label>"{feature}.{field}.label"</Label>
    // Menu titles
-   title: t("menu.{feature}.title")
+   title: "menu.{feature}.title"
    // Error messages (in Zod or form-schema)
-   { required_error: t("{feature}.{field}.errors.required") }
+   { required_error: "{feature}.{field}.errors.required" }
    //page.tsx title
     title: i18n.t("expense_type.title_plural")
    ```

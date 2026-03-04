@@ -1,4 +1,3 @@
-import i18n from "@/i18n";
 import { z } from "zod";
 
 const DeviceTypeRefSchema = z.object({
@@ -50,22 +49,22 @@ export type DeviceRow = z.infer<typeof DeviceRowSchema>;
 export const DeviceFormSchema = z.object({
   name: z
     .string({
-      required_error: i18n.t("device.name.errors.required"),
-      invalid_type_error: i18n.t("device.name.errors.invalid"),
+      required_error: "device.name.errors.required",
+      invalid_type_error: "device.name.errors.invalid",
     })
-    .min(2, { message: i18n.t("device.name.errors.min") }),
+    .min(2, { message: "device.name.errors.min" }),
   network_id: z.coerce
     .number({
-      required_error: i18n.t("device.network.errors.required"),
-      invalid_type_error: i18n.t("device.network.errors.required"),
+      required_error: "device.network.errors.required",
+      invalid_type_error: "device.network.errors.required",
     })
-    .min(1, { message: i18n.t("device.network.errors.required") }),
+    .min(1, { message: "device.network.errors.required" }),
   device_type_id: z.coerce
     .number({
-      required_error: i18n.t("device.device_type.errors.required"),
-      invalid_type_error: i18n.t("device.device_type.errors.required"),
+      required_error: "device.device_type.errors.required",
+      invalid_type_error: "device.device_type.errors.required",
     })
-    .min(1, { message: i18n.t("device.device_type.errors.required") }),
+    .min(1, { message: "device.device_type.errors.required" }),
   device_id: z.coerce.number().nullable().optional(),
   zone_id: z.coerce.number().nullable().optional(),
   device_ip: z.string().nullable().optional().default(""),

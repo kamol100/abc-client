@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const RefSchema = z.object({
     id: z.coerce.number(),
@@ -57,15 +56,15 @@ export type ClientRow = z.infer<typeof ClientRowSchema>;
 
 export const ClientFormSchema = z.object({
     name: z.string({
-        required_error: i18n.t("client.name.errors.required"),
-    }).min(2, { message: i18n.t("client.name.errors.min") }),
+        required_error: "client.name.errors.required",
+    }).min(2, { message: "client.name.errors.min" }),
     phone: z.string().nullable().optional(),
     email: z.string().nullable().optional(),
     pppoe_username: z.string().min(1, {
-        message: i18n.t("client.pppoe_username.errors.required"),
+        message: "client.pppoe_username.errors.required",
     }),
     pppoe_password: z.string().min(1, {
-        message: i18n.t("client.pppoe_password.errors.required"),
+        message: "client.pppoe_password.errors.required",
     }),
     ip_address: z.string().nullable().optional(),
     mac_address: z.string().nullable().optional(),

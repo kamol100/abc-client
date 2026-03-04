@@ -1,39 +1,36 @@
-import { useTranslation } from "react-i18next";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
 export const UserFilterSchema = (): FieldConfig[] => {
-    const { t } = useTranslation();
-
     return [
         {
             type: "text",
             name: "username",
-            placeholder: t("common.username"),
+            placeholder: "common.username",
             permission: true,
             watchForFilter: true,
         },
         {
             type: "text",
             name: "email",
-            placeholder: t("common.email"),
+            placeholder: "common.email",
             permission: true,
             watchForFilter: true,
         },
         {
             type: "dropdown",
             name: "roles_id",
-            placeholder: t("common.roles"),
+            placeholder: "common.roles",
             permission: true,
             api: "/dropdown-roles",
         },
         {
             type: "dropdown",
             name: "status",
-            placeholder: t("common.status"),
+            placeholder: "common.status",
             permission: true,
             options: [
-                { value: 1, label: t("common.active") },
-                { value: 0, label: t("common.inactive") },
+                { value: 1, label: "common.active" },
+                { value: 0, label: "common.inactive" },
             ],
         },
     ];

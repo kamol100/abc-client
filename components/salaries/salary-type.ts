@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const StaffRefSchema = z.object({
   id: z.coerce.number(),
@@ -15,13 +14,13 @@ export type StaffRef = z.infer<typeof StaffRefSchema>;
 export type FundRef = z.infer<typeof FundRefSchema>;
 
 export const SalaryItemSchema = z.object({
-  items_label: z.string().min(1, { message: i18n.t("salary.items_label.errors.required") }),
-  items_value: z.coerce.number().min(1, { message: i18n.t("salary.items_value.errors.required") }),
+  items_label: z.string().min(1, { message: "salary.items_label.errors.required" }),
+  items_value: z.coerce.number().min(1, { message: "salary.items_value.errors.required" }),
 });
 
 export const SalaryDeductionSchema = z.object({
-  deductions_label: z.string().min(1, { message: i18n.t("salary.items_label.errors.required") }),
-  deductions_value: z.coerce.number().min(1, { message: i18n.t("salary.items_value.errors.required") }),
+  deductions_label: z.string().min(1, { message: "salary.items_label.errors.required" }),
+  deductions_value: z.coerce.number().min(1, { message: "salary.items_value.errors.required" }),
 });
 
 export type SalaryItem = z.infer<typeof SalaryItemSchema>;
@@ -46,26 +45,26 @@ export type SalaryRow = z.infer<typeof SalaryRowSchema>;
 
 export const SalaryFormSchema = z.object({
   staff_id: z.coerce.number({
-    required_error: i18n.t("salary.staff.errors.required"),
-    invalid_type_error: i18n.t("salary.staff.errors.required"),
-  }).min(1, { message: i18n.t("salary.staff.errors.required") }),
+    required_error: "salary.staff.errors.required",
+    invalid_type_error: "salary.staff.errors.required",
+  }).min(1, { message: "salary.staff.errors.required" }),
   date: z.coerce.string().nullable().optional(),
   amount: z.coerce.number({
-    required_error: i18n.t("salary.amount.errors.required"),
-    invalid_type_error: i18n.t("salary.amount.errors.required"),
+    required_error: "salary.amount.errors.required",
+    invalid_type_error: "salary.amount.errors.required",
   }).min(0),
   salary_items: z.array(SalaryItemSchema).optional().default([]),
   salary_deductions: z.array(SalaryDeductionSchema).optional().default([]),
   salary_type: z.string()
-    .min(1, { message: i18n.t("salary.salary_type.errors.required") })
+    .min(1, { message: "salary.salary_type.errors.required" })
     .default("monthly"),
   fund_id: z.coerce.number({
-    required_error: i18n.t("salary.fund.errors.required"),
-    invalid_type_error: i18n.t("salary.fund.errors.required"),
-  }).min(1, { message: i18n.t("salary.fund.errors.required") }),
+    required_error: "salary.fund.errors.required",
+    invalid_type_error: "salary.fund.errors.required",
+  }).min(1, { message: "salary.fund.errors.required" }),
   note: z.string().nullable().optional().default(""),
   status: z.string()
-    .min(1, { message: i18n.t("salary.status.errors.required") })
+    .min(1, { message: "salary.status.errors.required" })
     .default("pending"),
 });
 

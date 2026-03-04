@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 function getNestedError(errors: Record<string, unknown>, name: string): { message?: string } | undefined {
     const parts = name.split(".");
@@ -14,7 +15,8 @@ function getNestedError(errors: Record<string, unknown>, name: string): { messag
 
 export default function FieldError({ name }: { name: string }) {
     const { formState: { errors } } = useFormContext();
+    const { t } = useTranslation();
     const error = getNestedError(errors as Record<string, unknown>, name);
     if (!error?.message) return null;
-    return <p className="text-sm text-destructive mt-1">{error.message}</p>;
+    return <p className="text-sm text-destructive mt-1">{t(error.message)}</p>;
 }

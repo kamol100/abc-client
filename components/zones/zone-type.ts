@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 const SubZoneSchema = z.object({
     id: z.coerce.number(),
@@ -21,9 +20,9 @@ export type ZoneRow = z.infer<typeof ZoneRowSchema>;
 
 export const ZoneFormSchema = z.object({
     name: z.string({
-        required_error: i18n.t("zone.name.errors.required"),
-        invalid_type_error: i18n.t("zone.name.errors.invalid"),
-    }).min(2, { message: i18n.t("zone.name.errors.min") }),
+        required_error: "zone.name.errors.required",
+        invalid_type_error: "zone.name.errors.invalid",
+    }).min(2, { message: "zone.name.errors.min" }),
     name_bn: z.string().optional().default(""),
     lat: z.coerce.number().nullable().optional(),
     lon: z.coerce.number().nullable().optional(),

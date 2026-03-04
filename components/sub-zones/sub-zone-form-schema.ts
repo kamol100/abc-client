@@ -1,15 +1,12 @@
-import { useTranslation } from "react-i18next";
 import { FieldConfig } from "../form-wrapper/form-builder-type";
 
 export const SubZoneFormFieldSchema = (): FieldConfig[] => {
-    const { t } = useTranslation();
-
     return [
         {
             type: "dropdown",
             name: "zone_id",
-            label: { labelText: t("sub_zone.zone.label"), mandatory: true },
-            placeholder: t("sub_zone.zone.placeholder"),
+            label: { labelText: "sub_zone.zone.label", mandatory: true },
+            placeholder: "sub_zone.zone.placeholder",
             api: "/dropdown-zones",
             valueKey: "zone",
             valueMapping: { idKey: "id", labelKey: "name" },
@@ -17,8 +14,8 @@ export const SubZoneFormFieldSchema = (): FieldConfig[] => {
         {
             type: "dropdown",
             name: "network_id",
-            label: { labelText: t("sub_zone.network.label") },
-            placeholder: t("sub_zone.network.placeholder"),
+            label: { labelText: "sub_zone.network.label" },
+            placeholder: "sub_zone.network.placeholder",
             api: "/dropdown-networks",
             valueKey: "network",
             valueMapping: { idKey: "id", labelKey: "name" },
@@ -26,32 +23,32 @@ export const SubZoneFormFieldSchema = (): FieldConfig[] => {
         {
             type: "text",
             name: "name",
-            label: { labelText: t("sub_zone.name.label"), mandatory: true },
-            placeholder: t("sub_zone.name.placeholder"),
+            label: { labelText: "sub_zone.name.label", mandatory: true },
+            placeholder: "sub_zone.name.placeholder",
         },
         {
             type: "text",
             name: "name_bn",
-            label: { labelText: t("sub_zone.name_bn.label") },
-            placeholder: t("sub_zone.name_bn.placeholder"),
+            label: { labelText: "sub_zone.name_bn.label" },
+            placeholder: "sub_zone.name_bn.placeholder",
         },
         {
             type: "text",
             name: "location",
-            label: { labelText: t("sub_zone.location.label") },
-            placeholder: t("sub_zone.location.placeholder"),
+            label: { labelText: "sub_zone.location.label" },
+            placeholder: "sub_zone.location.placeholder",
         },
         {
             type: "text",
             name: "ports",
-            label: { labelText: t("sub_zone.ports.label") },
-            placeholder: t("sub_zone.ports.placeholder"),
+            label: { labelText: "sub_zone.ports.label" },
+            placeholder: "sub_zone.ports.placeholder",
         },
         {
             type: "textarea",
             name: "note",
-            label: { labelText: t("sub_zone.note.label") },
-            placeholder: t("sub_zone.note.placeholder"),
+            label: { labelText: "sub_zone.note.label" },
+            placeholder: "sub_zone.note.placeholder",
             rows: 3,
         },
     ];

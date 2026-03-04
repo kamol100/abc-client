@@ -1,5 +1,4 @@
 import { z } from "zod";
-import i18n from "@/i18n";
 
 export const ExpenseTypeRowSchema = z.object({
     id: z.coerce.number(),
@@ -11,9 +10,9 @@ export type ExpenseTypeRow = z.infer<typeof ExpenseTypeRowSchema>;
 
 export const ExpenseTypeFormSchema = z.object({
     name: z.string({
-        required_error: i18n.t("expense_type.name.errors.required"),
-        invalid_type_error: i18n.t("expense_type.name.errors.invalid"),
-    }).min(2, { message: i18n.t("expense_type.name.errors.min") }),
+        required_error: "expense_type.name.errors.required",
+        invalid_type_error: "expense_type.name.errors.invalid",
+    }).min(2, { message: "expense_type.name.errors.min" }),
     description: z.string().nullable().optional().default(""),
 });
 

@@ -72,7 +72,7 @@ function DataTableSkeleton({
           <TableRow key={rowIndex}>
             {Array.from({ length: columns }).map((_, colIndex) => (
               <TableCell key={colIndex}>
-                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-3 w-full" />
               </TableCell>
             ))}
           </TableRow>
