@@ -202,11 +202,11 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
     title: t("menu.communication.title"),
     url: "#",
     icon: Radio,
-    permissions: ["communication-gateways.access"],
+    permissions: ["communication-gateways.access", "communication-logs.access", "communication-queue.access"],
     items: [
       { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
       { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
-      { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-gateways.access" },
+      { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
     ],
   },
   {

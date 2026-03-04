@@ -28,8 +28,8 @@ import {
 
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -47,39 +47,7 @@ interface DataTableProps<TData, TValue> {
   form?: any;
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
-}
-
-function DataTableSkeleton({
-  rows,
-  columns,
-}: {
-  rows: number;
-  columns: number;
-}) {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          {Array.from({ length: columns }).map((_, index) => (
-            <TableHead key={index}>
-              <Skeleton className="h-4 w-24" />
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Array.from({ length: rows }).map((_, rowIndex) => (
-          <TableRow key={rowIndex}>
-            {Array.from({ length: columns }).map((_, colIndex) => (
-              <TableCell key={colIndex}>
-                <Skeleton className="h-3 w-full" />
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+  initialColumnVisibility?: VisibilityState;
 }
 
 export function DataTable<TData, TValue>({
@@ -97,10 +65,11 @@ export function DataTable<TData, TValue>({
   form,
   toolbarTitle = null,
   toolbarTitleClass = "",
+  initialColumnVisibility,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>(initialColumnVisibility ?? {});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );

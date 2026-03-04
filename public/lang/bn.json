@@ -1,5 +1,7 @@
 {
     "common": {
+        "toggle_columns": "কলাম টগল করুন",
+        "view": "দেখুন",
         "add": "অ্যাড",
         "cancel": "বাতিল",
         "confirm": "নিশ্চিত",
@@ -7,7 +9,7 @@
         "save": "সংরক্ষণ",
         "refresh": "রিফ্রেশ",
         "actions": "অ্যাকশন",
-        "status": "অবস্থা",
+        "status": "স্ট্যাটাস",
         "email": "ইমেইল",
         "phone": "ফোন",
         "name": "নাম",
@@ -165,6 +167,223 @@
         },
         "title": "জোন",
         "delete_confirmation": "আপনি কি নিশ্চিত এই জোনটি মুছে ফেলতে চান?"
+    },
+    "communication_gateway": {
+        "title_plural": "কমিউনিকেশন গেটওয়ে",
+        "title_plural_count": "কমিউনিকেশন গেটওয়ে ({{count}})",
+        "create_title": "কমিউনিকেশন গেটওয়ে যোগ করুন",
+        "edit_title": "কমিউনিকেশন গেটওয়ে সম্পাদনা",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই কমিউনিকেশন গেটওয়েটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "গেটওয়ের নাম",
+            "errors": {
+                "required": "গেটওয়ের নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষর হতে হবে",
+                "invalid": "অবৈধ নাম"
+            }
+        },
+        "type": {
+            "label": "টাইপ",
+            "placeholder": "চ্যানেল টাইপ",
+            "errors": {
+                "required": "চ্যানেল টাইপ আবশ্যক"
+            },
+            "options": {
+                "sms": "SMS",
+                "voice": "ভয়েস",
+                "email": "ইমেইল",
+                "whatsapp": "হোয়াটসঅ্যাপ",
+                "telegram": "টেলিগ্রাম"
+            }
+        },
+        "api": {
+            "label": "API এন্ডপয়েন্ট",
+            "placeholder": "https://provider.example.com/send",
+            "errors": {
+                "required": "API এন্ডপয়েন্ট আবশ্যক",
+                "min": "API এন্ডপয়েন্ট আবশ্যক"
+            }
+        },
+        "balance_api": {
+            "label": "ব্যালেন্স API",
+            "placeholder": "https://provider.example.com/balance"
+        },
+        "rates_per_unit": {
+            "label": "ইউনিট প্রতি রেট",
+            "placeholder": "0.00"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "options": {
+                "active": "একটিভ",
+                "inactive": "ইনএকটিভ",
+                "test": "টেস্ট মোড"
+            }
+        },
+        "access_type": {
+            "label": "অ্যাক্সেস টাইপ",
+            "placeholder": "অ্যাক্সেস টাইপ নির্বাচন করুন",
+            "options": {
+                "view": "ভিউ",
+                "edit": "এডিট",
+                "delete": "ডিলিট"
+            }
+        },
+        "api_key": {
+            "label": "API কী",
+            "placeholder": "API কী"
+        },
+        "api_secret": {
+            "label": "API সিক্রেট",
+            "placeholder": "API সিক্রেট"
+        },
+        "api_token": {
+            "label": "API টোকেন",
+            "placeholder": "API টোকেন"
+        },
+        "api_username": {
+            "label": "API ইউজারনেম",
+            "placeholder": "API ইউজারনেম"
+        },
+        "api_password": {
+            "label": "API পাসওয়ার্ড",
+            "placeholder": "API পাসওয়ার্ড"
+        },
+        "api_host": {
+            "label": "API হোস্ট",
+            "placeholder": "API হোস্ট"
+        },
+        "api_port": {
+            "label": "API পোর্ট",
+            "placeholder": "API পোর্ট"
+        },
+        "campaign_id": {
+            "label": "ক্যাম্পেইন ID",
+            "placeholder": "ক্যাম্পেইন আইডেন্টিফায়ার (ভয়েসের জন্য আবশ্যক)",
+            "errors": {
+                "required_voice": "ভয়েস গেটওয়ের জন্য ক্যাম্পেইন ID আবশ্যক"
+            }
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "ঐচ্ছিক নোট"
+        },
+        "company": {
+            "label": "কোম্পানি",
+            "placeholder": "কোম্পানি নির্বাচন করুন"
+        },
+        "reseller": {
+            "label": "রিসেলার",
+            "placeholder": "রিসেলার নির্বাচন করুন"
+        },
+        "sections": {
+            "basic": "মৌলিক তথ্য",
+            "credentials": "API ও ক্রেডেনশিয়াল",
+            "admin": "অ্যাডমিন (কোম্পানি ও রিসেলার)"
+        }
+    },
+    "communication_log": {
+        "title_plural": "কমিউনিকেশন লগ",
+        "title_plural_count": "কমিউনিকেশন লগ ({{count}})",
+        "sl": "SL",
+        "delete_confirmation": "আপনি কি এই কমিউনিকেশন লগ মুছে দিতে চান?",
+        "channel": {
+            "label": "চ্যানেল",
+            "options": {
+                "sms": "এসএমএস",
+                "voice": "ভয়েস",
+                "email": "ইমেইল"
+            }
+        },
+        "body": {
+            "label": "বডি"
+        },
+        "sms_type": {
+            "label": "টাইপ",
+            "options": {
+                "custom": "কাস্টম",
+                "invoice_due": "ইনভয়েস ডিউ",
+                "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
+                "client_activation": "ক্লায়েন্ট অ্যাক্টিভেশন",
+                "client_deactivation": "ক্লায়েন্ট ডিএক্টিভেশন",
+                "payment_received": "পেমেন্ট রিসিভড"
+            }
+        },
+        "sms_count": {
+            "label": "কাউন্ট"
+        },
+        "cost": {
+            "label": "কস্ট"
+        },
+        "sms_from": {
+            "label": "থেকে"
+        },
+        "sms_to": {
+            "label": "প্রতি"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "options": {
+                "sent": "পাঠানো",
+                "failed": "ব্যর্থ",
+                "unknown": "অজানা"
+            }
+        },
+        "sent_at": {
+            "label": "পাঠানোর সময়"
+        }
+    },
+    "communication_queue": {
+        "title_plural": "কমিউনিকেশন কিউ",
+        "title_plural_count": "কমিউনিকেশন কিউ ({{count}})",
+        "sl": "SL",
+        "resend": "পুনরায় পাঠান",
+        "resend_all": "সব পুনরায় পাঠান",
+        "resend_sms": "এসএমএস পুনরায় পাঠান",
+        "resend_success": "এসএমএস সফলভাবে পুনরায় পাঠানো হয়েছে",
+        "sms_to": {
+            "label": "প্রাপক"
+        },
+        "sms_from": {
+            "label": "প্রেরক"
+        },
+        "sms_type": {
+            "label": "টাইপ",
+            "options": {
+                "all": "সব",
+                "custom": "কাস্টম",
+                "invoice_due": "ইনভয়েস ডিউ",
+                "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার"
+            }
+        },
+        "sms_count": {
+            "label": "কাউন্ট"
+        },
+        "message": {
+            "label": "মেসেজ"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "options": {
+                "pending": "পেন্ডিং",
+                "stop": "স্টপ",
+                "failed": "ব্যর্থ",
+                "completed": "সম্পন্ন",
+                "processing": "প্রসেসিং",
+                "unknown": "অজানা"
+            }
+        },
+        "comment": {
+            "label": "কমেন্ট"
+        },
+        "send_at": {
+            "label": "পাঠানোর সময়"
+        },
+        "expire_at": {
+            "label": "এক্সপায়ার সময়"
+        }
     },
     "sub_zone": {
         "name": {
@@ -1035,6 +1254,46 @@
         "description": {
             "label": "বিবরণ",
             "placeholder": "বিবরণ দিন"
+        }
+    },
+    "role": {
+        "title_plural": "রোল",
+        "create_title": "রোল যোগ করুন",
+        "edit_title": "রোল সম্পাদনা করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই রোলটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "রোলের নাম",
+            "placeholder": "রোলের নাম দিন",
+            "errors": {
+                "required": "রোলের নাম আবশ্যক",
+                "min": "রোলের নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        }
+    },
+    "activity_log": {
+        "title_plural": "অ্যাক্টিভিটি লগ",
+        "view": "দেখুন",
+        "sl": "নং",
+        "change_log_title": "চেঞ্জ লগ",
+        "original_values": "আসল মান",
+        "updated_values": "আপডেট মান",
+        "created": "তৈরি হয়েছে!",
+        "deleted": "মুছে ফেলা হয়েছে!",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই অ্যাক্টিভিটি লগটি মুছে ফেলতে চান?",
+        "company": {
+            "label": "কোম্পানি"
+        },
+        "reseller": {
+            "label": "রিসেলার"
+        },
+        "subject": {
+            "label": "সাবজেক্ট"
+        },
+        "action_by": {
+            "label": "অ্যাকশন বাই"
+        },
+        "date": {
+            "label": "তারিখ"
         }
     },
     "unit_type": {

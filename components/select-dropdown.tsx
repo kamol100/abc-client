@@ -56,7 +56,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
       return (
         result?.data?.map((item: { id: string | number; name: string }) => ({
           value: item.id,
-          label: item.name,
+          label: t(item.name),
         })) ?? []
       );
     },
@@ -104,6 +104,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
               name={name}
               options={options}
               value={selectedOption}
+              formatOptionLabel={(option) => t(option.label)}
               onChange={(newValue) => {
                 if (isMulti) {
                   const values = (newValue as MultiValue<SelectOption>).map(
