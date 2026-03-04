@@ -4,6 +4,7 @@ import { Control, Controller, FieldValues, RegisterOptions, useFormContext } fro
 import Label from "../label";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import FieldError from "./field-error";
+import { useTranslation } from "react-i18next";
 
 type CheckboxOption = {
     label: string;
@@ -34,7 +35,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
-
+    const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1", className)}>
             {!single && label && <Label label={label} />}
@@ -89,7 +90,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                                 opt.disabled && "opacity-50 cursor-not-allowed"
                                             )}
                                         >
-                                            {opt.label}
+                                            {t(opt.label)}
                                         </label>
                                     </div>
                                 );

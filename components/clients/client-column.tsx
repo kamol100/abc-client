@@ -1,131 +1,101 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import ActionButton from "../action-button";
+import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { User } from "../users/user-type";
-import { Badge } from "../ui/badge";
+import { ClientRow } from "./client-type";
+import ClientNamePhoneCell from "./client-name-phone-cell";
+import ClientZoneAddressCell from "./client-zone-address-cell";
+import ClientPackageCell from "./client-package-cell";
+import ClientBillingPaymentCell from "./client-billing-payment-cell";
+import ClientOnlineStatusCell from "./client-online-status-cell";
+import ClientStatusToggle from "./client-status-toggle";
+import ClientRowActions from "./client-row-actions";
 
-export const ClientColumns: ColumnDef<User>[] = [
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.name.label" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-[150px] capitalize">{row.original.name}</div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "roles",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.roles.label" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate capitalize font-medium">
-            {user.roles?.map((role: Role) => role.name).join(", ")}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "address",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.address.label" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate capitalize font-medium">
-            {(user as any)?.address}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "ip_address",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.ip.label" />
-    ),
-    cell: ({ row }) => {
-      const client = row.original;
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate capitalize font-medium">
-            {(client as any)?.ip_address}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.email.label" />
-    ),
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <div className="flex w-[100px] items-center">
-          <span className="capitalize"> {user.email}</span>
-        </div>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="client.status.label" />
-    ),
-    cell: ({ row }) => {
-      const user: any = row.original;
-      const statusValue = Number(user.status) as 0 | 1;
-      const stylesByStatus: Record<0 | 1, string> = {
-        1: "bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5",
-        0: "bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive",
-      };
-      const styles = stylesByStatus[statusValue];
-      return (
-        <Badge className={cn(styles)}>
-          <span
-            className={cn(
-              "capitalize",
-              statusValue === 1 ? "text-green-500" : "text-red-500"
-            )}
-          >
-            {statusValue === 1 ? "Active" : "Inactive"}
-          </span>
-        </Badge>
-      );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    id: "actions",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="common.actions" />
-    ),
-    cell: ({ row }) => {
-      const data = row.original;
-      return (
-        <>
-          <ActionButton className="hover:bg-primary hover:text-primary-foreground px-2" action="edit" />
-        </>
-      );
-    },
-  },
-];
+export function useClientColumns(): ColumnDef<ClientRow>[] {
+    const { t } = useTranslation();
+
+    return [
+        {
+            id: "id_name_phone",
+            accessorKey: "name",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.id_name_phone" />
+            ),
+            cell: ({ row }) => <ClientNamePhoneCell client={row.original} />,
+            enableSorting: false,
+            enableHiding: false,
+        },
+        {
+            id: "zone_address_network",
+            accessorKey: "zone",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.zone_address_network" />
+            ),
+            cell: ({ row }) => <ClientZoneAddressCell client={row.original} />,
+            enableSorting: false,
+        },
+        {
+            id: "connection_package",
+            accessorKey: "package",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.connection_package" />
+            ),
+            cell: ({ row }) => <ClientPackageCell client={row.original} />,
+            enableSorting: false,
+        },
+        {
+            id: "bill_payment",
+            accessorKey: "payment_deadline",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.bill_payment" />
+            ),
+            cell: ({ row }) => <ClientBillingPaymentCell client={row.original} />,
+            enableSorting: false,
+        },
+        {
+            id: "online_info",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.online_info" />
+            ),
+            cell: ({ row }) => (
+                <ClientOnlineStatusCell
+                    clientId={row.original.id}
+                    inactive={row.original.status === 0}
+                />
+            ),
+            enableSorting: false,
+        },
+        {
+            accessorKey: "status",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.status.label" />
+            ),
+            cell: ({ row }) => {
+                const statusValue = Number(row.original.status ?? 0) as 0 | 1;
+                return (
+                    <ClientStatusToggle
+                        clientId={row.original.id}
+                        initialStatus={statusValue}
+                    />
+                );
+            },
+            filterFn: (row, id, value) => value.includes(row.getValue(id)),
+        },
+        {
+            id: "actions",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    className="flex justify-end capitalize mr-3"
+                    title="common.actions"
+                />
+            ),
+            cell: ({ row }) => (
+                <div className="flex items-end justify-end mr-3">
+                    <ClientRowActions row={row} />
+                </div>
+            ),
+        },
+    ];
+}

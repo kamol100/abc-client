@@ -59,7 +59,9 @@
         "prepaid": "Prepaid",
         "postpaid": "Postpaid",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "connectivity_information": "Connectivity",
+        "advance_information": "Advance"
     },
     "user": {
         "name": {
@@ -434,7 +436,8 @@
         },
         "payment_deadline": {
             "label": "Payment Deadline",
-            "placeholder": "Select payment deadline"
+            "placeholder": "Select payment deadline",
+            "none": "None"
         },
         "payment_term": {
             "label": "Payment Term",
@@ -500,7 +503,287 @@
             "label": "Email",
             "placeholder": "Enter email"
         },
-        "title": "Clients"
+        "title": "Clients",
+        "title_plural": "Clients",
+        "create_title": "Add Client",
+        "edit_title": "Edit Client",
+        "delete_confirmation": "Are you sure you want to delete this client?",
+        "address": {
+            "label": "Address"
+        },
+        "connection_type": {
+            "label": "Connection Type",
+            "placeholder": "Select connection type",
+            "shared": "Shared",
+            "dedicated": "Dedicated"
+        },
+        "connection_mode": {
+            "label": "Connection Mode",
+            "placeholder": "Select connection mode"
+        },
+        "status_updated": "Client status updated successfully",
+        "actions": {
+            "view": "View",
+            "edit": "Edit",
+            "reset_session": "Reset Session",
+            "change_package": "Change Package",
+            "invoice_history": "Invoice History",
+            "pay": "Pay",
+            "sms": "Send SMS",
+            "tickets": "Create Ticket",
+            "delete": "Delete"
+        },
+        "session_reset": {
+            "title": "Reset Session",
+            "confirm": "Are you sure you want to reset the session for this client?",
+            "success": "Session reset successfully"
+        },
+        "change_package": {
+            "title": "Change Package",
+            "confirm": "Select a new network package for this client.",
+            "success": "Package changed successfully"
+        },
+        "delete_mikrotik": "Delete from Mikrotik?",
+        "view_title": "Client Details",
+        "online": {
+            "ip": "IP",
+            "mac": "MAC",
+            "uptime": "UT"
+        },
+        "table": {
+            "id_name_phone": "ID / Name / Phone",
+            "zone_address_network": "Zone / Address / Network",
+            "connection_package": "Connection / Package",
+            "bill_payment": "Bill / Payment",
+            "online_info": "Online / Info",
+            "deadline": "Deadline"
+        },
+        "history": {
+            "title": "History",
+            "sl": "SL",
+            "staff": "Staff",
+            "old_data": "Old Data",
+            "new_data": "New Data",
+            "description": "Description",
+            "date": "Date"
+        },
+        "speed": {
+            "title": "Speed",
+            "upload": "Upload",
+            "download": "Download"
+        },
+        "mac_address": {
+            "label": "MAC Address",
+            "placeholder": "Enter MAC address"
+        },
+        "billing_type": {
+            "label": "Billing Type",
+            "placeholder": "Select billing type"
+        },
+        "cable_type": {
+            "label": "Cable Type",
+            "placeholder": "Select cable type",
+            "options": {
+                "utp": "UTP",
+                "fiber": "FIBER"
+            }
+        },
+        "cable_length": {
+            "label": "Cable Length (m)",
+            "placeholder": "e.g. 200"
+        },
+        "invoice_day": {
+            "label": "Invoice Day",
+            "placeholder": "Select invoice day"
+        },
+        "connection_date": {
+            "label": "Connection Date",
+            "placeholder": "Select connection date"
+        },
+        "termination_date": {
+            "label": "Termination Date",
+            "placeholder": "Select termination date"
+        },
+        "upazila": {
+            "label": "Upazila / Thana",
+            "placeholder": "Select upazila"
+        },
+        "type": {
+            "label": "Client Type",
+            "placeholder": "Select client type",
+            "home": "Home",
+            "corporate": "Corporate",
+            "others": "Others"
+        },
+        "father_name": {
+            "label": "Father's Name",
+            "placeholder": "Enter father's name"
+        },
+        "occupation": {
+            "label": "Occupation",
+            "placeholder": "Enter occupation"
+        },
+        "permanent_address": {
+            "label": "Permanent Address",
+            "placeholder": "Enter permanent address"
+        },
+        "fund": {
+            "label": "Payment Method (Fund)",
+            "placeholder": "Enter fund"
+        }
+    },
+    "invoice": {
+        "title_plural": "Invoices",
+        "client_invoices": "Client Invoices",
+        "sl": "SL",
+        "invoice_id": "Invoice ID",
+        "date_created": "Created",
+        "date_due": "Due Date",
+        "amount": "Amount",
+        "no_invoices": "No invoices found",
+        "bulk_pay": {
+            "title": "Pay Invoices",
+            "select_all": "Select All",
+            "total_amount": "Total Amount",
+            "total_discount": "Total Discount",
+            "total_paid": "Total Paid",
+            "total_due": "Total Due",
+            "fund": {
+                "label": "Payment Method",
+                "placeholder": "Select fund",
+                "errors": {
+                    "required": "Payment method is required"
+                }
+            },
+            "payment_date": {
+                "label": "Payment Date",
+                "placeholder": "Select date"
+            },
+            "status": {
+                "label": "Status"
+            },
+            "partial_amount": {
+                "label": "Partial Amount",
+                "placeholder": "Enter partial amount",
+                "errors": {
+                    "min": "Amount must be greater than 0"
+                }
+            },
+            "confirmation_sms": {
+                "label": "Confirm SMS"
+            },
+            "note": {
+                "label": "Note",
+                "placeholder": "Optional note"
+            },
+            "no_due_invoices": "No due invoices found",
+            "submit": "Pay Now",
+            "success": "Payment completed successfully",
+            "errors": {
+                "select_invoice": "Select at least one invoice"
+            }
+        }
+    },
+    "ticket": {
+        "title_plural": "Tickets",
+        "title_single": "Ticket",
+        "create_title": "Create Ticket",
+        "edit_title": "Edit Ticket",
+        "view_title": "Ticket Details",
+        "ticket_id": {
+            "label": "Ticket ID"
+        },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client",
+            "errors": {
+                "required": "Client is required"
+            }
+        },
+        "subject": {
+            "label": "Subject",
+            "placeholder": "Select subject",
+            "errors": {
+                "required": "Subject is required"
+            }
+        },
+        "tags": {
+            "label": "Tags",
+            "placeholder": "Select tags"
+        },
+        "assigned_to": {
+            "label": "Assigned To",
+            "placeholder": "Select staff"
+        },
+        "message": {
+            "label": "Message",
+            "placeholder": "Enter message",
+            "errors": {
+                "required": "Message is required",
+                "min": "Message must be at least 2 characters"
+            }
+        },
+        "priority": {
+            "label": "Priority",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low"
+        },
+        "status": {
+            "label": "Status",
+            "open": "Open",
+            "in_progress": "In Progress",
+            "resolved": "Resolved",
+            "closed": "Closed"
+        },
+        "replies": "Replies",
+        "created_at": "Created",
+        "updated_at": "Updated",
+        "client_name": "Name",
+        "client_phone": "Phone",
+        "client_address": "Address",
+        "information": "Information",
+        "not_assigned": "Not Assigned",
+        "reply": {
+            "title": "Reply",
+            "placeholder": "Type your reply here...",
+            "send": "Send Reply",
+            "success": "Reply sent successfully",
+            "errors": {
+                "required": "Reply message is required"
+            }
+        },
+        "replied_by": "Replied by",
+        "create_success": "Ticket created successfully",
+        "no_messages": "No messages yet",
+        "back_to_list": "Back to Tickets",
+        "delete_confirmation": "Are you sure you want to delete this ticket?",
+        "deleted_success": "Ticket deleted successfully"
+    },
+    "sms_send": {
+        "title": "Send SMS",
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "required": "Phone number is required"
+            }
+        },
+        "message": {
+            "label": "Message",
+            "placeholder": "Enter your message",
+            "errors": {
+                "required": "Message is required",
+                "min": "Message must be at least 2 characters"
+            }
+        },
+        "template": {
+            "label": "SMS Template",
+            "placeholder": "Select template (optional)"
+        },
+        "send": "Send SMS",
+        "success": "SMS sent successfully",
+        "phone_prefilled": "Phone number prefilled from client"
     },
     "payment": {
         "title_plural": "Payments",
@@ -693,6 +976,168 @@
                 "invalid": "Name must be a string",
                 "min": "Name must be at least 2 characters"
             }
+        }
+    },
+    "network": {
+        "title_plural": "Networks",
+        "create_title": "Add Network",
+        "edit_title": "Edit Network",
+        "delete_confirmation": "Are you sure you want to delete this network?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter network name",
+            "errors": {
+                "required": "Network name is required",
+                "invalid": "Network name must be a string",
+                "min": "Network name must be at least 2 characters"
+            }
+        },
+        "ip_address": {
+            "label": "IP Address",
+            "placeholder": "Enter IP address",
+            "errors": {
+                "required": "IP address is required",
+                "invalid": "IP address must be a string",
+                "min": "A valid IP address is required"
+            }
+        },
+        "mikrotik_user": {
+            "label": "Mikrotik User",
+            "placeholder": "Enter mikrotik user",
+            "errors": {
+                "required": "Mikrotik user is required",
+                "invalid": "Mikrotik user must be a string",
+                "min": "Mikrotik user must be at least 2 characters"
+            }
+        },
+        "mikrotik_password": {
+            "label": "Mikrotik Password",
+            "placeholder": "Enter mikrotik password",
+            "errors": {
+                "required": "Mikrotik password is required",
+                "invalid": "Mikrotik password must be a string",
+                "min": "Password must be at least 5 characters"
+            }
+        },
+        "web_port": {
+            "label": "Web Port",
+            "placeholder": "Mikrotik > IP > Service > API Port"
+        },
+        "auto_client_mikrotik_status": {
+            "label": "Mikrotik Status"
+        },
+        "auto_sync_status": {
+            "label": "Auto Sync Status"
+        },
+        "graph_status": {
+            "label": "Graph Status"
+        },
+        "notes": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "status": {
+            "label": "Status",
+            "on": "ON",
+            "off": "OFF",
+            "placeholder": "Select status"
+        },
+        "connection": {
+            "label": "Mikrotik",
+            "connected": "Connected",
+            "disconnected": "Disconnected"
+        },
+        "filters": {
+            "name": "Filter by name",
+            "ip_address": "Filter by IP address",
+            "status": "Filter by status"
+        }
+    },
+    "device": {
+        "title_plural": "Devices",
+        "create_title": "Add Device",
+        "edit_title": "Edit Device",
+        "delete_confirmation": "Are you sure you want to delete this device?",
+        "name": {
+            "label": "Device Name",
+            "placeholder": "Enter device name",
+            "errors": {
+                "required": "Device name is required",
+                "invalid": "Device name must be a string",
+                "min": "Device name must be at least 2 characters"
+            }
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "device_type": {
+            "label": "Device Type",
+            "placeholder": "Select device type",
+            "errors": {
+                "required": "Device type is required"
+            }
+        },
+        "parent_device": {
+            "label": "Parent Device",
+            "placeholder": "Select parent device"
+        },
+        "device_ip": {
+            "label": "Device IP",
+            "placeholder": "Enter device IP address"
+        },
+        "zone": {
+            "label": "Zone",
+            "placeholder": "Select zone"
+        },
+        "input_port": {
+            "label": "Input Port",
+            "placeholder": "Enter input port"
+        },
+        "total_port": {
+            "label": "Total Port",
+            "placeholder": "Enter total port"
+        },
+        "ports": {
+            "label": "Ports"
+        },
+        "location": {
+            "label": "Location"
+        },
+        "latitude": {
+            "label": "Latitude",
+            "placeholder": "Enter latitude"
+        },
+        "longitude": {
+            "label": "Longitude",
+            "placeholder": "Enter longitude"
+        },
+        "fiber_code": {
+            "label": "Fiber Code",
+            "placeholder": "Enter fiber code"
+        },
+        "device_order": {
+            "label": "Device Order",
+            "placeholder": "Enter device order"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status",
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "filters": {
+            "name": "Filter by device name",
+            "network": "Filter by network",
+            "device_type": "Filter by device type",
+            "status": "Filter by status"
         }
     },
     "menu": {

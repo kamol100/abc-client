@@ -4,6 +4,7 @@ import Label from "../label";
 import { Textarea } from "../ui/textarea";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import FieldError from "./field-error";
+import { useTranslation } from "react-i18next";
 
 type TextareaFieldProps = {
     name: string;
@@ -26,7 +27,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
-
+    const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}>
             {label && <Label label={label} />}
@@ -37,7 +38,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Textarea
                         id={name}
-                        placeholder={placeholder}
+                        placeholder={placeholder ? t(placeholder as string) : ""}
                         value={value ?? ""}
                         onChange={onChange}
                         onBlur={onBlur}

@@ -4,6 +4,7 @@ import Label from "../label";
 import { Input } from "../ui/input";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import FieldError from "./field-error";
+import { useTranslation } from "react-i18next";
 
 type InputFieldProps = {
     name: string;
@@ -26,7 +27,7 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
-
+    const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
             {label && <Label label={label} />}
@@ -37,7 +38,7 @@ const InputField: React.FC<InputFieldProps> = ({
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Input
                         id={name}
-                        placeholder={placeholder}
+                        placeholder={placeholder ? t(placeholder as string) : ""}
                         type={type}
                         value={value ?? ""}
                         onChange={onChange}

@@ -56,6 +56,19 @@ interface ApiErrorShape {
     message?: string;
 }
 
+export function cellIndex(rowIndex: number, pagination?: Pagination): number {
+    const perPage = pagination?.per_page ?? 20;
+    const currentPage = pagination?.current_page ?? 1;
+    return (currentPage - 1) * perPage + rowIndex + 1;
+}
+
+export function formatKey(key: string): string {
+    return key
+        .split("_")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+}
+
 export function parseApiError(error: unknown): string | false {
     const err = error as ApiErrorShape;
     return (

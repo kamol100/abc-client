@@ -1,6 +1,6 @@
 {
     "common": {
-        "add": "যোগ",
+        "add": "অ্যাড",
         "cancel": "বাতিল",
         "confirm": "নিশ্চিত",
         "delete": "মুছুন",
@@ -298,8 +298,12 @@
             "placeholder": "সোশ্যাল মিডিয়া ঠিকানা দিন"
         },
         "title": "স্টাফ",
-        "create": { "title": "স্টাফ তৈরি" },
-        "edit": { "title": "স্টাফ সম্পাদনা" }
+        "create": {
+            "title": "স্টাফ তৈরি"
+        },
+        "edit": {
+            "title": "স্টাফ সম্পাদনা"
+        }
     },
     "salary": {
         "salary_type": {
@@ -355,8 +359,12 @@
             "placeholder": "ঐচ্ছিক নোট"
         },
         "title": "স্যালারি",
-        "create": { "title": "স্যালারি তৈরি" },
-        "edit": { "title": "স্যালারি সম্পাদনা" }
+        "create": {
+            "title": "স্যালারি তৈরি"
+        },
+        "edit": {
+            "title": "স্যালারি সম্পাদনা"
+        }
     },
     "vendor": {
         "name": {
@@ -426,7 +434,8 @@
         },
         "payment_deadline": {
             "label": "পেমেন্ট ডেডলাইন",
-            "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন"
+            "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন",
+            "none": "কোনোটি না"
         },
         "payment_term": {
             "label": "পেমেন্ট টার্ম",
@@ -492,7 +501,287 @@
             "label": "ইমেইল",
             "placeholder": "ইমেইল দিন"
         },
-        "title": "ক্লায়েন্ট"
+        "title": "ক্লায়েন্ট",
+        "title_plural": "ক্লায়েন্ট",
+        "create_title": "ক্লায়েন্ট যোগ করুন",
+        "edit_title": "ক্লায়েন্ট সম্পাদনা",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ক্লায়েন্টটি মুছে ফেলতে চান?",
+        "address": {
+            "label": "ঠিকানা"
+        },
+        "connection_type": {
+            "label": "কানেকশন টাইপ",
+            "placeholder": "কানেকশন টাইপ নির্বাচন করুন",
+            "shared": "শেয়ার্ড",
+            "dedicated": "ডেডিকেটেড"
+        },
+        "connection_mode": {
+            "label": "কানেকশন মোড",
+            "placeholder": "কানেকশন মোড নির্বাচন করুন"
+        },
+        "status_updated": "ক্লায়েন্ট স্ট্যাটাস সফলভাবে আপডেট হয়েছে",
+        "actions": {
+            "view": "দেখুন",
+            "edit": "সম্পাদনা",
+            "reset_session": "সেশন রিসেট",
+            "change_package": "প্যাকেজ পরিবর্তন",
+            "invoice_history": "ইনভয়েস হিস্ট্রি",
+            "pay": "পে",
+            "sms": "এসএমএস পাঠান",
+            "tickets": "টিকেট তৈরি",
+            "delete": "মুছুন"
+        },
+        "session_reset": {
+            "title": "সেশন রিসেট",
+            "confirm": "আপনি কি নিশ্চিত এই ক্লায়েন্টের সেশন রিসেট করতে চান?",
+            "success": "সেশন সফলভাবে রিসেট হয়েছে"
+        },
+        "change_package": {
+            "title": "প্যাকেজ পরিবর্তন",
+            "confirm": "এই ক্লায়েন্টের জন্য একটি নতুন নেটওয়ার্ক প্যাকেজ নির্বাচন করুন।",
+            "success": "প্যাকেজ সফলভাবে পরিবর্তন হয়েছে"
+        },
+        "delete_mikrotik": "মাইক্রোটিক থেকে মুছবেন?",
+        "view_title": "ক্লায়েন্ট বিবরণ",
+        "online": {
+            "ip": "আইপি",
+            "mac": "ম্যাক",
+            "uptime": "ইউটি"
+        },
+        "table": {
+            "id_name_phone": "আইডি / নাম / ফোন",
+            "zone_address_network": "জোন / ঠিকানা / নেটওয়ার্ক",
+            "connection_package": "কানেকশন / প্যাকেজ",
+            "bill_payment": "বিল / পেমেন্ট",
+            "online_info": "অনলাইন / তথ্য",
+            "deadline": "ডেডলাইন"
+        },
+        "history": {
+            "title": "হিস্ট্রি",
+            "sl": "ক্রম",
+            "staff": "স্টাফ",
+            "old_data": "পুরাতন ডাটা",
+            "new_data": "নতুন ডাটা",
+            "description": "বিবরণ",
+            "date": "তারিখ"
+        },
+        "mac_address": {
+            "label": "ম্যাক অ্যাড্রেস",
+            "placeholder": "ম্যাক অ্যাড্রেস দিন"
+        },
+        "billing_type": {
+            "label": "বিলিং টাইপ",
+            "placeholder": "বিলিং টাইপ নির্বাচন করুন"
+        },
+        "cable_type": {
+            "label": "ক্যাবল টাইপ",
+            "placeholder": "ক্যাবল টাইপ নির্বাচন করুন",
+            "options": {
+                "utp": "UTP",
+                "fiber": "FIBER"
+            }
+        },
+        "cable_length": {
+            "label": "ক্যাবল লেন্থ (মিটার)",
+            "placeholder": "যেমন: ২০০"
+        },
+        "invoice_day": {
+            "label": "ইনভয়েস ডে",
+            "placeholder": "ইনভয়েস ডে নির্বাচন করুন"
+        },
+        "connection_date": {
+            "label": "কানেকশন ডেট",
+            "placeholder": "কানেকশন ডেট নির্বাচন করুন"
+        },
+        "termination_date": {
+            "label": "টার্মিনেশন ডেট",
+            "placeholder": "টার্মিনেশন ডেট নির্বাচন করুন"
+        },
+        "upazila": {
+            "label": "উপজেলা / থানা",
+            "placeholder": "উপজেলা নির্বাচন করুন"
+        },
+        "type": {
+            "label": "ক্লায়েন্ট টাইপ",
+            "placeholder": "ক্লায়েন্ট টাইপ নির্বাচন করুন",
+            "home": "হোম",
+            "corporate": "কর্পোরেট",
+            "others": "অন্যান্য"
+        },
+        "father_name": {
+            "label": "পিতার নাম",
+            "placeholder": "পিতার নাম দিন"
+        },
+        "occupation": {
+            "label": "পেশা",
+            "placeholder": "পেশা দিন"
+        },
+        "permanent_address": {
+            "label": "স্থায়ী ঠিকানা",
+            "placeholder": "স্থায়ী ঠিকানা দিন"
+        },
+        "fund": {
+            "label": "পেমেন্ট মেথড (ফান্ড)",
+            "placeholder": "ফান্ড দিন"
+        },
+        "speed": {
+            "title": "স্পিড",
+            "upload": "আপলোড",
+            "download": "ডাউনলোড"
+        }
+    },
+    "invoice": {
+        "title_plural": "ইনভয়েস",
+        "client_invoices": "ক্লায়েন্ট ইনভয়েস",
+        "sl": "ক্রম",
+        "invoice_id": "ইনভয়েস আইডি",
+        "date_created": "তৈরি",
+        "date_due": "ডিউ তারিখ",
+        "amount": "পরিমাণ",
+        "no_invoices": "কোনো ইনভয়েস পাওয়া যায়নি",
+        "bulk_pay": {
+            "title": "ইনভয়েস পে করুন",
+            "select_all": "সব নির্বাচন করুন",
+            "total_amount": "মোট পরিমাণ",
+            "total_discount": "মোট ডিসকাউন্ট",
+            "total_paid": "মোট পেইড",
+            "total_due": "মোট ডিউ",
+            "fund": {
+                "label": "পেমেন্ট পদ্ধতি",
+                "placeholder": "ফান্ড নির্বাচন করুন",
+                "errors": {
+                    "required": "পেমেন্ট পদ্ধতি আবশ্যক"
+                }
+            },
+            "payment_date": {
+                "label": "পেমেন্ট তারিখ",
+                "placeholder": "তারিখ নির্বাচন করুন"
+            },
+            "status": {
+                "label": "অবস্থা"
+            },
+            "partial_amount": {
+                "label": "আংশিক পরিমাণ",
+                "placeholder": "আংশিক পরিমাণ দিন",
+                "errors": {
+                    "min": "পরিমাণ ০ এর বেশি হতে হবে"
+                }
+            },
+            "confirmation_sms": {
+                "label": "কনফার্ম এসএমএস"
+            },
+            "note": {
+                "label": "নোট",
+                "placeholder": "ঐচ্ছিক নোট"
+            },
+            "no_due_invoices": "কোনো ডিউ ইনভয়েস পাওয়া যায়নি",
+            "submit": "পে করুন",
+            "success": "পেমেন্ট সফলভাবে সম্পন্ন হয়েছে",
+            "errors": {
+                "select_invoice": "কমপক্ষে একটি ইনভয়েস নির্বাচন করুন"
+            }
+        }
+    },
+    "ticket": {
+        "title_plural": "টিকেট",
+        "title_single": "টিকেট",
+        "create_title": "টিকেট তৈরি করুন",
+        "edit_title": "টিকেট সম্পাদনা",
+        "view_title": "টিকেট বিবরণ",
+        "ticket_id": {
+            "label": "টিকেট আইডি"
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "errors": {
+                "required": "ক্লায়েন্ট আবশ্যক"
+            }
+        },
+        "subject": {
+            "label": "সাবজেক্ট",
+            "placeholder": "সাবজেক্ট নির্বাচন করুন",
+            "errors": {
+                "required": "সাবজেক্ট আবশ্যক"
+            }
+        },
+        "tags": {
+            "label": "ট্যাগ",
+            "placeholder": "ট্যাগ নির্বাচন করুন"
+        },
+        "assigned_to": {
+            "label": "অ্যাসাইন করা হয়েছে",
+            "placeholder": "স্টাফ নির্বাচন করুন"
+        },
+        "message": {
+            "label": "মেসেজ",
+            "placeholder": "মেসেজ দিন",
+            "errors": {
+                "required": "মেসেজ আবশ্যক",
+                "min": "মেসেজ কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "priority": {
+            "label": "প্রায়োরিটি",
+            "high": "হাই",
+            "medium": "মিডিয়াম",
+            "low": "লো"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "open": "ওপেন",
+            "in_progress": "ইন প্রগ্রেস",
+            "resolved": "রিজলভড",
+            "closed": "ক্লোজড"
+        },
+        "replies": "রিপ্লাই",
+        "created_at": "তৈরির তারিখ",
+        "updated_at": "আপডেটের তারিখ",
+        "client_name": "নাম",
+        "client_phone": "ফোন",
+        "client_address": "ঠিকানা",
+        "information": "তথ্য",
+        "not_assigned": "অ্যাসাইন করা হয়নি",
+        "reply": {
+            "title": "রিপ্লাই",
+            "placeholder": "আপনার রিপ্লাই লিখুন...",
+            "send": "রিপ্লাই পাঠান",
+            "success": "রিপ্লাই সফলভাবে পাঠানো হয়েছে",
+            "errors": {
+                "required": "রিপ্লাই মেসেজ আবশ্যক"
+            }
+        },
+        "replied_by": "রিপ্লাই করেছেন",
+        "create_success": "টিকেট সফলভাবে তৈরি হয়েছে",
+        "no_messages": "কোনো মেসেজ নেই",
+        "back_to_list": "টিকেট লিস্টে ফিরুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই টিকেটটি মুছতে চান?",
+        "deleted_success": "টিকেট সফলভাবে মুছে ফেলা হয়েছে"
+    },
+    "sms_send": {
+        "title": "এসএমএস পাঠান",
+        "phone": {
+            "label": "ফোন নম্বর",
+            "placeholder": "ফোন নম্বর দিন",
+            "errors": {
+                "required": "ফোন নম্বর আবশ্যক"
+            }
+        },
+        "message": {
+            "label": "মেসেজ",
+            "placeholder": "আপনার মেসেজ দিন",
+            "errors": {
+                "required": "মেসেজ আবশ্যক",
+                "min": "মেসেজ কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "template": {
+            "label": "এসএমএস টেমপ্লেট",
+            "placeholder": "টেমপ্লেট নির্বাচন করুন (ঐচ্ছিক)"
+        },
+        "send": "এসএমএস পাঠান",
+        "success": "এসএমএস সফলভাবে পাঠানো হয়েছে",
+        "phone_prefilled": "ক্লায়েন্ট থেকে ফোন নম্বর প্রিফিল করা হয়েছে"
     },
     "payment": {
         "title_plural": "পেমেন্ট",
@@ -685,6 +974,168 @@
                 "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
                 "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
             }
+        }
+    },
+    "network": {
+        "title_plural": "নেটওয়ার্ক",
+        "create_title": "নেটওয়ার্ক যোগ করুন",
+        "edit_title": "নেটওয়ার্ক সম্পাদনা করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই নেটওয়ার্কটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "নেটওয়ার্কের নাম দিন",
+            "errors": {
+                "required": "নেটওয়ার্কের নাম আবশ্যক",
+                "invalid": "নেটওয়ার্কের নাম অবশ্যই স্ট্রিং হতে হবে",
+                "min": "নেটওয়ার্কের নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "ip_address": {
+            "label": "আইপি অ্যাড্রেস",
+            "placeholder": "আইপি অ্যাড্রেস দিন",
+            "errors": {
+                "required": "আইপি অ্যাড্রেস আবশ্যক",
+                "invalid": "আইপি অ্যাড্রেস অবশ্যই স্ট্রিং হতে হবে",
+                "min": "একটি সঠিক আইপি অ্যাড্রেস দিন"
+            }
+        },
+        "mikrotik_user": {
+            "label": "মাইক্রোটিক ইউজার",
+            "placeholder": "মাইক্রোটিক ইউজার দিন",
+            "errors": {
+                "required": "মাইক্রোটিক ইউজার আবশ্যক",
+                "invalid": "মাইক্রোটিক ইউজার অবশ্যই স্ট্রিং হতে হবে",
+                "min": "মাইক্রোটিক ইউজার কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "mikrotik_password": {
+            "label": "মাইক্রোটিক পাসওয়ার্ড",
+            "placeholder": "মাইক্রোটিক পাসওয়ার্ড দিন",
+            "errors": {
+                "required": "মাইক্রোটিক পাসওয়ার্ড আবশ্যক",
+                "invalid": "মাইক্রোটিক পাসওয়ার্ড অবশ্যই স্ট্রিং হতে হবে",
+                "min": "পাসওয়ার্ড কমপক্ষে ৫ অক্ষরের হতে হবে"
+            }
+        },
+        "web_port": {
+            "label": "ওয়েব পোর্ট",
+            "placeholder": "মাইক্রোটিক > IP > সার্ভিস > API পোর্ট"
+        },
+        "auto_client_mikrotik_status": {
+            "label": "মাইক্রোটিক স্ট্যাটাস"
+        },
+        "auto_sync_status": {
+            "label": "অটো সিঙ্ক স্ট্যাটাস"
+        },
+        "graph_status": {
+            "label": "গ্রাফ স্ট্যাটাস"
+        },
+        "notes": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "on": "চালু",
+            "off": "বন্ধ",
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+        },
+        "connection": {
+            "label": "মাইক্রোটিক",
+            "connected": "কানেক্টেড",
+            "disconnected": "ডিসকানেক্টেড"
+        },
+        "filters": {
+            "name": "নাম দিয়ে ফিল্টার করুন",
+            "ip_address": "আইপি অ্যাড্রেস দিয়ে ফিল্টার করুন",
+            "status": "স্ট্যাটাস দিয়ে ফিল্টার করুন"
+        }
+    },
+    "device": {
+        "title_plural": "ডিভাইস",
+        "create_title": "ডিভাইস যোগ করুন",
+        "edit_title": "ডিভাইস সম্পাদনা করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ডিভাইসটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "ডিভাইস নাম",
+            "placeholder": "ডিভাইস নাম দিন",
+            "errors": {
+                "required": "ডিভাইস নাম আবশ্যক",
+                "invalid": "ডিভাইস নাম অবশ্যই স্ট্রিং হতে হবে",
+                "min": "ডিভাইস নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "device_type": {
+            "label": "ডিভাইস টাইপ",
+            "placeholder": "ডিভাইস টাইপ নির্বাচন করুন",
+            "errors": {
+                "required": "ডিভাইস টাইপ আবশ্যক"
+            }
+        },
+        "parent_device": {
+            "label": "প্যারেন্ট ডিভাইস",
+            "placeholder": "প্যারেন্ট ডিভাইস নির্বাচন করুন"
+        },
+        "device_ip": {
+            "label": "ডিভাইস আইপি",
+            "placeholder": "ডিভাইস আইপি অ্যাড্রেস দিন"
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন"
+        },
+        "input_port": {
+            "label": "ইনপুট পোর্ট",
+            "placeholder": "ইনপুট পোর্ট দিন"
+        },
+        "total_port": {
+            "label": "টোটাল পোর্ট",
+            "placeholder": "টোটাল পোর্ট দিন"
+        },
+        "ports": {
+            "label": "পোর্টস"
+        },
+        "location": {
+            "label": "লোকেশন"
+        },
+        "latitude": {
+            "label": "ল্যাটিটিউড",
+            "placeholder": "ল্যাটিটিউড দিন"
+        },
+        "longitude": {
+            "label": "লংগিটিউড",
+            "placeholder": "লংগিটিউড দিন"
+        },
+        "fiber_code": {
+            "label": "ফাইবার কোড",
+            "placeholder": "ফাইবার কোড দিন"
+        },
+        "device_order": {
+            "label": "ডিভাইস অর্ডার",
+            "placeholder": "ডিভাইস অর্ডার দিন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "active": "অ্যাকটিভ",
+            "inactive": "ইনঅ্যাকটিভ"
+        },
+        "filters": {
+            "name": "ডিভাইস নাম দিয়ে ফিল্টার করুন",
+            "network": "নেটওয়ার্ক দিয়ে ফিল্টার করুন",
+            "device_type": "ডিভাইস টাইপ দিয়ে ফিল্টার করুন",
+            "status": "স্ট্যাটাস দিয়ে ফিল্টার করুন"
         }
     },
     "menu": {

@@ -1,77 +1,71 @@
 "use client";
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
-import { Plus } from "lucide-react";
-import Link from "next/link";
+
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
-import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { ClientColumns } from "@/components/clients/client-column";
+import ActionButton from "@/components/action-button";
+import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
-
-type ClientRow = Record<string, unknown>;
+import { ClientRow } from "@/components/clients/client-type";
 
 const ClientTable: FC = () => {
-  const [filterValue, setFilter] = useState<string | null>(null);
-  const params = useMemo(
-    () =>
-      filterValue
-        ? Object.fromEntries(new URLSearchParams(filterValue))
-        : undefined,
-    [filterValue]
-  );
+    const { t } = useTranslation();
+    const { isMobile } = useSidebar();
+    const columns = useClientColumns();
 
-  const { data, isLoading, isFetching, setCurrentPage } =
-    useApiQuery<PaginatedApiResponse<ClientRow>>({
-      queryKey: ["clients"],
-      url: "clients",
-      params,
-    });
+    const [filterValue, setFilter] = useState<string | null>(null);
+    const params = useMemo(
+        () =>
+            filterValue
+                ? Object.fromEntries(new URLSearchParams(filterValue))
+                : undefined,
+        [filterValue]
+    );
 
-  const clients = data?.data?.data ?? [];
-  const pagination = data?.data?.pagination;
-  const { t } = useTranslation();
-  const { isMobile } = useSidebar();
+    const { data, isLoading, isFetching, setCurrentPage } =
+        useApiQuery<PaginatedApiResponse<ClientRow>>({
+            queryKey: ["clients"],
+            url: "clients",
+            params,
+        });
 
-  const toolbarOptions = {
-    filter: ClientFilterSchema(),
-  };
+    const clients = data?.data?.data ?? [];
+    const pagination = data?.data?.pagination;
 
-  const FormLink = () => (
-    <Link href={"/clients/create"}>
-      <Button>
-        {isMobile ? (
-          <Plus />
-        ) : (
-          <>
-            <Plus /> Add
-          </>
-        )}
-      </Button>
-    </Link>
-  );
+    const toolbarOptions = {
+        filter: ClientFilterSchema(),
+    };
 
-  const toolbarTitle = pagination?.total
-    ? `Clients (${pagination.total})`
-    : "Clients";
+    const FormLink = () => (
+        <ActionButton
+            action="add"
+            title={isMobile ? undefined : t("common.add")}
+            url="/clients/create"
+        />
+    );
 
-  return (
-    <DataTable
-      data={clients}
-      setFilter={setFilter}
-      columns={ClientColumns}
-      toolbarOptions={toolbarOptions}
-      toggleColumns={true}
-      pagination={pagination}
-      setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
-      isFetching={isFetching}
-      queryKey={"clients"}
-      form={FormLink}
-      toolbarTitle={toolbarTitle}
-    />
-  );
+    const toolbarTitle = pagination?.total
+        ? `${t("client.title_plural")} (${pagination.total})`
+        : t("client.title_plural");
+
+    return (
+        <DataTable
+            data={clients}
+            setFilter={setFilter}
+            columns={columns}
+            toolbarOptions={toolbarOptions}
+            toggleColumns={true}
+            pagination={pagination}
+            setCurrentPage={setCurrentPage}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            queryKey={"clients"}
+            form={FormLink}
+            toolbarTitle={toolbarTitle}
+        />
+    );
 };
 
 export default ClientTable;
