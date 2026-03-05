@@ -26,7 +26,9 @@ const RoleTable: FC = () => {
             params,
         });
 
-    const roles = data?.data?.data ?? [];
+    console.log(data, 'data');
+
+    const roles = data?.data.data ?? [];
     const pagination = data?.data?.pagination;
 
     const toolbarTitle = pagination?.total

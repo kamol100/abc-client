@@ -41,6 +41,8 @@ const ClientTable: FC = () => {
     const FormLink = () => (
         <ActionButton
             action="add"
+            size="default"
+            variant="default"
             title={isMobile ? undefined : t("common.add")}
             url="/clients/create"
         />

@@ -1256,6 +1256,57 @@
             "placeholder": "বিবরণ দিন"
         }
     },
+    "wallet": {
+        "title_plural": "ওয়ালেট ট্রানজেকশন",
+        "my_wallet_title": "আমার ওয়ালেট",
+        "client_wallet_title": "ক্লায়েন্ট ওয়ালেট",
+        "my_balance": "আমার ব্যালেন্স",
+        "recharge_title": "ওয়ালেট রিচার্জ",
+        "client_recharge_title": "ক্লায়েন্ট ওয়ালেট রিচার্জ",
+        "recharge_with_bkash": "bKash দিয়ে রিচার্জ",
+        "pay_with_bkash": "bKash দিয়ে পেমেন্ট",
+        "payment_date": {
+            "label": "পেমেন্ট তারিখ"
+        },
+        "created_at": {
+            "label": "তারিখ"
+        },
+        "method": {
+            "label": "মেথড"
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "errors": {
+                "required": "ক্লায়েন্ট আবশ্যক"
+            }
+        },
+        "balance": {
+            "label": "ব্যালেন্স"
+        },
+        "amount": {
+            "label": "অ্যামাউন্ট",
+            "placeholder": "রিচার্জ অ্যামাউন্ট দিন",
+            "errors": {
+                "required": "অ্যামাউন্ট আবশ্যক",
+                "min": "অ্যামাউন্ট ০ এর বেশি হতে হবে"
+            }
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "messages": {
+            "processing_payment": "পেমেন্ট প্রসেস হচ্ছে...",
+            "payment_failed": "পেমেন্ট ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
+            "payment_success": "পেমেন্ট সফলভাবে সম্পন্ন হয়েছে।",
+            "recharge_successful": "ওয়ালেট রিচার্জ সফল হয়েছে।",
+            "recharge_failed": "ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।",
+            "redirecting_to_payment": "পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হচ্ছে...",
+            "client_recharge_success": "ক্লায়েন্ট ওয়ালেট সফলভাবে রিচার্জ হয়েছে।",
+            "client_recharge_failed": "ক্লায়েন্ট ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।"
+        }
+    },
     "role": {
         "title_plural": "রোল",
         "create_title": "রোল যোগ করুন",
@@ -1268,6 +1319,31 @@
                 "required": "রোলের নাম আবশ্যক",
                 "min": "রোলের নাম কমপক্ষে ২ অক্ষরের হতে হবে"
             }
+        }
+    },
+    "permission": {
+        "title_plural": "পার্মিশন",
+        "description": "রোল অনুযায়ী পার্মিশন অ্যাসাইনমেন্ট ম্যানেজ করুন।",
+        "group": "গ্রুপ",
+        "general_group": "জেনারেল",
+        "select_role_prompt": "পার্মিশন লোড করতে একটি রোল নির্বাচন করুন।",
+        "empty_permissions": "কোনো পার্মিশন পাওয়া যায়নি।",
+        "role": {
+            "label": "রোল",
+            "placeholder": "একটি রোল নির্বাচন করুন",
+            "errors": {
+                "required": "রোল আবশ্যক"
+            }
+        },
+        "messages": {
+            "updated": "পার্মিশন সফলভাবে আপডেট হয়েছে।",
+            "failed_update": "পার্মিশন আপডেট করা যায়নি।",
+            "select_role_first": "আগে একটি রোল নির্বাচন করুন।"
+        },
+        "errors": {
+            "permissions_fetch": "পার্মিশন লোড করা যায়নি।",
+            "roles_fetch": "রোল লোড করা যায়নি।",
+            "role_permissions_fetch": "রোল পার্মিশন লোড করা যায়নি।"
         }
     },
     "activity_log": {
@@ -1490,6 +1566,86 @@
             "network": "নেটওয়ার্ক দিয়ে ফিল্টার করুন",
             "device_type": "ডিভাইস টাইপ দিয়ে ফিল্টার করুন",
             "status": "স্ট্যাটাস দিয়ে ফিল্টার করুন"
+        }
+    },
+    "fund": {
+        "title_plural": "ফান্ড",
+        "create_title": "ফান্ড যোগ করুন",
+        "edit_title": "ফান্ড সম্পাদনা",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ফান্ডটি মুছে ফেলতে চান?",
+        "sl": "ক্রম",
+        "balance": {
+            "label": "ব্যালেন্স"
+        },
+        "name": {
+            "label": "ফান্ড নেম",
+            "placeholder": "ফান্ড নেম দিন",
+            "errors": {
+                "required": "ফান্ড নেম আবশ্যক",
+                "min": "ফান্ড নেম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "short_name": {
+            "label": "শর্ট নেম",
+            "placeholder": "শর্ট নেম দিন",
+            "errors": {
+                "required": "শর্ট নেম আবশ্যক",
+                "min": "শর্ট নেম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "staff": {
+            "label": "স্টাফ",
+            "placeholder": "স্টাফ নির্বাচন করুন"
+        },
+        "account_number": {
+            "label": "অ্যাকাউন্ট নাম্বার",
+            "placeholder": "অ্যাকাউন্ট নাম্বার দিন"
+        }
+    },
+    "fund_transaction": {
+        "title_plural": "ফান্ড ট্রানজেকশন",
+        "create_title": "ফান্ড ট্রানজেকশন যোগ করুন",
+        "add_transaction": "ট্রানজেকশন যোগ করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ট্রানজেকশনটি মুছে ফেলতে চান?",
+        "sl": "ক্রম",
+        "current_balance": "কারেন্ট ব্যালেন্স",
+        "created_at": {
+            "label": "তারিখ",
+            "placeholder": "তারিখ দিয়ে সার্চ করুন"
+        },
+        "fund": {
+            "label": "ফান্ড",
+            "placeholder": "ফান্ড নির্বাচন করুন"
+        },
+        "transaction_type": {
+            "label": "ট্রানজেকশন টাইপ",
+            "placeholder": "ট্রানজেকশন টাইপ নির্বাচন করুন",
+            "options": {
+                "deposit": "ডিপোজিট",
+                "transfer": "ট্রান্সফার",
+                "withdraw": "উইথড্র",
+                "expense": "এক্সপেন্স",
+                "salary": "স্যালারি"
+            }
+        },
+        "amount": {
+            "label": "পরিমাণ",
+            "placeholder": "পরিমাণ দিন",
+            "errors": {
+                "required": "পরিমাণ আবশ্যক",
+                "min": "পরিমাণ ০ এর বেশি হতে হবে"
+            }
+        },
+        "transfer_by": {
+            "label": "ট্রান্সফার টু",
+            "placeholder": "ফান্ড নির্বাচন করুন",
+            "errors": {
+                "required": "ট্রান্সফার ফান্ড আবশ্যক"
+            }
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "ঐচ্ছিক নোট"
         }
     },
     "menu": {

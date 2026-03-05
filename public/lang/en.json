@@ -1258,6 +1258,57 @@
             "placeholder": "Enter description"
         }
     },
+    "wallet": {
+        "title_plural": "Wallet Transactions",
+        "my_wallet_title": "My Wallets",
+        "client_wallet_title": "Client Wallets",
+        "my_balance": "My Balance",
+        "recharge_title": "Recharge Wallet",
+        "client_recharge_title": "Recharge Client Wallet",
+        "recharge_with_bkash": "Recharge with bKash",
+        "pay_with_bkash": "Pay with bKash",
+        "payment_date": {
+            "label": "Payment Date"
+        },
+        "created_at": {
+            "label": "Date"
+        },
+        "method": {
+            "label": "Method"
+        },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client",
+            "errors": {
+                "required": "Client is required"
+            }
+        },
+        "balance": {
+            "label": "Balance"
+        },
+        "amount": {
+            "label": "Amount",
+            "placeholder": "Enter recharge amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be greater than 0"
+            }
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "messages": {
+            "processing_payment": "Processing payment...",
+            "payment_failed": "Payment failed. Please try again.",
+            "payment_success": "Payment completed successfully.",
+            "recharge_successful": "Wallet recharge successful.",
+            "recharge_failed": "Wallet recharge failed.",
+            "redirecting_to_payment": "Redirecting to payment gateway...",
+            "client_recharge_success": "Client wallet recharged successfully.",
+            "client_recharge_failed": "Client wallet recharge failed."
+        }
+    },
     "role": {
         "title_plural": "Roles",
         "create_title": "Add Role",
@@ -1270,6 +1321,31 @@
                 "required": "Role name is required",
                 "min": "Role name must be at least 2 characters"
             }
+        }
+    },
+    "permission": {
+        "title_plural": "Permissions",
+        "description": "Manage role-wise permission assignments.",
+        "group": "Group",
+        "general_group": "General",
+        "select_role_prompt": "Select a role to load permissions.",
+        "empty_permissions": "No permissions found.",
+        "role": {
+            "label": "Role",
+            "placeholder": "Select a role",
+            "errors": {
+                "required": "Role is required"
+            }
+        },
+        "messages": {
+            "updated": "Permissions updated successfully.",
+            "failed_update": "Unable to update permissions.",
+            "select_role_first": "Select a role first."
+        },
+        "errors": {
+            "permissions_fetch": "Unable to load permissions.",
+            "roles_fetch": "Unable to load roles.",
+            "role_permissions_fetch": "Unable to load role permissions."
         }
     },
     "activity_log": {
@@ -1492,6 +1568,86 @@
             "network": "Filter by network",
             "device_type": "Filter by device type",
             "status": "Filter by status"
+        }
+    },
+    "fund": {
+        "title_plural": "Funds",
+        "create_title": "Add Fund",
+        "edit_title": "Edit Fund",
+        "delete_confirmation": "Are you sure you want to delete this fund?",
+        "sl": "SL",
+        "balance": {
+            "label": "Balance"
+        },
+        "name": {
+            "label": "Fund Name",
+            "placeholder": "Enter fund name",
+            "errors": {
+                "required": "Fund name is required",
+                "min": "Fund name must be at least 2 characters"
+            }
+        },
+        "short_name": {
+            "label": "Short Name",
+            "placeholder": "Enter short name",
+            "errors": {
+                "required": "Short name is required",
+                "min": "Short name must be at least 2 characters"
+            }
+        },
+        "staff": {
+            "label": "Staff",
+            "placeholder": "Select staff"
+        },
+        "account_number": {
+            "label": "Account Number",
+            "placeholder": "Enter account number"
+        }
+    },
+    "fund_transaction": {
+        "title_plural": "Fund Transactions",
+        "create_title": "Add Fund Transaction",
+        "add_transaction": "Add Transaction",
+        "delete_confirmation": "Are you sure you want to delete this transaction?",
+        "sl": "SL",
+        "current_balance": "Current Balance",
+        "created_at": {
+            "label": "Date",
+            "placeholder": "Search by date"
+        },
+        "fund": {
+            "label": "Fund",
+            "placeholder": "Select fund"
+        },
+        "transaction_type": {
+            "label": "Transaction Type",
+            "placeholder": "Select transaction type",
+            "options": {
+                "deposit": "Deposit",
+                "transfer": "Transfer",
+                "withdraw": "Withdraw",
+                "expense": "Expense",
+                "salary": "Salary"
+            }
+        },
+        "amount": {
+            "label": "Amount",
+            "placeholder": "Enter amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be greater than 0"
+            }
+        },
+        "transfer_by": {
+            "label": "Transfer To",
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Transfer fund is required"
+            }
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Optional note"
         }
     },
     "menu": {
