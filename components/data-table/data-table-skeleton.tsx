@@ -68,7 +68,7 @@ export function DataTableSkeleton({
                       {Array.from({ length: actionCount }).map((_, btnIndex) => (
                         <Skeleton
                           key={btnIndex}
-                          className="h-4 w-4 min-w-0 rounded-md"
+                          className="h-5 w-8 min-w-0 rounded-md"
                           aria-hidden
                         />
                       ))}

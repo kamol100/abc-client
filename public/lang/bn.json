@@ -1256,6 +1256,20 @@
             "placeholder": "বিবরণ দিন"
         }
     },
+    "tag": {
+        "title_plural": "ট্যাগ",
+        "create_title": "ট্যাগ যোগ করুন",
+        "edit_title": "ট্যাগ সম্পাদনা করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ট্যাগটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "ট্যাগের নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে"
+            }
+        }
+    },
     "wallet": {
         "title_plural": "ওয়ালেট ট্রানজেকশন",
         "my_wallet_title": "আমার ওয়ালেট",
@@ -1370,6 +1384,29 @@
         },
         "date": {
             "label": "তারিখ"
+        }
+    },
+    "history": {
+        "title": "হিস্ট্রি",
+        "title_plural": "হিস্ট্রিস",
+        "sl": "নং",
+        "staff": {
+            "label": "স্টাফ",
+            "placeholder": "স্টাফ নির্বাচন করুন"
+        },
+        "description": {
+            "label": "বিবরণ",
+            "placeholder": "বিবরণ দিয়ে সার্চ করুন"
+        },
+        "old_data": {
+            "label": "ওল্ড ডাটা"
+        },
+        "new_data": {
+            "label": "নিউ ডাটা"
+        },
+        "created_at": {
+            "label": "তারিখ",
+            "placeholder": "তারিখ দিয়ে সার্চ করুন"
         }
     },
     "unit_type": {
@@ -1646,6 +1683,320 @@
         "note": {
             "label": "নোট",
             "placeholder": "ঐচ্ছিক নোট"
+        }
+    },
+    "reseller": {
+        "title_plural": "রিসেলার",
+        "create_title": "রিসেলার যোগ করুন",
+        "edit_title": "রিসেলার এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই রিসেলারটি ডিলিট করতে চান?",
+        "sections": {
+            "basic_information": "বেসিক ইনফরমেশন",
+            "billing_information": "বিলিং ইনফরমেশন",
+            "advance_information": "অ্যাডভান্স ইনফরমেশন"
+        },
+        "actions": {
+            "edit": "এডিট",
+            "permissions": "পার্মিশন"
+        },
+        "table": {
+            "name": "রিসেলার নাম",
+            "username": "ইউজারনেম",
+            "phone": "ফোন",
+            "clients": "ক্লায়েন্ট",
+            "prefix": "প্রিফিক্স",
+            "due": "ডিউ",
+            "paid": "পেইড"
+        },
+        "name": {
+            "label": "নাম",
+            "placeholder": "রিসেলারের নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "username": {
+            "label": "ইউজারনেম",
+            "placeholder": "ইউজারনেম দিন",
+            "errors": {
+                "required": "ইউজারনেম আবশ্যক"
+            }
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "পাসওয়ার্ড দিন",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক"
+            }
+        },
+        "phone": {
+            "label": "ফোন নাম্বার",
+            "placeholder": "ফোন নাম্বার দিন",
+            "errors": {
+                "required": "ফোন নাম্বার আবশ্যক",
+                "min": "ফোন নাম্বার কমপক্ষে ১১ ডিজিট হতে হবে"
+            }
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "package": {
+            "label": "রিসেলার প্যাকেজ",
+            "placeholder": "রিসেলার প্যাকেজ নির্বাচন করুন"
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন"
+        },
+        "company": {
+            "label": "কোম্পানি নাম",
+            "placeholder": "কোম্পানি নাম দিন"
+        },
+        "company_phone": {
+            "label": "কোম্পানি ফোন",
+            "placeholder": "কোম্পানি ফোন দিন"
+        },
+        "company_address": {
+            "label": "কোম্পানি ঠিকানা",
+            "placeholder": "কোম্পানি ঠিকানা দিন"
+        },
+        "prefix": {
+            "label": "প্রিফিক্স",
+            "placeholder": "প্রিফিক্স দিন"
+        },
+        "status": {
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+        },
+        "over_due_amount": {
+            "label": "ওভার ডিউ অ্যামাউন্ট",
+            "placeholder": "ওভার ডিউ অ্যামাউন্ট দিন"
+        },
+        "billing_type": {
+            "label": "বিলিং টাইপ"
+        },
+        "auto_recharge": {
+            "label": "অটো রিচার্জ"
+        },
+        "terminate_hour": {
+            "label": "টার্মিনেট আওয়ার",
+            "placeholder": "টার্মিনেট আওয়ার দিন"
+        },
+        "terminate_minute": {
+            "label": "টার্মিনেট মিনিট",
+            "placeholder": "টার্মিনেট মিনিট দিন"
+        },
+        "serial_start_from": {
+            "label": "সিরিয়াল স্টার্ট ফ্রম",
+            "placeholder": "সিরিয়াল শুরুর মান দিন"
+        },
+        "father_name": {
+            "label": "ফাদার নেম",
+            "placeholder": "ফাদার নেম দিন"
+        },
+        "mother_name": {
+            "label": "মাদার নেম",
+            "placeholder": "মাদার নেম দিন"
+        },
+        "present_address": {
+            "label": "প্রেজেন্ট অ্যাড্রেস",
+            "placeholder": "প্রেজেন্ট অ্যাড্রেস দিন"
+        },
+        "permanent_address": {
+            "label": "পার্মানেন্ট অ্যাড্রেস",
+            "placeholder": "পার্মানেন্ট অ্যাড্রেস দিন"
+        },
+        "social_media_account": {
+            "label": "সোশ্যাল মিডিয়া অ্যাকাউন্ট",
+            "placeholder": "সোশ্যাল মিডিয়া অ্যাকাউন্ট দিন"
+        },
+        "nid": {
+            "label": "ন্যাশনাল আইডি",
+            "placeholder": "ন্যাশনাল আইডি দিন"
+        },
+        "email": {
+            "label": "ইমেইল",
+            "placeholder": "ইমেইল ঠিকানা দিন"
+        },
+        "gender": {
+            "label": "জেন্ডার"
+        },
+        "marital_status": {
+            "label": "ম্যারিটাল স্ট্যাটাস"
+        },
+        "blood_group": {
+            "label": "ব্লাড গ্রুপ",
+            "placeholder": "ব্লাড গ্রুপ নির্বাচন করুন"
+        },
+        "date_of_birth": {
+            "label": "ডেট অফ বার্থ",
+            "placeholder": "ডেট অফ বার্থ নির্বাচন করুন"
+        },
+        "join_date": {
+            "label": "জয়েন ডেট",
+            "placeholder": "জয়েন ডেট নির্বাচন করুন"
+        }
+    },
+    "subject": {
+        "title_plural": "সাবজেক্ট",
+        "create_title": "সাবজেক্ট যোগ করুন",
+        "edit_title": "সাবজেক্ট এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই সাবজেক্টটি ডিলিট করতে চান?",
+        "sections": {
+            "basic_information": "বেসিক ইনফরমেশন"
+        },
+        "actions": {
+            "edit": "এডিট"
+        },
+        "table": {
+            "sl": "SL",
+            "name": "নাম"
+        },
+        "name": {
+            "label": "নাম",
+            "placeholder": "সাবজেক্টের নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
+                "min": "নাম কমপক্ষে ১ অক্ষরের হতে হবে"
+            }
+        }
+    },
+    "mikrotik_command": {
+        "title_plural": "মাইক্রোটিক কমান্ড",
+        "form_title": "মাইক্রোটিক কমান্ড রান করুন",
+        "form_description": "একটি নেটওয়ার্ক সিলেক্ট করে কমান্ড রান করুন এবং লাইভ মাইক্রোটিক রেসপন্স দেখুন।",
+        "run": "কমান্ড রান করুন",
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক সিলেক্ট করুন",
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "command": {
+            "label": "কমান্ড",
+            "placeholder": "কমান্ড সিলেক্ট করুন",
+            "errors": {
+                "required": "কমান্ড আবশ্যক"
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "key": {
+                "label": "ফিল্ড"
+            },
+            "value": {
+                "label": "ভ্যালু"
+            }
+        },
+        "result": {
+            "title": "কমান্ড রেজাল্ট",
+            "description": "মাইক্রোটিক API থেকে রেসপন্স ডাটা।",
+            "initial_hint": "নেটওয়ার্ক এবং কমান্ড সিলেক্ট করে রান বাটনে ক্লিক করুন।",
+            "empty": "এই কমান্ডের জন্য কোনো রেজাল্ট পাওয়া যায়নি।",
+            "raw_title": "র' রেসপন্স",
+            "single_value": "ভ্যালু",
+            "row_key": "রো {{index}}"
+        }
+    },
+    "package": {
+        "title_plural_client": "ক্লায়েন্ট প্যাকেজ",
+        "title_plural_reseller": "রিসেলার প্যাকেজ",
+        "view_title": "প্যাকেজ ডিটেইলস",
+        "create_title_client": "ক্লায়েন্ট প্যাকেজ যোগ করুন",
+        "create_title_reseller": "রিসেলার প্যাকেজ যোগ করুন",
+        "edit_title": "প্যাকেজ এডিট করুন",
+        "delete_button": "প্যাকেজ ডিলিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই প্যাকেজটি ডিলিট করতে চান?",
+        "back_to_list": "লিস্টে ফিরুন",
+        "name": {
+            "label": "প্যাকেজ নাম",
+            "placeholder": "প্যাকেজ নাম দিন",
+            "errors": {
+                "required": "প্যাকেজ নাম আবশ্যক",
+                "invalid": "প্যাকেজ নাম অবশ্যই টেক্সট হতে হবে",
+                "min": "প্যাকেজ নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "mikrotik_profile": {
+            "label": "মাইক্রোটিক প্রোফাইল",
+            "placeholder": "মাইক্রোটিক প্রোফাইল দিন"
+        },
+        "bandwidth": {
+            "label": "ব্যান্ডউইথ",
+            "placeholder": "ব্যান্ডউইথ দিন",
+            "errors": {
+                "required": "ব্যান্ডউইথ আবশ্যক",
+                "invalid": "ব্যান্ডউইথ অবশ্যই টেক্সট হতে হবে",
+                "min": "ব্যান্ডউইথ কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "price": {
+            "label": "প্রাইস",
+            "placeholder": "প্রাইস দিন",
+            "errors": {
+                "invalid": "প্রাইস অবশ্যই সঠিক সংখ্যা হতে হবে",
+                "min": "প্রাইস ঋণাত্মক হতে পারবে না"
+            }
+        },
+        "buying_price": {
+            "label": "কস্ট",
+            "placeholder": "কস্ট দিন",
+            "errors": {
+                "invalid": "কস্ট অবশ্যই সঠিক সংখ্যা হতে হবে",
+                "min": "কস্ট ঋণাত্মক হতে পারবে না"
+            }
+        },
+        "reseller_price": {
+            "label": "রিসেলার প্রাইস",
+            "placeholder": "রিসেলার প্রাইস দিন"
+        },
+        "cost": {
+            "label": "কস্ট",
+            "placeholder": "কস্ট দিন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "table": {
+            "name": "প্যাকেজ নাম",
+            "mikrotik_profile": "মাইক্রোটিক",
+            "bandwidth": "ব্যান্ডউইথ",
+            "price": "প্রাইস",
+            "buying_price": "কস্ট",
+            "reseller_price": "রিসেলার প্রাইস",
+            "cost": "কস্ট"
+        },
+        "view": {
+            "title": "প্যাকেজ ডিটেইলস",
+            "basic_information": "বেসিক ইনফরমেশন",
+            "usage_information": "ইউজেজ ইনফরমেশন",
+            "assigned_resellers": "অ্যাসাইন্ড রিসেলার",
+            "reseller_name": "রিসেলার নাম",
+            "clients": "ক্লায়েন্ট",
+            "active_clients": "অ্যাক্টিভ ক্লায়েন্ট",
+            "inactive_clients": "ইনঅ্যাক্টিভ ক্লায়েন্ট",
+            "reseller_count": "রিসেলার কাউন্ট",
+            "reseller_clients": "রিসেলার ক্লায়েন্ট"
+        },
+        "remove": {
+            "button": "রিমুভ",
+            "confirm_button": "প্যাকেজ রিমুভ করুন",
+            "confirmation": "আপনি কি নিশ্চিত এই প্যাকেজটি রিসেলার থেকে রিমুভ করতে চান?",
+            "success": "রিসেলার থেকে প্যাকেজ সফলভাবে রিমুভ হয়েছে"
         }
     },
     "menu": {

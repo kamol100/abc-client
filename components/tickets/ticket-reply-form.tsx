@@ -7,7 +7,8 @@ import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { TicketReplySchema, TicketReplyInput } from "./ticket-type";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Card from "../card";
 import { usePermissions } from "@/context/app-provider";
 
 interface TicketReplyFormProps {

@@ -3,7 +3,8 @@
 import { FC } from "react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Card from "../card";
 import { Skeleton } from "@/components/ui/skeleton";
 import ActionButton from "@/components/action-button";
 import { useTranslation } from "react-i18next";
@@ -47,10 +48,16 @@ const TicketView: FC<TicketViewProps> = ({ ticketId }) => {
 
     if (isLoading) {
         return (
-            <div className="space-y-4 p-4">
-                <Skeleton className="h-8 w-48" />
-                <Skeleton className="h-32 w-full" />
-                <Skeleton className="h-64 w-full" />
+            <div className="space-y-6 w-full">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <Skeleton className="h-8 w-48" />
+                    <Skeleton className="h-9 w-32" />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Skeleton className="h-40 w-full rounded-xl" />
+                    <Skeleton className="h-40 w-full rounded-xl" />
+                </div>
+                <Skeleton className="h-32 w-full rounded-xl" />
             </div>
         );
     }
@@ -58,78 +65,109 @@ const TicketView: FC<TicketViewProps> = ({ ticketId }) => {
     if (!ticket) return null;
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-bold">
+        <div className="space-y-6 w-full">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <div className="flex flex-wrap items-center gap-2">
+                    <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
                         {t("ticket.title_single")} #{ticket.ticketId}
                     </h1>
-                    <Badge variant={priorityVariant(ticket.priority)} className="capitalize">
+                    <Badge variant={priorityVariant(ticket.priority)} className="capitalize shrink-0">
                         {ticket.priority}
                     </Badge>
-                    <Badge variant={statusVariant(ticket.status)} className="capitalize">
+                    <Badge variant={statusVariant(ticket.status)} className="capitalize shrink-0">
                         {ticket.status.replace("_", " ")}
                     </Badge>
                 </div>
-                <ActionButton action="cancel" url="/tickets" title={t("ticket.back_to_list")} />
+                <ActionButton
+                    action="cancel"
+                    url="/tickets"
+                    title={t("ticket.back_to_list")}
+                    className="shrink-0"
+                />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card>
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base">{t("ticket.client.label")}</CardTitle>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+                <Card className="border-border bg-card">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-base font-medium">
+                            {t("ticket.client.label")}
+                        </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm space-y-1">
-                        <div>
-                            <span className="text-muted-foreground">{t("ticket.client_name")}: </span>
-                            {ticket.client?.name ?? "—"}
+                    <CardContent className="space-y-2 text-sm">
+                        <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1">
+                            <span className="shrink-0 text-muted-foreground">
+                                {t("ticket.client_name")}:
+                            </span>
+                            <span className="break-words">{ticket.client?.name ?? "—"}</span>
                         </div>
-                        <div>
-                            <span className="text-muted-foreground">{t("ticket.client_phone")}: </span>
-                            {ticket.client?.phone ?? "—"}
+                        <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1">
+                            <span className="shrink-0 text-muted-foreground">
+                                {t("ticket.client_phone")}:
+                            </span>
+                            <span className="break-words">{ticket.client?.phone ?? "—"}</span>
                         </div>
                         {ticket.client?.current_address && (
-                            <div>
-                                <span className="text-muted-foreground">{t("ticket.client_address")}: </span>
-                                {ticket.client.current_address}
+                            <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1">
+                                <span className="shrink-0 text-muted-foreground">
+                                    {t("ticket.client_address")}:
+                                </span>
+                                <span className="break-words">{ticket.client.current_address}</span>
                             </div>
                         )}
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base">{t("ticket.information")}</CardTitle>
+                <Card className="border-border bg-card">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-base font-medium">
+                            {t("ticket.information")}
+                        </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-sm space-y-2">
-                        <div>
-                            <span className="text-muted-foreground">{t("ticket.subject.label")}: </span>
-                            {ticket.subject?.name ?? "—"}
+                    <CardContent className="space-y-2 text-sm">
+                        <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1">
+                            <span className="shrink-0 text-muted-foreground">
+                                {t("ticket.subject.label")}:
+                            </span>
+                            <span className="break-words">{ticket.subject?.name ?? "—"}</span>
                         </div>
-                        <div>
-                            <span className="text-muted-foreground">{t("ticket.assigned_to.label")}: </span>
-                            {ticket.staff?.name ?? t("ticket.not_assigned")}
+                        <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-1">
+                            <span className="shrink-0 text-muted-foreground">
+                                {t("ticket.assigned_to.label")}:
+                            </span>
+                            <span className="break-words">
+                                {ticket.staff?.name ?? t("ticket.not_assigned")}
+                            </span>
                         </div>
                         {ticket.tag && ticket.tag.length > 0 && (
-                            <div className="flex items-center gap-1 flex-wrap">
-                                <span className="text-muted-foreground">{t("ticket.tags.label")}: </span>
-                                {ticket.tag.map((tag) => (
-                                    <Badge key={tag.id} variant="outline" className="text-xs">
-                                        {tag.name}
-                                    </Badge>
-                                ))}
+                            <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="shrink-0 text-muted-foreground">
+                                    {t("ticket.tags.label")}:
+                                </span>
+                                <span className="flex flex-wrap gap-1">
+                                    {ticket.tag.map((tag) => (
+                                        <Badge
+                                            key={tag.id}
+                                            variant="outline"
+                                            className="text-xs font-normal"
+                                        >
+                                            {tag.name}
+                                        </Badge>
+                                    ))}
+                                </span>
                             </div>
                         )}
                     </CardContent>
                 </Card>
             </div>
 
-            <Card>
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base">{t("ticket.message.label")}</CardTitle>
+            <Card className="border-border bg-card">
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-medium">
+                        {t("ticket.message.label")}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="rounded-md bg-muted p-4 text-sm">
+                    <div className="rounded-lg border border-border bg-muted/50 p-4 text-sm text-foreground">
                         {ticket.message}
                     </div>
                 </CardContent>

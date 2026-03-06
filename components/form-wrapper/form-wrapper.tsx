@@ -228,6 +228,10 @@ export default function FormWrapper({
         }
     };
 
+    const onError = async (data: FieldValues) => {
+        console.log(data, 'data');
+    }
+
     // --- Save on change ---
     useEffect(() => {
         if (save) {
@@ -298,7 +302,7 @@ export default function FormWrapper({
     return (
         <Form {...form}>
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit, onError)}
                 className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
             >
                 {fullPage ? (

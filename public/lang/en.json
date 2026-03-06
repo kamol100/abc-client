@@ -1258,6 +1258,20 @@
             "placeholder": "Enter description"
         }
     },
+    "tag": {
+        "title_plural": "Tags",
+        "create_title": "Add Tag",
+        "edit_title": "Edit Tag",
+        "delete_confirmation": "Are you sure you want to delete this tag?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter tag name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string"
+            }
+        }
+    },
     "wallet": {
         "title_plural": "Wallet Transactions",
         "my_wallet_title": "My Wallets",
@@ -1372,6 +1386,29 @@
         },
         "date": {
             "label": "Date"
+        }
+    },
+    "history": {
+        "title": "History",
+        "title_plural": "Histories",
+        "sl": "SL",
+        "staff": {
+            "label": "Staff",
+            "placeholder": "Select staff"
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Search description"
+        },
+        "old_data": {
+            "label": "Old Data"
+        },
+        "new_data": {
+            "label": "New Data"
+        },
+        "created_at": {
+            "label": "Date",
+            "placeholder": "Search date"
         }
     },
     "unit_type": {
@@ -1648,6 +1685,320 @@
         "note": {
             "label": "Note",
             "placeholder": "Optional note"
+        }
+    },
+    "reseller": {
+        "title_plural": "Resellers",
+        "create_title": "Add Reseller",
+        "edit_title": "Edit Reseller",
+        "delete_confirmation": "Are you sure you want to delete this reseller?",
+        "sections": {
+            "basic_information": "Basic Information",
+            "billing_information": "Billing Information",
+            "advance_information": "Advance Information"
+        },
+        "actions": {
+            "edit": "Edit",
+            "permissions": "Permissions"
+        },
+        "table": {
+            "name": "Reseller Name",
+            "username": "Username",
+            "phone": "Phone",
+            "clients": "Clients",
+            "prefix": "Prefix",
+            "due": "Due",
+            "paid": "Paid"
+        },
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter reseller name",
+            "errors": {
+                "required": "Name is required",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "placeholder": "Enter username",
+            "errors": {
+                "required": "Username is required"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Enter password",
+            "errors": {
+                "required": "Password is required"
+            }
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "required": "Phone number is required",
+                "min": "Phone number must be at least 11 digits"
+            }
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "package": {
+            "label": "Reseller Package",
+            "placeholder": "Select reseller package"
+        },
+        "zone": {
+            "label": "Zone",
+            "placeholder": "Select zone"
+        },
+        "company": {
+            "label": "Company Name",
+            "placeholder": "Enter company name"
+        },
+        "company_phone": {
+            "label": "Company Phone",
+            "placeholder": "Enter company phone"
+        },
+        "company_address": {
+            "label": "Company Address",
+            "placeholder": "Enter company address"
+        },
+        "prefix": {
+            "label": "Prefix",
+            "placeholder": "Enter prefix"
+        },
+        "status": {
+            "placeholder": "Select status"
+        },
+        "over_due_amount": {
+            "label": "Over Due Amount",
+            "placeholder": "Enter over due amount"
+        },
+        "billing_type": {
+            "label": "Billing Type"
+        },
+        "auto_recharge": {
+            "label": "Auto Recharge"
+        },
+        "terminate_hour": {
+            "label": "Terminate Hour",
+            "placeholder": "Enter terminate hour"
+        },
+        "terminate_minute": {
+            "label": "Terminate Minute",
+            "placeholder": "Enter terminate minute"
+        },
+        "serial_start_from": {
+            "label": "Serial Start From",
+            "placeholder": "Enter serial start value"
+        },
+        "father_name": {
+            "label": "Father Name",
+            "placeholder": "Enter father name"
+        },
+        "mother_name": {
+            "label": "Mother Name",
+            "placeholder": "Enter mother name"
+        },
+        "present_address": {
+            "label": "Present Address",
+            "placeholder": "Enter present address"
+        },
+        "permanent_address": {
+            "label": "Permanent Address",
+            "placeholder": "Enter permanent address"
+        },
+        "social_media_account": {
+            "label": "Social Media Account",
+            "placeholder": "Enter social media account"
+        },
+        "nid": {
+            "label": "National ID",
+            "placeholder": "Enter national ID"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email address"
+        },
+        "gender": {
+            "label": "Gender"
+        },
+        "marital_status": {
+            "label": "Marital Status"
+        },
+        "blood_group": {
+            "label": "Blood Group",
+            "placeholder": "Select blood group"
+        },
+        "date_of_birth": {
+            "label": "Date of Birth",
+            "placeholder": "Select date of birth"
+        },
+        "join_date": {
+            "label": "Join Date",
+            "placeholder": "Select join date"
+        }
+    },
+    "subject": {
+        "title_plural": "Subjects",
+        "create_title": "Add Subject",
+        "edit_title": "Edit Subject",
+        "delete_confirmation": "Are you sure you want to delete this subject?",
+        "sections": {
+            "basic_information": "Basic Information"
+        },
+        "actions": {
+            "edit": "Edit"
+        },
+        "table": {
+            "sl": "SL",
+            "name": "Name"
+        },
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter subject name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 1 character"
+            }
+        }
+    },
+    "mikrotik_command": {
+        "title_plural": "Mikrotik Commands",
+        "form_title": "Run Mikrotik Command",
+        "form_description": "Select a network and run a command to inspect live Mikrotik response.",
+        "run": "Run Command",
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "command": {
+            "label": "Command",
+            "placeholder": "Select command",
+            "errors": {
+                "required": "Command is required"
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "key": {
+                "label": "Field"
+            },
+            "value": {
+                "label": "Value"
+            }
+        },
+        "result": {
+            "title": "Command Result",
+            "description": "Response data from the Mikrotik API.",
+            "initial_hint": "Select a network and command, then click run.",
+            "empty": "No result found for this command.",
+            "raw_title": "Raw Response",
+            "single_value": "Value",
+            "row_key": "Row {{index}}"
+        }
+    },
+    "package": {
+        "title_plural_client": "Client Packages",
+        "title_plural_reseller": "Reseller Packages",
+        "view_title": "Package Details",
+        "create_title_client": "Add Client Package",
+        "create_title_reseller": "Add Reseller Package",
+        "edit_title": "Edit Package",
+        "delete_button": "Delete Package",
+        "delete_confirmation": "Are you sure you want to delete this package?",
+        "back_to_list": "Back to List",
+        "name": {
+            "label": "Package Name",
+            "placeholder": "Enter package name",
+            "errors": {
+                "required": "Package name is required",
+                "invalid": "Package name must be a string",
+                "min": "Package name must be at least 2 characters"
+            }
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "mikrotik_profile": {
+            "label": "Mikrotik Profile",
+            "placeholder": "Enter mikrotik profile"
+        },
+        "bandwidth": {
+            "label": "Bandwidth",
+            "placeholder": "Enter bandwidth",
+            "errors": {
+                "required": "Bandwidth is required",
+                "invalid": "Bandwidth must be a string",
+                "min": "Bandwidth must be at least 2 characters"
+            }
+        },
+        "price": {
+            "label": "Price",
+            "placeholder": "Enter price",
+            "errors": {
+                "invalid": "Price must be a valid number",
+                "min": "Price cannot be negative"
+            }
+        },
+        "buying_price": {
+            "label": "Cost",
+            "placeholder": "Enter cost",
+            "errors": {
+                "invalid": "Cost must be a valid number",
+                "min": "Cost cannot be negative"
+            }
+        },
+        "reseller_price": {
+            "label": "Reseller Price",
+            "placeholder": "Enter reseller price"
+        },
+        "cost": {
+            "label": "Cost",
+            "placeholder": "Enter cost"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "table": {
+            "name": "Package Name",
+            "mikrotik_profile": "Mikrotik",
+            "bandwidth": "Bandwidth",
+            "price": "Price",
+            "buying_price": "Cost",
+            "reseller_price": "Reseller Price",
+            "cost": "Cost"
+        },
+        "view": {
+            "title": "Package Details",
+            "basic_information": "Basic Information",
+            "usage_information": "Usage Information",
+            "assigned_resellers": "Assigned Resellers",
+            "reseller_name": "Reseller Name",
+            "clients": "Clients",
+            "active_clients": "Active Clients",
+            "inactive_clients": "Inactive Clients",
+            "reseller_count": "Reseller Count",
+            "reseller_clients": "Reseller Clients"
+        },
+        "remove": {
+            "button": "Remove",
+            "confirm_button": "Remove Package",
+            "confirmation": "Are you sure you want to remove this package from reseller?",
+            "success": "Package removed from reseller successfully"
         }
     },
     "menu": {
