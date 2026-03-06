@@ -37,28 +37,12 @@ const PaymentTable: FC = () => {
 
     const payments = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
-    const totalPaid = data?.data?.reports?.amount;
+    //const totalPaid = data?.data?.reports?.amount;
     const { t } = useTranslation();
-    const { isMobile } = useSidebar();
 
     const toolbarTitle = pagination?.total
         ? `${t("payment.title_plural")} (${pagination.total})`
         : t("payment.title_plural");
-
-    const FormLink = () => (
-        <div className="flex items-center gap-3">
-            {totalPaid !== undefined && (
-                <span className="text-sm text-muted-foreground hidden sm:inline">
-                    {t("payment.total_paid")}: <strong className="text-primary">৳{formatMoney(totalPaid)}</strong>
-                </span>
-            )}
-            <Link href="/payments/create">
-                <ActionButton size="default" variant="default">
-                    {isMobile ? <Plus /> : <><Plus /> {t("common.add")}</>}
-                </ActionButton>
-            </Link>
-        </div>
-    );
 
     return (
         <DataTable
@@ -71,7 +55,6 @@ const PaymentTable: FC = () => {
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="payments"
-            form={FormLink}
             toolbarTitle={toolbarTitle}
         />
     );

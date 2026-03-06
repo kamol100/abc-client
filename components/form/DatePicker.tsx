@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import type { DateRange } from "react-day-picker";
+import { useTranslation } from "react-i18next";
 import Label from "../label";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -32,6 +33,7 @@ type DatePickerProps = {
     rangeDateFormat?: string;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
+    onValueChange?: (value: DatePickerValue) => void;
 };
 
 const parseValue = (
@@ -62,7 +64,9 @@ const DatePicker = ({
     rangeDateFormat = "PPP",
     control: controlProp,
     rules: rulesProp,
+    onValueChange,
 }: DatePickerProps) => {
+    const { t } = useTranslation();
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
     const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
@@ -106,7 +110,7 @@ const DatePicker = ({
                                     )}
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {displayValue(parsed) ?? placeholder}
+                                    {displayValue(parsed) ?? t(placeholder)}
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
@@ -114,7 +118,10 @@ const DatePicker = ({
                                     <Calendar
                                         mode="range"
                                         selected={parsed as DateRange | undefined}
-                                        onSelect={onChange}
+                                        onSelect={(next) => {
+                                            onChange(next);
+                                            onValueChange?.(next);
+                                        }}
                                         autoFocus
                                         numberOfMonths={1}
                                         defaultMonth={
@@ -125,7 +132,10 @@ const DatePicker = ({
                                     <Calendar
                                         mode="single"
                                         selected={parsed as Date | undefined}
-                                        onSelect={onChange}
+                                        onSelect={(next) => {
+                                            onChange(next);
+                                            onValueChange?.(next);
+                                        }}
                                         autoFocus
                                         defaultMonth={
                                             (parsed as Date | undefined) ?? new Date()

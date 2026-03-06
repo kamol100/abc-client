@@ -21,6 +21,56 @@ function resolveWatchFields(
     .map((f) => f.name);
 }
 
+function formatDateValue(value: unknown): string | undefined {
+  if (!value) return undefined;
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+  if (typeof value === "string") {
+    if (value.includes("T")) return value.slice(0, 10);
+    return value.trim() || undefined;
+  }
+  return undefined;
+}
+
+function serializeFilterParams(
+  params: FieldValues,
+  formSchema: FieldConfig[],
+): FieldValues {
+  const serialized: FieldValues = { ...params };
+
+  formSchema.forEach((field) => {
+    const rawValue = serialized[field.name];
+    if (!rawValue) return;
+
+    if (field.type === "date") {
+      const normalizedDate = formatDateValue(rawValue);
+      if (normalizedDate) serialized[field.name] = normalizedDate;
+      return;
+    }
+
+    if (field.type === "dateRange") {
+      if (typeof rawValue === "string") {
+        serialized[field.name] = rawValue;
+        return;
+      }
+      if (typeof rawValue === "object" && rawValue !== null) {
+        const from = formatDateValue((rawValue as { from?: unknown }).from);
+        const to = formatDateValue((rawValue as { to?: unknown }).to);
+        if (from && to) {
+          serialized[field.name] = `${from},${to}`;
+        } else if (from) {
+          serialized[field.name] = from;
+        } else {
+          delete serialized[field.name];
+        }
+      }
+    }
+  });
+
+  return serialized;
+}
+
 type UseFilterFormOptions = {
   formSchema: FieldConfig[];
   setFilter: (query: string) => void;
@@ -55,13 +105,14 @@ export function useFilterForm({
 
   const submitFilter = useCallback(
     (params: FieldValues) => {
-      let query = objectToQueryString(params);
+      const normalizedParams = serializeFilterParams(params, formSchema);
+      let query = objectToQueryString(normalizedParams);
       if (defaultFilter) {
         query = query ? `${query}&${defaultFilter}` : defaultFilter;
       }
       setFilter(query);
     },
-    [defaultFilter, setFilter],
+    [defaultFilter, formSchema, setFilter],
   );
 
   const submitFilterRef = useRef(submitFilter);

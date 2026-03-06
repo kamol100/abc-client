@@ -12,5 +12,5 @@ export default async function ClientInvoicesPage({ params }: Props) {
 }
 
 export const metadata: Metadata = {
-    title: t("invoice.client_invoices"),
+    title: t("invoice.client_history.title"),
 };

@@ -43,6 +43,45 @@ export function formatMoney(
     return new Intl.NumberFormat("en", { minimumFractionDigits }).format(toNumber(value));
 }
 
+type InvoiceLineLike = {
+    amount?: number | string | null;
+    quantity?: number | string | null;
+    discount?: number | string | null;
+};
+
+export type InvoiceTotals = {
+    sub_total: number;
+    line_total_discount: number;
+    header_discount: number;
+    total_discount: number;
+    after_discount_amount: number;
+};
+
+export function calculateInvoiceTotals(
+    lines: InvoiceLineLike[] = [],
+    headerDiscount: number | string | null | undefined = 0,
+): InvoiceTotals {
+    const subTotal = lines.reduce(
+        (sum, line) => sum + toNumber(line.amount) * toNumber(line.quantity || 1),
+        0,
+    );
+    const lineTotalDiscount = lines.reduce(
+        (sum, line) => sum + toNumber(line.discount),
+        0,
+    );
+    const headerDiscountAmount = toNumber(headerDiscount);
+    const totalDiscount = lineTotalDiscount + headerDiscountAmount;
+    const afterDiscountAmount = subTotal - totalDiscount;
+
+    return {
+        sub_total: subTotal,
+        line_total_discount: lineTotalDiscount,
+        header_discount: headerDiscountAmount,
+        total_discount: totalDiscount,
+        after_discount_amount: afterDiscountAmount,
+    };
+}
+
 interface ApiErrorShape {
     response?: {
         data?: {
@@ -78,4 +117,23 @@ export function parseApiError(error: unknown): string | false {
         err?.message ??
         false
     );
+}
+
+export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: number }> {
+    return new Promise((resolve, reject) => {
+        if (!navigator?.geolocation) {
+            reject(new Error("Geolocation is not supported by your browser."));
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+            },
+            (err) => reject(err),
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    });
 }

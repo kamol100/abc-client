@@ -928,12 +928,263 @@
     "invoice": {
         "title_plural": "ইনভয়েস",
         "client_invoices": "ক্লায়েন্ট ইনভয়েস",
+        "create": {
+            "title": "ইনভয়েস তৈরি",
+            "success": "ইনভয়েস সফলভাবে তৈরি হয়েছে"
+        },
+        "edit": {
+            "title": "ইনভয়েস এডিট",
+            "success": "ইনভয়েস সফলভাবে আপডেট হয়েছে"
+        },
         "sl": "ক্রম",
-        "invoice_id": "ইনভয়েস আইডি",
+        "invoice_id": "আইডি",
         "date_created": "তৈরি",
         "date_due": "ডিউ তারিখ",
-        "amount": "পরিমাণ",
+        "type": {
+            "label": "টাইপ"
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "errors": {
+                "required": "ক্লায়েন্ট আবশ্যক"
+            }
+        },
+        "zone": "জোন",
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট লিখুন"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "due": "ডিউ",
+            "paid": "পেইড",
+            "partial_paid": "পার্শিয়াল পেইড"
+        },
+        "amount": {
+            "label": "পরিমাণ"
+        },
+        "create_date": {
+            "label": "তৈরির তারিখ",
+            "placeholder": "তৈরির তারিখ নির্বাচন করুন",
+            "errors": {
+                "required": "তৈরির তারিখ আবশ্যক"
+            }
+        },
+        "due_date": {
+            "label": "ডিউ তারিখ",
+            "placeholder": "ডিউ তারিখ নির্বাচন করুন",
+            "errors": {
+                "required": "ডিউ তারিখ আবশ্যক"
+            }
+        },
+        "invoice_type": {
+            "label": "ইনভয়েস টাইপ",
+            "placeholder": "ইনভয়েস টাইপ নির্বাচন করুন",
+            "errors": {
+                "required": "ইনভয়েস টাইপ আবশ্যক"
+            }
+        },
+        "discount": {
+            "label": "ডিসকাউন্ট",
+            "placeholder": "ডিসকাউন্ট দিন"
+        },
+        "partial_amount": {
+            "label": "পার্শিয়াল এমাউন্ট",
+            "placeholder": "পার্শিয়াল এমাউন্ট দিন",
+            "errors": {
+                "min": "পরিমাণ ০ এর বেশি হতে হবে"
+            }
+        },
+        "fund": {
+            "label": "পেমেন্ট মেথড",
+            "placeholder": "পেমেন্ট মেথড নির্বাচন করুন",
+            "errors": {
+                "required": "পেমেন্ট মেথড আবশ্যক"
+            }
+        },
+        "payment_date": {
+            "label": "পেমেন্ট তারিখ",
+            "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন"
+        },
+        "confirmation_sms": {
+            "label": "কনফার্মেশন এসএমএস"
+        },
+        "lines": {
+            "title": "ইনভয়েস লাইনসমূহ",
+            "add": "লাইন যোগ করুন",
+            "remove": "রিমুভ",
+            "item": "লাইন {{index}}",
+            "errors": {
+                "required": "কমপক্ষে একটি লাইন আইটেম আবশ্যক"
+            }
+        },
+        "line": {
+            "description": {
+                "label": "বিবরণ",
+                "placeholder": "বিবরণ দিন",
+                "errors": {
+                    "required": "বিবরণ আবশ্যক"
+                }
+            },
+            "amount": {
+                "label": "পরিমাণ",
+                "placeholder": "পরিমাণ দিন",
+                "errors": {
+                    "min": "পরিমাণ ০ এর বেশি হতে হবে"
+                }
+            },
+            "quantity": {
+                "label": "পরিমাণ (Qty)",
+                "placeholder": "Qty দিন",
+                "errors": {
+                    "min": "Qty কমপক্ষে ১ হতে হবে"
+                }
+            },
+            "discount": {
+                "label": "ডিসকাউন্ট",
+                "placeholder": "ডিসকাউন্ট দিন",
+                "errors": {
+                    "min": "ডিসকাউন্ট ০ বা তার বেশি হতে হবে"
+                }
+            },
+            "total": {
+                "label": "লাইন টোটাল"
+            }
+        },
+        "actions": {
+            "edit": "এডিট",
+            "pay": "পে",
+            "print": "প্রিন্ট",
+            "delete": "ডিলিট"
+        },
+        "pay": {
+            "title": "ইনভয়েস পে",
+            "submit": "পেমেন্ট সম্পন্ন করুন",
+            "success": "ইনভয়েস পেমেন্ট সফলভাবে সম্পন্ন হয়েছে",
+            "summary": {
+                "client": "ক্লায়েন্ট",
+                "invoice_id": "ইনভয়েস আইডি",
+                "total": "মোট",
+                "due": "ডিউ"
+            },
+            "fund": {
+                "label": "পেমেন্ট মেথড",
+                "placeholder": "পেমেন্ট মেথড নির্বাচন করুন",
+                "errors": {
+                    "required": "পেমেন্ট মেথড আবশ্যক"
+                }
+            },
+            "payment_date": {
+                "label": "পেমেন্ট তারিখ",
+                "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন",
+                "errors": {
+                    "required": "পেমেন্ট তারিখ আবশ্যক"
+                }
+            },
+            "status": {
+                "label": "স্ট্যাটাস",
+                "paid": "পেইড",
+                "partial_paid": "পার্শিয়াল পেইড"
+            },
+            "partial_amount": {
+                "label": "পার্শিয়াল এমাউন্ট",
+                "placeholder": "পার্শিয়াল এমাউন্ট দিন",
+                "errors": {
+                    "min": "পরিমাণ ০ এর বেশি হতে হবে",
+                    "max": "পরিমাণ {{amount}} এর বেশি হতে পারবে না"
+                }
+            },
+            "transaction_id": {
+                "label": "ট্রানজেকশন আইডি",
+                "placeholder": "ট্রানজেকশন আইডি দিন"
+            },
+            "reference": {
+                "label": "রেফারেন্স",
+                "placeholder": "রেফারেন্স দিন"
+            },
+            "confirmation_sms": {
+                "label": "কনফার্মেশন এসএমএস পাঠান"
+            },
+            "note": {
+                "label": "নোট",
+                "placeholder": "নোট লিখুন"
+            }
+        },
+        "discount_dialog": {
+            "title": "ডিসকাউন্ট অ্যাপ্লাই",
+            "submit": "ডিসকাউন্ট অ্যাপ্লাই করুন",
+            "success": "ডিসকাউন্ট সফলভাবে আপডেট হয়েছে",
+            "summary": {
+                "invoice_id": "ইনভয়েস আইডি",
+                "type": "ইনভয়েস টাইপ",
+                "total": "মোট এমাউন্ট",
+                "current_discount": "বর্তমান ডিসকাউন্ট",
+                "max_allowed": "সর্বোচ্চ অনুমোদিত"
+            },
+            "discount_amount": {
+                "label": "ডিসকাউন্ট এমাউন্ট",
+                "placeholder": "ডিসকাউন্ট এমাউন্ট দিন",
+                "errors": {
+                    "required": "ডিসকাউন্ট এমাউন্ট আবশ্যক",
+                    "min": "ডিসকাউন্ট এমাউন্ট ০ এর বেশি হতে হবে",
+                    "max": "ডিসকাউন্ট এমাউন্ট {{amount}} এর বেশি হতে পারবে না"
+                }
+            }
+        },
+        "print": {
+            "title": "ইনভয়েস প্রিন্ট",
+            "print_button": "প্রিন্ট"
+        },
+        "receipt": {
+            "default_company": "আইএসপি ক্লায়েন্ট",
+            "phone": "ফোন",
+            "client": "ক্লায়েন্ট",
+            "client_phone": "ক্লায়েন্ট ফোন",
+            "invoice_id": "আইডি",
+            "date": "তারিখ",
+            "item": "আইটেম",
+            "qty": "কিউটি",
+            "price": "প্রাইস",
+            "amount": "এমাউন্ট",
+            "sub_total": "সাব টোটাল",
+            "discount": "ডিসকাউন্ট",
+            "total": "মোট",
+            "paid": "পেইড",
+            "due": "ডিউ",
+            "thank_you": "ধন্যবাদ"
+        },
         "no_invoices": "কোনো ইনভয়েস পাওয়া যায়নি",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ইনভয়েসটি ডিলিট করতে চান?",
+        "client_history": {
+            "title": "ক্লায়েন্ট ইনভয়েস হিস্ট্রি",
+            "filters": {
+                "track_id": "ইনভয়েস আইডি দিয়ে খুঁজুন",
+                "create_date": "তৈরির তারিখ রেঞ্জ",
+                "due_date": "ডিউ তারিখ রেঞ্জ",
+                "status": "স্ট্যাটাস নির্বাচন করুন"
+            }
+        },
+        "reports": {
+            "sub_total": "সাব টোটাল",
+            "discount": "ডিসকাউন্ট",
+            "total": "মোট",
+            "paid": "পরিশোধিত"
+        },
+        "filter": {
+            "track_id": "ইনভয়েস আইডি দিয়ে খুঁজুন",
+            "create_date": "তৈরির তারিখ",
+            "due_date": "ডিউ তারিখ",
+            "zone": "জোন নির্বাচন করুন",
+            "type": "ইনভয়েস টাইপ নির্বাচন করুন",
+            "created_by": "স্টাফ নির্বাচন করুন",
+            "client": "ক্লায়েন্ট নির্বাচন করুন",
+            "status": "স্ট্যাটাস নির্বাচন করুন",
+            "status_due": "ডিউ",
+            "status_paid": "পেইড",
+            "status_partial": "আংশিক"
+        },
         "bulk_pay": {
             "title": "ইনভয়েস পে করুন",
             "select_all": "সব নির্বাচন করুন",
@@ -972,6 +1223,10 @@
             "no_due_invoices": "কোনো ডিউ ইনভয়েস পাওয়া যায়নি",
             "submit": "পে করুন",
             "success": "পেমেন্ট সফলভাবে সম্পন্ন হয়েছে",
+            "row": {
+                "discount": "ডিসকাউন্ট",
+                "paid": "পেইড"
+            },
             "errors": {
                 "select_invoice": "কমপক্ষে একটি ইনভয়েস নির্বাচন করুন"
             }
@@ -1864,6 +2119,76 @@
                 "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
                 "min": "নাম কমপক্ষে ১ অক্ষরের হতে হবে"
             }
+        }
+    },
+    "invoice_type": {
+        "title_plural": "ইনভয়েস টাইপ",
+        "create_title": "ইনভয়েস টাইপ যোগ করুন",
+        "edit_title": "ইনভয়েস টাইপ এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ইনভয়েস টাইপটি ডিলিট করতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "ইনভয়েস টাইপের নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "description": {
+            "label": "বিবরণ",
+            "placeholder": "নোট বা বিবরণ দিন"
+        }
+    },
+    "tj_box": {
+        "title_plural": "টিজে বক্স",
+        "create_title": "টিজে বক্স যোগ করুন",
+        "edit_title": "টিজে বক্স এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই টিজে বক্সটি ডিলিট করতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "টিজে বক্সের নাম দিন"
+        },
+        "address": {
+            "label": "ঠিকানা",
+            "placeholder": "ঠিকানা দিন"
+        },
+        "zone": {
+            "label": "জোন",
+            "placeholder": "জোন সিলেক্ট করুন"
+        },
+        "device": {
+            "label": "ডিভাইস",
+            "placeholder": "ডিভাইস সিলেক্ট করুন"
+        },
+        "latitude": {
+            "label": "অক্ষাংশ",
+            "placeholder": "অক্ষাংশ দিন",
+            "errors": {
+                "range": "অক্ষাংশ -৯০ থেকে ৯০ এর মধ্যে হতে হবে"
+            }
+        },
+        "longitude": {
+            "label": "দ্রাঘিমাংশ",
+            "placeholder": "দ্রাঘিমাংশ দিন",
+            "errors": {
+                "range": "দ্রাঘিমাংশ -১৮০ থেকে ১৮০ এর মধ্যে হতে হবে"
+            }
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস সিলেক্ট করুন",
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ"
+        },
+        "get_current_location": "বর্তমান লোকেশন নিন",
+        "get_location_success": "লোকেশন সফলভাবে আপডেট হয়েছে",
+        "get_location_error": "লোকেশন পেতে ব্যর্থ",
+        "filter": {
+            "name": "বক্সের নাম",
+            "address": "বক্সের ঠিকানা",
+            "device": "ডিভাইস",
+            "zone": "জোন",
+            "status": "স্ট্যাটাস"
         }
     },
     "mikrotik_command": {

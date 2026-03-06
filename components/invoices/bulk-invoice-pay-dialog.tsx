@@ -16,8 +16,10 @@ import useApiMutation from "@/hooks/use-api-mutation";
 import { formatMoney } from "@/lib/helper/helper";
 import { InvoiceDueItem } from "@/components/clients/client-type";
 import { BulkInvoicePayInput, BulkInvoicePaySchema } from "./invoice-type";
-import { FileText } from "lucide-react";
+import { BadgePercent, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
+import { usePermissions } from "@/context/app-provider";
+import InvoiceDiscountDialog from "@/components/invoices/invoice-discount-dialog";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
@@ -35,6 +37,8 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     onOpenChange,
 }) => {
     const { t } = useTranslation();
+    const { hasPermission } = usePermissions();
+    const canDiscount = hasPermission("invoices.edit");
     const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
     const [selectedIds, setSelectedIds] = useState<string[]>(allUuids);
 
@@ -187,10 +191,12 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                     const due =
                                         item.after_discount_amount -
                                         item.amount_paid;
+                                    const discountValue =
+                                        item.discount + item.line_total_discount;
                                     return (
-                                        <label
+                                        <div
                                             key={item.uuid}
-                                            className="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-muted/30"
+                                            className="flex items-center gap-3 px-3 py-2 hover:bg-muted/30"
                                         >
                                             <Checkbox
                                                 checked={selectedIds.includes(
@@ -203,17 +209,75 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                                     )
                                                 }
                                             />
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm truncate">
+                                            <button
+                                                type="button"
+                                                className="flex-1 min-w-0 text-left"
+                                                onClick={() =>
+                                                    toggleInvoice(
+                                                        item.uuid,
+                                                        !selectedIds.includes(
+                                                            item.uuid,
+                                                        ),
+                                                    )
+                                                }
+                                            >
+                                                <p className="text-sm truncate font-medium">
                                                     {item.trackID}
                                                     {item.invoice_type &&
                                                         ` - ${item.invoice_type}`}
                                                 </p>
-                                            </div>
+                                                <p className="text-xs text-muted-foreground truncate">
+                                                    {t(
+                                                        "invoice.bulk_pay.row.discount",
+                                                    )}
+                                                    : ৳
+                                                    {formatMoney(discountValue)}{" "}
+                                                    • {t("invoice.bulk_pay.row.paid")}
+                                                    : ৳
+                                                    {formatMoney(
+                                                        item.amount_paid,
+                                                    )}
+                                                </p>
+                                            </button>
                                             <span className="text-sm font-medium text-destructive whitespace-nowrap">
                                                 ৳{formatMoney(due)}
                                             </span>
-                                        </label>
+                                            {canDiscount && (
+                                                <InvoiceDiscountDialog
+                                                    invoice={{
+                                                        uuid: item.uuid,
+                                                        trackID: item.trackID,
+                                                        invoice_type:
+                                                            item.invoice_type,
+                                                        total_amount:
+                                                            item.total_amount,
+                                                        discount: item.discount,
+                                                        line_total_discount:
+                                                            item.line_total_discount,
+                                                        amount_paid:
+                                                            item.amount_paid,
+                                                        after_discount_amount:
+                                                            item.after_discount_amount,
+                                                    }}
+                                                    trigger={
+                                                        <ActionButton
+                                                            type="button"
+                                                            size="icon"
+                                                            variant="outline"
+                                                            className="h-8 w-8"
+                                                            onClick={(event) => {
+                                                                event.stopPropagation();
+                                                            }}
+                                                            aria-label={t(
+                                                                "invoice.discount_dialog.title",
+                                                            )}
+                                                        >
+                                                            <BadgePercent className="h-4 w-4" />
+                                                        </ActionButton>
+                                                    }
+                                                />
+                                            )}
+                                        </div>
                                     );
                                 })}
                             </div>

@@ -1,14 +1,15 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
+import useApiQuery from "@/hooks/use-api-query";
+import ActionButton from "@/components/action-button";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { FC } from "react";
+import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
 import { clientInvoiceColumns } from "./client-invoice-columns";
-import { InvoiceRow } from "./invoice-type";
+import { InvoiceListApiResponse } from "./invoice-type";
+import ClientInvoiceFilterSchema from "./client-invoice-filter-schema";
+import InvoiceReports from "./invoice-reports";
 
 interface Props {
     clientId: string;
@@ -16,41 +17,76 @@ interface Props {
 
 const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
     const { t } = useTranslation();
+    const [filterValue, setFilter] = useState<string | null>(null);
+    const params = useMemo(() => {
+        const queryParams = filterValue
+            ? (Object.fromEntries(
+                  new URLSearchParams(filterValue),
+              ) as Record<string, string>)
+            : {};
+        if (queryParams.track_id && !queryParams.trackID) {
+            queryParams.trackID = queryParams.track_id;
+        }
+        return {
+            client_id: clientId,
+            ...queryParams,
+        };
+    }, [clientId, filterValue]);
+
+    const toolbarOptions = useMemo(
+        () => ({
+            filter: ClientInvoiceFilterSchema(),
+        }),
+        [],
+    );
 
     const { data, isLoading, isFetching, setCurrentPage } =
-        useApiQuery<PaginatedApiResponse<InvoiceRow>>({
+        useApiQuery<InvoiceListApiResponse>({
             queryKey: ["invoices", "client", clientId],
             url: "invoices",
-            params: { client_id: clientId },
+            params,
         });
 
     const invoices = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
+    const reports = data?.data?.reports;
 
     const toolbarTitle = pagination?.total
-        ? `${t("invoice.client_invoices")} (${pagination.total})`
-        : t("invoice.client_invoices");
+        ? `${t("invoice.client_history.title")} (${pagination.total})`
+        : t("invoice.client_history.title");
 
     const BackButton = () => (
-        <Button variant="outline" size="icon" asChild>
-            <Link href="/clients">
-                <ArrowLeft className="h-4 w-4" />
-            </Link>
-        </Button>
+        <ActionButton
+            action="cancel"
+            variant="outline"
+            size="icon"
+            className="h-9 w-9"
+            url="/clients"
+            aria-label={t("invoice.client_history.title")}
+        >
+            <ArrowLeft className="h-4 w-4" />
+        </ActionButton>
     );
 
     return (
-        <DataTable
-            data={invoices}
-            columns={clientInvoiceColumns}
-            pagination={pagination}
-            setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            queryKey="invoices"
-            form={BackButton}
-            toolbarTitle={toolbarTitle}
-        />
+        <div className="space-y-4">
+            {(isLoading || reports) && (
+                <InvoiceReports reports={reports} isLoading={isLoading} />
+            )}
+            <DataTable
+                data={invoices}
+                columns={clientInvoiceColumns}
+                pagination={pagination}
+                setCurrentPage={setCurrentPage}
+                isLoading={isLoading}
+                isFetching={isFetching}
+                setFilter={(value) => setFilter(value)}
+                toolbarOptions={toolbarOptions}
+                queryKey="invoices"
+                form={BackButton}
+                toolbarTitle={toolbarTitle}
+            />
+        </div>
     );
 };
 

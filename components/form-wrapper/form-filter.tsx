@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import ActionButton from "@/components/action-button";
 import InputField from "@/components/form/input-field";
+import DatePicker from "@/components/form/DatePicker";
 import { Close } from "@/components/icon";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
 
@@ -76,6 +77,23 @@ function FilterDropdownField({
   );
 }
 
+function FilterDateField({
+  field,
+  onValueChange,
+}: {
+  field: FieldConfig & { type: "date" | "dateRange" };
+  onValueChange: () => void;
+}) {
+  return (
+    <DatePicker
+      name={field.name}
+      placeholder={field.placeholder}
+      mode={field.type === "dateRange" ? "range" : "single"}
+      onValueChange={onValueChange}
+    />
+  );
+}
+
 const FormFilter = ({
   formSchema,
   grids = 1,
@@ -122,6 +140,9 @@ const FormFilter = ({
           onValueChange={triggerSubmit}
         />
       );
+    }
+    if (field.type === "date" || field.type === "dateRange") {
+      return <FilterDateField field={field} onValueChange={triggerSubmit} />;
     }
     return null;
   };

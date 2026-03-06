@@ -6,10 +6,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { Badge } from "../ui/badge";
 import { InvoiceRow } from "./invoice-type";
+import i18next from "i18next";
 
 const STATUS_STYLES: Record<string, string> = {
     paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
     due: "bg-red-600/10 text-red-600 dark:bg-red-400/10 dark:text-red-400",
+    partial: "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
+    partial_paid:
+        "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
 };
 
 export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
@@ -47,7 +51,7 @@ export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
     {
         accessorKey: "after_discount_amount",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="invoice.amount" />
+            <DataTableColumnHeader column={column} title="invoice.amount.label" />
         ),
         cell: ({ row }) => (
             <span className="font-semibold text-primary">
@@ -62,9 +66,12 @@ export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
         ),
         cell: ({ row }) => {
             const status = row.original.status ?? "due";
+            const normalizedStatus = status === "partial_paid" ? "partial" : status;
             return (
                 <Badge className={cn(STATUS_STYLES[status])}>
-                    <span className="capitalize">{status}</span>
+                    <span className="capitalize">
+                        {i18next.t(`invoice.filter.status_${normalizedStatus}`)}
+                    </span>
                 </Badge>
             );
         },

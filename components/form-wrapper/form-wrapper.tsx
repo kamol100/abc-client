@@ -160,6 +160,8 @@ export default function FormWrapper({
         staleTime: 30_000,
     });
 
+    console.log(detailResponse, 'detailResponse');
+
     const isHydrating = shouldHydrate && isHydrationLoading;
     const hydrationFailed = shouldHydrate && isHydrationError;
 
@@ -217,6 +219,7 @@ export default function FormWrapper({
     });
 
     const onSubmit = async (formValues: FieldValues) => {
+        console.log(formValues, 'formValues');
         if (isFormData) {
             const fd = new FormData();
             Object.entries(formValues).forEach(([key, value]) => {
