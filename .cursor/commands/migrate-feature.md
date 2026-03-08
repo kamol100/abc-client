@@ -63,6 +63,8 @@ Rules:
   - Reference: zone-type.ts, sub-zone-type.ts
 - Use translation via i18next — see STEP 4 (Translation Workflow)
 - Must use metadata title on page.tsx component
+- Use the invoice-form.tsx (shadcn-isp-client/components/invoices/invoice-form.tsx) structure as a reference for the dynamic form section.
+- Always try to use the FormBuilder component to generate forms. You may refactor the builder if needed, but do not break any existing functionality. If you encounter a special case where using FormBuilder seems impossible, ask me a clarifying question using the AskUserQuestion tool.
 - Use Zod for validation
 - Use TanStack Query for fetching
 - Replace Flowbite with shadcn components
@@ -75,7 +77,7 @@ Rules:
 - Never update shadcn core files like components/ui
 - For re-usable method/function update lib/helper/helper.ts 
 - Must follow theme setting
-- Ensure mobile first design
+- Ensure mobile first design according tailwind css.
 - Ensure using ActionButton (components/action-button.tsx) instead Button
 - Ensure the dynamic form UI looks clean and well-structured. For example, when multiple items are added by clicking the plus button, the delete (trash) icon should be properly aligned with each item in the list.
 
@@ -193,6 +195,22 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
 -----------------------------------------
 STEP 5 — OUTPUT FORMAT
 -----------------------------------------
+   - Prefer using custom components built on top of shadcn. Only use the core shadcn components if a suitable custom component is not available.
+
+   ✅ **Correct:**
+```customComponent
+import Card from '@components/Card';
+import ActionButton from "@/components/action-button";
+```
+
+❌ **Wrong:**
+```typescript
+import { Button } from '../../../components/ui/button';
+import { Card } from '../../../components/ui/card';
+```
+-----------------------------------------
+STEP 6 — OUTPUT FORMAT
+-----------------------------------------
 
 Return:
 
@@ -212,6 +230,7 @@ IMPORTANT
 -----------------------------------------
 
 - Do NOT blindly copy code.
+- Use FormBuilder unless it impossible.
 - Always modernize to Next 16 standards.
 - Always improve type safety.
 - Make it scalable and future-proof.

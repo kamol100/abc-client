@@ -8,6 +8,7 @@
         "delete": "মুছুন",
         "save": "সংরক্ষণ",
         "refresh": "রিফ্রেশ",
+        "loading": "লোড হচ্ছে...",
         "actions": "অ্যাকশন",
         "status": "স্ট্যাটাস",
         "email": "ইমেইল",
@@ -1333,6 +1334,99 @@
         "success": "এসএমএস সফলভাবে পাঠানো হয়েছে",
         "phone_prefilled": "ক্লায়েন্ট থেকে ফোন নম্বর প্রিফিল করা হয়েছে"
     },
+    "sms_sent": {
+        "title": "এসএমএস পাঠান",
+        "description": "একই পেইজ থেকে সিঙ্গেল এবং বাল্ক এসএমএস পাঠান।",
+        "phone_number": {
+            "label": "ফোন নম্বর",
+            "placeholder": "ফোন নম্বর দিন",
+            "errors": {
+                "required": "ফোন নম্বর আবশ্যক"
+            }
+        },
+        "sms_template": {
+            "label": "এসএমএস টেমপ্লেট",
+            "placeholder": "টেমপ্লেট নির্বাচন করুন (ঐচ্ছিক)"
+        },
+        "sms_body": {
+            "label": "এসএমএস বডি",
+            "placeholder": "এসএমএস বডি লিখুন",
+            "errors": {
+                "required": "এসএমএস বডি আবশ্যক"
+            }
+        },
+        "sms_count": {
+            "label": "মোট এসএমএস",
+            "zero_tooltip": "এসএমএস কাউন্ট ০। একটি ফোন নম্বর দিন অথবা মিল থাকা ক্লায়েন্টসহ একটি টেমপ্লেট নির্বাচন করুন।"
+        },
+        "client_list": {
+            "title": "ক্লায়েন্ট লিস্ট",
+            "description": "বর্তমান ফিল্টারের সাথে মিল থাকা সব ক্লায়েন্টকে এসএমএস পাঠানো হবে।"
+        },
+        "sort_option": {
+            "label": "সোর্ট অপশন",
+            "active_clients": "অ্যাক্টিভ ক্লায়েন্ট",
+            "inactive_clients": "ইনঅ্যাক্টিভ ক্লায়েন্ট",
+            "all_clients": "অল ক্লায়েন্ট",
+            "all_clients_tooltip": "এটি বর্তমান ফিল্টারের সাথে মিল থাকা সব ক্লায়েন্টকে এসএমএস পাঠাবে। উদাহরণ: প্রতি পেইজে ১০টি ক্লায়েন্ট দেখালেও মোট ১৫টি থাকলে ১৫টি এসএমএস পাঠানো হবে।"
+        },
+        "filters": {
+            "apply": "ফিল্টার প্রয়োগ করুন",
+            "reset": "ফিল্টার রিসেট করুন"
+        },
+        "table": {
+            "sl": "ক্রমিক",
+            "package_due": "প্যাকেজ / ডিউ"
+        },
+        "send": "এসএমএস পাঠান",
+        "success": "এসএমএস কিউতে সফলভাবে যোগ হয়েছে"
+    },
+    "sms_template": {
+        "title_plural": "এসএমএস টেমপ্লেট",
+        "create_title": "এসএমএস টেমপ্লেট যোগ করুন",
+        "edit_title": "এসএমএস টেমপ্লেট সম্পাদনা",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই এসএমএস টেমপ্লেটটি মুছে ফেলতে চান?",
+        "name": {
+            "label": "টেমপ্লেট নাম",
+            "placeholder": "টেমপ্লেট নাম দিন",
+            "errors": {
+                "required": "টেমপ্লেট নাম আবশ্যক",
+                "invalid": "টেমপ্লেট নাম অবশ্যই টেক্সট হতে হবে",
+                "min": "টেমপ্লেট নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "template_type": {
+            "label": "টেমপ্লেট টাইপ",
+            "placeholder": "টেমপ্লেট টাইপ নির্বাচন করুন",
+            "errors": {
+                "required": "টেমপ্লেট টাইপ আবশ্যক",
+                "invalid": "টেমপ্লেট টাইপ সঠিক নয়"
+            },
+            "options": {
+                "welcome": "ওয়েলকাম",
+                "invoice_due": "ইনভয়েস ডিউ",
+                "invoice_due_reseller": "ইনভয়েস ডিউ রিসেলার",
+                "payment_received": "পেমেন্ট রিসিভড",
+                "wallet_payment": "ওয়ালেট পেমেন্ট",
+                "client_activated": "ক্লায়েন্ট অ্যাক্টিভেটেড",
+                "client_deactivated": "ক্লায়েন্ট ডিএ্যাক্টিভেটেড",
+                "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
+                "custom": "কাস্টম"
+            }
+        },
+        "message": {
+            "label": "মেসেজ",
+            "placeholder": "এসএমএস মেসেজ দিন",
+            "errors": {
+                "required": "মেসেজ আবশ্যক",
+                "invalid": "মেসেজ অবশ্যই টেক্সট হতে হবে"
+            }
+        },
+        "tokens": {
+            "title": "টেমপ্লেট ভ্যারিয়েবল",
+            "description": "যেকোনো ভ্যারিয়েবলে ক্লিক করলে এটি মেসেজে যুক্ত হবে।"
+        }
+    },
     "payment": {
         "title_plural": "পেমেন্ট",
         "create_title": "বিল যোগ করুন",
@@ -1490,6 +1584,358 @@
         "description": {
             "label": "বিবরণ",
             "placeholder": "বিবরণ দিন"
+        }
+    },
+    "product": {
+        "title_plural": "প্রোডাক্ট",
+        "create_title": "প্রোডাক্ট যোগ করুন",
+        "edit_title": "প্রোডাক্ট সম্পাদনা করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?",
+        "sl": "SL",
+        "stock_in": {
+            "label": "স্টক ইন"
+        },
+        "stock_out": {
+            "label": "স্টক আউট"
+        },
+        "remaining": {
+            "label": "অবশিষ্ট"
+        },
+        "name": {
+            "label": "প্রোডাক্ট নাম",
+            "placeholder": "প্রোডাক্ট নাম দিন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
+                "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "has_serial": {
+            "label": "সিরিয়াল আছে",
+            "placeholder": "সিরিয়াল অপশন নির্বাচন করুন",
+            "errors": {
+                "required": "সিরিয়াল অপশন আবশ্যক",
+                "invalid": "সিরিয়াল অপশন সঠিক নয়"
+            }
+        },
+        "vat": {
+            "label": "ভ্যাট (%)",
+            "placeholder": "ভ্যাট শতাংশ দিন",
+            "errors": {
+                "invalid": "ভ্যাট অবশ্যই সঠিক সংখ্যা হতে হবে",
+                "min": "ভ্যাট নেগেটিভ হতে পারবে না"
+            }
+        },
+        "unit_type": {
+            "label": "ইউনিট টাইপ",
+            "placeholder": "ইউনিট টাইপ নির্বাচন করুন",
+            "errors": {
+                "required": "ইউনিট টাইপ আবশ্যক"
+            }
+        },
+        "product_category": {
+            "label": "প্রোডাক্ট ক্যাটাগরি",
+            "placeholder": "প্রোডাক্ট ক্যাটাগরি নির্বাচন করুন",
+            "errors": {
+                "required": "প্রোডাক্ট ক্যাটাগরি আবশ্যক"
+            }
+        },
+        "description": {
+            "label": "বিবরণ",
+            "placeholder": "প্রোডাক্টের বিবরণ দিন"
+        }
+    },
+    "product_in": {
+        "title": "প্রোডাক্ট ইন",
+        "create_title": "প্রোডাক্ট ইন তৈরি করুন",
+        "success_message": "প্রোডাক্ট ইন সফলভাবে তৈরি হয়েছে",
+        "purchase_by": {
+            "label": "পারচেজ বাই",
+            "placeholder": "পারচেজার নির্বাচন করুন"
+        },
+        "purchase_date": {
+            "label": "পারচেজ ডেট",
+            "placeholder": "পারচেজ ডেট নির্বাচন করুন"
+        },
+        "voucher": {
+            "label": "ভাউচার",
+            "placeholder": "ভাউচার দিন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "expense": {
+            "title": "এক্সপেন্স",
+            "expense_type": {
+                "label": "এক্সপেন্স টাইপ",
+                "placeholder": "এক্সপেন্স টাইপ নির্বাচন করুন"
+            },
+            "vendor": {
+                "label": "ভেন্ডর",
+                "placeholder": "ভেন্ডর নির্বাচন করুন"
+            },
+            "fund": {
+                "label": "ফান্ড",
+                "placeholder": "ফান্ড নির্বাচন করুন"
+            },
+            "amount": {
+                "label": "অ্যামাউন্ট",
+                "placeholder": "অটো ক্যালকুলেটেড অ্যামাউন্ট"
+            },
+            "expense_note": {
+                "label": "এক্সপেন্স নোট",
+                "placeholder": "এক্সপেন্স নোট দিন"
+            }
+        },
+        "lines": {
+            "title": "প্রোডাক্ট লাইন",
+            "add": "লাইন যোগ করুন",
+            "remove": "লাইন মুছুন",
+            "item": "লাইন {{index}}"
+        },
+        "line": {
+            "product": {
+                "label": "প্রোডাক্ট",
+                "placeholder": "প্রোডাক্ট নির্বাচন করুন"
+            },
+            "brand": {
+                "label": "ব্র্যান্ড",
+                "placeholder": "ব্র্যান্ড দিন"
+            },
+            "status": {
+                "label": "স্ট্যাটাস",
+                "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+            },
+            "quantity": {
+                "label": "কোয়ান্টিটি",
+                "placeholder": "কোয়ান্টিটি দিন"
+            },
+            "unit_price": {
+                "label": "ইউনিট প্রাইস",
+                "placeholder": "ইউনিট প্রাইস দিন"
+            },
+            "unit_sell_price": {
+                "label": "ইউনিট সেল প্রাইস",
+                "placeholder": "ইউনিট সেল প্রাইস দিন"
+            },
+            "vat": {
+                "label": "ভ্যাট (%)",
+                "placeholder": "ভ্যাট দিন"
+            },
+            "total": {
+                "label": "টোটাল"
+            },
+            "serial": {
+                "title": "সিরিয়াল নাম্বার",
+                "label": "সিরিয়াল {{index}}",
+                "placeholder": "সিরিয়াল {{index}} দিন"
+            },
+            "fiber": {
+                "fiber_id": {
+                    "label": "ফাইবার আইডি",
+                    "placeholder": "ফাইবার আইডি দিন"
+                },
+                "meter_start": {
+                    "label": "ফাইবার মিটার স্টার্ট",
+                    "placeholder": "মিটার স্টার্ট দিন"
+                },
+                "meter_end": {
+                    "label": "ফাইবার মিটার এন্ড",
+                    "placeholder": "মিটার এন্ড দিন"
+                }
+            }
+        },
+        "status": {
+            "new": "নিউ",
+            "old": "ওল্ড",
+            "replace": "রিপ্লেস"
+        },
+        "totals": {
+            "title": "সামারি",
+            "total_quantity": "টোটাল কোয়ান্টিটি",
+            "total_amount": "টোটাল অ্যামাউন্ট"
+        },
+        "errors": {
+            "purchase_by_required": "পারচেজার আবশ্যক",
+            "product_required": "প্রোডাক্ট আবশ্যক",
+            "product_min": "অন্তত একটি প্রোডাক্ট লাইন আবশ্যক",
+            "quantity_min": "কোয়ান্টিটি কমপক্ষে ০ হতে হবে",
+            "unit_price_min": "ইউনিট প্রাইস কমপক্ষে ০ হতে হবে",
+            "vat_min": "ভ্যাট নেগেটিভ হতে পারবে না",
+            "serial_required": "সব সিরিয়াল নাম্বার আবশ্যক",
+            "serial_count": "সিরিয়াল কাউন্ট কোয়ান্টিটির সমান হতে হবে",
+            "expense_type_required": "এক্সপেন্স টাইপ আবশ্যক"
+        }
+    },
+    "product_out": {
+        "title": "প্রোডাক্ট আউট",
+        "create_title": "প্রোডাক্ট আউট তৈরি করুন",
+        "success_message": "প্রোডাক্ট আউট সফলভাবে তৈরি হয়েছে",
+        "out_date": {
+            "label": "আউট ডেট",
+            "placeholder": "আউট ডেট নির্বাচন করুন"
+        },
+        "received_by": {
+            "label": "রিসিভড বাই",
+            "placeholder": "রিসিভার নির্বাচন করুন"
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "placeholder": "ক্লায়েন্ট নির্বাচন করুন"
+        },
+        "create_invoice": {
+            "label": "ইনভয়েস তৈরি করুন"
+        },
+        "note": {
+            "label": "নোট",
+            "placeholder": "নোট দিন"
+        },
+        "lines": {
+            "title": "প্রোডাক্ট লাইন",
+            "add": "লাইন যোগ করুন",
+            "remove": "লাইন মুছুন",
+            "item": "লাইন {{index}}"
+        },
+        "line": {
+            "product": {
+                "label": "প্রোডাক্ট",
+                "placeholder": "প্রোডাক্ট নির্বাচন করুন"
+            },
+            "product_in": {
+                "label": "প্রোডাক্ট ইন",
+                "placeholder": "সোর্স স্টক নির্বাচন করুন"
+            },
+            "quantity": {
+                "label": "কোয়ান্টিটি",
+                "placeholder": "কোয়ান্টিটি দিন"
+            },
+            "unit_price": {
+                "label": "ইউনিট প্রাইস",
+                "placeholder": "ইউনিট প্রাইস দিন"
+            },
+            "vat": {
+                "label": "ভ্যাট (%)",
+                "placeholder": "ভ্যাট দিন"
+            },
+            "discount": {
+                "label": "ডিসকাউন্ট",
+                "placeholder": "ডিসকাউন্ট দিন"
+            },
+            "total": {
+                "label": "টোটাল"
+            }
+        },
+        "serial": {
+            "search_placeholder": "সিরিয়াল সার্চ করুন",
+            "selected_count": "{{count}} টি সিলেক্টেড",
+            "empty_state": "কোনো সিরিয়াল পাওয়া যায়নি"
+        },
+        "totals": {
+            "title": "সামারি",
+            "total_quantity": "টোটাল কোয়ান্টিটি",
+            "sub_total": "সাব টোটাল",
+            "discount": "ডিসকাউন্ট",
+            "total_amount": "টোটাল অ্যামাউন্ট"
+        },
+        "errors": {
+            "received_by_required": "রিসিভার আবশ্যক",
+            "product_required": "প্রোডাক্ট আবশ্যক",
+            "product_in_required": "প্রোডাক্ট ইন সোর্স আবশ্যক",
+            "product_min": "অন্তত একটি প্রোডাক্ট লাইন আবশ্যক",
+            "quantity_min": "কোয়ান্টিটি কমপক্ষে ০ হতে হবে",
+            "unit_price_min": "ইউনিট প্রাইস কমপক্ষে ০ হতে হবে",
+            "vat_min": "ভ্যাট নেগেটিভ হতে পারবে না",
+            "discount_min": "ডিসকাউন্ট নেগেটিভ হতে পারবে না",
+            "serial_required": "অন্তত একটি সিরিয়াল সিলেক্ট করুন",
+            "serial_count": "সিলেক্টেড সিরিয়াল কোয়ান্টিটির সমান হতে হবে"
+        }
+    },
+    "product_serial": {
+        "title": "সিরিয়াল ডিটেইলস",
+        "columns": {
+            "serial": "সিরিয়াল",
+            "status": "স্ট্যাটাস",
+            "purchase_date": "পারচেজ ডেট",
+            "out_date": "আউট ডেট"
+        },
+        "status": {
+            "in_stock": "ইন-স্টক",
+            "out": "আউট"
+        }
+    },
+    "product_movement": {
+        "in_details_title": "প্রোডাক্ট ইন ডিটেইলস",
+        "out_details_title": "প্রোডাক্ট আউট ডিটেইলস",
+        "summary": {
+            "total_price": "টোটাল প্রাইস",
+            "total_quantity": "টোটাল কোয়ান্টিটি"
+        },
+        "columns": {
+            "sl": "SL",
+            "product": "প্রোডাক্ট",
+            "status": "স্ট্যাটাস",
+            "date_and_by": "ডেট ও বাই",
+            "purchase_date": "পারচেজ ডেট",
+            "out_date": "আউট ডেট",
+            "purchase_by": "পারচেজ বাই",
+            "received_by": "রিসিভড বাই",
+            "vendor": "ভেন্ডর",
+            "quantity": "কোয়ান্টিটি",
+            "remaining": "রিমেইনিং",
+            "unit_price": "ইউনিট প্রাইস",
+            "total_price": "টোটাল প্রাইস",
+            "selling_price": "সেলিং প্রাইস",
+            "note_serial": "নোট / সিরিয়াল",
+            "entry_by": "এন্ট্রি বাই"
+        },
+        "filters": {
+            "purchase_date": "পারচেজ ডেট রেঞ্জ",
+            "out_date": "আউট ডেট রেঞ্জ",
+            "vendor": "ভেন্ডর দিয়ে ফিল্টার করুন",
+            "status": "স্ট্যাটাস দিয়ে ফিল্টার করুন",
+            "entry_by": "এন্ট্রি বাই দিয়ে ফিল্টার করুন",
+            "purchase_by": "পারচেজ বাই দিয়ে ফিল্টার করুন",
+            "received_by": "রিসিভড বাই দিয়ে ফিল্টার করুন",
+            "client": "ক্লায়েন্ট দিয়ে ফিল্টার করুন"
+        },
+        "actions": {
+            "delete_confirmation": "আপনি কি নিশ্চিত এই মুভমেন্টটি মুছে ফেলতে চান?",
+            "back_to_products": "প্রোডাক্টে ফিরে যান"
+        }
+    },
+    "product_reports": {
+        "title": "প্রোডাক্ট রিপোর্টস",
+        "toggle": {
+            "in": "প্রোডাক্ট ইন",
+            "out": "প্রোডাক্ট আউট"
+        },
+        "summary": {
+            "actual_quantity": "একচুয়াল কোয়ান্টিটি",
+            "actual_price": "একচুয়াল প্রাইস",
+            "current_quantity": "কারেন্ট কোয়ান্টিটি",
+            "current_price": "কারেন্ট প্রাইস"
+        },
+        "columns": {
+            "sl": "SL",
+            "date": "ডেট",
+            "status": "স্ট্যাটাস",
+            "vendor": "ভেন্ডর",
+            "quantity": "কোয়ান্টিটি",
+            "unit_price": "ইউনিট প্রাইস",
+            "total_price": "টোটাল প্রাইস",
+            "serial": "সিরিয়াল",
+            "note": "নোট"
+        },
+        "filters": {
+            "product": "প্রোডাক্ট দিয়ে ফিল্টার করুন",
+            "purchase_date": "পারচেজ ডেট রেঞ্জ",
+            "out_date": "আউট ডেট রেঞ্জ",
+            "vendor": "ভেন্ডর দিয়ে ফিল্টার করুন",
+            "status": "স্ট্যাটাস দিয়ে ফিল্টার করুন",
+            "entry_by": "এন্ট্রি বাই দিয়ে ফিল্টার করুন",
+            "purchase_by": "পারচেজ বাই দিয়ে ফিল্টার করুন",
+            "received_by": "রিসিভড বাই দিয়ে ফিল্টার করুন"
         }
     },
     "expense_type": {
@@ -2191,6 +2637,70 @@
             "status": "স্ট্যাটাস"
         }
     },
+    "client_map": {
+        "title": "ক্লায়েন্ট ম্যাপ",
+        "loading": "ক্লায়েন্ট ম্যাপ লোড হচ্ছে",
+        "error": {
+            "load_failed": "ক্লায়েন্ট ম্যাপ ডাটা লোড করতে ব্যর্থ"
+        },
+        "company": {
+            "label": "কোম্পানি",
+            "fallback_name": "অফিস",
+            "address": "ঠিকানা"
+        },
+        "olt": {
+            "device": "ডিভাইস"
+        },
+        "client": {
+            "label": "ক্লায়েন্ট",
+            "status": "স্ট্যাটাস",
+            "address": "ঠিকানা",
+            "phone": "ফোন"
+        },
+        "status": {
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ",
+            "unknown": "অজানা"
+        },
+        "filter": {
+            "device": "ডিভাইস",
+            "network": "নেটওয়ার্ক",
+            "zone": "জোন",
+            "status": "স্ট্যাটাস"
+        }
+    },
+    "tj_box_map": {
+        "title": "টিজে বক্স ম্যাপ",
+        "loading": "টিজে বক্স ম্যাপ লোড হচ্ছে",
+        "office": "অফিস",
+        "error": {
+            "load_failed": "টিজে বক্স ম্যাপ ডাটা লোড করতে ব্যর্থ"
+        },
+        "box": {
+            "name": "বক্স",
+            "status": "স্ট্যাটাস"
+        },
+        "device": {
+            "name": "ডিভাইস",
+            "status": "স্ট্যাটাস"
+        },
+        "status": {
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ",
+            "unknown": "অজানা"
+        },
+        "filter": {
+            "name": "বক্সের নাম",
+            "address": "বক্সের ঠিকানা",
+            "device": "ডিভাইস",
+            "zone": "জোন",
+            "status": "স্ট্যাটাস"
+        }
+    },
+    "map_common": {
+        "tile_attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+        "not_available": "N/A"
+    },
     "mikrotik_command": {
         "title_plural": "মাইক্রোটিক কমান্ড",
         "form_title": "মাইক্রোটিক কমান্ড রান করুন",
@@ -2227,6 +2737,35 @@
             "raw_title": "র' রেসপন্স",
             "single_value": "ভ্যালু",
             "row_key": "রো {{index}}"
+        }
+    },
+    "mikrotik_package": {
+        "title_plural": "মাইক্রোটিক প্যাকেজ",
+        "create_title": "মাইক্রোটিক প্যাকেজ যোগ করুন",
+        "edit_title": "মাইক্রোটিক প্যাকেজ এডিট করুন",
+        "table": {
+            "sl": "SL",
+            "network": "নেটওয়ার্ক",
+            "name": "নাম"
+        },
+        "network": {
+            "label": "নেটওয়ার্ক",
+            "placeholder": "নেটওয়ার্ক সিলেক্ট করুন",
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "name": {
+            "label": "প্যাকেজ নাম",
+            "placeholder": "প্যাকেজ নাম দিন",
+            "errors": {
+                "required": "প্যাকেজ নাম আবশ্যক",
+                "invalid": "প্যাকেজ নাম অবশ্যই টেক্সট হতে হবে",
+                "min": "প্যাকেজ নাম কমপক্ষে ২ অক্ষর হতে হবে"
+            }
+        },
+        "messages": {
+            "delete_confirmation": "আপনি কি নিশ্চিত এই মাইক্রোটিক প্যাকেজটি ডিলিট করতে চান?"
         }
     },
     "package": {
@@ -2322,6 +2861,207 @@
             "confirm_button": "প্যাকেজ রিমুভ করুন",
             "confirmation": "আপনি কি নিশ্চিত এই প্যাকেজটি রিসেলার থেকে রিমুভ করতে চান?",
             "success": "রিসেলার থেকে প্যাকেজ সফলভাবে রিমুভ হয়েছে"
+        }
+    },
+    "import_client": {
+        "title": "ইমপোর্ট ক্লায়েন্ট",
+        "title_plural": "ইমপোর্ট ক্লায়েন্ট",
+        "import_title": "ইমপোর্ট ক্লায়েন্ট",
+        "sync": {
+            "title": "মাইক্রোটিক সিঙ্ক",
+            "button": "সিঙ্ক",
+            "network": {
+                "label": "নেটওয়ার্ক",
+                "placeholder": "নেটওয়ার্ক সিলেক্ট করুন",
+                "errors": {
+                    "required": "নেটওয়ার্ক আবশ্যক"
+                }
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "name": "নাম",
+            "service": "সার্ভিস",
+            "password": "পাসওয়ার্ড",
+            "profile": "প্রোফাইল",
+            "disabled": "ডিসেবল",
+            "route": "রুট",
+            "ipv6_routes": "IPv6 রুট",
+            "sync_status": "সিঙ্ক স্ট্যাটাস"
+        },
+        "filters": {
+            "name": {
+                "label": "নাম",
+                "placeholder": "ক্লায়েন্ট নাম দিয়ে সার্চ করুন"
+            },
+            "service": {
+                "label": "সার্ভিস",
+                "placeholder": "সার্ভিস দিয়ে সার্চ করুন"
+            },
+            "password": {
+                "label": "পাসওয়ার্ড",
+                "placeholder": "পাসওয়ার্ড দিয়ে সার্চ করুন"
+            },
+            "profile": {
+                "label": "প্রোফাইল",
+                "placeholder": "প্রোফাইল দিয়ে সার্চ করুন"
+            },
+            "disabled": {
+                "label": "ডিসেবল",
+                "placeholder": "ডিসেবল স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "true": "হ্যাঁ",
+                    "false": "না"
+                }
+            },
+            "syncd_status": {
+                "label": "সিঙ্ক স্ট্যাটাস",
+                "placeholder": "সিঙ্ক স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "imported": "ইমপোর্টেড",
+                    "not_imported": "নট ইমপোর্টেড"
+                }
+            }
+        },
+        "actions": {
+            "import": "ইমপোর্ট"
+        },
+        "messages": {
+            "sync_success": "মাইক্রোটিক সিঙ্ক সফলভাবে সম্পন্ন হয়েছে",
+            "import_success": "ক্লায়েন্ট সফলভাবে ইমপোর্ট হয়েছে",
+            "delete_confirmation": "আপনি কি নিশ্চিত এই সিঙ্ক ক্লায়েন্টটি ডিলিট করতে চান?"
+        },
+        "mikrotik_profile": {
+            "label": "মাইক্রোটিক প্রোফাইল",
+            "placeholder": "মাইক্রোটিক প্রোফাইল দিন"
+        },
+        "network_id": {
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "package_id": {
+            "errors": {
+                "required": "প্যাকেজ আবশ্যক"
+            }
+        },
+        "payment_term": {
+            "errors": {
+                "required": "পেমেন্ট টার্ম আবশ্যক"
+            }
+        }
+    },
+    "re_sync": {
+        "title": "রি-সিঙ্ক",
+        "title_plural": "রি-সিঙ্ক ক্লায়েন্ট",
+        "sync": {
+            "network": {
+                "label": "নেটওয়ার্ক",
+                "placeholder": "নেটওয়ার্ক সিলেক্ট করুন",
+                "errors": {
+                    "required": "নেটওয়ার্ক আবশ্যক"
+                }
+            },
+            "actions": {
+                "load": "লোড",
+                "all_sync": "অল সিঙ্ক"
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "reseller": "রিসেলার",
+            "client_in_mikrotik": "মাইক্রোটিকে ক্লায়েন্ট",
+            "client_in_app": "অ্যাপে ক্লায়েন্ট",
+            "mikrotik_profile": "মাইক্রোটিক প্রোফাইল",
+            "app_profile": "অ্যাপ প্রোফাইল",
+            "client_status_mikrotik": "মাইক্রোটিক স্ট্যাটাস",
+            "client_status_app": "অ্যাপ স্ট্যাটাস"
+        },
+        "filters": {
+            "client_in_app": {
+                "placeholder": "অ্যাপ ক্লায়েন্ট দিয়ে সার্চ করুন"
+            },
+            "mikrotik_profile": {
+                "placeholder": "মাইক্রোটিক প্রোফাইল দিয়ে সার্চ করুন"
+            },
+            "app_profile": {
+                "placeholder": "অ্যাপ প্রোফাইল দিয়ে সার্চ করুন"
+            },
+            "client_status_mikrotik": {
+                "placeholder": "মাইক্রোটিক স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "active": "অ্যাক্টিভ",
+                    "inactive": "ইনঅ্যাক্টিভ"
+                }
+            },
+            "client": {
+                "placeholder": "ক্লায়েন্ট সোর্স সিলেক্ট করুন",
+                "options": {
+                    "mikrotik": "মাইক্রোটিকে ক্লায়েন্ট",
+                    "app": "অ্যাপে ক্লায়েন্ট"
+                }
+            },
+            "mikrotik_match": {
+                "placeholder": "ম্যাচ স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "match": "ম্যাচ",
+                    "not_match": "নট ম্যাচ"
+                }
+            }
+        },
+        "summary": {
+            "empty": "কোনো সামারি নেই",
+            "total_clients": "ক্লায়েন্ট",
+            "match": "ম্যাচ",
+            "not_match": "নট ম্যাচ"
+        },
+        "status": {
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ"
+        },
+        "actions": {
+            "individual_sync": "ইনডিভিজুয়াল সিঙ্ক"
+        },
+        "messages": {
+            "load_success": "ক্লায়েন্ট লিস্ট সফলভাবে লোড হয়েছে",
+            "all_sync_success": "সব ক্লায়েন্ট সফলভাবে সিঙ্ক হয়েছে",
+            "individual_sync_success": "ক্লায়েন্ট সফলভাবে সিঙ্ক হয়েছে",
+            "delete_confirmation": "আপনি কি নিশ্চিত এই রি-সিঙ্ক রোটি ডিলিট করতে চান?"
+        }
+    },
+    "dashboard": {
+        "cards": {
+            "total_clients": "টোটাল ক্লায়েন্ট",
+            "new_clients": "নতুন ক্লায়েন্ট",
+            "total_resellers": "টোটাল রিসেলার",
+            "total_invoice": "টোটাল ইনভয়েস"
+        },
+        "metrics": {
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ",
+            "paid": "পেইড",
+            "due": "ডিউ"
+        },
+        "filters": {
+            "date": {
+                "label": "ডেট ফিল্টার",
+                "all": "সব",
+                "this_month": "এই মাস",
+                "last_month": "গত মাস",
+                "this_week": "এই সপ্তাহ",
+                "last_week": "গত সপ্তাহ",
+                "last_15_days": "শেষ ১৫ দিন",
+                "today": "আজ",
+                "this_year": "এই বছর",
+                "last_year": "গত বছর"
+            },
+            "year": {
+                "label": "বছর"
+            }
+        },
+        "graph": {
+            "title": "ইনভয়েস এবং এক্সপেন্স ওভারভিউ",
+            "empty": "কোনো গ্রাফ ডেটা পাওয়া যায়নি"
         }
     },
     "menu": {
@@ -2521,7 +3261,334 @@
             }
         },
         "settings": {
-            "title": "সেটিংস"
+            "title": "সেটিংস",
+            "general": {
+                "title": "জেনারেল"
+            },
+            "sms": {
+                "title": "এসএমএস"
+            },
+            "voice_call": {
+                "title": "ভয়েস কল"
+            },
+            "map": {
+                "title": "ম্যাপ"
+            },
+            "payments": {
+                "title": "পেমেন্ট"
+            },
+            "telegram": {
+                "title": "টেলিগ্রাম"
+            }
         }
+    },
+    "settings": {
+        "actions": {
+            "edit": "এডিট"
+        },
+        "messages": {
+            "updated": "সেটিংস সফলভাবে আপডেট হয়েছে"
+        },
+        "common": {
+            "not_set": "সেট করা নেই"
+        },
+        "sections": {
+            "general": {
+                "title": "জেনারেল সেটিংস",
+                "description": "ইনভয়েস ডিফল্ট এবং অ্যাকাউন্ট লেভেল আচরণ ম্যানেজ করুন।"
+            },
+            "sms": {
+                "title": "এসএমএস সেটিংস",
+                "description": "এসএমএস নোটিফিকেশন, রিমাইন্ডার এবং চ্যানেল কন্ট্রোল করুন।"
+            },
+            "voice_call": {
+                "title": "ভয়েস কল সেটিংস",
+                "description": "ভয়েস কল API ক্রেডেনশিয়াল এবং ক্যাম্পেইন সেটআপ কনফিগার করুন।"
+            },
+            "map": {
+                "title": "ম্যাপ সেটিংস",
+                "description": "ম্যাপ API এবং ডিফল্ট কোঅর্ডিনেট কনফিগার করুন।"
+            },
+            "payments": {
+                "title": "পেমেন্ট সেটিংস",
+                "description": "bKash ইন্টিগ্রেশন ক্রেডেনশিয়াল এবং এন্ডপয়েন্ট ম্যানেজ করুন।"
+            },
+            "telegram": {
+                "title": "টেলিগ্রাম সেটিংস",
+                "description": "টেলিগ্রাম টোকেন এবং ইভেন্ট নোটিফিকেশন কনফিগার করুন।"
+            }
+        },
+        "options": {
+            "reminder_channel_sms": "এসএমএস",
+            "reminder_channel_voice": "ভয়েস কল",
+            "schedule_07": "০৭:০০ AM",
+            "schedule_08": "০৮:০০ AM",
+            "schedule_09": "০৯:০০ AM",
+            "schedule_10": "১০:০০ AM",
+            "schedule_11": "১১:০০ AM",
+            "schedule_12": "১২:০০ PM",
+            "schedule_13": "০১:০০ PM",
+            "schedule_14": "০২:০০ PM",
+            "schedule_15": "০৩:০০ PM",
+            "schedule_16": "০৪:০০ PM",
+            "schedule_17": "০৫:০০ PM",
+            "schedule_18": "০৬:০০ PM",
+            "schedule_19": "০৭:০০ PM",
+            "schedule_20": "০৮:০০ PM",
+            "reminder_day_1": "ডেডলাইনের ১ দিন আগে",
+            "reminder_day_2": "ডেডলাইনের ২ দিন আগে",
+            "reminder_day_3": "ডেডলাইনের ৩ দিন আগে",
+            "reminder_day_4": "ডেডলাইনের ৪ দিন আগে",
+            "reminder_day_5": "ডেডলাইনের ৫ দিন আগে",
+            "reminder_day_6": "ডেডলাইনের ৬ দিন আগে",
+            "reminder_day_7": "ডেডলাইনের ৭ দিন আগে",
+            "reminder_day_8": "ডেডলাইনের ৮ দিন আগে",
+            "reminder_day_9": "ডেডলাইনের ৯ দিন আগে",
+            "reminder_day_10": "ডেডলাইনের ১০ দিন আগে",
+            "reminder_day_11": "ডেডলাইনের ১১ দিন আগে",
+            "reminder_day_12": "ডেডলাইনের ১২ দিন আগে",
+            "reminder_day_13": "ডেডলাইনের ১৩ দিন আগে",
+            "reminder_day_14": "ডেডলাইনের ১৪ দিন আগে",
+            "reminder_day_15": "ডেডলাইনের ১৫ দিন আগে"
+        },
+        "fields": {
+            "invoice_due_reminder_voice_campaign_name": {
+                "label": "ভয়েস ক্যাম্পেইন নেম",
+                "placeholder": "ভয়েস ক্যাম্পেইন নেম দিন"
+            },
+            "voice_call_api": {
+                "label": "ভয়েস কল API URL",
+                "placeholder": "ভয়েস কল API URL দিন"
+            },
+            "voice_call_api_key": {
+                "label": "ভয়েস কল API কি",
+                "placeholder": "ভয়েস কল API কি দিন"
+            },
+            "voice_call_campaign_id": {
+                "label": "ভয়েস কল ক্যাম্পেইন আইডি",
+                "placeholder": "ভয়েস কল ক্যাম্পেইন আইডি দিন"
+            },
+            "gmap_api": {
+                "label": "গুগল ম্যাপ API কি",
+                "placeholder": "গুগল ম্যাপ API কি দিন"
+            },
+            "lat": {
+                "label": "ডিফল্ট ল্যাটিটিউড",
+                "placeholder": "ডিফল্ট ল্যাটিটিউড দিন"
+            },
+            "lon": {
+                "label": "ডিফল্ট লংিটিউড",
+                "placeholder": "ডিফল্ট লংিটিউড দিন"
+            },
+            "invoice_prefix": {
+                "label": "ইনভয়েস প্রিফিক্স",
+                "placeholder": "ইনভয়েস প্রিফিক্স দিন"
+            },
+            "bkash_username": {
+                "label": "bKash ইউজারনেম",
+                "placeholder": "bKash ইউজারনেম দিন"
+            },
+            "bkash_password": {
+                "label": "bKash পাসওয়ার্ড",
+                "placeholder": "bKash পাসওয়ার্ড দিন"
+            },
+            "bkash_app_key": {
+                "label": "bKash অ্যাপ কি",
+                "placeholder": "bKash অ্যাপ কি দিন"
+            },
+            "bkash_app_secret": {
+                "label": "bKash অ্যাপ সিক্রেট",
+                "placeholder": "bKash অ্যাপ সিক্রেট দিন"
+            },
+            "bkash_token_url": {
+                "label": "bKash টোকেন URL",
+                "placeholder": "bKash টোকেন URL দিন"
+            },
+            "bkash_create_url": {
+                "label": "bKash ক্রিয়েট URL",
+                "placeholder": "bKash ক্রিয়েট URL দিন"
+            },
+            "bkash_execute_url": {
+                "label": "bKash এক্সিকিউট URL",
+                "placeholder": "bKash এক্সিকিউট URL দিন"
+            },
+            "bkash_refresh_token_url": {
+                "label": "bKash রিফ্রেশ টোকেন URL",
+                "placeholder": "bKash রিফ্রেশ টোকেন URL দিন"
+            },
+            "bkash_search_transaction_url": {
+                "label": "bKash সার্চ ট্রানজেকশন URL",
+                "placeholder": "bKash সার্চ ট্রানজেকশন URL দিন"
+            },
+            "telegram_bot_token": {
+                "label": "টেলিগ্রাম বট টোকেন",
+                "placeholder": "টেলিগ্রাম বট টোকেন দিন"
+            },
+            "telegram_channel_id": {
+                "label": "টেলিগ্রাম চ্যানেল আইডি",
+                "placeholder": "টেলিগ্রাম চ্যানেল আইডি দিন"
+            },
+            "sms_auto_invoice_schedule": {
+                "label": "অটো ইনভয়েস SMS শিডিউল",
+                "placeholder": "SMS শিডিউল টাইম সিলেক্ট করুন"
+            },
+            "invoice_due_reminder_channel": {
+                "label": "ইনভয়েস ডিউ রিমাইন্ডার চ্যানেল",
+                "placeholder": "রিমাইন্ডার চ্যানেল সিলেক্ট করুন"
+            },
+            "sms_invoice_reminder_before_day": {
+                "label": "ইনভয়েস রিমাইন্ডার বিফোর ডে",
+                "placeholder": "রিমাইন্ডার ডে সিলেক্ট করুন"
+            },
+            "sms_after_client_create": {
+                "label": "ক্লায়েন্ট ক্রিয়েটের পর SMS"
+            },
+            "sms_after_client_activated": {
+                "label": "ক্লায়েন্ট অ্যাক্টিভেটেডের পর SMS"
+            },
+            "sms_after_client_deactivated": {
+                "label": "ক্লায়েন্ট ডিএ্যাক্টিভেটেডের পর SMS"
+            },
+            "sms_after_payment_received": {
+                "label": "পেমেন্ট রিসিভডের পর SMS"
+            },
+            "sms_after_manual_invoice_generate": {
+                "label": "ম্যানুয়াল ইনভয়েস জেনারেটের পর SMS"
+            },
+            "sms_after_auto_invoice_generate_client": {
+                "label": "ক্লায়েন্ট অটো ইনভয়েস জেনারেটের পর SMS"
+            },
+            "sms_after_auto_invoice_paid_from_wallet": {
+                "label": "ওয়ালেট থেকে ইনভয়েস পেইডের পর SMS"
+            },
+            "sms_after_auto_invoice_generate_reseller": {
+                "label": "রিসেলার অটো ইনভয়েস জেনারেটের পর SMS"
+            },
+            "sms_auto_invoice_due_reminder": {
+                "label": "SMS অটো ইনভয়েস ডিউ রিমাইন্ডার"
+            },
+            "voice_call_invoice_reminder": {
+                "label": "ভয়েস কল ইনভয়েস রিমাইন্ডার"
+            },
+            "auto_inactive_client_invoice_due": {
+                "label": "অটো ইনঅ্যাক্টিভ ক্লায়েন্ট ইনভয়েস ডিউ"
+            },
+            "telegram_client_create": {
+                "label": "টেলিগ্রাম ক্লায়েন্ট ক্রিয়েট"
+            },
+            "telegram_client_update": {
+                "label": "টেলিগ্রাম ক্লায়েন্ট আপডেট"
+            },
+            "telegram_client_delete": {
+                "label": "টেলিগ্রাম ক্লায়েন্ট ডিলিট"
+            },
+            "telegram_fund_transaction_create": {
+                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ক্রিয়েট"
+            },
+            "telegram_fund_transaction_delete": {
+                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ডিলিট"
+            },
+            "telegram_invoice_create": {
+                "label": "টেলিগ্রাম ইনভয়েস ক্রিয়েট"
+            },
+            "telegram_invoice_auto_generate": {
+                "label": "টেলিগ্রাম ইনভয়েস অটো জেনারেট"
+            },
+            "telegram_invoice_update": {
+                "label": "টেলিগ্রাম ইনভয়েস আপডেট"
+            },
+            "telegram_invoice_paid": {
+                "label": "টেলিগ্রাম ইনভয়েস পেইড"
+            },
+            "telegram_invoice_delete": {
+                "label": "টেলিগ্রাম ইনভয়েস ডিলিট"
+            },
+            "telegram_expense_create": {
+                "label": "টেলিগ্রাম এক্সপেন্স ক্রিয়েট"
+            },
+            "telegram_expense_update": {
+                "label": "টেলিগ্রাম এক্সপেন্স আপডেট"
+            },
+            "telegram_expense_delete": {
+                "label": "টেলিগ্রাম এক্সপেন্স ডিলিট"
+            },
+            "telegram_ticket_create": {
+                "label": "টেলিগ্রাম টিকেট ক্রিয়েট"
+            },
+            "telegram_ticket_update": {
+                "label": "টেলিগ্রাম টিকেট আপডেট"
+            },
+            "telegram_ticket_delete": {
+                "label": "টেলিগ্রাম টিকেট ডিলিট"
+            },
+            "telegram_network_create": {
+                "label": "টেলিগ্রাম নেটওয়ার্ক ক্রিয়েট"
+            },
+            "telegram_network_update": {
+                "label": "টেলিগ্রাম নেটওয়ার্ক আপডেট"
+            },
+            "telegram_network_delete": {
+                "label": "টেলিগ্রাম নেটওয়ার্ক ডিলিট"
+            },
+            "telegram_package_create": {
+                "label": "টেলিগ্রাম প্যাকেজ ক্রিয়েট"
+            },
+            "telegram_package_update": {
+                "label": "টেলিগ্রাম প্যাকেজ আপডেট"
+            },
+            "telegram_package_delete": {
+                "label": "টেলিগ্রাম প্যাকেজ ডিলিট"
+            },
+            "telegram_vendor_create": {
+                "label": "টেলিগ্রাম ভেন্ডর ক্রিয়েট"
+            },
+            "telegram_vendor_update": {
+                "label": "টেলিগ্রাম ভেন্ডর আপডেট"
+            },
+            "telegram_vendor_delete": {
+                "label": "টেলিগ্রাম ভেন্ডর ডিলিট"
+            }
+        }
+    },
+    "theme_customizer": {
+        "title": "থিম কাস্টমাইজার",
+        "description": "আপনার থিম কাস্টমাইজ করুন।",
+        "aria_label": "থিম কাস্টমাইজ করুন",
+        "color": {
+            "label": "রঙ",
+            "green": "গ্রিন",
+            "red": "রেড",
+            "zinc": "জিঙ্ক",
+            "rose": "রোজ",
+            "orange": "অরেঞ্জ",
+            "blue": "ব্লু"
+        },
+        "radius": {
+            "label": "রেডিয়াস"
+        },
+        "density": {
+            "label": "ডেনসিটি",
+            "compact": "কমপ্যাক্ট",
+            "comfortable": "কমফর্টেবল",
+            "large": "লার্জ"
+        },
+        "mode": {
+            "label": "মোড",
+            "light": "লাইট",
+            "dark": "ডার্ক"
+        },
+        "mobile_drawer": {
+            "label": "মোবাইল ড্রয়ার",
+            "left": "বাম",
+            "right": "ডান"
+        }
+    },
+    "user_profile": {
+        "aria_label": "ইউজার মেনু",
+        "menu": "ইউজার মেনু",
+        "dashboard": "ড্যাশবোর্ড",
+        "company_profile": "কোম্পানি প্রোফাইল",
+        "settings": "সেটিংস",
+        "sign_out": "সাইন আউট"
     }
 }

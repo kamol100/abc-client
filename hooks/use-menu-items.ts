@@ -214,7 +214,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
     title: t("menu.sms.title"),
     url: "#",
     icon: MessageSquare,
-    permissions: ["sms-templates.access"],
+    permissions: ["sms-send.access", "sms-templates.access"],
     items: [
       { title: t("menu.sms.send.title"), url: "/sms-send", permission: "sms-send.access" },
       { title: t("menu.sms.templates.title"), url: "/sms-templates", permission: "sms-templates.access" },
@@ -338,7 +338,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
     permissions: ["sync-clients.access", "client-sync.access"],
     items: [
       { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access" },
-      { title: t("menu.mikrotik_sync.re_sync.title"), url: "/client-sync", permission: "client-sync.access" },
+      { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access" },
     ],
   },
   {
@@ -355,9 +355,17 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
   {
     id: 24,
     title: t("menu.settings.title"),
-    url: "/settings",
+    url: "#",
     icon: Settings,
     permissions: ["company-settings.access"],
+    items: [
+      { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
+      { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
+      { title: t("menu.settings.voice_call.title"), url: "/settings/voice-call", permission: "company-settings.access" },
+      { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
+      { title: t("menu.settings.payments.title"), url: "/settings/payments", permission: "company-settings.access" },
+      { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
+    ],
   },
 ];
 }

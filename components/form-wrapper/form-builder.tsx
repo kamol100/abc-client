@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { ReactNode, useCallback, useMemo, useState } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
 import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { z } from "zod";
 import FormWrapper from "./form-wrapper";
@@ -258,12 +258,15 @@ export type FormBuilderProps = {
   method: "GET" | "POST" | "PUT";
   mode: "create" | "edit";
   queryKey?: string;
+  successMessage?: string;
   data?: Record<string, unknown>;
   onClose?: () => void | undefined;
   actionButton?: boolean;
   actionButtonClass?: string;
   hydrateOnEdit?: HydratePolicy;
   fullPage?: boolean;
+  extraPayload?: Record<string, unknown>;
+  transformPayload?: (values: FieldValues) => FieldValues;
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
 };
 
@@ -277,11 +280,14 @@ const FormBuilder = ({
   mode = "create",
   data,
   queryKey,
+  successMessage,
   onClose,
   actionButton = true,
   actionButtonClass,
   hydrateOnEdit = "ifNeeded",
   fullPage = false,
+  extraPayload,
+  transformPayload,
   children,
 }: FormBuilderProps) => {
   const [saveOnChange, setSaveOnChange] = useState(false);
@@ -408,6 +414,7 @@ const FormBuilder = ({
       method={method}
       mode={mode}
       queryKey={queryKey}
+      successMessage={successMessage}
       data={transformedData}
       onClose={onClose}
       actionButton={actionButton}
@@ -417,6 +424,8 @@ const FormBuilder = ({
       hydrateOnEdit={hydrateOnEdit}
       formSchema={formSchema}
       transformToFormValues={transformCallback}
+      extraPayload={extraPayload}
+      transformPayload={transformPayload}
       grids={grids}
       fullPage={fullPage}
     >

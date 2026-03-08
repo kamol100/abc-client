@@ -1,6 +1,6 @@
-import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-export const InvoiceFormFieldSchema = (): FieldConfig[] => [
+export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
     {
         type: "date",
         name: "create_date",

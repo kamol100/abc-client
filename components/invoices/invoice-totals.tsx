@@ -7,11 +7,11 @@ import {
     calculateInvoiceTotals,
     formatMoney,
 } from "@/lib/helper/helper";
-import type { InvoiceFormValues } from "@/components/invoices/invoice-type";
+import type { InvoiceFormState } from "@/components/invoices/invoice-type";
 
 const InvoiceTotals: FC = () => {
     const { t } = useTranslation();
-    const { control } = useFormContext<InvoiceFormValues>();
+    const { control } = useFormContext<InvoiceFormState>();
     const lines = useWatch({
         control,
         name: "lines",

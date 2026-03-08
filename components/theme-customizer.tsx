@@ -10,47 +10,68 @@ import {
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { THEME_RADII, useThemeSettings } from "@/context/theme-data-provider";
-import { ArrowLeft, ArrowRight, Maximize, Minimize, Moon, Square, Sun } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Maximize,
+  Minimize,
+  Moon,
+  SlidersHorizontal,
+  Square,
+  Sun,
+} from "lucide-react";
 import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 
-const THEME_COLOR_OPTIONS: { value: ThemeColor; label: string; primary: string }[] = [
-  { value: "green", label: "Green", primary: "142.1 76.2% 36.3%" },
-  { value: "red", label: "Red", primary: "0 84.2% 60.2%" },
-  { value: "zinc", label: "Zinc", primary: "240 5.9% 10%" },
-  { value: "rose", label: "Rose", primary: "346.8 77.2% 49.8%" },
-  { value: "orange", label: "Orange", primary: "24.6 95% 53.1%" },
-  { value: "blue", label: "Blue", primary: "221.2 83.2% 53.3%" },
+const THEME_COLOR_OPTIONS: { value: ThemeColor; primary: string }[] = [
+  { value: "green", primary: "142.1 76.2% 36.3%" },
+  { value: "red", primary: "0 84.2% 60.2%" },
+  { value: "zinc", primary: "240 5.9% 10%" },
+  { value: "rose", primary: "346.8 77.2% 49.8%" },
+  { value: "orange", primary: "24.6 95% 53.1%" },
+  { value: "blue", primary: "221.2 83.2% 53.3%" },
 ];
 
-const DENSITY_OPTIONS: { value: ThemeDensity; label: string; icon: typeof Minimize }[] = [
-  { value: "compact", label: "Compact", icon: Minimize },
-  { value: "comfortable", label: "Comfortable", icon: Square },
-  { value: "large", label: "Large", icon: Maximize },
+const DENSITY_OPTIONS: { value: ThemeDensity; icon: typeof Minimize }[] = [
+  { value: "compact", icon: Minimize },
+  { value: "comfortable", icon: Square },
+  { value: "large", icon: Maximize },
 ];
 
 export default function ThemeCustomize() {
+  const { t } = useTranslation();
   const { settings, setColor, setDensity, setRadius, setNavDrawerSide } = useThemeSettings();
   const { setTheme, theme } = useTheme();
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">Customize</Button>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label={t("theme_customizer.aria_label")}
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4">
-        <h4 className="font-medium">Theme Customizer</h4>
-        <p className="text-sm text-muted-foreground">Customize your theme.</p>
+        <h4 className="font-medium">{t("theme_customizer.title")}</h4>
+        <p className="text-sm text-muted-foreground">
+          {t("theme_customizer.description")}
+        </p>
 
         <div className="mt-4 space-y-4">
           <div>
-            <Label className="text-sm font-medium">Color</Label>
+            <Label className="text-sm font-medium">
+              {t("theme_customizer.color.label")}
+            </Label>
             <ToggleGroup
               type="single"
               value={settings.color}
               onValueChange={(value) => value && setColor(value as ThemeColor)}
               className="grid grid-cols-3 gap-2 mt-2"
             >
-              {THEME_COLOR_OPTIONS.map(({ value, label, primary }) => (
+              {THEME_COLOR_OPTIONS.map(({ value, primary }) => (
                 <ToggleGroupItem
                   key={value}
                   value={value}
@@ -62,14 +83,16 @@ export default function ThemeCustomize() {
                   >
                     {settings.color === value && <Checked />}
                   </div>
-                  {label}
+                  {t(`theme_customizer.color.${value}`)}
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
           </div>
 
           <div>
-            <Label className="text-sm font-medium">Radius</Label>
+            <Label className="text-sm font-medium">
+              {t("theme_customizer.radius.label")}
+            </Label>
             <ToggleGroup
               type="single"
               value={settings.radius}
@@ -89,27 +112,31 @@ export default function ThemeCustomize() {
           </div>
 
           <div>
-            <Label className="text-sm font-medium">Density</Label>
+            <Label className="text-sm font-medium">
+              {t("theme_customizer.density.label")}
+            </Label>
             <ToggleGroup
               type="single"
               value={settings.density}
               onValueChange={(value) => value && setDensity(value as ThemeDensity)}
               className="flex gap-2 mt-2 justify-between"
             >
-              {DENSITY_OPTIONS.map(({ value, label, icon: Icon }) => (
+              {DENSITY_OPTIONS.map(({ value, icon: Icon }) => (
                 <ToggleGroupItem
                   key={value}
                   value={value}
                   variant={settings.density === value ? "default" : "outline"}
                 >
-                  <Icon className="h-4 w-4" /> {label}
+                  <Icon className="h-4 w-4" /> {t(`theme_customizer.density.${value}`)}
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>
           </div>
 
           <div>
-            <Label className="text-sm font-medium">Mode</Label>
+            <Label className="text-sm font-medium">
+              {t("theme_customizer.mode.label")}
+            </Label>
             <ToggleGroup
               type="single"
               value={theme}
@@ -120,19 +147,21 @@ export default function ThemeCustomize() {
                 value="light"
                 variant={theme === "light" ? "default" : "outline"}
               >
-                <Sun className="h-4 w-4" /> Light
+                <Sun className="h-4 w-4" /> {t("theme_customizer.mode.light")}
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="dark"
                 variant={theme === "dark" ? "default" : "outline"}
               >
-                <Moon className="h-4 w-4" /> Dark
+                <Moon className="h-4 w-4" /> {t("theme_customizer.mode.dark")}
               </ToggleGroupItem>
             </ToggleGroup>
           </div>
 
           <div>
-            <Label className="text-sm font-medium">Mobile Drawer</Label>
+            <Label className="text-sm font-medium">
+              {t("theme_customizer.mobile_drawer.label")}
+            </Label>
             <ToggleGroup
               type="single"
               value={settings.navDrawerSide}
@@ -145,13 +174,13 @@ export default function ThemeCustomize() {
                 value="left"
                 variant={settings.navDrawerSide === "left" ? "default" : "outline"}
               >
-                <ArrowLeft className="h-4 w-4" /> Left
+                <ArrowLeft className="h-4 w-4" /> {t("theme_customizer.mobile_drawer.left")}
               </ToggleGroupItem>
               <ToggleGroupItem
                 value="right"
                 variant={settings.navDrawerSide === "right" ? "default" : "outline"}
               >
-                <ArrowRight className="h-4 w-4" /> Right
+                <ArrowRight className="h-4 w-4" /> {t("theme_customizer.mobile_drawer.right")}
               </ToggleGroupItem>
             </ToggleGroup>
           </div>

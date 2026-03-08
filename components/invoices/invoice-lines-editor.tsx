@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
 import InputField from "@/components/form/input-field";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
-import type { InvoiceFormValues } from "@/components/invoices/invoice-type";
+import type { InvoiceFormState } from "@/components/invoices/invoice-type";
 
 const defaultLineItem = {
     description: "",
@@ -19,7 +19,7 @@ const defaultLineItem = {
 
 const InvoiceLinesEditor: FC = () => {
     const { t } = useTranslation();
-    const { control } = useFormContext<InvoiceFormValues>();
+    const { control } = useFormContext<InvoiceFormState>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "lines",

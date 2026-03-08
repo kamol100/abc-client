@@ -91,6 +91,7 @@ type FormWrapperProps = {
     api?: string;
     isFormData?: boolean;
     queryKey?: string;
+    successMessage?: string;
     onClose?: () => void;
     actionButton?: boolean;
     saveOnChange?: boolean;
@@ -101,6 +102,8 @@ type FormWrapperProps = {
     transformToFormValues?: (
         data: Record<string, unknown>
     ) => Record<string, unknown>;
+    extraPayload?: Record<string, unknown>;
+    transformPayload?: (values: FieldValues) => FieldValues;
     grids?: number;
     fullPage?: boolean;
 };
@@ -114,6 +117,7 @@ export default function FormWrapper({
     api,
     isFormData = false,
     queryKey = "data",
+    successMessage,
     onClose,
     actionButton = true,
     saveOnChange: save = false,
@@ -122,6 +126,8 @@ export default function FormWrapper({
     hydrateOnEdit = "ifNeeded",
     formSchema,
     transformToFormValues,
+    extraPayload,
+    transformPayload,
     grids = 1,
     fullPage = false,
 }: FormWrapperProps) {
@@ -209,9 +215,10 @@ export default function FormWrapper({
         url: apiRoute,
         method: mutationMethod as "POST" | "PUT" | "DELETE",
         invalidateKeys: queryKey,
+        successMessage,
         onSuccess: (responseData) => {
             reset();
-            if (responseData?.message) {
+            if (!successMessage && responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
             handleClose();
@@ -219,15 +226,22 @@ export default function FormWrapper({
     });
 
     const onSubmit = async (formValues: FieldValues) => {
-        console.log(formValues, 'formValues');
+        const transformedValues = transformPayload
+            ? transformPayload(formValues)
+            : formValues;
+        const payload =
+            extraPayload && Object.keys(extraPayload).length > 0
+                ? ({ ...transformedValues, ...extraPayload } as FieldValues)
+                : transformedValues;
+
         if (isFormData) {
             const fd = new FormData();
-            Object.entries(formValues).forEach(([key, value]) => {
+            Object.entries(payload).forEach(([key, value]) => {
                 fd.append(key, value as string);
             });
             submitForm(fd);
         } else {
-            submitForm(formValues);
+            submitForm(payload);
         }
     };
 

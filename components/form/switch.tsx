@@ -9,6 +9,7 @@ type SwitchProps = {
     label?: LabelProps;
     className?: string;
     onValueChange?: (value: boolean) => void;
+    disabled?: boolean;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
 };
@@ -18,6 +19,7 @@ const Switch: React.FC<SwitchProps> = ({
     label,
     className,
     onValueChange,
+    disabled = false,
     control: controlProp,
     rules,
 }) => {
@@ -35,6 +37,7 @@ const Switch: React.FC<SwitchProps> = ({
                     <ShadcnSwitch
                         id={`switch-${name}`}
                         checked={!!value}
+                        disabled={disabled}
                         onCheckedChange={(checked) => {
                             onChange(checked);
                             onValueChange?.(checked);

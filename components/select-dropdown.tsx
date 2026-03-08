@@ -93,6 +93,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
 
           return (
             <Select<SelectOption, boolean>
+              instanceId={name}
               className={cn("basic-single")}
               classNamePrefix="select"
               isSearchable={isSearchable}

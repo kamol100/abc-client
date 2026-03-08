@@ -8,6 +8,7 @@
         "delete": "Delete",
         "save": "Save",
         "refresh": "Refresh",
+        "loading": "Loading...",
         "actions": "Actions",
         "status": "Status",
         "email": "Email",
@@ -1335,6 +1336,99 @@
         "success": "SMS sent successfully",
         "phone_prefilled": "Phone number prefilled from client"
     },
+    "sms_sent": {
+        "title": "Send SMS",
+        "description": "Send single and bulk SMS from one page.",
+        "phone_number": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "errors": {
+                "required": "Phone number is required"
+            }
+        },
+        "sms_template": {
+            "label": "SMS Template",
+            "placeholder": "Select template (optional)"
+        },
+        "sms_body": {
+            "label": "SMS Body",
+            "placeholder": "Write SMS body",
+            "errors": {
+                "required": "SMS body is required"
+            }
+        },
+        "sms_count": {
+            "label": "Total SMS",
+            "zero_tooltip": "SMS count is 0. Add a phone number or select a template with matching clients."
+        },
+        "client_list": {
+            "title": "Client List",
+            "description": "SMS will be sent to all clients that match the current filters."
+        },
+        "sort_option": {
+            "label": "Sort Option",
+            "active_clients": "Active Clients",
+            "inactive_clients": "Inactive Clients",
+            "all_clients": "All Clients",
+            "all_clients_tooltip": "This will send SMS to all clients that match the current filters. Example: If 10 clients are shown per page and there are 15 total clients, then 15 SMS will be sent."
+        },
+        "filters": {
+            "apply": "Apply Filters",
+            "reset": "Reset Filters"
+        },
+        "table": {
+            "sl": "SL",
+            "package_due": "Package / Due"
+        },
+        "send": "Send SMS",
+        "success": "SMS queued successfully"
+    },
+    "sms_template": {
+        "title_plural": "SMS Templates",
+        "create_title": "Add SMS Template",
+        "edit_title": "Edit SMS Template",
+        "delete_confirmation": "Are you sure you want to delete this SMS template?",
+        "name": {
+            "label": "Template Name",
+            "placeholder": "Enter template name",
+            "errors": {
+                "required": "Template name is required",
+                "invalid": "Template name must be a string",
+                "min": "Template name must be at least 2 characters"
+            }
+        },
+        "template_type": {
+            "label": "Template Type",
+            "placeholder": "Select template type",
+            "errors": {
+                "required": "Template type is required",
+                "invalid": "Template type is invalid"
+            },
+            "options": {
+                "welcome": "Welcome",
+                "invoice_due": "Invoice Due",
+                "invoice_due_reseller": "Invoice Due Reseller",
+                "payment_received": "Payment Received",
+                "wallet_payment": "Wallet Payment",
+                "client_activated": "Client Activated",
+                "client_deactivated": "Client Deactivated",
+                "invoice_due_reminder": "Invoice Due Reminder",
+                "custom": "Custom"
+            }
+        },
+        "message": {
+            "label": "Message",
+            "placeholder": "Enter SMS message",
+            "errors": {
+                "required": "Message is required",
+                "invalid": "Message must be a string"
+            }
+        },
+        "tokens": {
+            "title": "Template Variables",
+            "description": "Click any variable to insert it into the message."
+        }
+    },
     "payment": {
         "title_plural": "Payments",
         "create_title": "Add Bill",
@@ -1492,6 +1586,358 @@
         "description": {
             "label": "Description",
             "placeholder": "Enter description"
+        }
+    },
+    "product": {
+        "title_plural": "Products",
+        "create_title": "Add Product",
+        "edit_title": "Edit Product",
+        "delete_confirmation": "Are you sure you want to delete this product?",
+        "sl": "SL",
+        "stock_in": {
+            "label": "Stock In"
+        },
+        "stock_out": {
+            "label": "Stock Out"
+        },
+        "remaining": {
+            "label": "Remaining"
+        },
+        "name": {
+            "label": "Product Name",
+            "placeholder": "Enter product name",
+            "errors": {
+                "required": "Name is required",
+                "invalid": "Name must be a string",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "has_serial": {
+            "label": "Has Serial",
+            "placeholder": "Select serial option",
+            "errors": {
+                "required": "Serial option is required",
+                "invalid": "Serial option is invalid"
+            }
+        },
+        "vat": {
+            "label": "VAT (%)",
+            "placeholder": "Enter VAT percentage",
+            "errors": {
+                "invalid": "VAT must be a valid number",
+                "min": "VAT cannot be negative"
+            }
+        },
+        "unit_type": {
+            "label": "Unit Type",
+            "placeholder": "Select unit type",
+            "errors": {
+                "required": "Unit type is required"
+            }
+        },
+        "product_category": {
+            "label": "Product Category",
+            "placeholder": "Select product category",
+            "errors": {
+                "required": "Product category is required"
+            }
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Enter product description"
+        }
+    },
+    "product_in": {
+        "title": "Product In",
+        "create_title": "Create Product In",
+        "success_message": "Product in created successfully",
+        "purchase_by": {
+            "label": "Purchased By",
+            "placeholder": "Select purchaser"
+        },
+        "purchase_date": {
+            "label": "Purchase Date",
+            "placeholder": "Select purchase date"
+        },
+        "voucher": {
+            "label": "Voucher",
+            "placeholder": "Enter voucher"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "expense": {
+            "title": "Expense",
+            "expense_type": {
+                "label": "Expense Type",
+                "placeholder": "Select expense type"
+            },
+            "vendor": {
+                "label": "Vendor",
+                "placeholder": "Select vendor"
+            },
+            "fund": {
+                "label": "Fund",
+                "placeholder": "Select fund"
+            },
+            "amount": {
+                "label": "Amount",
+                "placeholder": "Auto calculated amount"
+            },
+            "expense_note": {
+                "label": "Expense Note",
+                "placeholder": "Enter expense note"
+            }
+        },
+        "lines": {
+            "title": "Product Lines",
+            "add": "Add line",
+            "remove": "Remove line",
+            "item": "Line {{index}}"
+        },
+        "line": {
+            "product": {
+                "label": "Product",
+                "placeholder": "Select product"
+            },
+            "brand": {
+                "label": "Brand",
+                "placeholder": "Enter brand"
+            },
+            "status": {
+                "label": "Status",
+                "placeholder": "Select status"
+            },
+            "quantity": {
+                "label": "Quantity",
+                "placeholder": "Enter quantity"
+            },
+            "unit_price": {
+                "label": "Unit Price",
+                "placeholder": "Enter unit price"
+            },
+            "unit_sell_price": {
+                "label": "Unit Sell Price",
+                "placeholder": "Enter unit sell price"
+            },
+            "vat": {
+                "label": "VAT (%)",
+                "placeholder": "Enter VAT"
+            },
+            "total": {
+                "label": "Total"
+            },
+            "serial": {
+                "title": "Serial Numbers",
+                "label": "Serial {{index}}",
+                "placeholder": "Enter serial {{index}}"
+            },
+            "fiber": {
+                "fiber_id": {
+                    "label": "Fiber ID",
+                    "placeholder": "Enter fiber ID"
+                },
+                "meter_start": {
+                    "label": "Fiber Meter Start",
+                    "placeholder": "Enter meter start"
+                },
+                "meter_end": {
+                    "label": "Fiber Meter End",
+                    "placeholder": "Enter meter end"
+                }
+            }
+        },
+        "status": {
+            "new": "New",
+            "old": "Old",
+            "replace": "Replace"
+        },
+        "totals": {
+            "title": "Summary",
+            "total_quantity": "Total Quantity",
+            "total_amount": "Total Amount"
+        },
+        "errors": {
+            "purchase_by_required": "Purchaser is required",
+            "product_required": "Product is required",
+            "product_min": "At least one product line is required",
+            "quantity_min": "Quantity must be at least 0",
+            "unit_price_min": "Unit price must be at least 0",
+            "vat_min": "VAT cannot be negative",
+            "serial_required": "All serial numbers are required",
+            "serial_count": "Serial count must match quantity",
+            "expense_type_required": "Expense type is required"
+        }
+    },
+    "product_out": {
+        "title": "Product Out",
+        "create_title": "Create Product Out",
+        "success_message": "Product out created successfully",
+        "out_date": {
+            "label": "Out Date",
+            "placeholder": "Select out date"
+        },
+        "received_by": {
+            "label": "Received By",
+            "placeholder": "Select receiver"
+        },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client"
+        },
+        "create_invoice": {
+            "label": "Create Invoice"
+        },
+        "note": {
+            "label": "Note",
+            "placeholder": "Enter note"
+        },
+        "lines": {
+            "title": "Product Lines",
+            "add": "Add line",
+            "remove": "Remove line",
+            "item": "Line {{index}}"
+        },
+        "line": {
+            "product": {
+                "label": "Product",
+                "placeholder": "Select product"
+            },
+            "product_in": {
+                "label": "Product In",
+                "placeholder": "Select source stock"
+            },
+            "quantity": {
+                "label": "Quantity",
+                "placeholder": "Enter quantity"
+            },
+            "unit_price": {
+                "label": "Unit Price",
+                "placeholder": "Enter unit price"
+            },
+            "vat": {
+                "label": "VAT (%)",
+                "placeholder": "Enter VAT"
+            },
+            "discount": {
+                "label": "Discount",
+                "placeholder": "Enter discount"
+            },
+            "total": {
+                "label": "Total"
+            }
+        },
+        "serial": {
+            "search_placeholder": "Search serial",
+            "selected_count": "{{count}} selected",
+            "empty_state": "No serial found"
+        },
+        "totals": {
+            "title": "Summary",
+            "total_quantity": "Total Quantity",
+            "sub_total": "Sub Total",
+            "discount": "Discount",
+            "total_amount": "Total Amount"
+        },
+        "errors": {
+            "received_by_required": "Receiver is required",
+            "product_required": "Product is required",
+            "product_in_required": "Product in source is required",
+            "product_min": "At least one product line is required",
+            "quantity_min": "Quantity must be at least 0",
+            "unit_price_min": "Unit price must be at least 0",
+            "vat_min": "VAT cannot be negative",
+            "discount_min": "Discount cannot be negative",
+            "serial_required": "At least one serial must be selected",
+            "serial_count": "Selected serial count must match quantity"
+        }
+    },
+    "product_serial": {
+        "title": "Serial Details",
+        "columns": {
+            "serial": "Serial",
+            "status": "Status",
+            "purchase_date": "Purchase Date",
+            "out_date": "Out Date"
+        },
+        "status": {
+            "in_stock": "IN-STOCK",
+            "out": "OUT"
+        }
+    },
+    "product_movement": {
+        "in_details_title": "Product In Details",
+        "out_details_title": "Product Out Details",
+        "summary": {
+            "total_price": "Total Price",
+            "total_quantity": "Total Quantity"
+        },
+        "columns": {
+            "sl": "SL",
+            "product": "Product",
+            "status": "Status",
+            "date_and_by": "Date & By",
+            "purchase_date": "Purchase Date",
+            "out_date": "Out Date",
+            "purchase_by": "Purchased By",
+            "received_by": "Received By",
+            "vendor": "Vendor",
+            "quantity": "Quantity",
+            "remaining": "Remaining",
+            "unit_price": "Unit Price",
+            "total_price": "Total Price",
+            "selling_price": "Selling Price",
+            "note_serial": "Note / Serial",
+            "entry_by": "Entry By"
+        },
+        "filters": {
+            "purchase_date": "Purchase date range",
+            "out_date": "Out date range",
+            "vendor": "Filter by vendor",
+            "status": "Filter by status",
+            "entry_by": "Filter by entry by",
+            "purchase_by": "Filter by purchased by",
+            "received_by": "Filter by received by",
+            "client": "Filter by client"
+        },
+        "actions": {
+            "delete_confirmation": "Are you sure you want to delete this movement?",
+            "back_to_products": "Back to Products"
+        }
+    },
+    "product_reports": {
+        "title": "Product Reports",
+        "toggle": {
+            "in": "Product In",
+            "out": "Product Out"
+        },
+        "summary": {
+            "actual_quantity": "Actual Quantity",
+            "actual_price": "Actual Price",
+            "current_quantity": "Current Quantity",
+            "current_price": "Current Price"
+        },
+        "columns": {
+            "sl": "SL",
+            "date": "Date",
+            "status": "Status",
+            "vendor": "Vendor",
+            "quantity": "Quantity",
+            "unit_price": "Unit Price",
+            "total_price": "Total Price",
+            "serial": "Serial",
+            "note": "Note"
+        },
+        "filters": {
+            "product": "Filter by product",
+            "purchase_date": "Purchase date range",
+            "out_date": "Out date range",
+            "vendor": "Filter by vendor",
+            "status": "Filter by status",
+            "entry_by": "Filter by entry by",
+            "purchase_by": "Filter by purchased by",
+            "received_by": "Filter by received by"
         }
     },
     "expense_type": {
@@ -2193,6 +2639,70 @@
             "status": "Status"
         }
     },
+    "client_map": {
+        "title": "Client Maps",
+        "loading": "Loading client map",
+        "error": {
+            "load_failed": "Failed to load client map data"
+        },
+        "company": {
+            "label": "Company",
+            "fallback_name": "Office",
+            "address": "Address"
+        },
+        "olt": {
+            "device": "Device"
+        },
+        "client": {
+            "label": "Client",
+            "status": "Status",
+            "address": "Address",
+            "phone": "Phone"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "unknown": "Unknown"
+        },
+        "filter": {
+            "device": "Device",
+            "network": "Network",
+            "zone": "Zone",
+            "status": "Status"
+        }
+    },
+    "tj_box_map": {
+        "title": "TJ Box Maps",
+        "loading": "Loading TJ box map",
+        "office": "Office",
+        "error": {
+            "load_failed": "Failed to load TJ box map data"
+        },
+        "box": {
+            "name": "Box",
+            "status": "Status"
+        },
+        "device": {
+            "name": "Device",
+            "status": "Status"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "unknown": "Unknown"
+        },
+        "filter": {
+            "name": "Box name",
+            "address": "Box address",
+            "device": "Device",
+            "zone": "Zone",
+            "status": "Status"
+        }
+    },
+    "map_common": {
+        "tile_attribution": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+        "not_available": "N/A"
+    },
     "mikrotik_command": {
         "title_plural": "Mikrotik Commands",
         "form_title": "Run Mikrotik Command",
@@ -2229,6 +2739,35 @@
             "raw_title": "Raw Response",
             "single_value": "Value",
             "row_key": "Row {{index}}"
+        }
+    },
+    "mikrotik_package": {
+        "title_plural": "Mikrotik Packages",
+        "create_title": "Add Mikrotik Package",
+        "edit_title": "Edit Mikrotik Package",
+        "table": {
+            "sl": "SL",
+            "network": "Network",
+            "name": "Name"
+        },
+        "network": {
+            "label": "Network",
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "name": {
+            "label": "Package Name",
+            "placeholder": "Enter package name",
+            "errors": {
+                "required": "Package name is required",
+                "invalid": "Package name must be a string",
+                "min": "Package name must be at least 2 characters"
+            }
+        },
+        "messages": {
+            "delete_confirmation": "Are you sure you want to delete this Mikrotik package?"
         }
     },
     "package": {
@@ -2324,6 +2863,207 @@
             "confirm_button": "Remove Package",
             "confirmation": "Are you sure you want to remove this package from reseller?",
             "success": "Package removed from reseller successfully"
+        }
+    },
+    "import_client": {
+        "title": "Import Client",
+        "title_plural": "Import Clients",
+        "import_title": "Import Client",
+        "sync": {
+            "title": "Mikrotik Sync",
+            "button": "Sync",
+            "network": {
+                "label": "Network",
+                "placeholder": "Select network",
+                "errors": {
+                    "required": "Network is required"
+                }
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "name": "Name",
+            "service": "Service",
+            "password": "Password",
+            "profile": "Profile",
+            "disabled": "Disabled",
+            "route": "Route",
+            "ipv6_routes": "IPv6 Route",
+            "sync_status": "Sync Status"
+        },
+        "filters": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Search by client name"
+            },
+            "service": {
+                "label": "Service",
+                "placeholder": "Search by service"
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Search by password"
+            },
+            "profile": {
+                "label": "Profile",
+                "placeholder": "Search by profile"
+            },
+            "disabled": {
+                "label": "Disabled",
+                "placeholder": "Select disabled status",
+                "options": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            "syncd_status": {
+                "label": "Sync Status",
+                "placeholder": "Select sync status",
+                "options": {
+                    "imported": "Imported",
+                    "not_imported": "Not Imported"
+                }
+            }
+        },
+        "actions": {
+            "import": "Import"
+        },
+        "messages": {
+            "sync_success": "Mikrotik sync completed successfully",
+            "import_success": "Client imported successfully",
+            "delete_confirmation": "Are you sure you want to delete this synced client?"
+        },
+        "mikrotik_profile": {
+            "label": "Mikrotik Profile",
+            "placeholder": "Enter Mikrotik profile"
+        },
+        "network_id": {
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "package_id": {
+            "errors": {
+                "required": "Package is required"
+            }
+        },
+        "payment_term": {
+            "errors": {
+                "required": "Payment term is required"
+            }
+        }
+    },
+    "re_sync": {
+        "title": "Re-Sync",
+        "title_plural": "Re-Sync Clients",
+        "sync": {
+            "network": {
+                "label": "Network",
+                "placeholder": "Select network",
+                "errors": {
+                    "required": "Network is required"
+                }
+            },
+            "actions": {
+                "load": "Load",
+                "all_sync": "All Sync"
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "reseller": "Reseller",
+            "client_in_mikrotik": "Client In Mikrotik",
+            "client_in_app": "Client In App",
+            "mikrotik_profile": "Mikrotik Profile",
+            "app_profile": "App Profile",
+            "client_status_mikrotik": "Mikrotik Status",
+            "client_status_app": "App Status"
+        },
+        "filters": {
+            "client_in_app": {
+                "placeholder": "Search client in app"
+            },
+            "mikrotik_profile": {
+                "placeholder": "Search Mikrotik profile"
+            },
+            "app_profile": {
+                "placeholder": "Search app profile"
+            },
+            "client_status_mikrotik": {
+                "placeholder": "Select Mikrotik status",
+                "options": {
+                    "active": "Active",
+                    "inactive": "Inactive"
+                }
+            },
+            "client": {
+                "placeholder": "Select client source",
+                "options": {
+                    "mikrotik": "Client in Mikrotik",
+                    "app": "Client in App"
+                }
+            },
+            "mikrotik_match": {
+                "placeholder": "Select match status",
+                "options": {
+                    "match": "Match",
+                    "not_match": "Not Match"
+                }
+            }
+        },
+        "summary": {
+            "empty": "No summary available",
+            "total_clients": "Client",
+            "match": "Match",
+            "not_match": "Not Match"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "actions": {
+            "individual_sync": "Individual Sync"
+        },
+        "messages": {
+            "load_success": "Client list loaded successfully",
+            "all_sync_success": "All clients synced successfully",
+            "individual_sync_success": "Client synced successfully",
+            "delete_confirmation": "Are you sure you want to delete this re-sync row?"
+        }
+    },
+    "dashboard": {
+        "cards": {
+            "total_clients": "Total Clients",
+            "new_clients": "New Clients",
+            "total_resellers": "Total Reseller",
+            "total_invoice": "Total Invoice"
+        },
+        "metrics": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "paid": "Paid",
+            "due": "Due"
+        },
+        "filters": {
+            "date": {
+                "label": "Date Filter",
+                "all": "All",
+                "this_month": "This Month",
+                "last_month": "Last Month",
+                "this_week": "This Week",
+                "last_week": "Last Week",
+                "last_15_days": "Last 15 Days",
+                "today": "Today",
+                "this_year": "This Year",
+                "last_year": "Last Year"
+            },
+            "year": {
+                "label": "Year"
+            }
+        },
+        "graph": {
+            "title": "Invoice and Expense Overview",
+            "empty": "No graph data available"
         }
     },
     "menu": {
@@ -2523,7 +3263,334 @@
             }
         },
         "settings": {
-            "title": "Settings"
+            "title": "Settings",
+            "general": {
+                "title": "General"
+            },
+            "sms": {
+                "title": "SMS"
+            },
+            "voice_call": {
+                "title": "Voice Call"
+            },
+            "map": {
+                "title": "Map"
+            },
+            "payments": {
+                "title": "Payments"
+            },
+            "telegram": {
+                "title": "Telegram"
+            }
         }
+    },
+    "settings": {
+        "actions": {
+            "edit": "Edit"
+        },
+        "messages": {
+            "updated": "Setting updated successfully"
+        },
+        "common": {
+            "not_set": "Not set"
+        },
+        "sections": {
+            "general": {
+                "title": "General Settings",
+                "description": "Manage invoice defaults and account-level behavior."
+            },
+            "sms": {
+                "title": "SMS Settings",
+                "description": "Control SMS notifications, reminders, and channels."
+            },
+            "voice_call": {
+                "title": "Voice Call Settings",
+                "description": "Configure voice call API credentials and campaign setup."
+            },
+            "map": {
+                "title": "Map Settings",
+                "description": "Configure map API and default coordinates."
+            },
+            "payments": {
+                "title": "Payment Settings",
+                "description": "Manage bKash integration credentials and endpoints."
+            },
+            "telegram": {
+                "title": "Telegram Settings",
+                "description": "Configure Telegram token and event notifications."
+            }
+        },
+        "options": {
+            "reminder_channel_sms": "SMS",
+            "reminder_channel_voice": "Voice Call",
+            "schedule_07": "07:00 AM",
+            "schedule_08": "08:00 AM",
+            "schedule_09": "09:00 AM",
+            "schedule_10": "10:00 AM",
+            "schedule_11": "11:00 AM",
+            "schedule_12": "12:00 PM",
+            "schedule_13": "01:00 PM",
+            "schedule_14": "02:00 PM",
+            "schedule_15": "03:00 PM",
+            "schedule_16": "04:00 PM",
+            "schedule_17": "05:00 PM",
+            "schedule_18": "06:00 PM",
+            "schedule_19": "07:00 PM",
+            "schedule_20": "08:00 PM",
+            "reminder_day_1": "1 Day before deadline",
+            "reminder_day_2": "2 Days before deadline",
+            "reminder_day_3": "3 Days before deadline",
+            "reminder_day_4": "4 Days before deadline",
+            "reminder_day_5": "5 Days before deadline",
+            "reminder_day_6": "6 Days before deadline",
+            "reminder_day_7": "7 Days before deadline",
+            "reminder_day_8": "8 Days before deadline",
+            "reminder_day_9": "9 Days before deadline",
+            "reminder_day_10": "10 Days before deadline",
+            "reminder_day_11": "11 Days before deadline",
+            "reminder_day_12": "12 Days before deadline",
+            "reminder_day_13": "13 Days before deadline",
+            "reminder_day_14": "14 Days before deadline",
+            "reminder_day_15": "15 Days before deadline"
+        },
+        "fields": {
+            "invoice_due_reminder_voice_campaign_name": {
+                "label": "Voice Campaign Name",
+                "placeholder": "Enter voice campaign name"
+            },
+            "voice_call_api": {
+                "label": "Voice Call API URL",
+                "placeholder": "Enter voice call API URL"
+            },
+            "voice_call_api_key": {
+                "label": "Voice Call API Key",
+                "placeholder": "Enter voice call API key"
+            },
+            "voice_call_campaign_id": {
+                "label": "Voice Call Campaign ID",
+                "placeholder": "Enter voice call campaign ID"
+            },
+            "gmap_api": {
+                "label": "Google Map API Key",
+                "placeholder": "Enter Google Map API key"
+            },
+            "lat": {
+                "label": "Default Latitude",
+                "placeholder": "Enter default latitude"
+            },
+            "lon": {
+                "label": "Default Longitude",
+                "placeholder": "Enter default longitude"
+            },
+            "invoice_prefix": {
+                "label": "Invoice Prefix",
+                "placeholder": "Enter invoice prefix"
+            },
+            "bkash_username": {
+                "label": "bKash Username",
+                "placeholder": "Enter bKash username"
+            },
+            "bkash_password": {
+                "label": "bKash Password",
+                "placeholder": "Enter bKash password"
+            },
+            "bkash_app_key": {
+                "label": "bKash App Key",
+                "placeholder": "Enter bKash app key"
+            },
+            "bkash_app_secret": {
+                "label": "bKash App Secret",
+                "placeholder": "Enter bKash app secret"
+            },
+            "bkash_token_url": {
+                "label": "bKash Token URL",
+                "placeholder": "Enter bKash token URL"
+            },
+            "bkash_create_url": {
+                "label": "bKash Create URL",
+                "placeholder": "Enter bKash create URL"
+            },
+            "bkash_execute_url": {
+                "label": "bKash Execute URL",
+                "placeholder": "Enter bKash execute URL"
+            },
+            "bkash_refresh_token_url": {
+                "label": "bKash Refresh Token URL",
+                "placeholder": "Enter bKash refresh token URL"
+            },
+            "bkash_search_transaction_url": {
+                "label": "bKash Search Transaction URL",
+                "placeholder": "Enter bKash search transaction URL"
+            },
+            "telegram_bot_token": {
+                "label": "Telegram Bot Token",
+                "placeholder": "Enter Telegram bot token"
+            },
+            "telegram_channel_id": {
+                "label": "Telegram Channel ID",
+                "placeholder": "Enter Telegram channel ID"
+            },
+            "sms_auto_invoice_schedule": {
+                "label": "Auto Invoice SMS Schedule",
+                "placeholder": "Select SMS schedule time"
+            },
+            "invoice_due_reminder_channel": {
+                "label": "Invoice Due Reminder Channel",
+                "placeholder": "Select reminder channel"
+            },
+            "sms_invoice_reminder_before_day": {
+                "label": "Invoice Reminder Before Day",
+                "placeholder": "Select reminder day"
+            },
+            "sms_after_client_create": {
+                "label": "SMS After Client Create"
+            },
+            "sms_after_client_activated": {
+                "label": "SMS After Client Activated"
+            },
+            "sms_after_client_deactivated": {
+                "label": "SMS After Client Deactivated"
+            },
+            "sms_after_payment_received": {
+                "label": "SMS After Payment Received"
+            },
+            "sms_after_manual_invoice_generate": {
+                "label": "SMS After Manual Invoice Generate"
+            },
+            "sms_after_auto_invoice_generate_client": {
+                "label": "SMS After Client Auto Invoice Generate"
+            },
+            "sms_after_auto_invoice_paid_from_wallet": {
+                "label": "SMS After Invoice Paid From Wallet"
+            },
+            "sms_after_auto_invoice_generate_reseller": {
+                "label": "SMS After Reseller Auto Invoice Generate"
+            },
+            "sms_auto_invoice_due_reminder": {
+                "label": "SMS Auto Invoice Due Reminder"
+            },
+            "voice_call_invoice_reminder": {
+                "label": "Voice Call Invoice Reminder"
+            },
+            "auto_inactive_client_invoice_due": {
+                "label": "Auto Inactive Client Invoice Due"
+            },
+            "telegram_client_create": {
+                "label": "Telegram Client Create"
+            },
+            "telegram_client_update": {
+                "label": "Telegram Client Update"
+            },
+            "telegram_client_delete": {
+                "label": "Telegram Client Delete"
+            },
+            "telegram_fund_transaction_create": {
+                "label": "Telegram Fund Transaction Create"
+            },
+            "telegram_fund_transaction_delete": {
+                "label": "Telegram Fund Transaction Delete"
+            },
+            "telegram_invoice_create": {
+                "label": "Telegram Invoice Create"
+            },
+            "telegram_invoice_auto_generate": {
+                "label": "Telegram Invoice Auto Generate"
+            },
+            "telegram_invoice_update": {
+                "label": "Telegram Invoice Update"
+            },
+            "telegram_invoice_paid": {
+                "label": "Telegram Invoice Paid"
+            },
+            "telegram_invoice_delete": {
+                "label": "Telegram Invoice Delete"
+            },
+            "telegram_expense_create": {
+                "label": "Telegram Expense Create"
+            },
+            "telegram_expense_update": {
+                "label": "Telegram Expense Update"
+            },
+            "telegram_expense_delete": {
+                "label": "Telegram Expense Delete"
+            },
+            "telegram_ticket_create": {
+                "label": "Telegram Ticket Create"
+            },
+            "telegram_ticket_update": {
+                "label": "Telegram Ticket Update"
+            },
+            "telegram_ticket_delete": {
+                "label": "Telegram Ticket Delete"
+            },
+            "telegram_network_create": {
+                "label": "Telegram Network Create"
+            },
+            "telegram_network_update": {
+                "label": "Telegram Network Update"
+            },
+            "telegram_network_delete": {
+                "label": "Telegram Network Delete"
+            },
+            "telegram_package_create": {
+                "label": "Telegram Package Create"
+            },
+            "telegram_package_update": {
+                "label": "Telegram Package Update"
+            },
+            "telegram_package_delete": {
+                "label": "Telegram Package Delete"
+            },
+            "telegram_vendor_create": {
+                "label": "Telegram Vendor Create"
+            },
+            "telegram_vendor_update": {
+                "label": "Telegram Vendor Update"
+            },
+            "telegram_vendor_delete": {
+                "label": "Telegram Vendor Delete"
+            }
+        }
+    },
+    "theme_customizer": {
+        "title": "Theme Customizer",
+        "description": "Customize your theme.",
+        "aria_label": "Customize theme",
+        "color": {
+            "label": "Color",
+            "green": "Green",
+            "red": "Red",
+            "zinc": "Zinc",
+            "rose": "Rose",
+            "orange": "Orange",
+            "blue": "Blue"
+        },
+        "radius": {
+            "label": "Radius"
+        },
+        "density": {
+            "label": "Density",
+            "compact": "Compact",
+            "comfortable": "Comfortable",
+            "large": "Large"
+        },
+        "mode": {
+            "label": "Mode",
+            "light": "Light",
+            "dark": "Dark"
+        },
+        "mobile_drawer": {
+            "label": "Mobile Drawer",
+            "left": "Left",
+            "right": "Right"
+        }
+    },
+    "user_profile": {
+        "aria_label": "User menu",
+        "menu": "User menu",
+        "dashboard": "Dashboard",
+        "company_profile": "Company Profile",
+        "settings": "Settings",
+        "sign_out": "Sign out"
     }
 }

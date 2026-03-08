@@ -1,6 +1,21 @@
 import { z } from "zod";
 import type { ApiResponse } from "@/hooks/use-api-query";
-import { toNumber } from "@/lib/helper/helper";
+import { calculateInvoiceTotals, toNumber } from "@/lib/helper/helper";
+
+const toApiDateString = (value: Date | string | null | undefined): string | null => {
+    if (!value) return null;
+    if (value instanceof Date) {
+        const year = value.getFullYear();
+        const month = String(value.getMonth() + 1).padStart(2, "0");
+        const day = String(value.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
+    if (typeof value === "string") {
+        if (value.includes("T")) return value.slice(0, 10);
+        return value;
+    }
+    return null;
+};
 
 const toDate = (value: unknown): Date | undefined => {
     if (!value) return undefined;
@@ -112,7 +127,7 @@ export const InvoiceLineSchema = z.object({
     uuid: z.string().nullable().optional(),
 }).passthrough();
 
-export const InvoiceFormSchema = z.object({
+const InvoiceFormSchemaBase = z.object({
     create_date: createDateValueSchema("invoice.create_date.errors.required"),
     due_date: createDateValueSchema("invoice.due_date.errors.required"),
     invoice_type_id: z.coerce.number({
@@ -133,23 +148,62 @@ export const InvoiceFormSchema = z.object({
     lines: z.array(InvoiceLineSchema).min(1, {
         message: "invoice.lines.errors.required",
     }),
-}).superRefine((values, ctx) => {
-    if ((values.status === "paid" || values.status === "partial_paid") && !values.fund_id) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["fund_id"],
-            message: "invoice.fund.errors.required",
-        });
-    }
-
-    if (values.status === "partial_paid" && toNumber(values.partial_amount) <= 0) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["partial_amount"],
-            message: "invoice.partial_amount.errors.min",
-        });
-    }
 });
+
+export const InvoiceFormSchema = InvoiceFormSchemaBase
+    .superRefine((values, ctx) => {
+        if ((values.status === "paid" || values.status === "partial_paid") && !values.fund_id) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["fund_id"],
+                message: "invoice.fund.errors.required",
+            });
+        }
+
+        if (values.status === "partial_paid" && toNumber(values.partial_amount) <= 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["partial_amount"],
+                message: "invoice.partial_amount.errors.min",
+            });
+        }
+    })
+    .transform((values) => {
+        const normalizedLines = values.lines.map((line, index) => ({
+            description: line.description.trim(),
+            amount: toNumber(line.amount),
+            quantity: Math.max(1, Math.trunc(toNumber(line.quantity) || 1)),
+            discount: toNumber(line.discount),
+            order: line.order ?? index,
+            uuid: line.uuid ?? null,
+        }));
+        const totals = calculateInvoiceTotals(normalizedLines, values.discount);
+
+        return {
+            create_date: toApiDateString(values.create_date) ?? "",
+            due_date: toApiDateString(values.due_date) ?? "",
+            invoice_type_id: toNumber(values.invoice_type_id),
+            client_id: toNumber(values.client_id),
+            discount: toNumber(values.discount),
+            status: values.status,
+            partial_amount:
+                values.status === "partial_paid" ? toNumber(values.partial_amount) : 0,
+            fund_id:
+                values.status === "paid" || values.status === "partial_paid"
+                    ? (toNumber(values.fund_id) || null)
+                    : null,
+            payment_date:
+                values.status === "paid" || values.status === "partial_paid"
+                    ? toApiDateString(values.payment_date)
+                    : null,
+            confirmation_sms: toNumber(values.confirmation_sms),
+            note: values.note ?? "",
+            lines: normalizedLines,
+            total_amount: totals.sub_total,
+            line_total_discount: totals.line_total_discount,
+            after_discount_amount: totals.after_discount_amount,
+        };
+    });
 
 const InvoicePayloadLineSchema = z.object({
     description: z.string().trim().min(1),
@@ -243,6 +297,7 @@ export const InvoiceDiscountSchema = z.object({
 });
 
 export type InvoiceLine = z.infer<typeof InvoiceLineSchema>;
+export type InvoiceFormState = z.infer<typeof InvoiceFormSchemaBase>;
 export type InvoiceFormInput = z.input<typeof InvoiceFormSchema>;
 export type InvoiceFormValues = z.output<typeof InvoiceFormSchema>;
 export type InvoicePayload = z.output<typeof InvoicePayloadSchema>;
