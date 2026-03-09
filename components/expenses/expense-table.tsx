@@ -9,7 +9,15 @@ import ExpenseForm from "./expense-form";
 import { ExpenseRow } from "./expense-type";
 import ExpenseFilterSchema from "./expense-filter-schema";
 
-const ExpenseTable: FC = () => {
+type ExpenseTableProps = {
+    toolbarTitleKey?: string;
+    showCreateAction?: boolean;
+};
+
+const ExpenseTable: FC<ExpenseTableProps> = ({
+    toolbarTitleKey = "expense.title_plural",
+    showCreateAction = true,
+}) => {
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -35,8 +43,8 @@ const ExpenseTable: FC = () => {
     };
 
     const toolbarTitle = pagination?.total
-        ? `${t("expense.title_plural")} (${pagination.total})`
-        : t("expense.title_plural");
+        ? `${t(toolbarTitleKey)} (${pagination.total})`
+        : t(toolbarTitleKey);
 
     return (
         <DataTable
@@ -49,7 +57,7 @@ const ExpenseTable: FC = () => {
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={ExpenseForm}
+            form={showCreateAction ? ExpenseForm : undefined}
             toolbarTitle={toolbarTitle}
             queryKey="expenses"
         />

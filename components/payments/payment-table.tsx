@@ -1,24 +1,30 @@
 "use client";
 
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { formatMoney } from "@/lib/helper/helper";
-import { Plus } from "lucide-react";
-import Link from "next/link";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
-import { useSidebar } from "@/components/ui/sidebar";
-import ActionButton from "../action-button";
+import { CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PaymentColumns } from "./payment-column";
 import { PaymentRow } from "./payment-type";
 
-type PaymentApiResponse = PaginatedApiResponse<PaymentRow> & {
-    data?: {
-        reports?: { amount?: number | string };
-    };
+type PaymentListPayload = {
+    data: PaymentRow[];
+    pagination: Pagination;
+    reports?: { amount?: number | string } | null;
+};
+type PaymentApiResponse = ApiResponse<PaymentListPayload>;
+
+type PaymentTableProps = {
+    toolbarTitleKey?: string;
 };
 
-const PaymentTable: FC = () => {
+const PaymentTable: FC<PaymentTableProps> = ({
+    toolbarTitleKey = "payment.title_plural",
+}) => {
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -37,26 +43,41 @@ const PaymentTable: FC = () => {
 
     const payments = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
-    //const totalPaid = data?.data?.reports?.amount;
+    const totalPaid = data?.data?.reports?.amount;
     const { t } = useTranslation();
 
     const toolbarTitle = pagination?.total
-        ? `${t("payment.title_plural")} (${pagination.total})`
-        : t("payment.title_plural");
+        ? `${t(toolbarTitleKey)} (${pagination.total})`
+        : t(toolbarTitleKey);
 
     return (
-        <DataTable
-            data={payments}
-            setFilter={setFilter}
-            columns={PaymentColumns}
-            toggleColumns
-            pagination={pagination}
-            setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            queryKey="payments"
-            toolbarTitle={toolbarTitle}
-        />
+        <div className="space-y-4">
+            <Card>
+                <CardContent className="p-4">
+                    <p className="text-sm text-muted-foreground">{t("payment.total_paid")}</p>
+                    {isLoading ? (
+                        <Skeleton className="h-8 w-32 mt-2" />
+                    ) : (
+                        <p className="text-2xl font-semibold text-primary">
+                            ৳{formatMoney(totalPaid)}
+                        </p>
+                    )}
+                </CardContent>
+            </Card>
+
+            <DataTable
+                data={payments}
+                setFilter={setFilter}
+                columns={PaymentColumns}
+                toggleColumns
+                pagination={pagination}
+                setCurrentPage={setCurrentPage}
+                isLoading={isLoading}
+                isFetching={isFetching}
+                queryKey="payments"
+                toolbarTitle={toolbarTitle}
+            />
+        </div>
     );
 };
 

@@ -46,6 +46,8 @@ const ClientHistory: FC<Props> = ({ clientId }) => {
             url: `clients-history/${clientId}`,
         });
 
+    console.log(data);
+
     const histories = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
 

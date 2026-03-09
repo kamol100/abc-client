@@ -21,6 +21,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/": "menu.dashboard.title",
   "/dashboard": "menu.dashboard.title",
   "/clients": "menu.clients.title",
+  "/reports": "menu.reports.title",
   "/reports/income-expense": "menu.reports.income_expense.title",
   "/reports/funds": "menu.reports.funds.title",
   "/reports/invoices": "menu.reports.invoices.title",

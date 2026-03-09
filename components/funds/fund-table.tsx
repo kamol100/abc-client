@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { formatMoney } from "@/lib/helper/helper";
 import { DataTable } from "@/components/data-table/data-table";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
+import Card from "@/components/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import FundFilterSchema from "./fund-filter-schema";
 import FundForm from "./fund-form";
@@ -19,7 +20,15 @@ type FundListPayload = {
   reports?: { total_balance?: number | string } | null;
 };
 
-const FundTable: FC = () => {
+type FundTableProps = {
+  toolbarTitleKey?: string;
+  showCreateAction?: boolean;
+};
+
+const FundTable: FC<FundTableProps> = ({
+  toolbarTitleKey = "fund.title_plural",
+  showCreateAction = true,
+}) => {
   const { t } = useTranslation();
   const [filterValue, setFilter] = useState<string | null>(null);
 
@@ -46,8 +55,8 @@ const FundTable: FC = () => {
     0;
 
   const toolbarTitle = pagination?.total
-    ? `${t("fund.title_plural")} (${pagination.total})`
-    : t("fund.title_plural");
+    ? `${t(toolbarTitleKey)} (${pagination.total})`
+    : t(toolbarTitleKey);
 
   const toolbarOptions = useMemo(
     () => ({
@@ -85,7 +94,7 @@ const FundTable: FC = () => {
         isLoading={isLoading}
         isFetching={isFetching}
         queryKey="funds"
-        form={FundForm}
+        form={showCreateAction ? FundForm : undefined}
         toolbarTitle={toolbarTitle}
       />
     </div>

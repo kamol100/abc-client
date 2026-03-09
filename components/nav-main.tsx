@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import type { NavMenuItem } from "@/hooks/use-menu-items";
+import { useTranslation } from "react-i18next";
 
 function isPathActive(pathname: string, url: string): boolean {
   if (url === "/") return pathname === "/";
@@ -31,10 +32,10 @@ function isPathActive(pathname: string, url: string): boolean {
 export function NavMain({ items }: { items: NavMenuItem[] }) {
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
-
+  const { t } = useTranslation();
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Menu</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("common.menu")}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) =>
           item.items ? (
@@ -66,19 +67,18 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                         onClick={() => setOpenMobile(false)}
                         className={cn(
                           isPathActive(pathname, subItem.url) &&
-                            "bg-primary text-primary-foreground rounded-md"
+                          "bg-primary text-primary-foreground rounded-md"
                         )}
                       >
-                        <SidebarMenuSubButton asChild>
+                        <SidebarMenuSubButton
+                          asChild
+                          className={cn(
+                            isPathActive(pathname, subItem.url) &&
+                            "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                          )}
+                        >
                           <Link href={subItem.url}>
-                            <span
-                              className={cn(
-                                isPathActive(pathname, subItem.url) &&
-                                  "text-primary-foreground"
-                              )}
-                            >
-                              {subItem.title}
-                            </span>
+                            <span className="truncate">{subItem.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
@@ -95,7 +95,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                 onClick={() => setOpenMobile(false)}
                 className={cn(
                   isPathActive(pathname, item.url) &&
-                    "bg-primary text-primary-foreground font-medium"
+                  "bg-primary text-primary-foreground font-medium"
                 )}
               >
                 <Link href={item.url}>
