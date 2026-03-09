@@ -65,7 +65,6 @@ export default function useApiQuery<TData = unknown>({
     ...(pagination ? [{ page: currentPage }] : []),
     ...(params ? [params] : []),
   ];
-
   const query = useQuery<TData, Error>({
     queryKey: fullQueryKey,
     queryFn: async (): Promise<TData> => {

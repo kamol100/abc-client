@@ -20,18 +20,20 @@ type PaymentApiResponse = ApiResponse<PaymentListPayload>;
 
 type PaymentTableProps = {
     toolbarTitleKey?: string;
+    filterValue?: string;
 };
 
 const PaymentTable: FC<PaymentTableProps> = ({
     toolbarTitleKey = "payment.title_plural",
+    filterValue,
 }) => {
-    const [filterValue, setFilter] = useState<string | null>(null);
+    const [filter, setFilter] = useState<string | null>(filterValue ?? null);
     const params = useMemo(
         () =>
-            filterValue
-                ? Object.fromEntries(new URLSearchParams(filterValue))
+            filter
+                ? Object.fromEntries(new URLSearchParams(filter))
                 : undefined,
-        [filterValue],
+        [filter],
     );
 
     const { data, isLoading, isFetching, setCurrentPage } =

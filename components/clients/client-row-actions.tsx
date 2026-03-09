@@ -70,10 +70,10 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     };
 
     return (
-        <>
+        <div className="w-full">
             <DataTableRowActions row={row}>
                 {hasPermission("clients.show") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/clients/view/${client.id}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             {t("client.actions.view")}
@@ -81,7 +81,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
                 {hasPermission("clients.edit") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/clients/edit/${client.id}`}>
                             <Edit className="mr-2 h-4 w-4" />
                             {t("client.actions.edit")}
@@ -97,7 +97,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     {t("client.actions.change_package")}
                 </DropdownMenuItem>
                 {hasPermission("invoices.access") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/invoices/client/${client.id}`}>
                             <FileText className="mr-2 h-4 w-4" />
                             {t("client.actions.invoice_history")}
@@ -111,7 +111,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
                 {hasPermission("sms-send.access") && client.phone && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/sms-send?phone=${client.phone}`}>
                             <MessageSquare className="mr-2 h-4 w-4" />
                             {t("client.actions.sms")}
@@ -119,7 +119,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
                 {hasPermission("tickets.create") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/tickets?client_id=${client.id}`}>
                             <Ticket className="mr-2 h-4 w-4" />
                             {t("client.actions.tickets")}
@@ -130,7 +130,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 {hasPermission("clients.delete") && (
                     <DropdownMenuItem
                         onSelect={() => setDeleteOpen(true)}
-                        className="text-destructive focus:text-destructive"
+                        className="text-destructive cursor-pointer focus:text-destructive"
                     >
                         <Trash2 className="mr-2 h-4 w-4" />
                         {t("client.actions.delete")}
@@ -209,7 +209,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </label>
                 </div>
             </DialogWrapper>
-        </>
+        </div>
     );
 };
 

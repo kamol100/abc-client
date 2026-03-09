@@ -11,21 +11,22 @@ import TicketFilterSchema from "./ticket-filter-schema";
 
 interface TicketTableProps {
     clientId?: string;
+    filterValue?: string;
 }
 
-const TicketTable: FC<TicketTableProps> = ({ clientId }) => {
+const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue }) => {
     const { t } = useTranslation();
-    const [filterValue, setFilter] = useState<string | null>(null);
+    const [filter, setFilter] = useState<string | null>(filterValue ?? null);
 
     const params = useMemo(() => {
         const base: Record<string, unknown> = {};
         if (clientId) base.client_id = clientId;
-        if (filterValue) {
+        if (filter) {
             const parsed = Object.fromEntries(new URLSearchParams(filterValue));
             Object.assign(base, parsed);
         }
         return Object.keys(base).length > 0 ? base : undefined;
-    }, [clientId, filterValue]);
+    }, [clientId, filter]);
 
     const { data, isLoading, isFetching, setCurrentPage } =
         useApiQuery<PaginatedApiResponse<TicketRow>>({
@@ -33,7 +34,6 @@ const TicketTable: FC<TicketTableProps> = ({ clientId }) => {
             url: "tickets",
             params,
         });
-
     const tickets = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
 

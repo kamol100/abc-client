@@ -128,3 +128,12 @@ export const ClientSpeedSchema = z.object({
 });
 
 export type ClientSpeed = z.infer<typeof ClientSpeedSchema>;
+
+/** Router/session info from API (e.g. client detail with router_info). */
+export interface RouterInfo {
+    ip_address?: string | null;
+    user_mac_address?: string | null;
+    uptime?: string | null;
+    last_logout?: string | null;
+    is_online?: boolean;
+}
