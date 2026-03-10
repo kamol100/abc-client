@@ -43,20 +43,14 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
             <div className="flex items-center justify-end gap-2 mr-2">
                 {canEdit && (
                     <ActionButton
-                        action="edit"
-                        size="icon"
                         variant="outline"
-                        className="h-8 w-8"
-                        title={t("invoice.actions.edit")}
                         url={`/invoices/edit/${invoice.id}`}
                     />
                 )}
 
                 {canPay && (
                     <ActionButton
-                        size="icon"
                         variant="outline"
-                        className="h-8 w-8"
                         onClick={() => setPayOpen(true)}
                         aria-label={t("invoice.actions.pay")}
                     >
@@ -66,9 +60,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
 
                 {canPrint && (
                     <ActionButton
-                        size="icon"
                         variant="outline"
-                        className="h-8 w-8"
                         onClick={() => setPrintOpen(true)}
                         aria-label={t("invoice.actions.print")}
                     >

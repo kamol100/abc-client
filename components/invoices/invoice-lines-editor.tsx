@@ -35,19 +35,18 @@ const InvoiceLinesEditor: FC = () => {
                 <h3 className="text-sm font-semibold">{t("invoice.lines.title")}</h3>
                 <ActionButton
                     action="add"
-                    variant="outline"
-                    size="sm"
+                    variant="default"
                     onClick={() => append(defaultLineItem)}
                     title={t("invoice.lines.add")}
                 />
             </div>
 
             <div className="hidden md:grid grid-cols-12 gap-3 rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
-                <span className="col-span-5">{t("invoice.line.description.label")}</span>
+                <span className="col-span-4">{t("invoice.line.description.label")}</span>
                 <span className="col-span-2">{t("invoice.line.amount.label")}</span>
                 <span className="col-span-1">{t("invoice.line.quantity.label")}</span>
                 <span className="col-span-2">{t("invoice.line.discount.label")}</span>
-                <span className="col-span-1 text-right">{t("invoice.line.total.label")}</span>
+                <span className="col-span-2 text-right">{t("invoice.line.total.label")}</span>
                 <span className="col-span-1 text-right">{t("common.actions")}</span>
             </div>
 
@@ -72,8 +71,8 @@ const InvoiceLinesEditor: FC = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                            <div className="md:col-span-5">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:items-start">
+                            <div className="md:col-span-4">
                                 <InputField
                                     name={`lines.${index}.description`}
                                     label={{
@@ -81,6 +80,7 @@ const InvoiceLinesEditor: FC = () => {
                                         mandatory: true,
                                     }}
                                     placeholder="invoice.line.description.placeholder"
+                                    reserveErrorSpace={true}
                                 />
                             </div>
                             <div className="md:col-span-2">
@@ -92,6 +92,8 @@ const InvoiceLinesEditor: FC = () => {
                                         mandatory: true,
                                     }}
                                     placeholder="invoice.line.amount.placeholder"
+                                    errorMessageEllipsis={true}
+                                    reserveErrorSpace={true}
                                 />
                             </div>
                             <div className="md:col-span-1">
@@ -103,6 +105,8 @@ const InvoiceLinesEditor: FC = () => {
                                         mandatory: true,
                                     }}
                                     placeholder="invoice.line.quantity.placeholder"
+                                    errorMessageEllipsis={true}
+                                    reserveErrorSpace={true}
                                 />
                             </div>
                             <div className="md:col-span-2">
@@ -111,28 +115,35 @@ const InvoiceLinesEditor: FC = () => {
                                     name={`lines.${index}.discount`}
                                     label={{ labelText: "invoice.line.discount.label" }}
                                     placeholder="invoice.line.discount.placeholder"
+                                    errorMessageEllipsis={true}
+                                    reserveErrorSpace={true}
                                 />
                             </div>
-                            <div className="md:col-span-1">
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-sm font-medium text-foreground">
-                                        {t("invoice.line.total.label")}
-                                    </p>
-                                    <div className="flex h-10 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold">
-                                        ৳{formatMoney(lineTotal)}
-                                    </div>
+                            <div className="md:col-span-2">
+                                <InputField
+                                    type="number"
+                                    name={`lines.${index}.total`}
+                                    label={{ labelText: "invoice.line.total.label" }}
+                                    placeholder="invoice.line.total.placeholder"
+                                    readOnly={true}
+                                    defaultValue={formatMoney(lineTotal)}
+                                    reserveErrorSpace={true}
+                                />
+                            </div>
+                            <div className="md:col-span-1 flex flex-col gap-1 min-h-full">
+                                <div className="hidden md:block min-h-6 shrink-0" aria-hidden />
+                                <div className="hidden md:flex shrink-0">
+                                    <ActionButton
+                                        action="delete"
+                                        variant="outline"
+                                        onClick={() => remove(index)}
+                                        disabled={fields.length <= 1}
+                                        aria-label={t("invoice.lines.remove")}
+                                    />
                                 </div>
+                                <div className="min-h-[1.25rem] hidden md:block shrink-0" aria-hidden />
                             </div>
-                            <div className="hidden md:flex md:col-span-1 items-end justify-end">
-                                <ActionButton
-                                    action="delete"
-                                    variant="outline"
-                                    size="icon"
-                                    onClick={() => remove(index)}
-                                    disabled={fields.length <= 1}
-                                    aria-label={t("invoice.lines.remove")}
-                                />
-                            </div>
+
                         </div>
                     </div>
                 );

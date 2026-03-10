@@ -14,6 +14,12 @@ type InputFieldProps = {
     className?: string;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
+    readOnly?: boolean;
+    disabled?: boolean;
+    defaultValue?: string | number;
+    errorMessageEllipsis?: boolean;
+    /** Reserve space for error message so layout (e.g. grid rows) does not shift when validation errors appear */
+    reserveErrorSpace?: boolean;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -24,6 +30,11 @@ const InputField: React.FC<InputFieldProps> = ({
     className,
     control: controlProp,
     rules,
+    readOnly = false,
+    disabled = false,
+    defaultValue,
+    errorMessageEllipsis = false,
+    reserveErrorSpace = false,
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
@@ -35,20 +46,23 @@ const InputField: React.FC<InputFieldProps> = ({
                 name={name}
                 control={control}
                 rules={rules}
+                defaultValue={defaultValue}
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Input
                         id={name}
                         placeholder={placeholder ? t(placeholder as string) : ""}
                         type={type}
-                        value={value ?? ""}
+                        value={readOnly ? defaultValue ?? value ?? "" : value ?? ""}
                         onChange={onChange}
                         onBlur={onBlur}
                         ref={ref}
+                        readOnly={readOnly}
+                        disabled={disabled}
                         className={cn(error && "border-destructive dark:border-destructive")}
                     />
                 )}
             />
-            <FieldError name={name} />
+            <FieldError name={name} errorMessageEllipsis={errorMessageEllipsis} reserveSpace={reserveErrorSpace} />
         </div>
     );
 };

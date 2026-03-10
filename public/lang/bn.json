@@ -1176,10 +1176,10 @@
                 }
             },
             "quantity": {
-                "label": "পরিমাণ (Qty)",
-                "placeholder": "Qty দিন",
+                "label": "পরিমাণ",
+                "placeholder": "পরিমাণ দিন",
                 "errors": {
-                    "min": "Qty কমপক্ষে ১ হতে হবে"
+                    "min": "পরিমাণ কমপক্ষে ১ হতে হবে"
                 }
             },
             "discount": {
@@ -1190,7 +1190,7 @@
                 }
             },
             "total": {
-                "label": "লাইন টোটাল"
+                "label": "টোটাল"
             }
         },
         "actions": {
