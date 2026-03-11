@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import InputField from "../form/input-field";
 import { Login, LoginSchema } from "../schema/login";
+import { useEffect, useState } from "react";
 
 export function LoginForm({
   className,
@@ -19,14 +20,20 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const [host, setHost] = useState("");
   const loginFrom = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
   });
+  useEffect(() => {
+    const domain = window?.location?.hostname;
+    setHost(domain);
+  });
   const { mutate: login, isPending } = useMutation({
+
     mutationFn: async (data: any) => {
       const result: any = await authenticate(
-        Object.assign(data, { host: "localhost" })
+        Object.assign(data, { host })
       );
       if (result?.error) {
         toast({
@@ -106,10 +113,6 @@ export function LoginForm({
           </FormProvider>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }
