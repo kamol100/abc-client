@@ -5,12 +5,6 @@ const nextConfig: NextConfig = {
   /* config options here */
   devIndicators: false,
   reactStrictMode: true,
-  serverRuntimeConfig: {
-    API_URL: process.env.NEXTAPI_URL,
-  },
-  publicRuntimeConfig: {
-    PUBLIC_API_URL: process.env.NEXTAPI_URL,
-  },
   logging: {
     fetches: {
       fullUrl: true
