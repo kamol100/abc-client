@@ -60,19 +60,19 @@ const BadgeWrapper = React.forwardRef<HTMLDivElement, BadgeProps>(
     ref
   ) => {
     const badgeContent = (
-      <Badge
-        ref={ref}
-        variant={variant}
-        className={cn(
-          status && enhancedBadgeVariants({ status, size }),
-          "inline-flex items-center gap-1.5",
-          className
-        )}
-        {...props}
-      >
-        {icon && <span className="inline-flex shrink-0">{icon}</span>}
-        {children}
-      </Badge>
+      <div ref={ref} className="inline-flex items-center gap-1.5">
+        <Badge
+          variant={variant}
+          className={cn(
+            status && enhancedBadgeVariants({ status, size }),
+            className
+          )}
+          {...props}
+        >
+          {icon && <span className="inline-flex shrink-0">{icon}</span>}
+          {children}
+        </Badge>
+      </div>
     );
 
     if (!tooltip) {

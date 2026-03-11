@@ -29,7 +29,7 @@ const TicketReplyForm: FC<TicketReplyFormProps> = ({ ticketId }) => {
         defaultValues: { message: "" },
     });
 
-    const { mutateAsync, isPending } = useApiMutation({
+    const { mutateAsync, isPending } = useApiMutation<unknown, TicketReplyInput>({
         url: `tickets/${ticketId}/messages`,
         method: "POST",
         invalidateKeys: "ticket-messages",

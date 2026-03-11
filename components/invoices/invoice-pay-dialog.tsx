@@ -18,6 +18,7 @@ import { formatMoney, parseApiError, toNumber } from "@/lib/helper/helper";
 import {
     InvoiceDetail,
     InvoiceDetailSchema,
+    InvoicePayFormInput,
     InvoicePayInput,
     InvoicePaySchema,
 } from "./invoice-type";
@@ -43,7 +44,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
     onOpenChange,
 }) => {
     const { t } = useTranslation();
-    const form = useForm<InvoicePayInput>({
+    const form = useForm<InvoicePayFormInput>({
         resolver: zodResolver(InvoicePaySchema),
         defaultValues: {
             fund_id: 0,
@@ -157,7 +158,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
                         action="save"
                         variant="default"
                         size="default"
-                        onClick={handleSubmit(onSubmit)}
+                        onClick={handleSubmit((data) => onSubmit(data as InvoicePayInput))}
                         loading={loading}
                         title={t("invoice.pay.submit")}
                     />

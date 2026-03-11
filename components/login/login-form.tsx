@@ -69,9 +69,8 @@ export function LoginForm({
                   <div className="grid gap-2">
                     <InputField
                       name="username"
-                      label="Username"
+                      label={{ labelText: "Username" }}
                       placeholder="Username"
-                      validationSchema={LoginSchema.shape.username}
                     />
                   </div>
                   <div className="grid gap-2">
@@ -88,7 +87,6 @@ export function LoginForm({
                       type="password"
                       name="password"
                       placeholder="Password"
-                      validationSchema={LoginSchema.shape.password}
                     />
                   </div>
                   <Button type="submit" className="w-full">

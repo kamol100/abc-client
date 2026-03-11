@@ -34,7 +34,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
         defaultValues: { package_id: client.package_id ?? null },
     });
 
-    const { mutateAsync, isPending } = useApiMutation({
+    const { mutateAsync, isPending } = useApiMutation<unknown, ChangePackageForm>({
         url: `/clients-change-package/${client.id}`,
         method: "PUT",
         invalidateKeys: "clients",

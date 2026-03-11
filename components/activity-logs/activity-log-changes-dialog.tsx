@@ -46,7 +46,7 @@ export function ActivityLogChangesDialog({
                     <div className="rounded-md border border-green-800/50 bg-green-950/20 p-3 dark:border-green-700 dark:bg-green-950/30">
                         {hasOld ? (
                             <>
-                                {Object.entries(changes.old).map(([key, value], idx) => (
+                                {Object.entries(changes.old ?? {}).map(([key, value], idx) => (
                                     <p key={idx} className="mt-2 text-left first:mt-0">
                                         {formatKey(key)}: {transformValue(value)}
                                     </p>
@@ -67,7 +67,7 @@ export function ActivityLogChangesDialog({
                     <div className="rounded-md border border-red-800/50 bg-red-950/20 p-3 dark:border-red-700 dark:bg-red-950/30">
                         {hasAttributes ? (
                             <>
-                                {Object.entries(changes.attributes).map(([key, value], idx) => (
+                                {Object.entries(changes.attributes ?? {}).map(([key, value], idx) => (
                                     <p key={idx} className="mt-2 text-left first:mt-0">
                                         {formatKey(key)}: {transformValue(value)}
                                     </p>

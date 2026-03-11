@@ -302,6 +302,7 @@ export type InvoiceFormInput = z.input<typeof InvoiceFormSchema>;
 export type InvoiceFormValues = z.output<typeof InvoiceFormSchema>;
 export type InvoicePayload = z.output<typeof InvoicePayloadSchema>;
 export type InvoiceDetail = z.infer<typeof InvoiceDetailSchema>;
+export type InvoicePayFormInput = z.input<typeof InvoicePaySchema>;
 export type InvoicePayInput = z.infer<typeof InvoicePaySchema>;
 export type InvoiceDiscountInput = z.infer<typeof InvoiceDiscountSchema>;
 
@@ -317,10 +318,11 @@ export const BulkInvoicePaySchema = z.object({
     invoice_ids: z.array(z.string()).min(1),
     fund_id: z.coerce.number().min(1),
     payment_date: z.string().min(1),
-    status: z.enum(["paid", "partial"]).default("paid"),
-    partial_amount: z.coerce.number().default(0),
-    confirmation_sms: z.coerce.number().default(0),
+    status: z.enum(["paid", "partial"]),
+    partial_amount: z.coerce.number().min(0),
+    confirmation_sms: z.coerce.number().int().min(0).max(1),
     note: z.string().nullable().optional(),
 });
 
+export type BulkInvoicePayFormInput = z.input<typeof BulkInvoicePaySchema>;
 export type BulkInvoicePayInput = z.infer<typeof BulkInvoicePaySchema>;

@@ -15,7 +15,7 @@ import InputField from "@/components/form/input-field";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { formatMoney } from "@/lib/helper/helper";
 import { InvoiceDueItem } from "@/components/clients/client-type";
-import { BulkInvoicePayInput, BulkInvoicePaySchema } from "./invoice-type";
+import { BulkInvoicePayFormInput, BulkInvoicePayInput, BulkInvoicePaySchema } from "./invoice-type";
 import { BadgePercent, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
 import { usePermissions } from "@/context/app-provider";
@@ -42,7 +42,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
     const [selectedIds, setSelectedIds] = useState<string[]>(allUuids);
 
-    const form = useForm<BulkInvoicePayInput>({
+    const form = useForm<BulkInvoicePayFormInput>({
         resolver: zodResolver(BulkInvoicePaySchema),
         defaultValues: {
             invoice_ids: allUuids,
@@ -147,7 +147,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                             action="save"
                             variant="default"
                             size="default"
-                            onClick={handleSubmit(onSubmit)}
+                            onClick={handleSubmit((data) => onSubmit(data as BulkInvoicePayInput))}
                             loading={loading}
                             title={t("invoice.bulk_pay.submit")}
                         />

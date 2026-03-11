@@ -51,21 +51,27 @@ export const WalletRechargeFormSchema = z.object({
     .gt(0, { message: "wallet.amount.errors.min" }),
 });
 
-export const ClientWalletRechargeFormSchema = z.object({
-  client_id: z.coerce
-    .number({
-      required_error: "wallet.client.errors.required",
-      invalid_type_error: "wallet.client.errors.required",
-    })
-    .min(1, { message: "wallet.client.errors.required" }),
-  balance: z.coerce
-    .number({
-      required_error: "wallet.amount.errors.required",
-      invalid_type_error: "wallet.amount.errors.required",
-    })
-    .gt(0, { message: "wallet.amount.errors.min" }),
-  note: z.string().nullable().optional(),
-});
+export const ClientWalletRechargeFormSchema = z
+  .object({
+    client_id: z.coerce
+      .number({
+        required_error: "wallet.client.errors.required",
+        invalid_type_error: "wallet.client.errors.required",
+      })
+      .min(1, { message: "wallet.client.errors.required" })
+      .optional(),
+    balance: z.coerce
+      .number({
+        required_error: "wallet.amount.errors.required",
+        invalid_type_error: "wallet.amount.errors.required",
+      })
+      .gt(0, { message: "wallet.amount.errors.min" }),
+    note: z.string().nullable().optional(),
+  })
+  .refine(
+    (data) => data.client_id != null && data.client_id >= 1,
+    { message: "wallet.client.errors.required", path: ["client_id"] }
+  );
 
 export type WalletRow = z.infer<typeof WalletRowSchema>;
 export type ClientWalletRow = z.infer<typeof ClientWalletRowSchema>;
