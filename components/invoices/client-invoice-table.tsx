@@ -21,8 +21,8 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
     const params = useMemo(() => {
         const queryParams = filterValue
             ? (Object.fromEntries(
-                  new URLSearchParams(filterValue),
-              ) as Record<string, string>)
+                new URLSearchParams(filterValue),
+            ) as Record<string, string>)
             : {};
         if (queryParams.track_id && !queryParams.trackID) {
             queryParams.trackID = queryParams.track_id;

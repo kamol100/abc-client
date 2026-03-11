@@ -45,6 +45,7 @@ export default async function RootLayout({
       data-theme-color={themeColor}
       data-density={density}
       data-radius={radius}
+      translate="no"
     >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
