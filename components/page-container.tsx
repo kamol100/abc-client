@@ -27,7 +27,7 @@ export default function PageContainer({
         className={cn(
           "flex flex-col flex-1 min-h-0 p-4",
           isFixed
-            ? "overflow-hidden [&>*]:flex [&>*]:flex-col [&>*]:flex-1 [&>*]:min-h-0"
+            ? "overflow-hidden [&>*]:flex [&>*]:flex-col [&>*]:flex-1 [&>*]:min-h-0 [&>*]:overflow-auto"
             : "overflow-auto"
         )}
       >
