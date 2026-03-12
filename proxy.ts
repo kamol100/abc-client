@@ -1,7 +1,7 @@
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
-const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+const authSecret = process.env.NEXTAUTH_SECRET;
 const loginRoute = "/login";
 
 export async function proxy(req: NextRequest) {
