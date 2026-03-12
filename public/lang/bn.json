@@ -181,7 +181,7 @@
     },
     "login": {
         "title": "লগইন",
-        "continue_with_test": "টেস্ট দিয়ে চালিয়ে যান",
+        "continue_with_credentials": "ক্রেডেনশিয়াল দিয়ে চালিয়ে যান",
         "username": {
             "label": "ইউজারনেম",
             "placeholder": "ইউজারনেম",

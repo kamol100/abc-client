@@ -181,7 +181,7 @@
     },
     "login": {
         "title": "Login",
-        "continue_with_test": "continue with test",
+        "continue_with_credentials": "continue with credentials",
         "username": {
             "label": "Username",
             "placeholder": "Username",
