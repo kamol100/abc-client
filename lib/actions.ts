@@ -15,11 +15,14 @@ export async function authenticate(
             switch (error.type) {
                 case 'CredentialsSignin':
                     return {
-                        message: "Invalid credentials.",
+                        message: "login.errors.invalid_credentials",
                         error: true
                     };
                 default:
-                    return 'Something went wrong.';
+                    return {
+                        message: "login.errors.something_went_wrong",
+                        error: true
+                    };
             }
         }
         throw error;

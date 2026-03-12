@@ -9,15 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import InputField from "../form/input-field";
 import { Login, LoginSchema } from "../schema/login";
-import { useEffect, useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [host, setHost] = useState("");
@@ -37,7 +39,7 @@ export function LoginForm({
       );
       if (result?.error) {
         toast({
-          title: result?.message,
+          title: t(result?.message ?? "common.request_failed"),
           variant: "destructive",
         });
       }
@@ -61,7 +63,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Login</CardTitle>
+          <CardTitle className="text-xl">{t("login.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <FormProvider {...loginFrom}>
@@ -69,42 +71,42 @@ export function LoginForm({
               <div className="grid gap-6">
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                   <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                    continue with test
+                    {t("login.continue_with_test")}
                   </span>
                 </div>
                 <div className="grid gap-6">
                   <div className="grid gap-2">
                     <InputField
                       name="username"
-                      label={{ labelText: "Username" }}
-                      placeholder="Username"
+                      label={{ labelText: "login.username.label" }}
+                      placeholder="login.username.placeholder"
                     />
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t("login.password.label")}</Label>
                       <a
                         href="#"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
                       >
-                        Forgot your password?
+                        {t("login.forgot_password")}
                       </a>
                     </div>
                     <InputField
                       type="password"
                       name="password"
-                      placeholder="Password"
+                      placeholder="login.password.placeholder"
                     />
                   </div>
                   <Button type="submit" className="w-full">
                     {isPending && <Loader2 className="animate-spin" />}
-                    Login
+                    {t("login.submit")}
                   </Button>
                 </div>
                 <div className="text-center text-sm">
-                  Don&apos;t have an account?{" "}
+                  {t("login.no_account")}{" "}
                   <a href="#" className="underline underline-offset-4">
-                    Sign up
+                    {t("login.sign_up")}
                   </a>
                 </div>
               </div>

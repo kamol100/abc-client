@@ -179,6 +179,32 @@
         "type": "টাইপ",
         "expensetype_name": "খরচের ধরন"
     },
+    "login": {
+        "title": "লগইন",
+        "continue_with_test": "টেস্ট দিয়ে চালিয়ে যান",
+        "username": {
+            "label": "ইউজারনেম",
+            "placeholder": "ইউজারনেম",
+            "errors": {
+                "required": "ইউজারনেম আবশ্যক"
+            }
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "পাসওয়ার্ড",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক"
+            }
+        },
+        "forgot_password": "পাসওয়ার্ড ভুলে গেছেন?",
+        "submit": "লগইন",
+        "no_account": "অ্যাকাউন্ট নেই?",
+        "sign_up": "সাইন আপ",
+        "errors": {
+            "invalid_credentials": "ক্রেডেনশিয়াল ভুল।",
+            "something_went_wrong": "কিছু ভুল হয়েছে।"
+        }
+    },
     "user": {
         "name": {
             "label": "নাম",
