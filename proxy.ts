@@ -16,11 +16,12 @@
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
+const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
 export default async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const token = await getToken({ req, secret: authSecret });
     // console.log(token, "md")
     // Define the routes that require authentication
     const protectedRoutes = ["/", "/dashboard"];

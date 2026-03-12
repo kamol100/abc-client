@@ -1,5 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 
+const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+
 export const authConfig = {
     trustHost: true,
     pages: {
@@ -39,6 +41,6 @@ export const authConfig = {
     session: {
         strategy: "jwt"
     },
-    secret: process.env.AUTH_SECRET,
+    secret: authSecret,
     providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;
