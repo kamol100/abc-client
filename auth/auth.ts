@@ -6,7 +6,10 @@ const BASE_URL = `${process.env.NEXTAPI_URL}/api/v1`;
 
 async function getLogin(credentials: any): Promise<any> {
     try {
-        const result = await fetch(`${BASE_URL}/auth/login`, {
+        const hostQuery = credentials?.host
+            ? `?host=${encodeURIComponent(credentials.host)}`
+            : "";
+        const result = await fetch(`${BASE_URL}/auth/login${hostQuery}`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",
@@ -35,13 +38,19 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
                 if (parsedCredentials.success) {
                     const data = await getLogin(parsedCredentials.data);
-                    if (!data?.success) {
+                    const isAuthenticated = data?.success ?? Boolean(data?.token);
+                    if (!isAuthenticated || !data?.token) {
                         return null;
                     }
                     return {
                         token: data?.token,
                         name: data?.user?.name,
                         email: data?.user?.email,
+                        reseller_id: data.user.reseller_id,
+                        logo: data.user?.company?.logo,
+                        favicon: data.user?.company?.favicon,
+                        company: data.user?.company,
+                        staff: data.user?.staff,
                     };
                 }
 

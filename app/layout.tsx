@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Total-ISP-Management",
+  title: "ISPTIK",
   description: "ISP-Management",
 };
 

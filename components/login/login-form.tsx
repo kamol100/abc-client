@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { authenticate } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -23,6 +22,7 @@ export function LoginForm({
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [host, setHost] = useState("");
+  const [isPending, setIsPending] = useState(false);
   const loginFrom = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
@@ -30,30 +30,43 @@ export function LoginForm({
   useEffect(() => {
     const domain = window?.location?.hostname;
     setHost(domain);
-  });
-  const { mutate: login, isPending } = useMutation({
+  }, []);
 
-    mutationFn: async (data: any) => {
-      const result: any = await authenticate(
-        Object.assign(data, { host })
-      );
+  const onSubmit = async (data: Login) => {
+    setIsPending(true);
+    try {
+      const result = await signIn("credentials", {
+        ...data,
+        host,
+        redirect: false,
+        callbackUrl,
+      });
+
       if (result?.error) {
         toast({
-          title: t(result?.message ?? "common.request_failed"),
+          title: t("login.errors.invalid_credentials"),
           variant: "destructive",
         });
+        return;
       }
-    },
-    onSuccess: (data: any) => {
-      //
-    },
-    onError: (error: any) => {
-      //
-    },
-  });
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    login(data);
+
+      if (result?.ok) {
+        window.location.href = result.url ?? callbackUrl;
+        return;
+      }
+
+      toast({
+        title: t("login.errors.something_went_wrong"),
+        variant: "destructive",
+      });
+    } catch {
+      toast({
+        title: t("login.errors.something_went_wrong"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
   };
   const onError = (data: any) => {
     console.log(data);
@@ -110,7 +123,6 @@ export function LoginForm({
                   </a>
                 </div>
               </div>
-              <input type="hidden" name="redirectTo" value={callbackUrl} />
             </form>
           </FormProvider>
         </CardContent>
