@@ -17,23 +17,22 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+const loginRoute = "/login";
 
 export default async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
     const token = await getToken({ req, secret: authSecret });
-    // console.log(token, "md")
-    // Define the routes that require authentication
-    const protectedRoutes = ["/", "/dashboard"];
+    const isLoginRoute = pathname === loginRoute;
+    const isAuthenticated = Boolean((token as any)?.token);
 
-    const isProtectedRoute = protectedRoutes.includes(pathname);
-
-    if (isProtectedRoute && !token) {
-        const loginUrl = new URL('/login', req.url);
+    if (!isLoginRoute && !isAuthenticated) {
+        const loginUrl = new URL(loginRoute, req.url);
+        loginUrl.searchParams.set("callbackUrl", pathname);
         return NextResponse.redirect(loginUrl);
     }
 
-    if (token && pathname === '/login') {
+    if (isLoginRoute && isAuthenticated) {
         const dashboardUrl = new URL('/dashboard', req.url);
         return NextResponse.redirect(dashboardUrl);
     }
@@ -43,10 +42,6 @@ export default async function proxy(req: NextRequest) {
 
 export const config = {
     matcher: [
-        "/",
-        "/dashboard",
-        "/users",
-        "/login",
         '/((?!api|_next/static|_next/image|.*\\.png$).*)'
     ],
 };

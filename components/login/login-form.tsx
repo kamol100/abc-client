@@ -35,11 +35,15 @@ export function LoginForm({
   const onSubmit = async (data: Login) => {
     setIsPending(true);
     try {
+      const redirectTo =
+        callbackUrl.startsWith("/") && !callbackUrl.startsWith("/login")
+          ? callbackUrl
+          : "/dashboard";
       const result = await signIn("credentials", {
         ...data,
         host,
         redirect: false,
-        callbackUrl,
+        redirectTo,
       });
 
       if (result?.error) {
@@ -51,7 +55,7 @@ export function LoginForm({
       }
 
       if (result?.ok) {
-        window.location.href = result.url ?? callbackUrl;
+        window.location.href = redirectTo;
         return;
       }
 
