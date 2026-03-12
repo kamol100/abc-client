@@ -49,6 +49,8 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         reseller_id: data.user.reseller_id,
                         logo: data.user?.company?.logo,
                         favicon: data.user?.company?.favicon,
+                        company: data.user?.company,
+                        staff: data.user?.staff,
                     };
                 }
 
