@@ -68,17 +68,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const menuItems = useMenuItems();
 
   return (
-    <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
-      <SidebarHeader>
-        <TeamSwitcher teams={sidebarConfig.teams} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={menuItems} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+    <>
+      <style>{`
+        [data-mobile="true"][data-sidebar="sidebar"] {
+          top: 4rem !important;
+        }
+      `}</style>
+      <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
+        <SidebarHeader>
+          <TeamSwitcher teams={sidebarConfig.teams} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavMain items={menuItems} />
+        </SidebarContent>
+        <SidebarFooter>
+          <NavUser />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+    </>
   );
 }
