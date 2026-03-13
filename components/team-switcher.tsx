@@ -44,9 +44,9 @@ export function TeamSwitcher({
               <div>
                 <Logo />
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <div className="truncate text-xs font-semibold">
-                  {settings?.company != null ? String(settings.company) : ""}
-                </div>
+                  <div className="truncate text-xs font-medium text-muted-foreground">
+                    {settings?.company != null ? String(settings.company) : ""}
+                  </div>
                 </div>
               </div>
               <ChevronsUpDown className="ml-auto" />

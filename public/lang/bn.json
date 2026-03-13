@@ -542,14 +542,14 @@
         },
         "zone": {
             "label": "জোন",
-            "placeholder": "জোন নির্বাচন করুন",
+            "placeholder": "জোন",
             "errors": {
                 "required": "জোন আবশ্যক"
             }
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক নির্বাচন করুন"
+            "placeholder": "নেটওয়ার্ক"
         },
         "location": {
             "label": "লোকেশন",
@@ -880,23 +880,23 @@
         },
         "zone": {
             "label": "জোন",
-            "placeholder": "জোন নির্বাচন করুন"
+            "placeholder": "জোন"
         },
         "sub_zone": {
             "label": "সাব জোন",
-            "placeholder": "সাব জোন নির্বাচন করুন"
+            "placeholder": "সাব জোন"
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক নির্বাচন করুন"
+            "placeholder": "নেটওয়ার্ক"
         },
         "package": {
             "label": "নেটওয়ার্ক প্যাকেজ",
-            "placeholder": "নেটওয়ার্ক প্যাকেজ নির্বাচন করুন"
+            "placeholder": "নেটওয়ার্ক প্যাকেজ"
         },
         "device": {
             "label": "ডিভাইস",
-            "placeholder": "ডিভাইস নির্বাচন করুন"
+            "placeholder": "ডিভাইস"
         },
         "latitude": {
             "label": "অক্ষাংশ",
@@ -931,8 +931,8 @@
             "label": "আইপি"
         },
         "status": {
-            "label": "অবস্থা",
-            "placeholder": "অবস্থা নির্বাচন করুন"
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস"
         },
         "email": {
             "label": "ইমেইল",

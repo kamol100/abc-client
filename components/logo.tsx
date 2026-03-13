@@ -8,12 +8,12 @@ import { useSession } from "next-auth/react";
 const DEFAULT_LOGO = "/static/logo.png";
 
 const DefaultLogoImage = () => (
-  <div className="max-w-[80px] h-8 overflow-hidden relative">
+  <div className="max-w-[80px] h-6 overflow-hidden relative">
     <Image
       src={DEFAULT_LOGO}
       alt="logo"
       width={80}
-      height={32}
+      height={24}
       className="h-8 w-auto object-contain"
     />
   </div>
