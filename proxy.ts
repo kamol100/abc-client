@@ -10,7 +10,7 @@ export async function proxy(req: NextRequest) {
     const token = await getToken({ req, secret: authSecret });
     const isLoginRoute = pathname === loginRoute;
     const isAuthenticated = Boolean((token as any)?.token);
-    console.log(isLoginRoute, isAuthenticated, token);
+    console.log(isLoginRoute, isAuthenticated, token, 'token');
     if (!isLoginRoute && !isAuthenticated) {
         const loginUrl = new URL(loginRoute, req.url);
         loginUrl.searchParams.set("callbackUrl", pathname);
