@@ -7,10 +7,18 @@ const loginRoute = "/login";
 export async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    const token = await getToken({ req, secret: authSecret });
+    // In production (HTTPS), the session cookie is __Secure-authjs.session-token;
+    // getToken must be told to look for it via secureCookie: true.
+    const isSecure =
+        process.env.NODE_ENV === 'production' ||
+        req.headers.get('x-forwarded-proto') === 'https';
+    const token = await getToken({
+        req,
+        secret: authSecret,
+        secureCookie: isSecure,
+    });
     const isLoginRoute = pathname === loginRoute;
     const isAuthenticated = Boolean((token as any)?.token);
-    console.log(isLoginRoute, isAuthenticated, token, req, authSecret, 'token');
     if (!isLoginRoute && !isAuthenticated) {
         const loginUrl = new URL(loginRoute, req.url);
         loginUrl.searchParams.set("callbackUrl", pathname);
