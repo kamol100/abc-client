@@ -26,9 +26,9 @@ export function LanguageSwitcher() {
           value={lang}
           variant="outline"
           className={cn(
-            "min-w-9 rounded-[var(--radius)] border px-2.5 text-xs font-medium transition-colors",
+            " rounded-[var(--radius)]  px-2.5 text-xs font-medium transition-colors",
             language === lang &&
-              "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
+            "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-primary-foreground"
           )}
           aria-label={lang === "en" ? "English" : "Bangla"}
         >
