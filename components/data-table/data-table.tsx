@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-
+import { useTranslation } from "react-i18next";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -68,6 +68,7 @@ export function DataTable<TData, TValue>({
   initialColumnVisibility,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
+  const { t } = useTranslation();
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialColumnVisibility ?? {});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -182,7 +183,7 @@ export function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {t("data_table.no_results")}
                   </TableCell>
                 </TableRow>
               )}

@@ -3,8 +3,8 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 import useInView from "@/hooks/use-in-view";
+import { Skeleton } from "@/components/ui/skeleton";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
 interface ClientOnlineStatus {
@@ -35,7 +35,11 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
     return (
         <div ref={ref} className="min-w-[130px]">
             {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                <div className="flex flex-col gap-0.5">
+                    <Skeleton className="h-4 w-28" />
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-24" />
+                </div>
             ) : (
                 <div className="flex flex-col gap-0.5">
                     <span className={cn("text-sm font-medium font-mono", inactive ? "text-destructive" : "text-foreground")}>

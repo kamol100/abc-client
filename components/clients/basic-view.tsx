@@ -22,8 +22,6 @@ type ClientDetail = ClientRow & {
 
 interface Props {
     client: ClientDetail;
-    clientId: string;
-    routerInfo?: RouterInfo | null;
 }
 
 const InfoRow: FC<{ label: string; labelWidth?: string; children: React.ReactNode }> = ({
@@ -38,7 +36,7 @@ const InfoRow: FC<{ label: string; labelWidth?: string; children: React.ReactNod
     </div>
 );
 
-const ClientBasicView: FC<Props> = ({ client, clientId, routerInfo }) => {
+const ClientBasicView: FC<Props> = ({ client }) => {
     const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
 
@@ -154,18 +152,18 @@ const ClientBasicView: FC<Props> = ({ client, clientId, routerInfo }) => {
                 </div>
                 <div className="space-y-0 px-3 py-3">
                     <InfoRow label={t("client.basic_view.up_down")}>
-                        <ClientSpeedWidget clientId={clientId} />
+                        <ClientSpeedWidget clientId={client.id.toString()} />
                     </InfoRow>
-                    <InfoRow label={t("client.ip_address.label")}>{routerInfo?.ip_address ?? "—"}</InfoRow>
+                    <InfoRow label={t("client.ip_address.label")}>{client?.router_info?.ip_address ?? "—"}</InfoRow>
                     <InfoRow label={t("client.basic_view.router_mac")}>
-                        {routerInfo?.user_mac_address ?? "—"}
+                        {client?.router_info?.user_mac_address ?? "—"}
                     </InfoRow>
-                    <InfoRow label={t("client.basic_view.uptime")}>{routerInfo?.uptime ?? "—"}</InfoRow>
+                    <InfoRow label={t("client.basic_view.uptime")}>{client?.router_info?.uptime ?? "—"}</InfoRow>
                     <InfoRow label={t("client.basic_view.last_logout")}>
-                        {routerInfo?.last_logout ?? "—"}
+                        {client?.router_info?.last_logout ?? "—"}
                     </InfoRow>
                     <InfoRow label={t("client.basic_view.is_online")}>
-                        {routerInfo?.is_online ? (
+                        {client?.router_info?.is_online ? (
                             <Badge variant="default" className="gap-1 bg-green-600 hover:bg-green-700">
                                 <Network className="h-3.5 w-3.5" />
                                 {t("client.basic_view.online")}

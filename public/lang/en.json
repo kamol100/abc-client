@@ -177,7 +177,11 @@
         "messages_count": "Messages",
         "priority": "Priority",
         "type": "Type",
-        "expensetype_name": "Expense Type"
+        "expensetype_name": "Expense Type",
+        "no_results": "No results"
+    },
+    "data_table": {
+        "no_results": "No results"
     },
     "login": {
         "title": "Login",

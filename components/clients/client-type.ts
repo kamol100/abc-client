@@ -50,6 +50,13 @@ export const ClientRowSchema = z.object({
     package_id: z.coerce.number().nullable().optional(),
     device_id: z.coerce.number().nullable().optional(),
     invoiceDue: z.array(InvoiceDueItemSchema).nullable().optional(),
+    router_info: z.object({
+        ip_address: z.string().nullable().optional(),
+        user_mac_address: z.string().nullable().optional(),
+        uptime: z.string().nullable().optional(),
+        last_logout: z.string().nullable().optional(),
+        is_online: z.boolean().nullable().optional(),
+    }).nullable().optional(),
 }).passthrough();
 
 export type ClientRow = z.infer<typeof ClientRowSchema>;

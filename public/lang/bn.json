@@ -177,7 +177,11 @@
         "messages_count": "মেসেজ",
         "priority": "অগ্রাধিকার",
         "type": "টাইপ",
-        "expensetype_name": "খরচের ধরন"
+        "expensetype_name": "খরচের ধরন",
+        "no_results": "কোনো ফলাফল পাওয়া যায়নি"
+    },
+    "data_table": {
+        "no_results": "কোনো ফলাফল পাওয়া যায়নি"
     },
     "login": {
         "title": "লগইন",

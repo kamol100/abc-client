@@ -7,33 +7,22 @@ import {
     CreditCard,
     Edit,
     FileText,
-    Loader2,
     MessageSquare,
     Package,
     Ticket,
 } from "lucide-react";
-import Link from "next/link";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
 import ActionButton from "@/components/action-button";
 import { ClientRow, RouterInfo } from "./client-type";
-import { Button } from "@/components/ui/button";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Card from "@/components/card";
 import { Badge } from "@/components/ui/badge";
-import ClientNamePhoneCell from "./client-name-phone-cell";
-import ClientZoneAddressCell from "./client-zone-address-cell";
-import ClientPackageCell from "./client-package-cell";
-import ClientBillingPaymentCell from "./client-billing-payment-cell";
-import ClientOnlineStatusCell from "./client-online-status-cell";
-import ClientSpeedWidget from "./client-speed-widget";
 import ClientHistory from "./client-history";
 import ClientBasicView from "./basic-view";
+import ClientViewSkeleton from "./client-view-skeleton";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "./client-change-package-dialog";
 import TicketTable from "../tickets/ticket-table";
 import PaymentTable from "../payments/payment-table";
-import { cn } from "@/lib/utils";
 
 interface Props {
     clientId: string;
@@ -54,17 +43,13 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const client = data?.data;
 
     if (isLoading) {
-        return (
-            <div className="flex items-center justify-center py-20">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-            </div>
-        );
+        return <ClientViewSkeleton />;
     }
 
     if (!client) return null;
 
     const isActive = client.status === 1;
-
+    console.log(client, 'client', isActive);
     return (
         <div className="space-y-6 overflow-auto pr-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -114,9 +99,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
 
             <div className="w-full">
                 <ClientBasicView
-                    client={client as ClientRow & { pppoe_password?: string | null; wallet?: { balance?: number }; package?: { name?: string; price?: number }; billing_type?: string | null; invoice_day?: string | null }}
-                    clientId={clientId}
-                    routerInfo={(client as ClientRow & { router_info?: RouterInfo }).router_info}
+                    client={client as ClientRow}
                 />
             </div>
             <div className="border-t pt-4">
