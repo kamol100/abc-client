@@ -179,7 +179,7 @@ export function CustomDrawer({
   description,
   children,
   footer,
-  size = "md",
+  size = "lg",
   side = "bottom",
   className,
   showHandle,

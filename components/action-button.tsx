@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { forwardRef, ReactNode } from "react";
 import { Button, type ButtonProps } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 const ACTION_ICONS = {
   edit: Edit,
@@ -57,7 +58,7 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
     ref
   ) => {
     const Icon = action ? ACTION_ICONS[action] : null;
-
+    const { t } = useTranslation();
     const content = children ?? (
       <>
         {loading ? (
@@ -65,7 +66,7 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
         ) : (
           icon && Icon && <Icon />
         )}
-        {title && <span className="capitalize">{title}</span>}
+        {title && <span className="capitalize">{t(title as string)}</span>}
       </>
     );
 

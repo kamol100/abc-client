@@ -19,7 +19,6 @@ import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { CustomDrawer } from "@/components/drawer";
 import { useFilterForm } from "@/hooks/use-filter-form";
-import { useTranslation } from "react-i18next";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -69,7 +68,6 @@ export function DataTableToolbar<TData>({
   const { isMobile } = useSidebar();
   const { isFixed, toggleMode } = useTableLayoutMode();
   const [showFilter, setShowFilter] = useState(false);
-  const { t } = useTranslation();
 
   const filterHook = useFilterForm({
     formSchema: toolbarOptions?.filter || [],
@@ -161,17 +159,16 @@ export function DataTableToolbar<TData>({
                     onClick={handleResetFilter}
                     variant="outline"
                     className="flex-1"
-                  >
-                    {t("common.reset")}
-                  </ActionButton>
+                    title="common.reset"
+                  />
                   <ActionButton
                     action="search"
+                    icon={true}
                     variant={isFiltered ? "default" : "outline"}
                     onClick={triggerFilterSubmit}
                     className="flex-1"
-                  >
-                    {t("common.apply_filter")}
-                  </ActionButton>
+                    title="common.apply_filter"
+                  />
                 </div>
               }
             >
