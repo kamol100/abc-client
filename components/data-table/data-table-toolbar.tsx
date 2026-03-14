@@ -162,10 +162,12 @@ export function DataTableToolbar<TData>({
                     onClick={handleResetFilter}
                     variant="outline"
                     className="flex-1"
+                    size={'default'}
                     title="common.reset"
                   />
                   <ActionButton
                     action="search"
+                    size={'default'}
                     icon={true}
                     variant={isFiltered ? "default" : "outline"}
                     onClick={() => {

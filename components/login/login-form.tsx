@@ -90,7 +90,7 @@ export function LoginForm({
         <div className="flex justify-center">
           <Logo />
         </div>
-        <Card className="min-w-[400px]">
+        <Card className="min-w-[380px]">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">&nbsp;</CardTitle>
           </CardHeader>

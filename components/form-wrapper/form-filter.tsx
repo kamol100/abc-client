@@ -1,7 +1,6 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
@@ -11,6 +10,7 @@ import InputField from "@/components/form/input-field";
 import DatePicker from "@/components/form/DatePicker";
 import { Close } from "@/components/icon";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
+import { useSidebar } from "../ui/sidebar";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
@@ -113,6 +113,7 @@ const FormFilter = ({
   formHook,
 }: FormFilterProps) => {
   const [isOpen, setIsOpen] = useState(forceOpen);
+  const { isMobile } = useSidebar();
 
   const internalHook = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
   const {
