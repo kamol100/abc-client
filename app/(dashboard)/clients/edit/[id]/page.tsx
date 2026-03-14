@@ -13,5 +13,5 @@ export const metadata: Metadata = {
 
 export default async function ClientEditPage({ params }: Props) {
     const { id } = await params;
-    return <ClientForm mode="edit" data={{ id: parseInt(id) }} />;
+    return <ClientForm mode="edit" data={{ id }} />;
 }

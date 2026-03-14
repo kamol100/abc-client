@@ -26,7 +26,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
       placeholder: "network.mikrotik_user.placeholder",
     },
     {
-      type: "password",
+      type: "text",
       name: "mikrotik_password",
       label: { labelText: "network.mikrotik_password.label" },
       placeholder: "network.mikrotik_password.placeholder",

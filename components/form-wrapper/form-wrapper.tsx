@@ -3,7 +3,7 @@
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Form } from "@/components/ui/form";
-import { Skeleton } from "@/components/ui/skeleton";
+import { FormLoader } from "@/components/loader";
 import { parseApiError } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,6 @@ import { useDialogClose } from "@/components/dialog-wrapper";
 import {
     AccordionSection,
     FormFieldConfig,
-    GRID_STYLES,
     HydratePolicy,
 } from "@/components/form-wrapper/form-builder-type";
 
@@ -53,29 +52,6 @@ function isDataComplete(
 
 function stripLeadingSlash(str: string): string {
     return str.startsWith("/") ? str.slice(1) : str;
-}
-
-// --- Form Skeleton ---
-
-function FormSkeleton({
-    grids = 1,
-    fieldCount = 4,
-}: {
-    grids?: number;
-    fieldCount?: number;
-}) {
-    return (
-        <div
-            className={`grid gap-4 m-auto ${GRID_STYLES[grids] ?? GRID_STYLES[1]} w-full`}
-        >
-            {Array.from({ length: fieldCount }).map((_, i) => (
-                <div key={i} className="space-y-2">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-10 w-full rounded-md" />
-                </div>
-            ))}
-        </div>
-    );
 }
 
 // --- Props ---
@@ -263,7 +239,7 @@ export default function FormWrapper({
     ).length;
 
     const formContent = isHydrating ? (
-        <FormSkeleton
+        <FormLoader
             grids={grids}
             fieldCount={visibleFieldCount || 4}
         />

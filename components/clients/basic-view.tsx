@@ -2,12 +2,11 @@
 
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Copy, Network, Phone } from "lucide-react";
+import { Copy, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 import Card from "@/components/card";
-import { Badge } from "@/components/ui/badge";
-import { ClientRow, RouterInfo } from "./client-type";
-import ClientSpeedWidget from "./client-speed-widget";
+import { ClientRow } from "./client-type";
+import ClientRouterInfo from "./client-router-info";
 import { formatMoney } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 
@@ -150,30 +149,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                         {t("client.basic_view.server_information")}
                     </h2>
                 </div>
-                <div className="space-y-0 px-3 py-3">
-                    <InfoRow label={t("client.basic_view.up_down")}>
-                        <ClientSpeedWidget clientId={client.id.toString()} />
-                    </InfoRow>
-                    <InfoRow label={t("client.ip_address.label")}>{client?.router_info?.ip_address ?? "—"}</InfoRow>
-                    <InfoRow label={t("client.basic_view.router_mac")}>
-                        {client?.router_info?.user_mac_address ?? "—"}
-                    </InfoRow>
-                    <InfoRow label={t("client.basic_view.uptime")}>{client?.router_info?.uptime ?? "—"}</InfoRow>
-                    <InfoRow label={t("client.basic_view.last_logout")}>
-                        {client?.router_info?.last_logout ?? "—"}
-                    </InfoRow>
-                    <InfoRow label={t("client.basic_view.is_online")}>
-                        {client?.router_info?.is_online ? (
-                            <Badge variant="default" className="gap-1 bg-green-600 hover:bg-green-700">
-                                <Network className="h-3.5 w-3.5" />
-                                {t("client.basic_view.online")}
-                            </Badge>
-                        ) : (
-                            <Badge variant="destructive">{t("client.basic_view.offline")}</Badge>
-                        )}
-                    </InfoRow>
-                    <InfoRow label={t("client.network.label")}>{client?.network?.name ?? "—"}</InfoRow>
-                </div>
+                <ClientRouterInfo client={client} />
             </Card>
         </div>
     );

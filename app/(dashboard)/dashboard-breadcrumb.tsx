@@ -87,9 +87,26 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/settings/telegram": "menu.settings.telegram.title",
 };
 
+/**
+ * Dynamic route patterns: pathname is matched against these when no exact
+ * ROUTE_TO_MENU_KEY match is found. Use for routes with [id] or other params.
+ */
+const DYNAMIC_ROUTE_PATTERNS: { pattern: RegExp; key: string }[] = [
+  { pattern: /^\/clients\/edit\/[^/]+$/, key: "client.edit_title" },
+  { pattern: /^\/resellers\/edit\/[^/]+$/, key: "reseller.edit_title" },
+  { pattern: /^\/invoices\/edit\/[^/]+$/, key: "menu.invoice.title" },
+  { pattern: /^\/staffs\/edit\/[^/]+$/, key: "menu.staffs.title" },
+  { pattern: /^\/salaries\/edit\/[^/]+$/, key: "menu.staffs.salaries.title" },
+];
+
 function getPageTitleKey(pathname: string): string {
   const normalized = pathname.replace(/\/$/, "") || "/";
-  return ROUTE_TO_MENU_KEY[normalized] ?? "menu.dashboard.title";
+  const exact = ROUTE_TO_MENU_KEY[normalized];
+  if (exact) return exact;
+  const dynamic = DYNAMIC_ROUTE_PATTERNS.find(({ pattern }) =>
+    pattern.test(normalized)
+  );
+  return dynamic?.key ?? "menu.dashboard.title";
 }
 
 function isDashboardRoute(pathname: string): boolean {
@@ -106,7 +123,6 @@ export function DashboardBreadcrumb() {
     const key = getPageTitleKey(pathname);
     return { isDashboard: isDash, pageTitleKey: key };
   }, [pathname]);
-
   const pageTitle = t(pageTitleKey);
 
   if (isDashboard) {

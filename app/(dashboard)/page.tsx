@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DashboardOverview from "@/components/dashboard/dashboard-overview";
+import DashboardOverviewClient from "@/components/dashboard/dashboard-overview-client";
 import { t } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardHomePage() {
-  return <DashboardOverview />;
+  return <DashboardOverviewClient />;
 }

@@ -10,6 +10,7 @@ import {
   PaginationItem,
 } from "../ui/pagination";
 import { useSidebar } from "../ui/sidebar";
+import ActionButton from "../action-button";
 
 interface DataTablePaginationProps<TData> {
   pagination: Pagination;
@@ -41,7 +42,7 @@ export function DataTablePagination<TData>({
           <PaginationContent>
             {/* Previous page button */}
             <PaginationItem>
-              <Button
+              <ActionButton
                 size="icon"
                 variant="outline"
                 className="disabled:pointer-events-none disabled:opacity-50"
@@ -50,7 +51,7 @@ export function DataTablePagination<TData>({
                 aria-label="Go to previous page"
               >
                 <ChevronLeftIcon aria-hidden="true" />
-              </Button>
+              </ActionButton>
             </PaginationItem>
 
             {/* Left ellipsis (...) */}
@@ -65,14 +66,15 @@ export function DataTablePagination<TData>({
               const isActive = page === pagination?.current_page;
               return (
                 <PaginationItem key={page}>
-                  <Button
+                  <ActionButton
                     size="icon"
                     variant={`${isActive ? "outline" : "ghost"}`}
                     onClick={() => setCurrentPage(page)}
                     aria-current={isActive ? "page" : undefined}
+                    className={`${isActive ? "border-primary" : ""}`}
                   >
                     {page}
-                  </Button>
+                  </ActionButton>
                 </PaginationItem>
               );
             })}
@@ -86,7 +88,7 @@ export function DataTablePagination<TData>({
 
             {/* Next page button */}
             <PaginationItem>
-              <Button
+              <ActionButton
                 size="icon"
                 variant="outline"
                 className="disabled:pointer-events-none disabled:opacity-50"
@@ -95,7 +97,7 @@ export function DataTablePagination<TData>({
                 aria-label="Go to next page"
               >
                 <ChevronRightIcon aria-hidden="true" />
-              </Button>
+              </ActionButton>
             </PaginationItem>
           </PaginationContent>
         </Pagination>

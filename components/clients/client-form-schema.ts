@@ -38,7 +38,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           placeholder: "client.pppoe_username.placeholder",
         },
         {
-          type: "password",
+          type: "text",
           name: "pppoe_password",
           label: { labelText: "client.pppoe_password.label", mandatory: true },
           placeholder: "client.pppoe_password.placeholder",
@@ -115,6 +115,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.zone.label" },
           placeholder: "client.zone.placeholder",
           api: "/dropdown-zones",
+          valueKey: "zone",
+          valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
           type: "dropdown",
@@ -122,6 +124,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.sub_zone.label" },
           placeholder: "client.sub_zone.placeholder",
           api: "/dropdown-sub-zones",
+          valueKey: "sub_zone",
+          valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
           type: "dropdown",
@@ -129,6 +133,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.network.label", mandatory: true },
           placeholder: "client.network.placeholder",
           api: "/dropdown-networks",
+          valueKey: "network",
+          valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
           type: "dropdown",
@@ -136,6 +142,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.package.label", mandatory: true },
           placeholder: "client.package.placeholder",
           api: "/dropdown-network-packages",
+          valueKey: "package",
+          valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
           type: "dropdown",
@@ -143,6 +151,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.device.label" },
           placeholder: "client.device.placeholder",
           api: "/dropdown-devices",
+          valueKey: "device",
+          valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
           type: "dropdown",

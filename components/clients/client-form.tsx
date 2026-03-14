@@ -10,8 +10,8 @@ import type { ClientRow } from "./client-type";
 type Props = {
   mode?: "create" | "edit";
   api?: string;
-  method?: "POST" | "PUT";
-  data?: { id?: string | number } & Partial<ClientRow>;
+  method?: "GET" | "POST" | "PUT";
+  data?: { id?: string | number } & Omit<Partial<ClientRow>, "id">;
 };
 
 const ClientForm: FC<Props> = ({
