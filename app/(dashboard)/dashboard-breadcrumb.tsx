@@ -93,7 +93,9 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
  */
 const DYNAMIC_ROUTE_PATTERNS: { pattern: RegExp; key: string }[] = [
   { pattern: /^\/clients\/edit\/[^/]+$/, key: "client.edit_title" },
+  { pattern: /^\/clients\/view\/[^/]+$/, key: "client.view_title" },
   { pattern: /^\/resellers\/edit\/[^/]+$/, key: "reseller.edit_title" },
+  { pattern: /^\/resellers\/view\/[^/]+$/, key: "reseller.view_title" },
   { pattern: /^\/invoices\/edit\/[^/]+$/, key: "menu.invoice.title" },
   { pattern: /^\/staffs\/edit\/[^/]+$/, key: "menu.staffs.title" },
   { pattern: /^\/salaries\/edit\/[^/]+$/, key: "menu.staffs.salaries.title" },

@@ -1,4 +1,4 @@
-type ThemeColor = "zinc" | "rose" | "blue" | "green" | "orange" | "red";
+type ThemeColor = "zinc" | "rose" | "blue" | "green" | "orange" | "red" | "pink" | "indigo" | "purple";
 type ThemeDensity = "compact" | "comfortable" | "large";
 type ThemeRadius = "0" | "0.3" | "0.5" | "0.75" | "1.0";
 type ThemeNavDrawerSide = "left" | "right";

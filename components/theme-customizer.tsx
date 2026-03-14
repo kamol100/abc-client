@@ -30,6 +30,9 @@ const THEME_COLOR_OPTIONS: { value: ThemeColor; primary: string }[] = [
   { value: "rose", primary: "346.8 77.2% 49.8%" },
   { value: "orange", primary: "24.6 95% 53.1%" },
   { value: "blue", primary: "221.2 83.2% 53.3%" },
+  { value: "pink", primary: "330 81% 60%" },
+  { value: "indigo", primary: "238.7 83.5% 58.6%" },
+  { value: "purple", primary: "262.1 83.3% 57.8%" },
 ];
 
 const DENSITY_OPTIONS: { value: ThemeDensity; icon: typeof Minimize }[] = [

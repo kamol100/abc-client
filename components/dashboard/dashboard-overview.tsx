@@ -264,7 +264,7 @@ export default function DashboardOverview() {
   const hasGraphData = graph.months.length > 0 && chartSeries.length > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pr-3">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         <DashboardCard
           titleKey="dashboard.cards.total_clients"

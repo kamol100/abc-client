@@ -23,6 +23,8 @@ type FormFilterProps = {
   searchButton?: boolean;
   setShowFilter?: (show: boolean) => void;
   className?: string;
+  forceOpen?: boolean;
+  hideTrigger?: boolean;
 };
 
 function FilterTextField({
@@ -104,8 +106,10 @@ const FormFilter = ({
   defaultFilter,
   setFilter = () => { },
   className = "h-9",
+  forceOpen = false,
+  hideTrigger = false,
 }: FormFilterProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(forceOpen);
 
   const {
     form,
@@ -121,7 +125,7 @@ const FormFilter = ({
     setShowFilter(next);
   };
 
-  const showSearchButton = searchButton && hasManualSearchFields && isOpen;
+  const showSearchButton = searchButton && hasManualSearchFields && (isOpen || forceOpen);
 
   const renderField = (field: FieldConfig) => {
     if (field.type === "text" || field.type === "email" || field.type === "number") {
@@ -149,7 +153,7 @@ const FormFilter = ({
 
   return (
     <div className={cn("flex-none md:flex lg:flex gap-3", className)}>
-      {isOpen && (
+      {(isOpen || forceOpen) && (
         <div className="w-full">
           <Form {...form}>
             <form
@@ -187,6 +191,7 @@ const FormFilter = ({
             size="default"
             variant={isOpen ? "default" : "outline"}
             onClick={handleToggle}
+            className={hideTrigger ? "hidden" : ""}
           />
         </div>
       </div>

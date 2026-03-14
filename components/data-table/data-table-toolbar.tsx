@@ -17,6 +17,7 @@ import { DataTableViewOptions } from "@/components/data-table/data-table-view-op
 import ActionButton from "@/components/action-button";
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
+import { CustomDrawer } from "@/components/drawer";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -125,14 +126,39 @@ export function DataTableToolbar<TData>({
         )}
 
         {toolbarOptions?.filter && (
-          <FormFilter
-            formSchema={toolbarOptions.filter}
-            grids={toolbarOptions?.filter?.length}
-            setFilter={setFilter}
-            watchFields={toolbarOptions?.watchFields}
-            searchButton
-            setShowFilter={setShowFilter}
-          />
+          isMobile ? (
+            <CustomDrawer
+              trigger={
+                <ActionButton
+                  action="filter"
+                  size="default"
+                  variant="outline"
+                />
+              }
+              title="Filter"
+              side="bottom"
+            >
+              <FormFilter
+                formSchema={toolbarOptions.filter}
+                grids={1}
+                setFilter={setFilter}
+                watchFields={toolbarOptions?.watchFields}
+                searchButton
+                forceOpen
+                hideTrigger
+                className="flex flex-col gap-4"
+              />
+            </CustomDrawer>
+          ) : (
+            <FormFilter
+              formSchema={toolbarOptions.filter}
+              grids={toolbarOptions?.filter?.length}
+              setFilter={setFilter}
+              watchFields={toolbarOptions?.watchFields}
+              searchButton
+              setShowFilter={setShowFilter}
+            />
+          )
         )}
         {FormComponent && !showFilter && <FormComponent />}
       </div>

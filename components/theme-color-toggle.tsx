@@ -16,6 +16,9 @@ const THEME_COLOR_OPTIONS: { name: ThemeColor; label: string; primary: string }[
   { name: "blue", label: "Blue", primary: "221.2 83.2% 53.3%" },
   { name: "green", label: "Green", primary: "142.1 76.2% 36.3%" },
   { name: "orange", label: "Orange", primary: "24.6 95% 53.1%" },
+  { name: "pink", label: "Pink", primary: "330 81% 60%" },
+  { name: "indigo", label: "Indigo", primary: "238.7 83.5% 58.6%" },
+  { name: "purple", label: "Purple", primary: "262.1 83.3% 57.8%" },
 ];
 
 export function ThemeColorToggle() {

@@ -158,6 +158,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 placeholder: (base) => ({
                   ...base,
                   color: `hsl(var(--muted-foreground))`,
+                  fontSize: "var(--font-size-sm)",
                   opacity: 1,
                 }),
                 singleValue: (base) => ({

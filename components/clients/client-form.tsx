@@ -24,19 +24,21 @@ const ClientForm: FC<Props> = ({
 
   return (
     <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
-      <AccordionFormBuilder
-        formSchema={ClientFormFieldSchema({ mode })}
-        grids={2}
-        data={data}
-        api={api}
-        mode={mode}
-        schema={ClientFormSchema}
-        method={method}
-        queryKey="clients"
-        fullPage
-        actionButtonClass="justify-center"
-        onClose={() => router.push("/clients")}
-      />
+      <div className="pr-3 pb-4">
+        <AccordionFormBuilder
+          formSchema={ClientFormFieldSchema({ mode })}
+          grids={2}
+          data={data}
+          api={api}
+          mode={mode}
+          schema={ClientFormSchema}
+          method={method}
+          queryKey="clients"
+          fullPage
+          actionButtonClass="justify-center"
+          onClose={() => router.push("/clients")}
+        />
+      </div>
     </div>
   );
 };

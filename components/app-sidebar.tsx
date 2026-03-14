@@ -75,13 +75,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         }
       `}</style>
       <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
-        <SidebarHeader>
+        <SidebarHeader className="border-b">
           <TeamSwitcher teams={sidebarConfig.teams} />
         </SidebarHeader>
         <SidebarContent>
           <NavMain items={menuItems} />
         </SidebarContent>
-        <SidebarFooter>
+        <SidebarFooter className="border-t">
           <NavUser />
         </SidebarFooter>
         <SidebarRail />
