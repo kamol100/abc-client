@@ -18,6 +18,8 @@ import ActionButton from "@/components/action-button";
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { CustomDrawer } from "@/components/drawer";
+import { useFilterForm } from "@/hooks/use-filter-form";
+import { useTranslation } from "react-i18next";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -67,6 +69,21 @@ export function DataTableToolbar<TData>({
   const { isMobile } = useSidebar();
   const { isFixed, toggleMode } = useTableLayoutMode();
   const [showFilter, setShowFilter] = useState(false);
+  const { t } = useTranslation();
+
+  const filterHook = useFilterForm({
+    formSchema: toolbarOptions?.filter || [],
+    setFilter,
+    watchFields: toolbarOptions?.watchFields,
+  });
+
+  const { form: filterForm, submitFilter: submitFilterHandler, triggerSubmit: triggerFilterSubmit } = filterHook;
+
+  const handleResetFilter = () => {
+    filterForm.reset();
+    submitFilterHandler({});
+  };
+
   return (
     <div
       className={cn(!showFilter && "flex  justify-end")}
@@ -135,8 +152,28 @@ export function DataTableToolbar<TData>({
                   variant="outline"
                 />
               }
-              title="Filter"
+              title="common.filter"
               side="bottom"
+              footer={
+                <div className="flex gap-2 w-full">
+                  <ActionButton
+                    action="reset"
+                    onClick={handleResetFilter}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    {t("common.reset")}
+                  </ActionButton>
+                  <ActionButton
+                    action="search"
+                    variant={isFiltered ? "default" : "outline"}
+                    onClick={triggerFilterSubmit}
+                    className="flex-1"
+                  >
+                    {t("common.apply_filter")}
+                  </ActionButton>
+                </div>
+              }
             >
               <FormFilter
                 formSchema={toolbarOptions.filter}
@@ -147,6 +184,7 @@ export function DataTableToolbar<TData>({
                 forceOpen
                 hideTrigger
                 className="flex flex-col gap-4"
+                formHook={filterHook}
               />
             </CustomDrawer>
           ) : (

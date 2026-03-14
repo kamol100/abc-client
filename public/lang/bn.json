@@ -1,5 +1,8 @@
 {
     "common": {
+        "filter": "ফিল্টার",
+        "reset": "রিসেট",
+        "apply_filter": "ফিল্টার প্রয়োগ করুন",
         "toggle_columns": "কলাম টগল করুন",
         "view": "দেখুন",
         "add": "অ্যাড",

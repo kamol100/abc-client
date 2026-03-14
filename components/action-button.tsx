@@ -4,6 +4,7 @@ import {
   FilterIcon,
   Loader2,
   Plus,
+  RotateCcw,
   Save,
   Search,
   Trash2,
@@ -20,6 +21,7 @@ const ACTION_ICONS = {
   delete: Trash2,
   search: Search,
   filter: FilterIcon,
+  reset: RotateCcw,
   create: Plus,
   add: Plus,
 } as const;

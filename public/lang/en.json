@@ -1,5 +1,8 @@
 {
     "common": {
+        "filter": "Filter",
+        "reset": "Reset",
+        "apply_filter": "Apply Filter",
         "toggle_columns": "Toggle columns",
         "view": "View",
         "add": "Add",

@@ -1,10 +1,11 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ActionButton from "@/components/action-button";
 import InputField from "@/components/form/input-field";
 import DatePicker from "@/components/form/DatePicker";
@@ -25,6 +26,7 @@ type FormFilterProps = {
   className?: string;
   forceOpen?: boolean;
   hideTrigger?: boolean;
+  formHook?: ReturnType<typeof useFilterForm>;
 };
 
 function FilterTextField({
@@ -108,16 +110,28 @@ const FormFilter = ({
   className = "h-9",
   forceOpen = false,
   hideTrigger = false,
+  formHook,
 }: FormFilterProps) => {
   const [isOpen, setIsOpen] = useState(forceOpen);
 
+  const internalHook = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
   const {
     form,
     hasManualSearchFields,
     triggerSubmit,
     clearField,
     submitFilter,
-  } = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
+  } = formHook || internalHook;
+
+  const values = form.watch();
+  const isFilterActive = useMemo(() => {
+    return Object.values(values).some(value => value && value.toString().length > 0);
+  }, [values]);
+
+  const handleReset = () => {
+    form.reset();
+    submitFilter({});
+  };
 
   const handleToggle = () => {
     const next = !isOpen;
@@ -184,6 +198,14 @@ const FormFilter = ({
               action="search"
               size="default"
               onClick={triggerSubmit}
+            />
+          )}
+          {!hideTrigger && isOpen && (
+            <ActionButton
+              action="reset"
+              size="default"
+              variant={isFilterActive ? "default" : "outline"}
+              onClick={handleReset}
             />
           )}
           <ActionButton
