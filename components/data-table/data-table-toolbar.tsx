@@ -68,6 +68,7 @@ export function DataTableToolbar<TData>({
   const { isMobile } = useSidebar();
   const { isFixed, toggleMode } = useTableLayoutMode();
   const [showFilter, setShowFilter] = useState(false);
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
   const filterHook = useFilterForm({
     formSchema: toolbarOptions?.filter || [],
@@ -143,6 +144,8 @@ export function DataTableToolbar<TData>({
         {toolbarOptions?.filter && (
           isMobile ? (
             <CustomDrawer
+              open={filterDrawerOpen}
+              onOpenChange={setFilterDrawerOpen}
               trigger={
                 <ActionButton
                   action="filter"
@@ -165,7 +168,10 @@ export function DataTableToolbar<TData>({
                     action="search"
                     icon={true}
                     variant={isFiltered ? "default" : "outline"}
-                    onClick={triggerFilterSubmit}
+                    onClick={() => {
+                      triggerFilterSubmit();
+                      setFilterDrawerOpen(false);
+                    }}
                     className="flex-1"
                     title="common.apply_filter"
                   />

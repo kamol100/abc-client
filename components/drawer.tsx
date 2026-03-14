@@ -58,7 +58,7 @@ const drawerContentVariants = cva(
     compoundVariants: [
       // Bottom/Top sizes (height)
       { side: ["top", "bottom"], size: "sm", class: "h-[30vh]" },
-      { side: ["top", "bottom"], size: "md", class: "h-[50vh]" },
+      { side: ["top", "bottom"], size: "md", class: "h-[60vh]" },
       { side: ["top", "bottom"], size: "lg", class: "h-[85vh]" },
       { side: ["top", "bottom"], size: "full", class: "h-screen" },
       // Left/Right sizes (width)
@@ -179,7 +179,7 @@ export function CustomDrawer({
   description,
   children,
   footer,
-  size = "lg",
+  size = "md",
   side = "bottom",
   className,
   showHandle,
@@ -213,7 +213,7 @@ export function CustomDrawer({
             {description && <DrawerDescription>{t(description as string)}</DrawerDescription>}
           </DrawerHeader>
         )}
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-4 pb-4 pt-1">
           {children}
         </div>
         {footer && <DrawerFooter>{footer}</DrawerFooter>}
