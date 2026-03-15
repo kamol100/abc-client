@@ -34,6 +34,11 @@ export function UserProfile() {
     const email = profile?.email ?? "";
     const avatar = profile?.avatar ?? undefined;
     const canAccessSettings = hasPermission("company-settings.access");
+    const handleLogout = async () => {
+        const loginUrl = new URL("/admin", window.location.origin).toString();
+        await signOut({ redirect: false, redirectTo: loginUrl });
+        window.location.assign(loginUrl);
+    };
 
     return (
         <DropdownMenu>
@@ -100,7 +105,7 @@ export function UserProfile() {
                 <DropdownMenuItem
                     className="text-destructive cursor-pointer focus:text-destructive"
                     onClick={async () => {
-                        await signOut({ redirectTo: "/admin" });
+                        await handleLogout();
                     }}
                 >
                     <LogOut className="h-4 w-4" />

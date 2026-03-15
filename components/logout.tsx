@@ -4,10 +4,16 @@ import { signOut } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 export default function Logout() {
   const { t } = useTranslation();
+  const handleLogout = async () => {
+    const loginUrl = new URL("/admin", window.location.origin).toString();
+    await signOut({ redirect: false, redirectTo: loginUrl });
+    window.location.assign(loginUrl);
+  };
+
   return (
     <div
       onClick={async () => {
-        await signOut({ redirectTo: "/admin" });
+        await handleLogout();
       }}
     >
       <div className="flex gap-2 cursor-pointer">
