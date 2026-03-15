@@ -1,39 +1,51 @@
 import { z } from "zod";
 
-export const CoordinateSchema = z.tuple([z.coerce.number(), z.coerce.number()]);
+export const CoordinateSchema = z.preprocess((val) => {
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (trimmed === "") return null;
+    if (trimmed.includes(",")) {
+      return trimmed.split(",").map((v) => v.trim());
+    }
+  }
+  if (Array.isArray(val) && val.length === 0) return null;
+  return val;
+}, z.tuple([z.coerce.number(), z.coerce.number()]).nullable());
 
 const StatusSchema = z.union([z.coerce.string(), z.coerce.number()]).optional();
 
 const ClientInfoSchema = z
   .object({
-    name: z.string().nullable().optional(),
+    name: z.coerce.string().nullable().optional(),
     status: StatusSchema,
-    address: z.string().nullable().optional(),
-    phone: z.string().nullable().optional(),
+    address: z.coerce.string().nullable().optional(),
+    phone: z.coerce.string().nullable().optional(),
   })
   .passthrough();
 
 const OltInfoSchema = z
   .object({
-    name: z.string().nullable().optional(),
+    name: z.coerce.string().nullable().optional(),
     status: StatusSchema,
-    type: z.string().nullable().optional(),
+    type: z.coerce.string().nullable().optional(),
   })
   .passthrough();
 
 export const ClientMapClientSchema = z
   .object({
-    id: z.union([z.coerce.number(), z.string()]),
-    location: CoordinateSchema.optional(),
+    id: z.union([z.coerce.number(), z.string()]).optional(),
+    status: StatusSchema,
+    location: CoordinateSchema.nullable().optional(),
     info: ClientInfoSchema.nullable().optional(),
   })
   .passthrough();
 
 export const ClientMapRowSchema = z
   .object({
-    id: z.union([z.coerce.number(), z.string()]),
-    location: CoordinateSchema.optional(),
-    color: z.string().nullable().optional(),
+    id: z.union([z.coerce.number(), z.string()]).optional(),
+    status: StatusSchema,
+    location: CoordinateSchema.nullable().optional(),
+    color: z.coerce.string().nullable().optional(),
     client: z.array(ClientMapClientSchema).optional().default([]),
     info: OltInfoSchema.nullable().optional(),
   })
@@ -45,7 +57,7 @@ export type ClientMapRow = z.infer<typeof ClientMapRowSchema>;
 
 const TjBoxInfoSchema = z
   .object({
-    name: z.string().nullable().optional(),
+    name: z.coerce.string().nullable().optional(),
     status: StatusSchema,
   })
   .passthrough();
@@ -54,7 +66,7 @@ const TjBoxDeviceSchema = z
   .object({
     id: z.union([z.coerce.number(), z.string()]).optional(),
     geocode: CoordinateSchema.optional(),
-    name: z.string().nullable().optional(),
+    name: z.coerce.string().nullable().optional(),
     status: StatusSchema,
   })
   .passthrough();

@@ -7,14 +7,17 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import FormFilter from "@/components/form-wrapper/form-filter";
-import { ClientMapListSchema, ClientMapRowSchema } from "@/components/maps/maps-type";
+import {
+  ClientMapClientSchema,
+  ClientMapListSchema,
+  ClientMapRowSchema,
+} from "@/components/maps/maps-type";
 import ClientMapsFilterSchema from "@/components/maps/client-maps-filter-schema";
 import { getSettingString, resolveMapCenter } from "@/components/maps/map-utils";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
-const ClientMapsCanvas = dynamic(
-  () => import("@/components/maps/client-maps-canvas"),
+const ClientMapsCanvas = dynamic(() => import("@/components/maps/client-maps-canvas"),
   {
     ssr: false,
     loading: () => (
@@ -23,13 +26,34 @@ const ClientMapsCanvas = dynamic(
   },
 );
 
+function extractMapRows(data: unknown): unknown[] {
+  if (Array.isArray(data)) return data;
+  if (!data || typeof data !== "object") return [];
+
+  const nestedRows = (data as { data?: unknown }).data;
+  return Array.isArray(nestedRows) ? nestedRows : [];
+}
+
 function parseClientMapRows(data: unknown): ReturnType<typeof ClientMapListSchema.parse> {
-  const rows = Array.isArray(data) ? data : [];
-  const parsedList = ClientMapListSchema.safeParse(rows);
-  if (parsedList.success) return parsedList.data;
+  const rows = extractMapRows(data);
 
   return rows.flatMap((row) => {
-    const parsedRow = ClientMapRowSchema.safeParse(row);
+    if (!row || typeof row !== "object") return [];
+
+    const rawClients = Array.isArray((row as { client?: unknown }).client)
+      ? (row as { client: unknown[] }).client
+      : [];
+    const normalizedClients = rawClients.flatMap((client) => {
+      const parsedClient = ClientMapClientSchema.safeParse(client);
+      return parsedClient.success ? [parsedClient.data] : [];
+    });
+
+    const normalizedRow = {
+      ...row,
+      client: normalizedClients,
+    };
+
+    const parsedRow = ClientMapRowSchema.safeParse(normalizedRow);
     return parsedRow.success ? [parsedRow.data] : [];
   });
 }
@@ -40,11 +64,7 @@ export default function ClientMapsTable() {
 
   const [filterValue, setFilter] = useState<string | null>(null);
 
-  const params = useMemo(
-    () =>
-      filterValue ? Object.fromEntries(new URLSearchParams(filterValue)) : undefined,
-    [filterValue],
-  );
+  const params = useMemo(() => filterValue ? Object.fromEntries(new URLSearchParams(filterValue)) : undefined, [filterValue]);
 
   const {
     data,
@@ -58,20 +78,17 @@ export default function ClientMapsTable() {
     pagination: false,
   });
 
-  const mapRows = useMemo(() => parseClientMapRows(data?.data), [data?.data]);
-  const center = useMemo(
-    () => resolveMapCenter(settings.lat, settings.lon),
-    [settings.lat, settings.lon],
-  );
+  console.log(data, 'data');
 
-  const companyName =
-    getSettingString(settings, ["company_name", "company", "name"]) ??
-    t("client_map.company.fallback_name");
+  const mapRows = useMemo(() => parseClientMapRows(data?.data), [data?.data]);
+  const center = useMemo(() => resolveMapCenter(settings.lat, settings.lon), [settings.lat, settings.lon]);
+
+  const companyName = getSettingString(settings, ["company_name", "company", "name"]) ?? t("client_map.company.fallback_name");
   const companyAddress = getSettingString(settings, [
     "company_address",
     "address",
   ]);
-
+  console.log(mapRows, 'mapRows')
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="rounded-md border border-border bg-card p-3">
@@ -80,6 +97,7 @@ export default function ClientMapsTable() {
           grids={4}
           setFilter={setFilter}
           searchButton
+          forceOpen={true}
         />
       </div>
 

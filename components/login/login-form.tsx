@@ -60,8 +60,8 @@ export function LoginForm({
     try {
       const redirectTo =
         callbackUrl.startsWith("/") &&
-        !callbackUrl.startsWith("/admin") &&
-        !callbackUrl.startsWith("/login")
+          !callbackUrl.startsWith("/admin") &&
+          !callbackUrl.startsWith("/login")
           ? callbackUrl
           : "/dashboard";
       const result = await signIn("credentials", {
@@ -109,7 +109,7 @@ export function LoginForm({
         <div className="flex justify-center">
           <Logo />
         </div>
-        <Card className="min-w-[380px]">
+        <Card className="min-w-[350px]">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">&nbsp;</CardTitle>
           </CardHeader>

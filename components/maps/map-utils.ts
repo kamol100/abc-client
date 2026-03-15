@@ -8,6 +8,10 @@ const COLOR_MARKER_BASE_URL =
   "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-";
 
 export const DEFAULT_MAP_CENTER: LatLngTuple = [23.8103, 90.4125];
+const LATITUDE_MIN = -90;
+const LATITUDE_MAX = 90;
+const LONGITUDE_MIN = -180;
+const LONGITUDE_MAX = 180;
 
 let defaultIconConfigured = false;
 
@@ -51,14 +55,32 @@ function toFiniteNumber(value: unknown): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function isValidLatitude(value: number): boolean {
+  return value >= LATITUDE_MIN && value <= LATITUDE_MAX;
+}
+
+function isValidLongitude(value: number): boolean {
+  return value >= LONGITUDE_MIN && value <= LONGITUDE_MAX;
+}
+
 export function toLatLngTuple(value: unknown): LatLngTuple | null {
   if (!Array.isArray(value) || value.length < 2) return null;
 
-  const lat = toFiniteNumber(value[0]);
-  const lon = toFiniteNumber(value[1]);
+  const first = toFiniteNumber(value[0]);
+  const second = toFiniteNumber(value[1]);
 
-  if (lat === null || lon === null) return null;
-  return [lat, lon];
+  if (first === null || second === null) return null;
+
+  if (isValidLatitude(first) && isValidLongitude(second)) {
+    return [first, second];
+  }
+
+  // Some APIs occasionally return [lng, lat] instead of [lat, lng].
+  if (isValidLongitude(first) && isValidLatitude(second)) {
+    return [second, first];
+  }
+
+  return null;
 }
 
 export function resolveMapCenter(lat: unknown, lon: unknown): LatLngTuple {
@@ -66,6 +88,9 @@ export function resolveMapCenter(lat: unknown, lon: unknown): LatLngTuple {
   const lonValue = toFiniteNumber(lon);
 
   if (latValue === null || lonValue === null) return DEFAULT_MAP_CENTER;
+  if (!isValidLatitude(latValue) || !isValidLongitude(lonValue)) {
+    return DEFAULT_MAP_CENTER;
+  }
   return [latValue, lonValue];
 }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ClientMapsTable from "@/components/maps/client-maps-table";
+import ClientMaps from "@/components/maps/client-maps";
 import { t } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function ClientMapsPage() {
-  return <ClientMapsTable />;
+  return <ClientMaps />;
 }

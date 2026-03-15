@@ -11,6 +11,7 @@ import { cookies } from "next/headers";
 import { ToastContainer } from "react-toastify";
 import { headers } from "next/headers";
 import "./globals.css";
+import { getPublicData } from "@/lib/api/api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,11 +23,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "ISPTIK",
-  description: "ISP-Management",
-};
-
 export async function fetchHostName() {
   const requestHeaders = await headers();
   let host = requestHeaders.get("x-forwarded-host");
@@ -37,6 +33,24 @@ export async function fetchHostName() {
     host = host.split(":")[0];
   }
   return host;
+}
+
+async function getCompany() {
+  let host = await fetchHostName();
+  const data = await getPublicData(`/api/company-data?host=${host}`);
+  return data?.data ?? [];
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getCompany();
+
+  return {
+    title: {
+      template: `%s | ${settings?.name ?? "ISP Management"}`,
+      default: settings?.name ?? "ISP Management",
+    },
+    description: settings?.address ?? "Total ISP management company",
+  };
 }
 
 
