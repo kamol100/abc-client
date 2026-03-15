@@ -5,7 +5,7 @@ export default function Logout() {
   return (
     <div
       onClick={async () => {
-        await signOut({ redirectTo: "/login" });
+        await signOut({ redirectTo: "/admin" });
       }}
     >
       <div className="flex gap-2">

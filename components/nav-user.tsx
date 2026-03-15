@@ -35,6 +35,7 @@ export function NavUser() {
 
   const name = profile?.name ?? "";
   const email = profile?.email ?? "";
+  const phone = profile?.phone ?? "";
   const avatar = profile?.avatar ?? undefined;
 
   function getInitials(name: string): string {
@@ -62,7 +63,7 @@ export function NavUser() {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{name}</span>
-                <span className="truncate text-xs">{email}</span>
+                {phone ? <span className="truncate text-xs">{phone} </span> : <span className="truncate text-xs">{email}</span>}
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -81,7 +82,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{name}</span>
-                  <span className="truncate text-xs">{email}</span>
+                  {phone ? <span className="truncate text-xs">{phone} </span> : <span className="truncate text-xs">{email}</span>}
                 </div>
               </div>
             </DropdownMenuLabel>

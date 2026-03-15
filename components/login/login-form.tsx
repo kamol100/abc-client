@@ -22,9 +22,11 @@ export function LoginForm({
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const authError = searchParams.get("error");
   const [host, setHost] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [handledAuthError, setHandledAuthError] = useState<string | null>(null);
   const loginFrom = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     mode: "onChange",
@@ -40,11 +42,26 @@ export function LoginForm({
     setHost(domain ?? "");
   }, [mounted]);
 
+  useEffect(() => {
+    if (!authError || handledAuthError === authError) return;
+    const message =
+      authError === "CredentialsSignin"
+        ? "login.errors.invalid_credentials"
+        : "login.errors.something_went_wrong";
+    toast({
+      title: t(message),
+      variant: "destructive",
+    });
+    setHandledAuthError(authError);
+  }, [authError, handledAuthError, t]);
+
   const onSubmit = async (data: Login) => {
     setIsPending(true);
     try {
       const redirectTo =
-        callbackUrl.startsWith("/") && !callbackUrl.startsWith("/login")
+        callbackUrl.startsWith("/") &&
+        !callbackUrl.startsWith("/admin") &&
+        !callbackUrl.startsWith("/login")
           ? callbackUrl
           : "/dashboard";
       const result = await signIn("credentials", {
@@ -55,10 +72,12 @@ export function LoginForm({
       });
 
       if (result?.error) {
-        toast({
-          title: t("login.errors.invalid_credentials"),
-          variant: "destructive",
-        });
+        const loginUrl = new URL("/admin", window.location.origin);
+        loginUrl.searchParams.set("error", result.error);
+        if (callbackUrl) {
+          loginUrl.searchParams.set("callbackUrl", callbackUrl);
+        }
+        window.location.href = loginUrl.toString();
         return;
       }
 

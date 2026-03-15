@@ -5,7 +5,7 @@ const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 export const authConfig = {
     trustHost: true,
     pages: {
-        signIn: '/login',
+        signIn: '/admin',
     },
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
