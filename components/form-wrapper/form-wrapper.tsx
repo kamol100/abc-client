@@ -202,6 +202,7 @@ export default function FormWrapper({
     });
 
     const onSubmit = async (formValues: FieldValues) => {
+        console.log(formValues, 'payload');
         const transformedValues = transformPayload
             ? transformPayload(formValues)
             : formValues;

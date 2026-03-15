@@ -1,11 +1,11 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
 import InputField from "@/components/form/input-field";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import { toNumber } from "@/lib/helper/helper";
 import type { InvoiceFormState } from "@/components/invoices/invoice-type";
 
 const defaultLineItem = {
@@ -14,12 +14,13 @@ const defaultLineItem = {
     quantity: 1,
     discount: 0,
     order: 0,
+    total_amount: 0,
     uuid: null,
 };
 
 const InvoiceLinesEditor: FC = () => {
     const { t } = useTranslation();
-    const { control } = useFormContext<InvoiceFormState>();
+    const { control, setValue } = useFormContext<InvoiceFormState>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "lines",
@@ -28,6 +29,22 @@ const InvoiceLinesEditor: FC = () => {
         control,
         name: "lines",
     }) ?? [];
+
+    useEffect(() => {
+        lines.forEach((line, index) => {
+            const computedTotalAmount =
+                toNumber(line?.amount) * toNumber(line?.quantity);
+            if (
+                line?.total_amount === undefined ||
+                toNumber(line?.total_amount) !== computedTotalAmount
+            ) {
+                setValue(`lines.${index}.total_amount`, computedTotalAmount, {
+                    shouldDirty: false,
+                    shouldValidate: false,
+                });
+            }
+        });
+    }, [lines, setValue]);
 
     return (
         <div className="space-y-3">
@@ -122,11 +139,11 @@ const InvoiceLinesEditor: FC = () => {
                             <div className="md:col-span-2">
                                 <InputField
                                     type="number"
-                                    name={`lines.${index}.total`}
+                                    name={`lines.${index}.total_amount`}
                                     label={{ labelText: "invoice.line.total.label" }}
                                     placeholder="invoice.line.total.placeholder"
                                     readOnly={true}
-                                    defaultValue={formatMoney(lineTotal)}
+                                    defaultValue={lineTotal}
                                     reserveErrorSpace={true}
                                 />
                             </div>

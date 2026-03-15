@@ -682,14 +682,14 @@
         },
         "fund": {
             "label": "ফান্ড",
-            "placeholder": "ফান্ড নির্বাচন করুন",
+            "placeholder": "ফান্ড",
             "errors": {
                 "required": "ফান্ড আবশ্যক"
             }
         },
         "staff": {
             "label": "স্টাফ",
-            "placeholder": "স্টাফ নির্বাচন করুন",
+            "placeholder": "স্টাফ",
             "errors": {
                 "required": "স্টাফ আবশ্যক"
             }
@@ -1118,7 +1118,7 @@
         },
         "client": {
             "label": "ক্লায়েন্ট",
-            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "placeholder": "ক্লায়েন্ট",
             "errors": {
                 "required": "ক্লায়েন্ট আবশ্যক"
             }
@@ -1130,7 +1130,7 @@
         },
         "status": {
             "label": "স্ট্যাটাস",
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "placeholder": "স্ট্যাটাস",
             "due": "ডিউ",
             "paid": "পেইড",
             "partial_paid": "পার্শিয়াল পেইড"
@@ -1140,21 +1140,21 @@
         },
         "create_date": {
             "label": "তৈরির তারিখ",
-            "placeholder": "তৈরির তারিখ নির্বাচন করুন",
+            "placeholder": "তৈরির তারিখ",
             "errors": {
                 "required": "তৈরির তারিখ আবশ্যক"
             }
         },
         "due_date": {
             "label": "ডিউ তারিখ",
-            "placeholder": "ডিউ তারিখ নির্বাচন করুন",
+            "placeholder": "ডিউ তারিখ",
             "errors": {
                 "required": "ডিউ তারিখ আবশ্যক"
             }
         },
         "invoice_type": {
             "label": "ইনভয়েস টাইপ",
-            "placeholder": "ইনভয়েস টাইপ নির্বাচন করুন",
+            "placeholder": "ইনভয়েস টাইপ",
             "errors": {
                 "required": "ইনভয়েস টাইপ আবশ্যক"
             }
@@ -1165,21 +1165,21 @@
         },
         "partial_amount": {
             "label": "পার্শিয়াল এমাউন্ট",
-            "placeholder": "পার্শিয়াল এমাউন্ট দিন",
+            "placeholder": "পার্শিয়াল এমাউন্ট",
             "errors": {
                 "min": "পরিমাণ ০ এর বেশি হতে হবে"
             }
         },
         "fund": {
             "label": "পেমেন্ট মেথড",
-            "placeholder": "পেমেন্ট মেথড নির্বাচন করুন",
+            "placeholder": "পেমেন্ট মেথড",
             "errors": {
                 "required": "পেমেন্ট মেথড আবশ্যক"
             }
         },
         "payment_date": {
             "label": "পেমেন্ট তারিখ",
-            "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন"
+            "placeholder": "পেমেন্ট তারিখ"
         },
         "confirmation_sms": {
             "label": "কনফার্মেশন এসএমএস"
@@ -1244,14 +1244,14 @@
             },
             "fund": {
                 "label": "পেমেন্ট মেথড",
-                "placeholder": "পেমেন্ট মেথড নির্বাচন করুন",
+                "placeholder": "পেমেন্ট মেথড",
                 "errors": {
                     "required": "পেমেন্ট মেথড আবশ্যক"
                 }
             },
             "payment_date": {
                 "label": "পেমেন্ট তারিখ",
-                "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন",
+                "placeholder": "পেমেন্ট তারিখ",
                 "errors": {
                     "required": "পেমেন্ট তারিখ আবশ্যক"
                 }
@@ -1263,7 +1263,7 @@
             },
             "partial_amount": {
                 "label": "পার্শিয়াল এমাউন্ট",
-                "placeholder": "পার্শিয়াল এমাউন্ট দিন",
+                "placeholder": "পার্শিয়াল এমাউন্ট",
                 "errors": {
                     "min": "পরিমাণ ০ এর বেশি হতে হবে",
                     "max": "পরিমাণ {{amount}} এর বেশি হতে পারবে না"
@@ -1271,11 +1271,11 @@
             },
             "transaction_id": {
                 "label": "ট্রানজেকশন আইডি",
-                "placeholder": "ট্রানজেকশন আইডি দিন"
+                "placeholder": "ট্রানজেকশন আইডি"
             },
             "reference": {
                 "label": "রেফারেন্স",
-                "placeholder": "রেফারেন্স দিন"
+                "placeholder": "রেফারেন্স"
             },
             "confirmation_sms": {
                 "label": "কনফার্মেশন এসএমএস পাঠান"
@@ -1298,7 +1298,7 @@
             },
             "discount_amount": {
                 "label": "ডিসকাউন্ট এমাউন্ট",
-                "placeholder": "ডিসকাউন্ট এমাউন্ট দিন",
+                "placeholder": "ডিসকাউন্ট এমাউন্ট",
                 "errors": {
                     "required": "ডিসকাউন্ট এমাউন্ট আবশ্যক",
                     "min": "ডিসকাউন্ট এমাউন্ট ০ এর বেশি হতে হবে",
@@ -1336,7 +1336,7 @@
                 "track_id": "ইনভয়েস আইডি দিয়ে খুঁজুন",
                 "create_date": "তৈরির তারিখ রেঞ্জ",
                 "due_date": "ডিউ তারিখ রেঞ্জ",
-                "status": "স্ট্যাটাস নির্বাচন করুন"
+                "status": "স্ট্যাটাস"
             }
         },
         "reports": {
@@ -1349,11 +1349,11 @@
             "track_id": "ইনভয়েস আইডি দিয়ে খুঁজুন",
             "create_date": "তৈরির তারিখ",
             "due_date": "ডিউ তারিখ",
-            "zone": "জোন নির্বাচন করুন",
-            "type": "ইনভয়েস টাইপ নির্বাচন করুন",
-            "created_by": "স্টাফ নির্বাচন করুন",
-            "client": "ক্লায়েন্ট নির্বাচন করুন",
-            "status": "স্ট্যাটাস নির্বাচন করুন",
+            "zone": "জোন",
+            "type": "টাইপ",
+            "created_by": "স্টাফ",
+            "client": "ক্লায়েন্ট",
+            "status": "স্ট্যাটাস",
             "status_due": "ডিউ",
             "status_paid": "পেইড",
             "status_partial": "আংশিক"
@@ -1367,21 +1367,21 @@
             "total_due": "মোট ডিউ",
             "fund": {
                 "label": "পেমেন্ট পদ্ধতি",
-                "placeholder": "ফান্ড নির্বাচন করুন",
+                "placeholder": "ফান্ড",
                 "errors": {
                     "required": "পেমেন্ট পদ্ধতি আবশ্যক"
                 }
             },
             "payment_date": {
                 "label": "পেমেন্ট তারিখ",
-                "placeholder": "তারিখ নির্বাচন করুন"
+                "placeholder": "তারিখ"
             },
             "status": {
                 "label": "অবস্থা"
             },
             "partial_amount": {
                 "label": "আংশিক পরিমাণ",
-                "placeholder": "আংশিক পরিমাণ দিন",
+                "placeholder": "আংশিক পরিমাণ",
                 "errors": {
                     "min": "পরিমাণ ০ এর বেশি হতে হবে"
                 }
@@ -1416,29 +1416,29 @@
         },
         "client": {
             "label": "ক্লায়েন্ট",
-            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "placeholder": "ক্লায়েন্ট",
             "errors": {
                 "required": "ক্লায়েন্ট আবশ্যক"
             }
         },
         "subject": {
             "label": "সাবজেক্ট",
-            "placeholder": "সাবজেক্ট নির্বাচন করুন",
+            "placeholder": "সাবজেক্ট",
             "errors": {
                 "required": "সাবজেক্ট আবশ্যক"
             }
         },
         "tags": {
             "label": "ট্যাগ",
-            "placeholder": "ট্যাগ নির্বাচন করুন"
+            "placeholder": "ট্যাগ"
         },
         "assigned_to": {
             "label": "অ্যাসাইন করা হয়েছে",
-            "placeholder": "স্টাফ নির্বাচন করুন"
+            "placeholder": "স্টাফ"
         },
         "message": {
             "label": "মেসেজ",
-            "placeholder": "মেসেজ দিন",
+            "placeholder": "মেসেজ",
             "errors": {
                 "required": "মেসেজ আবশ্যক",
                 "min": "মেসেজ কমপক্ষে ২ অক্ষর হতে হবে"
@@ -1485,7 +1485,7 @@
         "title": "এসএমএস পাঠান",
         "phone": {
             "label": "ফোন নম্বর",
-            "placeholder": "ফোন নম্বর দিন",
+            "placeholder": "ফোন নম্বর",
             "errors": {
                 "required": "ফোন নম্বর আবশ্যক"
             }
@@ -1522,7 +1522,7 @@
         },
         "sms_body": {
             "label": "এসএমএস বডি",
-            "placeholder": "এসএমএস বডি লিখুন",
+            "placeholder": "এসএমএস বডি",
             "errors": {
                 "required": "এসএমএস বডি আবশ্যক"
             }
@@ -1569,7 +1569,7 @@
         },
         "template_type": {
             "label": "টেমপ্লেট টাইপ",
-            "placeholder": "টেমপ্লেট টাইপ নির্বাচন করুন",
+            "placeholder": "টেমপ্লেট টাইপ",
             "errors": {
                 "required": "টেমপ্লেট টাইপ আবশ্যক",
                 "invalid": "টেমপ্লেট টাইপ সঠিক নয়"
@@ -1588,7 +1588,7 @@
         },
         "message": {
             "label": "মেসেজ",
-            "placeholder": "এসএমএস মেসেজ দিন",
+            "placeholder": "এসএমএস মেসেজ",
             "errors": {
                 "required": "মেসেজ আবশ্যক",
                 "invalid": "মেসেজ অবশ্যই টেক্সট হতে হবে"
@@ -1609,7 +1609,7 @@
         },
         "title": {
             "label": "পেমেন্ট টাইটেল",
-            "placeholder": "পেমেন্ট টাইটেল দিন",
+            "placeholder": "পেমেন্ট টাইটেল",
             "errors": {
                 "required": "পেমেন্ট টাইটেল আবশ্যক",
                 "min": "পেমেন্ট টাইটেল কমপক্ষে ২ অক্ষর হতে হবে"
@@ -1617,7 +1617,7 @@
         },
         "amount": {
             "label": "পরিমাণ",
-            "placeholder": "পরিমাণ দিন",
+            "placeholder": "পরিমাণ",
             "errors": {
                 "required": "পরিমাণ আবশ্যক",
                 "min": "পরিমাণ কমপক্ষে ১ হতে হবে"
@@ -1625,24 +1625,24 @@
         },
         "client": {
             "label": "ক্লায়েন্ট",
-            "placeholder": "ক্লায়েন্ট নির্বাচন করুন",
+            "placeholder": "ক্লায়েন্ট",
             "errors": {
                 "required": "ক্লায়েন্ট আবশ্যক"
             }
         },
         "fund": {
             "label": "পেমেন্ট পদ্ধতি",
-            "placeholder": "ফান্ড নির্বাচন করুন",
+            "placeholder": "ফান্ড",
             "errors": {
                 "required": "পেমেন্ট পদ্ধতি আবশ্যক"
             }
         },
         "payment_date": {
             "label": "পেমেন্ট তারিখ",
-            "placeholder": "পেমেন্ট তারিখ নির্বাচন করুন"
+            "placeholder": "পেমেন্ট তারিখ"
         },
         "status": {
-            "placeholder": "অবস্থা নির্বাচন করুন",
+            "placeholder": "অবস্থা",
             "errors": {
                 "required": "অবস্থা আবশ্যক"
             }
@@ -1653,22 +1653,22 @@
         },
         "partial_amount": {
             "label": "আংশিক পেমেন্ট পরিমাণ",
-            "placeholder": "আংশিক পেমেন্ট পরিমাণ দিন"
+            "placeholder": "আংশিক পেমেন্ট পরিমাণ"
         },
         "transaction_id": {
             "label": "ট্রানজেকশন আইডি",
-            "placeholder": "ট্রানজেকশন আইডি দিন"
+            "placeholder": "ট্রানজেকশন আইডি"
         },
         "reference": {
             "label": "রেফারেন্স",
-            "placeholder": "রেফারেন্স দিন"
+            "placeholder": "রেফারেন্স"
         },
         "confirmation_sms": {
             "label": "কনফার্ম এসএমএস"
         },
         "payment_type": {
             "label": "বিল টাইপ",
-            "placeholder": "বিল টাইপ নির্বাচন করুন"
+            "placeholder": "বিল টাইপ"
         },
         "collect_by": {
             "label": "কালেক্ট বাই"
@@ -1722,36 +1722,36 @@
         },
         "staff": {
             "label": "এক্সপেন্স বাই",
-            "placeholder": "স্টাফ নির্বাচন করুন",
+            "placeholder": "স্টাফ",
             "errors": {
                 "required": "স্টাফ আবশ্যক"
             }
         },
         "fund": {
             "label": "পেমেন্ট পদ্ধতি",
-            "placeholder": "ফান্ড নির্বাচন করুন"
+            "placeholder": "ফান্ড"
         },
         "expense_type": {
             "label": "এক্সপেন্স টাইপ",
-            "placeholder": "এক্সপেন্স টাইপ নির্বাচন করুন",
+            "placeholder": "এক্সপেন্স টাইপ",
             "errors": {
                 "required": "এক্সপেন্স টাইপ আবশ্যক"
             }
         },
         "zone": {
             "label": "জোন",
-            "placeholder": "জোন নির্বাচন করুন"
+            "placeholder": "জোন"
         },
         "voucher": {
             "label": "ভাউচার",
-            "placeholder": "ভাউচার দিন"
+            "placeholder": "ভাউচার"
         },
         "expense_date": {
             "label": "এক্সপেন্স তারিখ",
-            "placeholder": "এক্সপেন্স তারিখ নির্বাচন করুন"
+            "placeholder": "এক্সপেন্স তারিখ"
         },
         "status": {
-            "placeholder": "অবস্থা নির্বাচন করুন"
+            "placeholder": "অবস্থা"
         },
         "approve": "অনুমোদন",
         "decline": "প্রত্যাখ্যান",
@@ -1766,7 +1766,7 @@
         "delete_confirmation": "আপনি কি নিশ্চিত এই প্রোডাক্ট ক্যাটাগরিটি মুছে ফেলতে চান?",
         "name": {
             "label": "ক্যাটাগরির নাম",
-            "placeholder": "ক্যাটাগরির নাম দিন",
+            "placeholder": "ক্যাটাগরির নাম",
             "errors": {
                 "required": "নাম আবশ্যক",
                 "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
@@ -1775,7 +1775,7 @@
         },
         "description": {
             "label": "বিবরণ",
-            "placeholder": "বিবরণ দিন"
+            "placeholder": "বিবরণ"
         }
     },
     "product": {
@@ -1795,7 +1795,7 @@
         },
         "name": {
             "label": "প্রোডাক্ট নাম",
-            "placeholder": "প্রোডাক্ট নাম দিন",
+            "placeholder": "প্রোডাক্ট নাম",
             "errors": {
                 "required": "নাম আবশ্যক",
                 "invalid": "নাম অবশ্যই স্ট্রিং হতে হবে",
@@ -1804,7 +1804,7 @@
         },
         "has_serial": {
             "label": "সিরিয়াল আছে",
-            "placeholder": "সিরিয়াল অপশন নির্বাচন করুন",
+            "placeholder": "সিরিয়াল অপশন",
             "errors": {
                 "required": "সিরিয়াল অপশন আবশ্যক",
                 "invalid": "সিরিয়াল অপশন সঠিক নয়"
@@ -1812,7 +1812,7 @@
         },
         "vat": {
             "label": "ভ্যাট (%)",
-            "placeholder": "ভ্যাট শতাংশ দিন",
+            "placeholder": "ভ্যাট শতাংশ",
             "errors": {
                 "invalid": "ভ্যাট অবশ্যই সঠিক সংখ্যা হতে হবে",
                 "min": "ভ্যাট নেগেটিভ হতে পারবে না"
@@ -1820,21 +1820,21 @@
         },
         "unit_type": {
             "label": "ইউনিট টাইপ",
-            "placeholder": "ইউনিট টাইপ নির্বাচন করুন",
+            "placeholder": "ইউনিট টাইপ",
             "errors": {
                 "required": "ইউনিট টাইপ আবশ্যক"
             }
         },
         "product_category": {
             "label": "প্রোডাক্ট ক্যাটাগরি",
-            "placeholder": "প্রোডাক্ট ক্যাটাগরি নির্বাচন করুন",
+            "placeholder": "প্রোডাক্ট ক্যাটাগরি",
             "errors": {
                 "required": "প্রোডাক্ট ক্যাটাগরি আবশ্যক"
             }
         },
         "description": {
             "label": "বিবরণ",
-            "placeholder": "প্রোডাক্টের বিবরণ দিন"
+            "placeholder": "প্রোডাক্টের বিবরণ"
         }
     },
     "product_in": {
@@ -1843,33 +1843,33 @@
         "success_message": "প্রোডাক্ট ইন সফলভাবে তৈরি হয়েছে",
         "purchase_by": {
             "label": "পারচেজ বাই",
-            "placeholder": "পারচেজার নির্বাচন করুন"
+            "placeholder": "পারচেজার"
         },
         "purchase_date": {
             "label": "পারচেজ ডেট",
-            "placeholder": "পারচেজ ডেট নির্বাচন করুন"
+            "placeholder": "পারচেজ ডেট"
         },
         "voucher": {
             "label": "ভাউচার",
-            "placeholder": "ভাউচার দিন"
+            "placeholder": "ভাউচার"
         },
         "note": {
             "label": "নোট",
-            "placeholder": "নোট দিন"
+            "placeholder": "নোট"
         },
         "expense": {
             "title": "এক্সপেন্স",
             "expense_type": {
                 "label": "এক্সপেন্স টাইপ",
-                "placeholder": "এক্সপেন্স টাইপ নির্বাচন করুন"
+                "placeholder": "এক্সপেন্স টাইপ"
             },
             "vendor": {
                 "label": "ভেন্ডর",
-                "placeholder": "ভেন্ডর নির্বাচন করুন"
+                "placeholder": "ভেন্ডর"
             },
             "fund": {
                 "label": "ফান্ড",
-                "placeholder": "ফান্ড নির্বাচন করুন"
+                "placeholder": "ফান্ড"
             },
             "amount": {
                 "label": "অ্যামাউন্ট",
@@ -1877,7 +1877,7 @@
             },
             "expense_note": {
                 "label": "এক্সপেন্স নোট",
-                "placeholder": "এক্সপেন্স নোট দিন"
+                "placeholder": "এক্সপেন্স নোট"
             }
         },
         "lines": {
@@ -1889,31 +1889,31 @@
         "line": {
             "product": {
                 "label": "প্রোডাক্ট",
-                "placeholder": "প্রোডাক্ট নির্বাচন করুন"
+                "placeholder": "প্রোডাক্ট"
             },
             "brand": {
                 "label": "ব্র্যান্ড",
-                "placeholder": "ব্র্যান্ড দিন"
+                "placeholder": "ব্র্যান্ড"
             },
             "status": {
                 "label": "স্ট্যাটাস",
-                "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+                "placeholder": "স্ট্যাটাস"
             },
             "quantity": {
                 "label": "কোয়ান্টিটি",
-                "placeholder": "কোয়ান্টিটি দিন"
+                "placeholder": "কোয়ান্টিটি"
             },
             "unit_price": {
                 "label": "ইউনিট প্রাইস",
-                "placeholder": "ইউনিট প্রাইস দিন"
+                "placeholder": "ইউনিট প্রাইস"
             },
             "unit_sell_price": {
                 "label": "ইউনিট সেল প্রাইস",
-                "placeholder": "ইউনিট সেল প্রাইস দিন"
+                "placeholder": "ইউনিট সেল প্রাইস"
             },
             "vat": {
                 "label": "ভ্যাট (%)",
-                "placeholder": "ভ্যাট দিন"
+                "placeholder": "ভ্যাট"
             },
             "total": {
                 "label": "টোটাল"
@@ -1921,20 +1921,20 @@
             "serial": {
                 "title": "সিরিয়াল নাম্বার",
                 "label": "সিরিয়াল {{index}}",
-                "placeholder": "সিরিয়াল {{index}} দিন"
+                "placeholder": "সিরিয়াল {{index}}"
             },
             "fiber": {
                 "fiber_id": {
                     "label": "ফাইবার আইডি",
-                    "placeholder": "ফাইবার আইডি দিন"
+                    "placeholder": "ফাইবার আইডি"
                 },
                 "meter_start": {
                     "label": "ফাইবার মিটার স্টার্ট",
-                    "placeholder": "মিটার স্টার্ট দিন"
+                    "placeholder": "মিটার স্টার্ট"
                 },
                 "meter_end": {
                     "label": "ফাইবার মিটার এন্ড",
-                    "placeholder": "মিটার এন্ড দিন"
+                    "placeholder": "মিটার এন্ড"
                 }
             }
         },
@@ -1966,22 +1966,22 @@
         "success_message": "প্রোডাক্ট আউট সফলভাবে তৈরি হয়েছে",
         "out_date": {
             "label": "আউট ডেট",
-            "placeholder": "আউট ডেট নির্বাচন করুন"
+            "placeholder": "আউট ডেট"
         },
         "received_by": {
             "label": "রিসিভড বাই",
-            "placeholder": "রিসিভার নির্বাচন করুন"
+            "placeholder": "রিসিভার"
         },
         "client": {
             "label": "ক্লায়েন্ট",
-            "placeholder": "ক্লায়েন্ট নির্বাচন করুন"
+            "placeholder": "ক্লায়েন্ট"
         },
         "create_invoice": {
             "label": "ইনভয়েস তৈরি করুন"
         },
         "note": {
             "label": "নোট",
-            "placeholder": "নোট দিন"
+            "placeholder": "নোট"
         },
         "lines": {
             "title": "প্রোডাক্ট লাইন",
@@ -1992,27 +1992,27 @@
         "line": {
             "product": {
                 "label": "প্রোডাক্ট",
-                "placeholder": "প্রোডাক্ট নির্বাচন করুন"
+                "placeholder": "প্রোডাক্ট"
             },
             "product_in": {
                 "label": "প্রোডাক্ট ইন",
-                "placeholder": "সোর্স স্টক নির্বাচন করুন"
+                "placeholder": "সোর্স স্টক"
             },
             "quantity": {
                 "label": "কোয়ান্টিটি",
-                "placeholder": "কোয়ান্টিটি দিন"
+                "placeholder": "কোয়ান্টিটি"
             },
             "unit_price": {
                 "label": "ইউনিট প্রাইস",
-                "placeholder": "ইউনিট প্রাইস দিন"
+                "placeholder": "ইউনিট প্রাইস"
             },
             "vat": {
                 "label": "ভ্যাট (%)",
-                "placeholder": "ভ্যাট দিন"
+                "placeholder": "ভ্যাট"
             },
             "discount": {
                 "label": "ডিসকাউন্ট",
-                "placeholder": "ডিসকাউন্ট দিন"
+                "placeholder": "ডিসকাউন্ট"
             },
             "total": {
                 "label": "টোটাল"
@@ -2525,7 +2525,7 @@
         },
         "staff": {
             "label": "স্টাফ",
-            "placeholder": "স্টাফ নির্বাচন করুন"
+            "placeholder": "স্টাফ"
         },
         "account_number": {
             "label": "অ্যাকাউন্ট নাম্বার",
@@ -2545,7 +2545,7 @@
         },
         "fund": {
             "label": "ফান্ড",
-            "placeholder": "ফান্ড নির্বাচন করুন"
+            "placeholder": "ফান্ড"
         },
         "transaction_type": {
             "label": "ট্রানজেকশন টাইপ",
@@ -2766,7 +2766,7 @@
         "delete_confirmation": "আপনি কি নিশ্চিত এই ইনভয়েস টাইপটি ডিলিট করতে চান?",
         "name": {
             "label": "নাম",
-            "placeholder": "ইনভয়েস টাইপের নাম দিন",
+            "placeholder": "ইনভয়েস টাইপের",
             "errors": {
                 "required": "নাম আবশ্যক",
                 "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"

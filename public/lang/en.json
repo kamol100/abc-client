@@ -1346,14 +1346,14 @@
             "paid": "Paid"
         },
         "filter": {
-            "track_id": "Search by invoice ID",
+            "track_id": "Invoice ID",
             "create_date": "Created Date",
             "due_date": "Due Date",
-            "zone": "Select zone",
-            "type": "Select invoice type",
-            "created_by": "Select staff",
-            "client": "Select client",
-            "status": "Select status",
+            "zone": "Zone",
+            "type": "Type",
+            "created_by": "Staff",
+            "client": "Client",
+            "status": "Status",
             "status_due": "Due",
             "status_paid": "Paid",
             "status_partial": "Partial"
@@ -1367,14 +1367,14 @@
             "total_due": "Total Due",
             "fund": {
                 "label": "Payment Method",
-                "placeholder": "Select fund",
+                "placeholder": "Fund",
                 "errors": {
                     "required": "Payment method is required"
                 }
             },
             "payment_date": {
                 "label": "Payment Date",
-                "placeholder": "Select date"
+                "placeholder": "Date"
             },
             "status": {
                 "label": "Status"

@@ -119,7 +119,9 @@ export const InvoiceLineSchema = z.object({
     quantity: z.coerce.number().int().gt(0, {
         message: "invoice.line.quantity.errors.min",
     }),
-    total_amount: z.coerce.number().nullable().optional(),
+    total_amount: z.coerce.number().min(0, {
+        message: "invoice.line.total_amount.errors.min",
+    }).default(0),
     discount: z.coerce.number().min(0, {
         message: "invoice.line.discount.errors.min",
     }).default(0),
@@ -169,14 +171,19 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
         }
     })
     .transform((values) => {
-        const normalizedLines = values.lines.map((line, index) => ({
-            description: line.description.trim(),
-            amount: toNumber(line.amount),
-            quantity: Math.max(1, Math.trunc(toNumber(line.quantity) || 1)),
-            discount: toNumber(line.discount),
-            order: line.order ?? index,
-            uuid: line.uuid ?? null,
-        }));
+        const normalizedLines = values.lines.map((line, index) => {
+            const amount = toNumber(line.amount);
+            const quantity = Math.max(1, Math.trunc(toNumber(line.quantity) || 1));
+            return {
+                description: line.description.trim(),
+                amount,
+                quantity,
+                total_amount: amount * quantity,
+                discount: toNumber(line.discount),
+                order: line.order ?? index,
+                uuid: line.uuid ?? null,
+            };
+        });
         const totals = calculateInvoiceTotals(normalizedLines, values.discount);
 
         return {
@@ -209,6 +216,7 @@ const InvoicePayloadLineSchema = z.object({
     description: z.string().trim().min(1),
     amount: z.coerce.number().gt(0),
     quantity: z.coerce.number().int().gt(0),
+    total_amount: z.coerce.number().min(0).default(0),
     discount: z.coerce.number().min(0).default(0),
     order: z.coerce.number().optional(),
     uuid: z.string().nullable().optional(),

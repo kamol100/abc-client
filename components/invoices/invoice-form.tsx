@@ -27,6 +27,7 @@ const defaultLine = {
     quantity: 1,
     discount: 0,
     order: 0,
+    total_amount: 0,
     uuid: null,
 };
 
@@ -122,27 +123,29 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
 
     return (
         <div className="w-full xl:w-4/5 mx-auto flex flex-col flex-1 min-h-0">
-            <FormBuilder
-                formSchema={formSchema}
-                grids={3}
-                data={formData}
-                api="/invoices"
-                mode={mode}
-                schema={InvoiceFormSchema}
-                method="POST"
-                queryKey="invoices"
-                fullPage
-                actionButtonClass="justify-end"
-                onClose={() => router.push("/invoices")}
-            >
-                {(renderField) => (
-                    <InvoiceFormContent
-                        formSchema={formSchema}
-                        renderField={renderField}
-                        mode={mode}
-                    />
-                )}
-            </FormBuilder>
+            <div className="mr-3">
+                <FormBuilder
+                    formSchema={formSchema}
+                    grids={3}
+                    data={formData}
+                    api="/invoices"
+                    mode={mode}
+                    schema={InvoiceFormSchema}
+                    method="POST"
+                    queryKey="invoices"
+                    fullPage
+                    actionButtonClass="justify-end"
+                    onClose={() => router.push("/invoices")}
+                >
+                    {(renderField) => (
+                        <InvoiceFormContent
+                            formSchema={formSchema}
+                            renderField={renderField}
+                            mode={mode}
+                        />
+                    )}
+                </FormBuilder>
+            </div>
         </div>
     );
 };
