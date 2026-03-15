@@ -98,10 +98,9 @@ export function UserProfile() {
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                    className="text-destructive focus:text-destructive"
-                    onSelect={(e) => {
-                        e.preventDefault();
-                        void signOut({ redirectTo: "/" });
+                    className="text-destructive cursor-pointer focus:text-destructive"
+                    onClick={async () => {
+                        await signOut({ redirectTo: "/admin" });
                     }}
                 >
                     <LogOut className="h-4 w-4" />

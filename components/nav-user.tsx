@@ -5,6 +5,7 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
+  LayoutDashboard,
   Sparkles,
 } from "lucide-react";
 
@@ -27,6 +28,7 @@ import {
 import Logout from "./logout";
 import { useTranslation } from "react-i18next";
 import { useProfile } from "@/context/app-provider";
+import Link from "next/link";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -88,16 +90,11 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                {t("menu.dashboard.title")}
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                {t("menu.settings.title")}
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard">
+                  <LayoutDashboard />
+                  <span>{t("menu.dashboard.title")}</span>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
