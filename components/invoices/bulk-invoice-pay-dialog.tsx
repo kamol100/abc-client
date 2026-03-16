@@ -24,14 +24,12 @@ import InvoiceDiscountDialog from "@/components/invoices/invoice-discount-dialog
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
 interface BulkInvoicePayDialogProps {
-    clientId: number;
     invoiceDue: InvoiceDueItem[];
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }
 
 const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
-    clientId,
     invoiceDue,
     open,
     onOpenChange,
@@ -108,6 +106,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     });
 
     const onSubmit = (data: BulkInvoicePayInput) => {
+        console.log(data);
         if (data.invoice_ids.length === 0) {
             setError("invoice_ids", {
                 message: t("invoice.bulk_pay.errors.select_invoice"),

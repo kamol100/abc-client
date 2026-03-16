@@ -6,9 +6,12 @@ import ActionButton from "@/components/action-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
 import type { InvoiceRow } from "@/components/invoices/invoice-type";
-import { CreditCard, Printer } from "lucide-react";
-import InvoicePayDialog from "@/components/invoices/invoice-pay-dialog";
+import { CreditCard, Loader2, Printer } from "lucide-react";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
+import dynamic from "next/dynamic";
+const BulkInvoicePayDialog = dynamic(() => import("./bulk-invoice-pay-dialog"), { ssr: false });
+import { InvoiceDueItem } from "../clients/client-type";
+import { useFetch } from "@/app/actions";
 
 type InvoiceRowActionsProps = {
     invoice: InvoiceRow;
@@ -19,6 +22,8 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
     const { hasPermission } = usePermissions();
     const [payOpen, setPayOpen] = useState(false);
     const [printOpen, setPrintOpen] = useState(false);
+    const [invoiceDue, setInvoiceDue] = useState<InvoiceDueItem[]>([]);
+    const [loading, setLoading] = useState(false);
     const normalizedStatus =
         invoice.status === "partial_paid" ? "partial" : invoice.status;
 
@@ -37,7 +42,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
     if (!hasActions) {
         return <div className="text-right text-muted-foreground mr-2">-</div>;
     }
-
+    console.log(invoice);
     return (
         <>
             <div className="flex items-center justify-end gap-2 mr-2">
@@ -51,10 +56,19 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                 {canPay && (
                     <ActionButton
                         variant="outline"
-                        onClick={() => setPayOpen(true)}
+                        onClick={async () => {
+                            setLoading(true);
+                            const data = await useFetch({
+                                url: `/clients/${invoice?.client?.uuid}`,
+                            });
+                            const invoicesDue = await data?.data?.invoiceDue;
+                            setInvoiceDue(invoicesDue);
+                            setPayOpen(true);
+                            setLoading(false);
+                        }}
                         aria-label={t("invoice.actions.pay")}
                     >
-                        <CreditCard className="h-4 w-4" />
+                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
                     </ActionButton>
                 )}
 
@@ -77,12 +91,12 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                     />
                 )}
             </div>
-
-            <InvoicePayDialog
-                invoiceId={invoice.id}
-                open={payOpen}
-                onOpenChange={setPayOpen}
-            />
+            {payOpen && (
+                <BulkInvoicePayDialog
+                    invoiceDue={invoiceDue}
+                    open={payOpen}
+                    onOpenChange={setPayOpen}
+                />)}
             <InvoicePrintDialog
                 invoiceId={invoice.id}
                 open={printOpen}

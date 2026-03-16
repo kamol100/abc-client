@@ -125,7 +125,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                 </>
             )}
         >
-            <div className="space-y-4">
+            <div className="space-y-4 pb-4">
                 <div className="rounded-md border p-3 text-sm">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>

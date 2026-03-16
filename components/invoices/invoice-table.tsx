@@ -44,23 +44,17 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
         [filterValue],
     );
 
-    const { data, isLoading, isFetching, setCurrentPage } =
-        useApiQuery<InvoiceListApiResponse>({
-            queryKey: ["invoices"],
-            url: "invoices",
-            params,
-        });
+    const { data, isLoading, isFetching, setCurrentPage } = useApiQuery<InvoiceListApiResponse>({
+        queryKey: ["invoices"],
+        url: "invoices",
+        params,
+    });
 
     const invoices = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
     const reports = data?.data?.reports;
 
-    const toolbarOptions = useMemo(
-        () => ({
-            filter: InvoiceFilterSchema(),
-        }),
-        [],
-    );
+    const toolbarOptions = useMemo(() => ({ filter: InvoiceFilterSchema() }), []);
 
     const toolbarTitle = pagination?.total
         ? `${t(toolbarTitleKey)} (${pagination.total})`

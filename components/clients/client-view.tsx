@@ -120,7 +120,6 @@ const ClientView: FC<Props> = ({ clientId }) => {
             />
 
             <BulkInvoicePayDialog
-                clientId={client.id}
                 invoiceDue={client.invoiceDue ?? []}
                 open={bulkPayOpen}
                 onOpenChange={setBulkPayOpen}

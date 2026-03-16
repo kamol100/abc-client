@@ -19,6 +19,8 @@ export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
         label: { labelText: "invoice.invoice_type.label", mandatory: true },
         placeholder: "invoice.invoice_type.placeholder",
         api: "/dropdown-invoice-types",
+        valueKey: "invoice_type",
+        valueMapping: { idKey: "id", labelKey: "name" },
     },
     {
         type: "dropdown",
@@ -26,6 +28,8 @@ export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
         label: { labelText: "invoice.client.label", mandatory: true },
         placeholder: "invoice.client.placeholder",
         api: "/dropdown-clients",
+        valueKey: "client",
+        valueMapping: { idKey: "id", labelKey: "name" },
     },
     {
         type: "number",
@@ -56,6 +60,8 @@ export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
         label: { labelText: "invoice.fund.label" },
         placeholder: "invoice.fund.placeholder",
         api: "/dropdown-funds",
+        valueKey: "fund",
+        valueMapping: { idKey: "id", labelKey: "name" },
     },
     {
         type: "date",

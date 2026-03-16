@@ -322,10 +322,19 @@ export type InvoiceListPayload = {
 
 export type InvoiceListApiResponse = ApiResponse<InvoiceListPayload>;
 
+const bulkPayPaymentDateSchema = z.preprocess(
+    (val) => {
+        if (val instanceof Date) return val.toISOString().slice(0, 10);
+        if (typeof val === "string") return val;
+        return val;
+    },
+    z.string().min(1, { message: "invoice.pay.payment_date.errors.required" }),
+);
+
 export const BulkInvoicePaySchema = z.object({
     invoice_ids: z.array(z.string()).min(1),
     fund_id: z.coerce.number().min(1),
-    payment_date: z.string().min(1),
+    payment_date: bulkPayPaymentDateSchema,
     status: z.enum(["paid", "partial"]),
     partial_amount: z.coerce.number().min(0),
     confirmation_sms: z.coerce.number().int().min(0).max(1),

@@ -1,19 +1,18 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { ClientRow } from "./client-type";
 import ClientNamePhoneCell from "./client-name-phone-cell";
 import ClientZoneAddressCell from "./client-zone-address-cell";
 import ClientPackageCell from "./client-package-cell";
 import ClientBillingPaymentCell from "./client-billing-payment-cell";
-import ClientOnlineStatusCell from "./client-online-status-cell";
+import dynamic from 'next/dynamic';
+const ClientOnlineStatusCell = dynamic(() => import('./client-online-status-cell'), { ssr: false });
 import ClientStatusToggle from "./client-status-toggle";
 import ClientRowActions from "./client-row-actions";
 
 export function useClientColumns(): ColumnDef<ClientRow>[] {
-    const { t } = useTranslation();
 
     return [
         {

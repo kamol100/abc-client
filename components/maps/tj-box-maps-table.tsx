@@ -70,6 +70,7 @@ export default function TjBoxMapsTable() {
           formSchema={TjBoxMapsFilterSchema()}
           grids={4}
           setFilter={setFilter}
+          forceOpen
           searchButton
         />
       </div>
