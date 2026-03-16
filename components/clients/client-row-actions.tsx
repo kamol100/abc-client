@@ -151,7 +151,6 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             />
 
             <BulkInvoicePayDialog
-                clientId={client.id}
                 invoiceDue={client.invoiceDue ?? []}
                 open={bulkPayOpen}
                 onOpenChange={setBulkPayOpen}
