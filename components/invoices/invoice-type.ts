@@ -83,8 +83,8 @@ export const InvoiceReportsSchema = z.object({
 });
 
 export const InvoiceRowSchema = z.object({
-    id: z.coerce.number(),
-    uuid: z.string().optional(),
+    id: z.coerce.number().nullable().optional(),
+    uuid: z.string().nullable().optional(),
     trackID: z.string().nullable().optional(),
     create_date: z.string().nullable().optional(),
     due_date: z.string().nullable().optional(),

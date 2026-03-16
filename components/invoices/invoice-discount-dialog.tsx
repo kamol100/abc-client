@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, ReactNode, useCallback, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -83,6 +83,22 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
         await applyDiscount(values);
     };
 
+    const handleDiscountAmountFocus = useCallback(
+        (e: React.FocusEvent<HTMLInputElement>) => {
+            const target = e.target;
+            const scrollIntoView = () => {
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "end",
+                });
+            };
+            requestAnimationFrame(scrollIntoView);
+            setTimeout(scrollIntoView, 400);
+        },
+        [],
+    );
+
     return (
         <DialogWrapper
             open={open}
@@ -90,6 +106,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
             title="invoice.discount_dialog.title"
             size="md"
             loading={isPending}
+            contentClassName="max-h-[80vh] sm:max-h-[90vh]"
             trigger={
                 trigger ?? (
                     <ActionButton
@@ -176,6 +193,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                             mandatory: true,
                         }}
                         placeholder="invoice.discount_dialog.discount_amount.placeholder"
+                        onFocus={handleDiscountAmountFocus}
                     />
                 </Form>
             </div>

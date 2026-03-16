@@ -98,7 +98,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                     onOpenChange={setPayOpen}
                 />)}
             <InvoicePrintDialog
-                invoiceId={invoice.id}
+                invoiceId={invoice?.id}
                 open={printOpen}
                 onOpenChange={setPrintOpen}
             />

@@ -12,7 +12,7 @@ import InvoiceReceipt from "@/components/invoices/invoice-receipt";
 import { InvoiceDetail, InvoiceDetailSchema } from "./invoice-type";
 
 type InvoicePrintDialogProps = {
-    invoiceId: number;
+    invoiceId?: number | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
@@ -38,10 +38,10 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
         staleTime: 30_000,
     });
 
+
     const invoice = useMemo(() => {
         if (!detailResponse?.data) return null;
-        const parsed = InvoiceDetailSchema.safeParse(detailResponse.data);
-        return parsed.success ? parsed.data : null;
+        return detailResponse.data;
     }, [detailResponse]);
 
     const handlePrint = () => {

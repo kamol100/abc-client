@@ -20,6 +20,8 @@ type InputFieldProps = {
     errorMessageEllipsis?: boolean;
     /** Reserve space for error message so layout (e.g. grid rows) does not shift when validation errors appear */
     reserveErrorSpace?: boolean;
+    /** Optional focus handler (e.g. for scrolling input into view on mobile) */
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -35,6 +37,7 @@ const InputField: React.FC<InputFieldProps> = ({
     defaultValue,
     errorMessageEllipsis = false,
     reserveErrorSpace = false,
+    onFocus,
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
@@ -55,6 +58,7 @@ const InputField: React.FC<InputFieldProps> = ({
                         value={readOnly ? defaultValue ?? value ?? "" : value ?? ""}
                         onChange={onChange}
                         onBlur={onBlur}
+                        onFocus={onFocus}
                         ref={ref}
                         readOnly={readOnly}
                         disabled={disabled}
