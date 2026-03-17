@@ -152,7 +152,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                     )}
                 </div>
 
-                <div className="border-b py-2 space-y-1">
+                <div className="border-b pt-2 pb-3">
                     <div className="flex justify-between gap-2">
                         <span className="font-medium text-xs ">{t("invoice.receipt.client")}:</span>
                         <span className="text-right font-medium text-xs">
@@ -172,9 +172,9 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                 </div>
             </div>
 
-            <div className="p-2">
+            <div>
                 <div
-                    className="grid grid-cols-12 gap-1 border-b p-2 font-semibold text-[11px]"
+                    className="grid grid-cols-12 gap-1 border-b p-2 pt-0 font-semibold text-[11px]"
                     data-receipt-items-head
                 >
                     <div className="col-span-2">{t("invoice.receipt.invoice_id")}</div>
@@ -190,14 +190,14 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                     </div>
                 </div>
                 <div
-                    className="!p-2"
+                    className="px-2"
                     data-receipt-items-body
                 >
                     {invoiceGroups.map((group, groupIndex) => (
-                        <div key={group.key} className="invoice-group !p-2">
+                        <div key={group.key} className="invoice-group">
                             {groupIndex > 0 && (
                                 <div
-                                    className="invoice-group-separator my-2 border-t border-dashed"
+                                    className="invoice-group-separator my-1 border-t border-dashed"
                                     data-receipt-item-row
                                 />
                             )}
@@ -243,7 +243,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
             </div>
 
             <div
-                className="border-t p-2 font-medium text-xs  mt-2 space-y-1 break-inside-avoid"
+                className="border-t px-2 font-medium text-xs  mt-2 space-y-1 break-inside-avoid"
                 data-receipt-summary
             >
                 <div className="flex justify-between">
@@ -262,10 +262,12 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                     <span>{t("invoice.receipt.paid")}:</span>
                     <span>{formatMoney(totals.amountPaid)}</span>
                 </div>
-                <div className="flex justify-between font-semibold text-destructive">
-                    <span>{t("invoice.receipt.due")}:</span>
-                    <span>{formatMoney(totals.amountDue)}</span>
-                </div>
+                {totals.amountDue > 0 && (
+                    <div className="flex justify-between font-semibold text-destructive">
+                        <span>{t("invoice.receipt.due")}:</span>
+                        <span>{formatMoney(totals.amountDue)}</span>
+                    </div>
+                )}
                 <div className="pt-2 pb-1 text-center font-semibold">
                     {t("invoice.receipt.thank_you")}
                 </div>
