@@ -10,6 +10,7 @@ import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PaymentColumns } from "./payment-column";
 import { PaymentRow } from "./payment-type";
+import PaymentFilterSchema from "./payment-filter-schema";
 
 type PaymentListPayload = {
     data: PaymentRow[];
@@ -72,6 +73,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 setFilter={setFilter}
                 columns={PaymentColumns}
                 toggleColumns
+                toolbarOptions={{ filter: PaymentFilterSchema() }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}

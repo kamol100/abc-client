@@ -78,7 +78,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarHeader className="border-b">
           <TeamSwitcher teams={sidebarConfig.teams} />
         </SidebarHeader>
-        <SidebarContent className="group-data-[collapsible=icon]:!overflow-y-auto pr-2">
+        <SidebarContent className="group-data-[collapsible=icon]:!overflow-y-auto">
           <NavMain items={menuItems} />
         </SidebarContent>
         <SidebarFooter className="border-t">

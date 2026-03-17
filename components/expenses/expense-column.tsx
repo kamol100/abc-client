@@ -1,23 +1,23 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/helper/helper";
 import { ColumnDef } from "@tanstack/react-table";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { Badge } from "../ui/badge";
+import MyBadge from "../my-badge";
 import { Button } from "../ui/button";
 import { DeleteModal } from "../delete-modal";
 import useApiMutation from "@/hooks/use-api-mutation";
 import ExpenseForm from "./expense-form";
 import { ExpenseRow } from "./expense-type";
+import ActionButton from "../action-button";
 
-const STATUS_STYLES: Record<string, string> = {
-    approved: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
-    pending: "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
-    declined: "bg-red-600/10 text-red-600 dark:bg-red-400/10 dark:text-red-400",
+const STATUS_BADGE_TYPE = {
+    approved: "success" as const,
+    pending: "pending" as const,
+    declined: "decline" as const,
 };
 
 const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
@@ -39,8 +39,8 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
     return (
         <div className="flex items-end justify-end gap-1 mr-2">
             {expense.status !== "approved" && (
-                <Button
-                    variant="ghost"
+                <ActionButton
+                    variant="outline"
                     size="icon"
                     className="h-8 w-8 text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
                     disabled={isPending}
@@ -52,11 +52,11 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
                     ) : (
                         <CheckCircle2 className="h-4 w-4" />
                     )}
-                </Button>
+                </ActionButton>
             )}
             {expense.status !== "declined" && (
-                <Button
-                    variant="ghost"
+                <ActionButton
+                    variant="outline"
                     size="icon"
                     className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
                     disabled={isPending}
@@ -68,7 +68,7 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
                     ) : (
                         <XCircle className="h-4 w-4" />
                     )}
-                </Button>
+                </ActionButton>
             )}
             <ExpenseForm
                 mode="edit"
@@ -165,11 +165,12 @@ export const ExpenseColumns: ColumnDef<ExpenseRow>[] = [
             <DataTableColumnHeader column={column} title="common.status" />
         ),
         cell: ({ row }) => {
-            const status = row.original.status ?? "pending";
+            const status = (row.original.status ?? "pending") as keyof typeof STATUS_BADGE_TYPE;
+            const type = STATUS_BADGE_TYPE[status] ?? "pending";
             return (
-                <Badge className={cn(STATUS_STYLES[status])}>
+                <MyBadge type={type} variant="soft">
                     <span className="capitalize">{status}</span>
-                </Badge>
+                </MyBadge>
             );
         },
     },

@@ -3,10 +3,9 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { Badge } from "@/components/ui/badge";
+import MyBadge from "@/components/my-badge";
 import {
     Tooltip,
     TooltipContent,
@@ -16,13 +15,11 @@ import {
 import { InvoiceRow } from "./invoice-type";
 import InvoiceRowActions from "./invoice-row-actions";
 
-const STATUS_STYLES: Record<string, string> = {
-    paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
-    due: "bg-red-600/10 text-red-600 dark:bg-red-400/10 dark:text-red-400",
-    partial:
-        "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
-    partial_paid:
-        "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
+const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
+    paid: "success",
+    due: "decline",
+    partial: "warning",
+    partial_paid: "warning",
 };
 
 export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
@@ -143,14 +140,15 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                     const normalizedStatus =
                         status === "partial_paid" ? "partial" : status;
                     const statusLabelKey = `invoice.filter.status_${normalizedStatus}`;
+                    const type = STATUS_BADGE_TYPE[status] ?? "decline";
                     return (
-                        <Badge className={cn(STATUS_STYLES[status])}>
+                        <MyBadge type={type} variant="soft">
                             <span className="capitalize">
                                 {t(statusLabelKey, {
                                     defaultValue: normalizedStatus.replace("_", " "),
                                 })}
                             </span>
-                        </Badge>
+                        </MyBadge>
                     );
                 },
             },
