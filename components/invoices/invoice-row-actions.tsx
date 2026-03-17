@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
-import type { InvoiceRow } from "@/components/invoices/invoice-type";
+import type { InvoiceDetail, InvoiceRow } from "@/components/invoices/invoice-type";
 import { CreditCard, Loader2, Printer } from "lucide-react";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
 import dynamic from "next/dynamic";
@@ -98,7 +98,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                     onOpenChange={setPayOpen}
                 />)}
             <InvoicePrintDialog
-                invoiceId={invoice?.id}
+                invoices={[invoice as InvoiceDetail]}
                 open={printOpen}
                 onOpenChange={setPrintOpen}
             />
