@@ -213,8 +213,13 @@
         }
     },
     "user": {
+        "title": "ইউজার",
+        "title_plural": "ইউজার",
+        "create_title": "ইউজার যোগ করুন",
+        "edit_title": "ইউজার এডিট",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ইউজারটি মুছে ফেলতে চান?",
         "name": {
-            "label": "নাম",
+            "label": "ইউজারের নাম",
             "tooltip": "ব্যবহারকারীর সম্পূর্ণ নাম দিন",
             "placeholder": "ব্যবহারকারীর সম্পূর্ণ নাম দিন",
             "errors": {
@@ -268,6 +273,8 @@
         "status": {
             "label": "অবস্থা",
             "placeholder": "অবস্থা নির্বাচন করুন",
+            "active_tooltip": "ইউজার অ্যাক্টিভ",
+            "inactive_tooltip": "ইউজার ইনঅ্যাক্টিভ",
             "errors": {
                 "required": "অবস্থা আবশ্যক"
             }
@@ -285,9 +292,7 @@
         },
         "domain": {
             "label": "ডোমেইন"
-        },
-        "title": "ইউজার",
-        "delete_confirmation": "আপনি কি নিশ্চিত এই ইউজারটি মুছে ফেলতে চান?"
+        }
     },
     "zone": {
         "name": {
@@ -735,6 +740,11 @@
         }
     },
     "vendor": {
+        "title": "ভেন্ডর",
+        "title_plural": "ভেন্ডর",
+        "create_title": "ভেন্ডর যোগ করুন",
+        "edit_title": "ভেন্ডর এডিট",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই ভেন্ডরটি মুছে ফেলতে চান?",
         "name": {
             "label": "ভেন্ডরের নাম",
             "placeholder": "ভেন্ডরের নাম দিন",
@@ -761,9 +771,7 @@
         "address": {
             "label": "ঠিকানা",
             "placeholder": "ঠিকানা দিন"
-        },
-        "title": "ভেন্ডর",
-        "delete_confirmation": "আপনি কি নিশ্চিত এই ভেন্ডরটি মুছে ফেলতে চান?"
+        }
     },
     "company": {
         "name": {

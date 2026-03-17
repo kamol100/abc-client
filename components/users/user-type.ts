@@ -3,13 +3,9 @@ import { z } from "zod";
 export const UserStatusSchema = z.coerce.number().pipe(z.union([z.literal(0), z.literal(1)]));
 
 export const USER_STATUS_OPTIONS = [
-    { value: 1, label: "Active" },
-    { value: 0, label: "Inactive" },
+    { value: 1, label: "common.active" },
+    { value: 0, label: "common.inactive" },
 ] as const;
-
-export function getUserStatusLabel(status: 0 | 1): string {
-    return status === 1 ? "Active" : "Inactive";
-}
 
 export const RoleSchema = z.object({
     name: z.string(),

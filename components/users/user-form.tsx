@@ -23,7 +23,7 @@ const UserForm: FC<Props> = ({
     return (
         <DialogWrapper
             size="xl"
-            title={mode === "create" ? "create_user" : "edit_user"}
+            title={mode === "create" ? "user.create_title" : "user.edit_title"}
             trigger={<FormTrigger mode={mode} />}
         >
             <FormBuilder

@@ -7,6 +7,6 @@ export default async function Vendors() {
 }
 
 export const metadata: Metadata = {
-    title: t("vendor.title"),
-    description: t("vendor.title"),
+    title: t("vendor.title_plural"),
+    description: t("vendor.title_plural"),
 };

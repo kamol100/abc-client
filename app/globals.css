@@ -522,4 +522,38 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  /* ============================================
+     Desktop sidebar (expanded + collapsed): thin scrollbar, visible on hover only
+     [data-sidebar="sidebar"] is the desktop sidebar wrapper (mobile sheet has no wrapper)
+     ============================================ */
+
+  /* Firefox: thin scrollbar, transparent until hover */
+  [data-sidebar="sidebar"] [data-sidebar="content"] {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.15s ease;
+  }
+  [data-sidebar="sidebar"]:hover [data-sidebar="content"] {
+    scrollbar-color: hsl(var(--sidebar-foreground) / 0.25) transparent;
+  }
+
+  /* WebKit (Chrome, Edge, Safari): slim scrollbar, hidden until hover */
+  [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar {
+    width: 4px;
+  }
+  [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 2px;
+    transition: background 0.15s ease;
+  }
+  [data-sidebar="sidebar"]:hover [data-sidebar="content"]::-webkit-scrollbar-thumb {
+    background: hsl(var(--sidebar-foreground) / 0.25);
+  }
+  [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--sidebar-foreground) / 0.4);
+  }
 }

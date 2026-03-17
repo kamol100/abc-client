@@ -1,6 +1,8 @@
 "use client";
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
+
 import { FC, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { UserRow } from "@/components/users/user-type";
 import UserFilterSchema from "@/components/users/user-filter-schema";
@@ -8,6 +10,7 @@ import UserForm from "@/components/users/user-form";
 import { UsersColumns } from "@/components/users/users-column";
 
 const UserTable: FC = () => {
+  const { t } = useTranslation();
   const [filterValue, setFilter] = useState<string | null>(null);
   const params = useMemo(
     () =>
@@ -32,8 +35,8 @@ const UserTable: FC = () => {
   };
 
   const toolbarTitle = pagination?.total
-    ? `Users (${pagination.total})`
-    : "Users";
+    ? `${t("user.title_plural")} (${pagination.total})`
+    : t("user.title_plural");
 
   return (
     <DataTable

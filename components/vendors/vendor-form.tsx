@@ -23,7 +23,7 @@ const VendorForm: FC<Props> = ({
     return (
         <DialogWrapper
             size="xl"
-            title={mode === "create" ? "create_vendor" : "edit_vendor"}
+            title={mode === "create" ? "vendor.create_title" : "vendor.edit_title"}
             trigger={<FormTrigger mode={mode} />}
         >
             <FormBuilder

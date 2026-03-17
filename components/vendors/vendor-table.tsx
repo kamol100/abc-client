@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { VendorRow } from "@/components/vendors/vendor-type";
@@ -8,6 +9,7 @@ import { VendorsColumns } from "@/components/vendors/vendors-column";
 import VendorForm from "@/components/vendors/vendor-form";
 
 const VendorTable: FC = () => {
+    const { t } = useTranslation();
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -28,8 +30,8 @@ const VendorTable: FC = () => {
     const pagination = data?.data?.pagination;
 
     const toolbarTitle = pagination?.total
-        ? `Vendors (${pagination.total})`
-        : "Vendors";
+        ? `${t("vendor.title_plural")} (${pagination.total})`
+        : t("vendor.title_plural");
 
     return (
         <DataTable

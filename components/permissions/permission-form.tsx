@@ -225,7 +225,7 @@ const PermissionForm: FC = () => {
   return (
     <FormProvider {...form}>
       <div className="flex flex-col flex-1 min-h-0">
-        <div className="space-y-4 flex-1 min-h-0 overflow-y-auto pr-1">
+        <div className="space-y-4 flex-1 min-h-0 overflow-y-auto pr-3">
           <Card>
             <CardHeader>
               <CardTitle>{t("permission.title_plural")}</CardTitle>

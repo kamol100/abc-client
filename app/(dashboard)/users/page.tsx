@@ -7,6 +7,6 @@ export default async function Users() {
 }
 
 export const metadata: Metadata = {
-  title: t("user.title"),
-  description: t("user.title"),
+  title: t("user.title_plural"),
+  description: t("user.title_plural"),
 };

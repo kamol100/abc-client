@@ -213,6 +213,11 @@
         }
     },
     "user": {
+        "title": "Users",
+        "title_plural": "Users",
+        "create_title": "Add User",
+        "edit_title": "Edit User",
+        "delete_confirmation": "Are you sure you want to delete this user?",
         "name": {
             "label": "User Name",
             "tooltip": "Enter the full legal name of the user",
@@ -268,6 +273,8 @@
         "status": {
             "label": "Status",
             "placeholder": "Select the status",
+            "active_tooltip": "User is active",
+            "inactive_tooltip": "User is inactive",
             "errors": {
                 "required": "Status is required"
             }
@@ -285,9 +292,7 @@
         },
         "domain": {
             "label": "Domain"
-        },
-        "title": "Users",
-        "delete_confirmation": "Are you sure you want to delete this user?"
+        }
     },
     "zone": {
         "name": {
@@ -735,6 +740,11 @@
         }
     },
     "vendor": {
+        "title": "Vendors",
+        "title_plural": "Vendors",
+        "create_title": "Add Vendor",
+        "edit_title": "Edit Vendor",
+        "delete_confirmation": "Are you sure you want to delete this vendor?",
         "name": {
             "label": "Vendor Name",
             "placeholder": "Enter vendor name",
@@ -761,9 +771,7 @@
         "address": {
             "label": "Address",
             "placeholder": "Enter address"
-        },
-        "title": "Vendors",
-        "delete_confirmation": "Are you sure you want to delete this vendor?"
+        }
     },
     "company": {
         "name": {
