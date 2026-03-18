@@ -1,16 +1,18 @@
 "use client";
 
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { formatMoney } from "@/lib/helper/helper";
+import { toNumber } from "@/lib/helper/helper";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import DisplayMoney from "@/components/display-money";
 import { PaymentColumns } from "./payment-column";
 import { PaymentRow } from "./payment-type";
 import PaymentFilterSchema from "./payment-filter-schema";
+import { TakaIcon } from "../icons";
 
 type PaymentListPayload = {
     data: PaymentRow[];
@@ -61,9 +63,12 @@ const PaymentTable: FC<PaymentTableProps> = ({
                     {isLoading ? (
                         <Skeleton className="h-8 w-32 mt-2" />
                     ) : (
-                        <p className="text-2xl font-semibold text-primary">
-                            ৳{formatMoney(totalPaid)}
-                        </p>
+                        <DisplayMoney
+                            amount={toNumber(totalPaid)}
+                            className="text-xl font-semibold text-primary"
+                            animate
+                            duration={800}
+                        />
                     )}
                 </CardContent>
             </Card>

@@ -16,6 +16,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { TicketRow } from "./ticket-type";
 import ActionButton from "../action-button";
+import TicketForm from "./ticket-form";
 
 interface TicketRowActionsProps {
     row: Row<TicketRow>;
@@ -46,13 +47,12 @@ const TicketRowActions: FC<TicketRowActionsProps> = ({ row }) => {
                     </Tooltip>
                 )}
                 {hasPermission("tickets.edit") && (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <ActionButton variant="outline" size="icon" className="h-8 w-8" action="edit" aria-label={t("ticket.edit_title")}>
-                            </ActionButton>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">{t("ticket.edit_title")}</TooltipContent>
-                    </Tooltip>
+                    <TicketForm
+                        mode="edit"
+                        data={{ id: ticket.id }}
+                        api="/tickets"
+                        method="PUT"
+                    />
                 )}
                 {(hasPermission("tickets.reply") || hasPermission("client.tickets.reply")) && (
                     <Tooltip>

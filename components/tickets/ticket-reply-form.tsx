@@ -10,6 +10,8 @@ import { TicketReplySchema, TicketReplyInput } from "./ticket-type";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Card from "../card";
 import { usePermissions } from "@/context/app-provider";
+import TextareaField from "@/components/form/textarea-field";
+import { Form } from "@/components/ui/form";
 
 interface TicketReplyFormProps {
     ticketId: string;
@@ -19,15 +21,11 @@ const TicketReplyForm: FC<TicketReplyFormProps> = ({ ticketId }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<TicketReplyInput>({
+    const form = useForm<TicketReplyInput>({
         resolver: zodResolver(TicketReplySchema),
         defaultValues: { message: "" },
     });
+    const { handleSubmit, reset } = form;
 
     const { mutateAsync, isPending } = useApiMutation<unknown, TicketReplyInput>({
         url: `tickets/${ticketId}/messages`,
@@ -51,31 +49,29 @@ const TicketReplyForm: FC<TicketReplyFormProps> = ({ ticketId }) => {
                 <CardTitle className="text-base">{t("ticket.reply.title")}</CardTitle>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                    <div>
-                        <textarea
-                            {...register("message")}
-                            placeholder={t("ticket.reply.placeholder")}
+                <Form {...form}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <TextareaField
+                            name="message"
+                            label={{
+                                labelText: "ticket.reply.title",
+                                mandatory: true,
+                            }}
+                            placeholder="ticket.reply.placeholder"
                             rows={3}
-                            className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         />
-                        {errors.message && (
-                            <p className="text-sm text-destructive mt-1">
-                                {errors.message.message}
-                            </p>
-                        )}
-                    </div>
-                    <div className="flex justify-end">
-                        <ActionButton
-                            action="save"
-                            type="submit"
-                            variant="default"
-                            size="default"
-                            loading={isPending}
-                            title={t("ticket.reply.send")}
-                        />
-                    </div>
-                </form>
+                        <div className="flex justify-end">
+                            <ActionButton
+                                action="save"
+                                type="submit"
+                                variant="default"
+                                size="default"
+                                loading={isPending}
+                                title={t("ticket.reply.send")}
+                            />
+                        </div>
+                    </form>
+                </Form>
             </CardContent>
         </Card>
     );

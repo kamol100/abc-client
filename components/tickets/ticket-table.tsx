@@ -6,7 +6,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { TicketColumns } from "./ticket-column";
 import { TicketRow } from "./ticket-type";
 import { useTranslation } from "react-i18next";
-import TicketCreateDialog from "./ticket-create-dialog";
+import TicketCreateDialog from "./ticket-form";
 import TicketFilterSchema from "./ticket-filter-schema";
 
 interface TicketTableProps {

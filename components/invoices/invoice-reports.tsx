@@ -2,11 +2,12 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { CardContent } from "@/components/ui/card";
 import Card from "../card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InvoiceReports as InvoiceReportsType } from "./invoice-type";
+import DisplayMoney from "../display-money";
 
 type Props = {
     reports?: InvoiceReportsType | null;
@@ -27,13 +28,29 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                     <p className="text-xs text-muted-foreground">
                         {t("invoice.reports.sub_total")}
                     </p>
-                    <p className="font-semibold">৳{formatMoney(reports?.total_amount)}</p>
+                    <p className="font-semibold">
+                        <DisplayMoney
+                            amount={toNumber(reports?.total_amount)}
+                            currency="BDT"
+                            className="text-md font-semibold"
+                            animate
+                            duration={800}
+                        />
+                    </p>
                 </div>
                 <div>
                     <p className="text-xs text-muted-foreground">
                         {t("invoice.reports.discount")}
                     </p>
-                    <p className="font-semibold">৳{formatMoney(reports?.discount)}</p>
+                    <p className="font-semibold">
+                        <DisplayMoney
+                            amount={toNumber(reports?.discount)}
+                            currency="BDT"
+                            className="text-md font-semibold"
+                            animate
+                            duration={800}
+                        />
+                    </p>
                 </div>
                 <div className="flex justify-enter items-center">
                     <div>
@@ -41,7 +58,13 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                             {t("invoice.reports.total")}
                         </p>
                         <p className="font-semibold">
-                            ৳{formatMoney(reports?.after_discount_amount)}
+                            <DisplayMoney
+                                amount={toNumber(reports?.after_discount_amount)}
+                                currency="BDT"
+                                className="text-md font-semibold"
+                                animate
+                                duration={800}
+                            />
                         </p>
                     </div>
                 </div>
@@ -50,7 +73,15 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                         <p className="text-xs text-muted-foreground">
                             {t("invoice.reports.paid")}
                         </p>
-                        <p className="font-semibold">৳{formatMoney(reports?.amount_paid)}</p>
+                        <p className="font-semibold">
+                            <DisplayMoney
+                                amount={toNumber(reports?.amount_paid)}
+                                currency="BDT"
+                                className="text-md font-semibold"
+                                animate
+                                duration={800}
+                            />
+                        </p>
                     </div>
                 </div>
             </CardContent>
