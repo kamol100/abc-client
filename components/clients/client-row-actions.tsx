@@ -1,7 +1,7 @@
 "use client";
 
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import {
     DialogDescription,
@@ -156,7 +156,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 onOpenChange={setBulkPayOpen}
             />
 
-            <DialogWrapper
+            <MyDialog
                 open={deleteOpen}
                 onOpenChange={handleDeleteOpenChange}
                 size="sm"
@@ -207,7 +207,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                         </span>
                     </label>
                 </div>
-            </DialogWrapper>
+            </MyDialog>
         </div>
     );
 };

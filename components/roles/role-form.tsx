@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import { RoleFormSchema, RoleRow } from "./role-type";
@@ -19,7 +19,7 @@ const RoleForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "role.create_title" : "role.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const RoleForm: FC<Props> = ({
                 method={method}
                 queryKey="roles"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

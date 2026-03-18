@@ -1,7 +1,7 @@
 "use client";
 
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import {
     DialogDescription,
     DialogTitle,
@@ -39,7 +39,7 @@ const ClientSessionResetDialog: FC<ClientSessionResetDialogProps> = ({
     };
 
     return (
-        <DialogWrapper
+        <MyDialog
             trigger={trigger}
             open={open}
             onOpenChange={onOpenChange}
@@ -80,7 +80,7 @@ const ClientSessionResetDialog: FC<ClientSessionResetDialogProps> = ({
                     </DialogDescription>
                 </div>
             </div>
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-builder";
 import FormTrigger from "@/components/form-trigger";
 import {
@@ -27,7 +27,7 @@ const CommunicationGatewayForm: FC<Props> = ({
       : "communication_gateway.edit_title";
 
   return (
-    <DialogWrapper
+    <MyDialog
       size="4xl"
       title={title}
       trigger={mode === "create" ? <FormTrigger mode="create" /> : undefined}
@@ -44,7 +44,7 @@ const CommunicationGatewayForm: FC<Props> = ({
         method={mode === "edit" ? "PUT" : "POST"}
         queryKey="communicationGateways"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

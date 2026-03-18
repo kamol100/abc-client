@@ -5,7 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { DialogWrapper, useDialogClose } from "@/components/dialog-wrapper";
+import { MyDialog, useMyDialogClose } from "@/components/my-dialog";
 import FormTrigger from "@/components/form-trigger";
 import ActionButton from "@/components/action-button";
 import SelectDropdown from "@/components/select-dropdown";
@@ -26,13 +26,13 @@ const TicketCreateDialog: FC = () => {
     if (!hasPermission("tickets.create")) return null;
 
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title="ticket.create_title"
             trigger={<FormTrigger mode="create" />}
         >
             <TicketCreateForm />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 
@@ -40,7 +40,7 @@ const TicketCreateForm: FC = () => {
     const { t } = useTranslation();
     const searchParams = useSearchParams();
     const clientId = searchParams.get("client_id");
-    const close = useDialogClose();
+    const close = useMyDialogClose();
 
     const form = useForm<TicketCreateInput>({
         resolver: zodResolver(TicketCreateSchema),

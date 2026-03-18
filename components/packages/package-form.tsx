@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import PackageFormFieldSchema, {
@@ -45,7 +45,7 @@ const PackageForm: FC<Props> = ({
       : "package.edit_title";
 
   return (
-    <DialogWrapper
+    <MyDialog
       size="xl"
       title={titleKey}
       trigger={<FormTrigger mode={mode} />}
@@ -60,7 +60,7 @@ const PackageForm: FC<Props> = ({
         method={method}
         queryKey="packages"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

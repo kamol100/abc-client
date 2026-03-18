@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import { InvoiceTypeFormSchema, InvoiceTypeRow } from "./invoice-type-type";
@@ -21,7 +21,7 @@ const InvoiceTypeForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "invoice_type.create_title" : "invoice_type.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const InvoiceTypeForm: FC<Props> = ({
                 method={method}
                 queryKey="invoice-types"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

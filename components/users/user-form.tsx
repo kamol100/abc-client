@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { getUserFormSchema, UserRow } from "@/components/users/user-type";
 import UserFormSchema from "@/components/users/user-form-schema";
@@ -21,7 +21,7 @@ const UserForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "user.create_title" : "user.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const UserForm: FC<Props> = ({
                 method={method}
                 queryKey="users"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

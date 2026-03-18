@@ -4,7 +4,7 @@ import { ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useWatch } from "react-hook-form";
 import { formatMoney } from "@/lib/helper/helper";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import FundTransactionFormFieldSchema from "./fund-transaction-form-schema";
@@ -60,7 +60,7 @@ const FundTransactionForm = ({
   const formSchema = FundTransactionFormFieldSchema();
 
   return (
-    <DialogWrapper
+    <MyDialog
       open={open}
       onOpenChange={onOpenChange}
       trigger={trigger}
@@ -98,7 +98,7 @@ const FundTransactionForm = ({
           )}
         </FormBuilder>
       </div>
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import DeviceFormFieldSchema from "./device-form-schema";
@@ -19,7 +19,7 @@ const DeviceForm: FC<Props> = ({
   data = undefined,
 }) => {
   return (
-    <DialogWrapper
+    <MyDialog
       size="4xl"
       title={mode === "create" ? "device.create_title" : "device.edit_title"}
       trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const DeviceForm: FC<Props> = ({
         method={method}
         queryKey="devices"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

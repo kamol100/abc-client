@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import FundFormFieldSchema from "./fund-form-schema";
@@ -19,7 +19,7 @@ const FundForm: FC<FundFormProps> = ({
   data = undefined,
 }) => {
   return (
-    <DialogWrapper
+    <MyDialog
       size="xl"
       title={mode === "create" ? "fund.create_title" : "fund.edit_title"}
       trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const FundForm: FC<FundFormProps> = ({
         method={method}
         queryKey="funds"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/app/actions";
 import { ApiResponse } from "@/hooks/use-api-query";
@@ -291,7 +291,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
     };
 
     return (
-        <DialogWrapper
+        <MyDialog
             open={open}
             onOpenChange={onOpenChange}
             title="invoice.print.title"
@@ -349,7 +349,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                     </div>
                 </div>
             )}
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

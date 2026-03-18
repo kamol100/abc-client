@@ -4,7 +4,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import ActionButton from "@/components/action-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form } from "@/components/ui/form";
@@ -125,7 +125,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     const hasInvoices = invoiceDue.length > 0;
 
     return (
-        <DialogWrapper
+        <MyDialog
             open={open}
             onOpenChange={onOpenChange}
             title="invoice.bulk_pay.title"
@@ -407,7 +407,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                     </div>
                 </Form>
             )}
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

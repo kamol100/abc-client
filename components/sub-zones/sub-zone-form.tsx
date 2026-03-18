@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { SubZoneFormSchema, SubZoneRow } from "@/components/sub-zones/sub-zone-type";
 import SubZoneFormFieldSchema from "@/components/sub-zones/sub-zone-form-schema";
@@ -21,7 +21,7 @@ const SubZoneForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="2xl"
             title={mode === "create" ? "create_sub_zone" : "edit_sub_zone"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const SubZoneForm: FC<Props> = ({
                 method={method}
                 queryKey="sub-zones"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

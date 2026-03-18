@@ -17,7 +17,7 @@ import { DataTableViewOptions } from "@/components/data-table/data-table-view-op
 import ActionButton from "@/components/action-button";
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
-import { CustomDrawer } from "@/components/drawer";
+import { MyDrawer } from "@/components/my-drawer";
 import { useFilterForm } from "@/hooks/use-filter-form";
 
 interface DataTableToolbarProps<TData> {
@@ -143,7 +143,7 @@ export function DataTableToolbar<TData>({
 
         {toolbarOptions?.filter && (
           isMobile ? (
-            <CustomDrawer
+            <MyDrawer
               open={filterDrawerOpen}
               onOpenChange={setFilterDrawerOpen}
               trigger={
@@ -191,7 +191,7 @@ export function DataTableToolbar<TData>({
                 className="flex flex-col gap-4"
                 formHook={filterHook}
               />
-            </CustomDrawer>
+            </MyDrawer>
           ) : (
             <FormFilter
               formSchema={toolbarOptions.filter}

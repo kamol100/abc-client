@@ -4,7 +4,7 @@ import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import ActionButton from "../action-button";
-import { DialogWrapper } from "../dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { Badge } from "../ui/badge";
 import { SalaryRow } from "./salary-type";
 
@@ -48,7 +48,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
   );
 
   return (
-    <DialogWrapper
+    <MyDialog
       trigger={<ActionButton action="search" />}
       title="common.salary_details"
       size="2xl"
@@ -179,7 +179,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
           </div>
         )}
       </div>
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

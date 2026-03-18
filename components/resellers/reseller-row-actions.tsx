@@ -7,7 +7,7 @@ import { Edit, ShieldCheck, Trash2, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import ActionButton from "@/components/action-button";
 import useApiMutation from "@/hooks/use-api-mutation";
 import {
@@ -78,7 +78,7 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                 )}
             </DataTableRowActions>
 
-            <DialogWrapper
+            <MyDialog
                 open={deleteOpen}
                 onOpenChange={setDeleteOpen}
                 size="sm"
@@ -118,7 +118,7 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                         </DialogDescription>
                     </div>
                 </div>
-            </DialogWrapper>
+            </MyDialog>
         </>
     );
 };

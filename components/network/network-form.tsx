@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import NetworkFormFieldSchema from "./network-form-schema";
@@ -19,7 +19,7 @@ const NetworkForm: FC<Props> = ({
   data = undefined,
 }) => {
   return (
-    <DialogWrapper
+    <MyDialog
       size="3xl"
       title={mode === "create" ? "network.create_title" : "network.edit_title"}
       trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const NetworkForm: FC<Props> = ({
         method={method}
         queryKey="networks"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

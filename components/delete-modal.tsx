@@ -1,7 +1,7 @@
 "use client";
 
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import {
   DialogDescription,
   DialogTitle,
@@ -47,7 +47,7 @@ export function DeleteModal({
   };
 
   return (
-    <DialogWrapper
+    <MyDialog
       trigger={children ?? <ActionButton action="delete" icon={true} />}
       size="sm"
       loading={isPending}
@@ -86,6 +86,6 @@ export function DeleteModal({
           </DialogDescription>
         </div>
       </div>
-    </DialogWrapper>
+    </MyDialog>
   );
 }

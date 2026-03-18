@@ -1,7 +1,7 @@
 "use client";
 
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import SelectDropdown from "@/components/select-dropdown";
 import useApiMutation from "@/hooks/use-api-mutation";
@@ -54,7 +54,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
     };
 
     return (
-        <DialogWrapper
+        <MyDialog
             trigger={trigger}
             open={open}
             onOpenChange={handleOpenChange}
@@ -127,7 +127,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                     />
                 </FormProvider>
             </div>
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, ReactNode } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import { GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
@@ -39,7 +39,7 @@ const TjBoxForm: FC<Props> = ({
         );
 
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "tj_box.create_title" : "tj_box.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -55,7 +55,7 @@ const TjBoxForm: FC<Props> = ({
                 queryKey="tj-boxes"
                 children={children}
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

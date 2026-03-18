@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import RadioField from "@/components/form/radio-field";
 import TextareaField from "@/components/form/textarea-field";
@@ -138,7 +138,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
     };
 
     return (
-        <DialogWrapper
+        <MyDialog
             open={open}
             onOpenChange={onOpenChange}
             title="invoice.pay.title"
@@ -294,7 +294,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
                     </div>
                 </Form>
             )}
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

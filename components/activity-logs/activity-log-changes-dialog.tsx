@@ -1,6 +1,6 @@
 "use client";
 
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { formatKey } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 import type { ActivityLogChanges as ActivityLogChangesType } from "./activity-log-type";
@@ -31,7 +31,7 @@ export function ActivityLogChangesDialog({
         Object.keys(changes.attributes).length > 0;
 
     return (
-        <DialogWrapper
+        <MyDialog
             open={open}
             onOpenChange={onOpenChange}
             size="4xl"
@@ -82,6 +82,6 @@ export function ActivityLogChangesDialog({
                     </div>
                 </div>
             </div>
-        </DialogWrapper>
+        </MyDialog>
     );
 }

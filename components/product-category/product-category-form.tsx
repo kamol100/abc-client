@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import { ProductCategoryFormSchema, ProductCategoryRow } from "./product-category-type";
@@ -19,7 +19,7 @@ const ProductCategoryForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "product_category.create_title" : "product_category.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const ProductCategoryForm: FC<Props> = ({
                 method={method}
                 queryKey="product-categories"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import { TagFormSchema, TagRow } from "./tag-type";
@@ -19,7 +19,7 @@ const TagForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "tag.create_title" : "tag.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -34,7 +34,7 @@ const TagForm: FC<Props> = ({
                 method={method}
                 queryKey="tags"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

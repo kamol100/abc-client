@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { VendorFormSchema, VendorRow } from "@/components/vendors/vendor-type";
 import VendorFormFieldSchema from "@/components/vendors/vendor-form-schema";
@@ -21,7 +21,7 @@ const VendorForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "vendor.create_title" : "vendor.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const VendorForm: FC<Props> = ({
                 method={method}
                 queryKey="vendors"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

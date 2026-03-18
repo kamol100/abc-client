@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import {
     CompanyFormSchema,
@@ -28,7 +28,7 @@ const CompanyForm: FC<Props> = ({
     const formSchema = CompanyFormFieldSchema(mode);
 
     return (
-        <DialogWrapper
+        <MyDialog
             size="3xl"
             title={mode === "create" ? "company.create_title" : "company.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -43,7 +43,7 @@ const CompanyForm: FC<Props> = ({
                 method={method}
                 queryKey="companies"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

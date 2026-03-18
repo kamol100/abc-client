@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import ProductFormFieldSchema from "@/components/products/product-form-schema";
@@ -21,7 +21,7 @@ const ProductForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "product.create_title" : "product.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const ProductForm: FC<Props> = ({
                 method={method}
                 queryKey="products"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

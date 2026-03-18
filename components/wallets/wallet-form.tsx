@@ -2,7 +2,7 @@
 
 import { useFetch } from "@/app/actions";
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import TextareaField from "@/components/form/textarea-field";
 import SelectDropdown from "@/components/select-dropdown";
@@ -80,7 +80,7 @@ export const BkashWalletForm: FC = () => {
   });
 
   return (
-    <DialogWrapper
+    <MyDialog
       open={open}
       onOpenChange={(nextOpen) => {
         setOpen(nextOpen);
@@ -122,7 +122,7 @@ export const BkashWalletForm: FC = () => {
           <input ref={submitRef} type="submit" className="hidden" />
         </form>
       </Form>
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 
@@ -173,7 +173,7 @@ export const ClientWalletForm: FC = () => {
   });
 
   return (
-    <DialogWrapper
+    <MyDialog
       open={open}
       onOpenChange={(nextOpen) => {
         setOpen(nextOpen);
@@ -228,6 +228,6 @@ export const ClientWalletForm: FC = () => {
           <input ref={submitRef} type="submit" className="hidden" />
         </form>
       </Form>
-    </DialogWrapper>
+    </MyDialog>
   );
 };

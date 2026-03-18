@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import { Form } from "@/components/ui/form";
 import useApiMutation from "@/hooks/use-api-mutation";
@@ -100,7 +100,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
     );
 
     return (
-        <DialogWrapper
+        <MyDialog
             open={open}
             onOpenChange={setOpen}
             title="invoice.discount_dialog.title"
@@ -197,7 +197,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                     />
                 </Form>
             </div>
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

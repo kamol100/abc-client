@@ -2,7 +2,7 @@
 
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import ActionButton from "@/components/action-button";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import SmsTemplateFormFieldSchema from "@/components/sms-templates/sms-template-form-schema";
@@ -109,7 +109,7 @@ const SmsTemplateForm: FC<SmsTemplateFormProps> = ({
   const formSchema = useMemo(() => SmsTemplateFormFieldSchema(), []);
 
   return (
-    <DialogWrapper
+    <MyDialog
       size="3xl"
       title={mode === "create" ? "sms_template.create_title" : "sms_template.edit_title"}
       trigger={<FormTrigger mode={mode} />}
@@ -128,7 +128,7 @@ const SmsTemplateForm: FC<SmsTemplateFormProps> = ({
           <SmsTemplateFormLayout formFields={formSchema} renderField={renderField} />
         )}
       </FormBuilder>
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import ActionButton from "@/components/action-button";
-import { useDialogClose } from "@/components/dialog-wrapper";
+import { useMyDialogClose } from "@/components/my-dialog";
 import {
     AccordionSection,
     FormFieldConfig,
@@ -107,7 +107,7 @@ export default function FormWrapper({
     grids = 1,
     fullPage = false,
 }: FormWrapperProps) {
-    const dialogClose = useDialogClose();
+    const dialogClose = useMyDialogClose();
     const handleClose = onClose ?? dialogClose ?? (() => { });
     const { t } = useTranslation();
     const submitRef = useRef<HTMLInputElement>(null);

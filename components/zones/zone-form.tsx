@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { ZoneFormSchema, ZoneRow } from "@/components/zones/zone-type";
 import ZoneFormFieldSchema from "@/components/zones/zone-form-schema";
@@ -21,7 +21,7 @@ const ZoneForm: FC<Props> = ({
     data = undefined,
 }) => {
     return (
-        <DialogWrapper
+        <MyDialog
             size="xl"
             title={mode === "create" ? "create_zone" : "edit_zone"}
             trigger={<FormTrigger mode={mode} />}
@@ -36,7 +36,7 @@ const ZoneForm: FC<Props> = ({
                 method={method}
                 queryKey="zones"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { ExpenseFormSchema, ExpenseRow } from "@/components/expenses/expense-type";
 import ExpenseFormFieldSchema from "@/components/expenses/expense-form-schema";
@@ -26,7 +26,7 @@ const ExpenseForm: FC<Props> = ({
             : (data as unknown as Record<string, unknown> | undefined);
 
     return (
-        <DialogWrapper
+        <MyDialog
             size="3xl"
             title={mode === "create" ? "expense.create_title" : "expense.edit_title"}
             trigger={<FormTrigger mode={mode} />}
@@ -41,7 +41,7 @@ const ExpenseForm: FC<Props> = ({
                 method={method}
                 queryKey="expenses"
             />
-        </DialogWrapper>
+        </MyDialog>
     );
 };
 

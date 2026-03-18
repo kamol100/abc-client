@@ -9,7 +9,7 @@ import { cellIndex, formatMoney } from "@/lib/helper/helper";
 import ActionButton from "@/components/action-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import { Badge } from "@/components/ui/badge";
 import FundTransactionForm from "@/components/fund-transactions/fund-transaction-form";
 import FundTransactionTable from "@/components/fund-transactions/fund-transaction-table";
@@ -73,7 +73,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
             <Eye className="h-4 w-4" />
           </ActionButton>
 
-          <DialogWrapper
+          <MyDialog
             open={openTransactions}
             onOpenChange={setOpenTransactions}
             size="4xl"
@@ -86,7 +86,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
               showFundColumn={false}
               hideCreateAction
             />
-          </DialogWrapper>
+          </MyDialog>
         </>
       )}
 

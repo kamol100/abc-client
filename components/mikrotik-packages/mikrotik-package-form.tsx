@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { DialogWrapper } from "@/components/dialog-wrapper";
+import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import MikrotikPackageFormFieldSchema from "@/components/mikrotik-packages/mikrotik-package-form-schema";
@@ -24,7 +24,7 @@ const MikrotikPackageForm: FC<Props> = ({
   data = undefined,
 }) => {
   return (
-    <DialogWrapper
+    <MyDialog
       size="xl"
       title={
         mode === "create"
@@ -43,7 +43,7 @@ const MikrotikPackageForm: FC<Props> = ({
         method={method}
         queryKey="mikrotik-packages"
       />
-    </DialogWrapper>
+    </MyDialog>
   );
 };
 
