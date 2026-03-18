@@ -3,7 +3,6 @@
 import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useMemo } from "react";
-import { Button } from "./ui/button";
 import { useSidebar } from "./ui/sidebar";
 import { useMenuItems, type NavMenuItem } from "@/hooks/use-menu-items";
 import ActionButton from "./action-button";

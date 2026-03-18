@@ -22,6 +22,10 @@ const TYPE_ICONS = {
   decline: X,
   pending: Hourglass,
   partial: CircleSlash2,
+  open: Info,
+  in_progress: Hourglass,
+  resolved: Check,
+  closed: CircleSlash2,
 } as const;
 
 export type MyBadgeType = keyof typeof TYPE_ICONS;
@@ -90,6 +94,42 @@ const TYPE_STYLES: Record<
       base: "bg-muted text-muted-foreground border-transparent",
     },
     outline: { base: "border-muted-foreground/40 text-muted-foreground bg-transparent" },
+    soft: { base: "bg-muted text-muted-foreground border-transparent" },
+    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
+  },
+  open: {
+    default: {
+      base: "bg-primary text-primary-foreground border-transparent shadow",
+    },
+    outline: { base: "border-primary text-primary bg-transparent" },
+    soft: { base: "bg-primary/15 text-primary border-transparent" },
+    ghost: { base: "text-primary bg-transparent border-transparent" },
+  },
+  in_progress: {
+    default: {
+      base: "bg-muted text-muted-foreground border-transparent",
+    },
+    outline: {
+      base: "border-muted-foreground/40 text-muted-foreground bg-transparent",
+    },
+    soft: { base: "bg-muted text-muted-foreground border-transparent" },
+    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
+  },
+  resolved: {
+    default: {
+      base: "bg-primary text-primary-foreground border-transparent shadow",
+    },
+    outline: { base: "border-primary text-primary bg-transparent" },
+    soft: { base: "bg-primary/15 text-primary border-transparent" },
+    ghost: { base: "text-primary bg-transparent border-transparent" },
+  },
+  closed: {
+    default: {
+      base: "bg-muted text-muted-foreground border-transparent",
+    },
+    outline: {
+      base: "border-muted-foreground/40 text-muted-foreground bg-transparent",
+    },
     soft: { base: "bg-muted text-muted-foreground border-transparent" },
     ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
   },

@@ -15,6 +15,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { TicketRow } from "./ticket-type";
+import ActionButton from "../action-button";
 
 interface TicketRowActionsProps {
     row: Row<TicketRow>;
@@ -47,11 +48,8 @@ const TicketRowActions: FC<TicketRowActionsProps> = ({ row }) => {
                 {hasPermission("tickets.edit") && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-8 w-8" asChild>
-                                <Link href={viewUrl} aria-label={t("ticket.edit_title")}>
-                                    <Pencil className="h-4 w-4" />
-                                </Link>
-                            </Button>
+                            <ActionButton variant="outline" size="icon" className="h-8 w-8" action="edit" aria-label={t("ticket.edit_title")}>
+                            </ActionButton>
                         </TooltipTrigger>
                         <TooltipContent side="top">{t("ticket.edit_title")}</TooltipContent>
                     </Tooltip>

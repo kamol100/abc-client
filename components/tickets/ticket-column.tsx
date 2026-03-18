@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import MyBadge from "@/components/my-badge";
 import { TicketRow } from "./ticket-type";
 import TicketRowActions from "./ticket-row-actions";
 
@@ -15,13 +16,18 @@ const priorityVariant = (p: string) => {
     }
 };
 
-const statusVariant = (s: string) => {
+const statusBadgeType = (s: string) => {
     switch (s) {
-        case "open": return "default";
-        case "in_progress": return "secondary";
-        case "resolved": return "outline";
-        case "closed": return "outline";
-        default: return "default";
+        case "open":
+            return "open";
+        case "in_progress":
+            return "in_progress";
+        case "resolved":
+            return "resolved";
+        case "closed":
+            return "closed";
+        default:
+            return "open";
     }
 };
 
@@ -118,9 +124,14 @@ export const TicketColumns: ColumnDef<TicketRow>[] = [
             <DataTableColumnHeader column={column} title="ticket.status.label" />
         ),
         cell: ({ row }) => (
-            <Badge variant={statusVariant(row.original.status)} className="capitalize">
+            <MyBadge
+                type={statusBadgeType(row.original.status)}
+                variant="soft"
+                size="sm"
+                className="capitalize"
+            >
                 {row.original.status.replace("_", " ")}
-            </Badge>
+            </MyBadge>
         ),
         enableSorting: false,
     },

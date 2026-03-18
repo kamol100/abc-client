@@ -54,7 +54,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue }) => {
             toggleColumns={true}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             isFetching={isFetching}
             form={TicketCreateDialog}
             toolbarTitle={toolbarTitle}
