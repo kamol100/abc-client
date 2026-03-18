@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { toNumber } from "@/lib/helper/helper";
+import { toApiDateString, toNumber } from "@/lib/helper/helper";
 
 const toDate = (value: unknown): Date | undefined => {
     if (!value) return undefined;
@@ -9,21 +9,6 @@ const toDate = (value: unknown): Date | undefined => {
         if (!Number.isNaN(parsed.getTime())) return parsed;
     }
     return undefined;
-};
-
-const toApiDateString = (value: Date | string | null | undefined): string | null => {
-    if (!value) return null;
-    if (value instanceof Date) {
-        const year = value.getFullYear();
-        const month = String(value.getMonth() + 1).padStart(2, "0");
-        const day = String(value.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
-    if (typeof value === "string") {
-        if (value.includes("T")) return value.slice(0, 10);
-        return value;
-    }
-    return null;
 };
 
 const OptionalDateValueSchema = z.preprocess(

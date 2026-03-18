@@ -1,3 +1,4 @@
+import { toApiDateString } from "@/lib/helper/helper";
 import { z } from "zod";
 
 const StaffRefSchema = z.object({
@@ -72,7 +73,10 @@ export const ExpenseFormSchema = z.object({
     }).min(1, { message: "expense.expense_type.errors.required" }),
     zone_id: z.coerce.number().nullable().optional(),
     voucher: z.string().nullable().optional().default(""),
-    expense_date: z.coerce.string().nullable().optional(),
+    expense_date: z.preprocess(
+        (value) => (value instanceof Date ? toApiDateString(value, "dmy") : value),
+        z.string().nullable().optional().default(toApiDateString(new Date(), "dmy") ?? ""),
+    ),
     status: z.string().optional().default("pending"),
     note: z.string().nullable().optional().default(""),
 });

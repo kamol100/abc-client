@@ -20,6 +20,11 @@ const ExpenseForm: FC<Props> = ({
     method = "POST",
     data = undefined,
 }) => {
+    const formData =
+        mode === "create"
+            ? ({ expense_date: new Date(), ...(data ?? {}) } as Record<string, unknown>)
+            : (data as unknown as Record<string, unknown> | undefined);
+
     return (
         <DialogWrapper
             size="3xl"
@@ -29,7 +34,7 @@ const ExpenseForm: FC<Props> = ({
             <FormBuilder
                 formSchema={ExpenseFormFieldSchema()}
                 grids={2}
-                data={data}
+                data={formData}
                 api={api}
                 mode={mode}
                 schema={ExpenseFormSchema}

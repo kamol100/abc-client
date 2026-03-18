@@ -7,7 +7,6 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import MyBadge from "../my-badge";
-import { Button } from "../ui/button";
 import { DeleteModal } from "../delete-modal";
 import useApiMutation from "@/hooks/use-api-mutation";
 import ExpenseForm from "./expense-form";

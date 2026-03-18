@@ -1,21 +1,6 @@
 import { z } from "zod";
 import type { ApiResponse } from "@/hooks/use-api-query";
-import { calculateInvoiceTotals, toNumber } from "@/lib/helper/helper";
-
-const toApiDateString = (value: Date | string | null | undefined): string | null => {
-    if (!value) return null;
-    if (value instanceof Date) {
-        const year = value.getFullYear();
-        const month = String(value.getMonth() + 1).padStart(2, "0");
-        const day = String(value.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    }
-    if (typeof value === "string") {
-        if (value.includes("T")) return value.slice(0, 10);
-        return value;
-    }
-    return null;
-};
+import { calculateInvoiceTotals, toApiDateString, toNumber } from "@/lib/helper/helper";
 
 const toDate = (value: unknown): Date | undefined => {
     if (!value) return undefined;
@@ -187,8 +172,8 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
         const totals = calculateInvoiceTotals(normalizedLines, values.discount);
 
         return {
-            create_date: toApiDateString(values.create_date) ?? "",
-            due_date: toApiDateString(values.due_date) ?? "",
+            create_date: toApiDateString(values.create_date, "dmy") ?? "",
+            due_date: toApiDateString(values.due_date, "dmy") ?? "",
             invoice_type_id: toNumber(values.invoice_type_id),
             client_id: toNumber(values.client_id),
             discount: toNumber(values.discount),
@@ -201,7 +186,7 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
                     : null,
             payment_date:
                 values.status === "paid" || values.status === "partial_paid"
-                    ? toApiDateString(values.payment_date)
+                    ? toApiDateString(values.payment_date, "dmy")
                     : null,
             confirmation_sms: toNumber(values.confirmation_sms),
             note: values.note ?? "",

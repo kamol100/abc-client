@@ -30,14 +30,14 @@ export const ExpenseFilterSchema = (): FieldConfig[] => {
         {
             type: "dropdown",
             name: "fund_id",
-            placeholder: "expense.fund.label",
+            placeholder: "expense.fund.placeholder",
             api: "/dropdown-funds",
             valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
             type: "dropdown",
             name: "expense_type_id",
-            placeholder: "expense.expense_type.label",
+            placeholder: "expense.expense_type.placeholder",
             api: "/dropdown-expense-types",
             valueMapping: { idKey: "id", labelKey: "name" },
         },

@@ -43,6 +43,28 @@ export function formatMoney(
     return new Intl.NumberFormat("en", { minimumFractionDigits }).format(toNumber(value));
 }
 
+export function toApiDateString(
+    value: Date | string | null | undefined,
+    format: "iso" | "dmy" = "iso",
+): string | null {
+    if (!value) return null;
+
+    if (value instanceof Date) {
+        const year = value.getFullYear();
+        const month = String(value.getMonth() + 1).padStart(2, "0");
+        const day = String(value.getDate()).padStart(2, "0");
+
+        return format === "dmy" ? `${day}-${month}-${year}` : `${year}-${month}-${day}`;
+    }
+
+    if (typeof value === "string") {
+        if (value.includes("T")) return value.slice(0, 10);
+        return value;
+    }
+
+    return null;
+}
+
 type InvoiceLineLike = {
     amount?: number | string | null;
     quantity?: number | string | null;

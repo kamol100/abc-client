@@ -1420,7 +1420,7 @@
         "edit_title": "টিকেট এডিট",
         "view_title": "টিকেট বিবরণ",
         "ticket_id": {
-            "label": "টিকেট আইডি"
+            "label": "আইডি"
         },
         "client": {
             "label": "ক্লায়েন্ট",
@@ -1441,7 +1441,7 @@
             "placeholder": "ট্যাগ"
         },
         "assigned_to": {
-            "label": "অ্যাসাইন করা হয়েছে",
+            "label": "স্টাফ",
             "placeholder": "স্টাফ"
         },
         "message": {
@@ -1741,7 +1741,7 @@
         },
         "expense_type": {
             "label": "এক্সপেন্স টাইপ",
-            "placeholder": "এক্সপেন্স টাইপ",
+            "placeholder": "টাইপ",
             "errors": {
                 "required": "এক্সপেন্স টাইপ আবশ্যক"
             }
@@ -1869,7 +1869,7 @@
             "title": "এক্সপেন্স",
             "expense_type": {
                 "label": "এক্সপেন্স টাইপ",
-                "placeholder": "এক্সপেন্স টাইপ"
+                "placeholder": "টাইপ"
             },
             "vendor": {
                 "label": "ভেন্ডর",
@@ -3340,7 +3340,7 @@
                 "title": "এক্সপেন্স ক্যাটাগরি"
             },
             "types": {
-                "title": "এক্সপেন্স টাইপ"
+                "title": "টাইপ"
             }
         },
         "support_tickets": {

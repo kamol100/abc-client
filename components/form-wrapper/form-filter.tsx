@@ -107,7 +107,7 @@ const FormFilter = ({
   searchButton = false,
   defaultFilter,
   setFilter = () => { },
-  className = "h-9",
+  className = "h-9 mt-1 !ml-[1px]",
   forceOpen = false,
   hideTrigger = false,
   formHook,

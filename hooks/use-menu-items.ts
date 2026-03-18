@@ -174,7 +174,6 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       permissions: ["expenses.access", "expense-types.access"],
       items: [
         { title: t("menu.expense.title"), url: "/expenses", permission: "expenses.access" },
-        { title: t("menu.expense.category.title"), url: "/expense-categories", permission: "expense-categories.access" },
         { title: t("menu.expense.types.title"), url: "/expense-types", permission: "expense-types.access" },
       ],
     },

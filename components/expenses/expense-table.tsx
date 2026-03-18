@@ -55,7 +55,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
             toggleColumns
             pagination={pagination}
             setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             isFetching={isFetching}
             form={showCreateAction ? ExpenseForm : undefined}
             toolbarTitle={toolbarTitle}
