@@ -4,7 +4,7 @@ import { FC, ReactNode, useCallback, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import { Form } from "@/components/ui/form";
@@ -109,7 +109,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
             contentClassName="max-h-[80vh] sm:max-h-[90vh]"
             trigger={
                 trigger ?? (
-                    <ActionButton
+                    <MyButton
                         action="edit"
                         size="icon"
                         variant="outline"
@@ -120,7 +120,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
             }
             footer={({ close, loading }) => (
                 <>
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         variant="outline"
                         size="default"
@@ -131,7 +131,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                         disabled={loading}
                         title={t("common.cancel")}
                     />
-                    <ActionButton
+                    <MyButton
                         action="save"
                         variant="default"
                         size="default"

@@ -5,7 +5,7 @@ import { FC, useEffect, useMemo } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import RadioField from "@/components/form/radio-field";
@@ -146,7 +146,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
             loading={isPending}
             footer={({ close, loading }) => (
                 <>
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         variant="outline"
                         size="default"
@@ -154,7 +154,7 @@ const InvoicePayDialog: FC<InvoicePayDialogProps> = ({
                         disabled={loading}
                         title={t("common.cancel")}
                     />
-                    <ActionButton
+                    <MyButton
                         action="save"
                         variant="default"
                         size="default"

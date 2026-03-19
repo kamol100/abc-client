@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import TextareaField from "@/components/form/textarea-field";
@@ -91,23 +91,23 @@ export const BkashWalletForm: FC = () => {
       size="md"
       title="wallet.recharge_title"
       trigger={
-        <ActionButton size="default" variant="default">
+        <MyButton size="default" variant="default">
           {t("wallet.recharge_with_bkash")}
-        </ActionButton>
+        </MyButton>
       }
       footer={({ close }) => (
         <>
-          <ActionButton type="button" variant="outline" onClick={close}>
+          <MyButton type="button" variant="outline" onClick={close}>
             {t("common.cancel")}
-          </ActionButton>
-          <ActionButton
+          </MyButton>
+          <MyButton
             type="button"
             variant="default"
             onClick={() => submitRef.current?.click()}
             loading={rechargeMutation.isPending}
           >
             {t("wallet.pay_with_bkash")}
-          </ActionButton>
+          </MyButton>
         </>
       )}
     >
@@ -184,21 +184,21 @@ export const ClientWalletForm: FC = () => {
       size="md"
       title="wallet.client_recharge_title"
       trigger={
-        <ActionButton action="create" size="default" variant="default" title={t("common.add")} />
+        <MyButton action="create" size="default" variant="default" title={t("common.add")} />
       }
       footer={({ close }) => (
         <>
-          <ActionButton type="button" variant="outline" onClick={close}>
+          <MyButton type="button" variant="outline" onClick={close}>
             {t("common.cancel")}
-          </ActionButton>
-          <ActionButton
+          </MyButton>
+          <MyButton
             type="button"
             variant="default"
             onClick={() => submitRef.current?.click()}
             loading={rechargeMutation.isPending}
           >
             {t("common.save")}
-          </ActionButton>
+          </MyButton>
         </>
       )}
     >

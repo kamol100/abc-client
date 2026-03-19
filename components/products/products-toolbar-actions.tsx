@@ -3,7 +3,7 @@
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import ProductForm from "@/components/products/product-form";
 
 const ProductsToolbarActions: FC = () => {
@@ -22,7 +22,7 @@ const ProductsToolbarActions: FC = () => {
     return (
         <div className="flex items-center gap-2">
             {canCreateIn && (
-                <ActionButton
+                <MyButton
                     action="create"
                     variant="outline"
                     size="sm"
@@ -31,7 +31,7 @@ const ProductsToolbarActions: FC = () => {
                 />
             )}
             {canCreateOut && (
-                <ActionButton
+                <MyButton
                     action="create"
                     variant="outline"
                     size="sm"
@@ -40,7 +40,7 @@ const ProductsToolbarActions: FC = () => {
                 />
             )}
             {canViewReports && (
-                <ActionButton
+                <MyButton
                     action="create"
                     icon={false}
                     variant="outline"

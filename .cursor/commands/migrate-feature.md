@@ -78,7 +78,7 @@ Rules:
 - For re-usable method/function update lib/helper/helper.ts 
 - Must follow theme setting
 - Ensure mobile first design according tailwind css.
-- Ensure using ActionButton (components/action-button.tsx) instead Button
+- Ensure using MyButton (components/my-button.tsx) instead Button
 - Ensure the dynamic form UI looks clean and well-structured. For example, when multiple items are added by clicking the plus button, the delete (trash) icon should be properly aligned with each item in the list.
 
 -----------------------------------------
@@ -200,12 +200,12 @@ STEP 5 — OUTPUT FORMAT
    ✅ **Correct:**
 ```customComponent
 import Card from '@components/Card';
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 ```
 
 ❌ **Wrong:**
 ```typescript
-import { Button } from '../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Card } from '../../../components/ui/card';
 ```
 -----------------------------------------

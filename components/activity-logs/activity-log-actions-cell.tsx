@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
 import { Eye } from "lucide-react";
@@ -22,7 +22,7 @@ export const ActivityLogActionsCell: FC<Props> = ({ row }) => {
 
     return (
         <div className="flex items-center justify-end gap-2 mr-3">
-            <ActionButton
+            <MyButton
                 size="sm"
                 variant="outline"
                 icon={true}
@@ -31,7 +31,7 @@ export const ActivityLogActionsCell: FC<Props> = ({ row }) => {
                 className="[&_svg]:size-4"
             >
                 <Eye className="size-4" />
-            </ActionButton>
+            </MyButton>
             {viewOpen && (
                 <ActivityLogChangesDialog
                     changes={changes}

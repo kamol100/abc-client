@@ -2,10 +2,11 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Wifi, WifiOff } from "lucide-react";
+import { Wifi, WifiOff } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import useInView from "@/hooks/use-in-view";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NetworkConnectionPayload {
   message?: string;
@@ -32,7 +33,10 @@ const NetworkConnectionStatusCell: FC<Props> = ({ networkId }) => {
   return (
     <div ref={ref} className="min-w-[130px]">
       {isLoading ? (
-        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+        <div className="inline-flex items-center gap-1.5">
+          <Skeleton className="h-4 w-4 shrink-0 rounded-sm" />
+          <Skeleton className="h-4 w-[7.5rem]" />
+        </div>
       ) : (
         <div
           className={cn(

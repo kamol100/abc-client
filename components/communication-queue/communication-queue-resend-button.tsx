@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 
 interface CommunicationQueueResendButtonProps {
   smsId: string;
@@ -45,7 +45,7 @@ export function CommunicationQueueResendButton({
   if (!canResend) return null;
 
   return (
-    <ActionButton
+    <MyButton
       onClick={() => resend()}
       disabled={isPending}
       title={t("communication_queue.resend")}
@@ -60,6 +60,6 @@ export function CommunicationQueueResendButton({
         )}
         <span>{t("communication_queue.resend")}</span>
       </div>
-    </ActionButton>
+    </MyButton>
   );
 }

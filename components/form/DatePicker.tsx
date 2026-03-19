@@ -9,7 +9,7 @@ import type { DateRange, DayPickerLocale } from "react-day-picker";
 import { enUS, bn } from "react-day-picker/locale";
 import { useTranslation } from "react-i18next";
 import Label from "../label";
-import { Button } from "../ui/button";
+import { MyButton } from "../my-button";
 import { Calendar } from "../ui/calendar";
 import {
     Popover,
@@ -122,7 +122,7 @@ const DatePicker = ({
                     return (
                         <Popover open={open} onOpenChange={setOpen}>
                             <PopoverTrigger asChild>
-                                <Button
+                                <MyButton
                                     ref={ref}
                                     variant="outline"
                                     onBlur={onBlur}
@@ -135,7 +135,7 @@ const DatePicker = ({
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                     {displayValue(parsed) ?? t(placeholder)}
-                                </Button>
+                                </MyButton>
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                                 {mode === "range" ? (

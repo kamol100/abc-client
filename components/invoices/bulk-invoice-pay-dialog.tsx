@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { MyDialog } from "@/components/my-dialog";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form } from "@/components/ui/form";
 import DatePicker from "@/components/form/DatePicker";
@@ -134,7 +134,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
             footer={({ close, loading }) =>
                 hasInvoices ? (
                     <>
-                        <ActionButton
+                        <MyButton
                             action="cancel"
                             variant="outline"
                             size="default"
@@ -142,7 +142,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                             disabled={loading}
                             title={t("common.cancel")}
                         />
-                        <ActionButton
+                        <MyButton
                             action="save"
                             variant="default"
                             size="default"
@@ -152,7 +152,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                         />
                     </>
                 ) : (
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         variant="outline"
                         size="default"
@@ -259,7 +259,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                                             item.after_discount_amount,
                                                     }}
                                                     trigger={
-                                                        <ActionButton
+                                                        <MyButton
                                                             type="button"
                                                             size="icon"
                                                             variant="outline"
@@ -272,7 +272,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                                             )}
                                                         >
                                                             <BadgePercent className="h-4 w-4" />
-                                                        </ActionButton>
+                                                        </MyButton>
                                                     }
                                                 />
                                             )}

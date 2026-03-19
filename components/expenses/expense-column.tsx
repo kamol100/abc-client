@@ -11,7 +11,7 @@ import { DeleteModal } from "../delete-modal";
 import useApiMutation from "@/hooks/use-api-mutation";
 import ExpenseForm from "./expense-form";
 import { ExpenseRow } from "./expense-type";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 
 const STATUS_BADGE_TYPE = {
     approved: "success" as const,
@@ -38,7 +38,7 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
     return (
         <div className="flex items-end justify-end gap-1 mr-2">
             {expense.status !== "approved" && (
-                <ActionButton
+                <MyButton
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
@@ -51,10 +51,10 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
                     ) : (
                         <CheckCircle2 className="h-4 w-4" />
                     )}
-                </ActionButton>
+                </MyButton>
             )}
             {expense.status !== "declined" && (
-                <ActionButton
+                <MyButton
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
@@ -67,7 +67,7 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
                     ) : (
                         <XCircle className="h-4 w-4" />
                     )}
-                </ActionButton>
+                </MyButton>
             )}
             <ExpenseForm
                 mode="edit"

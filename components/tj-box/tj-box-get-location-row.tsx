@@ -5,7 +5,7 @@ import { getCurrentGeolocation } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import { useState } from "react";
 
 export function TjBoxGetLocationRow() {
@@ -28,7 +28,7 @@ export function TjBoxGetLocationRow() {
     };
 
     return (
-        <Button
+        <MyButton
             type="button"
             variant="outline"
             size="default"
@@ -37,6 +37,6 @@ export function TjBoxGetLocationRow() {
         >
             {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
             {t("tj_box.get_current_location")}
-        </Button>
+        </MyButton>
     );
 }

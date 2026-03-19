@@ -76,7 +76,7 @@ Rules:
 - For re-usable method/function update lib/helper/helper.ts 
 - Must follow theme setting
 - Ensure mobile first design
-- Ensure using ActionButton (components/action-button.tsx) instead Button
+- Ensure using MyButton (components/my-button.tsx) instead Button
 - Ensure the dynamic form UI looks clean and well-structured. For example, when multiple items are added by clicking the plus button, the delete (trash) icon should be properly aligned with each item in the list.
 
 -----------------------------------------

@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "@/app/actions";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
 import ProductOutSerialPicker from "@/components/products/product-out-serial-picker";
@@ -127,7 +127,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                 <p className="text-xs font-medium text-muted-foreground">
                     {t("product_out.lines.item", { index: index + 1 })}
                 </p>
-                <ActionButton
+                <MyButton
                     action="delete"
                     variant="outline"
                     size="sm"
@@ -212,7 +212,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
             {hasSerial && productInId > 0 && <ProductOutSerialPicker lineIndex={index} />}
 
             <div className="hidden md:flex justify-end">
-                <ActionButton
+                <MyButton
                     action="delete"
                     variant="outline"
                     size="icon"
@@ -282,7 +282,7 @@ const ProductOutLinesEditor: FC = () => {
         <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
                 <h3 className="text-sm font-semibold">{t("product_out.lines.title")}</h3>
-                <ActionButton
+                <MyButton
                     action="add"
                     variant="outline"
                     size="sm"

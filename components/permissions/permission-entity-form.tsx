@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { useFetch } from "@/app/actions";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import Card from "@/components/card";
 import { Badge } from "@/components/ui/badge";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -195,9 +195,9 @@ const PermissionEntityForm: FC<Props> = ({ entityId, userType }) => {
     <div className="space-y-4 overflow-auto pr-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <ActionButton variant="outline" size="icon" url={backUrl}>
+          <MyButton variant="outline" size="icon" url={backUrl}>
             <ArrowLeft className="h-4 w-4" />
-          </ActionButton>
+          </MyButton>
           <h1 className="text-lg sm:text-xl font-semibold">{t("permission.title_plural")}</h1>
           <Badge variant="secondary" className="capitalize">
             {userType}

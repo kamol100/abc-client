@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import Card from "@/components/card";
 import Label from "@/components/label";
 import SelectDropdown from "@/components/select-dropdown";
@@ -78,7 +78,7 @@ export default function ReSyncForm({ actionType = "load" }: ReSyncFormProps) {
               placeholder={networkField.placeholder}
             />
           </div>
-          <ActionButton
+          <MyButton
             action="save"
             type="submit"
             loading={isPending}

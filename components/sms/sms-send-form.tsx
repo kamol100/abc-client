@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import SelectDropdown from "@/components/select-dropdown";
 import Label from "@/components/label";
 import useApiMutation from "@/hooks/use-api-mutation";
@@ -112,7 +112,7 @@ const SmsSendForm: FC<SmsSendFormProps> = ({ phone }) => {
                             </div>
 
                             <div className="flex justify-end">
-                                <ActionButton
+                                <MyButton
                                     action="save"
                                     type="submit"
                                     variant="default"

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import ProductReportsTable from "@/components/products/product-reports-table";
 import type { ProductMovementMode } from "@/components/products/product-movement-filter-schema";
 
@@ -13,7 +13,7 @@ const ProductReportsView = () => {
     return (
         <div className="space-y-4">
             <div className="flex items-center gap-2">
-                <ActionButton
+                <MyButton
                     action="create"
                     icon={false}
                     variant={mode === "in" ? "default" : "outline"}
@@ -21,7 +21,7 @@ const ProductReportsView = () => {
                     onClick={() => setMode("in")}
                     title={t("product_reports.toggle.in")}
                 />
-                <ActionButton
+                <MyButton
                     action="create"
                     icon={false}
                     variant={mode === "out" ? "default" : "outline"}

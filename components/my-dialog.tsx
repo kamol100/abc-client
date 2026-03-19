@@ -19,7 +19,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 
 const DialogCloseContext = createContext<(() => void) | null>(null);
 
@@ -166,16 +166,16 @@ export function MyDialog({
               ? footer({ close, loading: isLoading })
               : (footer ?? (
                   <>
-                    <ActionButton
+                    <MyButton
                       type="button"
                       variant="outline"
                       onClick={handleCancel}
                       disabled={isLoading}
                     >
                       {t(cancelText ?? "cancel")}
-                    </ActionButton>
+                    </MyButton>
                     {onConfirm && (
-                      <ActionButton
+                      <MyButton
                         action="save"
                         onClick={handleConfirm}
                         disabled={isLoading}
@@ -184,7 +184,7 @@ export function MyDialog({
                           <Loader2 className="h-4 w-4 animate-spin" />
                         )}
                         {t(confirmText ?? "confirm")}
-                      </ActionButton>
+                      </MyButton>
                     )}
                   </>
                 ))}

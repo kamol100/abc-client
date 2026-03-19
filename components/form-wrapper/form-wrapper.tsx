@@ -12,7 +12,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { useMyDialogClose } from "@/components/my-dialog";
 import {
     AccordionSection,
@@ -250,12 +250,12 @@ export default function FormWrapper({
                 {t("common.failed_to_load_data")}
             </p>
             <div className="flex gap-2">
-                <ActionButton action="cancel" onClick={handleClose}>
+                <MyButton action="cancel" onClick={handleClose}>
                     {t("common.cancel")}
-                </ActionButton>
-                <ActionButton onClick={() => retryHydration()}>
+                </MyButton>
+                <MyButton onClick={() => retryHydration()}>
                     {t("common.refresh")}
-                </ActionButton>
+                </MyButton>
             </div>
         </div>
     ) : (
@@ -273,14 +273,14 @@ export default function FormWrapper({
                         actionButtonClass
                     )}
                 >
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         type="button"
                         title={t("common.cancel")}
                         size="default"
                         onClick={handleClose}
                     />
-                    <ActionButton
+                    <MyButton
                         action="save"
                         title={t("common.save")}
                         size="default"

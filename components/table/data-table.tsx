@@ -4,7 +4,7 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Table } from "@tanstack/react-table";
 import { Settings2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -23,14 +23,14 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
+        <MyButton
           variant="outline"
           size="sm"
           className="ml-auto hidden h-8 lg:flex"
         >
           <Settings2 />
           View
-        </Button>
+        </MyButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>

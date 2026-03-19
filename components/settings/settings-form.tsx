@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import Switch from "@/components/form/switch";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -182,7 +182,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                             <div className="space-y-2">
                                                 {renderField(fieldConfig)}
                                                 <div className="flex flex-wrap items-center justify-end gap-2">
-                                                    <ActionButton
+                                                    <MyButton
                                                         type="button"
                                                         action="save"
                                                         title={t("common.save")}
@@ -190,7 +190,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                                         loading={isPending}
                                                         onClick={() => void onSaveInlineField(fieldKey)}
                                                     />
-                                                    <ActionButton
+                                                    <MyButton
                                                         type="button"
                                                         action="cancel"
                                                         title={t("common.cancel")}
@@ -202,7 +202,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                         ) : (
                                             <div className="flex items-center justify-between gap-2">
                                                 <FieldValue field={field} value={syncedValues[fieldKey]} />
-                                                <ActionButton
+                                                <MyButton
                                                     type="button"
                                                     action="edit"
                                                     title={t("settings.actions.edit")}

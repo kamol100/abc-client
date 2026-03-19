@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "@/app/actions";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
 import {
@@ -129,7 +129,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                 <p className="text-xs font-medium text-muted-foreground">
                     {t("product_in.lines.item", { index: index + 1 })}
                 </p>
-                <ActionButton
+                <MyButton
                     action="delete"
                     variant="outline"
                     size="sm"
@@ -259,7 +259,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
             )}
 
             <div className="hidden md:flex justify-end">
-                <ActionButton
+                <MyButton
                     action="delete"
                     variant="outline"
                     size="icon"
@@ -360,7 +360,7 @@ const ProductInLinesEditor: FC = () => {
         <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
                 <h3 className="text-sm font-semibold">{t("product_in.lines.title")}</h3>
-                <ActionButton
+                <MyButton
                     action="add"
                     variant="outline"
                     size="sm"

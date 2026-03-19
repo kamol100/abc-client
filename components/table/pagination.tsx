@@ -6,7 +6,7 @@ import {
   ChevronsRight,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import {
   Select,
   SelectContent,
@@ -54,7 +54,7 @@ export function DataTablePagination<TData>({
           {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">
-          <Button
+          <MyButton
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(0)}
@@ -62,8 +62,8 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => table.previousPage()}
@@ -71,8 +71,8 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => table.nextPage()}
@@ -80,8 +80,8 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
-          </Button>
-          <Button
+          </MyButton>
+          <MyButton
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
@@ -89,7 +89,7 @@ export function DataTablePagination<TData>({
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />
-          </Button>
+          </MyButton>
         </div>
       </div>
     </div>

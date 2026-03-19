@@ -4,7 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { MyDialog } from "@/components/my-dialog";
 import { formatMoney } from "@/lib/helper/helper";
@@ -44,13 +44,13 @@ const CompanyWalletForm: FC<CompanyWalletFormProps> = ({ company }) => {
       size="md"
       title="company_wallet.recharge_title"
       trigger={
-        <ActionButton
+        <MyButton
           type="button"
           variant="outline"
           aria-label={t("company_wallet.recharge_action")}
         >
           <Wallet />
-        </ActionButton>
+        </MyButton>
       }
     >
       <div className="space-y-4">

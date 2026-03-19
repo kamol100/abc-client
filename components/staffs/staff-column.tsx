@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { Badge } from "../ui/badge";
 import { DeleteModal } from "../delete-modal";
@@ -100,7 +100,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
       const staffId = String(staff.id);
       return (
         <div className="flex items-center justify-end mr-2 gap-1">
-          <ActionButton
+          <MyButton
             action="edit"
             url={`/staffs/edit/${staffId}`}
             className="hover:bg-primary hover:text-primary-foreground px-2"

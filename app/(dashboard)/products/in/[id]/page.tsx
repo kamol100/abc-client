@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import ProductMovementTable from "@/components/products/product-movement-table";
 import { t } from "@/lib/i18n/server";
 
@@ -21,10 +21,10 @@ export default async function ProductInDetailsPage({ params }: Props) {
                 <h1 className="text-xl font-semibold">
                     {t("product_movement.in_details_title")}
                 </h1>
-                <ActionButton action="cancel" variant="outline" size="default" url="/products">
+                <MyButton action="cancel" variant="outline" size="default" url="/products">
                     <ArrowLeft className="h-4 w-4" />
                     <span>{t("product_movement.actions.back_to_products")}</span>
-                </ActionButton>
+                </MyButton>
             </div>
             <ProductMovementTable mode="in" productId={id} />
         </div>

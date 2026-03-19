@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { ClientRow, RouterInfo } from "./client-type";
 import { Badge } from "@/components/ui/badge";
 import ClientHistory from "./client-history";
@@ -54,9 +54,9 @@ const ClientView: FC<Props> = ({ clientId }) => {
         <div className="space-y-6 overflow-auto pr-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-3">
-                    <ActionButton variant="default" size="icon" url="/clients">
+                    <MyButton variant="default" size="icon" url="/clients">
                         <ArrowLeft className="h-4 w-4" />
-                    </ActionButton>
+                    </MyButton>
                     <h1 className="text-lg font-semibold">{t("client.view_title")}</h1>
                     <Badge variant={isActive ? "default" : "destructive"}>
                         {isActive ? t("common.active") : t("common.inactive")}
@@ -64,35 +64,35 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
                     {hasPermission("clients.edit") && (
-                        <ActionButton action="edit" url={`/clients/edit/${client.id}`} title={t("client.actions.edit")} />
+                        <MyButton action="edit" url={`/clients/edit/${client.id}`} title={t("client.actions.edit")} />
                     )}
-                    <ActionButton action="edit" icon={false} onClick={() => setChangePackageOpen(true)}>
+                    <MyButton action="edit" icon={false} onClick={() => setChangePackageOpen(true)}>
                         <Package className="h-4 w-4" />
                         {t("client.actions.change_package")}
-                    </ActionButton>
+                    </MyButton>
                     {hasPermission("invoices.access") && (
-                        <ActionButton action="edit" icon={false} url={`/invoices/client/${client.id}`}>
+                        <MyButton action="edit" icon={false} url={`/invoices/client/${client.id}`}>
                             <FileText className="h-4 w-4" />
                             {t("client.actions.invoice_history")}
-                        </ActionButton>
+                        </MyButton>
                     )}
                     {hasPermission("invoices.pay") && (
-                        <ActionButton action="edit" icon={false} onClick={() => setBulkPayOpen(true)}>
+                        <MyButton action="edit" icon={false} onClick={() => setBulkPayOpen(true)}>
                             <CreditCard className="h-4 w-4" />
                             {t("client.actions.pay")}
-                        </ActionButton>
+                        </MyButton>
                     )}
                     {hasPermission("tickets.create") && (
-                        <ActionButton action="edit" icon={false} url={`/tickets?client_id=${client.id}`}>
+                        <MyButton action="edit" icon={false} url={`/tickets?client_id=${client.id}`}>
                             <Ticket className="h-4 w-4" />
                             {t("client.actions.tickets")}
-                        </ActionButton>
+                        </MyButton>
                     )}
                     {hasPermission("sms-send.access") && client.phone && (
-                        <ActionButton action="edit" icon={false} url={`/sms-send?phone=${client.phone}`}>
+                        <MyButton action="edit" icon={false} url={`/sms-send?phone=${client.phone}`}>
                             <MessageSquare className="h-4 w-4" />
                             {t("client.actions.sms")}
-                        </ActionButton>
+                        </MyButton>
                     )}
                 </div>
             </div>

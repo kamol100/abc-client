@@ -1,17 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import ActionButton from "@/components/action-button";
 import { DeleteModal } from "@/components/delete-modal";
 import MikrotikPackageForm from "@/components/mikrotik-packages/mikrotik-package-form";
 import { MikrotikPackageRow } from "@/components/mikrotik-packages/mikrotik-package-type";
-import { cellIndex } from "@/lib/helper/helper";
 
 export function useMikrotikPackageColumns(): ColumnDef<MikrotikPackageRow>[] {
-  const { t } = useTranslation();
   const { hasPermission } = usePermissions();
 
   return [
@@ -73,9 +69,8 @@ export function useMikrotikPackageColumns(): ColumnDef<MikrotikPackageRow>[] {
 
         if (!canEdit && !canDelete) return null;
 
-        const deleteUrl = `mikrotik-packages/${pkg.id}${
-          pkg.network_id != null ? `?network_id=${pkg.network_id}` : ""
-        }`;
+        const deleteUrl = `mikrotik-packages/${pkg.id}${pkg.network_id != null ? `?network_id=${pkg.network_id}` : ""
+          }`;
 
         return (
           <div className="mr-3 flex items-center justify-end gap-2">

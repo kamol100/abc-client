@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Card from "../card";
 import { Skeleton } from "@/components/ui/skeleton";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { useTranslation } from "react-i18next";
 import { TicketRow } from "./ticket-type";
 import TicketReplyForm from "./ticket-reply-form";
@@ -78,7 +78,7 @@ const TicketView: FC<TicketViewProps> = ({ ticketId }) => {
                         {ticket.status.replace("_", " ")}
                     </Badge>
                 </div>
-                <ActionButton
+                <MyButton
                     action="cancel"
                     url="/tickets"
                     title={t("ticket.back_to_list")}

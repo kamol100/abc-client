@@ -1,7 +1,7 @@
 "use client";
 
 import { Checked } from "@/components/icon";
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -49,13 +49,13 @@ export default function ThemeCustomize() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
+        <MyButton
           variant="outline"
           size="icon"
           aria-label={t("theme_customizer.aria_label")}
         >
           <SlidersHorizontal className="h-4 w-4" />
-        </Button>
+        </MyButton>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-4">
         <h4 className="font-medium">{t("theme_customizer.title")}</h4>

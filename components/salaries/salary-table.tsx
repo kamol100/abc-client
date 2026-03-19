@@ -7,7 +7,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import { useSidebar } from "@/components/ui/sidebar";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 import { SalaryColumns } from "./salary-column";
 import { SalaryRow } from "./salary-type";
 
@@ -39,9 +39,9 @@ const SalaryTable: FC = () => {
 
   const FormLink = () => (
     <Link href="/salaries/create">
-      <ActionButton size={"default"} variant={"default"}>
+      <MyButton size={"default"} variant={"default"}>
         {isMobile ? <Plus /> : <><Plus /> {t("common.add")}</>}
-      </ActionButton>
+      </MyButton>
     </Link>
   );
 

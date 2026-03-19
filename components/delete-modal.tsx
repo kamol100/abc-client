@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import {
   DialogDescription,
@@ -48,12 +48,12 @@ export function DeleteModal({
 
   return (
     <MyDialog
-      trigger={children ?? <ActionButton action="delete" icon={true} />}
+      trigger={children ?? <MyButton action="delete" icon={true} />}
       size="sm"
       loading={isPending}
       footer={({ close, loading }) => (
         <>
-          <ActionButton
+          <MyButton
             action="cancel"
             variant="outline"
             size="default"
@@ -61,7 +61,7 @@ export function DeleteModal({
             disabled={loading}
             title={t("common.cancel")}
           />
-          <ActionButton
+          <MyButton
             action="delete"
             variant="default"
             size="default"

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FC, useMemo } from "react";
 import { useSidebar } from "./ui/sidebar";
 import { useMenuItems, type NavMenuItem } from "@/hooks/use-menu-items";
-import ActionButton from "./action-button";
+import MyButton from "./my-button";
 
 const MAX_PRIMARY_ITEMS = 5;
 
@@ -41,7 +41,7 @@ const MobileMenuBar: FC = () => {
       {primaryItems.map((item) => {
         const active = isItemActive(pathname, item);
         return (
-          <ActionButton
+          <MyButton
             key={item.id}
             variant={active ? "default" : "ghost"}
             size="icon"
@@ -55,17 +55,17 @@ const MobileMenuBar: FC = () => {
             }}
           >
             {item.icon && <item.icon className="size-5" />}
-          </ActionButton>
+          </MyButton>
         );
       })}
-      <ActionButton
+      <MyButton
         variant="ghost"
         size="icon"
         className="flex-1"
         onClick={toggleSidebar}
       >
         <Menu className="size-5" />
-      </ActionButton>
+      </MyButton>
     </div>
   );
 };

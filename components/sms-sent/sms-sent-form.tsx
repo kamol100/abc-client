@@ -5,7 +5,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Info } from "lucide-react";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
 import TextareaField from "@/components/form/textarea-field";
@@ -241,7 +241,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
               </div>
 
               {smsCount > 0 ? (
-                <ActionButton
+                <MyButton
                   action="save"
                   type="submit"
                   variant="default"
@@ -253,7 +253,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span>
-                      <ActionButton
+                      <MyButton
                         action="save"
                         type="button"
                         variant="default"
@@ -285,7 +285,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                   {t("sms_sent.sort_option.label")}:
                 </span>
 
-                <ActionButton
+                <MyButton
                   type="button"
                   icon={false}
                   size="sm"
@@ -294,7 +294,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                   onClick={() => handleStatusChange("active")}
                 />
 
-                <ActionButton
+                <MyButton
                   type="button"
                   icon={false}
                   size="sm"
@@ -306,7 +306,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="inline-flex items-center gap-1">
-                      <ActionButton
+                      <MyButton
                         type="button"
                         icon={false}
                         size="sm"
@@ -358,14 +358,14 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <ActionButton
+                  <MyButton
                     action="search"
                     type="submit"
                     variant="default"
                     size="default"
                     title={t("sms_sent.filters.apply")}
                   />
-                  <ActionButton
+                  <MyButton
                     action="cancel"
                     type="button"
                     variant="outline"

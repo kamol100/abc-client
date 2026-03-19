@@ -7,7 +7,7 @@ import { useSetting } from "@/context/app-provider";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import type { CommunicationGatewayRow } from "./communication-gateway-type";
 
 const MASKED_API = "https://api.isptik.com/";
@@ -163,7 +163,7 @@ function CommunicationGatewayActionsCell({
     <div className="flex items-center justify-end gap-2 mr-3">
       {canEdit && (
         <Link href={`/communication-gateways?id=${gateway.id}`}>
-          <ActionButton action="edit" icon />
+          <MyButton action="edit" icon />
         </Link>
       )}
       {canDelete && (

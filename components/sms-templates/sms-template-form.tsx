@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
@@ -83,7 +83,7 @@ const SmsTemplateFormLayout: FC<SmsTemplateFormLayoutProps> = ({
 
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
           {SMS_TEMPLATE_TOKENS.map((token) => (
-            <ActionButton
+            <MyButton
               key={token}
               type="button"
               variant="outline"
@@ -92,7 +92,7 @@ const SmsTemplateFormLayout: FC<SmsTemplateFormLayoutProps> = ({
               onClick={() => insertToken(token)}
             >
               {token}
-            </ActionButton>
+            </MyButton>
           ))}
         </div>
       </div>

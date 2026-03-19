@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import SelectDropdown from "@/components/select-dropdown";
 import { Form } from "@/components/ui/form";
 import useApiMutation from "@/hooks/use-api-mutation";
@@ -72,7 +72,7 @@ const MikrotikCommandForm: FC<MikrotikCommandFormProps> = ({ onSuccess }) => {
         </div>
 
         <div className="flex justify-end">
-          <ActionButton
+          <MyButton
             action="search"
             type="submit"
             size="default"

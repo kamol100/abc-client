@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/data-table/data-table";
 import useApiQuery from "@/hooks/use-api-query";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { ArrowLeft } from "lucide-react";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -56,7 +56,7 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
         : t("invoice.client_history.title");
 
     const BackButton = () => (
-        <ActionButton
+        <MyButton
             action="cancel"
             variant="outline"
             size="icon"
@@ -65,7 +65,7 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
             aria-label={t("invoice.client_history.title")}
         >
             <ArrowLeft className="h-4 w-4" />
-        </ActionButton>
+        </MyButton>
     );
 
     return (

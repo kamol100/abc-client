@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/helper/helper";
 import { ColumnDef } from "@tanstack/react-table";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { Badge } from "../ui/badge";
 import { DeleteModal } from "../delete-modal";
@@ -144,14 +144,14 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
             return (
                 <div className="flex items-end justify-end gap-1 mr-2">
                     {payment.status === "due" && (
-                        <ActionButton
+                        <MyButton
                             action="save"
                             url={`/payments/pay/${paymentId}`}
                             title="Pay"
                             className="hover:bg-primary hover:text-primary-foreground px-2"
                         />
                     )}
-                    <ActionButton
+                    <MyButton
                         action="edit"
                         url={`/payments/edit/${paymentId}`}
                         className="hover:bg-primary hover:text-primary-foreground px-2"

@@ -1,7 +1,7 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import Card from "@/components/card";
 import Label from "@/components/label";
 import SelectDropdown from "@/components/select-dropdown";
@@ -62,7 +62,7 @@ export default function ImportClientSyncForm() {
                             placeholder="import_client.sync.network.placeholder"
                         />
                     </div>
-                    <ActionButton
+                    <MyButton
                         action="save"
                         type="submit"
                         loading={isPending}

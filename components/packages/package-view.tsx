@@ -9,7 +9,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatMoney } from "@/lib/helper/helper";
@@ -121,7 +121,7 @@ const PackageView: FC<Props> = ({ packageId }) => {
                   resellerUuid={resellerUuid}
                 />
               ) : (
-                <ActionButton
+                <MyButton
                   action="delete"
                   variant="outline"
                   size="sm"
@@ -174,7 +174,7 @@ const PackageView: FC<Props> = ({ packageId }) => {
                 buttonText="common.confirm_delete"
                 redirectTo={`/${redirectType}`}
               >
-                <ActionButton
+                <MyButton
                   action="delete"
                   variant="destructive"
                   size="default"
@@ -182,7 +182,7 @@ const PackageView: FC<Props> = ({ packageId }) => {
                 />
               </DeleteModal>
             ) : (
-              <ActionButton
+              <MyButton
                 action="delete"
                 variant="destructive"
                 size="default"
@@ -190,7 +190,7 @@ const PackageView: FC<Props> = ({ packageId }) => {
                 disabled
               />
             ))}
-          <ActionButton
+          <MyButton
             action="cancel"
             size="default"
             title={t("package.back_to_list")}

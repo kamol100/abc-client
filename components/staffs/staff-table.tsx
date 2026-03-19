@@ -9,7 +9,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { useSidebar } from "@/components/ui/sidebar";
 import { StaffColumns } from "./staff-column";
 import { StaffRow } from "./staff-type";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 
 const StaffTable: FC = () => {
   const [filterValue, setFilter] = useState<string | null>(null);
@@ -39,9 +39,9 @@ const StaffTable: FC = () => {
 
   const FormLink = () => (
     <Link href="/staffs/create">
-      <ActionButton size={"default"} variant={"default"}>
+      <MyButton size={"default"} variant={"default"}>
         {isMobile ? <Plus /> : <><Plus /> {t("common.add")}</>}
-      </ActionButton>
+      </MyButton>
     </Link>
   );
 

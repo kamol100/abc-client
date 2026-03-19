@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
     Tooltip,
     TooltipContent,
@@ -15,7 +14,7 @@ import Link from "next/link";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { TicketRow } from "./ticket-type";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 import TicketForm from "./ticket-form";
 
 interface TicketRowActionsProps {
@@ -37,11 +36,11 @@ const TicketRowActions: FC<TicketRowActionsProps> = ({ row }) => {
                 {(hasPermission("tickets.show") || hasPermission("tickets.access")) && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
                                 <Link href={viewUrl} aria-label={t("common.view")}>
                                     <Eye className="h-4 w-4" />
                                 </Link>
-                            </Button>
+                            </MyButton>
                         </TooltipTrigger>
                         <TooltipContent side="top">{t("common.view")}</TooltipContent>
                     </Tooltip>
@@ -57,11 +56,11 @@ const TicketRowActions: FC<TicketRowActionsProps> = ({ row }) => {
                 {(hasPermission("tickets.reply") || hasPermission("client.tickets.reply")) && (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-8 w-8" asChild>
+                            <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
                                 <Link href={viewUrl} aria-label={t("ticket.reply.title")}>
                                     <MessageSquare className="h-4 w-4" />
                                 </Link>
-                            </Button>
+                            </MyButton>
                         </TooltipTrigger>
                         <TooltipContent side="top">{t("ticket.reply.title")}</TooltipContent>
                     </Tooltip>

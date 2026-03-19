@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import {
     DialogDescription,
@@ -47,7 +47,7 @@ const ClientSessionResetDialog: FC<ClientSessionResetDialogProps> = ({
             loading={isPending}
             footer={({ close, loading }) => (
                 <>
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         variant="outline"
                         size="default"
@@ -55,7 +55,7 @@ const ClientSessionResetDialog: FC<ClientSessionResetDialogProps> = ({
                         disabled={loading}
                         title={t("common.cancel")}
                     />
-                    <ActionButton
+                    <MyButton
                         action="save"
                         variant="default"
                         size="default"

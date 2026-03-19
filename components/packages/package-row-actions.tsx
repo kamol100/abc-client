@@ -5,7 +5,7 @@ import { Row } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 import PackageForm from "@/components/packages/package-form";
 import { PackageRow } from "@/components/packages/package-type";
@@ -30,7 +30,7 @@ const PackageRowActions: FC<Props> = ({ row, packageType }) => {
   return (
     <div className="flex items-center justify-end gap-2 mr-3">
       {canView && (
-        <ActionButton
+        <MyButton
           variant="outline"
           size="icon"
           className="h-8 w-8"
@@ -38,7 +38,7 @@ const PackageRowActions: FC<Props> = ({ row, packageType }) => {
           aria-label={t("common.view")}
         >
           <Eye className="h-4 w-4" />
-        </ActionButton>
+        </MyButton>
       )}
 
       {canEdit && (

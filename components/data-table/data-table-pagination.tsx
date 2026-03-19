@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
-import { Button } from "@/components/ui/button";
 import { usePagination } from "@/hooks/use-pagination";
 import ChangePagination from "../change-pagination";
 import {
@@ -10,7 +9,7 @@ import {
   PaginationItem,
 } from "../ui/pagination";
 import { useSidebar } from "../ui/sidebar";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 
 interface DataTablePaginationProps<TData> {
   pagination: Pagination;
@@ -42,7 +41,7 @@ export function DataTablePagination<TData>({
           <PaginationContent>
             {/* Previous page button */}
             <PaginationItem>
-              <ActionButton
+              <MyButton
                 size="icon"
                 variant="outline"
                 className="disabled:pointer-events-none disabled:opacity-50"
@@ -51,7 +50,7 @@ export function DataTablePagination<TData>({
                 aria-label="Go to previous page"
               >
                 <ChevronLeftIcon aria-hidden="true" />
-              </ActionButton>
+              </MyButton>
             </PaginationItem>
 
             {/* Left ellipsis (...) */}
@@ -66,7 +65,7 @@ export function DataTablePagination<TData>({
               const isActive = page === pagination?.current_page;
               return (
                 <PaginationItem key={page}>
-                  <ActionButton
+                  <MyButton
                     size="icon"
                     variant={`${isActive ? "outline" : "ghost"}`}
                     onClick={() => setCurrentPage(page)}
@@ -74,7 +73,7 @@ export function DataTablePagination<TData>({
                     className={`${isActive ? "border-primary" : ""}`}
                   >
                     {page}
-                  </ActionButton>
+                  </MyButton>
                 </PaginationItem>
               );
             })}
@@ -88,7 +87,7 @@ export function DataTablePagination<TData>({
 
             {/* Next page button */}
             <PaginationItem>
-              <ActionButton
+              <MyButton
                 size="icon"
                 variant="outline"
                 className="disabled:pointer-events-none disabled:opacity-50"
@@ -97,7 +96,7 @@ export function DataTablePagination<TData>({
                 aria-label="Go to next page"
               >
                 <ChevronRightIcon aria-hidden="true" />
-              </ActionButton>
+              </MyButton>
             </PaginationItem>
           </PaginationContent>
         </Pagination>

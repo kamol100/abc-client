@@ -3,7 +3,7 @@
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { FC, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { Badge } from "../ui/badge";
 import { SalaryRow } from "./salary-type";
@@ -49,7 +49,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
 
   return (
     <MyDialog
-      trigger={<ActionButton action="search" />}
+      trigger={<MyButton action="search" />}
       title="common.salary_details"
       size="2xl"
     >

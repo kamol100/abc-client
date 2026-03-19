@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { useSidebar } from "@/components/ui/sidebar";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
 import { ClientRow } from "@/components/clients/client-type";
@@ -39,7 +39,7 @@ const ClientTable: FC = () => {
     };
 
     const FormLink = () => (
-        <ActionButton
+        <MyButton
             action="add"
             size="default"
             variant="default"

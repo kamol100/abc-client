@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
@@ -178,10 +178,10 @@ export function LoginForm({
                       placeholder="login.password.placeholder"
                     />
                   </div>
-                  <Button type="submit" className="w-full">
+                  <MyButton type="submit" variant="default" size="default" className="w-full">
                     {isPending && <Loader2 className="animate-spin" />}
                     {t("login.submit")}
-                  </Button>
+                  </MyButton>
                 </div>
               </div>
             </form>

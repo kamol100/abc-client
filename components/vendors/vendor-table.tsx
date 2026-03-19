@@ -7,6 +7,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { VendorRow } from "@/components/vendors/vendor-type";
 import { VendorsColumns } from "@/components/vendors/vendors-column";
 import VendorForm from "@/components/vendors/vendor-form";
+import VendorFilterSchema from "@/components/vendors/vendor-filter-schema";
 
 const VendorTable: FC = () => {
     const { t } = useTranslation();
@@ -29,6 +30,9 @@ const VendorTable: FC = () => {
     const vendors = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
 
+    const toolbarOptions = {
+        filter: [...VendorFilterSchema()],
+    };
     const toolbarTitle = pagination?.total
         ? `${t("vendor.title_plural")} (${pagination.total})`
         : t("vendor.title_plural");
@@ -38,10 +42,11 @@ const VendorTable: FC = () => {
             data={vendors}
             setFilter={setFilter}
             columns={VendorsColumns}
+            toolbarOptions={toolbarOptions}
             toggleColumns={true}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             isFetching={isFetching}
             form={VendorForm}
             toolbarTitle={toolbarTitle}

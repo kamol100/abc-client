@@ -7,7 +7,7 @@ import { Loader2, RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
@@ -80,7 +79,7 @@ export function CommunicationQueueResendAllDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <ActionButton
+        <MyButton
           unstyled
           className="p-0 hover:bg-transparent"
           title={t("communication_queue.resend_all")}
@@ -89,7 +88,7 @@ export function CommunicationQueueResendAllDialog() {
             <RefreshCw className="h-4 w-4" />
             <span>{t("communication_queue.resend_all")}</span>
           </div>
-        </ActionButton>
+        </MyButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -126,13 +125,13 @@ export function CommunicationQueueResendAllDialog() {
           ))}
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <MyButton variant="outline" onClick={() => setOpen(false)}>
             {t("common.cancel")}
-          </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
+          </MyButton>
+          <MyButton variant="default" size="default" onClick={handleSubmit} disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {t("communication_queue.resend_sms")}
-          </Button>
+          </MyButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

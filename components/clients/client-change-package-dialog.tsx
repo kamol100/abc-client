@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import SelectDropdown from "@/components/select-dropdown";
@@ -62,7 +62,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
             loading={isPending}
             footer={({ close, loading }) => (
                 <>
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         variant="outline"
                         size="default"
@@ -70,7 +70,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                         disabled={loading}
                         title={t("common.cancel")}
                     />
-                    <ActionButton
+                    <MyButton
                         action="save"
                         variant="default"
                         size="default"

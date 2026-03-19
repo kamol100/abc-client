@@ -4,7 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePermissions } from "@/context/app-provider";
 import { useInvoiceColumns } from "./invoice-column";
@@ -61,7 +61,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
         : t(toolbarTitleKey);
 
     const CreateButton = () => (
-        <ActionButton
+        <MyButton
             action="add"
             size="default"
             variant="default"

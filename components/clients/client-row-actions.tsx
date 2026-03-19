@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import {
@@ -163,7 +163,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 loading={isDeleting}
                 footer={({ close, loading }) => (
                     <>
-                        <ActionButton
+                        <MyButton
                             action="cancel"
                             variant="outline"
                             size="default"
@@ -171,7 +171,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                             disabled={loading}
                             title={t("common.cancel")}
                         />
-                        <ActionButton
+                        <MyButton
                             action="delete"
                             variant="default"
                             size="default"

@@ -13,7 +13,7 @@ import FormFilter from "@/components/form-wrapper/form-filter";
 import InputField from "@/components/form/input-field";
 import { useSidebar } from "@/components/ui/sidebar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { MyDrawer } from "@/components/my-drawer";
@@ -115,14 +115,14 @@ export function DataTableToolbar<TData>({
           </div>
         )}
         {isFiltered && (
-          <ActionButton
+          <MyButton
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
             Reset
             <Cross2Icon className="h-4 w-4" />
-          </ActionButton>
+          </MyButton>
         )}
       </div>
       <div
@@ -130,14 +130,14 @@ export function DataTableToolbar<TData>({
       >
         {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
         {!showFilter && (
-          <ActionButton
+          <MyButton
             size="default"
             variant="outline"
             onClick={toggleMode}
             aria-label={isFixed ? "Switch to full layout" : "Switch to fixed layout"}
           >
             {isFixed ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-          </ActionButton>
+          </MyButton>
         )}
 
         {toolbarOptions?.filter && (
@@ -146,7 +146,7 @@ export function DataTableToolbar<TData>({
               open={filterDrawerOpen}
               onOpenChange={setFilterDrawerOpen}
               trigger={
-                <ActionButton
+                <MyButton
                   action="filter"
                   size="default"
                   variant="outline"
@@ -156,7 +156,7 @@ export function DataTableToolbar<TData>({
               side="bottom"
               footer={
                 <div className="flex gap-2 w-full">
-                  <ActionButton
+                  <MyButton
                     action="reset"
                     onClick={handleResetFilter}
                     variant="outline"
@@ -164,7 +164,7 @@ export function DataTableToolbar<TData>({
                     size={'default'}
                     title="common.reset"
                   />
-                  <ActionButton
+                  <MyButton
                     action="search"
                     size={'default'}
                     icon={true}

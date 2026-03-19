@@ -7,7 +7,7 @@ import { usePermissions } from "@/context/app-provider";
 import useApiQuery from "@/hooks/use-api-query";
 import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
@@ -237,7 +237,7 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
     const createTitleKey = mode === "in" ? "product_in.title" : "product_out.title";
 
     const CreateAction = () => (
-        <ActionButton
+        <MyButton
             action="create"
             size="default"
             variant="outline"

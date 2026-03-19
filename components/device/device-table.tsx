@@ -48,7 +48,7 @@ const DeviceTable: FC = () => {
       toggleColumns={true}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       isFetching={isFetching}
       form={canCreate ? DeviceForm : undefined}
       toolbarTitle={toolbarTitle}

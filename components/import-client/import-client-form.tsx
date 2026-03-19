@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { usePermissions } from "@/context/app-provider";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-builder";
 import ImportClientFormFieldSchema from "@/components/import-client/import-client-form-schema";
 import {
@@ -48,7 +48,7 @@ export default function ImportClientForm({ syncClient }: ImportClientFormProps) 
         <div className="mx-auto flex min-h-0 w-full flex-1 flex-col md:w-3/4">
             {!canImport && (
                 <div className="mb-3">
-                    <ActionButton
+                    <MyButton
                         action="cancel"
                         title={t("common.cancel")}
                         onClick={() => router.push("/import-client")}

@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { cellIndex, formatMoney } from "@/lib/helper/helper";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { MyDialog } from "@/components/my-dialog";
@@ -42,7 +42,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
 
       {canCreateTransaction && (
         <>
-          <ActionButton
+          <MyButton
             type="button"
             variant="outline"
             size="icon"
@@ -50,7 +50,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
             title={t("fund_transaction.create_title")}
           >
             <Plus className="h-4 w-4 text-green-600" />
-          </ActionButton>
+          </MyButton>
           <FundTransactionForm
             fundId={fund.id}
             fundName={fund.name}
@@ -63,7 +63,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
 
       {canViewTransactions && (
         <>
-          <ActionButton
+          <MyButton
             type="button"
             variant="outline"
             size="icon"
@@ -71,7 +71,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
             title={t("common.view")}
           >
             <Eye className="h-4 w-4" />
-          </ActionButton>
+          </MyButton>
 
           <MyDialog
             open={openTransactions}

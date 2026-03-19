@@ -5,7 +5,7 @@ import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import DatePicker from "@/components/form/DatePicker";
 import { Close } from "@/components/icon";
@@ -195,21 +195,21 @@ const FormFilter = ({
       <div>
         <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
           {showSearchButton && (
-            <ActionButton
+            <MyButton
               action="search"
               size="default"
               onClick={triggerSubmit}
             />
           )}
           {!hideTrigger && isOpen && (
-            <ActionButton
+            <MyButton
               action="reset"
               size="default"
               variant={isFilterActive ? "default" : "outline"}
               onClick={handleReset}
             />
           )}
-          <ActionButton
+          <MyButton
             action="filter"
             size="default"
             variant={isOpen ? "default" : "outline"}

@@ -9,7 +9,7 @@ import {
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { MyButton, buttonVariants } from "@/components/my-button"
 
 function Calendar({
   className,
@@ -21,7 +21,7 @@ function Calendar({
   components,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  buttonVariant?: React.ComponentProps<typeof MyButton>["variant"]
 }) {
   const defaultClassNames = getDefaultClassNames()
 
@@ -186,7 +186,7 @@ function CalendarDayButton({
   }, [modifiers.focused])
 
   return (
-    <Button
+    <MyButton
       ref={ref}
       variant="ghost"
       size="icon"

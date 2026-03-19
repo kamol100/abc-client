@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
 import FundTransactionFilterSchema from "./fund-transaction-filter-schema";
 import { getFundTransactionColumns } from "./fund-transaction-column";
@@ -71,10 +71,10 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
     }
 
     const AddFromFunds = () => (
-      <ActionButton size="default" variant="default" url="/funds">
+      <MyButton size="default" variant="default" url="/funds">
         <Plus />
         {t("common.add")}
-      </ActionButton>
+      </MyButton>
     );
 
     return AddFromFunds;

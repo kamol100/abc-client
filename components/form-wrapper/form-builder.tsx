@@ -21,7 +21,7 @@ import {
   GRID_STYLES,
   HydratePolicy,
 } from "@/components/form-wrapper/form-builder-type";
-import ActionButton from "../action-button";
+import MyButton from "../my-button";
 
 // --- Date helpers ---
 
@@ -208,25 +208,25 @@ const FieldArrayRenderer = ({
 
           <div className="flex items-center gap-1 justify-end flex-1">
             {allowReorder && index > 0 && (
-              <ActionButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
+              <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
                 <ArrowUp className="h-4 w-4" />
-              </ActionButton>
+              </MyButton>
             )}
             {allowReorder && index < fields.length - 1 && (
-              <ActionButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
+              <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
                 <ArrowDown className="h-4 w-4" />
-              </ActionButton>
+              </MyButton>
             )}
             {canRemove && (
-              <ActionButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)}>
-              </ActionButton>
+              <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)}>
+              </MyButton>
             )}
           </div>
         </div>
       ))}
 
       {canAppend && (
-        <ActionButton
+        <MyButton
           icon={true}
           action="create"
           onClick={() => append({ ...defaultItem })}
@@ -234,7 +234,7 @@ const FieldArrayRenderer = ({
         >
           <Plus className="h-4 w-4 mr-1" />
           {addButtonLabel}
-        </ActionButton>
+        </MyButton>
       )}
     </div>
   );

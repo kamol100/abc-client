@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/app/actions";
@@ -299,14 +299,14 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             footer={({ close }) => (
                 <div className="flex justify-center w-full">
                     <div className="flex items-center gap-2">
-                        <ActionButton
+                        <MyButton
                             action="cancel"
                             variant="outline"
                             size="default"
                             onClick={close}
                             title={t("common.cancel")}
                         />
-                        <ActionButton
+                        <MyButton
                             variant="default"
                             size="default"
                             onClick={handleGeneratePDF}
@@ -319,7 +319,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                                 <Printer className="h-4 w-4" />
                             )}
                             <span>{t("invoice.print.print_button")}</span>
-                        </ActionButton>
+                        </MyButton>
                     </div>
 
                 </div>

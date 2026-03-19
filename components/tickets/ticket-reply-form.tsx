@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { TicketReplySchema, TicketReplyInput } from "./ticket-type";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -61,7 +61,7 @@ const TicketReplyForm: FC<TicketReplyFormProps> = ({ ticketId }) => {
                             rows={3}
                         />
                         <div className="flex justify-end">
-                            <ActionButton
+                            <MyButton
                                 action="save"
                                 type="submit"
                                 variant="default"

@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { RefreshCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
@@ -185,7 +185,7 @@ export function useReSyncColumns({
         return (
           <div className="mr-3 flex items-end justify-end gap-2">
             {canIndividualSync && (
-              <ActionButton
+              <MyButton
                 variant="outline"
                 size="sm"
                 onClick={() => onIndividualSync(syncClient.id)}
@@ -194,7 +194,7 @@ export function useReSyncColumns({
               >
                 <RefreshCw className="h-4 w-4" />
                 <span className="sr-only">{t("re_sync.actions.individual_sync")}</span>
-              </ActionButton>
+              </MyButton>
             )}
             {canDelete && (
               <DeleteModal

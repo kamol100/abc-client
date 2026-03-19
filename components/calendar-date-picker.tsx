@@ -17,7 +17,7 @@ import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
-import { Button } from "@/components/ui/button";
+import { MyButton } from "@/components/my-button";
 import {
   Popover,
   PopoverContent,
@@ -402,7 +402,7 @@ export const CalendarDatePicker = React.forwardRef<
         </style>
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
-            <Button
+            <MyButton
               id="date"
               ref={ref}
               {...props}
@@ -540,7 +540,7 @@ export const CalendarDatePicker = React.forwardRef<
                   <span>Pick a date</span>
                 )}
               </span>
-            </Button>
+            </MyButton>
           </PopoverTrigger>
           {isPopoverOpen && (
             <PopoverContent
@@ -558,7 +558,7 @@ export const CalendarDatePicker = React.forwardRef<
                 {numberOfMonths === 2 && (
                   <div className="flex flex-col gap-1 pr-4 text-left border-r border-foreground/10">
                     {dateRanges.map(({ label, start, end }) => (
-                      <Button
+                      <MyButton
                         key={label}
                         variant="ghost"
                         size="sm"
@@ -576,7 +576,7 @@ export const CalendarDatePicker = React.forwardRef<
                         }}
                       >
                         {label}
-                      </Button>
+                      </MyButton>
                     ))}
                   </div>
                 )}

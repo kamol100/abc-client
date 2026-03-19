@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 
 type Props = {
@@ -21,7 +21,7 @@ const RemoveResellerPackageDialog: FC<Props> = ({ packageId, resellerUuid }) => 
       confirmMessage="package.remove.confirmation"
       buttonText="package.remove.confirm_button"
     >
-      <ActionButton
+      <MyButton
         action="delete"
         variant="outline"
         size="sm"

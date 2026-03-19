@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, Boxes, Edit, UserRound, UsersRound } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { Badge } from "@/components/ui/badge";
 import Card from "@/components/card";
 import ResellerBasicView from "@/components/resellers/reseller-basic-view";
@@ -65,9 +65,9 @@ const ResellerView: FC<Props> = ({ resellerId }) => {
         <div className="space-y-4 overflow-auto pr-3">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                    <ActionButton variant="default" size="icon" url="/resellers">
+                    <MyButton variant="default" size="icon" url="/resellers">
                         <ArrowLeft className="h-4 w-4" />
-                    </ActionButton>
+                    </MyButton>
                     <h1 className="text-lg sm:text-xl font-semibold">{t("reseller.view_title")}</h1>
                     <Badge variant={isActive ? "default" : "destructive"}>
                         {isActive ? t("common.active") : t("common.inactive")}
@@ -75,12 +75,12 @@ const ResellerView: FC<Props> = ({ resellerId }) => {
                 </div>
                 <div className="flex items-center gap-2">
                     {hasPermission("resellers.edit") && (
-                        <ActionButton action="edit" url={`/resellers/edit/${reseller.id}`}>
+                        <MyButton action="edit" url={`/resellers/edit/${reseller.id}`}>
                             <Edit className="h-4 w-4" />
                             {t("reseller.actions.edit")}
-                        </ActionButton>
+                        </MyButton>
                     )}
-                    <ActionButton action="cancel" title="reseller.title_plural" url="/resellers" />
+                    <MyButton action="cancel" title="reseller.title_plural" url="/resellers" />
                 </div>
             </div>
 
@@ -89,7 +89,7 @@ const ResellerView: FC<Props> = ({ resellerId }) => {
                     const Icon = tab.icon;
                     const isCurrent = activeTab === tab.key;
                     return (
-                        <ActionButton
+                        <MyButton
                             key={tab.key}
                             action="edit"
                             variant={isCurrent ? "default" : "outline"}
@@ -98,7 +98,7 @@ const ResellerView: FC<Props> = ({ resellerId }) => {
                         >
                             <Icon className="h-4 w-4" />
                             {tab.label}
-                        </ActionButton>
+                        </MyButton>
                     );
                 })}
             </div>

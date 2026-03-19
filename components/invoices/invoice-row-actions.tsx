@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
 import type { InvoiceDetail, InvoiceRow } from "@/components/invoices/invoice-type";
@@ -47,14 +47,14 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
         <>
             <div className="flex items-center justify-end gap-2 mr-2">
                 {canEdit && (
-                    <ActionButton
+                    <MyButton
                         variant="outline"
                         url={`/invoices/edit/${invoice.id}`}
                     />
                 )}
 
                 {canPay && (
-                    <ActionButton
+                    <MyButton
                         variant="outline"
                         onClick={async () => {
                             setLoading(true);
@@ -69,17 +69,17 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                         aria-label={t("invoice.actions.pay")}
                     >
                         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CreditCard className="h-4 w-4" />}
-                    </ActionButton>
+                    </MyButton>
                 )}
 
                 {canPrint && (
-                    <ActionButton
+                    <MyButton
                         variant="outline"
                         onClick={() => setPrintOpen(true)}
                         aria-label={t("invoice.actions.print")}
                     >
                         <Printer className="h-4 w-4" />
-                    </ActionButton>
+                    </MyButton>
                 )}
 
                 {canDelete && (

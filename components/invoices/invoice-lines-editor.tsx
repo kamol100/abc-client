@@ -3,7 +3,7 @@
 import { FC, useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import { toNumber } from "@/lib/helper/helper";
 import type { InvoiceFormState } from "@/components/invoices/invoice-type";
@@ -50,7 +50,7 @@ const InvoiceLinesEditor: FC = () => {
         <div className="space-y-3">
             <div className="flex items-center justify-between gap-2">
                 <h3 className="text-sm font-semibold">{t("invoice.lines.title")}</h3>
-                <ActionButton
+                <MyButton
                     action="add"
                     variant="default"
                     onClick={() => append(defaultLineItem)}
@@ -78,7 +78,7 @@ const InvoiceLinesEditor: FC = () => {
                             <p className="text-xs font-medium text-muted-foreground">
                                 {t("invoice.lines.item", { index: index + 1 })}
                             </p>
-                            <ActionButton
+                            <MyButton
                                 action="delete"
                                 variant="outline"
                                 size="sm"
@@ -150,7 +150,7 @@ const InvoiceLinesEditor: FC = () => {
                             <div className="md:col-span-1 flex flex-col gap-1 min-h-full">
                                 <div className="hidden md:block min-h-6 shrink-0" aria-hidden />
                                 <div className="hidden md:flex shrink-0">
-                                    <ActionButton
+                                    <MyButton
                                         action="delete"
                                         variant="outline"
                                         onClick={() => remove(index)}

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import ActionButton from "@/components/action-button";
+import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { cellIndex } from "@/lib/helper/helper";
 import { SyncClientRow } from "@/components/import-client/import-client-type";
@@ -127,7 +127,7 @@ export function useImportClientColumns(
                 return (
                     <div className="mr-3 flex items-end justify-end gap-2">
                         {canImport && (
-                            <ActionButton
+                            <MyButton
                                 action="edit"
                                 title={t("import_client.actions.import")}
                                 url={`/import-client/import/${syncClient.id}`}
