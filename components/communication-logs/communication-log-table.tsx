@@ -67,7 +67,7 @@ const CommunicationLogTable: FC = () => {
       toggleColumns
       pagination={pagination}
       setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       isFetching={isFetching}
       toolbarTitle={toolbarTitle}
       toolbarOptions={toolbarOptions}

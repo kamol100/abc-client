@@ -32,7 +32,7 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                         <DisplayMoney
                             amount={toNumber(reports?.total_amount)}
                             currency="BDT"
-                            className="text-md font-semibold"
+                            className="text-xs md:text-md lg:text-md font-semibold"
                             animate
                             duration={800}
                         />
@@ -46,7 +46,7 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                         <DisplayMoney
                             amount={toNumber(reports?.discount)}
                             currency="BDT"
-                            className="text-md font-semibold"
+                            className="font-semibold text-xs md:text-md lg:text-md"
                             animate
                             duration={800}
                         />
@@ -61,7 +61,7 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                             <DisplayMoney
                                 amount={toNumber(reports?.after_discount_amount)}
                                 currency="BDT"
-                                className="text-md font-semibold"
+                                className="font-semibold text-xs md:text-md lg:text-md"
                                 animate
                                 duration={800}
                             />
@@ -77,7 +77,7 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                             <DisplayMoney
                                 amount={toNumber(reports?.amount_paid)}
                                 currency="BDT"
-                                className="text-md font-semibold"
+                                className="font-semibold text-xs md:text-md lg:text-md"
                                 animate
                                 duration={800}
                             />
