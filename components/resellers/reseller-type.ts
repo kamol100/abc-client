@@ -1,4 +1,4 @@
-import { nullable, z } from "zod";
+import { z } from "zod";
 
 const UserRefSchema = z.object({
     id: z.coerce.number().optional(),
@@ -11,6 +11,30 @@ const NamedRefSchema = z.object({
     name: z.string(),
 }).passthrough();
 
+const UpazilaRefSchema = z.object({
+    id: z.coerce.number().optional(),
+    name: z.string().nullable().optional(),
+}).passthrough();
+
+const ResellerPackageRowSchema = z.object({
+    id: z.coerce.number(),
+    name: z.string().nullable().optional(),
+    mikrotik_profile: z.string().nullable().optional(),
+    bandwidth: z.string().nullable().optional(),
+    is_reseller_package: z.coerce.number().default(0),
+    buying_price: z.coerce.number().nullable().optional(),
+}).passthrough();
+
+const ResellerClientRowSchema = z.object({
+    id: z.coerce.number(),
+    name: z.string().nullable().optional(),
+    phone: z.string().nullable().optional(),
+    status: z.coerce.number().nullable().optional(),
+    package: NamedRefSchema.nullable().optional(),
+    network: NamedRefSchema.nullable().optional(),
+    zone: NamedRefSchema.nullable().optional(),
+}).passthrough();
+
 const InvoiceRefSchema = z.object({
     id: z.coerce.number().optional(),
     after_discount_amount: z.coerce.number().default(0),
@@ -20,12 +44,15 @@ const InvoiceRefSchema = z.object({
 export type UserRef = z.infer<typeof UserRefSchema>;
 export type NamedRef = z.infer<typeof NamedRefSchema>;
 export type InvoiceRef = z.infer<typeof InvoiceRefSchema>;
+export type ResellerPackageRow = z.infer<typeof ResellerPackageRowSchema>;
+export type ResellerClientRow = z.infer<typeof ResellerClientRowSchema>;
 
 export const ResellerRowSchema = z.object({
     id: z.coerce.number(),
     reseller_id: z.string().nullable().optional(),
     name: z.string(),
     username: z.string().nullable().optional(),
+    password: z.string().nullable().optional(),
     phone: z.string().nullable().optional(),
     email: z.string().nullable().optional(),
     prefix: z.string().nullable().optional(),
@@ -53,7 +80,8 @@ export const ResellerRowSchema = z.object({
     user: UserRefSchema.nullable().optional(),
     network: NamedRefSchema.nullable().optional(),
     zone: NamedRefSchema.nullable().optional(),
-    package: z.array(NamedRefSchema).nullable().optional(),
+    upazilas: z.array(UpazilaRefSchema).nullable().optional(),
+    package: z.array(ResellerPackageRowSchema).nullable().optional(),
     clients: z.array(NamedRefSchema).nullable().optional(),
     invoices: z.array(InvoiceRefSchema).nullable().optional(),
     network_id: z.coerce.number().nullable().optional(),

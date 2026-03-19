@@ -2590,6 +2590,7 @@
         "title_plural": "Resellers",
         "create_title": "Add Reseller",
         "edit_title": "Edit Reseller",
+        "view_title": "Reseller Details",
         "delete_confirmation": "Are you sure you want to delete this reseller?",
         "sections": {
             "basic_information": "Basic Information",
@@ -2598,6 +2599,7 @@
         },
         "actions": {
             "edit": "Edit",
+            "view": "View",
             "permissions": "Permissions"
         },
         "table": {
@@ -2608,6 +2610,29 @@
             "prefix": "Prefix",
             "due": "Due",
             "paid": "Paid"
+        },
+        "view": {
+            "tabs": {
+                "profile": "Profile",
+                "package": "Package",
+                "client": "Client"
+            },
+            "profile_information": "Profile Information",
+            "account_information": "Account Information",
+            "additional_information": "Additional Information",
+            "package_information": "Package Information",
+            "client_information": "Client Information",
+            "reseller_id": "Reseller ID",
+            "thana_upazila": "Thana/Upazila",
+            "not_available": "N/A",
+            "empty_packages": "No reseller package found.",
+            "package_table": {
+                "sl": "SL",
+                "is_reseller": "Reseller Package"
+            },
+            "client_table": {
+                "sl": "SL"
+            }
         },
         "name": {
             "label": "Name",

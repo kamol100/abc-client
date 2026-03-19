@@ -2590,6 +2590,7 @@
         "title_plural": "রিসেলার",
         "create_title": "রিসেলার যোগ করুন",
         "edit_title": "রিসেলার এডিট করুন",
+        "view_title": "রিসেলার ডিটেইলস",
         "delete_confirmation": "আপনি কি নিশ্চিত এই রিসেলারটি ডিলিট করতে চান?",
         "sections": {
             "basic_information": "বেসিক ইনফরমেশন",
@@ -2598,6 +2599,7 @@
         },
         "actions": {
             "edit": "এডিট",
+            "view": "ভিউ",
             "permissions": "পার্মিশন"
         },
         "table": {
@@ -2608,6 +2610,29 @@
             "prefix": "প্রিফিক্স",
             "due": "ডিউ",
             "paid": "পেইড"
+        },
+        "view": {
+            "tabs": {
+                "profile": "প্রোফাইল",
+                "package": "প্যাকেজ",
+                "client": "ক্লায়েন্ট"
+            },
+            "profile_information": "প্রোফাইল ইনফরমেশন",
+            "account_information": "অ্যাকাউন্ট ইনফরমেশন",
+            "additional_information": "অতিরিক্ত ইনফরমেশন",
+            "package_information": "প্যাকেজ ইনফরমেশন",
+            "client_information": "ক্লায়েন্ট ইনফরমেশন",
+            "reseller_id": "রিসেলার আইডি",
+            "thana_upazila": "থানা/উপজেলা",
+            "not_available": "প্রযোজ্য নয়",
+            "empty_packages": "কোনো রিসেলার প্যাকেজ পাওয়া যায়নি।",
+            "package_table": {
+                "sl": "নং",
+                "is_reseller": "রিসেলার প্যাকেজ"
+            },
+            "client_table": {
+                "sl": "নং"
+            }
         },
         "name": {
             "label": "নাম",

@@ -3,7 +3,7 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { Row } from "@tanstack/react-table";
-import { Edit, ShieldCheck, Trash2, TriangleAlert } from "lucide-react";
+import { Edit, Eye, ShieldCheck, Trash2, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
@@ -46,8 +46,17 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
     return (
         <>
             <DataTableRowActions row={row}>
+                {(hasPermission("resellers.show") || hasPermission("resellers.edit")) && (
+                    <DropdownMenuItem asChild className="cursor-pointer">
+                        <Link href={`/resellers/view/${reseller.id}`}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            {t("reseller.actions.view")}
+                        </Link>
+                    </DropdownMenuItem>
+                )}
+
                 {hasPermission("resellers.edit") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild className="cursor-pointer">
                         <Link href={`/resellers/edit/${reseller.id}`}>
                             <Edit className="mr-2 h-4 w-4" />
                             {t("reseller.actions.edit")}
@@ -56,7 +65,7 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                 )}
 
                 {hasPermission("permissions.access") && hasPermission("resellers.edit") && (
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild className="cursor-pointer">
                         <Link href={`/permissions/${reseller.id}?type=reseller`}>
                             <ShieldCheck className="mr-2 h-4 w-4" />
                             {t("reseller.actions.permissions")}
@@ -69,7 +78,7 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onSelect={() => setDeleteOpen(true)}
-                            className="text-destructive focus:text-destructive"
+                            className="text-destructive focus:text-destructive cursor-pointer"
                         >
                             <Trash2 className="mr-2 h-4 w-4" />
                             {t("common.delete")}
