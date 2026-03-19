@@ -369,7 +369,7 @@
         },
         "status": {
             "label": "স্ট্যাটাস",
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "placeholder": "স্ট্যাটাস",
             "options": {
                 "active": "একটিভ",
                 "inactive": "ইনএকটিভ",
@@ -812,7 +812,7 @@
         },
         "status": {
             "label": "স্ট্যাটাস",
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "placeholder": "স্ট্যাটাস",
             "errors": {
                 "required": "স্ট্যাটাস আবশ্যক"
             }
@@ -2406,7 +2406,7 @@
             "label": "স্ট্যাটাস",
             "on": "চালু",
             "off": "বন্ধ",
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+            "placeholder": "স্ট্যাটাস"
         },
         "connection": {
             "label": "মাইক্রোটিক",
@@ -2435,7 +2435,7 @@
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "placeholder": "নেটওয়ার্ক",
             "errors": {
                 "required": "নেটওয়ার্ক আবশ্যক"
             }
@@ -2457,7 +2457,7 @@
         },
         "zone": {
             "label": "জোন",
-            "placeholder": "জোন নির্বাচন করুন"
+            "placeholder": "জোন"
         },
         "input_port": {
             "label": "ইনপুট পোর্ট",
@@ -2495,7 +2495,7 @@
         },
         "status": {
             "label": "স্ট্যাটাস",
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "placeholder": "স্ট্যাটাস",
             "active": "অ্যাকটিভ",
             "inactive": "ইনঅ্যাকটিভ"
         },
@@ -2641,7 +2641,7 @@
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "placeholder": "নেটওয়ার্ক",
             "errors": {
                 "required": "নেটওয়ার্ক আবশ্যক"
             }
@@ -2652,7 +2652,7 @@
         },
         "zone": {
             "label": "জোন",
-            "placeholder": "জোন নির্বাচন করুন"
+            "placeholder": "জোন"
         },
         "company": {
             "label": "কোম্পানি নাম",
@@ -2671,7 +2671,7 @@
             "placeholder": "প্রিফিক্স দিন"
         },
         "status": {
-            "placeholder": "স্ট্যাটাস নির্বাচন করুন"
+            "placeholder": "স্ট্যাটাস"
         },
         "over_due_amount": {
             "label": "ওভার ডিউ অ্যামাউন্ট",
@@ -2989,7 +2989,7 @@
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক নির্বাচন করুন",
+            "placeholder": "নেটওয়ার্ক",
             "errors": {
                 "required": "নেটওয়ার্ক আবশ্যক"
             }

@@ -62,7 +62,7 @@ const ResellerTable: FC = () => {
             toggleColumns={true}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
+            isLoading={isLoading || isFetching}
             isFetching={isFetching}
             queryKey="resellers"
             form={hasPermission("resellers.create") ? FormLink : undefined}

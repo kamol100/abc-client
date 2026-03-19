@@ -3,16 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import MyBadge from "@/components/my-badge";
 import { toNumber } from "@/lib/helper/helper";
 import { ResellerRow } from "@/components/resellers/reseller-type";
 import ResellerRowActions from "@/components/resellers/reseller-row-actions";
-
-const STATUS_STYLES: Record<number, string> = {
-    1: "bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40",
-    0: "bg-destructive/10 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive",
-};
 
 const getTotalDue = (reseller: ResellerRow): number => {
     const due = (reseller.invoices ?? []).reduce(
@@ -107,11 +101,10 @@ export function useResellerColumns(): ColumnDef<ResellerRow>[] {
             ),
             cell: ({ row }) => {
                 const status = Number(row.original.status ?? 0) as 0 | 1;
-                const style = STATUS_STYLES[status] ?? STATUS_STYLES[0];
                 return (
-                    <Badge className={cn(style)}>
+                    <MyBadge type={status === 1 ? "success" : "error"}>
                         {status === 1 ? t("common.active") : t("common.inactive")}
-                    </Badge>
+                    </MyBadge>
                 );
             },
             enableSorting: false,

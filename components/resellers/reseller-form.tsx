@@ -23,19 +23,21 @@ const ResellerForm: FC<Props> = ({
 
     return (
         <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
-            <AccordionFormBuilder
-                formSchema={ResellerFormFieldSchema({ mode })}
-                grids={2}
-                data={data}
-                api={api}
-                mode={mode}
-                schema={getResellerFormSchema(mode)}
-                method={method}
-                queryKey="resellers"
-                fullPage
-                actionButtonClass="justify-center"
-                onClose={() => router.push("/resellers")}
-            />
+            <div className="mr-3">
+                <AccordionFormBuilder
+                    formSchema={ResellerFormFieldSchema({ mode })}
+                    grids={2}
+                    data={data}
+                    api={api}
+                    mode={mode}
+                    schema={getResellerFormSchema(mode)}
+                    method={method}
+                    queryKey="resellers"
+                    fullPage
+                    actionButtonClass="justify-center"
+                    onClose={() => router.push("/resellers")}
+                />
+            </div>
         </div>
     );
 };
