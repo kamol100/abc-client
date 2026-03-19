@@ -849,6 +849,33 @@
         "edit_title": "কোম্পানি এডিট",
         "delete_confirmation": "আপনি কি নিশ্চিত এই কোম্পানিটি মুছে ফেলতে চান?"
     },
+    "company_wallet": {
+        "recharge_title": "কোম্পানি ওয়ালেট রিচার্জ",
+        "recharge_action": "ওয়ালেট রিচার্জ",
+        "current_balance": "বর্তমান ব্যালেন্স",
+        "recharge_method": {
+            "label": "রিচার্জ মেথড",
+            "placeholder": "রিচার্জ মেথড নির্বাচন করুন",
+            "options": {
+                "cash": "ক্যাশ",
+                "bank": "ব্যাংক"
+            },
+            "errors": {
+                "required": "রিচার্জ মেথড আবশ্যক"
+            }
+        },
+        "balance": {
+            "label": "অ্যামাউন্ট",
+            "placeholder": "রিচার্জ অ্যামাউন্ট দিন",
+            "errors": {
+                "required": "অ্যামাউন্ট আবশ্যক",
+                "min": "অ্যামাউন্ট ০ এর বেশি হতে হবে"
+            }
+        },
+        "messages": {
+            "recharge_successful": "কোম্পানি ওয়ালেট সফলভাবে রিচার্জ হয়েছে।"
+        }
+    },
     "client": {
         "name": {
             "label": "ক্লায়েন্টের নাম",

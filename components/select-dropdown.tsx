@@ -69,6 +69,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     return staticOptions ?? [];
   }, [api, apiOptions, staticOptions]);
 
+  const isOptionMatch = (optionValue: string | number, fieldValue: unknown) => {
+    if (fieldValue === undefined || fieldValue === null || fieldValue === "") return false;
+    return String(optionValue) === String(fieldValue);
+  };
+
   return (
     <div className="">
       {label && (
@@ -86,9 +91,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
             if (value === undefined || value === null || value === "")
               return null;
             if (isMulti && Array.isArray(value)) {
-              return options.filter((opt) => value.includes(opt.value));
+              return options.filter((opt) =>
+                value.some((currentValue) => isOptionMatch(opt.value, currentValue))
+              );
             }
-            return options.find((opt) => opt.value === value) ?? null;
+            return options.find((opt) => isOptionMatch(opt.value, value)) ?? null;
           })();
 
           return (

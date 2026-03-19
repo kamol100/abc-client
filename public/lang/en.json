@@ -849,6 +849,33 @@
         "edit_title": "Edit Company",
         "delete_confirmation": "Are you sure you want to delete this company?"
     },
+    "company_wallet": {
+        "recharge_title": "Recharge Company Wallet",
+        "recharge_action": "Recharge wallet",
+        "current_balance": "Current Balance",
+        "recharge_method": {
+            "label": "Recharge Method",
+            "placeholder": "Select recharge method",
+            "options": {
+                "cash": "Cash",
+                "bank": "Bank"
+            },
+            "errors": {
+                "required": "Recharge method is required"
+            }
+        },
+        "balance": {
+            "label": "Amount",
+            "placeholder": "Enter recharge amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be greater than 0"
+            }
+        },
+        "messages": {
+            "recharge_successful": "Company wallet recharged successfully."
+        }
+    },
     "client": {
         "name": {
             "label": "Client Name",

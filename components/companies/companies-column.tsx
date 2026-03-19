@@ -1,11 +1,42 @@
 "use client";
 
+import { FC } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { CompanyRow } from "./company-type";
 import CompanyForm from "./company-form";
 import { DeleteModal } from "../delete-modal";
+import CompanyWalletForm from "@/components/company-wallets/company-wallet-form";
+import { usePermissions } from "@/context/app-provider";
 import { formatMoney } from "@/lib/helper/helper";
+
+const CompanyActionsCell: FC<{ company: CompanyRow }> = ({ company }) => {
+    const { hasPermission } = usePermissions();
+    const canEdit = hasPermission("companies.edit");
+    const canDelete = hasPermission("companies.delete");
+
+    return (
+        <div className="flex items-end justify-end gap-2 mr-3">
+            {canEdit && (
+                <CompanyForm
+                    mode="edit"
+                    data={{ id: company.id }}
+                    api="companies"
+                    method="PUT"
+                />
+            )}
+            {canEdit && <CompanyWalletForm company={company} />}
+            {canDelete && (
+                <DeleteModal
+                    api_url={`companies/${company.id}`}
+                    keys="companies"
+                    confirmMessage="company.delete_confirmation"
+                    buttonText="common.confirm_delete"
+                />
+            )}
+        </div>
+    );
+};
 
 export const CompaniesColumns: ColumnDef<CompanyRow>[] = [
     {
@@ -95,22 +126,7 @@ export const CompaniesColumns: ColumnDef<CompanyRow>[] = [
         ),
         cell: ({ row }) => {
             const company = row.original;
-            return (
-                <div className="flex items-end justify-end gap-2 mr-3">
-                    <CompanyForm
-                        mode="edit"
-                        data={{ id: company.id }}
-                        api="companies"
-                        method="PUT"
-                    />
-                    <DeleteModal
-                        api_url={`companies/${company.id}`}
-                        keys="companies"
-                        confirmMessage="company.delete_confirmation"
-                        buttonText="common.confirm_delete"
-                    />
-                </div>
-            );
+            return <CompanyActionsCell company={company} />;
         },
     },
 ];
