@@ -48,6 +48,7 @@ export const SmsSentFormSchema = z
   .object({
     phone_number: z.string().trim().optional().default(""),
     sms_template_id: NullableNumberSchema,
+    client_ids: z.array(z.string()).nullable().optional(),
     sms_body: z
       .string({
         required_error: "sms_sent.sms_body.errors.required",

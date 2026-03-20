@@ -2,12 +2,12 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import { toNumber } from "@/lib/helper/helper";
 import { CardContent } from "@/components/ui/card";
 import Card from "../card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InvoiceReports as InvoiceReportsType } from "./invoice-type";
-import DisplayMoney from "../display-money";
+import DisplayCount from "../display-count";
 
 type Props = {
     reports?: InvoiceReportsType | null;
@@ -29,8 +29,9 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                         {t("invoice.reports.sub_total")}
                     </p>
                     <p className="font-semibold">
-                        <DisplayMoney
+                        <DisplayCount
                             amount={toNumber(reports?.total_amount)}
+                            formatCurrency
                             currency="BDT"
                             className="text-xs md:text-md lg:text-md font-semibold"
                             animate
@@ -43,8 +44,9 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                         {t("invoice.reports.discount")}
                     </p>
                     <p className="font-semibold">
-                        <DisplayMoney
+                        <DisplayCount
                             amount={toNumber(reports?.discount)}
+                            formatCurrency
                             currency="BDT"
                             className="font-semibold text-xs md:text-md lg:text-md"
                             animate
@@ -58,8 +60,9 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                             {t("invoice.reports.total")}
                         </p>
                         <p className="font-semibold">
-                            <DisplayMoney
+                            <DisplayCount
                                 amount={toNumber(reports?.after_discount_amount)}
+                                formatCurrency
                                 currency="BDT"
                                 className="font-semibold text-xs md:text-md lg:text-md"
                                 animate
@@ -74,8 +77,9 @@ const InvoiceReports: FC<Props> = ({ reports, isLoading = false }) => {
                             {t("invoice.reports.paid")}
                         </p>
                         <p className="font-semibold">
-                            <DisplayMoney
+                            <DisplayCount
                                 amount={toNumber(reports?.amount_paid)}
+                                formatCurrency
                                 currency="BDT"
                                 className="font-semibold text-xs md:text-md lg:text-md"
                                 animate

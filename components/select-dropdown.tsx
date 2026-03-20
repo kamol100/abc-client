@@ -5,14 +5,57 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { FC, useMemo } from "react";
 import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { ChevronDown, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Select, { MultiValue, SingleValue } from "react-select";
+import Select, {
+  components as selectComponents,
+  MultiValue,
+  SingleValue,
+} from "react-select";
+import type {
+  ClearIndicatorProps,
+  DropdownIndicatorProps,
+  GroupBase,
+} from "react-select";
 import type {
   LabelProps,
   SelectOption,
 } from "./form-wrapper/form-builder-type";
 import FieldError from "./form/field-error";
 import Label from "./label";
+
+function SelectDropdownIndicator(
+  props: DropdownIndicatorProps<SelectOption, boolean, GroupBase<SelectOption>>,
+) {
+  return (
+    <selectComponents.DropdownIndicator {...props}>
+      <ChevronDown
+        aria-hidden
+        className="size-4 shrink-0 text-current"
+        strokeWidth={2}
+      />
+    </selectComponents.DropdownIndicator>
+  );
+}
+
+function SelectClearIndicator(
+  props: ClearIndicatorProps<SelectOption, boolean, GroupBase<SelectOption>>,
+) {
+  return (
+    <selectComponents.ClearIndicator {...props}>
+      <X
+        aria-hidden
+        className="size-4 shrink-0 text-current"
+        strokeWidth={2}
+      />
+    </selectComponents.ClearIndicator>
+  );
+}
+
+const selectDropdownSelectComponents = {
+  DropdownIndicator: SelectDropdownIndicator,
+  ClearIndicator: SelectClearIndicator,
+};
 
 type SelectDropdownProps = {
   name: string;
@@ -103,6 +146,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
               instanceId={name}
               className={cn("basic-single")}
               classNamePrefix="select"
+              components={selectDropdownSelectComponents}
               isSearchable={isSearchable}
               isClearable={isClearable}
               isDisabled={isDisabled}

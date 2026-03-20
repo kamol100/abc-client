@@ -8,7 +8,7 @@ import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import DisplayMoney from "@/components/display-money";
+import DisplayCount from "@/components/display-count";
 import { PaymentColumns } from "./payment-column";
 import { PaymentRow } from "./payment-type";
 import PaymentFilterSchema from "./payment-filter-schema";
@@ -63,8 +63,9 @@ const PaymentTable: FC<PaymentTableProps> = ({
                     {isLoading ? (
                         <Skeleton className="h-8 w-32 mt-2" />
                     ) : (
-                        <DisplayMoney
+                        <DisplayCount
                             amount={toNumber(totalPaid)}
+                            formatCurrency
                             className="text-xl font-semibold text-primary"
                             animate
                             duration={800}

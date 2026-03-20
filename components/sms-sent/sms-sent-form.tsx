@@ -32,6 +32,7 @@ import {
   buildSmsSentClientParams,
   buildSmsSentPayload,
 } from "@/components/sms-sent/sms-sent-type";
+import DisplayCount from "../display-count";
 
 const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
   pppoe_username: "",
@@ -69,7 +70,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     useState<SmsSentClientFilterValues>(DEFAULT_FILTER_VALUES);
   const [bulkSmsCount, setBulkSmsCount] = useState(0);
   const [hydratedTemplateId, setHydratedTemplateId] = useState<number | null>(null);
-
+  console.log(hydratedTemplateId, "hydratedTemplateId");
   const selectedTemplateId = useWatch({
     control: sendForm.control,
     name: "sms_template_id",
@@ -237,7 +238,12 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                 <span className="text-sm text-muted-foreground">
                   {t("sms_sent.sms_count.label")}:
                 </span>
-                <span className="text-base font-semibold tabular-nums">{smsCount}</span>
+                <span className="text-base font-semibold tabular-nums">
+                  <DisplayCount
+                    amount={smsCount}
+                    animate
+                  />
+                </span>
               </div>
 
               {smsCount > 0 ? (
