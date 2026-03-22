@@ -245,19 +245,19 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                                         ? fieldConfig.placeholder
                                                         : undefined;
                                                 return (
-                                            <SelectDropdown
-                                                name={fieldKey}
-                                                options={field.options}
-                                                placeholder={placeholder}
-                                                isClearable={false}
-                                                isDisabled={isPending}
-                                                onValueChange={(value) =>
-                                                    void onImmediateFieldChange(
-                                                        fieldKey,
-                                                        value as SettingsFormInput[SettingsFieldKey]
-                                                    )
-                                                }
-                                            />
+                                                    <SelectDropdown
+                                                        name={fieldKey}
+                                                        options={field.options}
+                                                        placeholder={placeholder}
+                                                        isClearable={false}
+                                                        isDisabled={isPending}
+                                                        onValueChange={(value) =>
+                                                            void onImmediateFieldChange(
+                                                                fieldKey,
+                                                                value as SettingsFormInput[SettingsFieldKey]
+                                                            )
+                                                        }
+                                                    />
                                                 );
                                             })()}
                                         </div>
@@ -337,7 +337,7 @@ const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
     );
 
     return (
-        <div className="mx-auto w-full">
+        <div className="mx-auto w-2/3 flex justify-start pr-3">
             <FormBuilder
                 formSchema={formSchema}
                 grids={1}

@@ -70,7 +70,6 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     useState<SmsSentClientFilterValues>(DEFAULT_FILTER_VALUES);
   const [bulkSmsCount, setBulkSmsCount] = useState(0);
   const [hydratedTemplateId, setHydratedTemplateId] = useState<number | null>(null);
-  console.log(hydratedTemplateId, "hydratedTemplateId");
   const selectedTemplateId = useWatch({
     control: sendForm.control,
     name: "sms_template_id",
@@ -80,11 +79,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     name: "phone_number",
   });
 
-  const hasTemplateSelected =
-    selectedTemplateId !== null && selectedTemplateId !== undefined;
+  const hasTemplateSelected = selectedTemplateId !== null && selectedTemplateId !== undefined;
 
   const templateDetailsUrl = hasTemplateSelected
-    ? `sms-templates/${selectedTemplateId}`
+    ? `sms-template/${selectedTemplateId}`
     : "";
 
   const { data: templateDetails } = useApiQuery<ApiResponse<SmsTemplateSummary>>({
