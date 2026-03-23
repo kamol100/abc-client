@@ -65,7 +65,7 @@ export const SmsSentFormSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["phone"],
-        message: "sms_sent.phone.errors.required",
+        message: "sms_sent.phone_number.errors.required",
       });
     }
   });
@@ -89,9 +89,9 @@ export type SmsSentClientFilterInput = z.input<typeof SmsSentClientFilterSchema>
 export type SmsSentClientFilterValues = z.output<typeof SmsSentClientFilterSchema>;
 
 export const SmsSentPayloadSchema = z.object({
+  phone: z.string().nullable().optional(),
   sms_body: z.string(),
   sms_template_id: z.coerce.number().nullable().optional(),
-  phone: z.string().nullable().optional(),
   message: z.string(),
   custom_message: z.string(),
   all_client: z.coerce.number().default(0),
@@ -143,9 +143,9 @@ export function buildSmsSentPayload({
   const clientFilter = buildSmsSentClientParams(filterValues);
 
   return {
+    phone: phoneNumber,
     sms_body: smsBody,
     sms_template_id: formValues.sms_template_id ?? null,
-    phone: phoneNumber,
     message: smsBody,
     custom_message: smsBody,
     all_client: hasTemplate && (!selectedClientIds || selectedClientIds.length === 0) ? 1 : 0,

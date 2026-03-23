@@ -4,7 +4,7 @@ export const SmsSentFormFieldSchema = (): FieldConfig[] => {
   return [
     {
       type: "text",
-      name: "phone_number",
+      name: "phone",
       label: {
         labelText: "sms_sent.phone_number.label",
         mandatory: true,

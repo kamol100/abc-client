@@ -53,7 +53,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   const sendForm = useForm<SmsSentFormInput>({
     resolver: zodResolver(SmsSentFormSchema),
     defaultValues: {
-      phone_number: phone ?? "",
+      phone: phone ?? "",
       sms_template_id: null,
       sms_body: "",
     },
@@ -77,7 +77,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   });
   const phoneNumber = useWatch({
     control: sendForm.control,
-    name: "phone_number",
+    name: "phone",
   });
 
   const hasTemplateSelected = selectedTemplateId !== null && selectedTemplateId !== undefined;
@@ -95,7 +95,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
 
   useEffect(() => {
     if (phone) {
-      sendForm.setValue("phone_number", phone, { shouldValidate: true });
+      sendForm.setValue("phone", phone, { shouldValidate: true });
     }
   }, [phone, sendForm]);
 
@@ -194,17 +194,17 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     await sendSms(payload);
 
     sendForm.reset({
-      phone_number: phone ?? "",
+      phone: phone ?? "",
       sms_template_id: null,
       sms_body: "",
-    });
+    } as any);
     filterForm.reset(DEFAULT_FILTER_VALUES);
     setAppliedFilters(DEFAULT_FILTER_VALUES);
     setSelectedClientIds([]);
     setBulkSmsCount(0);
   };
 
-  const phoneField = sendFields.find((field) => field.name === "phone_number");
+  const phoneField = sendFields.find((field) => field.name === "phone");
   const templateField = sendFields.find((field) => field.name === "sms_template_id");
   const bodyField = sendFields.find((field) => field.name === "sms_body");
 
