@@ -70,6 +70,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     useState<SmsSentClientFilterValues>(DEFAULT_FILTER_VALUES);
   const [bulkSmsCount, setBulkSmsCount] = useState(0);
   const [hydratedTemplateId, setHydratedTemplateId] = useState<number | null>(null);
+  const [selectedClientIds, setSelectedClientIds] = useState<number[]>([]);
   const selectedTemplateId = useWatch({
     control: sendForm.control,
     name: "sms_template_id",
@@ -129,7 +130,9 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   );
 
   const smsCount = hasTemplateSelected
-    ? bulkSmsCount
+    ? selectedClientIds.length > 0
+      ? selectedClientIds.length
+      : bulkSmsCount
     : phoneNumber?.trim()
       ? 1
       : 0;
@@ -143,11 +146,13 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   const handleFilterSubmit = (values: SmsSentClientFilterValues) => {
     const normalized = SmsSentClientFilterFormSchema.parse(values);
     setAppliedFilters(normalized);
+    setSelectedClientIds([]);
   };
 
   const handleFilterReset = () => {
     filterForm.reset(DEFAULT_FILTER_VALUES);
     setAppliedFilters(DEFAULT_FILTER_VALUES);
+    setSelectedClientIds([]);
   };
 
   const handleStatusChange = (status: SmsSentClientStatus) => {
@@ -157,6 +162,24 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
       client_status: status,
     });
     setAppliedFilters(nextValues);
+    setSelectedClientIds([]);
+  };
+
+  const handleSelectRow = (clientId: number, selected: boolean) => {
+    setSelectedClientIds((prev) =>
+      selected ? [...prev, clientId] : prev.filter((id) => id !== clientId)
+    );
+  };
+
+  const handleSelectAllCurrentPage = (clientIds: number[], selected: boolean) => {
+    setSelectedClientIds((prev) => {
+      if (selected) {
+        const newIds = clientIds.filter((id) => !prev.includes(id));
+        return [...prev, ...newIds];
+      } else {
+        return prev.filter((id) => !clientIds.includes(id));
+      }
+    });
   };
 
   const onSubmit = async (values: SmsSentFormInput) => {
@@ -165,6 +188,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
       formValues: normalizedForm,
       filterValues: appliedFilters,
       smsCount,
+      selectedClientIds,
     });
 
     await sendSms(payload);
@@ -176,6 +200,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
     });
     filterForm.reset(DEFAULT_FILTER_VALUES);
     setAppliedFilters(DEFAULT_FILTER_VALUES);
+    setSelectedClientIds([]);
     setBulkSmsCount(0);
   };
 
@@ -385,6 +410,9 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
               enabled={hasTemplateSelected}
               params={clientParams}
               onTotalCountChange={setBulkSmsCount}
+              selectedClientIds={selectedClientIds}
+              onSelectRow={handleSelectRow}
+              onSelectAllCurrentPage={handleSelectAllCurrentPage}
             />
           </div>
         )}

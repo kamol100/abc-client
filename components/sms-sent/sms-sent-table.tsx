@@ -12,12 +12,18 @@ type SmsSentTableProps = {
   enabled: boolean;
   params?: Record<string, string | number>;
   onTotalCountChange?: (count: number) => void;
+  selectedClientIds: number[];
+  onSelectRow: (clientId: number, selected: boolean) => void;
+  onSelectAllCurrentPage: (clientIds: number[], selected: boolean) => void;
 };
 
 const SmsSentTable: FC<SmsSentTableProps> = ({
   enabled,
   params,
   onTotalCountChange = () => {},
+  selectedClientIds,
+  onSelectRow,
+  onSelectAllCurrentPage,
 }) => {
   const { t } = useTranslation();
   const { data, isLoading, isFetching, isError, error, setCurrentPage } =
@@ -36,8 +42,8 @@ const SmsSentTable: FC<SmsSentTableProps> = ({
   }, [enabled, pagination?.total, onTotalCountChange]);
 
   const columns = useMemo(
-    () => getSmsSentColumns(() => pagination),
-    [pagination]
+    () => getSmsSentColumns(() => pagination, selectedClientIds, onSelectRow, onSelectAllCurrentPage, clients),
+    [pagination, selectedClientIds, onSelectRow, onSelectAllCurrentPage, clients]
   );
 
   if (!enabled) {

@@ -5,13 +5,58 @@ import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { cellIndex } from "@/lib/helper/helper";
 import { SmsSentClientRow } from "@/components/sms-sent/sms-sent-type";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type GetPagination = () => Pagination | undefined;
 
 export function getSmsSentColumns(
-  getPagination: GetPagination
+  getPagination: GetPagination,
+  selectedClientIds: number[],
+  onSelectRow: (clientId: number, selected: boolean) => void,
+  onSelectAllCurrentPage: (clientIds: number[], selected: boolean) => void,
+  currentPageClients: SmsSentClientRow[]
 ): ColumnDef<SmsSentClientRow>[] {
+  const isAllSelected = currentPageClients.length > 0 && currentPageClients.every(c => {
+    const id = c.cid ?? c.id;
+    return id !== undefined && selectedClientIds.includes(id);
+  });
+  const isSomeSelected = currentPageClients.some(c => {
+    const id = c.cid ?? c.id;
+    return id !== undefined && selectedClientIds.includes(id);
+  });
+
   return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={isAllSelected ? true : isSomeSelected ? "indeterminate" : false}
+          onCheckedChange={(value) => {
+            const clientIds = currentPageClients.map(c => c.cid ?? c.id).filter((id): id is number => id !== undefined);
+            onSelectAllCurrentPage(clientIds, !!value);
+          }}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      ),
+      cell: ({ row }) => {
+        const id = row.original.cid ?? row.original.id;
+        return (
+          <Checkbox
+            checked={id !== undefined && selectedClientIds.includes(id)}
+            onCheckedChange={(value) => {
+              if (id !== undefined) {
+                onSelectRow(id, !!value);
+              }
+            }}
+            aria-label="Select row"
+            className="translate-y-[2px]"
+          />
+        );
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       id: "sl",
       header: ({ column }) => (

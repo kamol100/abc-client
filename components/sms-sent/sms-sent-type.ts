@@ -26,7 +26,8 @@ export type SmsTemplateSummary = z.infer<typeof SmsTemplateSummarySchema>;
 
 export const SmsSentClientRowSchema = z
   .object({
-    id: z.coerce.number(),
+    id: z.coerce.number().optional(),
+    cid: z.coerce.number().optional(),
     client_id: z.string().nullable().optional(),
     pppoe_username: z.string().nullable().optional(),
     name: z.string(),
@@ -46,7 +47,7 @@ export type SmsSentClientRow = z.infer<typeof SmsSentClientRowSchema>;
 
 export const SmsSentFormSchema = z
   .object({
-    phone_number: z.string().trim().optional().default(""),
+    phone: z.string().trim().optional().default(""),
     sms_template_id: NullableNumberSchema,
     client_ids: z.array(z.string()).nullable().optional(),
     sms_body: z
@@ -58,13 +59,13 @@ export const SmsSentFormSchema = z
   })
   .superRefine((value, ctx) => {
     const hasTemplate = value.sms_template_id !== null && value.sms_template_id !== undefined;
-    const phone = value.phone_number?.trim() ?? "";
+    const phone = value.phone?.trim() ?? "";
 
     if (!hasTemplate && !phone) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["phone_number"],
-        message: "sms_sent.phone_number.errors.required",
+        path: ["phone"],
+        message: "sms_sent.phone.errors.required",
       });
     }
   });
@@ -88,7 +89,6 @@ export type SmsSentClientFilterInput = z.input<typeof SmsSentClientFilterSchema>
 export type SmsSentClientFilterValues = z.output<typeof SmsSentClientFilterSchema>;
 
 export const SmsSentPayloadSchema = z.object({
-  phone_number: z.string().nullable().optional(),
   sms_body: z.string(),
   sms_template_id: z.coerce.number().nullable().optional(),
   phone: z.string().nullable().optional(),
@@ -127,34 +127,35 @@ type BuildPayloadOptions = {
   formValues: SmsSentFormValues;
   filterValues: SmsSentClientFilterValues;
   smsCount: number;
+  selectedClientIds?: number[];
 };
 
 export function buildSmsSentPayload({
   formValues,
   filterValues,
   smsCount,
+  selectedClientIds,
 }: BuildPayloadOptions): SmsSentPayload {
   const hasTemplate =
     formValues.sms_template_id !== null && formValues.sms_template_id !== undefined;
-  const phoneNumber = formValues.phone_number?.trim() || null;
+  const phoneNumber = formValues.phone?.trim() || null;
   const smsBody = formValues.sms_body.trim();
   const clientFilter = buildSmsSentClientParams(filterValues);
 
   return {
-    phone_number: phoneNumber,
     sms_body: smsBody,
     sms_template_id: formValues.sms_template_id ?? null,
     phone: phoneNumber,
     message: smsBody,
     custom_message: smsBody,
-    all_client: hasTemplate ? 1 : 0,
+    all_client: hasTemplate && (!selectedClientIds || selectedClientIds.length === 0) ? 1 : 0,
     status:
       filterValues.client_status === "all"
         ? null
         : filterValues.client_status === "active"
           ? 1
           : 0,
-    clientIds: null,
+    clientIds: selectedClientIds && selectedClientIds.length > 0 ? selectedClientIds : null,
     client_filter: hasTemplate ? clientFilter : undefined,
     sms_count: smsCount,
   };
