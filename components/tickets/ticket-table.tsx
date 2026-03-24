@@ -12,9 +12,10 @@ import TicketFilterSchema from "./ticket-filter-schema";
 interface TicketTableProps {
     clientId?: string;
     filterValue?: string;
+    tableToolBar?: boolean;
 }
 
-const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue }) => {
+const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar = true }) => {
     const { t } = useTranslation();
     const [filter, setFilter] = useState<string | null>(filterValue ?? null);
 
@@ -59,6 +60,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue }) => {
             form={TicketCreateDialog}
             toolbarTitle={toolbarTitle}
             queryKey="tickets"
+            toolbar={tableToolBar}
         />
     );
 };

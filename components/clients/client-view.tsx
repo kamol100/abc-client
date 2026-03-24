@@ -103,13 +103,16 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 />
             </div>
             <div className="border-t pt-4">
-                <PaymentTable filterValue={`client_uuid=${clientId}`} />
+                <div className="text-md font-semibold mb-2">{t('payment.title_plural')}:</div>
+                <PaymentTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
             </div>
             <div className="border-t pt-4">
-                <TicketTable filterValue={`client_uuid=${clientId}`} />
+                <div className="text-md font-semibold mb-2">{t('ticket.title_plural')}:</div>
+                <TicketTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
             </div>
 
             <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('client.history.title')}:</div>
                 <ClientHistory clientId={clientId} />
             </div>
 

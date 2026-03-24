@@ -24,11 +24,13 @@ type PaymentApiResponse = ApiResponse<PaymentListPayload>;
 type PaymentTableProps = {
     toolbarTitleKey?: string;
     filterValue?: string;
+    tableToolBar?: boolean
 };
 
 const PaymentTable: FC<PaymentTableProps> = ({
     toolbarTitleKey = "payment.title_plural",
     filterValue,
+    tableToolBar = true
 }) => {
     const [filter, setFilter] = useState<string | null>(filterValue ?? null);
     const params = useMemo(
@@ -77,6 +79,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
             <DataTable
                 data={payments}
                 setFilter={setFilter}
+                toolbar={tableToolBar}
                 columns={PaymentColumns}
                 toggleColumns
                 toolbarOptions={{ filter: PaymentFilterSchema() }}

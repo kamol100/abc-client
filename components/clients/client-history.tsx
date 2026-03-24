@@ -135,6 +135,7 @@ const ClientHistory: FC<Props> = ({ clientId }) => {
             data={histories}
             columns={columns}
             pagination={pagination}
+            toolbar={false}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
