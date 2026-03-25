@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
-import { webpack } from "next/dist/compiled/webpack/webpack";
 
 const nextConfig: NextConfig = {
   /* config options here */
   devIndicators: false,
+  allowedDevOrigins: ['192.168.0.101'],
   reactStrictMode: true,
   logging: {
     fetches: {

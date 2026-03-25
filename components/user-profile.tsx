@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutDashboard, LogOut, FolderOpen, Settings } from "lucide-react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
+import { adminLogout } from "@/lib/actions";
 import { useTranslation } from "react-i18next";
 
 function getInitials(name: string): string {
@@ -36,7 +36,7 @@ export function UserProfile() {
     const canAccessSettings = hasPermission("company-settings.access");
     const handleLogout = async () => {
         const loginUrl = new URL("/admin", window.location.origin).toString();
-        await signOut({ redirect: false, redirectTo: loginUrl });
+        await adminLogout();
         window.location.assign(loginUrl);
     };
 

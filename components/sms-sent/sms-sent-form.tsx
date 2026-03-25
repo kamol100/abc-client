@@ -33,6 +33,7 @@ import {
   buildSmsSentPayload,
 } from "@/components/sms-sent/sms-sent-type";
 import DisplayCount from "../display-count";
+import MyWallet from "../wallets/my-wallet";
 
 const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
   pppoe_username: "",
@@ -210,10 +211,15 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
 
   return (
     <TooltipProvider>
-      <div className="space-y-5">
-        <div>
-          <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
-          <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+      <div className="space-y-5 pr-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
+            <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+          </div>
+          <div>
+            <MyWallet />
+          </div>
         </div>
 
         <Form {...sendForm}>

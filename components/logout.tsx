@@ -1,12 +1,12 @@
 "use client";
 import { LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { adminLogout } from "@/lib/actions";
 import { useTranslation } from "react-i18next";
 export default function Logout() {
   const { t } = useTranslation();
   const handleLogout = async () => {
     const loginUrl = new URL("/admin", window.location.origin).toString();
-    await signOut({ redirect: false, redirectTo: loginUrl });
+    await adminLogout();
     window.location.assign(loginUrl);
   };
 

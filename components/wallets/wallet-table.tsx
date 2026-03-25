@@ -3,7 +3,6 @@
 import { useFetch } from "@/app/actions";
 import { DataTable } from "@/components/data-table/data-table";
 import useApiQuery, {
-  ApiResponse,
   PaginatedApiResponse,
 } from "@/hooks/use-api-query";
 import { parseApiError } from "@/lib/helper/helper";
@@ -13,18 +12,15 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { Skeleton } from "@/components/ui/skeleton";
 import { BkashWalletForm, ClientWalletForm } from "./wallet-form";
 import { ClientWalletColumns, WalletColumns } from "./wallet-column";
 import {
   ClientWalletRow,
   ClientWalletRowSchema,
-  MyWalletBalance,
-  MyWalletBalanceSchema,
   WalletRow,
   WalletRowSchema,
 } from "./wallet-type";
-import { formatMoney } from "@/lib/helper/helper";
+import MyWallet from "./my-wallet";
 
 const StatusNotice: FC<{
   type: "success" | "error" | "info";
@@ -47,23 +43,16 @@ const StatusNotice: FC<{
 
 const MyWalletBalanceCard: FC = () => {
   const { t } = useTranslation();
-  const { data, isLoading } = useApiQuery<ApiResponse<MyWalletBalance>>({
-    queryKey: ["my-wallet"],
-    url: "my-wallet",
-    pagination: false,
-  });
-
-  const parsed = MyWalletBalanceSchema.safeParse(data?.data);
-  const balance = parsed.success ? parsed.data.balance : 0;
 
   return (
     <div className="rounded-md border bg-card px-4 py-3 min-w-[210px]">
       <div className="text-xs text-muted-foreground">{t("wallet.my_balance")}</div>
-      {isLoading ? (
-        <Skeleton className="h-7 w-28 mt-1" />
-      ) : (
-        <div className="text-xl font-semibold text-primary">৳{formatMoney(balance)}</div>
-      )}
+      <MyWallet
+        label={false}
+        className="mt-1"
+        amountClassName="text-xl"
+        loadingClassName="h-7 w-28"
+      />
     </div>
   );
 };

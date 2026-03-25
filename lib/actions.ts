@@ -1,9 +1,12 @@
 "use server";
-import { signIn } from '@/auth/auth';
+import { signIn, signOut } from '@/auth/auth';
 import { Login } from '@/components/schema/login';
 import { AuthError } from 'next-auth';
 
-// ...
+/** Clears the session on the server (avoids client fetch to /api/auth/signout). */
+export async function adminLogout() {
+    await signOut({ redirect: false, redirectTo: '/admin' });
+}
 
 export async function authenticate(
     formData: Login,

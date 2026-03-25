@@ -1543,7 +1543,7 @@
     },
     "sms_sent": {
         "title": "Send SMS",
-        "description": "Send single and bulk SMS from one page.",
+        "description": "Send single and bulk SMS.",
         "phone_number": {
             "label": "Phone Number",
             "placeholder": "Enter phone number",
