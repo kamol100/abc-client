@@ -337,7 +337,7 @@ const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
     );
 
     return (
-        <div className="mx-auto w-full sm:w-2/3 md:w-1/2 lg:w-2/3 flex justify-start pr-3">
+        <div className=" w-full sm:w-2/3 md:w-1/2 lg:w-4/3 flex justify-start pr-3">
             <FormBuilder
                 formSchema={formSchema}
                 grids={1}
