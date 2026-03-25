@@ -6,6 +6,8 @@ rm -rf .next
 
 npm install
 
+npm audit fix
+
 if [ -d "build" ]; then
   rm -rf build
 fi

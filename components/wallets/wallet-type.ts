@@ -37,7 +37,7 @@ export const ClientWalletRowSchema = z
 
 export const MyWalletBalanceSchema = z
   .object({
-    id: z.coerce.number().optional(),
+    id: z.coerce.string().optional(),
     balance: z.coerce.number().default(0),
   })
   .passthrough();

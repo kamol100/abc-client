@@ -29,9 +29,8 @@ const MyWallet: FC<MyWalletProps> = ({
     url: "my-wallet",
     pagination: false,
   });
-
   const parsed = MyWalletBalanceSchema.safeParse(data?.data);
-  const balance = parsed.success ? parsed.data.balance : 0;
+  const balance = parsed.success ? parsed?.data?.balance : 0;
 
   return (
     <div className={cn("inline-flex items-center gap-2", className)}>
