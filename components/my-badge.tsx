@@ -155,7 +155,7 @@ export interface MyBadgeProps
   /** Predefined semantic type (drives default color and icon) */
   type?: MyBadgeType;
   /** Optional custom icon; overrides type default when provided */
-  icon?: LucideIcon | ReactNode;
+  icon?: LucideIcon | ReactNode | false;
   /** Show spinner and disabled visual state */
   loading?: boolean;
   /** Visual style variant */
@@ -188,11 +188,11 @@ const MyBadge = forwardRef<HTMLSpanElement, MyBadgeProps>(
 
     const iconContent = loading ? (
       <Loader2 className={cn(sizeStyles.icon, "animate-spin")} />
-    ) : IconProp ? (
+    ) : IconProp === false ? null : IconProp != null ? (
       typeof IconProp === "function" ? (
         createElement(IconProp as LucideIcon, { className: sizeStyles.icon })
       ) : (
-        IconProp
+        (IconProp as ReactNode)
       )
     ) : (
       <DefaultIcon className={sizeStyles.icon} />

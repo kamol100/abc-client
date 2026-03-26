@@ -426,11 +426,14 @@ const FormBuilder = ({
         children((field) => renderField(field))
       ) : (
         <div className={`grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`}>
-          {(formSchema as FormFieldConfig[]).map((field) => (
-            <div key={field.name}>
-              {field.permission !== false ? renderField(field) : null}
-            </div>
-          ))}
+          {(formSchema as FormFieldConfig[]).map((field) => {
+            if (field.permission === false) return null;
+            return (
+              <div key={field.name}>
+                {renderField(field)}
+              </div>
+            );
+          })}
         </div>
       )}
     </FormWrapper>

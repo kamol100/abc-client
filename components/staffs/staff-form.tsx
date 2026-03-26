@@ -23,19 +23,21 @@ const StaffForm: FC<Props> = ({
 
   return (
     <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
-      <AccordionFormBuilder
-        formSchema={StaffFormSchema({ mode })}
-        grids={2}
-        data={data}
-        api={api}
-        mode={mode}
-        schema={StaffSchema}
-        method={method}
-        queryKey="staffs"
-        fullPage
-        actionButtonClass="justify-center"
-        onClose={() => router.push("/staffs")}
-      />
+      <div className="mr-3">
+        <AccordionFormBuilder
+          formSchema={StaffFormSchema({ mode })}
+          grids={2}
+          data={data}
+          api={api}
+          mode={mode}
+          schema={StaffSchema}
+          method={method}
+          queryKey="staffs"
+          fullPage
+          actionButtonClass="justify-center"
+          onClose={() => router.push("/staffs")}
+        />
+      </div>
     </div>
   );
 };

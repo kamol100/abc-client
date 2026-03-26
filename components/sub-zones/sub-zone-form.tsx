@@ -23,7 +23,7 @@ const SubZoneForm: FC<Props> = ({
     return (
         <MyDialog
             size="2xl"
-            title={mode === "create" ? "create_sub_zone" : "edit_sub_zone"}
+            title={mode === "create" ? "sub_zone.create_title" : "sub_zone.edit_title"}
             trigger={<FormTrigger mode={mode} />}
         >
             <FormBuilder

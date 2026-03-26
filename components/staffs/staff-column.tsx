@@ -4,15 +4,32 @@ import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import MyButton from "../my-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { Badge } from "../ui/badge";
+import MyBadge, { type MyBadgeType } from "../my-badge";
 import { DeleteModal } from "../delete-modal";
 import { StaffRow } from "./staff-type";
+import { useTranslation } from "react-i18next";
 
 const STATUS_STYLES: Record<string, string> = {
   active:
     "bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40",
   inactive:
     "bg-destructive/10 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive",
+};
+
+const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
+  active: "success",
+  inactive: "decline",
+};
+
+const StatusCell = ({ status }: { status: string }) => {
+  const { t } = useTranslation();
+  const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
+  const badgeType = STATUS_BADGE_TYPES[status] ?? "decline";
+  return (
+    <MyBadge type={badgeType} className={cn(style)}>
+      <span className="capitalize">{t(`common.${status}`)}</span>
+    </MyBadge>
+  );
 };
 
 export const StaffColumns: ColumnDef<StaffRow>[] = [
@@ -80,15 +97,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="common.status" />
     ),
-    cell: ({ row }) => {
-      const status = String(row.original.status);
-      const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
-      return (
-        <Badge className={cn(style)}>
-          <span className="capitalize">{status}</span>
-        </Badge>
-      );
-    },
+    cell: ({ row }) => <StatusCell status={String(row.original.status)} />,
   },
   {
     id: "actions",

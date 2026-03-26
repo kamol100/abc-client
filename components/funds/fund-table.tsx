@@ -3,7 +3,6 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { formatMoney } from "@/lib/helper/helper";
 import { DataTable } from "@/components/data-table/data-table";
 import { CardContent } from "@/components/ui/card";
 import Card from "@/components/card";
@@ -12,6 +11,8 @@ import FundFilterSchema from "./fund-filter-schema";
 import FundForm from "./fund-form";
 import { getFundColumns } from "./fund-column";
 import { FundReport, FundRow } from "./fund-type";
+import DisplayCount from "../display-count";
+import { toNumber } from "@/lib/helper/helper";
 
 type FundListPayload = {
   data: FundRow[];
@@ -76,9 +77,9 @@ const FundTable: FC<FundTableProps> = ({
           {isLoading ? (
             <Skeleton className="h-8 w-32 mt-2" />
           ) : (
-            <p className="text-2xl font-semibold text-primary">
-              ৳{formatMoney(totalBalance)}
-            </p>
+            <div className="text-lg font-semibold text-primary">
+              <DisplayCount amount={toNumber(totalBalance)} formatCurrency animate currency="BDT" />
+            </div>
           )}
         </CardContent>
       </Card>

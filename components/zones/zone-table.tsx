@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { ZoneRow } from "@/components/zones/zone-type";
@@ -8,6 +9,7 @@ import { ZonesColumns } from "@/components/zones/zones-column";
 import ZoneForm from "@/components/zones/zone-form";
 
 const ZoneTable: FC = () => {
+    const { t } = useTranslation();
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -28,8 +30,8 @@ const ZoneTable: FC = () => {
     const pagination = data?.data?.pagination;
 
     const toolbarTitle = pagination?.total
-        ? `Zones (${pagination.total})`
-        : "Zones";
+        ? `${t("zone.title")} (${pagination.total})`
+        : t("zone.title");
 
     return (
         <DataTable

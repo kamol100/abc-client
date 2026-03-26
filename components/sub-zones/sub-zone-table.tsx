@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { SubZoneRow } from "@/components/sub-zones/sub-zone-type";
@@ -8,6 +9,7 @@ import { SubZonesColumns } from "@/components/sub-zones/sub-zones-column";
 import SubZoneForm from "@/components/sub-zones/sub-zone-form";
 
 const SubZoneTable: FC = () => {
+    const { t } = useTranslation();
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -28,8 +30,8 @@ const SubZoneTable: FC = () => {
     const pagination = data?.data?.pagination;
 
     const toolbarTitle = pagination?.total
-        ? `Sub Zones (${pagination.total})`
-        : "Sub Zones";
+        ? `${t("sub_zone.title")} (${pagination.total})`
+        : t("sub_zone.title");
 
     return (
         <DataTable

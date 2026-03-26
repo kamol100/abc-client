@@ -77,7 +77,7 @@ export const StaffFormSchema = z.object({
   mother_name: z.string().nullable().optional().default(""),
   nid: z.string().nullable().optional().default(""),
   marital_status: z.string().nullable().optional().default("unmarred"),
-  gender: z.string().min(1, { message: "staff.gender.errors.required" }),
+  gender: z.string().min(1, { message: "staff.gender.errors.required" }).default("male"),
   status: z.coerce.string().default("active"),
   present_address: z.string().nullable().optional().default(""),
   permanent_address: z.string().nullable().optional().default(""),

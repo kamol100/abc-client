@@ -89,7 +89,7 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
       toggleColumns
       pagination={pagination}
       setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       isFetching={isFetching}
       toolbarTitle={toolbarTitle}
       queryKey={queryKey}

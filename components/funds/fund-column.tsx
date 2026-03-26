@@ -5,7 +5,7 @@ import { Eye, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import { cellIndex, formatMoney } from "@/lib/helper/helper";
+import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
 import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
@@ -15,6 +15,8 @@ import FundTransactionForm from "@/components/fund-transactions/fund-transaction
 import FundTransactionTable from "@/components/fund-transactions/fund-transaction-table";
 import FundForm from "./fund-form";
 import { FundRow } from "./fund-type";
+import DisplayCount from "../display-count";
+import MyBadge from "../my-badge";
 
 type GetPagination = () => Pagination | undefined;
 
@@ -104,73 +106,73 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
 export const getFundColumns = (
   getPagination: GetPagination
 ): ColumnDef<FundRow>[] => [
-  {
-    id: "sl",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.sl" />
-    ),
-    cell: ({ row }) => (
-      <div className="font-medium">{cellIndex(row.index, getPagination())}</div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "short_name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.short_name.label" />
-    ),
-    cell: ({ row }) => <span>{row.original.short_name ?? "—"}</span>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.name.label" />
-    ),
-    cell: ({ row }) => <span className="capitalize">{row.original.name}</span>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "staff.name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.staff.label" />
-    ),
-    cell: ({ row }) => <span>{row.original.staff?.name ?? "—"}</span>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "account_number",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.account_number.label" />
-    ),
-    cell: ({ row }) => <span>{row.original.account_number ?? "—"}</span>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: "balance",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="fund.balance.label" />
-    ),
-    cell: ({ row }) => (
-      <Badge className="bg-primary/10 text-primary hover:bg-primary/15">
-        ৳{formatMoney(row.original.balance)}
-      </Badge>
-    ),
-    enableSorting: false,
-  },
-  {
-    id: "actions",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="common.actions"
-        className="flex justify-end mr-2"
-      />
-    ),
-    cell: ({ row }) => <FundActionsCell fund={row.original} />,
-    enableSorting: false,
-    enableHiding: false,
-  },
-];
+    {
+      id: "sl",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.sl" />
+      ),
+      cell: ({ row }) => (
+        <div className="font-medium">{cellIndex(row.index, getPagination())}</div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "short_name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.short_name.label" />
+      ),
+      cell: ({ row }) => <span>{row.original.short_name ?? "—"}</span>,
+      enableSorting: false,
+    },
+    {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.name.label" />
+      ),
+      cell: ({ row }) => <span className="capitalize">{row.original.name}</span>,
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "staff.name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.staff.label" />
+      ),
+      cell: ({ row }) => <span>{row.original.staff?.name ?? "—"}</span>,
+      enableSorting: false,
+    },
+    {
+      accessorKey: "account_number",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.account_number.label" />
+      ),
+      cell: ({ row }) => <span>{row.original.account_number ?? "—"}</span>,
+      enableSorting: false,
+    },
+    {
+      accessorKey: "balance",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund.balance.label" />
+      ),
+      cell: ({ row }) => (
+        <MyBadge icon={false}>
+          <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
+        </MyBadge>
+      ),
+      enableSorting: false,
+    },
+    {
+      id: "actions",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title="common.actions"
+          className="flex justify-end mr-2"
+        />
+      ),
+      cell: ({ row }) => <FundActionsCell fund={row.original} />,
+      enableSorting: false,
+      enableHiding: false,
+    },
+  ];

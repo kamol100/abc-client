@@ -41,7 +41,7 @@ const MikrotikPackagesTable: FC = () => {
         data={packages}
         setFilter={setFilter}
         columns={columns}
-        toolbarOptions={{ filter: MikrotikPackageFilterSchema() }}
+        toolbarOptions={{ filter: MikrotikPackageFilterSchema(), showFilter: true }}
         toggleColumns={false}
         pagination={undefined}
         isLoading={isLoading}

@@ -182,11 +182,14 @@ const FormFilter = ({
                   GRID_STYLES[grids],
                 )}
               >
-                {formSchema.map((field, index) => (
-                  <div key={field.name ?? index}>
-                    {field.permission !== false ? renderField(field) : null}
-                  </div>
-                ))}
+                {formSchema.map((field, index) => {
+                  if (field.permission === false) return null;
+                  return (
+                    <div key={field.name ?? index}>
+                      {renderField(field)}
+                    </div>
+                  );
+                })}
               </div>
             </form>
           </Form>

@@ -320,6 +320,8 @@
             "label": "Sub Zones"
         },
         "title": "Zones",
+        "create_title": "Add zone",
+        "edit_title": "Edit zone",
         "delete_confirmation": "Are you sure you want to delete this zone?"
     },
     "communication_gateway": {
@@ -576,6 +578,8 @@
             "placeholder": "Enter note"
         },
         "title": "Sub Zones",
+        "create_title": "Add sub zone",
+        "edit_title": "Edit sub zone",
         "delete_confirmation": "Are you sure you want to delete this sub zone?"
     },
     "staff": {

@@ -23,7 +23,7 @@ const ZoneForm: FC<Props> = ({
     return (
         <MyDialog
             size="xl"
-            title={mode === "create" ? "create_zone" : "edit_zone"}
+            title={mode === "create" ? "zone.create_title" : "zone.edit_title"}
             trigger={<FormTrigger mode={mode} />}
         >
             <FormBuilder

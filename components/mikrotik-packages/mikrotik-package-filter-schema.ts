@@ -5,7 +5,6 @@ export function MikrotikPackageFilterSchema(): FieldConfig[] {
     {
       type: "dropdown",
       name: "network_id",
-      label: { labelText: "mikrotik_package.network.label" },
       placeholder: "mikrotik_package.network.placeholder",
       api: "/dropdown-networks",
     },

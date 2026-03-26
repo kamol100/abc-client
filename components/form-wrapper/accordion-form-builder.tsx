@@ -51,11 +51,14 @@ const AccordionFormBuilder = ({
                   accordionBodyClass
                 )}
               >
-                {section.form.map((field) => (
-                  <div key={field.name}>
-                    {field.permission !== false ? renderField(field) : null}
-                  </div>
-                ))}
+                {section.form.map((field) => {
+                  if (field.permission === false) return null;
+                  return (
+                    <div key={field.name}>
+                      {renderField(field)}
+                    </div>
+                  );
+                })}
               </AccordionContent>
             </AccordionItem>
           ))}

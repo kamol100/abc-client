@@ -16,6 +16,7 @@ import {
   SalaryItem,
   SalaryStructure,
 } from "./salary-type";
+import DisplayCount from "../display-count";
 
 type Props = {
   mode?: "create" | "edit";
@@ -125,7 +126,7 @@ const SalaryFormContent: FC<ContentProps> = ({
                 {t("common.gross_amount")}:
               </span>
               <span className="font-medium">
-                ৳{formatMoney(totalItems)}
+                <DisplayCount amount={toNumber(totalItems)} formatCurrency />
               </span>
             </div>
             {totalDeductions > 0 && (
@@ -134,14 +135,14 @@ const SalaryFormContent: FC<ContentProps> = ({
                   {t("common.total_deductions")}:
                 </span>
                 <span className="font-medium text-destructive">
-                  -৳{formatMoney(totalDeductions)}
+                  <DisplayCount amount={toNumber(totalDeductions)} formatCurrency />
                 </span>
               </div>
             )}
             <div className="flex justify-between border-t pt-2">
               <span className="font-semibold">{t("common.net_salary")}:</span>
               <span className="font-bold text-primary text-lg">
-                ৳{formatMoney(netSalary)}
+                <DisplayCount amount={toNumber(netSalary)} formatCurrency />
               </span>
             </div>
           </div>
