@@ -51,7 +51,7 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
             onClick={() => setOpenTransactionForm(true)}
             title={t("fund_transaction.create_title")}
           >
-            <Plus className="h-4 w-4 text-green-600" />
+            <Plus className="h-4 w-4 " />
           </MyButton>
           <FundTransactionForm
             fundId={fund.id}
@@ -156,7 +156,7 @@ export const getFundColumns = (
         <DataTableColumnHeader column={column} title="fund.balance.label" />
       ),
       cell: ({ row }) => (
-        <MyBadge icon={false}>
+        <MyBadge icon={false} variant="outline" color="green">
           <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
         </MyBadge>
       ),

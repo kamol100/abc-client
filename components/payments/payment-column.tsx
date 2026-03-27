@@ -1,13 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { ColumnDef } from "@tanstack/react-table";
 import MyButton from "../my-button";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
 import { Badge } from "../ui/badge";
 import { DeleteModal } from "../delete-modal";
 import { PaymentRow } from "./payment-type";
+import DisplayCount from "../display-count";
 
 const STATUS_STYLES: Record<string, string> = {
     paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
@@ -94,7 +95,7 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
         ),
         cell: ({ row }) => (
             <span className="font-semibold text-primary">
-                ৳{formatMoney(row.original.amount)}
+                <DisplayCount amount={toNumber(row.original.amount)} formatCurrency />
             </span>
         ),
     },
@@ -143,19 +144,6 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
             const paymentId = String(payment.id);
             return (
                 <div className="flex items-end justify-end gap-1 mr-2">
-                    {payment.status === "due" && (
-                        <MyButton
-                            action="save"
-                            url={`/payments/pay/${paymentId}`}
-                            title="Pay"
-                            className="hover:bg-primary hover:text-primary-foreground px-2"
-                        />
-                    )}
-                    <MyButton
-                        action="edit"
-                        url={`/payments/edit/${paymentId}`}
-                        className="hover:bg-primary hover:text-primary-foreground px-2"
-                    />
                     <DeleteModal
                         api_url={`/payments/${paymentId}`}
                         keys="payments"

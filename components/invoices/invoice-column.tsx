@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 import { InvoiceRow } from "./invoice-type";
 import InvoiceRowActions from "./invoice-row-actions";
+import DisplayCount from "../display-count";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     paid: "success",
@@ -120,10 +121,12 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
 
                     return (
                         <div className="space-y-0.5">
-                            <p className="font-semibold text-primary">৳{formatMoney(total)}</p>
+                            <p className="font-semibold text-primary">
+                                <DisplayCount amount={toNumber(total)} formatCurrency />
+                            </p>
                             {isPartial && (
                                 <p className="text-xs text-green-600">
-                                    {t("invoice.reports.paid")}: ৳{formatMoney(paid)}
+                                    {t("invoice.reports.paid")}: <DisplayCount amount={toNumber(paid)} formatCurrency />
                                 </p>
                             )}
                         </div>

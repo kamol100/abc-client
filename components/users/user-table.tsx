@@ -47,7 +47,7 @@ const UserTable: FC = () => {
       toggleColumns={true}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       isFetching={isFetching}
       form={UserForm}
       toolbarTitle={toolbarTitle}

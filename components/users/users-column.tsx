@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { BadgeWrapper } from "@/components/badge-wrapper";
+import MyBadge from "@/components/my-badge";
 import { UserRow } from "./user-type";
 import UserForm from "./user-form";
 import { DeleteModal } from "../delete-modal";
@@ -11,13 +11,13 @@ import { DeleteModal } from "../delete-modal";
 function UserStatusCell({ status }: { status: 0 | 1 }) {
   const { t } = useTranslation();
   return (
-    <BadgeWrapper
-      status={status === 1 ? "success" : "error"}
-      tooltip={status === 1 ? t("user.status.active_tooltip") : t("user.status.inactive_tooltip")}
+    <MyBadge
+      type={status === 1 ? "success" : "decline"}
+      title={status === 1 ? t("user.status.active_tooltip") : t("user.status.inactive_tooltip")}
       className="capitalize"
     >
       {status === 1 ? t("common.active") : t("common.inactive")}
-    </BadgeWrapper>
+    </MyBadge>
   );
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { ClientWalletRow, WalletRow } from "./wallet-type";
+import DisplayCount from "../display-count";
 
 export const WalletColumns: ColumnDef<WalletRow>[] = [
   {
@@ -30,7 +31,7 @@ export const WalletColumns: ColumnDef<WalletRow>[] = [
     ),
     cell: ({ row }) => (
       <span className="font-semibold text-primary">
-        ৳{formatMoney(row.original.amount)}
+        <DisplayCount amount={toNumber(row.original.amount)} formatCurrency />
       </span>
     ),
     enableSorting: false,
@@ -62,7 +63,7 @@ export const ClientWalletColumns: ColumnDef<ClientWalletRow>[] = [
     ),
     cell: ({ row }) => (
       <span className="font-semibold text-primary">
-        ৳{formatMoney(row.original.balance)}
+        <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
       </span>
     ),
     enableSorting: false,

@@ -30,11 +30,11 @@ const StatusNotice: FC<{
     className={cn(
       "rounded-md border px-4 py-3 text-sm",
       type === "success" &&
-        "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+      "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
       type === "error" &&
-        "border-destructive/30 bg-destructive/10 text-destructive",
+      "border-destructive/30 bg-destructive/10 text-destructive",
       type === "info" &&
-        "border-primary/30 bg-primary/10 text-primary"
+      "border-primary/30 bg-primary/10 text-primary"
     )}
   >
     {message}
@@ -205,7 +205,7 @@ export const ClientWalletTable: FC = () => {
       toggleColumns
       pagination={pagination}
       setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
       isFetching={isFetching}
       toolbarTitle={toolbarTitle}
       form={ClientWalletForm}

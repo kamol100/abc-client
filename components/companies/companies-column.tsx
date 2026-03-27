@@ -8,7 +8,8 @@ import CompanyForm from "./company-form";
 import { DeleteModal } from "../delete-modal";
 import CompanyWalletForm from "@/components/company-wallets/company-wallet-form";
 import { usePermissions } from "@/context/app-provider";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
+import DisplayCount from "../display-count";
 
 const CompanyActionsCell: FC<{ company: CompanyRow }> = ({ company }) => {
     const { hasPermission } = usePermissions();
@@ -88,7 +89,7 @@ export const CompaniesColumns: ColumnDef<CompanyRow>[] = [
             const balance = row.original.wallet?.balance ?? 0;
             return (
                 <div className="font-semibold">
-                    ৳{formatMoney(balance)}
+                    <DisplayCount amount={toNumber(balance)} formatCurrency />
                 </div>
             );
         },

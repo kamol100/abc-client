@@ -3,12 +3,13 @@
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { usePermissions } from "@/context/app-provider";
-import { cellIndex, formatMoney } from "@/lib/helper/helper";
+import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { DeleteModal } from "@/components/delete-modal";
 import { FundTransactionRow } from "./fund-transaction-type";
+import DisplayCount from "../display-count";
 
 type GetPagination = () => Pagination | undefined;
 
@@ -128,7 +129,7 @@ export const getFundTransactionColumns = (
       ),
       cell: ({ row }) => (
         <span className={cn("font-semibold", TYPE_AMOUNT_STYLES[row.original.transaction_type])}>
-          ৳{formatMoney(row.original.amount)}
+          <DisplayCount amount={toNumber(row.original.amount)} formatCurrency />
         </span>
       ),
       enableSorting: false,

@@ -9,7 +9,7 @@ export const FundRefSchema = z
 
 export const ClientRefSchema = z
   .object({
-    id: z.coerce.number(),
+    id: z.coerce.string(),
     name: z.string(),
   })
   .passthrough();
@@ -27,7 +27,7 @@ export const WalletRowSchema = z
 
 export const ClientWalletRowSchema = z
   .object({
-    id: z.coerce.number().optional(),
+    id: z.coerce.string().optional(),
     balance: z.coerce.number().default(0),
     note: z.string().nullable().optional(),
     created_at: z.string().nullable().optional(),
