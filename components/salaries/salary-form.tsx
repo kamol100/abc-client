@@ -42,8 +42,9 @@ const SalaryFormContent: FC<ContentProps> = ({
   const salaryType: string = watch("salary_type") ?? "monthly";
   const staffId: number | undefined = watch("staff_id");
   const salaryItems: SalaryItem[] = watch("salary_items") ?? [];
-  const salaryDeductions: SalaryDeduction[] =
-    watch("salary_deductions") ?? [];
+  const salaryDeductions: SalaryDeduction[] = watch("salary_deductions") ?? [];
+
+  console.log(salaryItems, salaryDeductions)
 
   const fieldMap = useMemo(() => {
     const map = new Map<string, FormFieldConfig>();
@@ -63,11 +64,14 @@ const SalaryFormContent: FC<ContentProps> = ({
         url: `/salary-deduction/${staffId}`,
       });
       if (!result?.success) throw new Error("Failed to fetch salary structure");
+      console.log(result, 'rs')
       return result.data as SalaryStructure;
     },
     enabled: !!staffId && salaryType === "monthly" && mode === "create",
     retry: 1,
   });
+
+  console.log(staffSalary)
 
   useEffect(() => {
     if (!staffSalary || mode !== "create") return;
@@ -76,21 +80,13 @@ const SalaryFormContent: FC<ContentProps> = ({
     setValue("amount", staffSalary.total_salary ?? 0);
   }, [staffSalary, mode, setValue]);
 
-  const totalItems = useMemo(
-    () =>
-      salaryItems.reduce(
-        (acc, item) => acc + toNumber(item.items_value),
-        0,
-      ),
+  const totalItems = useMemo(() =>
+    salaryItems.reduce((acc, item) => acc + toNumber(item.items_value), 0),
     [salaryItems],
   );
 
-  const totalDeductions = useMemo(
-    () =>
-      salaryDeductions.reduce(
-        (acc, item) => acc + toNumber(item.deductions_value),
-        0,
-      ),
+  const totalDeductions = useMemo(() =>
+    salaryDeductions.reduce((acc, item) => acc + toNumber(item.deductions_value), 0),
     [salaryDeductions],
   );
 
@@ -165,27 +161,29 @@ const SalaryForm: FC<Props> = ({
 
   return (
     <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
-      <FormBuilder
-        formSchema={formSchema}
-        grids={2}
-        data={data}
-        api={api}
-        mode={mode}
-        schema={SalaryFormSchema}
-        method={method}
-        queryKey="salaries"
-        fullPage
-        actionButtonClass="justify-center"
-        onClose={() => router.push("/salaries")}
-      >
-        {(renderField) => (
-          <SalaryFormContent
-            formSchema={formSchema}
-            renderField={renderField}
-            mode={mode}
-          />
-        )}
-      </FormBuilder>
+      <div className="ml-1 pr-3">
+        <FormBuilder
+          formSchema={formSchema}
+          grids={2}
+          data={data}
+          api={api}
+          mode={mode}
+          schema={SalaryFormSchema}
+          method={method}
+          queryKey="salaries"
+          fullPage
+          actionButtonClass="justify-center"
+          onClose={() => router.push("/salaries")}
+        >
+          {(renderField) => (
+            <SalaryFormContent
+              formSchema={formSchema}
+              renderField={renderField}
+              mode={mode}
+            />
+          )}
+        </FormBuilder>
+      </div>
     </div>
   );
 };

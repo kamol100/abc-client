@@ -1,6 +1,8 @@
 import { FormFieldConfig } from "../form-wrapper/form-builder-type";
+import { useTranslation } from "react-i18next";
 
 export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
+  const { t } = useTranslation();
   return [
     {
       type: "dropdown",
@@ -61,8 +63,8 @@ export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
       label: { labelText: "common.salary_and_allowance" },
       minItems: 1,
       grids: 2,
-      addButtonLabel: "common.add_item",
-      defaultItem: { items_label: "", items_value: 0 },
+      addButtonLabel: t("common.add_item"),
+      defaultItem: { items_label: t("common.label"), items_value: 0 },
       itemFields: [
         {
           type: "text",
@@ -84,7 +86,7 @@ export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
       label: { labelText: "common.salary_deductions" },
       minItems: 0,
       grids: 2,
-      addButtonLabel: "common.add_deduction",
+      addButtonLabel: t("common.add_deduction"),
       defaultItem: { deductions_label: "", deductions_value: 0 },
       itemFields: [
         {

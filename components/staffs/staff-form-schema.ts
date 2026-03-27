@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { AccordionSection } from "../form-wrapper/form-builder-type";
 
 type Props = {
@@ -11,6 +12,7 @@ const salaryDayOptions = Array.from({ length: 31 }, (_, i) => {
 });
 
 export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] => {
+  const { t } = useTranslation();
   return [
     {
       name: "common.basic_information",
@@ -183,7 +185,7 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
           label: { labelText: "common.salary_and_allowance" },
           minItems: 1,
           grids: 2,
-          addButtonLabel: "common.add_item",
+          addButtonLabel: t("common.add_item"),
           defaultItem: { items_label: "", items_value: 0 },
           itemFields: [
             {
@@ -206,7 +208,7 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
           label: { labelText: "common.salary_deductions" },
           minItems: 0,
           grids: 2,
-          addButtonLabel: "common.add_deduction",
+          addButtonLabel: t("common.add_deduction"),
           defaultItem: { deductions_label: "", deductions_value: 0 },
           itemFields: [
             {

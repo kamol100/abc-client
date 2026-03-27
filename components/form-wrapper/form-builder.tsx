@@ -194,7 +194,7 @@ const FieldArrayRenderer = ({
       {config.label && <Label label={config.label} />}
 
       {fields.map((item, index) => (
-        <div key={item.id} className="relative flex gap-3 border rounded-md p-3">
+        <div key={item.id} className="relative flex items-end justify-center gap-3 border rounded-md p-3">
           <div className={`grid ${itemGridGap} ${GRID_STYLES[itemGrids]} w-full`}>
             {itemFields.map((itemField) => {
               if (itemField.permission === false) return null;
@@ -218,8 +218,7 @@ const FieldArrayRenderer = ({
               </MyButton>
             )}
             {canRemove && (
-              <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)}>
-              </MyButton>
+              <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)} />
             )}
           </div>
         </div>
@@ -229,11 +228,10 @@ const FieldArrayRenderer = ({
         <MyButton
           icon={true}
           action="create"
+          title={addButtonLabel}
           onClick={() => append({ ...defaultItem })}
-          className="mt-2 hover:bg-primary hover:text-primary-foreground"
+          className=" hover:bg-primary hover:text-primary-foreground"
         >
-          <Plus className="h-4 w-4 mr-1" />
-          {addButtonLabel}
         </MyButton>
       )}
     </div>
