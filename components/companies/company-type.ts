@@ -5,6 +5,11 @@ const WalletRefSchema = z.object({
     balance: z.coerce.number().nullable().optional(),
 }).passthrough();
 
+const UserRowSchema = z.object({
+    id: z.coerce.string(),
+    name: z.string(),
+}).passthrough();
+
 export const CompanyRowSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -17,6 +22,7 @@ export const CompanyRowSchema = z.object({
     client_count: z.coerce.number().nullable().optional(),
     clients: z.array(z.unknown()).optional(),
     wallet: WalletRefSchema.nullable().optional(),
+    users: z.array(UserRowSchema).nullable().optional(),
 }).passthrough();
 
 export type CompanyRow = z.infer<typeof CompanyRowSchema>;

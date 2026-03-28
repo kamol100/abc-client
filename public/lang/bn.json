@@ -3806,6 +3806,24 @@
             }
         }
     },
+    "tenant_switcher": {
+        "scope": {
+            "super_admin": "সুপার অ্যাডমিন",
+            "company": "কোম্পানি",
+            "reseller": "রিসেলার",
+            "impersonating": "ইমপারসোনেটিং",
+            "current_scope": "কারেন্ট স্কোপ"
+        },
+        "actions": {
+            "switch_back_one_level": "সুইচ ব্যাক (ওয়ান লেভেল)",
+            "exit_all_impersonation": "এক্সিট অল ইমপারসোনেশন",
+            "exit_impersonation": "এক্সিট ইমপারসোনেশন"
+        },
+        "labels": {
+            "companies": "কোম্পানি",
+            "resellers": "রিসেলার"
+        }
+    },
     "theme_customizer": {
         "title": "থিম কাস্টমাইজার",
         "description": "আপনার থিম কাস্টমাইজ করুন।",

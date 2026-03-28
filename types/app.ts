@@ -36,3 +36,43 @@ export interface AppData {
   profile: Profile;
   permissions: AppPermission[];
 }
+
+// ─── Impersonation ──────────────────────────────────────────────────
+export interface ImpersonationState {
+  is_impersonating: boolean;
+  chain: number[];
+  original_user_id: number | null;
+}
+
+export interface ImpersonationUser {
+  id: string;
+  name: string;
+  username?: string;
+  email?: string;
+  reseller_id?: string | null;
+  roles?: { id: number; name: string }[];
+  staff?: Staff | null;
+  company?: {
+    id: string;
+    name: string;
+    logo?: string;
+    favicon?: string;
+    domain?: string;
+  };
+}
+
+export interface ImpersonationResponse {
+  user: ImpersonationUser;
+  token: string | null;
+  impersonation: ImpersonationState;
+}
+
+export interface TenantListItem {
+  id: string;
+  name: string;
+  user?: {
+    uuid: string;
+    name: string;
+    username?: string;
+  };
+}

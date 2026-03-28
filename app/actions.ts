@@ -31,12 +31,13 @@ type Props = {
     data?: any;
     method?: string;
     version?: string;
+    token?: string;
 };
 
-export async function useFetch({ url, data = null, method = "GET", version = "v1" }: Props) {
+export async function useFetch({ url, data = null, method = "GET", version = "v1", token: overrideToken }: Props) {
     try {
         const session: any = await auth();
-        const token = session?.token;
+        const token = overrideToken || session?.token;
         const api_url = `${BASE_URL}${version}${url}`;
         console.log(api_url, method, data)
 

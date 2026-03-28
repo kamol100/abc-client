@@ -5,7 +5,6 @@ import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -20,30 +19,10 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useMenuItems } from "@/hooks/use-menu-items";
 import type { AppData } from "@/types/app";
 
-const sidebarConfig = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-};
-
+import dynamic from "next/dynamic";
+const TenantSwitcher = dynamic(() => import("@/components/tenant-switcher").then((mod) => mod.TenantSwitcher), {
+  ssr: false,
+});
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { setSettings } = useSettings();
   const { setProfile } = useProfile();
@@ -76,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       `}</style>
       <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
         <SidebarHeader className="border-b">
-          <TeamSwitcher teams={sidebarConfig.teams} />
+          <TenantSwitcher />
         </SidebarHeader>
         <SidebarContent className="group-data-[collapsible=icon]:!overflow-y-auto">
           <NavMain items={menuItems} />

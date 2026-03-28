@@ -3806,6 +3806,24 @@
             }
         }
     },
+    "tenant_switcher": {
+        "scope": {
+            "super_admin": "Super Admin",
+            "company": "Company",
+            "reseller": "Reseller",
+            "impersonating": "Impersonating",
+            "current_scope": "Current Scope"
+        },
+        "actions": {
+            "switch_back_one_level": "Switch Back (One Level)",
+            "exit_all_impersonation": "Exit All Impersonation",
+            "exit_impersonation": "Exit Impersonation"
+        },
+        "labels": {
+            "companies": "Companies",
+            "resellers": "Resellers"
+        }
+    },
     "theme_customizer": {
         "title": "Theme Customizer",
         "description": "Customize your theme.",

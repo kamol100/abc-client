@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type PropsWithChildren,
@@ -11,6 +12,7 @@ import {
 import type {
   AppData,
   AppPermission,
+  ImpersonationState,
   Profile,
   Settings,
 } from "@/types/app";
@@ -66,6 +68,29 @@ export function usePermissions(): PermissionsContextValue {
   return ctx;
 }
 
+// ─── Impersonation ──────────────────────────────────────────────────
+const ORIGINAL_TOKEN_KEY = "isp_original_token";
+
+export interface ImpersonationContextValue {
+  impersonation: ImpersonationState;
+  setImpersonation: React.Dispatch<React.SetStateAction<ImpersonationState>>;
+  originalToken: string | null;
+  saveOriginalToken: (token: string) => void;
+  clearOriginalToken: () => void;
+  getOriginalToken: () => string | null;
+}
+
+const ImpersonationContext = createContext<ImpersonationContextValue | null>(
+  null
+);
+
+export function useImpersonation(): ImpersonationContextValue {
+  const ctx = useContext(ImpersonationContext);
+  if (!ctx)
+    throw new Error("useImpersonation must be used within <AppProvider>");
+  return ctx;
+}
+
 // ─── Combined Provider ───────────────────────────────────────────────
 interface AppProviderProps extends PropsWithChildren {
   initialData: AppData;
@@ -80,6 +105,17 @@ export default function AppProvider({
   const [permissions, setPermissions] = useState<AppPermission[]>(
     initialData.permissions
   );
+  const [impersonation, setImpersonation] = useState<ImpersonationState>({
+    is_impersonating: false,
+    chain: [],
+    original_user_id: null,
+  });
+  const [originalToken, setOriginalToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(ORIGINAL_TOKEN_KEY);
+    if (stored) setOriginalToken(stored);
+  }, []);
 
   const updateSettings = useCallback(
     (partial: Partial<Settings>) =>
@@ -98,6 +134,20 @@ export default function AppProvider({
     [permissions]
   );
 
+  const saveOriginalToken = useCallback((token: string) => {
+    localStorage.setItem(ORIGINAL_TOKEN_KEY, token);
+    setOriginalToken(token);
+  }, []);
+
+  const clearOriginalToken = useCallback(() => {
+    localStorage.removeItem(ORIGINAL_TOKEN_KEY);
+    setOriginalToken(null);
+  }, []);
+
+  const getOriginalToken = useCallback(() => {
+    return localStorage.getItem(ORIGINAL_TOKEN_KEY);
+  }, []);
+
   const settingsValue = useMemo<SettingsContextValue>(
     () => ({ settings, setSettings, updateSettings }),
     [settings, updateSettings]
@@ -113,11 +163,25 @@ export default function AppProvider({
     [permissions, hasPermission]
   );
 
+  const impersonationValue = useMemo<ImpersonationContextValue>(
+    () => ({
+      impersonation,
+      setImpersonation,
+      originalToken,
+      saveOriginalToken,
+      clearOriginalToken,
+      getOriginalToken,
+    }),
+    [impersonation, originalToken, saveOriginalToken, clearOriginalToken, getOriginalToken]
+  );
+
   return (
     <SettingsContext.Provider value={settingsValue}>
       <ProfileContext.Provider value={profileValue}>
         <PermissionsContext.Provider value={permissionsValue}>
-          {children}
+          <ImpersonationContext.Provider value={impersonationValue}>
+            {children}
+          </ImpersonationContext.Provider>
         </PermissionsContext.Provider>
       </ProfileContext.Provider>
     </SettingsContext.Provider>
