@@ -12,6 +12,7 @@ import * as React from "react";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 import {
   DropdownMenu,
@@ -132,9 +133,6 @@ export function TenantSwitcher() {
    * Start impersonation: switch into a tenant's user context.
    */
   async function handleImpersonate(tenant: TenantListItem) {
-    const userUuid = tenant.user?.uuid;
-    if (!userUuid) return;
-
     setSwitching(true);
     try {
       // Save the original token before first impersonation
@@ -142,9 +140,14 @@ export function TenantSwitcher() {
         saveOriginalToken(sessionToken);
       }
 
+      const payload = scope === "super_admin"
+        ? { company_id: tenant.id }
+        : { reseller_id: tenant.id };
+
       const res = await useFetch({
-        url: `/impersonate/${userUuid}`,
+        url: `/impersonate/${tenant?.id}`,
         method: "POST",
+        data: payload,
       });
 
       if (!res?.success) {
@@ -172,8 +175,11 @@ export function TenantSwitcher() {
         // Refresh all app data with the new token
         await refreshAppData(result.token);
       }
-    } catch (error) {
+
+      window.location.reload();
+    } catch (error: any) {
       console.error("Impersonation failed:", error);
+      toast.error(error?.message || "Impersonation failed");
     } finally {
       setSwitching(false);
     }
@@ -220,8 +226,10 @@ export function TenantSwitcher() {
       });
 
       await refreshAppData(newToken ?? undefined);
-    } catch (error) {
+      window.location.reload();
+    } catch (error: any) {
       console.error("Leave impersonation failed:", error);
+      toast.error(error?.message || "Leave impersonation failed");
     } finally {
       setSwitching(false);
     }
@@ -263,8 +271,10 @@ export function TenantSwitcher() {
       });
 
       await refreshAppData(originalToken ?? undefined);
-    } catch (error) {
+      window.location.reload();
+    } catch (error: any) {
       console.error("Leave all impersonation failed:", error);
+      toast.error(error?.message || "Leave all impersonation failed");
     } finally {
       setSwitching(false);
     }
@@ -277,25 +287,26 @@ export function TenantSwitcher() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${
-                isImpersonating
-                  ? "ring-2 ring-orange-500/50 ring-offset-1 ring-offset-sidebar"
-                  : ""
-              }`}
+              className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isImpersonating
+                ? "ring-2 ring-orange-500/50 ring-offset-1 ring-offset-sidebar"
+                : ""
+                }`}
             >
               <div className="flex items-center gap-2 flex-1 min-w-0">
-                <Logo />
-                <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
-                  <span className="truncate text-xs font-medium text-muted-foreground">
-                    {settings?.company != null
-                      ? String(settings.company)
-                      : t(scopeLabelKeyMap[scope])}
-                  </span>
-                  {isImpersonating && (
-                    <span className="truncate text-[10px] font-medium text-orange-500">
-                      {t("tenant_switcher.scope.impersonating")}
+                <div>
+                  <Logo />
+                  <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
+                    <span className="truncate text-xs font-medium text-muted-foreground">
+                      {settings?.company != null
+                        ? String(settings.company)
+                        : t(scopeLabelKeyMap[scope])}
                     </span>
-                  )}
+                    {isImpersonating && (
+                      <span className="truncate text-[10px] font-medium text-orange-500">
+                        {t("tenant_switcher.scope.impersonating")}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               {switching ? (
@@ -324,7 +335,10 @@ export function TenantSwitcher() {
               <>
                 <DropdownMenuItem
                   className="gap-2 p-2 text-orange-600 focus:text-orange-600"
-                  onClick={handleLeave}
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    handleLeave();
+                  }}
                   disabled={switching}
                 >
                   <ArrowLeftRight className="h-4 w-4" />
@@ -333,7 +347,10 @@ export function TenantSwitcher() {
                 {impersonation.chain.length > 1 && (
                   <DropdownMenuItem
                     className="gap-2 p-2 text-red-600 focus:text-red-600"
-                    onClick={handleLeaveAll}
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleLeaveAll();
+                    }}
                     disabled={switching}
                   >
                     <LogOut className="h-4 w-4" />
@@ -343,7 +360,10 @@ export function TenantSwitcher() {
                 {impersonation.chain.length <= 1 && (
                   <DropdownMenuItem
                     className="gap-2 p-2 text-red-600 focus:text-red-600"
-                    onClick={handleLeaveAll}
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleLeaveAll();
+                    }}
                     disabled={switching}
                   >
                     <LogOut className="h-4 w-4" />
@@ -374,7 +394,10 @@ export function TenantSwitcher() {
                   <DropdownMenuItem
                     key={tenant.id}
                     className="gap-2 p-2"
-                    onClick={() => handleImpersonate(tenant)}
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleImpersonate(tenant);
+                    }}
                     disabled={switching}
                   >
                     <div className="flex size-6 items-center justify-center rounded-sm border">
