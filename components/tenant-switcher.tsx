@@ -145,7 +145,7 @@ export function TenantSwitcher() {
         : { reseller_id: tenant.id };
 
       const res = await useFetch({
-        url: `/impersonate/${tenant?.id}`,
+        url: `/impersonate/${tenant?.user?.uuid}`,
         method: "POST",
         data: payload,
       });
