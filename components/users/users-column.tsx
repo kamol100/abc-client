@@ -7,6 +7,10 @@ import MyBadge from "@/components/my-badge";
 import { UserRow } from "./user-type";
 import UserForm from "./user-form";
 import { DeleteModal } from "../delete-modal";
+import { ShieldCheck } from "lucide-react";
+import { usePermissions } from "@/context/app-provider";
+import Link from "next/link";
+import MyButton from "../my-button";
 
 function UserStatusCell({ status }: { status: 0 | 1 }) {
   const { t } = useTranslation();
@@ -121,6 +125,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
     ),
     cell: ({ row }) => {
       const data = row.original;
+      const { permissions } = usePermissions();
       return (
         <div className="flex items-end justify-end gap-2 mr-3">
           <UserForm mode="edit" data={{ id: data.id }} api="/users" method="PUT" />
@@ -131,6 +136,13 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
             buttonText="common.confirm_delete"
           >
           </DeleteModal>
+          {permissions?.includes("users.edit") && (
+            <>
+              <MyButton url={`/permissions/${data?.id}?type=user`}>
+                <ShieldCheck className="m" />
+              </MyButton>
+            </>
+          )}
         </div>
       );
     },

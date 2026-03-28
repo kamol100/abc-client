@@ -45,7 +45,7 @@ const PermissionEntityForm: FC<Props> = ({ entityId, userType }) => {
   const queryClient = useQueryClient();
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
 
-  const backUrl = userType === "user" ? "/users" : "/resellers";
+  const backUrl = userType === "user" ? "/user" : "/reseller";
   const permissionUrl = userType ? `${userType}-permissions/${entityId}` : "";
   const permissionQueryKey = useMemo(
     () => ["entity-permissions", userType ?? "unknown", entityId],
