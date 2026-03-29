@@ -70,6 +70,27 @@ export function usePermissions(): PermissionsContextValue {
 
 // ─── Impersonation ──────────────────────────────────────────────────
 const ORIGINAL_TOKEN_KEY = "isp_original_token";
+const IMPERSONATION_STATE_KEY = "isp_impersonation_state";
+
+const DEFAULT_IMPERSONATION_STATE: ImpersonationState = {
+  is_impersonating: false,
+  chain: [],
+  original_user_id: null,
+};
+
+function loadImpersonationState(): ImpersonationState {
+  if (typeof window === "undefined") return DEFAULT_IMPERSONATION_STATE;
+  try {
+    const stored = localStorage.getItem(IMPERSONATION_STATE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (typeof parsed.is_impersonating === "boolean") return parsed;
+    }
+  } catch {
+    // Corrupted data — fall back to default
+  }
+  return DEFAULT_IMPERSONATION_STATE;
+}
 
 export interface ImpersonationContextValue {
   impersonation: ImpersonationState;
@@ -105,11 +126,25 @@ export default function AppProvider({
   const [permissions, setPermissions] = useState<AppPermission[]>(
     initialData.permissions
   );
-  const [impersonation, setImpersonation] = useState<ImpersonationState>({
-    is_impersonating: false,
-    chain: [],
-    original_user_id: null,
-  });
+  const [impersonation, setImpersonationRaw] = useState<ImpersonationState>(
+    loadImpersonationState
+  );
+
+  // Wrap setImpersonation to persist to localStorage
+  const setImpersonation: React.Dispatch<React.SetStateAction<ImpersonationState>> = useCallback(
+    (action) => {
+      setImpersonationRaw((prev) => {
+        const next = typeof action === "function" ? action(prev) : action;
+        if (next.is_impersonating) {
+          localStorage.setItem(IMPERSONATION_STATE_KEY, JSON.stringify(next));
+        } else {
+          localStorage.removeItem(IMPERSONATION_STATE_KEY);
+        }
+        return next;
+      });
+    },
+    []
+  );
   const [originalToken, setOriginalToken] = useState<string | null>(null);
 
   useEffect(() => {

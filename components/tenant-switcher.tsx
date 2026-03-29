@@ -93,8 +93,8 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     async function checkStatus() {
       try {
         const res = await useFetch({ url: "/impersonate/status" });
-        if (res?.success && res.data?.impersonation?.is_impersonating) {
-          setImpersonation(res.data.impersonation.is_impersonating);
+        if (res?.success && res.data?.impersonation) {
+          setImpersonation(res.data.impersonation);
         }
       } catch {
         // Status check is non-critical
@@ -148,6 +148,11 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
 
       const result = res.data as ImpersonationResponse;
 
+      // Update impersonation state before reload so it persists
+      if (result.impersonation) {
+        setImpersonation(result.impersonation);
+      }
+
       // Update NextAuth session with the new impersonation token
       if (result.token) {
         await updateSession({
@@ -189,6 +194,9 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       }
 
       const result = res.data as ImpersonationResponse;
+
+      // Update impersonation state before reload so it persists
+      setImpersonation(result.impersonation);
 
       // Determine which token to use
       const newToken =
@@ -235,6 +243,9 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       }
 
       const result = res.data as ImpersonationResponse;
+
+      // Update impersonation state before reload so it persists
+      setImpersonation(result.impersonation);
 
       // Restore original token
       const originalToken = getOriginalToken();
