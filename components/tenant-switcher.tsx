@@ -3,8 +3,6 @@
 import {
   ArrowLeftRight,
   Building2,
-  ChevronsUpDown,
-  Loader2,
   LogOut,
   Store,
 } from "lucide-react";
@@ -22,13 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
-import Logo from "./logo";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   useSettings,
   useProfile,
@@ -43,21 +35,21 @@ import type {
   AppData,
 } from "@/types/app";
 
-type ScopeLevel = "super_admin" | "company" | "reseller";
+export type ScopeLevel = "super_admin" | "company" | "reseller";
 
-const scopeLabelKeyMap: Record<ScopeLevel, string> = {
+export const scopeLabelKeyMap: Record<ScopeLevel, string> = {
   super_admin: "tenant_switcher.scope.super_admin",
   company: "tenant_switcher.scope.company",
   reseller: "tenant_switcher.scope.reseller",
 };
 
-function resolveScope(roles?: string[]): ScopeLevel {
+export function resolveScope(roles?: string[]): ScopeLevel {
   if (roles?.includes("Super Admin")) return "super_admin";
   if (roles?.includes("Admin")) return "company";
   return "reseller";
 }
 
-export function TenantSwitcher() {
+export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: boolean) => React.ReactNode }) {
   const { isMobile } = useSidebar();
   const { data: session, update: updateSession } = useSession();
   const queryClient = useQueryClient();
@@ -281,47 +273,16 @@ export function TenantSwitcher() {
   }
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isImpersonating
-                ? "ring-2 ring-orange-500/50 ring-offset-1 ring-offset-sidebar"
-                : ""
-                }`}
-            >
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <div>
-                  <Logo />
-                  <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
-                    <span className="truncate text-xs font-medium text-muted-foreground">
-                      {settings?.company != null
-                        ? String(settings.company)
-                        : t(scopeLabelKeyMap[scope])}
-                    </span>
-                    {isImpersonating && (
-                      <span className="truncate text-[10px] font-medium text-orange-500">
-                        {t("tenant_switcher.scope.impersonating")}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-              {switching ? (
-                <Loader2 className="ml-auto h-4 w-4 animate-spin" />
-              ) : (
-                <ChevronsUpDown className="ml-auto h-4 w-4" />
-              )}
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-72 max-w-[calc(100vw-1rem)] rounded-lg"
-            align="start"
-            side={isMobile ? "bottom" : "right"}
-            sideOffset={4}
-          >
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        {renderTrigger(switching)}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-[--radix-dropdown-menu-trigger-width] min-w-72 max-w-[calc(100vw-1rem)] rounded-lg"
+        align="start"
+        side={isMobile ? "bottom" : "right"}
+        sideOffset={4}
+      >
             {/* Current scope indicator */}
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               {isImpersonating
@@ -421,8 +382,6 @@ export function TenantSwitcher() {
               </>
             )}
           </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    </DropdownMenu>
   );
 }
