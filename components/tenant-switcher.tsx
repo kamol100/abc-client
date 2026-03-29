@@ -148,9 +148,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
 
       const result = res.data as ImpersonationResponse;
 
-      // Update impersonation state
-      setImpersonation(result.impersonation);
-
       // Update NextAuth session with the new impersonation token
       if (result.token) {
         await updateSession({
@@ -172,7 +169,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     } catch (error: any) {
       console.error("Impersonation failed:", error);
       toast.error(error?.message || "Impersonation failed");
-    } finally {
       setSwitching(false);
     }
   }
@@ -193,9 +189,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       }
 
       const result = res.data as ImpersonationResponse;
-
-      // Update impersonation state
-      setImpersonation(result.impersonation);
 
       // Determine which token to use
       const newToken =
@@ -222,7 +215,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     } catch (error: any) {
       console.error("Leave impersonation failed:", error);
       toast.error(error?.message || "Leave impersonation failed");
-    } finally {
       setSwitching(false);
     }
   }
@@ -244,9 +236,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
 
       const result = res.data as ImpersonationResponse;
 
-      // Reset impersonation state
-      setImpersonation(result.impersonation);
-
       // Restore original token
       const originalToken = getOriginalToken();
       clearOriginalToken();
@@ -267,7 +256,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     } catch (error: any) {
       console.error("Leave all impersonation failed:", error);
       toast.error(error?.message || "Leave all impersonation failed");
-    } finally {
       setSwitching(false);
     }
   }
@@ -278,110 +266,110 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
         {renderTrigger(switching)}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] min-w-72 max-w-[calc(100vw-1rem)] rounded-lg"
+        className="w-[--radix-dropdown-menu-trigger-width] p-4 min-w-72 max-w-[calc(100vw-1rem)] rounded-lg"
         align="start"
         side={isMobile ? "bottom" : "right"}
         sideOffset={4}
       >
-            {/* Current scope indicator */}
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              {isImpersonating
-                ? t("tenant_switcher.scope.impersonating")
-                : t("tenant_switcher.scope.current_scope")}{" "}
-              - {t(scopeLabelKeyMap[scope])}
-            </DropdownMenuLabel>
+        {/* Current scope indicator */}
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
+          {isImpersonating
+            ? t("tenant_switcher.scope.impersonating")
+            : t("tenant_switcher.scope.current_scope")}{" "}
+          - {t(scopeLabelKeyMap[scope])}
+        </DropdownMenuLabel>
 
-            {/* Exit impersonation actions */}
-            {isImpersonating && (
-              <>
-                <DropdownMenuItem
-                  className="gap-2 p-2 text-orange-600 focus:text-orange-600"
-                  onSelect={(e) => {
-                    e.preventDefault();
-                    handleLeave();
-                  }}
-                  disabled={switching}
-                >
-                  <ArrowLeftRight className="h-4 w-4" />
-                  {t("tenant_switcher.actions.switch_back_one_level")}
-                </DropdownMenuItem>
-                {impersonation.chain.length > 1 && (
-                  <DropdownMenuItem
-                    className="gap-2 p-2 text-red-600 focus:text-red-600"
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleLeaveAll();
-                    }}
-                    disabled={switching}
-                  >
-                    <LogOut className="h-4 w-4" />
-                    {t("tenant_switcher.actions.exit_all_impersonation")}
-                  </DropdownMenuItem>
-                )}
-                {impersonation.chain.length <= 1 && (
-                  <DropdownMenuItem
-                    className="gap-2 p-2 text-red-600 focus:text-red-600"
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleLeaveAll();
-                    }}
-                    disabled={switching}
-                  >
-                    <LogOut className="h-4 w-4" />
-                    {t("tenant_switcher.actions.exit_impersonation")}
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuSeparator />
-              </>
+        {/* Exit impersonation actions */}
+        {isImpersonating && (
+          <>
+            <DropdownMenuItem
+              className="gap-2 p-2 text-orange-600 focus:text-orange-600"
+              onSelect={(e) => {
+                e.preventDefault();
+                handleLeave();
+              }}
+              disabled={switching}
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              {t("tenant_switcher.actions.switch_back_one_level")}
+            </DropdownMenuItem>
+            {impersonation.chain.length > 1 && (
+              <DropdownMenuItem
+                className="gap-2 p-2 text-red-600 focus:text-red-600"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleLeaveAll();
+                }}
+                disabled={switching}
+              >
+                <LogOut className="h-4 w-4" />
+                {t("tenant_switcher.actions.exit_all_impersonation")}
+              </DropdownMenuItem>
             )}
+            {impersonation.chain.length <= 1 && (
+              <DropdownMenuItem
+                className="gap-2 p-2 text-red-600 focus:text-red-600"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleLeaveAll();
+                }}
+                disabled={switching}
+              >
+                <LogOut className="h-4 w-4" />
+                {t("tenant_switcher.actions.exit_impersonation")}
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuSeparator />
+          </>
+        )}
 
-            {/* Tenant list — only show if user can switch */}
-            {scope !== "reseller" && tenants.length > 0 && (
-              <>
-                <DropdownMenuLabel className="text-xs text-muted-foreground">
+        {/* Tenant list — only show if user can switch */}
+        {scope !== "reseller" && tenants.length > 0 && (
+          <>
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
+              {scope === "super_admin" ? (
+                <span className="flex items-center gap-1">
+                  <Building2 className="h-3 w-3" />{" "}
+                  {t("tenant_switcher.labels.companies")}
+                </span>
+              ) : (
+                <span className="flex items-center gap-1">
+                  <Store className="h-3 w-3" />{" "}
+                  {t("tenant_switcher.labels.resellers")}
+                </span>
+              )}
+            </DropdownMenuLabel>
+            {tenants.map((tenant) => (
+              <DropdownMenuItem
+                key={tenant.id}
+                className="gap-2 p-2"
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleImpersonate(tenant);
+                }}
+                disabled={switching}
+              >
+                <div className="flex size-6 items-center cursor-pointer justify-center rounded-sm border">
                   {scope === "super_admin" ? (
-                    <span className="flex items-center gap-1">
-                      <Building2 className="h-3 w-3" />{" "}
-                      {t("tenant_switcher.labels.companies")}
-                    </span>
+                    <Building2 className="h-3.5 w-3.5" />
                   ) : (
-                    <span className="flex items-center gap-1">
-                      <Store className="h-3 w-3" />{" "}
-                      {t("tenant_switcher.labels.resellers")}
+                    <Store className="h-3.5 w-3.5" />
+                  )}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="truncate text-sm">{tenant.name}</span>
+                  {tenant.user && (
+                    <span className="truncate text-[10px] text-muted-foreground">
+                      {tenant.user.name}
                     </span>
                   )}
-                </DropdownMenuLabel>
-                {tenants.map((tenant) => (
-                  <DropdownMenuItem
-                    key={tenant.id}
-                    className="gap-2 p-2"
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      handleImpersonate(tenant);
-                    }}
-                    disabled={switching}
-                  >
-                    <div className="flex size-6 items-center justify-center rounded-sm border">
-                      {scope === "super_admin" ? (
-                        <Building2 className="h-3.5 w-3.5" />
-                      ) : (
-                        <Store className="h-3.5 w-3.5" />
-                      )}
-                    </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="truncate text-sm">{tenant.name}</span>
-                      {tenant.user && (
-                        <span className="truncate text-[10px] text-muted-foreground">
-                          {tenant.user.name}
-                        </span>
-                      )}
-                    </div>
-                    <ArrowLeftRight className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
-                  </DropdownMenuItem>
-                ))}
-              </>
-            )}
-          </DropdownMenuContent>
+                </div>
+                <ArrowLeftRight className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+              </DropdownMenuItem>
+            ))}
+          </>
+        )}
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 }
