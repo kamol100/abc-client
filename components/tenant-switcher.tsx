@@ -93,8 +93,8 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     async function checkStatus() {
       try {
         const res = await useFetch({ url: "/impersonate/status" });
-        if (res?.success && res.data?.impersonation) {
-          setImpersonation(res.data.impersonation);
+        if (res?.success && res.data?.impersonation?.is_impersonating) {
+          setImpersonation(res.data.impersonation.is_impersonating);
         }
       } catch {
         // Status check is non-critical
