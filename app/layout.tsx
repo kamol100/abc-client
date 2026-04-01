@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: {
-      template: `%s | ${settings?.name ?? "ISP Management"}`,
+      template: `%s | ${settings?.name ?? "ISP"}`,
       default: settings?.name ?? "ISP Management",
     },
     description: settings?.address ?? "Total ISP management company",

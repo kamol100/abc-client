@@ -28,8 +28,8 @@ export async function getData(url: string) {
 }
 type Props = {
     url: string;
-    data?: any;
-    method?: string;
+    data?: unknown;
+    method?: "GET" | "POST" | "PUT" | "DELETE";
     version?: string;
     token?: string;
 };
@@ -38,20 +38,25 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
     try {
         const session: any = await auth();
         const token = overrideToken || session?.token;
-        const api_url = `${BASE_URL}${version}${url}`;
-        console.log(api_url, method, data)
+        const normalizedUrl = url.startsWith("/") ? url : `/${url}`;
+        const normalizedVersion = version.trim();
+        const api_url = `${BASE_URL}${normalizedVersion}${normalizedUrl}`;
+        const isFormDataPayload = data instanceof FormData;
 
+        const headers: HeadersInit = {
+            "X-Requested-With": "XMLHttpRequest",
+            Authorization: `Bearer ${token}`,
+        };
+        if (!isFormDataPayload) {
+            headers["Content-type"] = "application/json";
+        }
         const options: RequestInit = {
             method: method,
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-                Authorization: `Bearer ${token}`,
-            },
+            headers,
         };
 
-        if (data && (method === "POST" || method === "PUT" || method === "DELETE")) {
-            options.body = JSON.stringify(data);
+        if (data !== null && data !== undefined && (method === "POST" || method === "PUT" || method === "DELETE")) {
+            options.body = isFormDataPayload ? data : JSON.stringify(data);
         }
 
         const result = await fetch(api_url, options);

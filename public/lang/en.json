@@ -853,6 +853,79 @@
         "edit_title": "Edit Company",
         "delete_confirmation": "Are you sure you want to delete this company?"
     },
+    "company_profile": {
+        "title": "Company Profile",
+        "edit_title": "Edit Company Profile",
+        "name": {
+            "label": "Company Name",
+            "placeholder": "Enter company name",
+            "errors": {
+                "required": "Company name is required",
+                "min": "Company name must be at least 2 characters"
+            }
+        },
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Enter email address",
+            "errors": {
+                "invalid": "Enter a valid email address"
+            }
+        },
+        "address": {
+            "label": "Address",
+            "placeholder": "Enter address"
+        },
+        "status": {
+            "label": "Status"
+        },
+        "logo": {
+            "label": "Logo",
+            "actions": {
+                "choose": "Choose Logo",
+                "upload": "Upload Logo",
+                "delete": "Delete Logo"
+            },
+            "messages": {
+                "empty": "No logo uploaded yet.",
+                "preview_ready": "Logo preview ready.",
+                "upload_success": "Logo uploaded successfully.",
+                "upload_failed": "Unable to upload logo.",
+                "delete_success": "Logo deleted successfully.",
+                "delete_failed": "Unable to delete logo."
+            }
+        },
+        "favicon": {
+            "label": "Favicon",
+            "actions": {
+                "choose": "Choose Favicon",
+                "upload": "Upload Favicon",
+                "delete": "Delete Favicon"
+            },
+            "messages": {
+                "empty": "No favicon uploaded yet.",
+                "preview_ready": "Favicon preview ready.",
+                "upload_success": "Favicon uploaded successfully.",
+                "upload_failed": "Unable to upload favicon.",
+                "delete_success": "Favicon deleted successfully.",
+                "delete_failed": "Unable to delete favicon."
+            }
+        },
+        "actions": {
+            "edit": "Edit",
+            "retry": "Retry",
+            "back_dashboard": "Back to Dashboard"
+        },
+        "messages": {
+            "update_success": "Company profile updated successfully.",
+            "failed_to_load": "Failed to load company profile.",
+            "company_not_found": "Company profile not found.",
+            "no_access": "You do not have permission to access company profile."
+        }
+    },
     "company_wallet": {
         "recharge_title": "Recharge Company Wallet",
         "recharge_action": "Recharge wallet",
@@ -3497,6 +3570,9 @@
         },
         "companies": {
             "title": "Companies"
+        },
+        "company_profile": {
+            "title": "Company Profile"
         },
         "mikrotik_sync": {
             "title": "Mikrotik Sync",

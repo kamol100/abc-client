@@ -18,6 +18,14 @@ export interface Staff {
   address?: string;
 }
 
+export interface Company {
+  uuid: string;
+  name: string;
+  logo?: string;
+  favicon?: string;
+  domain?: string;
+}
+
 export interface Profile {
   id: string;
   phone?: number | string;
@@ -27,6 +35,7 @@ export interface Profile {
   current_address?: string | null;
   avatar?: string | null;
   staff?: Staff | null;
+  company?: Company | null
 }
 
 export type AppPermission = string;

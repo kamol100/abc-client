@@ -1,6 +1,6 @@
 "use client";
 
-import { useProfile, usePermissions } from "@/context/app-provider";
+import { useProfile, usePermissions, useSettings } from "@/context/app-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -14,6 +14,7 @@ import { LayoutDashboard, LogOut, FolderOpen, Settings } from "lucide-react";
 import Link from "next/link";
 import { adminLogout } from "@/lib/actions";
 import { useTranslation } from "react-i18next";
+import { useSession } from "next-auth/react";
 
 function getInitials(name: string): string {
     return name
@@ -29,7 +30,6 @@ export function UserProfile() {
     const { t } = useTranslation();
     const { profile } = useProfile();
     const { hasPermission } = usePermissions();
-
     const name = profile?.name ?? "";
     const email = profile?.email ?? "";
     const avatar = profile?.avatar ?? undefined;
@@ -87,7 +87,10 @@ export function UserProfile() {
                 </DropdownMenuItem>
                 {canAccessSettings && (
                     <DropdownMenuItem asChild>
-                        <Link href="/settings/general" className="flex items-center gap-2">
+                        <Link
+                            href={profile?.company?.uuid ? `/company-profile/${profile.company.uuid}` : "/company-profile"}
+                            className="flex items-center gap-2"
+                        >
                             <FolderOpen className="h-4 w-4" />
                             {t("user_profile.company_profile")}
                         </Link>
