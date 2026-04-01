@@ -1,11 +1,14 @@
 import { Toaster } from "@/components/ui/toaster";
+import InstallPrompt from "@/components/pwa/install-prompt";
+import PWAAuthGuard from "@/components/pwa/pwa-auth-guard";
+import ServiceWorkerRegistration from "@/components/pwa/service-worker-registration";
 import AuthProvider from "@/context/AuthProvider";
 import I18nProvider from "@/context/I18nProvider";
 import TanstackProvider from "@/context/tanstack-provider";
 import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import { ToastContainer } from "react-toastify";
@@ -41,6 +44,13 @@ async function getCompany() {
   return data?.data ?? [];
 }
 
+export const viewport: Viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getCompany();
 
@@ -50,6 +60,15 @@ export async function generateMetadata(): Promise<Metadata> {
       default: settings?.name ?? "ISP Management",
     },
     description: settings?.address ?? "Total ISP management company",
+    manifest: "/api/manifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: settings?.name ?? "ISP Management",
+    },
+    other: {
+      "mobile-web-app-capable": "yes",
+    },
   };
 }
 
@@ -76,6 +95,9 @@ export default async function RootLayout({
       data-radius={radius}
       translate="no"
     >
+      <head>
+        <link rel="apple-touch-icon" href="/pwa/icon-192x192.svg" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
@@ -87,6 +109,8 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
+            <ServiceWorkerRegistration />
+            <PWAAuthGuard />
             <Toaster />
             <I18nProvider initialLanguage={language}>
               <ThemeSettingsProvider
@@ -95,6 +119,7 @@ export default async function RootLayout({
                 <TanstackProvider>{children}</TanstackProvider>
               </ThemeSettingsProvider>
             </I18nProvider>
+            <InstallPrompt />
             <ToastContainer
               position="bottom-right"
               pauseOnFocusLoss={false}
