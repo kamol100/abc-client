@@ -1,14 +1,16 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import { parseApiError, toNumber } from "@/lib/helper/helper";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { FC, ReactNode, useEffect, useMemo } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import FormBuilder from "../form-wrapper/form-builder";
 import { FormFieldConfig } from "../form-wrapper/form-builder-type";
+import { Skeleton } from "../ui/skeleton";
 import SalaryFormFieldSchema from "./salary-form-schema";
 import {
   SalaryDeduction,
@@ -31,20 +33,87 @@ type ContentProps = {
   mode: string;
 };
 
+type SalaryStructureResponse = {
+  success?: boolean;
+  data?: unknown;
+  message?: string;
+};
+
+const normalizeSalaryStructure = (response: unknown): SalaryStructure | null => {
+  if (!response || typeof response !== "object") return null;
+
+  const parsedResponse = response as SalaryStructureResponse;
+  if (parsedResponse.success === false) {
+    throw new Error(parsedResponse.message || "Failed to fetch salary structure");
+  }
+
+  const payload =
+    parsedResponse.data !== undefined
+      ? parsedResponse.data
+      : parsedResponse;
+
+  if (!payload || typeof payload !== "object") return null;
+
+  const structure = payload as Partial<SalaryStructure>;
+  const salaryItems = Array.isArray(structure.salary_items) ? structure.salary_items : [];
+  const salaryDeductions = Array.isArray(structure.salary_deductions)
+    ? structure.salary_deductions
+    : [];
+  const totalSalary = toNumber(structure.total_salary);
+  const advance = toNumber(structure.advance);
+
+  const hasPredefinedStructure =
+    salaryItems.length > 0 || salaryDeductions.length > 0 || totalSalary > 0 || advance > 0;
+
+  if (!hasPredefinedStructure) return null;
+
+  return {
+    salary_items: salaryItems,
+    salary_deductions: salaryDeductions,
+    total_salary: totalSalary,
+    advance,
+  };
+};
+
+const SalaryStructureSkeleton: FC = () => {
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-3">
+          <Skeleton className="h-3 w-44" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-3 w-40" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      </div>
+      <Skeleton className="h-24 w-full rounded-lg" />
+    </div>
+  );
+};
+
 const SalaryFormContent: FC<ContentProps> = ({
   formSchema,
   renderField,
   mode,
 }) => {
   const { t } = useTranslation();
-  const { watch, setValue } = useFormContext();
+  const { control, watch, setValue } = useFormContext();
 
   const salaryType: string = watch("salary_type") ?? "monthly";
-  const staffId: number | undefined = watch("staff_id");
-  const salaryItems: SalaryItem[] = watch("salary_items") ?? [];
-  const salaryDeductions: SalaryDeduction[] = watch("salary_deductions") ?? [];
-
-  console.log(salaryItems, salaryDeductions)
+  const staffIdValue = toNumber(watch("staff_id"));
+  const staffId = staffIdValue > 0 ? staffIdValue : undefined;
+  const salaryItems = (useWatch({
+    control,
+    name: "salary_items",
+  }) as SalaryItem[] | undefined) ?? [];
+  const salaryDeductions = (useWatch({
+    control,
+    name: "salary_deductions",
+  }) as SalaryDeduction[] | undefined) ?? [];
 
   const fieldMap = useMemo(() => {
     const map = new Map<string, FormFieldConfig>();
@@ -57,44 +126,65 @@ const SalaryFormContent: FC<ContentProps> = ({
     return config ? renderField(config) : null;
   };
 
-  const { data: staffSalary } = useQuery<SalaryStructure>({
+  const {
+    data: staffSalary,
+    error: salaryStructureError,
+    isFetching: isSalaryStructureLoading,
+  } = useQuery<SalaryStructure | null>({
     queryKey: ["staff-salary-structure", staffId],
     queryFn: async () => {
       const result = await useFetch({
         url: `/salary-deduction/${staffId}`,
       });
-      if (!result?.success) throw new Error("Failed to fetch salary structure");
-      console.log(result, 'rs')
-      return result.data as SalaryStructure;
+      return normalizeSalaryStructure(result);
     },
     enabled: !!staffId && salaryType === "monthly" && mode === "create",
-    retry: 1,
+    retry: 0,
+    refetchOnWindowFocus: false,
   });
-
-  console.log(staffSalary)
+  const showSalaryStructureSkeleton =
+    mode === "create" && salaryType === "monthly" && !!staffId && isSalaryStructureLoading;
 
   useEffect(() => {
-    if (!staffSalary || mode !== "create") return;
+    if (!salaryStructureError) return;
+    toast.error(
+      parseApiError(salaryStructureError) || "Failed to load salary structure for the selected staff."
+    );
+  }, [salaryStructureError]);
+
+  useEffect(() => {
+    if (mode !== "create" || salaryType !== "monthly") return;
+
+    if (!staffId) {
+      setValue("salary_items", []);
+      setValue("salary_deductions", []);
+      setValue("amount", 0);
+      return;
+    }
+
+    if (isSalaryStructureLoading) return;
+
+    if (!staffSalary) {
+      setValue("salary_items", []);
+      setValue("salary_deductions", []);
+      setValue("amount", 0);
+      return;
+    }
+
     setValue("salary_items", staffSalary.salary_items ?? []);
     setValue("salary_deductions", staffSalary.salary_deductions ?? []);
     setValue("amount", staffSalary.total_salary ?? 0);
-  }, [staffSalary, mode, setValue]);
+  }, [staffId, staffSalary, isSalaryStructureLoading, mode, salaryType, setValue]);
 
-  const totalItems = useMemo(() =>
-    salaryItems.reduce((acc, item) => acc + toNumber(item.items_value), 0),
-    [salaryItems],
-  );
+  const totalItems = salaryItems.reduce((acc, item) => acc + toNumber(item.items_value), 0);
 
-  const totalDeductions = useMemo(() =>
-    salaryDeductions.reduce((acc, item) => acc + toNumber(item.deductions_value), 0),
-    [salaryDeductions],
-  );
+  const totalDeductions = salaryDeductions.reduce((acc, item) => acc + toNumber(item.deductions_value), 0);
 
   const netSalary = totalItems - totalDeductions;
 
   useEffect(() => {
     if (salaryType === "monthly") {
-      setValue("amount", netSalary);
+      setValue("amount", netSalary, { shouldDirty: true, shouldValidate: true });
     }
   }, [netSalary, salaryType, setValue]);
 
@@ -111,37 +201,48 @@ const SalaryFormContent: FC<ContentProps> = ({
 
       {salaryType === "monthly" && (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>{field("salary_items")}</div>
-            <div>{field("salary_deductions")}</div>
-          </div>
-
-          <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">
-                {t("common.gross_amount")}:
-              </span>
-              <span className="font-medium">
-                <DisplayCount amount={toNumber(totalItems)} formatCurrency />
-              </span>
-            </div>
-            {totalDeductions > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {t("common.total_deductions")}:
-                </span>
-                <span className="font-medium text-destructive">
-                  <DisplayCount amount={toNumber(totalDeductions)} formatCurrency />
-                </span>
+          {showSalaryStructureSkeleton ? (
+            <SalaryStructureSkeleton />
+          ) : (
+            <>
+              {staffId && !staffSalary && !salaryStructureError && (
+                <p className="text-sm text-muted-foreground">
+                  No predefined salary structure found for this staff. You can add salary items and deductions manually.
+                </p>
+              )}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>{field("salary_items")}</div>
+                <div>{field("salary_deductions")}</div>
               </div>
-            )}
-            <div className="flex justify-between border-t pt-2">
-              <span className="font-semibold">{t("common.net_salary")}:</span>
-              <span className="font-bold text-primary text-lg">
-                <DisplayCount amount={toNumber(netSalary)} formatCurrency />
-              </span>
-            </div>
-          </div>
+
+              <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    {t("common.gross_amount")}:
+                  </span>
+                  <span className="font-medium">
+                    <DisplayCount amount={toNumber(totalItems)} formatCurrency />
+                  </span>
+                </div>
+                {totalDeductions > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">
+                      {t("common.total_deductions")}:
+                    </span>
+                    <span className="font-medium text-destructive">
+                      <DisplayCount amount={toNumber(totalDeductions)} formatCurrency />
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between border-t pt-2">
+                  <span className="font-semibold">{t("common.net_salary")}:</span>
+                  <span className="font-bold text-primary text-lg">
+                    <DisplayCount amount={toNumber(netSalary)} formatCurrency />
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
 
