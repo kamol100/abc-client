@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
+import MyButton from "@/components/my-button";
 import ProductForm from "@/components/products/product-form";
 import { ProductRow } from "@/components/products/product-type";
 import { cellIndex } from "@/lib/helper/helper";
@@ -139,14 +140,18 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
             cell: ({ row }) => {
                 const product = row.original;
                 const canEdit = hasPermission("products.edit");
+                const canProductIn = hasPermission("products-in.create");
+                const canProductOut = hasPermission("products-out.create");
                 const canDelete =
                     hasPermission("products.delete") &&
                     Number(product.stock_in_quantity ?? 0) === 0;
 
-                if (!canEdit && !canDelete) return null;
+                if (!canEdit && !canDelete && !canProductIn && !canProductOut) {
+                    return null;
+                }
 
                 return (
-                    <div className="flex items-end justify-end gap-2 mr-3">
+                    <div className="flex items-center justify-end gap-2 mr-3">
                         {canEdit && (
                             <ProductForm
                                 mode="edit"
@@ -155,10 +160,31 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
                                 method="PUT"
                             />
                         )}
+                        {canProductIn && (
+                            <MyButton
+                                action="create"
+                                variant="outline"
+                                size="sm"
+                                url={`/products/in`}
+                                tooltip={t("product_in.title")}
+                                aria-label={t("product_in.title")}
+                            />
+                        )}
+                        {canProductOut && (
+                            <MyButton
+                                action="minus"
+                                variant="outline"
+                                size="sm"
+                                url={`/products/out`}
+                                tooltip={t("product_out.title")}
+                                aria-label={t("product_out.title")}
+                            />
+                        )}
                         {canDelete && (
                             <DeleteModal
                                 api_url={`/products/${product.id}`}
                                 keys="products"
+                                tooltip={t("common.delete")}
                                 confirmMessage="product.delete_confirmation"
                                 buttonText="common.confirm_delete"
                             />

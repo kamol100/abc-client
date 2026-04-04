@@ -1,10 +1,6 @@
 "use client";
 import { Label as LabelUI } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { InfoQuestion } from "./icon";
@@ -33,16 +29,13 @@ const Label = ({
         <div className={`capitalize ${label?.labelClass}`}>{t(label?.labelText || "") as string}</div>
         {label?.mandatory && <div className="text-destructive ml-1"> *</div>}
         {label?.tooltip && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="inline-flex text-muted-foreground cursor-pointer">
-                <InfoQuestion />
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className={label?.tooltipClass}>{t(label?.tooltip || "")}</div>
-            </TooltipContent>
-          </Tooltip>
+          <MyTooltip
+            content={<div className={label?.tooltipClass}>{t(label.tooltip)}</div>}
+          >
+            <span className="inline-flex text-muted-foreground cursor-pointer">
+              <InfoQuestion />
+            </span>
+          </MyTooltip>
         )}
       </div>
     </LabelUI>

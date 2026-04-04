@@ -10,12 +10,7 @@ import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
 import TextareaField from "@/components/form/textarea-field";
 import { Form } from "@/components/ui/form";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-schema";
@@ -210,8 +205,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   const bodyField = sendFields.find((field) => field.name === "sms_body");
 
   return (
-    <TooltipProvider>
-      <div className="space-y-5 pr-3">
+    <div className="space-y-5 pr-3">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
@@ -285,21 +279,16 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                   title={t("sms_sent.send")}
                 />
               ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span>
-                      <MyButton
-                        action="save"
-                        type="button"
-                        variant="default"
-                        size="default"
-                        disabled
-                        title={t("sms_sent.send")}
-                      />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>{t("sms_sent.sms_count.zero_tooltip")}</TooltipContent>
-                </Tooltip>
+                <MyTooltip content="sms_sent.sms_count.zero_tooltip">
+                  <MyButton
+                    action="save"
+                    type="button"
+                    variant="default"
+                    size="default"
+                    disabled
+                    title={t("sms_sent.send")}
+                  />
+                </MyTooltip>
               )}
             </div>
           </form>
@@ -338,24 +327,19 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
                   onClick={() => handleStatusChange("inactive")}
                 />
 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="inline-flex items-center gap-1">
-                      <MyButton
-                        type="button"
-                        icon={false}
-                        size="sm"
-                        variant={appliedFilters.client_status === "all" ? "default" : "outline"}
-                        title={t("sms_sent.sort_option.all_clients")}
-                        onClick={() => handleStatusChange("all")}
-                      />
-                      <Info className="h-4 w-4 text-muted-foreground" />
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs text-sm">
-                    {t("sms_sent.sort_option.all_clients_tooltip")}
-                  </TooltipContent>
-                </Tooltip>
+                <MyTooltip content="sms_sent.sort_option.all_clients_tooltip" className="max-w-xs text-sm">
+                  <span className="inline-flex items-center gap-1">
+                    <MyButton
+                      type="button"
+                      icon={false}
+                      size="sm"
+                      variant={appliedFilters.client_status === "all" ? "default" : "outline"}
+                      title={t("sms_sent.sort_option.all_clients")}
+                      onClick={() => handleStatusChange("all")}
+                    />
+                    <Info className="h-4 w-4 text-muted-foreground" />
+                  </span>
+                </MyTooltip>
               </div>
             </div>
 
@@ -423,7 +407,6 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
           </div>
         )}
       </div>
-    </TooltipProvider>
   );
 };
 

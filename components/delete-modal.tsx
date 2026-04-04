@@ -1,6 +1,6 @@
 "use client";
 
-import MyButton from "@/components/my-button";
+import MyButton, { type MyButtonProps } from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import {
   DialogDescription,
@@ -19,6 +19,8 @@ export type DeleteModalProps = {
   redirectTo?: string;
   buttonText?: string;
   children?: ReactNode;
+  tooltip?: MyButtonProps["tooltip"];
+  tooltipPlacement?: MyButtonProps["tooltipPlacement"];
 };
 
 export function DeleteModal({
@@ -29,6 +31,8 @@ export function DeleteModal({
   redirectTo,
   buttonText,
   children,
+  tooltip,
+  tooltipPlacement,
 }: DeleteModalProps) {
   const { t } = useTranslation();
 
@@ -48,7 +52,9 @@ export function DeleteModal({
 
   return (
     <MyDialog
-      trigger={children ?? <MyButton action="delete" icon={true} />}
+      trigger={children ?? (
+        <MyButton action="delete" icon={true} tooltip={tooltip} tooltipPlacement={tooltipPlacement} />
+      )}
       size="sm"
       loading={isPending}
       footer={({ close, loading }) => (

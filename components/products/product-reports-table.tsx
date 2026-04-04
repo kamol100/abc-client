@@ -11,12 +11,7 @@ import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import ProductSerialDialog from "@/components/products/product-serial-dialog";
 import ProductReportsFilterSchema from "@/components/products/product-reports-filter-schema";
 import ProductReportsSummary from "@/components/products/product-reports-summary";
@@ -169,18 +164,15 @@ function useProductReportsColumns(
                     />
                 ),
                 cell: ({ row }) => (
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
-                                    {row.original.note || "-"}
-                                </p>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-sm break-words">
-                                {row.original.note || "-"}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <MyTooltip
+                        content={row.original.note || "-"}
+                        placement="top"
+                        className="max-w-sm break-words"
+                    >
+                        <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
+                            {row.original.note || "-"}
+                        </p>
+                    </MyTooltip>
                 ),
                 enableSorting: false,
             },

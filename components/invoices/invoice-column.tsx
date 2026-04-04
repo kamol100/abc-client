@@ -6,12 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge from "@/components/my-badge";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import { InvoiceRow } from "./invoice-type";
 import InvoiceRowActions from "./invoice-row-actions";
 import DisplayCount from "../display-count";
@@ -93,18 +88,15 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                     <DataTableColumnHeader column={column} title="invoice.note.label" />
                 ),
                 cell: ({ row }) => (
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <span className="text-sm line-clamp-1 cursor-default max-w-[180px]">
-                                    {row.original.note ?? "—"}
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-sm break-words">
-                                {row.original.note ?? "—"}
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <MyTooltip
+                        content={row.original.note ?? "—"}
+                        placement="top"
+                        className="max-w-sm break-words"
+                    >
+                        <span className="text-sm line-clamp-1 cursor-default max-w-[180px]">
+                            {row.original.note ?? "—"}
+                        </span>
+                    </MyTooltip>
                 ),
                 enableSorting: false,
             },

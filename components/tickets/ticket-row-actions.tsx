@@ -1,11 +1,6 @@
 "use client";
 
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
 import { Row } from "@tanstack/react-table";
@@ -32,40 +27,32 @@ const TicketRowActions: FC<TicketRowActionsProps> = ({ row }) => {
 
     return (
         <div className="flex items-center justify-end gap-2 mr-3">
-            <TooltipProvider delayDuration={0}>
-                {(hasPermission("tickets.show") || hasPermission("tickets.access")) && (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
-                                <Link href={viewUrl} aria-label={t("common.view")}>
-                                    <Eye className="h-4 w-4" />
-                                </Link>
-                            </MyButton>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">{t("common.view")}</TooltipContent>
-                    </Tooltip>
-                )}
-                {hasPermission("tickets.edit") && (
-                    <TicketForm
-                        mode="edit"
-                        data={{ id: ticket.id }}
-                        api="/tickets"
-                        method="PUT"
-                    />
-                )}
-                {(hasPermission("tickets.reply") || hasPermission("client.tickets.reply")) && (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
-                                <Link href={viewUrl} aria-label={t("ticket.reply.title")}>
-                                    <MessageSquare className="h-4 w-4" />
-                                </Link>
-                            </MyButton>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">{t("ticket.reply.title")}</TooltipContent>
-                    </Tooltip>
-                )}
-            </TooltipProvider>
+            {(hasPermission("tickets.show") || hasPermission("tickets.access")) && (
+                <MyTooltip content="common.view" placement="top" delay={0}>
+                    <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
+                        <Link href={viewUrl} aria-label={t("common.view")}>
+                            <Eye className="h-4 w-4" />
+                        </Link>
+                    </MyButton>
+                </MyTooltip>
+            )}
+            {hasPermission("tickets.edit") && (
+                <TicketForm
+                    mode="edit"
+                    data={{ id: ticket.id }}
+                    api="/tickets"
+                    method="PUT"
+                />
+            )}
+            {(hasPermission("tickets.reply") || hasPermission("client.tickets.reply")) && (
+                <MyTooltip content="ticket.reply.title" placement="top" delay={0}>
+                    <MyButton variant="outline" size="icon" className="h-8 w-8" asChild>
+                        <Link href={viewUrl} aria-label={t("ticket.reply.title")}>
+                            <MessageSquare className="h-4 w-4" />
+                        </Link>
+                    </MyButton>
+                </MyTooltip>
+            )}
             {(hasPermission("tickets.delete") || canDeleteAsClient) && (
                 <DeleteModal
                     api_url={deleteUrl}

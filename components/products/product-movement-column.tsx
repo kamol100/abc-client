@@ -9,12 +9,7 @@ import { cn } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { Badge } from "@/components/ui/badge";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import ProductSerialDialog from "@/components/products/product-serial-dialog";
 import {
     ProductMovementRow,
@@ -207,18 +202,15 @@ export function useProductMovementColumns({
 
                     return (
                         <div className="space-y-1">
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
-                                            {note || "-"}
-                                        </p>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="top" className="max-w-sm break-words">
-                                        {note || "-"}
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
+                            <MyTooltip
+                                content={note || "-"}
+                                placement="top"
+                                className="max-w-sm break-words"
+                            >
+                                <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
+                                    {note || "-"}
+                                </p>
+                            </MyTooltip>
                             {hasSerial ? (
                                 <ProductSerialDialog
                                     serial={serialItems}

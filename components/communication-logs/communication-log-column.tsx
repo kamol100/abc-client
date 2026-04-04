@@ -2,12 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { cellIndex } from "@/lib/helper/helper";
@@ -201,18 +196,11 @@ function CommunicationLogBodyCell({ body }: { body?: string | null }) {
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className="text-sm truncate max-w-[200px] inline-block cursor-default">
-            {truncated}
-          </span>
-        </TooltipTrigger>
-        <TooltipContent side="top" className="max-w-sm break-words">
-          {text}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <MyTooltip content={text} placement="top" className="max-w-sm break-words">
+      <span className="text-sm truncate max-w-[200px] inline-block cursor-default">
+        {truncated}
+      </span>
+    </MyTooltip>
   );
 }
 

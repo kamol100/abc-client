@@ -147,26 +147,28 @@ const ProductInForm: FC<ProductInFormProps> = ({ mode = "create", data }) => {
 
     return (
         <div className="w-full xl:w-5/6 mx-auto flex flex-col flex-1 min-h-0">
-            <FormBuilder
-                formSchema={formSchema}
-                grids={3}
-                data={formData}
-                api="/products-in"
-                mode={mode}
-                schema={ProductInFormSchema}
-                method="POST"
-                queryKey="products,products-in"
-                fullPage
-                actionButtonClass="justify-end"
-                onClose={() => router.push("/products")}
-            >
-                {(renderField) => (
-                    <ProductInFormContent
-                        formSchema={formSchema}
-                        renderField={renderField}
-                    />
-                )}
-            </FormBuilder>
+            <div className="mr-3">
+                <FormBuilder
+                    formSchema={formSchema}
+                    grids={3}
+                    data={formData}
+                    api="/products-in"
+                    mode={mode}
+                    schema={ProductInFormSchema}
+                    method="POST"
+                    queryKey="products,products-in"
+                    fullPage
+                    actionButtonClass="justify-end"
+                    onClose={() => router.push("/products")}
+                >
+                    {(renderField) => (
+                        <ProductInFormContent
+                            formSchema={formSchema}
+                            renderField={renderField}
+                        />
+                    )}
+                </FormBuilder>
+            </div>
         </div>
     );
 };

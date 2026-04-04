@@ -122,7 +122,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
             });
         }
     }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetailResponse, setValue]);
-
+    console.log(hasSerial, "hasSerial", line);
     return (
         <div className="rounded-md border p-3 space-y-3">
             <div className="mb-1 flex items-center justify-between md:hidden">

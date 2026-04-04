@@ -18,7 +18,7 @@ type RadioFieldProps = {
     options: RadioOption[];
     className?: string;
     direction?: "row" | "col";
-    defaultValue?: string;
+    defaultValue?: string | number;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
 };
@@ -46,9 +46,9 @@ const RadioField: React.FC<RadioFieldProps> = ({
                 rules={rules}
                 render={({ field: { value, onChange }, fieldState: { error: fieldError } }) => (
                     <RadioGroup
-                        value={value}
+                        value={value == null ? undefined : String(value)}
                         onValueChange={onChange}
-                        defaultValue={defaultValue}
+                        defaultValue={defaultValue == null ? undefined : String(defaultValue)}
                         className={cn(
                             "flex gap-4",
                             direction === "col" ? "flex-col" : "flex-row",

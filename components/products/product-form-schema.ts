@@ -1,8 +1,8 @@
 import { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
 const serialOptions = [
-    { label: "common.yes", value: 1 },
-    { label: "common.no", value: 0 },
+    { label: "common.yes", value: "1" },
+    { label: "common.no", value: "0" },
 ];
 
 export const ProductFormFieldSchema = (): FieldConfig[] => {
@@ -45,6 +45,8 @@ export const ProductFormFieldSchema = (): FieldConfig[] => {
                 mandatory: true,
             },
             placeholder: "product.unit_type.placeholder",
+            valueKey: "unitType",
+            valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
             type: "dropdown",
@@ -56,6 +58,8 @@ export const ProductFormFieldSchema = (): FieldConfig[] => {
                 mandatory: true,
             },
             placeholder: "product.product_category.placeholder",
+            valueKey: "category",
+            valueMapping: { idKey: "id", labelKey: "name" },
         },
         {
             type: "textarea",

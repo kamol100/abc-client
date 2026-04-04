@@ -5,6 +5,7 @@ import {
   Edit,
   FilterIcon,
   Loader2,
+  Minus,
   Plus,
   RotateCcw,
   Save,
@@ -15,6 +16,7 @@ import {
 import Link from "next/link";
 import { forwardRef, ReactNode } from "react";
 import { Button, type ButtonProps } from "./ui/button";
+import MyTooltip, { type MyTooltipProps } from "./my-tooltip";
 import { useTranslation } from "react-i18next";
 
 export { buttonVariants } from "./ui/button";
@@ -30,6 +32,7 @@ const ACTION_ICONS = {
   reset: RotateCcw,
   create: Plus,
   add: Plus,
+  minus: Minus,
 } as const;
 
 export type MyButtonActionType = keyof typeof ACTION_ICONS;
@@ -42,6 +45,9 @@ export interface MyButtonProps extends ButtonProps {
   loading?: boolean;
   url?: string;
   unstyled?: boolean;
+  tooltip?: MyTooltipProps["content"];
+  tooltipPlacement?: MyTooltipProps["placement"];
+  tooltipDelay?: MyTooltipProps["delay"];
 }
 
 const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
@@ -59,14 +65,26 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
       className,
       asChild = false,
       disabled,
+      tooltip,
+      tooltipPlacement,
+      tooltipDelay,
       ...props
     },
     ref
   ) => {
     const { t } = useTranslation();
 
+    const withTooltip = (node: ReactNode) =>
+      tooltip ? (
+        <MyTooltip content={tooltip} placement={tooltipPlacement} delay={tooltipDelay}>
+          {node}
+        </MyTooltip>
+      ) : (
+        node
+      );
+
     if (asChild) {
-      return (
+      return withTooltip(
         <Button
           ref={ref}
           asChild
@@ -109,14 +127,14 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
     };
 
     if (url) {
-      return (
+      return withTooltip(
         <Button asChild {...sharedProps}>
           <Link href={url}>{content}</Link>
         </Button>
       );
     }
 
-    return (
+    return withTooltip(
       <Button ref={ref} {...sharedProps}>
         {content}
       </Button>

@@ -8,12 +8,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { ClientHistoryRow } from "./client-type";
 import { cellIndex, formatKey } from "@/lib/helper/helper";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
+import MyTooltip from "@/components/my-tooltip";
 
 function RecordDisplay({ record }: { record?: Record<string, unknown> | null }) {
     if (!record || Object.keys(record).length === 0) {
@@ -97,18 +92,11 @@ const ClientHistory: FC<Props> = ({ clientId }) => {
                 <DataTableColumnHeader column={column} title="client.history.description" />
             ),
             cell: ({ row }) => (
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <span className="capitalize text-sm line-clamp-1 cursor-default">
-                                {row.original.description ?? "—"}
-                            </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p className="max-w-xs">{row.original.description}</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <MyTooltip content={<p className="max-w-xs">{row.original.description}</p>}>
+                    <span className="capitalize text-sm line-clamp-1 cursor-default">
+                        {row.original.description ?? "—"}
+                    </span>
+                </MyTooltip>
             ),
             enableSorting: false,
         },
