@@ -2190,7 +2190,8 @@
             "unit_price": "ইউনিট প্রাইস",
             "total_price": "টোটাল প্রাইস",
             "selling_price": "সেলিং প্রাইস",
-            "note_serial": "নোট / সিরিয়াল",
+            "note": "নোট",
+            "serial": "সিরিয়াল",
             "entry_by": "এন্ট্রি বাই"
         },
         "filters": {

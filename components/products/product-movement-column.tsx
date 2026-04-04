@@ -186,38 +186,49 @@ export function useProductMovementColumns({
                 cell: ({ row }) => <span>৳{formatMoney(row.original.unit_sell_price)}</span>,
             },
             {
-                id: "note_serial",
+                accessorKey: "note",
                 header: ({ column }) => (
                     <DataTableColumnHeader
                         column={column}
-                        title="product_movement.columns.note_serial"
+                        title="product_movement.columns.note"
                     />
                 ),
                 cell: ({ row }) => {
                     const note = row.original.note ?? "";
+                    return (
+                        <MyTooltip
+                            content={note || "-"}
+                            placement="top"
+                            className="max-w-sm break-words"
+                        >
+                            <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
+                                {note || "-"}
+                            </p>
+                        </MyTooltip>
+                    );
+                },
+                enableSorting: false,
+            },
+            {
+                id: "serial",
+                header: ({ column }) => (
+                    <DataTableColumnHeader
+                        column={column}
+                        title="product_movement.columns.serial"
+                    />
+                ),
+                cell: ({ row }) => {
                     const serialItems = Array.isArray(row.original.serial)
                         ? row.original.serial
                         : [];
-                    const hasSerial = serialItems.length > 0;
-
+                    if (serialItems.length === 0) {
+                        return <span className="text-sm text-muted-foreground">-</span>;
+                    }
                     return (
-                        <div className="space-y-1">
-                            <MyTooltip
-                                content={note || "-"}
-                                placement="top"
-                                className="max-w-sm break-words"
-                            >
-                                <p className="max-w-[220px] line-clamp-1 text-sm cursor-default">
-                                    {note || "-"}
-                                </p>
-                            </MyTooltip>
-                            {hasSerial ? (
-                                <ProductSerialDialog
-                                    serial={serialItems}
-                                    productName={row.original.product?.name}
-                                />
-                            ) : null}
-                        </div>
+                        <ProductSerialDialog
+                            serial={serialItems}
+                            productName={row.original.product?.name}
+                        />
                     );
                 },
                 enableSorting: false,

@@ -92,7 +92,7 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
                 return (
                     <Link
                         href={`/products/in/${row.original.id}`}
-                        className="text-primary hover:underline"
+                        className="text-primary !text-blue-500 hover:underline"
                     >
                         {quantity}
                     </Link>
@@ -110,7 +110,7 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
                 return (
                     <Link
                         href={`/products/out/${row.original.id}`}
-                        className="text-primary hover:underline"
+                        className="text-primary !text-blue-500 hover:underline"
                     >
                         {quantity}
                     </Link>

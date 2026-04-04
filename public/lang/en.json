@@ -2190,7 +2190,8 @@
             "unit_price": "Unit Price",
             "total_price": "Total Price",
             "selling_price": "Selling Price",
-            "note_serial": "Note / Serial",
+            "note": "Note",
+            "serial": "Serial",
             "entry_by": "Entry By"
         },
         "filters": {

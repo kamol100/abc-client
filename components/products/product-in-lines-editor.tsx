@@ -2,9 +2,7 @@
 
 import { FC, useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { useFetch } from "@/app/actions";
 import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
@@ -13,11 +11,13 @@ import {
     calculateProductInLineTotal,
 } from "@/components/products/product-in-type";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { ProductCategoryRow } from "@/components/product-category/product-category-type";
 
 type ProductDetail = {
     has_serial?: number | string | null;
     vat?: number | string | null;
-    product_category_id?: number | string | null;
+    category?: ProductCategoryRow | null;
 };
 
 const defaultLine: ProductInFormState["product"][number] = {
@@ -41,19 +41,57 @@ const isNearlyEqual = (left: number, right: number): boolean => {
     return Math.abs(left - right) < 0.0001;
 };
 
-const getDetailFromResponse = (response: unknown): ProductDetail | null => {
-    if (!response || typeof response !== "object") return null;
-    const root = response as Record<string, unknown>;
-    const data = root.data;
 
-    if (data && typeof data === "object") {
-        const nested = (data as Record<string, unknown>).data;
-        if (nested && typeof nested === "object") {
-            return nested as ProductDetail;
-        }
-        return data as ProductDetail;
-    }
-    return null;
+const FiberCableFields: FC<{ index: number }> = ({ index }) => (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-md border border-dashed p-3">
+        <InputField
+            name={`product.${index}.fiberID`}
+            label={{ labelText: "product_in.line.fiber.fiber_id.label" }}
+            placeholder="product_in.line.fiber.fiber_id.placeholder"
+        />
+        <InputField
+            type="number"
+            name={`product.${index}.fiber_meter_start`}
+            label={{ labelText: "product_in.line.fiber.meter_start.label" }}
+            placeholder="product_in.line.fiber.meter_start.placeholder"
+        />
+        <InputField
+            type="number"
+            name={`product.${index}.fiber_meter_end`}
+            label={{ labelText: "product_in.line.fiber.meter_end.label" }}
+            placeholder="product_in.line.fiber.meter_end.placeholder"
+        />
+    </div>
+);
+
+const SerialNumberFields: FC<{
+    index: number;
+    fieldId: string;
+    quantity: number;
+}> = ({ index, fieldId, quantity }) => {
+    const { t } = useTranslation();
+    const count = Math.max(0, Math.trunc(quantity));
+
+    if (count === 0) return null;
+
+    return (
+        <div className="rounded-md border border-dashed p-3">
+            <p className="mb-3 text-sm font-medium">
+                {t("product_in.line.serial.title")}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+                {Array.from({ length: count }).map((_, serialIndex) => (
+                    <InputField
+                        key={`${fieldId}-${serialIndex}`}
+                        name={`product.${index}.serial.${serialIndex}`}
+                        placeholder={t("product_in.line.serial.placeholder", {
+                            index: serialIndex + 1,
+                        })}
+                    />
+                ))}
+            </div>
+        </div>
+    );
 };
 
 type ProductInLineItemProps = {
@@ -82,26 +120,24 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
     const isFiber = toNumber(line?.product_category_id) === 2;
     const total = toNumber(line?.total_price);
 
-    const { data: productDetailResponse } = useQuery({
+    const { data: productResponse } = useApiQuery<ApiResponse<ProductDetail>>({
         queryKey: ["product-line-detail", productId],
-        queryFn: async () => {
-            const response = await useFetch({
-                url: `/products/${productId}`,
-            });
-            return getDetailFromResponse(response);
-        },
+        url: `get-product/${productId}`,
+        pagination: false,
         enabled: productId > 0,
         retry: 0,
     });
 
+    const productDetail = productResponse?.data ?? null;
+
     useEffect(() => {
-        if (!productDetailResponse) return;
+        if (!productDetail) return;
         const hasSerialValue = Math.min(
             1,
-            Math.max(0, toNumber(productDetailResponse.has_serial)),
+            Math.max(0, toNumber(productDetail.has_serial)),
         );
-        const vatValue = Math.max(0, toNumber(productDetailResponse.vat));
-        const categoryValue = toNumber(productDetailResponse.product_category_id) || 1;
+        const vatValue = Math.max(0, toNumber(productDetail.vat));
+        const categoryValue = toNumber(productDetail?.category?.id) || 1;
 
         if (toNumber(line?.has_serial) !== hasSerialValue) {
             setValue(`product.${index}.has_serial`, hasSerialValue, {
@@ -121,8 +157,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                 shouldValidate: false,
             });
         }
-    }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetailResponse, setValue]);
-    console.log(hasSerial, "hasSerial", line);
+    }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetail, setValue]);
     return (
         <div className="rounded-md border p-3 space-y-3">
             <div className="mb-1 flex items-center justify-between md:hidden">
@@ -150,10 +185,13 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                     }}
                     placeholder="product_in.line.product.placeholder"
                     onValueChange={() => {
-                        setValue(`product.${index}.serial`, [], {
-                            shouldDirty: true,
-                            shouldValidate: false,
-                        });
+                        const opts = { shouldDirty: true, shouldValidate: false };
+                        setValue(`product.${index}.has_serial`, 0, opts);
+                        setValue(`product.${index}.product_category_id`, 1, opts);
+                        setValue(`product.${index}.serial`, [], opts);
+                        setValue(`product.${index}.fiberID`, null, opts);
+                        setValue(`product.${index}.fiber_meter_start`, null, opts);
+                        setValue(`product.${index}.fiber_meter_end`, null, opts);
                     }}
                 />
                 <InputField
@@ -210,52 +248,14 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                 </div>
             </div>
 
-            {isFiber && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-md border border-dashed p-3">
-                    <InputField
-                        name={`product.${index}.fiberID`}
-                        label={{ labelText: "product_in.line.fiber.fiber_id.label" }}
-                        placeholder="product_in.line.fiber.fiber_id.placeholder"
-                    />
-                    <InputField
-                        type="number"
-                        name={`product.${index}.fiber_meter_start`}
-                        label={{ labelText: "product_in.line.fiber.meter_start.label" }}
-                        placeholder="product_in.line.fiber.meter_start.placeholder"
-                    />
-                    <InputField
-                        type="number"
-                        name={`product.${index}.fiber_meter_end`}
-                        label={{ labelText: "product_in.line.fiber.meter_end.label" }}
-                        placeholder="product_in.line.fiber.meter_end.placeholder"
-                    />
-                </div>
-            )}
+            {isFiber && <FiberCableFields index={index} />}
 
             {hasSerial && (
-                <div className="rounded-md border border-dashed p-3">
-                    <p className="mb-3 text-sm font-medium">
-                        {t("product_in.line.serial.title")}
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-                        {Array.from({
-                            length: Math.max(0, Math.trunc(toNumber(line?.quantity))),
-                        }).map((_, serialIndex) => (
-                            <InputField
-                                key={`${fieldId}-${serialIndex}`}
-                                name={`product.${index}.serial.${serialIndex}`}
-                                label={{
-                                    labelText: t("product_in.line.serial.label", {
-                                        index: serialIndex + 1,
-                                    }),
-                                }}
-                                placeholder={t("product_in.line.serial.placeholder", {
-                                    index: serialIndex + 1,
-                                })}
-                            />
-                        ))}
-                    </div>
-                </div>
+                <SerialNumberFields
+                    index={index}
+                    fieldId={fieldId}
+                    quantity={toNumber(line?.quantity)}
+                />
             )}
 
             <div className="hidden md:flex justify-end">
@@ -297,13 +297,6 @@ const ProductInLinesEditor: FC = () => {
             const derivedQuantity = isFiberCategory
                 ? Math.max(0, meterEnd - meterStart)
                 : fallbackQuantity;
-
-            if (isFiberCategory && !isNearlyEqual(fallbackQuantity, derivedQuantity)) {
-                setValue(`product.${index}.quantity`, derivedQuantity, {
-                    shouldDirty: true,
-                    shouldValidate: false,
-                });
-            }
 
             const computedLineTotal = Math.max(
                 0,

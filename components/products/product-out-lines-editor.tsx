@@ -14,11 +14,13 @@ import {
     calculateProductOutLineTotal,
 } from "@/components/products/product-out-type";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
+import useApiQuery from "@/hooks/use-api-query";
+import { ProductCategoryRow } from "../product-category/product-category-type";
 
 type ProductDetail = {
     has_serial?: number | string | null;
     vat?: number | string | null;
-    product_category_id?: number | string | null;
+    category?: ProductCategoryRow | null;
 };
 
 const defaultLine: ProductOutFormState["product"][number] = {
@@ -41,20 +43,6 @@ const isNearlyEqual = (left: number, right: number): boolean => {
     return Math.abs(left - right) < 0.0001;
 };
 
-const getDetailFromResponse = (response: unknown): ProductDetail | null => {
-    if (!response || typeof response !== "object") return null;
-    const root = response as Record<string, unknown>;
-    const data = root.data;
-
-    if (data && typeof data === "object") {
-        const nested = (data as Record<string, unknown>).data;
-        if (nested && typeof nested === "object") {
-            return nested as ProductDetail;
-        }
-        return data as ProductDetail;
-    }
-    return null;
-};
 
 type ProductOutLineItemProps = {
     index: number;
@@ -80,26 +68,22 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
     const hasSerial = toNumber(line?.has_serial) === 1;
     const total = toNumber(line?.total_price);
 
-    const { data: productDetailResponse } = useQuery({
-        queryKey: ["product-out-line-detail", productId],
-        queryFn: async () => {
-            const response = await useFetch({
-                url: `/products/${productId}`,
-            });
-            return getDetailFromResponse(response);
-        },
+    const { data: productDetail } = useApiQuery<ProductDetail>({
+        queryKey: ["product-line-detail", productId],
+        url: `get-product/${productId}`,
+        pagination: false,
         enabled: productId > 0,
         retry: 0,
     });
 
     useEffect(() => {
-        if (!productDetailResponse) return;
+        if (!productDetail) return;
         const hasSerialValue = Math.min(
             1,
-            Math.max(0, toNumber(productDetailResponse.has_serial)),
+            Math.max(0, toNumber(productDetail.has_serial)),
         );
-        const vatValue = Math.max(0, toNumber(productDetailResponse.vat));
-        const categoryValue = toNumber(productDetailResponse.product_category_id) || 1;
+        const vatValue = Math.max(0, toNumber(productDetail.vat));
+        const categoryValue = toNumber(productDetail?.category?.id) || 1;
 
         if (toNumber(line?.has_serial) !== hasSerialValue) {
             setValue(`product.${index}.has_serial`, hasSerialValue, {
@@ -119,7 +103,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                 shouldValidate: false,
             });
         }
-    }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetailResponse, setValue]);
+    }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetail, setValue]);
 
     return (
         <div className="rounded-md border p-3 space-y-3">
@@ -140,7 +124,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                 <SelectDropdown
                     name={`product.${index}.product_id`}
-                    api="/dropdown-products?filter=out"
+                    api="/dropdown-products"
                     isClearable={false}
                     label={{
                         labelText: "product_out.line.product.label",
