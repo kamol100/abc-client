@@ -49,7 +49,7 @@ const ImportClientTable: FC = () => {
                 toggleColumns
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
-                isLoading={isLoading}
+                isLoading={isLoading || isFetching}
                 isFetching={isFetching}
                 queryKey="sync-clients"
                 toolbarTitle={toolbarTitle}

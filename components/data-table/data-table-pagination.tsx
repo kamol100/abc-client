@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 import { usePagination } from "@/hooks/use-pagination";
 import ChangePagination from "../change-pagination";
@@ -39,6 +40,20 @@ export function DataTablePagination<TData>({
       <div className="flex justify-end">
         <Pagination>
           <PaginationContent>
+            {/* First page button */}
+            <PaginationItem>
+              <MyButton
+                size="icon"
+                variant="outline"
+                className="disabled:pointer-events-none disabled:opacity-50"
+                onClick={() => setCurrentPage(1)}
+                disabled={pagination?.current_page <= 1}
+                aria-label="Go to first page"
+              >
+                <ChevronsLeft aria-hidden="true" />
+              </MyButton>
+            </PaginationItem>
+
             {/* Previous page button */}
             <PaginationItem>
               <MyButton
@@ -96,6 +111,20 @@ export function DataTablePagination<TData>({
                 aria-label="Go to next page"
               >
                 <ChevronRightIcon aria-hidden="true" />
+              </MyButton>
+            </PaginationItem>
+
+            {/* Last page button */}
+            <PaginationItem>
+              <MyButton
+                size="icon"
+                variant="outline"
+                className="disabled:pointer-events-none disabled:opacity-50"
+                onClick={() => setCurrentPage(pagination.total_pages)}
+                disabled={pagination.current_page >= pagination.total_pages}
+                aria-label="Go to last page"
+              >
+                <ChevronsRight aria-hidden="true" />
               </MyButton>
             </PaginationItem>
           </PaginationContent>

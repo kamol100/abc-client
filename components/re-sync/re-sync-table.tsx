@@ -115,7 +115,7 @@ const ReSyncTable: FC = () => {
         toggleColumns
         pagination={pagination}
         setCurrentPage={setCurrentPage}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
         isFetching={isFetching}
         queryKey="re-sync"
         toolbarTitle={toolbarTitle}
