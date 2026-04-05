@@ -271,6 +271,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 menuPortal: (base) => ({
                   ...base,
                   zIndex: 9999,
+                  pointerEvents: "auto" as const,
                 }),
                 menuList: (base) => ({
                   ...base,

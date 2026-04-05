@@ -140,6 +140,19 @@ export function MyDialog({
           "flex flex-col max-h-[90vh] gap-0",
           contentClassName
         )}
+        onPointerDownOutside={(e) => {
+          if (isLoading) {
+            e.preventDefault();
+            return;
+          }
+          const target = e.target as HTMLElement;
+          if (
+            target !== document.documentElement &&
+            target !== document.body
+          ) {
+            e.preventDefault();
+          }
+        }}
         onInteractOutside={isLoading ? (e) => e.preventDefault() : undefined}
         onEscapeKeyDown={isLoading ? (e) => e.preventDefault() : undefined}
       >
