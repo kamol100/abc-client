@@ -91,6 +91,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   const { t } = useTranslation();
   const { control: ctxControl } = useFormContext();
   const control = controlProp ?? ctxControl;
+  // Render menu in a portal to avoid clipping inside overflow-hidden containers (e.g. accordion content).
+  const menuPortalTarget = useMemo(
+    () => (typeof window !== "undefined" ? document.body : null),
+    [],
+  );
 
   const { data: apiOptions, isLoading: isApiLoading } = useQuery({
     queryKey: [`${name}-dropdown`, api],
@@ -147,6 +152,8 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
               className={cn("basic-single")}
               classNamePrefix="select"
               components={selectDropdownSelectComponents}
+              menuPortalTarget={menuPortalTarget}
+              menuPosition="fixed"
               isSearchable={isSearchable}
               isClearable={isClearable}
               isDisabled={isDisabled}
@@ -259,7 +266,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                   borderRadius: "calc(var(--radius) - 2px)",
                   border: `1px solid hsl(var(--border))`,
                   overflow: "hidden",
-                  zIndex: 50,
+                  zIndex: 9999,
+                }),
+                menuPortal: (base) => ({
+                  ...base,
+                  zIndex: 9999,
                 }),
                 menuList: (base) => ({
                   ...base,

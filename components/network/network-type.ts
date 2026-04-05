@@ -45,7 +45,7 @@ export const NetworkFormSchema = z.object({
     .min(5, { message: "network.mikrotik_password.errors.min" })
     .optional()
     .or(z.literal("")),
-  web_port: z.number().optional().nullable(),
+  web_port: z.coerce.number().optional().nullable(),
   auto_client_mikrotik_status: z.coerce.number().min(0).max(1),
   auto_sync_status: z.coerce.number().min(0).max(1),
   graph_status: z.coerce.number().min(0).max(1),
