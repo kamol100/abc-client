@@ -55,10 +55,12 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
     const productInId = toNumber(line?.productin_id);
     const quantityLimit = Math.max(0, Math.trunc(toNumber(line?.quantity)));
     const serialPath = `product.${lineIndex}.serial` as const;
-    const selectedSerialIds = (line?.serial ?? []).map((id) => toNumber(id));
+    const selectedSerialIds = (line?.serial ?? [])
+        .map((id) => String(id ?? "").trim())
+        .filter((id) => id.length > 0);
 
     const { data, isLoading } = useQuery({
-        queryKey: ["product-out-serials", productInId],
+        queryKey: ["product-in-serials", productInId],
         queryFn: async () => {
             const response = await useFetch({
                 url: `/product-in-serials/${productInId}`,
@@ -68,7 +70,6 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
         enabled: productInId > 0,
         retry: 0,
     });
-
     const serialList = data ?? [];
 
     const filteredSerials = useMemo(() => {
@@ -90,7 +91,7 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
 
     useEffect(() => {
         if (selectedSerialIds.length === 0 || serialList.length === 0) return;
-        const availableIds = new Set(serialList.map((row) => row.id));
+        const availableIds = new Set(serialList.map((row) => String(row.id)));
         const validIds = selectedSerialIds.filter((id) => availableIds.has(id));
 
         if (validIds.length !== selectedSerialIds.length) {
@@ -98,7 +99,7 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
         }
     }, [selectedSerialIds, serialList, serialPath, setValue]);
 
-    const toggleSerial = (serialId: number, checked: boolean) => {
+    const toggleSerial = (serialId: string, checked: boolean) => {
         const current = [...selectedSerialIds];
         if (checked) {
             if (current.includes(serialId)) return;
@@ -146,9 +147,10 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
                         {t("product_out.serial.empty_state")}
                     </p>
                 ) : (
-                    <div className="space-y-1">
+                    <div className="space-y-1 flex">
                         {filteredSerials.map((item) => {
-                            const checked = selectedSerialIds.includes(item.id);
+                            const serialId = String(item.id);
+                            const checked = selectedSerialIds.includes(serialId);
                             return (
                                 <label
                                     key={item.id}
@@ -157,7 +159,7 @@ const ProductOutSerialPicker: FC<ProductOutSerialPickerProps> = ({ lineIndex }) 
                                     <Checkbox
                                         checked={checked}
                                         onCheckedChange={(value) =>
-                                            toggleSerial(item.id, value === true)
+                                            toggleSerial(serialId, value === true)
                                         }
                                     />
                                     <span className="text-sm">{item.serial_number}</span>

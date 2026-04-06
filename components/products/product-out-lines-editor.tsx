@@ -14,8 +14,9 @@ import {
     calculateProductOutLineTotal,
 } from "@/components/products/product-out-type";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
-import useApiQuery from "@/hooks/use-api-query";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { ProductCategoryRow } from "@/components/product-category/product-category-type";
+import DisplayCount from "../display-count";
 
 type ProductDetail = {
     has_serial?: number | string | null;
@@ -75,13 +76,15 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
     const hasSerial = toNumber(line?.has_serial) === 1;
     const total = toNumber(line?.total_price);
 
-    const { data: productDetail } = useApiQuery<ProductDetail>({
+    const { data: productResponse } = useApiQuery<ApiResponse<ProductDetail>>({
         queryKey: ["product-line-detail", productId],
         url: `get-product/${productId}`,
         pagination: false,
         enabled: productId > 0,
         retry: 0,
     });
+
+    const productDetail = productResponse?.data ?? null;
 
     useEffect(() => {
         if (!productDetail) return;
@@ -91,7 +94,6 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
         );
         const vatValue = Math.max(0, toNumber(productDetail.vat));
         const categoryValue = toNumber(productDetail?.category?.id) || 1;
-
         if (toNumber(line?.has_serial) !== hasSerialValue) {
             setValue(`product.${index}.has_serial`, hasSerialValue, {
                 shouldDirty: true,
@@ -111,7 +113,6 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
             });
         }
     }, [index, line?.has_serial, line?.product_category_id, line?.vat, productDetail, setValue]);
-
     return (
         <div className="rounded-md border p-3 space-y-3">
             <div className="mb-1 flex items-center justify-between md:hidden">
@@ -209,7 +210,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                     <div className="flex min-w-0 flex-col gap-1">
                         <p className="text-sm font-medium">{t("product_out.line.total.label")}</p>
                         <div className="flex h-9 mt-1 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold">
-                            ৳{formatMoney(total)}
+                            <DisplayCount amount={toNumber(total)} formatCurrency />
                         </div>
                     </div>
                     <div className="hidden md:flex items-start justify-end pt-7">
@@ -262,12 +263,10 @@ const ProductOutLinesEditor: FC = () => {
             }
 
             const hasSerial = toNumber(line?.has_serial) === 1;
-            const serials = Array.isArray(line?.serial)
-                ? line.serial.map((id) => toNumber(id))
-                : [];
+            const serialValues = Array.isArray(line?.serial) ? line.serial : [];
             const maxAllowed = Math.max(0, Math.trunc(quantity));
 
-            if (!hasSerial && serials.length > 0) {
+            if (!hasSerial && serialValues.length > 0) {
                 setValue(`product.${index}.serial`, [], {
                     shouldDirty: true,
                     shouldValidate: false,
@@ -275,8 +274,8 @@ const ProductOutLinesEditor: FC = () => {
                 return;
             }
 
-            if (hasSerial && serials.length > maxAllowed) {
-                setValue(`product.${index}.serial`, serials.slice(0, maxAllowed), {
+            if (hasSerial && serialValues.length > maxAllowed) {
+                setValue(`product.${index}.serial`, serialValues.slice(0, maxAllowed), {
                     shouldDirty: true,
                     shouldValidate: false,
                 });
@@ -297,7 +296,7 @@ const ProductOutLinesEditor: FC = () => {
                 />
             </div>
 
-            <div className="hidden md:block overflow-x-auto">
+            {/* <div className="hidden md:block overflow-x-auto">
                 <div
                     className={`${lineDesktopGridClassName} rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground`}
                 >
@@ -310,7 +309,7 @@ const ProductOutLinesEditor: FC = () => {
                     <span className="text-right">{t("product_out.line.total.label")}</span>
                     <span className="text-right">{t("product_out.lines.remove")}</span>
                 </div>
-            </div>
+            </div> */}
 
             {fields.map((field, index) => (
                 <ProductOutLineItem

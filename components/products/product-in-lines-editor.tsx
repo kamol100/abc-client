@@ -388,7 +388,7 @@ const ProductInLinesEditor: FC = () => {
                 />
             </div>
 
-            <div className="hidden md:block overflow-x-auto">
+            {/* <div className="hidden md:block overflow-x-auto">
                 <div
                     className={`${lineDesktopGridClassName} rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground`}
                 >
@@ -402,7 +402,7 @@ const ProductInLinesEditor: FC = () => {
                     <span className="text-right">{t("product_in.line.total.label")}</span>
                     <span className="text-right">{t("product_in.lines.remove")}</span>
                 </div>
-            </div>
+            </div> */}
 
             {fields.map((field, index) => (
                 <ProductInLineItem
