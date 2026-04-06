@@ -137,7 +137,7 @@ const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data }) => {
     const formData = mode === "edit" && data ? data : defaultValues;
 
     return (
-        <div className="w-full xl:w-5/6 mx-auto flex flex-col flex-1 min-h-0">
+        <div className="w-full">
             <FormBuilder
                 formSchema={formSchema}
                 grids={3}

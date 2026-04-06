@@ -3937,6 +3937,15 @@
             "right": "Right"
         }
     },
+    "pwa_install_prompt": {
+        "title": "Install this app",
+        "description": "Install for a better experience with offline support",
+        "install": "Install",
+        "later": "Later",
+        "dismiss_aria_label": "Dismiss install prompt",
+        "ios_instruction_start": "Tap the share button",
+        "ios_instruction_end": "and then \"Add to Home Screen\""
+    },
     "user_profile": {
         "aria_label": "User menu",
         "menu": "User menu",

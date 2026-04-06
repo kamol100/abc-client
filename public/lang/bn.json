@@ -3937,6 +3937,15 @@
             "right": "ডান"
         }
     },
+    "pwa_install_prompt": {
+        "title": "এই অ্যাপ ইন্সটল করুন",
+        "description": "অফলাইন সাপোর্টসহ ভালো এক্সপেরিয়েন্সের জন্য ইন্সটল করুন",
+        "install": "ইন্সটল",
+        "later": "পরে",
+        "dismiss_aria_label": "ইন্সটল প্রম্পট বন্ধ করুন",
+        "ios_instruction_start": "শেয়ার বাটনে ট্যাপ করুন",
+        "ios_instruction_end": "তারপর \"Add to Home Screen\" সিলেক্ট করুন"
+    },
     "user_profile": {
         "aria_label": "ইউজার মেনু",
         "menu": "ইউজার মেনু",

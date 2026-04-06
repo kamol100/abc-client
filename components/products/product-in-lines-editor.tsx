@@ -13,6 +13,7 @@ import {
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { ProductCategoryRow } from "@/components/product-category/product-category-type";
+import DisplayCount from "../display-count";
 
 type ProductDetail = {
     has_serial?: number | string | null;
@@ -40,6 +41,13 @@ const defaultLine: ProductInFormState["product"][number] = {
 const isNearlyEqual = (left: number, right: number): boolean => {
     return Math.abs(left - right) < 0.0001;
 };
+
+const lineDesktopGridTemplate =
+    "md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_auto]";
+
+const lineDesktopMinWidth = "md:min-w-[1080px]";
+
+const lineDesktopGridClassName = `grid grid-cols-1 gap-3 mb-1 ml-0.5 ${lineDesktopGridTemplate} ${lineDesktopMinWidth}`;
 
 
 const FiberCableFields: FC<{ index: number }> = ({ index }) => (
@@ -79,7 +87,7 @@ const SerialNumberFields: FC<{
             <p className="mb-3 text-sm font-medium">
                 {t("product_in.line.serial.title")}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-8 gap-3">
                 {Array.from({ length: count }).map((_, serialIndex) => (
                     <InputField
                         key={`${fieldId}-${serialIndex}`}
@@ -174,76 +182,104 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-                <SelectDropdown
-                    name={`product.${index}.product_id`}
-                    api="/dropdown-products"
-                    isClearable={false}
-                    label={{
-                        labelText: "product_in.line.product.label",
-                        mandatory: true,
-                    }}
-                    placeholder="product_in.line.product.placeholder"
-                    onValueChange={() => {
-                        const opts = { shouldDirty: true, shouldValidate: false };
-                        setValue(`product.${index}.has_serial`, 0, opts);
-                        setValue(`product.${index}.product_category_id`, 1, opts);
-                        setValue(`product.${index}.serial`, [], opts);
-                        setValue(`product.${index}.fiberID`, null, opts);
-                        setValue(`product.${index}.fiber_meter_start`, null, opts);
-                        setValue(`product.${index}.fiber_meter_end`, null, opts);
-                    }}
-                />
-                <InputField
-                    name={`product.${index}.brand`}
-                    label={{ labelText: "product_in.line.brand.label" }}
-                    placeholder="product_in.line.brand.placeholder"
-                />
-                <SelectDropdown
-                    name={`product.${index}.status`}
-                    isClearable={false}
-                    options={[
-                        { value: "new", label: "product_in.status.new" },
-                        { value: "old", label: "product_in.status.old" },
-                        { value: "replace", label: "product_in.status.replace" },
-                    ]}
-                    label={{ labelText: "product_in.line.status.label" }}
-                    placeholder="product_in.line.status.placeholder"
-                />
-                <InputField
-                    type="number"
-                    name={`product.${index}.quantity`}
-                    label={{
-                        labelText: "product_in.line.quantity.label",
-                        mandatory: true,
-                    }}
-                    placeholder="product_in.line.quantity.placeholder"
-                />
-                <InputField
-                    type="number"
-                    name={`product.${index}.unit_price`}
-                    label={{
-                        labelText: "product_in.line.unit_price.label",
-                        mandatory: true,
-                    }}
-                    placeholder="product_in.line.unit_price.placeholder"
-                />
-                <InputField
-                    type="number"
-                    name={`product.${index}.unit_sell_price`}
-                    label={{ labelText: "product_in.line.unit_sell_price.label" }}
-                    placeholder="product_in.line.unit_sell_price.placeholder"
-                />
-                <InputField
-                    type="number"
-                    name={`product.${index}.vat`}
-                    label={{ labelText: "product_in.line.vat.label" }}
-                    placeholder="product_in.line.vat.placeholder"
-                />
-                <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">{t("product_in.line.total.label")}</p>
-                    <div className="flex h-10 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold">
-                        ৳{formatMoney(total)}
+            <div className="md:overflow-x-auto">
+                <div className={lineDesktopGridClassName}>
+                    <div className="min-w-0">
+                        <SelectDropdown
+                            name={`product.${index}.product_id`}
+                            api="/dropdown-products"
+                            isClearable={false}
+                            label={{
+                                labelText: "product_in.line.product.label",
+                                mandatory: true,
+                            }}
+                            placeholder="product_in.line.product.placeholder"
+                            onValueChange={() => {
+                                const opts = { shouldDirty: true, shouldValidate: false };
+                                setValue(`product.${index}.has_serial`, 0, opts);
+                                setValue(`product.${index}.product_category_id`, 1, opts);
+                                setValue(`product.${index}.serial`, [], opts);
+                                setValue(`product.${index}.fiberID`, null, opts);
+                                setValue(`product.${index}.fiber_meter_start`, null, opts);
+                                setValue(`product.${index}.fiber_meter_end`, null, opts);
+                            }}
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <InputField
+                            reserveErrorSpace={true}
+                            name={`product.${index}.brand`}
+                            label={{ labelText: "product_in.line.brand.label" }}
+                            placeholder="product_in.line.brand.placeholder"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <SelectDropdown
+                            name={`product.${index}.status`}
+                            isClearable={false}
+                            options={[
+                                { value: "new", label: "product_in.status.new" },
+                                { value: "old", label: "product_in.status.old" },
+                                { value: "replace", label: "product_in.status.replace" },
+                            ]}
+                            label={{ labelText: "product_in.line.status.label" }}
+                            placeholder="product_in.line.status.placeholder"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <InputField
+                            type="number"
+                            name={`product.${index}.quantity`}
+                            label={{
+                                labelText: "product_in.line.quantity.label",
+                                mandatory: true,
+                            }}
+                            placeholder="product_in.line.quantity.placeholder"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <InputField
+                            type="number"
+                            name={`product.${index}.unit_price`}
+                            label={{
+                                labelText: "product_in.line.unit_price.label",
+                                mandatory: true,
+                            }}
+                            placeholder="product_in.line.unit_price.placeholder"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <InputField
+                            type="number"
+                            name={`product.${index}.unit_sell_price`}
+                            label={{ labelText: "product_in.line.unit_sell_price.label" }}
+                            placeholder="product_in.line.unit_sell_price.placeholder"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <InputField
+                            reserveErrorSpace={true}
+                            type="number"
+                            name={`product.${index}.vat`}
+                            label={{ labelText: "product_in.line.vat.label" }}
+                            placeholder="product_in.line.vat.placeholder"
+                        />
+                    </div>
+                    <div className="flex min-w-0 flex-col gap-1">
+                        <p className="text-sm font-medium">{t("product_in.line.total.label")}</p>
+                        <div className="flex h-9 mt-1 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold">
+                            <DisplayCount amount={toNumber(total)} formatCurrency />
+                        </div>
+                    </div>
+                    <div className="hidden md:flex items-start justify-end pt-7">
+                        <MyButton
+                            action="delete"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => onRemove(index)}
+                            disabled={!canRemove}
+                            aria-label={t("product_in.lines.remove")}
+                        />
                     </div>
                 </div>
             </div>
@@ -258,16 +294,6 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                 />
             )}
 
-            <div className="hidden md:flex justify-end">
-                <MyButton
-                    action="delete"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => onRemove(index)}
-                    disabled={!canRemove}
-                    aria-label={t("product_in.lines.remove")}
-                />
-            </div>
         </div>
     );
 };
@@ -362,15 +388,20 @@ const ProductInLinesEditor: FC = () => {
                 />
             </div>
 
-            <div className="hidden xl:grid grid-cols-8 gap-3 rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground">
-                <span>{t("product_in.line.product.label")}</span>
-                <span>{t("product_in.line.brand.label")}</span>
-                <span>{t("product_in.line.status.label")}</span>
-                <span>{t("product_in.line.quantity.label")}</span>
-                <span>{t("product_in.line.unit_price.label")}</span>
-                <span>{t("product_in.line.unit_sell_price.label")}</span>
-                <span>{t("product_in.line.vat.label")}</span>
-                <span className="text-right">{t("product_in.line.total.label")}</span>
+            <div className="hidden md:block overflow-x-auto">
+                <div
+                    className={`${lineDesktopGridClassName} rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground`}
+                >
+                    <span>{t("product_in.line.product.label")}</span>
+                    <span>{t("product_in.line.brand.label")}</span>
+                    <span>{t("product_in.line.status.label")}</span>
+                    <span>{t("product_in.line.quantity.label")}</span>
+                    <span>{t("product_in.line.unit_price.label")}</span>
+                    <span>{t("product_in.line.unit_sell_price.label")}</span>
+                    <span>{t("product_in.line.vat.label")}</span>
+                    <span className="text-right">{t("product_in.line.total.label")}</span>
+                    <span className="text-right">{t("product_in.lines.remove")}</span>
+                </div>
             </div>
 
             {fields.map((field, index) => (
