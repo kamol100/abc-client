@@ -3,7 +3,7 @@
 import { useFetch } from "@/app/actions";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import { ChevronDown, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -71,12 +71,15 @@ type SelectDropdownProps = {
   onValueChange?: (value: unknown) => void;
   control?: Control<FieldValues>;
   rules?: RegisterOptions;
+  parentFieldName?: string;
+  buildApi?: (parentValue: string | number) => string;
+  resetOnParentChange?: boolean;
 };
 
 const SelectDropdown: FC<SelectDropdownProps> = ({
   name,
   label,
-  api,
+  api: staticApi,
   options: staticOptions,
   isMulti = false,
   isDisabled = false,
@@ -87,15 +90,42 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   onValueChange,
   control: controlProp,
   rules,
+  parentFieldName,
+  buildApi,
+  resetOnParentChange = true,
 }) => {
   const { t } = useTranslation();
-  const { control: ctxControl } = useFormContext();
+  const { control: ctxControl, watch, setValue } = useFormContext();
   const control = controlProp ?? ctxControl;
-  // Render menu in a portal to avoid clipping inside overflow-hidden containers (e.g. accordion content).
   const menuPortalTarget = useMemo(
     () => (typeof window !== "undefined" ? document.body : null),
     [],
   );
+
+  const parentValue = parentFieldName ? watch(parentFieldName) : undefined;
+  const hasDependency = !!parentFieldName && !!buildApi;
+  const parentHasValue = parentValue !== undefined && parentValue !== null && parentValue !== "";
+
+  const api = useMemo(() => {
+    if (hasDependency && parentHasValue) {
+      return buildApi(parentValue as string | number);
+    }
+    return hasDependency ? undefined : staticApi;
+  }, [hasDependency, parentHasValue, parentValue, buildApi, staticApi]);
+
+  const prevParentRef = useRef(parentValue);
+  useEffect(() => {
+    if (!hasDependency) return;
+    const prevParent = prevParentRef.current;
+    prevParentRef.current = parentValue;
+
+    if (prevParent === undefined) return;
+    if (String(prevParent) === String(parentValue)) return;
+
+    if (resetOnParentChange) {
+      setValue(name, isMulti ? [] : null, { shouldValidate: true });
+    }
+  }, [parentValue, hasDependency, resetOnParentChange, name, isMulti, setValue]);
 
   const { data: apiOptions, isLoading: isApiLoading } = useQuery({
     queryKey: [`${name}-dropdown`, api],
@@ -156,7 +186,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
               menuPosition="fixed"
               isSearchable={isSearchable}
               isClearable={isClearable}
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || (hasDependency && !parentHasValue)}
               isLoading={isLoading || isApiLoading}
               placeholder={t(placeholder)}
               isMulti={isMulti}

@@ -320,6 +320,9 @@ const FormBuilder = ({
             isLoading={f.isLoading}
             isClearable={f.isClearable}
             rules={f.rules}
+            parentFieldName={f.dependsOn?.field}
+            buildApi={f.dependsOn?.buildApi}
+            resetOnParentChange={f.dependsOn?.resetOnChange}
           />
         );
       case "radio":

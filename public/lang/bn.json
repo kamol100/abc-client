@@ -3279,6 +3279,10 @@
             "errors": {
                 "required": "পেমেন্ট টার্ম আবশ্যক"
             }
+        },
+        "import_detail": {
+            "error_title": "এরর",
+            "load_failed": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।"
         }
     },
     "re_sync": {

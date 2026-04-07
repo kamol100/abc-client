@@ -39,6 +39,12 @@ export type TextareaFieldConfig = BaseFieldConfig & {
     rows?: number;
 };
 
+export type DropdownDependsOn = {
+    field: string;
+    buildApi: (parentValue: string | number) => string;
+    resetOnChange?: boolean;
+};
+
 export type DropdownFieldConfig = BaseFieldConfig & {
     type: "dropdown";
     api?: string;
@@ -50,6 +56,7 @@ export type DropdownFieldConfig = BaseFieldConfig & {
     isLoading?: boolean;
     valueKey?: string;
     valueMapping?: ValueMapping;
+    dependsOn?: DropdownDependsOn;
 };
 
 export type RadioFieldConfig = BaseFieldConfig & {

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { useFetch } from "@/app/actions";
+import { ImportClientImportError } from "@/app/(dashboard)/import-client/import/[id]/import-client-import-error";
 import ImportClientForm from "@/components/import-client/import-client-form";
 import { SyncClientRowSchema } from "@/components/import-client/import-client-type";
 import { t } from "@/lib/i18n/server";
@@ -19,6 +20,10 @@ export default async function ImportClientImportPage({ params }: Props) {
     const response = await useFetch({
         url: `/sync-client/${id}`,
     });
+
+    if (response?.error) {
+        return <ImportClientImportError error={response.error} />;
+    }
 
     if (!response?.success || !response?.data) {
         notFound();

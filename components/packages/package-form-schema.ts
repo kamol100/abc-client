@@ -22,10 +22,16 @@ export const PackageFormFieldSchema = ({
       valueMapping: { idKey: "id", labelKey: "name" },
     },
     {
-      type: "text",
+      type: "dropdown",
       name: "mikrotik_profile",
+      valueKey: "mikrotik_profile",
+      valueMapping: { idKey: "id", labelKey: "name" },
       label: { labelText: "package.mikrotik_profile.label" },
       placeholder: "package.mikrotik_profile.placeholder",
+      dependsOn: {
+        field: "network_id",
+        buildApi: (networkId) => `/dropdown-mikrotik-packages/${networkId}`,
+      },
     },
     {
       type: "text",

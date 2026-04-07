@@ -3279,6 +3279,10 @@
             "errors": {
                 "required": "Payment term is required"
             }
+        },
+        "import_detail": {
+            "error_title": "Error",
+            "load_failed": "Something went wrong. Please try again."
         }
     },
     "re_sync": {
