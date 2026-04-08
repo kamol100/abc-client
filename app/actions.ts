@@ -1,6 +1,5 @@
 "use server"
 import { auth } from "@/auth/auth";
-import { NextResponse } from "next/server";
 const BASE_URL = `${process.env.NEXTAPI_URL}/api/`;
 
 export async function getData(url: string) {
@@ -18,12 +17,17 @@ export async function getData(url: string) {
         });
         const data = await result.json();
         return data;
-    } catch (errors: any) {
-        const { response = null } = errors;
-        return NextResponse.json(
-            { message: "Unable to insert data", error: response?.data },
-            { status: response?.status ?? 500 }
-        );
+    } catch (errors: unknown) {
+        const errorRecord =
+            typeof errors === "object" && errors !== null ? (errors as { response?: { data?: unknown; status?: number } }) : {};
+        const response = errorRecord.response ?? null;
+
+        return {
+            success: false,
+            message: "Unable to insert data",
+            error: response?.data ?? null,
+            status: response?.status ?? 500,
+        };
     }
 }
 type Props = {
@@ -63,11 +67,16 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
         const responseData = await result.json();
         // console.log(responseData, "responseData");
         return responseData;
-    } catch (errors: any) {
-        const { response = null } = errors;
-        return NextResponse.json(
-            { message: "Unable to process request", error: response?.data },
-            { status: response?.status ?? 500 }
-        );
+    } catch (errors: unknown) {
+        const errorRecord =
+            typeof errors === "object" && errors !== null ? (errors as { response?: { data?: unknown; status?: number } }) : {};
+        const response = errorRecord.response ?? null;
+
+        return {
+            success: false,
+            message: "Unable to process request",
+            error: response?.data ?? null,
+            status: response?.status ?? 500,
+        };
     }
 }

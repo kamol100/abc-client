@@ -1,11 +1,19 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useProfile } from "@/context/app-provider";
 
-// Default logo: copied from isp-client/public/static/logo.png into this app's public folder
 const DEFAULT_LOGO = "/static/logo.png";
+
+function toAbsoluteUrl(value?: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  const base = (process.env.NEXT_PUBLIC_API ?? "").trim().replace(/\/$/, "");
+  return base ? `${base}${trimmed.startsWith("/") ? "" : "/"}${trimmed}` : trimmed;
+}
 
 const DefaultLogoImage = () => (
   <div className="max-w-[80px] h-6 overflow-hidden relative">
@@ -20,24 +28,23 @@ const DefaultLogoImage = () => (
 );
 
 const Logo: FC = () => {
-  const { data: session, status } = useSession();
-  const [customLogoFailed, setCustomLogoFailed] = useState(false);
+  const { profile } = useProfile();
+  const [logoFailed, setLogoFailed] = useState(false);
 
-  const logo = (session?.user as { logo?: string } | undefined)?.logo;
-  const useCustomLogo =
-    status !== "loading" &&
-    typeof logo === "string" &&
-    logo.trim() !== "" &&
-    !customLogoFailed;
+  const logoUrl = toAbsoluteUrl(profile?.company?.logo);
 
-  if (useCustomLogo) {
+  useEffect(() => {
+    setLogoFailed(false);
+  }, [logoUrl]);
+
+  if (logoUrl && !logoFailed) {
     return (
       <div className="max-w-[80px] h-6 overflow-hidden">
         <img
-          src={logo.trim()}
+          src={logoUrl}
           className="h-6 object-fill"
           alt="logo"
-          onError={() => setCustomLogoFailed(true)}
+          onError={() => setLogoFailed(true)}
         />
       </div>
     );

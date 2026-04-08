@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import MyButton from "@/components/my-button";
 import { parseApiError } from "@/lib/helper/helper";
+import { useProfile } from "@/context/app-provider";
 
 type CompanyProfileAssetType = "logo" | "favicon";
 type CompanyProfileAssetScope = "company" | "reseller";
@@ -43,6 +44,7 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
 }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { profile, updateProfile } = useProfile();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(() => toAssetUrl(value));
@@ -65,13 +67,17 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
     [companyId, scope]
   );
 
+  const removeEndpoint = useMemo(
+    () => `/${scope}-remove-image/${companyId}`,
+    [companyId, scope]
+  );
   const { mutate: uploadAsset, isPending: isUploading } = useMutation({
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append(type, file);
       const response = (await useFetch({
         url: uploadEndpoint,
-        method: "PUT",
+        method: "POST",
         data: formData,
       })) as UploadResponse;
 
@@ -80,10 +86,23 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
       }
       return response?.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["company-profile"] });
       toast.success(t(`company_profile.${type}.messages.upload_success`));
-      window.location.reload();
+
+      const uploadedPath = (data as Record<string, string> | undefined)?.[type];
+      const baseUrl = (uploadedPath ?? value ?? "").split("?")[0];
+      const cacheBustedUrl = baseUrl ? `${baseUrl}?t=${Date.now()}` : undefined;
+
+      if (profile.company) {
+        const companyUpdate = type === "logo"
+          ? { logo: cacheBustedUrl }
+          : { favicon: cacheBustedUrl };
+        updateProfile({ company: { ...profile.company, ...companyUpdate } });
+      }
+
+      setSelectedFile(null);
+      if (cacheBustedUrl) setPreviewUrl(toAssetUrl(cacheBustedUrl));
     },
     onError: (error) => {
       toast.error(
@@ -98,10 +117,10 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
   const { mutate: deleteAsset, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       const response = (await useFetch({
-        url: uploadEndpoint,
+        url: removeEndpoint,
         method: "DELETE",
         data: {
-          [type]: [type],
+          logo: [type],
         },
       })) as UploadResponse;
 
@@ -113,7 +132,15 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["company-profile"] });
       toast.success(t(`company_profile.${type}.messages.delete_success`));
-      window.location.reload();
+
+      if (profile.company) {
+        const companyUpdate = type === "logo"
+          ? { logo: undefined }
+          : { favicon: undefined };
+        updateProfile({ company: { ...profile.company, ...companyUpdate } });
+      }
+
+      setPreviewUrl(null);
     },
     onError: (error) => {
       toast.error(

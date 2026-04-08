@@ -188,12 +188,12 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
               scope={isReseller ? "reseller" : "company"}
               value={company.logo}
             />
-            <CompanyProfileLogoUpload
+            {/* <CompanyProfileLogoUpload
               type="favicon"
               companyId={uploadCompanyId}
               scope={isReseller ? "reseller" : "company"}
               value={company.favicon}
-            />
+            /> */}
           </div>
         )}
       </Card>
