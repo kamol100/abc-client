@@ -81,8 +81,8 @@ fi
 # ln -sf "$SHARED_DIR/public/uploads" "$RELEASE_DIR/public/uploads"
 
 # ── 4. Install dependencies ───────────────────────────────────────────────────
-log "Installing dependencies..."
-npm ci --prefix "$RELEASE_DIR" --omit=dev --prefer-offline
+log "Installing dependencies (including dev for build)..."
+npm ci --prefix "$RELEASE_DIR" --prefer-offline
 
 # ── 4b. Audit & auto-fix non-breaking vulnerabilities ────────────────────────
 log "Running security audit..."
@@ -109,6 +109,10 @@ if [[ ! -d "$RELEASE_DIR/.next" ]]; then
 fi
 log "Build succeeded."
 
+# Remove devDependencies after build to keep the release lean
+log "Pruning devDependencies..."
+npm prune --prefix "$RELEASE_DIR" --omit=dev
+
 # ── 6. Atomic symlink switch ──────────────────────────────────────────────────
 # Capture the previous release path so rollback can restore it if needed.
 if [[ -L "$CURRENT_LINK" ]]; then
@@ -124,7 +128,7 @@ ln -sfn "$RELEASE_DIR" "$CURRENT_LINK"
 # accepting connections before the old one is killed — no dropped requests.
 # PM2 must be configured to point to `current/` (the symlink), not a fixed path.
 log "Reloading PM2 processes..."
-if pm2 describe next-app > /dev/null 2>&1; then
+if pm2 describe isp > /dev/null 2>&1; then
   pm2 reload "$APP_DIR/current/ecosystem.config.js" --update-env
 else
   # First-ever deploy: start the process
