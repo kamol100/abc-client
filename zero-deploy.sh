@@ -21,9 +21,15 @@ RELEASE_DIR="$RELEASES_DIR/$RELEASE_ID"
 KEEP_RELEASES=5                        # number of old releases to retain
 GIT_BRANCH="${GIT_BRANCH:-master}"
 
+# ── Colors ────────────────────────────────────────────────────────────────────
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 log()  { echo "[$(date '+%H:%M:%S')] $*"; }
-err()  { echo "[$(date '+%H:%M:%S')] ERROR: $*" >&2; }
+ok()   { echo -e "${GREEN}[$(date '+%H:%M:%S')] $*${NC}"; }
+err()  { echo -e "${RED}[$(date '+%H:%M:%S')] ERROR: $*${NC}" >&2; }
 
 # ── Rollback ─────────────────────────────────────────────────────────────────
 # Called automatically via ERR trap; switches back to the previous release.
@@ -100,14 +106,16 @@ fi
 # Build runs entirely inside the release directory.
 # The live `current/.next` is never touched during this step.
 log "Building Next.js app..."
-npm run build --prefix "$RELEASE_DIR"
-
-# Verify the build output exists before proceeding
-if [[ ! -d "$RELEASE_DIR/.next" ]]; then
-  err "Build output (.next) not found — aborting."
+if npm run build --prefix "$RELEASE_DIR"; then
+  if [[ ! -d "$RELEASE_DIR/.next" ]]; then
+    err "Build output (.next) not found — aborting."
+    exit 1
+  fi
+  ok "Build succeeded."
+else
+  err "Build failed — aborting deployment."
   exit 1
 fi
-log "Build succeeded."
 
 # Remove devDependencies after build to keep the release lean
 log "Pruning devDependencies..."
@@ -150,5 +158,5 @@ for old in "${OLD_RELEASES[@]}"; do
 done
 
 # ── Done ──────────────────────────────────────────────────────────────────────
-log "=== Deployment complete: $RELEASE_DIR ==="
-log "Active release: $(readlink -f "$CURRENT_LINK")"
+ok "=== Deployment complete: $RELEASE_DIR ==="
+ok "Active release: $(readlink -f "$CURRENT_LINK")"
