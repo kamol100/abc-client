@@ -84,6 +84,18 @@ fi
 log "Installing dependencies..."
 npm ci --prefix "$RELEASE_DIR" --omit=dev --prefer-offline
 
+# ── 4b. Audit & auto-fix non-breaking vulnerabilities ────────────────────────
+log "Running security audit..."
+AUDIT_OUTPUT=$(npm audit --prefix "$RELEASE_DIR" 2>&1) || true
+if echo "$AUDIT_OUTPUT" | grep -q "found 0 vulnerabilities"; then
+  log "No vulnerabilities found."
+else
+  log "WARNING: Vulnerabilities detected — attempting npm audit fix..."
+  npm audit fix --prefix "$RELEASE_DIR" || log "WARNING: npm audit fix could not resolve all issues — continuing deployment."
+  # Re-run audit to report remaining issues (non-blocking)
+  npm audit --prefix "$RELEASE_DIR" 2>&1 | grep -E "^(found|[0-9]+ vulnerabilit)" || true
+fi
+
 # ── 5. Build ──────────────────────────────────────────────────────────────────
 # Build runs entirely inside the release directory.
 # The live `current/.next` is never touched during this step.
