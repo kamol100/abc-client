@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import InputField from "../form/input-field";
-import Logo from "../logo";
 import { Login, LoginSchema } from "../schema/login";
 
 export function LoginForm({
