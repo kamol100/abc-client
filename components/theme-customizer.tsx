@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { THEME_RADII, useThemeSettings } from "@/context/theme-data-provider";
+import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius } from "@/types/theme-types";
 import {
   ArrowLeft,
   ArrowRight,

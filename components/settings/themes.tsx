@@ -4,6 +4,7 @@ import { Checked } from "@/components/icon";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { THEME_RADII, useThemeSettings } from "@/context/theme-data-provider";
+import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius } from "@/types/theme-types";
 import { ArrowLeft, ArrowRight, Maximize, Minimize, Moon, Square, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 

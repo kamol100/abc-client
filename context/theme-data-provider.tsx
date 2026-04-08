@@ -1,5 +1,6 @@
 "use client";
 
+import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius, ThemeSettings, ThemeSettingsContextValue } from "@/types/theme-types";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
