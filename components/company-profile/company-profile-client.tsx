@@ -28,8 +28,9 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
 
   const canAccess = hasPermission("company-settings.access");
   const canEdit = hasPermission("company-settings.edit");
+  console.log(session)
   const resolvedCompanyId = companyId ?? profile?.company?.uuid ?? "";
-  const isReseller = Boolean((session?.user as SessionUser | undefined)?.reseller_id);
+  const isReseller = false;
 
   const profileEndpoint = isReseller
     ? `reseller/profile/${resolvedCompanyId}`
