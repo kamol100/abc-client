@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull origin master
+git pull origin main
 
 rm -rf .next
 
@@ -23,3 +23,13 @@ fi
 
 if [ ! -d ".next" ]; then
   echo "Build failed."
+  exit 1
+fi
+
+# Start PM2 process
+pm2 restart ecosystem.config.js
+
+# Save PM2 process
+pm2 save
+
+echo "Deployment done."
