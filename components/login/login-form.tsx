@@ -137,7 +137,6 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex justify-center">
-        {/* <Logo /> */}
       </div>
       <Card className="min-w-[400px]">
         <CardHeader className="text-center">
