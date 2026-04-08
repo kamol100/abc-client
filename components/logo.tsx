@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { useProfile } from "@/context/app-provider";
+import { useSafeProfile } from "@/context/app-provider";
 
 const DEFAULT_LOGO = "/static/logo.png";
 
@@ -28,10 +28,10 @@ const DefaultLogoImage = () => (
 );
 
 const Logo: FC = () => {
-  const { profile } = useProfile();
+  const profileCtx = useSafeProfile();
   const [logoFailed, setLogoFailed] = useState(false);
 
-  const logoUrl = toAbsoluteUrl(profile?.company?.logo);
+  const logoUrl = toAbsoluteUrl(profileCtx?.profile?.company?.logo);
 
   useEffect(() => {
     setLogoFailed(false);

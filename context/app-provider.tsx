@@ -52,6 +52,11 @@ export function useProfile(): ProfileContextValue {
   return ctx;
 }
 
+/** Returns null when used outside <AppProvider> — safe for optional usage like Logo. */
+export function useSafeProfile(): ProfileContextValue | null {
+  return useContext(ProfileContext);
+}
+
 // ─── Permissions ─────────────────────────────────────────────────────
 interface PermissionsContextValue {
   permissions: AppPermission[];
