@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useThemeSettings } from "@/context/theme-data-provider";
+import type { ThemeColor } from "@/types/theme-types";
 
 const THEME_COLOR_OPTIONS: { name: ThemeColor; label: string; primary: string }[] = [
   { name: "zinc", label: "Zinc", primary: "240 5.9% 10%" },

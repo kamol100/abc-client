@@ -9,6 +9,7 @@ import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
 import type { Metadata, Viewport } from "next";
+import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius } from "@/types/theme-types";
 import { Geist, Geist_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import { ToastContainer } from "react-toastify";
