@@ -5,6 +5,14 @@ const NumberLikeSchema = z.preprocess(
   z.coerce.number(),
 );
 
+const NullableStringSchema = z.preprocess(
+  (value) => {
+    if (value === null || value === undefined || value === "") return null;
+    return String(value);
+  },
+  z.string().nullable(),
+);
+
 export const DashboardDateFilterValues = [
   "all",
   "this_month",
@@ -64,8 +72,39 @@ export const DashboardGraphSchema = z
   })
   .passthrough();
 
+export const DashboardTopDueInvoiceZoneSchema = z
+  .object({
+    id: NumberLikeSchema,
+    name: NullableStringSchema.optional().default(null),
+  })
+  .passthrough();
+
+export const DashboardTopDueInvoiceClientSchema = z
+  .object({
+    name: NullableStringSchema.optional().default(null),
+    zone: DashboardTopDueInvoiceZoneSchema.nullable().optional(),
+  })
+  .passthrough();
+
+export const DashboardTopDueInvoiceSchema = z
+  .object({
+    trackID: NullableStringSchema.optional().default(null),
+    total_amount: NumberLikeSchema,
+    due_date: NullableStringSchema.optional().default(null),
+    status: NullableStringSchema.optional().default(null),
+    client: DashboardTopDueInvoiceClientSchema.nullable().optional(),
+  })
+  .passthrough();
+
+export const DashboardTopDueInvoiceListSchema = z
+  .array(DashboardTopDueInvoiceSchema)
+  .default([]);
+
 export type DashboardClientCount = z.infer<typeof DashboardClientCountSchema>;
 export type DashboardResellerCount = z.infer<typeof DashboardResellerCountSchema>;
 export type DashboardInvoiceReport = z.infer<typeof DashboardInvoiceReportSchema>;
 export type DashboardGraph = z.infer<typeof DashboardGraphSchema>;
 export type DashboardGraphSeries = z.infer<typeof DashboardGraphSeriesSchema>;
+export type DashboardTopDueInvoice = z.infer<typeof DashboardTopDueInvoiceSchema>;
+export type DashboardTopDueInvoiceClient = z.infer<typeof DashboardTopDueInvoiceClientSchema>;
+export type DashboardTopDueInvoiceZone = z.infer<typeof DashboardTopDueInvoiceZoneSchema>;

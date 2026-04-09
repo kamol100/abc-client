@@ -3396,6 +3396,22 @@
         "graph": {
             "title": "Invoice and Expense Overview",
             "empty": "No graph data available"
+        },
+        "top_due_invoice": {
+            "title": "Top Due Invoices",
+            "empty": "No due invoices available",
+            "filters": {
+                "zone": "Zone",
+                "limit": "Row limit"
+            },
+            "columns": {
+                "invoice_id": "Invoice ID",
+                "client": "Client",
+                "zone": "Zone",
+                "amount": "Amount",
+                "due_date": "Due Date",
+                "status": "Status"
+            }
         }
     },
     "menu": {

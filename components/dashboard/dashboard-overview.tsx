@@ -1,16 +1,24 @@
 "use client";
 
 import Card from "@/components/card";
+import { DataTable } from "@/components/data-table/data-table";
 import DashboardCardSkeleton from "@/components/dashboard/dashboard-card-skeleton";
 import DashboardChartSkeleton from "@/components/dashboard/dashboard-chart-skeleton";
 import DashboardFilterSelect from "@/components/dashboard/dashboard-filter-select";
+import { useDashboardTopDueInvoiceColumns } from "@/components/dashboard/dashboard-top-due-invoice-columns";
+import DashboardTopDueInvoiceFilterSchema, {
+  DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT,
+} from "@/components/dashboard/dashboard-top-due-invoice-filter-schema";
 import {
   DashboardClientCountSchema,
   DashboardDateFilter,
   DashboardGraphSchema,
   DashboardInvoiceReportSchema,
   DashboardResellerCountSchema,
+  DashboardTopDueInvoice,
+  DashboardTopDueInvoiceListSchema,
 } from "@/components/dashboard/dashboard-type";
+import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { formatMoney } from "@/lib/helper/helper";
 import { Loader2 } from "lucide-react";
@@ -106,12 +114,56 @@ function DashboardCard({
   );
 }
 
+type TopDueInvoiceTableProps = {
+  invoices: DashboardTopDueInvoice[];
+  isLoading: boolean;
+  isFetching: boolean;
+  isError: boolean;
+  setFilter: (query: string) => void;
+  toolbarOptions: { filter: FieldConfig[] };
+  toolbarTitle: string;
+};
+
+function TopDueInvoiceTable({
+  invoices,
+  isLoading,
+  isFetching,
+  isError,
+  setFilter,
+  toolbarOptions,
+  toolbarTitle,
+}: TopDueInvoiceTableProps) {
+  const { t } = useTranslation();
+  const columns = useDashboardTopDueInvoiceColumns();
+
+  return (
+    <Card className="p-4 md:p-5">
+      {isError ? (
+        <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
+      ) : (
+        <DataTable
+          data={isLoading ? [] : invoices}
+          columns={columns}
+          setFilter={setFilter}
+          toolbarOptions={toolbarOptions}
+          toggleColumns={true}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          queryKey="dashboard-top-due-invoices"
+          toolbarTitle={toolbarTitle}
+        />
+      )}
+    </Card>
+  );
+}
+
 export default function DashboardOverview() {
   const { t } = useTranslation();
   const [clientDateFilter, setClientDateFilter] = useState<DashboardDateFilter>("all");
   const [newClientDateFilter, setNewClientDateFilter] = useState<DashboardDateFilter>("this_month");
   const [invoiceDateFilter, setInvoiceDateFilter] = useState<DashboardDateFilter>("this_month");
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
+  const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
 
   const yearOptions = useMemo(() => {
     const currentYear = new Date().getFullYear();
@@ -128,6 +180,28 @@ export default function DashboardOverview() {
   );
   const invoiceParams = useMemo(() => ({ date_filter: invoiceDateFilter }), [invoiceDateFilter]);
   const chartParams = useMemo(() => ({ year_filter: yearFilter }), [yearFilter]);
+  const topDueInvoiceToolbarOptions = useMemo(
+    () => ({ filter: DashboardTopDueInvoiceFilterSchema() }),
+    [],
+  );
+  const topDueInvoiceParams = useMemo(() => {
+    const defaultLimit = DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT;
+    if (!topDueInvoiceFilter) {
+      return { limit: defaultLimit };
+    }
+    const parsed = Object.fromEntries(new URLSearchParams(topDueInvoiceFilter)) as Record<
+      string,
+      string
+    >;
+    const limitRaw = parsed.limit;
+    const limit =
+      limitRaw && !Number.isNaN(Number(limitRaw)) ? Number(limitRaw) : defaultLimit;
+    const next: Record<string, unknown> = { limit };
+    if (parsed.zone_id) {
+      next.zone_id = parsed.zone_id;
+    }
+    return next;
+  }, [topDueInvoiceFilter]);
 
   const {
     data: clientResponse,
@@ -188,6 +262,19 @@ export default function DashboardOverview() {
     pagination: false,
   });
 
+  const {
+    data: topDueInvoiceResponse,
+    isLoading: isTopDueInvoiceLoading,
+    isFetching: isTopDueInvoiceFetching,
+    isError: isTopDueInvoiceError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-top-due-invoices", topDueInvoiceFilter ?? ""],
+    url: "dashboard-top-due-invoices",
+    params: topDueInvoiceParams,
+    pagination: false,
+  });
+  console.log(topDueInvoiceResponse)
+
   const clientCount = useMemo(() => {
     const parsed = DashboardClientCountSchema.safeParse(clientResponse?.data);
     if (parsed.success) return parsed.data;
@@ -244,6 +331,20 @@ export default function DashboardOverview() {
       series: [],
     };
   }, [graphResponse?.data]);
+
+  const topDueInvoices = useMemo(() => {
+    const parsed = DashboardTopDueInvoiceListSchema.safeParse(topDueInvoiceResponse?.data);
+    if (parsed.success) return parsed.data;
+    return [];
+  }, [topDueInvoiceResponse?.data]);
+
+  const topDueInvoiceToolbarTitle = useMemo(() => {
+    const title = t("dashboard.top_due_invoice.title");
+    if (!isTopDueInvoiceLoading && topDueInvoices.length > 0) {
+      return `${title} (${topDueInvoices.length})`;
+    }
+    return title;
+  }, [t, isTopDueInvoiceLoading, topDueInvoices.length]);
 
   const chartSeries = useMemo(
     () =>
@@ -336,6 +437,17 @@ export default function DashboardOverview() {
               placeholderKey="dashboard.filters.date.label"
             />
           }
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+        <TopDueInvoiceTable
+          invoices={topDueInvoices}
+          isLoading={isTopDueInvoiceLoading}
+          isFetching={isTopDueInvoiceFetching}
+          isError={isTopDueInvoiceError}
+          setFilter={(query) => setTopDueInvoiceFilter(query === "" ? null : query)}
+          toolbarOptions={topDueInvoiceToolbarOptions}
+          toolbarTitle={topDueInvoiceToolbarTitle}
         />
       </div>
 
