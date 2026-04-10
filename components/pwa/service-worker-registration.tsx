@@ -8,6 +8,21 @@ export default function ServiceWorkerRegistration() {
       return;
     }
 
+    if (process.env.NODE_ENV !== "production") {
+      // In dev, unregister SWs to prevent stale chunk/module cache issues.
+      void navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => {
+          registrations.forEach((registration) => {
+            void registration.unregister();
+          });
+        })
+        .catch(() => {
+          // noop
+        });
+      return;
+    }
+
     const registerSW = async () => {
       try {
         const registration = await navigator.serviceWorker.register("/sw.js", {

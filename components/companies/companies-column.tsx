@@ -26,7 +26,7 @@ const CompanyActionsCell: FC<{ company: CompanyRow }> = ({ company }) => {
                     method="PUT"
                 />
             )}
-            {canEdit && <CompanyWalletForm company={company} />}
+            <CompanyWalletForm company={company} />
             {canDelete && (
                 <DeleteModal
                     api_url={`companies/${company.id}`}

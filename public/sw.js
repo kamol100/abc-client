@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";
 
@@ -16,12 +16,12 @@ const NEVER_CACHE_PATTERNS = [
   /\/api\//,          // All API routes (including Next.js API routes)
   /\/auth\//,         // Auth endpoints
   /\/_next\/data\//,  // Next.js server-side data fetches (may contain auth state)
+  /\/_next\/static\//, // Avoid stale JS/CSS chunks after deployments
   /\/dashboard/,      // Protected routes - never serve stale
 ];
 
 // Patterns for static assets that are safe to cache
 const CACHEABLE_STATIC_PATTERNS = [
-  /\/_next\/static\//,  // Next.js static bundles (JS, CSS)
   /\/pwa\//,            // PWA icons
   /\/static\//,         // Public static assets
   /\/icons\//,          // Public icons

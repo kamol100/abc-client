@@ -5,6 +5,10 @@ import { DataTable } from "@/components/data-table/data-table";
 import DashboardCardSkeleton from "@/components/dashboard/dashboard-card-skeleton";
 import DashboardChartSkeleton from "@/components/dashboard/dashboard-chart-skeleton";
 import DashboardFilterSelect from "@/components/dashboard/dashboard-filter-select";
+import { useDashboardZoneWiseTopInvoiceDueColumns } from "@/components/dashboard/dashboard-zone-wise-top-invoice-due-columns";
+import DashboardZoneWiseTopInvoiceDueFilterSchema, {
+  DASHBOARD_ZONE_WISE_TOP_DUE_INVOICE_DEFAULT_LIMIT,
+} from "@/components/dashboard/dashboard-zone-wise-top-invoice-due-filter-schema";
 import { useDashboardTopDueInvoiceColumns } from "@/components/dashboard/dashboard-top-due-invoice-columns";
 import DashboardTopDueInvoiceFilterSchema, {
   DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT,
@@ -16,14 +20,17 @@ import {
   DashboardInvoiceReportSchema,
   DashboardResellerCountSchema,
   DashboardTopDueInvoice,
-  DashboardTopDueInvoiceListSchema,
+  DashboardTopDueInvoiceResponseSchema,
+  DashboardZoneWiseTopInvoiceDueItem,
+  DashboardZoneWiseTopInvoiceDueSchema,
 } from "@/components/dashboard/dashboard-type";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { Loader2 } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import DisplayCount from "../display-count";
 
 const CLIENT_DATE_FILTER_OPTIONS: ReadonlyArray<{ value: DashboardDateFilter; labelKey: string }> = [
   { value: "all", labelKey: "dashboard.filters.date.all" },
@@ -116,6 +123,7 @@ function DashboardCard({
 
 type TopDueInvoiceTableProps = {
   invoices: DashboardTopDueInvoice[];
+  totalAmount: number;
   isLoading: boolean;
   isFetching: boolean;
   isError: boolean;
@@ -126,6 +134,7 @@ type TopDueInvoiceTableProps = {
 
 function TopDueInvoiceTable({
   invoices,
+  totalAmount,
   isLoading,
   isFetching,
   isError,
@@ -141,17 +150,80 @@ function TopDueInvoiceTable({
       {isError ? (
         <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
       ) : (
-        <DataTable
-          data={isLoading ? [] : invoices}
-          columns={columns}
-          setFilter={setFilter}
-          toolbarOptions={toolbarOptions}
-          toggleColumns={true}
-          isLoading={isLoading}
-          isFetching={isFetching}
-          queryKey="dashboard-top-due-invoices"
-          toolbarTitle={toolbarTitle}
-        />
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">{t("dashboard.top_due_invoice.total_amount")}</p>
+            <p className="text-sm font-semibold">
+              <DisplayCount amount={toNumber(totalAmount)} animate formatCurrency />
+            </p>
+          </div>
+          <DataTable
+            data={isLoading ? [] : invoices}
+            columns={columns}
+            setFilter={setFilter}
+            toolbarOptions={toolbarOptions}
+            toggleColumns={true}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            queryKey="dashboard-top-due-invoices"
+            toolbarTitle={toolbarTitle}
+          />
+        </div>
+      )}
+    </Card>
+  );
+}
+
+type ZoneWiseTopInvoiceDueTableProps = {
+  dueItems: DashboardZoneWiseTopInvoiceDueItem[];
+  totalAmount: number;
+  isLoading: boolean;
+  isFetching: boolean;
+  isError: boolean;
+  setFilter: (query: string) => void;
+  toolbarOptions: { filter: FieldConfig[] };
+  toolbarTitle: string;
+};
+
+function ZoneWiseTopInvoiceDueTable({
+  dueItems,
+  totalAmount,
+  isLoading,
+  isFetching,
+  isError,
+  setFilter,
+  toolbarOptions,
+  toolbarTitle,
+}: ZoneWiseTopInvoiceDueTableProps) {
+  const { t } = useTranslation();
+  const columns = useDashboardZoneWiseTopInvoiceDueColumns();
+
+  return (
+    <Card className="p-4 md:p-5">
+      {isError ? (
+        <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
+      ) : (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">
+              {t("dashboard.zone_wise_top_invoice_due.total_amount")}
+            </p>
+            <p className="text-sm font-semibold">
+              <DisplayCount amount={toNumber(totalAmount)} animate formatCurrency />
+            </p>
+          </div>
+          <DataTable
+            data={isLoading ? [] : dueItems}
+            columns={columns}
+            setFilter={setFilter}
+            toolbarOptions={toolbarOptions}
+            toggleColumns={true}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            queryKey="dashboard-zone-wise-top-invoice-due"
+            toolbarTitle={toolbarTitle}
+          />
+        </div>
       )}
     </Card>
   );
@@ -164,6 +236,9 @@ export default function DashboardOverview() {
   const [invoiceDateFilter, setInvoiceDateFilter] = useState<DashboardDateFilter>("this_month");
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
   const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
+  const [zoneWiseTopDueInvoiceFilter, setZoneWiseTopDueInvoiceFilter] = useState<string | null>(
+    null,
+  );
 
   const yearOptions = useMemo(() => {
     const currentYear = new Date().getFullYear();
@@ -184,6 +259,10 @@ export default function DashboardOverview() {
     () => ({ filter: DashboardTopDueInvoiceFilterSchema() }),
     [],
   );
+  const zoneWiseTopDueInvoiceToolbarOptions = useMemo(
+    () => ({ filter: DashboardZoneWiseTopInvoiceDueFilterSchema() }),
+    [],
+  );
   const topDueInvoiceParams = useMemo(() => {
     const defaultLimit = DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT;
     if (!topDueInvoiceFilter) {
@@ -202,6 +281,20 @@ export default function DashboardOverview() {
     }
     return next;
   }, [topDueInvoiceFilter]);
+  const zoneWiseTopDueInvoiceParams = useMemo(() => {
+    const defaultLimit = DASHBOARD_ZONE_WISE_TOP_DUE_INVOICE_DEFAULT_LIMIT;
+    if (!zoneWiseTopDueInvoiceFilter) {
+      return { limit: defaultLimit };
+    }
+    const parsed = Object.fromEntries(new URLSearchParams(zoneWiseTopDueInvoiceFilter)) as Record<
+      string,
+      string
+    >;
+    const limitRaw = parsed.limit;
+    const limit =
+      limitRaw && !Number.isNaN(Number(limitRaw)) ? Number(limitRaw) : defaultLimit;
+    return { limit };
+  }, [zoneWiseTopDueInvoiceFilter]);
 
   const {
     data: clientResponse,
@@ -273,7 +366,17 @@ export default function DashboardOverview() {
     params: topDueInvoiceParams,
     pagination: false,
   });
-  console.log(topDueInvoiceResponse)
+  const {
+    data: zoneWiseTopDueInvoiceResponse,
+    isLoading: isZoneWiseTopDueInvoiceLoading,
+    isFetching: isZoneWiseTopDueInvoiceFetching,
+    isError: isZoneWiseTopDueInvoiceError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-zone-wise-top-invoice-due", zoneWiseTopDueInvoiceFilter ?? ""],
+    url: "dashboard-zone-wise-top-invoice-due",
+    params: zoneWiseTopDueInvoiceParams,
+    pagination: false,
+  });
 
   const clientCount = useMemo(() => {
     const parsed = DashboardClientCountSchema.safeParse(clientResponse?.data);
@@ -332,11 +435,23 @@ export default function DashboardOverview() {
     };
   }, [graphResponse?.data]);
 
-  const topDueInvoices = useMemo(() => {
-    const parsed = DashboardTopDueInvoiceListSchema.safeParse(topDueInvoiceResponse?.data);
+  const topDueInvoiceData = useMemo(() => {
+    const parsed = DashboardTopDueInvoiceResponseSchema.safeParse(topDueInvoiceResponse?.data);
     if (parsed.success) return parsed.data;
-    return [];
+    return {
+      total_amount: 0,
+      top_due_invoices: [],
+    };
   }, [topDueInvoiceResponse?.data]);
+  const topDueInvoices = topDueInvoiceData.top_due_invoices;
+  const zoneWiseTopDueInvoice = useMemo(() => {
+    const parsed = DashboardZoneWiseTopInvoiceDueSchema.safeParse(zoneWiseTopDueInvoiceResponse?.data);
+    if (parsed.success) return parsed.data;
+    return {
+      total_amount: 0,
+      zone_wise_due: [],
+    };
+  }, [zoneWiseTopDueInvoiceResponse?.data]);
 
   const topDueInvoiceToolbarTitle = useMemo(() => {
     const title = t("dashboard.top_due_invoice.title");
@@ -345,6 +460,12 @@ export default function DashboardOverview() {
     }
     return title;
   }, [t, isTopDueInvoiceLoading, topDueInvoices.length]);
+  const zoneWiseTopDueInvoiceToolbarTitle = useMemo(() => {
+    const title = t("dashboard.zone_wise_top_invoice_due.title");
+    const itemCount = !isZoneWiseTopDueInvoiceLoading ? ` (${zoneWiseTopDueInvoice.zone_wise_due.length})` : "";
+
+    return `${title}${itemCount}`;
+  }, [t, isZoneWiseTopDueInvoiceLoading, zoneWiseTopDueInvoice.zone_wise_due.length]);
 
   const chartSeries = useMemo(
     () =>
@@ -439,15 +560,26 @@ export default function DashboardOverview() {
           }
         />
       </div>
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <TopDueInvoiceTable
           invoices={topDueInvoices}
+          totalAmount={topDueInvoiceData.total_amount}
           isLoading={isTopDueInvoiceLoading}
           isFetching={isTopDueInvoiceFetching}
           isError={isTopDueInvoiceError}
           setFilter={(query) => setTopDueInvoiceFilter(query === "" ? null : query)}
           toolbarOptions={topDueInvoiceToolbarOptions}
           toolbarTitle={topDueInvoiceToolbarTitle}
+        />
+        <ZoneWiseTopInvoiceDueTable
+          dueItems={zoneWiseTopDueInvoice.zone_wise_due}
+          totalAmount={zoneWiseTopDueInvoice.total_amount}
+          isLoading={isZoneWiseTopDueInvoiceLoading}
+          isFetching={isZoneWiseTopDueInvoiceFetching}
+          isError={isZoneWiseTopDueInvoiceError}
+          setFilter={(query) => setZoneWiseTopDueInvoiceFilter(query === "" ? null : query)}
+          toolbarOptions={zoneWiseTopDueInvoiceToolbarOptions}
+          toolbarTitle={zoneWiseTopDueInvoiceToolbarTitle}
         />
       </div>
 

@@ -3400,17 +3400,29 @@
         "top_due_invoice": {
             "title": "টপ ডিউ ইনভয়েস",
             "empty": "কোনো ডিউ ইনভয়েস পাওয়া যায়নি",
+            "total_amount": "মোট অ্যামাউন্ট",
             "filters": {
                 "zone": "জোন",
                 "limit": "রো লিমিট"
             },
             "columns": {
-                "invoice_id": "ইনভয়েস আইডি",
+                "invoice_id": "আইডি",
                 "client": "ক্লায়েন্ট",
                 "zone": "জোন",
                 "amount": "অ্যামাউন্ট",
                 "due_date": "ডিউ ডেট",
                 "status": "স্ট্যাটাস"
+            }
+        },
+        "zone_wise_top_invoice_due": {
+            "title": "জোনভিত্তিক টপ ডিউ ",
+            "total_amount": "মোট অ্যামাউন্ট",
+            "filters": {
+                "limit": "রো লিমিট"
+            },
+            "columns": {
+                "zone": "জোন",
+                "total_due_amount": "মোট ডিউ অ্যামাউন্ট"
             }
         }
     },

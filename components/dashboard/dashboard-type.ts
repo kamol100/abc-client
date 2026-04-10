@@ -100,6 +100,27 @@ export const DashboardTopDueInvoiceListSchema = z
   .array(DashboardTopDueInvoiceSchema)
   .default([]);
 
+export const DashboardTopDueInvoiceResponseSchema = z
+  .object({
+    total_amount: NumberLikeSchema.optional().default(0),
+    top_due_invoices: DashboardTopDueInvoiceListSchema,
+  })
+  .passthrough();
+
+export const DashboardZoneWiseTopInvoiceDueItemSchema = z
+  .object({
+    zone: NullableStringSchema.optional().default(null),
+    total_due_amount: NumberLikeSchema,
+  })
+  .passthrough();
+
+export const DashboardZoneWiseTopInvoiceDueSchema = z
+  .object({
+    total_amount: NumberLikeSchema.optional().default(0),
+    zone_wise_due: z.array(DashboardZoneWiseTopInvoiceDueItemSchema).default([]),
+  })
+  .passthrough();
+
 export type DashboardClientCount = z.infer<typeof DashboardClientCountSchema>;
 export type DashboardResellerCount = z.infer<typeof DashboardResellerCountSchema>;
 export type DashboardInvoiceReport = z.infer<typeof DashboardInvoiceReportSchema>;
@@ -108,3 +129,6 @@ export type DashboardGraphSeries = z.infer<typeof DashboardGraphSeriesSchema>;
 export type DashboardTopDueInvoice = z.infer<typeof DashboardTopDueInvoiceSchema>;
 export type DashboardTopDueInvoiceClient = z.infer<typeof DashboardTopDueInvoiceClientSchema>;
 export type DashboardTopDueInvoiceZone = z.infer<typeof DashboardTopDueInvoiceZoneSchema>;
+export type DashboardTopDueInvoiceResponse = z.infer<typeof DashboardTopDueInvoiceResponseSchema>;
+export type DashboardZoneWiseTopInvoiceDueItem = z.infer<typeof DashboardZoneWiseTopInvoiceDueItemSchema>;
+export type DashboardZoneWiseTopInvoiceDue = z.infer<typeof DashboardZoneWiseTopInvoiceDueSchema>;

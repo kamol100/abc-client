@@ -3400,17 +3400,29 @@
         "top_due_invoice": {
             "title": "Top Due Invoices",
             "empty": "No due invoices available",
+            "total_amount": "Total Amount",
             "filters": {
                 "zone": "Zone",
                 "limit": "Row limit"
             },
             "columns": {
-                "invoice_id": "Invoice ID",
+                "invoice_id": "ID",
                 "client": "Client",
                 "zone": "Zone",
                 "amount": "Amount",
                 "due_date": "Due Date",
                 "status": "Status"
+            }
+        },
+        "zone_wise_top_invoice_due": {
+            "title": "Zone-wise Top Due",
+            "total_amount": "Total Amount",
+            "filters": {
+                "limit": "Row limit"
+            },
+            "columns": {
+                "zone": "Zone",
+                "total_due_amount": "Total Due Amount"
             }
         }
     },
