@@ -1,5 +1,31 @@
 import { z } from "zod";
 
+const padDatePart = (value: number): string => value.toString().padStart(2, "0");
+
+const toLocalDateString = (value: Date): string => {
+    const year = value.getFullYear();
+    const month = padDatePart(value.getMonth() + 1);
+    const day = padDatePart(value.getDate());
+    return `${year}-${month}-${day}`;
+};
+
+const normalizeDateOnlyInput = (value: unknown): unknown => {
+    if (value === null || value === undefined || value === "") return undefined;
+    if (value instanceof Date) return toLocalDateString(value);
+    if (typeof value === "string") {
+        const trimmed = value.trim();
+        if (!trimmed) return undefined;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+
+        const parsed = new Date(trimmed);
+        if (!Number.isNaN(parsed.getTime())) return toLocalDateString(parsed);
+        return trimmed;
+    }
+    return value;
+};
+
+const dateOnlyField = z.preprocess(normalizeDateOnlyInput, z.string().optional());
+
 const RefSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -87,8 +113,8 @@ export const ClientFormSchema = z.object({
     billing_term: z.enum(["prepaid", "postpaid"]).optional(),
     connection_type: z.string().optional(),
     connection_mode: z.string().optional(),
-    connection_date: z.coerce.string().nullable().optional(),
-    termination_date: z.coerce.string().optional(),
+    connection_date: dateOnlyField.nullable().optional(),
+    termination_date: dateOnlyField.nullable().optional(),
     current_address: z.string().nullable().optional(),
     permanent_address: z.string().nullable().optional(),
     adr_latitude: z.coerce.string().nullable().optional(),
