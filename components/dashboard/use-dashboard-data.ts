@@ -10,6 +10,7 @@ import DashboardZoneWiseTopInvoiceDueFilterSchema, {
 import {
   DashboardClientCountSchema,
   type DashboardDateFilter,
+  DashboardExpenseReportSchema,
   DashboardGraphSchema,
   DashboardInvoiceReportSchema,
   DashboardResellerCountSchema,
@@ -29,6 +30,7 @@ export function useDashboardData() {
   const [clientDateFilter, setClientDateFilter] = useState<DashboardDateFilter>("all");
   const [newClientDateFilter, setNewClientDateFilter] = useState<DashboardDateFilter>("this_month");
   const [invoiceDateFilter, setInvoiceDateFilter] = useState<DashboardDateFilter>("this_month");
+  const [expenseDateFilter, setExpenseDateFilter] = useState<DashboardDateFilter>("this_month");
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
   const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
   const [zoneWiseTopDueInvoiceFilter, setZoneWiseTopDueInvoiceFilter] = useState<string | null>(null);
@@ -48,6 +50,7 @@ export function useDashboardData() {
     [newClientDateFilter],
   );
   const invoiceParams = useMemo(() => ({ date_filter: invoiceDateFilter }), [invoiceDateFilter]);
+  const expenseParams = useMemo(() => ({ date_filter: expenseDateFilter }), [expenseDateFilter]);
   const chartParams = useMemo(() => ({ year_filter: yearFilter }), [yearFilter]);
 
   const topDueInvoiceParams = useMemo(() => {
@@ -117,6 +120,18 @@ export function useDashboardData() {
     queryKey: ["dashboard-invoice-report", invoiceDateFilter],
     url: "dashboard-invoice-report",
     params: invoiceParams,
+    pagination: false,
+  });
+
+  const {
+    data: expenseResponse,
+    isLoading: isExpenseLoading,
+    isFetching: isExpenseFetching,
+    isError: isExpenseError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-expense-report", expenseDateFilter],
+    url: "dashboard-expense-report",
+    params: expenseParams,
     pagination: false,
   });
 
@@ -194,6 +209,13 @@ export function useDashboardData() {
         };
   }, [invoiceResponse?.data]);
 
+  const expenseReport = useMemo(() => {
+    const parsed = DashboardExpenseReportSchema.safeParse(expenseResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_expense: 0, pending_expense: 0, approved_expense: 0 };
+  }, [expenseResponse?.data]);
+
   const graph = useMemo(() => {
     const parsed = DashboardGraphSchema.safeParse(graphResponse?.data);
     return parsed.success ? parsed.data : { months: [], series: [] };
@@ -238,6 +260,13 @@ export function useDashboardData() {
     isInvoiceLoading,
     isInvoiceFetching,
     isInvoiceError,
+
+    expenseDateFilter,
+    setExpenseDateFilter,
+    expenseReport,
+    isExpenseLoading,
+    isExpenseFetching,
+    isExpenseError,
 
     graph,
     yearFilter,

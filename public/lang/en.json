@@ -3368,13 +3368,16 @@
             "total_clients": "Total Clients",
             "new_clients": "New Clients",
             "total_resellers": "Total Reseller",
-            "total_invoice": "Total Invoice"
+            "total_invoice": "Total Invoice",
+            "total_expense": "Total Expense"
         },
         "metrics": {
             "active": "Active",
             "inactive": "Inactive",
             "paid": "Paid",
-            "due": "Due"
+            "due": "Due",
+            "pending": "Pending",
+            "approved": "Approved"
         },
         "filters": {
             "date": {

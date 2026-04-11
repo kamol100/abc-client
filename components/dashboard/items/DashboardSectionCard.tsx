@@ -2,7 +2,7 @@
 
 import Card from "@/components/card";
 import DashboardCardSkeleton from "@/components/dashboard/dashboard-card-skeleton";
-import { formatDashboardValue } from "@/components/dashboard/dashboard-constants";
+import DisplayCount from "@/components/display-count";
 import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -17,6 +17,7 @@ type Props = {
   isRefreshing: boolean;
   isError: boolean;
   filter?: ReactNode;
+  formatCurrency?: boolean;
 };
 
 export default function DashboardSectionCard({
@@ -30,34 +31,47 @@ export default function DashboardSectionCard({
   isRefreshing,
   isError,
   filter,
+  formatCurrency = false,
 }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Card className="h-full p-4">
+    <Card className="flex h-full flex-col overflow-hidden transition-all hover:shadow-sm">
       {isLoading || isRefreshing ? (
         <DashboardCardSkeleton />
       ) : isError ? (
-        <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
+        <div className="flex h-full items-center justify-center p-4">
+          <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
+        </div>
       ) : (
-        <div className="space-y-4">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex justify-between w-full">
-              <p className="text-sm text-muted-foreground">{t(titleKey)}</p>
-              <p className="text-xl font-semibold">{formatDashboardValue(totalValue)}</p>
+        <div className="flex h-full flex-col animate-in fade-in duration-300">
+          <div className="flex flex-1 flex-col p-4">
+            <div className="flex items-start justify-between gap-4 min-h-8">
+              <p className="text-sm font-medium text-muted-foreground">{t(titleKey)}</p>
+              {filter && <div className="-mt-1 -mr-1">{filter}</div>}
+            </div>
+
+            <div className="flex flex-1 items-center pt-2">
+              <p className="text-2xl font-bold tracking-tight text-foreground">
+                <DisplayCount amount={totalValue} formatCurrency={formatCurrency} />
+              </p>
             </div>
           </div>
 
-          {filter}
-
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between gap-2 text-green-600">
-              <span>{t(firstMetricKey)}</span>
-              <span className="font-medium">{formatDashboardValue(firstMetricValue)}</span>
-            </div>
-            <div className="flex items-center justify-between gap-2 text-red-500">
-              <span>{t(secondMetricKey)}</span>
-              <span className="font-medium">{formatDashboardValue(secondMetricValue)}</span>
+          <div className="border-t bg-muted/40 px-4 py-3">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground">{t(firstMetricKey)}:</span>
+                <span className="font-semibold text-emerald-600 dark:text-emerald-500">
+                  <DisplayCount amount={firstMetricValue} formatCurrency={formatCurrency} />
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-muted-foreground">{t(secondMetricKey)}:</span>
+                <span className="font-semibold text-rose-600 dark:text-rose-500">
+                  <DisplayCount amount={secondMetricValue} formatCurrency={formatCurrency} />
+                </span>
+              </div>
             </div>
           </div>
         </div>

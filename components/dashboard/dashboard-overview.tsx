@@ -41,6 +41,13 @@ export default function DashboardOverview() {
     isInvoiceFetching,
     isInvoiceError,
 
+    expenseDateFilter,
+    setExpenseDateFilter,
+    expenseReport,
+    isExpenseLoading,
+    isExpenseFetching,
+    isExpenseError,
+
     graph,
     yearFilter,
     setYearFilter,
@@ -80,6 +87,7 @@ export default function DashboardOverview() {
               options={CLIENT_DATE_FILTER_OPTIONS}
               onValueChange={(value) => setClientDateFilter(value as DashboardDateFilter)}
               placeholderKey="dashboard.filters.date.label"
+              className="h-8 text-xs w-[130px]"
             />
           }
         />
@@ -100,6 +108,7 @@ export default function DashboardOverview() {
               options={DATE_FILTER_OPTIONS}
               onValueChange={(value) => setNewClientDateFilter(value as DashboardDateFilter)}
               placeholderKey="dashboard.filters.date.label"
+              className="h-8 text-xs w-[130px]"
             />
           }
         />
@@ -126,12 +135,36 @@ export default function DashboardOverview() {
           isLoading={isInvoiceLoading}
           isRefreshing={isInvoiceFetching}
           isError={isInvoiceError}
+          formatCurrency={true}
           filter={
             <DashboardFilterSelect
               value={invoiceDateFilter}
               options={DATE_FILTER_OPTIONS}
               onValueChange={(value) => setInvoiceDateFilter(value as DashboardDateFilter)}
               placeholderKey="dashboard.filters.date.label"
+              className="h-8 text-xs w-[130px]"
+            />
+          }
+        />
+
+        <DashboardSectionCard
+          titleKey="dashboard.cards.total_expense"
+          totalValue={expenseReport.total_expense}
+          firstMetricKey="dashboard.metrics.approved"
+          firstMetricValue={expenseReport.approved_expense}
+          secondMetricKey="dashboard.metrics.pending"
+          secondMetricValue={expenseReport.pending_expense}
+          isLoading={isExpenseLoading}
+          isRefreshing={isExpenseFetching}
+          isError={isExpenseError}
+          formatCurrency={true}
+          filter={
+            <DashboardFilterSelect
+              value={expenseDateFilter}
+              options={DATE_FILTER_OPTIONS}
+              onValueChange={(value) => setExpenseDateFilter(value as DashboardDateFilter)}
+              placeholderKey="dashboard.filters.date.label"
+              className="h-8 text-xs w-[130px]"
             />
           }
         />
