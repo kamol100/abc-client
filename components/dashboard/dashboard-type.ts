@@ -129,6 +129,30 @@ export const DashboardExpenseReportSchema = z
   })
   .passthrough();
 
+export const DashboardProductStockCategorySchema = z
+  .object({
+    category_name: z.string(),
+    total_remaining_stock: NumberLikeSchema,
+    total_stock_out: NumberLikeSchema,
+  })
+  .passthrough();
+
+export const DashboardProductStockSummarySchema = z
+  .object({
+    categories: z.array(DashboardProductStockCategorySchema).default([]),
+    total_remaining_stock: NumberLikeSchema.optional().default(0),
+    total_stock_out: NumberLikeSchema.optional().default(0),
+  })
+  .passthrough();
+
+export const ProductCategoryDropdownItemSchema = z
+  .object({
+    id: NumberLikeSchema,
+    name: z.string(),
+    sid: z.string().nullable().optional(),
+  })
+  .passthrough();
+
 export type DashboardClientCount = z.infer<typeof DashboardClientCountSchema>;
 export type DashboardResellerCount = z.infer<typeof DashboardResellerCountSchema>;
 export type DashboardInvoiceReport = z.infer<typeof DashboardInvoiceReportSchema>;
@@ -141,3 +165,6 @@ export type DashboardTopDueInvoiceResponse = z.infer<typeof DashboardTopDueInvoi
 export type DashboardZoneWiseTopInvoiceDueItem = z.infer<typeof DashboardZoneWiseTopInvoiceDueItemSchema>;
 export type DashboardZoneWiseTopInvoiceDue = z.infer<typeof DashboardZoneWiseTopInvoiceDueSchema>;
 export type DashboardExpenseReport = z.infer<typeof DashboardExpenseReportSchema>;
+export type DashboardProductStockCategory = z.infer<typeof DashboardProductStockCategorySchema>;
+export type DashboardProductStockSummary = z.infer<typeof DashboardProductStockSummarySchema>;
+export type ProductCategoryDropdownItem = z.infer<typeof ProductCategoryDropdownItemSchema>;

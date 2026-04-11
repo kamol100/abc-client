@@ -3427,6 +3427,17 @@
                 "zone": "Zone",
                 "total_due_amount": "Total Due Amount"
             }
+        },
+        "product_stock": {
+            "title": "Product Stock",
+            "remaining": "Remaining",
+            "stock_out": "Stock Out",
+            "total_remaining": "Total Remaining",
+            "total_stock_out": "Total Stock Out",
+            "filter": {
+                "label": "Category",
+                "all": "All Categories"
+            }
         }
     },
     "menu": {

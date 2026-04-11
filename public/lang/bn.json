@@ -3427,6 +3427,17 @@
                 "zone": "জোন",
                 "total_due_amount": "মোট ডিউ অ্যামাউন্ট"
             }
+        },
+        "product_stock": {
+            "title": "পণ্য স্টক",
+            "remaining": "অবশিষ্ট",
+            "stock_out": "স্টক আউট",
+            "total_remaining": "মোট অবশিষ্ট",
+            "total_stock_out": "মোট স্টক আউট",
+            "filter": {
+                "label": "ক্যাটাগরি",
+                "all": "সকল ক্যাটাগরি"
+            }
         }
     },
     "menu": {

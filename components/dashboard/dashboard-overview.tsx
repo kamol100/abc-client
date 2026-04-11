@@ -11,6 +11,7 @@ import DashboardSectionCard from "@/components/dashboard/items/DashboardSectionC
 import DashboardTopDueInvoicesTable from "@/components/dashboard/items/DashboardTopDueInvoicesTable";
 import DashboardZoneDueSummaryTable from "@/components/dashboard/items/DashboardZoneDueSummaryTable";
 import DashboardRevenueChart from "@/components/dashboard/items/DashboardRevenueChart";
+import DashboardProductStockCard from "@/components/dashboard/items/DashboardProductStockCard";
 
 export default function DashboardOverview() {
   const {
@@ -168,6 +169,8 @@ export default function DashboardOverview() {
             />
           }
         />
+
+        <DashboardProductStockCard />
       </div>
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
