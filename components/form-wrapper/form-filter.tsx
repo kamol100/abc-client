@@ -12,7 +12,9 @@ import { Close } from "@/components/icon";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
 import { useSidebar } from "../ui/sidebar";
 
-const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
+const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
+  loading: () => null,
+});
 
 type FormFilterProps = {
   formSchema: FieldConfig[];

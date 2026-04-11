@@ -26,6 +26,7 @@ import {
 } from "@/components/dashboard/dashboard-type";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { keepPreviousData } from "@tanstack/react-query";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { Loader2 } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
@@ -365,6 +366,7 @@ export default function DashboardOverview() {
     url: "dashboard-top-due-invoices",
     params: topDueInvoiceParams,
     pagination: false,
+    placeholderData: keepPreviousData,
   });
   const {
     data: zoneWiseTopDueInvoiceResponse,
@@ -376,6 +378,7 @@ export default function DashboardOverview() {
     url: "dashboard-zone-wise-top-invoice-due",
     params: zoneWiseTopDueInvoiceParams,
     pagination: false,
+    placeholderData: keepPreviousData,
   });
 
   const clientCount = useMemo(() => {
