@@ -82,17 +82,11 @@ export function useDashboardTopDueInvoiceColumns(): ColumnDef<DashboardTopDueInv
 
           const zoneNameRaw = zone.name?.trim();
           const zoneName = zoneNameRaw && zoneNameRaw.length > 0 ? zoneNameRaw : null;
-          const line =
-            zone.id != null
-              ? zoneName
-                ? `${zoneName} #${zone.id}`
-                : `#${zone.id}`
-              : (zoneName ?? "—");
 
           const tooltipBody =
             zone.id != null
               ? zoneName
-                ? `${zoneName} (#${zone.id})`
+                ? `${zoneName}`
                 : `#${zone.id}`
               : (zoneName ?? "—");
 
@@ -108,7 +102,7 @@ export function useDashboardTopDueInvoiceColumns(): ColumnDef<DashboardTopDueInv
                 className="max-w-sm break-words"
               >
                 <span className="block min-w-0 max-w-full cursor-default truncate text-sm font-medium">
-                  {line}
+                  {zoneNameRaw}
                 </span>
               </MyTooltip>
             </div>
