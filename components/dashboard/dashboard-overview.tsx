@@ -1,13 +1,13 @@
 "use client";
 
 import DashboardFilterSelect from "@/components/dashboard/dashboard-filter-select";
-import {
-  CLIENT_DATE_FILTER_OPTIONS,
-  DATE_FILTER_OPTIONS,
-} from "@/components/dashboard/dashboard-constants";
+import { DATE_FILTER_OPTIONS } from "@/components/dashboard/dashboard-constants";
 import { useDashboardData } from "@/components/dashboard/use-dashboard-data";
 import type { DashboardDateFilter } from "@/components/dashboard/dashboard-type";
 import DashboardSectionCard from "@/components/dashboard/items/DashboardSectionCard";
+import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardClientSummaryCard";
+import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
+import DashboardInvoicePaidSummaryCard from "@/components/dashboard/items/DashboardInvoicePaidSummaryCard";
 import DashboardTopDueInvoicesTable from "@/components/dashboard/items/DashboardTopDueInvoicesTable";
 import DashboardZoneDueSummaryTable from "@/components/dashboard/items/DashboardZoneDueSummaryTable";
 import DashboardRevenueChart from "@/components/dashboard/items/DashboardRevenueChart";
@@ -15,20 +15,20 @@ import DashboardProductStockCard from "@/components/dashboard/items/DashboardPro
 
 export default function DashboardOverview() {
   const {
-    clientDateFilter,
-    setClientDateFilter,
     clientCount,
     isClientLoading,
     isClientFetching,
     isClientError,
 
-    newClientDateFilter,
-    setNewClientDateFilter,
-    newClientCount,
-    newClientsTotal,
-    isNewClientLoading,
-    isNewClientFetching,
-    isNewClientError,
+    invoiceSummary,
+    isInvoiceSummaryLoading,
+    isInvoiceSummaryFetching,
+    isInvoiceSummaryError,
+
+    invoicePaidSummary,
+    isInvoicePaidSummaryLoading,
+    isInvoicePaidSummaryFetching,
+    isInvoicePaidSummaryError,
 
     resellerCount,
     isResellerLoading,
@@ -72,46 +72,25 @@ export default function DashboardOverview() {
   return (
     <div className="space-y-4 pr-3">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <DashboardSectionCard
-          titleKey="dashboard.cards.total_clients"
-          totalValue={clientCount.total_clients}
-          firstMetricKey="dashboard.metrics.active"
-          firstMetricValue={clientCount.active_clients}
-          secondMetricKey="dashboard.metrics.inactive"
-          secondMetricValue={clientCount.inactive_clients}
+        <DashboardClientSummaryCard
+          data={clientCount}
           isLoading={isClientLoading}
           isRefreshing={isClientFetching}
           isError={isClientError}
-          filter={
-            <DashboardFilterSelect
-              value={clientDateFilter}
-              options={CLIENT_DATE_FILTER_OPTIONS}
-              onValueChange={(value) => setClientDateFilter(value as DashboardDateFilter)}
-              placeholderKey="dashboard.filters.date.label"
-              className="h-8 text-xs w-[130px]"
-            />
-          }
         />
 
-        <DashboardSectionCard
-          titleKey="dashboard.cards.new_clients"
-          totalValue={newClientsTotal}
-          firstMetricKey="dashboard.metrics.active"
-          firstMetricValue={newClientCount.active_clients}
-          secondMetricKey="dashboard.metrics.inactive"
-          secondMetricValue={newClientCount.inactive_clients}
-          isLoading={isNewClientLoading}
-          isRefreshing={isNewClientFetching}
-          isError={isNewClientError}
-          filter={
-            <DashboardFilterSelect
-              value={newClientDateFilter}
-              options={DATE_FILTER_OPTIONS}
-              onValueChange={(value) => setNewClientDateFilter(value as DashboardDateFilter)}
-              placeholderKey="dashboard.filters.date.label"
-              className="h-8 text-xs w-[130px]"
-            />
-          }
+        <DashboardInvoiceSummaryCard
+          data={invoiceSummary}
+          isLoading={isInvoiceSummaryLoading}
+          isRefreshing={isInvoiceSummaryFetching}
+          isError={isInvoiceSummaryError}
+        />
+
+        <DashboardInvoicePaidSummaryCard
+          data={invoicePaidSummary}
+          isLoading={isInvoicePaidSummaryLoading}
+          isRefreshing={isInvoicePaidSummaryFetching}
+          isError={isInvoicePaidSummaryError}
         />
 
         <DashboardSectionCard

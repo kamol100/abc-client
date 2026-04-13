@@ -3367,6 +3367,8 @@
         "cards": {
             "total_clients": "Total Clients",
             "new_clients": "New Clients",
+            "invoices": "Invoices",
+            "invoice_paid": "Invoice Paid",
             "total_resellers": "Total Reseller",
             "total_invoice": "Total Invoice",
             "total_expense": "Total Expense"
@@ -3374,6 +3376,9 @@
         "metrics": {
             "active": "Active",
             "inactive": "Inactive",
+            "today": "Today",
+            "this_month": "This month",
+            "last_month": "Last month",
             "paid": "Paid",
             "due": "Due",
             "pending": "Pending",

@@ -3367,6 +3367,8 @@
         "cards": {
             "total_clients": "টোটাল ক্লায়েন্ট",
             "new_clients": "নতুন ক্লায়েন্ট",
+            "invoices": "ইনভয়েস",
+            "invoice_paid": "পেইড ইনভয়েস",
             "total_resellers": "টোটাল রিসেলার",
             "total_invoice": "টোটাল ইনভয়েস",
             "total_expense": "টোটাল এক্সপেন্স"
@@ -3374,6 +3376,9 @@
         "metrics": {
             "active": "অ্যাক্টিভ",
             "inactive": "ইনঅ্যাক্টিভ",
+            "today": "আজ",
+            "this_month": "এই মাস",
+            "last_month": "গত মাস",
             "paid": "পেইড",
             "due": "ডিউ",
             "pending": "পেন্ডিং",

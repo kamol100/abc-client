@@ -13,6 +13,8 @@ import {
   DashboardExpenseReportSchema,
   DashboardGraphSchema,
   DashboardInvoiceReportSchema,
+  DashboardInvoiceSummarySchema,
+  DashboardInvoicePaidSummarySchema,
   DashboardResellerCountSchema,
   DashboardTopDueInvoiceResponseSchema,
   DashboardZoneWiseTopInvoiceDueSchema,
@@ -27,8 +29,6 @@ function parseFilterParams(raw: string | null, defaultLimit: number): Record<str
 }
 
 export function useDashboardData() {
-  const [clientDateFilter, setClientDateFilter] = useState<DashboardDateFilter>("all");
-  const [newClientDateFilter, setNewClientDateFilter] = useState<DashboardDateFilter>("this_month");
   const [invoiceDateFilter, setInvoiceDateFilter] = useState<DashboardDateFilter>("this_month");
   const [expenseDateFilter, setExpenseDateFilter] = useState<DashboardDateFilter>("this_month");
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
@@ -44,11 +44,6 @@ export function useDashboardData() {
     [],
   );
 
-  const clientParams = useMemo(() => ({ date_filter: clientDateFilter }), [clientDateFilter]);
-  const newClientParams = useMemo(
-    () => ({ date_filter: newClientDateFilter }),
-    [newClientDateFilter],
-  );
   const invoiceParams = useMemo(() => ({ date_filter: invoiceDateFilter }), [invoiceDateFilter]);
   const expenseParams = useMemo(() => ({ date_filter: expenseDateFilter }), [expenseDateFilter]);
   const chartParams = useMemo(() => ({ year_filter: yearFilter }), [yearFilter]);
@@ -82,21 +77,30 @@ export function useDashboardData() {
     isFetching: isClientFetching,
     isError: isClientError,
   } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["dashboard-client-count", clientDateFilter],
+    queryKey: ["dashboard-client-count"],
     url: "dashboard-client-count",
-    params: clientParams,
     pagination: false,
   });
 
   const {
-    data: newClientResponse,
-    isLoading: isNewClientLoading,
-    isFetching: isNewClientFetching,
-    isError: isNewClientError,
+    data: invoiceSummaryResponse,
+    isLoading: isInvoiceSummaryLoading,
+    isFetching: isInvoiceSummaryFetching,
+    isError: isInvoiceSummaryError,
   } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["dashboard-new-client-count", newClientDateFilter],
-    url: "dashboard-new-client-count",
-    params: newClientParams,
+    queryKey: ["dashboard-invoice-summary"],
+    url: "dashboard-invoice-summary",
+    pagination: false,
+  });
+
+  const {
+    data: invoicePaidSummaryResponse,
+    isLoading: isInvoicePaidSummaryLoading,
+    isFetching: isInvoicePaidSummaryFetching,
+    isError: isInvoicePaidSummaryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-invoice-paid-summary"],
+    url: "dashboard-invoice-paid-summary",
     pagination: false,
   });
 
@@ -180,12 +184,19 @@ export function useDashboardData() {
       : { total_clients: 0, active_clients: 0, inactive_clients: 0, new_clients_this_month: 0, new_clients: 0 };
   }, [clientResponse?.data]);
 
-  const newClientCount = useMemo(() => {
-    const parsed = DashboardClientCountSchema.safeParse(newClientResponse?.data);
+  const invoiceSummary = useMemo(() => {
+    const parsed = DashboardInvoiceSummarySchema.safeParse(invoiceSummaryResponse?.data);
     return parsed.success
       ? parsed.data
-      : { total_clients: 0, active_clients: 0, inactive_clients: 0, new_clients_this_month: 0, new_clients: 0 };
-  }, [newClientResponse?.data]);
+      : { total_invoice_amount: 0, this_month_invoice_amount: 0, last_month_invoice_amount: 0 };
+  }, [invoiceSummaryResponse?.data]);
+
+  const invoicePaidSummary = useMemo(() => {
+    const parsed = DashboardInvoicePaidSummarySchema.safeParse(invoicePaidSummaryResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_paid_amount: 0, today_paid_amount: 0, this_month_paid_amount: 0, last_month_paid_amount: 0 };
+  }, [invoicePaidSummaryResponse?.data]);
 
   const resellerCount = useMemo(() => {
     const parsed = DashboardResellerCountSchema.safeParse(resellerResponse?.data);
@@ -231,23 +242,21 @@ export function useDashboardData() {
     return parsed.success ? parsed.data : { total_amount: 0, zone_wise_due: [] };
   }, [zoneWiseTopDueInvoiceResponse?.data]);
 
-  const newClientsTotal = newClientCount.new_clients || newClientCount.new_clients_this_month || 0;
-
   return {
-    clientDateFilter,
-    setClientDateFilter,
     clientCount,
     isClientLoading,
     isClientFetching,
     isClientError,
 
-    newClientDateFilter,
-    setNewClientDateFilter,
-    newClientCount,
-    newClientsTotal,
-    isNewClientLoading,
-    isNewClientFetching,
-    isNewClientError,
+    invoiceSummary,
+    isInvoiceSummaryLoading,
+    isInvoiceSummaryFetching,
+    isInvoiceSummaryError,
+
+    invoicePaidSummary,
+    isInvoicePaidSummaryLoading,
+    isInvoicePaidSummaryFetching,
+    isInvoicePaidSummaryError,
 
     resellerCount,
     isResellerLoading,
