@@ -1,13 +1,11 @@
 "use client";
 
-import DashboardFilterSelect from "@/components/dashboard/dashboard-filter-select";
-import { DATE_FILTER_OPTIONS } from "@/components/dashboard/dashboard-constants";
 import { useDashboardData } from "@/components/dashboard/use-dashboard-data";
-import type { DashboardDateFilter } from "@/components/dashboard/dashboard-type";
-import DashboardSectionCard from "@/components/dashboard/items/DashboardSectionCard";
 import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardClientSummaryCard";
 import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
 import DashboardInvoicePaidSummaryCard from "@/components/dashboard/items/DashboardInvoicePaidSummaryCard";
+import DashboardExpenseSummaryCard from "@/components/dashboard/items/DashboardExpenseSummaryCard";
+import DashboardFundSummaryCard from "@/components/dashboard/items/DashboardFundSummaryCard";
 import DashboardTopDueInvoicesTable from "@/components/dashboard/items/DashboardTopDueInvoicesTable";
 import DashboardZoneDueSummaryTable from "@/components/dashboard/items/DashboardZoneDueSummaryTable";
 import DashboardRevenueChart from "@/components/dashboard/items/DashboardRevenueChart";
@@ -30,24 +28,20 @@ export default function DashboardOverview() {
     isInvoicePaidSummaryFetching,
     isInvoicePaidSummaryError,
 
-    resellerCount,
-    isResellerLoading,
-    isResellerFetching,
-    isResellerError,
+    invoiceDueSummary,
+    isInvoiceDueSummaryLoading,
+    isInvoiceDueSummaryFetching,
+    isInvoiceDueSummaryError,
 
-    invoiceDateFilter,
-    setInvoiceDateFilter,
-    invoiceReport,
-    isInvoiceLoading,
-    isInvoiceFetching,
-    isInvoiceError,
+    expenseSummary,
+    isExpenseSummaryLoading,
+    isExpenseSummaryFetching,
+    isExpenseSummaryError,
 
-    expenseDateFilter,
-    setExpenseDateFilter,
-    expenseReport,
-    isExpenseLoading,
-    isExpenseFetching,
-    isExpenseError,
+    fundSummary,
+    isFundSummaryLoading,
+    isFundSummaryFetching,
+    isFundSummaryError,
 
     graph,
     yearFilter,
@@ -93,60 +87,26 @@ export default function DashboardOverview() {
           isError={isInvoicePaidSummaryError}
         />
 
-        <DashboardSectionCard
-          titleKey="dashboard.cards.total_resellers"
-          totalValue={resellerCount.total_clients}
-          firstMetricKey="dashboard.metrics.active"
-          firstMetricValue={resellerCount.active_clients}
-          secondMetricKey="dashboard.metrics.inactive"
-          secondMetricValue={resellerCount.inactive_clients}
-          isLoading={isResellerLoading}
-          isRefreshing={isResellerFetching}
-          isError={isResellerError}
+        <DashboardInvoiceSummaryCard
+          data={invoiceDueSummary}
+          isLoading={isInvoiceDueSummaryLoading}
+          isRefreshing={isInvoiceDueSummaryFetching}
+          isError={isInvoiceDueSummaryError}
+          titleKey="dashboard.cards.invoices_due"
         />
 
-        <DashboardSectionCard
-          titleKey="dashboard.cards.total_invoice"
-          totalValue={invoiceReport.total_after_discount}
-          firstMetricKey="dashboard.metrics.paid"
-          firstMetricValue={invoiceReport.total_amount_paid}
-          secondMetricKey="dashboard.metrics.due"
-          secondMetricValue={invoiceReport.total_amount_due}
-          isLoading={isInvoiceLoading}
-          isRefreshing={isInvoiceFetching}
-          isError={isInvoiceError}
-          formatCurrency={true}
-          filter={
-            <DashboardFilterSelect
-              value={invoiceDateFilter}
-              options={DATE_FILTER_OPTIONS}
-              onValueChange={(value) => setInvoiceDateFilter(value as DashboardDateFilter)}
-              placeholderKey="dashboard.filters.date.label"
-              className="h-8 text-xs w-[130px]"
-            />
-          }
+        <DashboardExpenseSummaryCard
+          data={expenseSummary}
+          isLoading={isExpenseSummaryLoading}
+          isRefreshing={isExpenseSummaryFetching}
+          isError={isExpenseSummaryError}
         />
 
-        <DashboardSectionCard
-          titleKey="dashboard.cards.total_expense"
-          totalValue={expenseReport.total_expense}
-          firstMetricKey="dashboard.metrics.approved"
-          firstMetricValue={expenseReport.approved_expense}
-          secondMetricKey="dashboard.metrics.pending"
-          secondMetricValue={expenseReport.pending_expense}
-          isLoading={isExpenseLoading}
-          isRefreshing={isExpenseFetching}
-          isError={isExpenseError}
-          formatCurrency={true}
-          filter={
-            <DashboardFilterSelect
-              value={expenseDateFilter}
-              options={DATE_FILTER_OPTIONS}
-              onValueChange={(value) => setExpenseDateFilter(value as DashboardDateFilter)}
-              placeholderKey="dashboard.filters.date.label"
-              className="h-8 text-xs w-[130px]"
-            />
-          }
+        <DashboardFundSummaryCard
+          data={fundSummary}
+          isLoading={isFundSummaryLoading}
+          isRefreshing={isFundSummaryFetching}
+          isError={isFundSummaryError}
         />
 
         <DashboardProductStockCard />

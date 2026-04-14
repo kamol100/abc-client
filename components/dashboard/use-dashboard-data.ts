@@ -11,6 +11,8 @@ import {
   DashboardClientCountSchema,
   type DashboardDateFilter,
   DashboardExpenseReportSchema,
+  DashboardExpenseSummarySchema,
+  DashboardFundSummarySchema,
   DashboardGraphSchema,
   DashboardInvoiceReportSchema,
   DashboardInvoiceSummarySchema,
@@ -94,6 +96,17 @@ export function useDashboardData() {
   });
 
   const {
+    data: invoiceDueSummaryResponse,
+    isLoading: isInvoiceDueSummaryLoading,
+    isFetching: isInvoiceDueSummaryFetching,
+    isError: isInvoiceDueSummaryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-invoice-due-summary"],
+    url: "dashboard-invoice-due-summary",
+    pagination: false,
+  });
+
+  const {
     data: invoicePaidSummaryResponse,
     isLoading: isInvoicePaidSummaryLoading,
     isFetching: isInvoicePaidSummaryFetching,
@@ -136,6 +149,28 @@ export function useDashboardData() {
     queryKey: ["dashboard-expense-report", expenseDateFilter],
     url: "dashboard-expense-report",
     params: expenseParams,
+    pagination: false,
+  });
+
+  const {
+    data: expenseSummaryResponse,
+    isLoading: isExpenseSummaryLoading,
+    isFetching: isExpenseSummaryFetching,
+    isError: isExpenseSummaryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-expense-summary"],
+    url: "dashboard-expense-summary",
+    pagination: false,
+  });
+
+  const {
+    data: fundSummaryResponse,
+    isLoading: isFundSummaryLoading,
+    isFetching: isFundSummaryFetching,
+    isError: isFundSummaryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-fund-summary"],
+    url: "dashboard-fund-summary",
     pagination: false,
   });
 
@@ -191,6 +226,13 @@ export function useDashboardData() {
       : { total_invoice_amount: 0, this_month_invoice_amount: 0, last_month_invoice_amount: 0 };
   }, [invoiceSummaryResponse?.data]);
 
+  const invoiceDueSummary = useMemo(() => {
+    const parsed = DashboardInvoiceSummarySchema.safeParse(invoiceDueSummaryResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_invoice_amount: 0, this_month_invoice_amount: 0, last_month_invoice_amount: 0 };
+  }, [invoiceDueSummaryResponse?.data]);
+
   const invoicePaidSummary = useMemo(() => {
     const parsed = DashboardInvoicePaidSummarySchema.safeParse(invoicePaidSummaryResponse?.data);
     return parsed.success
@@ -227,6 +269,20 @@ export function useDashboardData() {
       : { total_expense: 0, pending_expense: 0, approved_expense: 0 };
   }, [expenseResponse?.data]);
 
+  const expenseSummary = useMemo(() => {
+    const parsed = DashboardExpenseSummarySchema.safeParse(expenseSummaryResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_expense_amount: 0, today_expense_amount: 0, this_month_expense_amount: 0, last_month_expense_amount: 0 };
+  }, [expenseSummaryResponse?.data]);
+
+  const fundSummary = useMemo(() => {
+    const parsed = DashboardFundSummarySchema.safeParse(fundSummaryResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_fund_amount: 0, total_cash_amount: 0, total_bkash_amount: 0 };
+  }, [fundSummaryResponse?.data]);
+
   const graph = useMemo(() => {
     const parsed = DashboardGraphSchema.safeParse(graphResponse?.data);
     return parsed.success ? parsed.data : { months: [], series: [] };
@@ -253,6 +309,11 @@ export function useDashboardData() {
     isInvoiceSummaryFetching,
     isInvoiceSummaryError,
 
+    invoiceDueSummary,
+    isInvoiceDueSummaryLoading,
+    isInvoiceDueSummaryFetching,
+    isInvoiceDueSummaryError,
+
     invoicePaidSummary,
     isInvoicePaidSummaryLoading,
     isInvoicePaidSummaryFetching,
@@ -276,6 +337,16 @@ export function useDashboardData() {
     isExpenseLoading,
     isExpenseFetching,
     isExpenseError,
+
+    expenseSummary,
+    isExpenseSummaryLoading,
+    isExpenseSummaryFetching,
+    isExpenseSummaryError,
+
+    fundSummary,
+    isFundSummaryLoading,
+    isFundSummaryFetching,
+    isFundSummaryError,
 
     graph,
     yearFilter,

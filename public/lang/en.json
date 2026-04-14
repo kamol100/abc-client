@@ -3368,10 +3368,13 @@
             "total_clients": "Total Clients",
             "new_clients": "New Clients",
             "invoices": "Invoices",
+            "invoices_due": "Invoices Due",
             "invoice_paid": "Invoice Paid",
             "total_resellers": "Total Reseller",
             "total_invoice": "Total Invoice",
-            "total_expense": "Total Expense"
+            "total_expense": "Total Expense",
+            "expense": "Expense",
+            "fund": "Fund"
         },
         "metrics": {
             "active": "Active",
@@ -3382,7 +3385,9 @@
             "paid": "Paid",
             "due": "Due",
             "pending": "Pending",
-            "approved": "Approved"
+            "approved": "Approved",
+            "cash_amount": "Cash amount",
+            "bkash_amount": "bKash amount"
         },
         "filters": {
             "date": {

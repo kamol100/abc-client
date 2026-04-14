@@ -3368,10 +3368,13 @@
             "total_clients": "টোটাল ক্লায়েন্ট",
             "new_clients": "নতুন ক্লায়েন্ট",
             "invoices": "ইনভয়েস",
+            "invoices_due": "ডিউ ইনভয়েস",
             "invoice_paid": "পেইড ইনভয়েস",
             "total_resellers": "টোটাল রিসেলার",
             "total_invoice": "টোটাল ইনভয়েস",
-            "total_expense": "টোটাল এক্সপেন্স"
+            "total_expense": "টোটাল এক্সপেন্স",
+            "expense": "এক্সপেন্স",
+            "fund": "ফান্ড"
         },
         "metrics": {
             "active": "অ্যাক্টিভ",
@@ -3382,7 +3385,9 @@
             "paid": "পেইড",
             "due": "ডিউ",
             "pending": "পেন্ডিং",
-            "approved": "অ্যাপ্রুভড"
+            "approved": "অ্যাপ্রুভড",
+            "cash_amount": "ক্যাশ অ্যামাউন্ট",
+            "bkash_amount": "বিকাশ অ্যামাউন্ট"
         },
         "filters": {
             "date": {

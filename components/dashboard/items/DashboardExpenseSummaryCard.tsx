@@ -4,23 +4,23 @@ import Card from "@/components/card";
 import DisplayCount from "@/components/display-count";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
-import type { DashboardInvoiceSummary } from "@/components/dashboard/dashboard-type";
+import type { DashboardExpenseSummary } from "@/components/dashboard/dashboard-type";
 import { toNumber } from "@/lib/helper/helper";
 
 type Props = {
-  data: DashboardInvoiceSummary;
+  data: DashboardExpenseSummary;
   isLoading: boolean;
   isRefreshing: boolean;
   isError: boolean;
-  titleKey?: string;
 };
 
-const METRICS: Array<{ labelKey: string; key: keyof DashboardInvoiceSummary }> = [
-  { labelKey: "dashboard.metrics.this_month", key: "this_month_invoice_amount" },
-  { labelKey: "dashboard.metrics.last_month", key: "last_month_invoice_amount" },
+const METRICS: Array<{ labelKey: string; key: keyof DashboardExpenseSummary }> = [
+  { labelKey: "dashboard.metrics.today", key: "today_expense_amount" },
+  { labelKey: "dashboard.metrics.this_month", key: "this_month_expense_amount" },
+  { labelKey: "dashboard.metrics.last_month", key: "last_month_expense_amount" },
 ];
 
-function InvoiceSummaryCardSkeleton() {
+function ExpenseSummaryCardSkeleton() {
   return (
     <div className="flex h-full flex-col animate-in fade-in duration-300">
       <div className="flex flex-1 flex-col p-4">
@@ -41,13 +41,13 @@ function InvoiceSummaryCardSkeleton() {
   );
 }
 
-export default function DashboardInvoiceSummaryCard({ data, isLoading, isRefreshing, isError, titleKey = "dashboard.cards.invoices" }: Props) {
+export default function DashboardExpenseSummaryCard({ data, isLoading, isRefreshing, isError }: Props) {
   const { t } = useTranslation();
 
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all hover:shadow-sm">
       {isLoading || isRefreshing ? (
-        <InvoiceSummaryCardSkeleton />
+        <ExpenseSummaryCardSkeleton />
       ) : isError ? (
         <div className="flex h-full items-center justify-center p-4">
           <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
@@ -57,15 +57,15 @@ export default function DashboardInvoiceSummaryCard({ data, isLoading, isRefresh
           <div className="flex flex-1 flex-col p-4">
             <div className="flex items-center justify-between gap-4 min-h-8">
               <p className="text-sm font-medium text-muted-foreground">
-                {t(titleKey)}
+                {t("dashboard.cards.expense")}
               </p>
               <p className="text-2xl font-bold tracking-tight text-foreground">
-                <DisplayCount amount={data.total_invoice_amount} abbreviate />
+                <DisplayCount amount={data.total_expense_amount} abbreviate />
               </p>
             </div>
           </div>
 
-          <div className=" px-4 py-3 space-y-1.5">
+          <div className="px-4 py-3 space-y-1.5">
             {METRICS.map(({ labelKey, key }) => (
               <div key={key} className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">{t(labelKey)}:</span>
