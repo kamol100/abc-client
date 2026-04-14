@@ -27,7 +27,7 @@ export default function OfflinePage() {
           </svg>
         </div>
 
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-xl font-bold tracking-tight text-foreground">
           You&apos;re Offline
         </h1>
 

@@ -56,11 +56,11 @@ export default function DashboardExpenseSummaryCard({ data, isLoading, isRefresh
         <div className="flex h-full flex-col animate-in fade-in duration-300">
           <div className="flex flex-1 flex-col p-4">
             <div className="flex items-center justify-between gap-4 min-h-8">
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-xl font-bold text-primary">
                 {t("dashboard.cards.expense")}
               </p>
-              <p className="text-2xl font-bold tracking-tight text-foreground">
-                <DisplayCount amount={data.total_expense_amount} abbreviate />
+              <p className="text-xl font-bold tracking-tight text-foreground">
+                <DisplayCount amount={data.total_expense_amount} abbreviate translation={false} />
               </p>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function DashboardExpenseSummaryCard({ data, isLoading, isRefresh
               <div key={key} className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">{t(labelKey)}:</span>
                 <span className="font-semibold text-foreground">
-                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} abbreviate />
+                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} abbreviate translation={false} />
                 </span>
               </div>
             ))}
