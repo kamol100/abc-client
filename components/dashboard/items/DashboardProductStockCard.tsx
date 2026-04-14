@@ -26,7 +26,7 @@ function StockRow({ category, t }: { category: DashboardProductStockCategory; t:
   const unitKey = getCategoryUnit(category.category_name);
   return (
     <div className="flex items-center justify-between text-xs">
-      <span className="text-muted-foreground">{t(`common.${category.category_name}`)}:</span>
+      <span className="text-muted-foreground">{t(`common.${String(category?.category_name ?? 'fiber').toLowerCase()}`)}:</span>
       <span className="font-semibold text-foreground">
         <DisplayCount amount={category.total_remaining_stock} />
         {unitKey && <span className="ml-1 font-normal text-muted-foreground">{t(unitKey)}</span>}
