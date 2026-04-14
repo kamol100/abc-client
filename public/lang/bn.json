@@ -1,5 +1,7 @@
 {
     "common": {
+        "fiber": "ফাইবার",
+        "onu": "ওনু",
         "filter": "ফিল্টার",
         "reset": "রিসেট",
         "apply_filter": "ফিল্টার প্রয়োগ করুন",
@@ -3374,7 +3376,8 @@
             "total_invoice": "টোটাল ইনভয়েস",
             "total_expense": "টোটাল এক্সপেন্স",
             "expense": "এক্সপেন্স",
-            "fund": "ফান্ড"
+            "fund": "ফান্ড",
+            "support_ticket": "সাপোর্ট টিকেট"
         },
         "metrics": {
             "active": "অ্যাক্টিভ",
@@ -3387,7 +3390,10 @@
             "pending": "পেন্ডিং",
             "approved": "অ্যাপ্রুভড",
             "cash_amount": "ক্যাশ অ্যামাউন্ট",
-            "bkash_amount": "বিকাশ অ্যামাউন্ট"
+            "bkash_amount": "বিকাশ অ্যামাউন্ট",
+            "open_ticket": "ওপেন টিকেট",
+            "in_progress": "ইন-প্রগ্রেস",
+            "resolved": "রিজোলভড"
         },
         "filters": {
             "date": {
@@ -3444,6 +3450,10 @@
             "stock_out": "স্টক আউট",
             "total_remaining": "মোট অবশিষ্ট",
             "total_stock_out": "মোট স্টক আউট",
+            "units": {
+                "meter": "মিটার",
+                "piece": "পিস"
+            },
             "filter": {
                 "label": "ক্যাটাগরি",
                 "all": "সকল ক্যাটাগরি"

@@ -14,22 +14,22 @@ import {
 const DEFAULT_ROW_COUNT = 2;
 
 const CATEGORY_UNITS: Record<string, string> = {
-  fiber: "meter",
-  onu: "piece",
+  fiber: "dashboard.product_stock.units.meter",
+  onu: "dashboard.product_stock.units.piece",
 };
 
 function getCategoryUnit(name: string): string | undefined {
   return CATEGORY_UNITS[name.toLowerCase()];
 }
 
-function StockRow({ category }: { category: DashboardProductStockCategory }) {
-  const unit = getCategoryUnit(category.category_name);
+function StockRow({ category, t }: { category: DashboardProductStockCategory; t: (key: string) => string }) {
+  const unitKey = getCategoryUnit(category.category_name);
   return (
     <div className="flex items-center justify-between text-xs">
-      <span className="text-muted-foreground capitalize">{category.category_name}:</span>
+      <span className="text-muted-foreground">{t(`common.${category.category_name}`)}:</span>
       <span className="font-semibold text-foreground">
         <DisplayCount amount={category.total_remaining_stock} />
-        {unit && <span className="ml-1 font-normal text-muted-foreground">{unit}</span>}
+        {unitKey && <span className="ml-1 font-normal text-muted-foreground">{t(unitKey)}</span>}
       </span>
     </div>
   );
@@ -98,7 +98,7 @@ export default function DashboardProductStockCard() {
               <p className="text-center text-xs text-muted-foreground">{t("common.no_data")}</p>
             ) : (
               stockData.categories.map((category) => (
-                <StockRow key={category.category_name} category={category} />
+                <StockRow key={category.category_name} category={category} t={t} />
               ))
             )}
           </div>

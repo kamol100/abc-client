@@ -6,6 +6,7 @@ import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardI
 import DashboardInvoicePaidSummaryCard from "@/components/dashboard/items/DashboardInvoicePaidSummaryCard";
 import DashboardExpenseSummaryCard from "@/components/dashboard/items/DashboardExpenseSummaryCard";
 import DashboardFundSummaryCard from "@/components/dashboard/items/DashboardFundSummaryCard";
+import DashboardSupportTicketCard from "@/components/dashboard/items/DashboardSupportTicketCard";
 import DashboardTopDueInvoicesTable from "@/components/dashboard/items/DashboardTopDueInvoicesTable";
 import DashboardZoneDueSummaryTable from "@/components/dashboard/items/DashboardZoneDueSummaryTable";
 import DashboardRevenueChart from "@/components/dashboard/items/DashboardRevenueChart";
@@ -42,6 +43,11 @@ export default function DashboardOverview() {
     isFundSummaryLoading,
     isFundSummaryFetching,
     isFundSummaryError,
+
+    ticketSummary,
+    isTicketSummaryLoading,
+    isTicketSummaryFetching,
+    isTicketSummaryError,
 
     graph,
     yearFilter,
@@ -107,6 +113,13 @@ export default function DashboardOverview() {
           isLoading={isFundSummaryLoading}
           isRefreshing={isFundSummaryFetching}
           isError={isFundSummaryError}
+        />
+
+        <DashboardSupportTicketCard
+          data={ticketSummary}
+          isLoading={isTicketSummaryLoading}
+          isRefreshing={isTicketSummaryFetching}
+          isError={isTicketSummaryError}
         />
 
         <DashboardProductStockCard />

@@ -18,6 +18,7 @@ import {
   DashboardInvoiceSummarySchema,
   DashboardInvoicePaidSummarySchema,
   DashboardResellerCountSchema,
+  DashboardTicketSummarySchema,
   DashboardTopDueInvoiceResponseSchema,
   DashboardZoneWiseTopInvoiceDueSchema,
 } from "./dashboard-type";
@@ -175,6 +176,17 @@ export function useDashboardData() {
   });
 
   const {
+    data: ticketSummaryResponse,
+    isLoading: isTicketSummaryLoading,
+    isFetching: isTicketSummaryFetching,
+    isError: isTicketSummaryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-ticket-summary"],
+    url: "dashboard-ticket-summary",
+    pagination: false,
+  });
+
+  const {
     data: graphResponse,
     isLoading: isGraphLoading,
     isFetching: isGraphFetching,
@@ -283,6 +295,13 @@ export function useDashboardData() {
       : { total_fund_amount: 0, total_cash_amount: 0, total_bkash_amount: 0 };
   }, [fundSummaryResponse?.data]);
 
+  const ticketSummary = useMemo(() => {
+    const parsed = DashboardTicketSummarySchema.safeParse(ticketSummaryResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { total_open_ticket: 0, total_in_progress_ticket: 0, total_resolve_ticket: 0 };
+  }, [ticketSummaryResponse?.data]);
+
   const graph = useMemo(() => {
     const parsed = DashboardGraphSchema.safeParse(graphResponse?.data);
     return parsed.success ? parsed.data : { months: [], series: [] };
@@ -347,6 +366,11 @@ export function useDashboardData() {
     isFundSummaryLoading,
     isFundSummaryFetching,
     isFundSummaryError,
+
+    ticketSummary,
+    isTicketSummaryLoading,
+    isTicketSummaryFetching,
+    isTicketSummaryError,
 
     graph,
     yearFilter,

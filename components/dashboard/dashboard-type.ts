@@ -163,6 +163,14 @@ export const DashboardFundSummarySchema = z
   })
   .passthrough();
 
+export const DashboardTicketSummarySchema = z
+  .object({
+    total_open_ticket: NumberLikeSchema.optional().default(0),
+    total_in_progress_ticket: NumberLikeSchema.optional().default(0),
+    total_resolve_ticket: NumberLikeSchema.optional().default(0),
+  })
+  .passthrough();
+
 export const DashboardProductStockCategorySchema = z
   .object({
     category_name: z.string(),
@@ -207,3 +215,4 @@ export type DashboardFundSummary = z.infer<typeof DashboardFundSummarySchema>;
 export type DashboardProductStockCategory = z.infer<typeof DashboardProductStockCategorySchema>;
 export type DashboardProductStockSummary = z.infer<typeof DashboardProductStockSummarySchema>;
 export type ProductCategoryDropdownItem = z.infer<typeof ProductCategoryDropdownItemSchema>;
+export type DashboardTicketSummary = z.infer<typeof DashboardTicketSummarySchema>;

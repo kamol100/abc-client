@@ -1,5 +1,7 @@
 {
     "common": {
+        "fiber": "Fiber",
+        "onu": "ONU",
         "filter": "Filter",
         "reset": "Reset",
         "apply_filter": "Apply Filter",
@@ -3374,7 +3376,8 @@
             "total_invoice": "Total Invoice",
             "total_expense": "Total Expense",
             "expense": "Expense",
-            "fund": "Fund"
+            "fund": "Fund",
+            "support_ticket": "Support Ticket"
         },
         "metrics": {
             "active": "Active",
@@ -3387,7 +3390,10 @@
             "pending": "Pending",
             "approved": "Approved",
             "cash_amount": "Cash amount",
-            "bkash_amount": "bKash amount"
+            "bkash_amount": "bKash amount",
+            "open_ticket": "Open ticket",
+            "in_progress": "In-progress",
+            "resolved": "Resolved"
         },
         "filters": {
             "date": {
@@ -3444,6 +3450,10 @@
             "stock_out": "Stock Out",
             "total_remaining": "Total Remaining",
             "total_stock_out": "Total Stock Out",
+            "units": {
+                "meter": "meter",
+                "piece": "piece"
+            },
             "filter": {
                 "label": "Category",
                 "all": "All Categories"
