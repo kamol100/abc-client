@@ -44,7 +44,7 @@ function StockCardSkeleton() {
           <Skeleton className="h-7 w-16" />
         </div>
       </div>
-      <div className="border-t bg-muted/40 px-4 py-3 space-y-2">
+      <div className="px-4 py-3 space-y-2">
         {Array.from({ length: DEFAULT_ROW_COUNT }).map((_, i) => (
           <div key={i} className="flex items-center justify-between">
             <Skeleton className="h-3.5 w-20" />

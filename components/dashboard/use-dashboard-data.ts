@@ -9,15 +9,11 @@ import DashboardZoneWiseTopInvoiceDueFilterSchema, {
 } from "./dashboard-zone-wise-top-invoice-due-filter-schema";
 import {
   DashboardClientCountSchema,
-  type DashboardDateFilter,
-  DashboardExpenseReportSchema,
   DashboardExpenseSummarySchema,
   DashboardFundSummarySchema,
   DashboardGraphSchema,
-  DashboardInvoiceReportSchema,
   DashboardInvoiceSummarySchema,
   DashboardInvoicePaidSummarySchema,
-  DashboardResellerCountSchema,
   DashboardTicketSummarySchema,
   DashboardTopDueInvoiceResponseSchema,
   DashboardZoneWiseTopInvoiceDueSchema,
@@ -32,8 +28,6 @@ function parseFilterParams(raw: string | null, defaultLimit: number): Record<str
 }
 
 export function useDashboardData() {
-  const [invoiceDateFilter, setInvoiceDateFilter] = useState<DashboardDateFilter>("this_month");
-  const [expenseDateFilter, setExpenseDateFilter] = useState<DashboardDateFilter>("this_month");
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
   const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
   const [zoneWiseTopDueInvoiceFilter, setZoneWiseTopDueInvoiceFilter] = useState<string | null>(null);
@@ -47,8 +41,6 @@ export function useDashboardData() {
     [],
   );
 
-  const invoiceParams = useMemo(() => ({ date_filter: invoiceDateFilter }), [invoiceDateFilter]);
-  const expenseParams = useMemo(() => ({ date_filter: expenseDateFilter }), [expenseDateFilter]);
   const chartParams = useMemo(() => ({ year_filter: yearFilter }), [yearFilter]);
 
   const topDueInvoiceParams = useMemo(() => {
@@ -115,41 +107,6 @@ export function useDashboardData() {
   } = useApiQuery<ApiResponse<unknown>>({
     queryKey: ["dashboard-invoice-paid-summary"],
     url: "dashboard-invoice-paid-summary",
-    pagination: false,
-  });
-
-  const {
-    data: resellerResponse,
-    isLoading: isResellerLoading,
-    isFetching: isResellerFetching,
-    isError: isResellerError,
-  } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["dashboard-reseller-count"],
-    url: "dashboard-reseller-count",
-    pagination: false,
-  });
-
-  const {
-    data: invoiceResponse,
-    isLoading: isInvoiceLoading,
-    isFetching: isInvoiceFetching,
-    isError: isInvoiceError,
-  } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["dashboard-invoice-report", invoiceDateFilter],
-    url: "dashboard-invoice-report",
-    params: invoiceParams,
-    pagination: false,
-  });
-
-  const {
-    data: expenseResponse,
-    isLoading: isExpenseLoading,
-    isFetching: isExpenseFetching,
-    isError: isExpenseError,
-  } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["dashboard-expense-report", expenseDateFilter],
-    url: "dashboard-expense-report",
-    params: expenseParams,
     pagination: false,
   });
 
@@ -252,35 +209,6 @@ export function useDashboardData() {
       : { total_paid_amount: 0, today_paid_amount: 0, this_month_paid_amount: 0, last_month_paid_amount: 0 };
   }, [invoicePaidSummaryResponse?.data]);
 
-  const resellerCount = useMemo(() => {
-    const parsed = DashboardResellerCountSchema.safeParse(resellerResponse?.data);
-    return parsed.success
-      ? parsed.data
-      : { total_clients: 0, active_clients: 0, inactive_clients: 0 };
-  }, [resellerResponse?.data]);
-
-  const invoiceReport = useMemo(() => {
-    const parsed = DashboardInvoiceReportSchema.safeParse(invoiceResponse?.data);
-    return parsed.success
-      ? parsed.data
-      : {
-          month: null,
-          total_invoice: 0,
-          total_discount: 0,
-          total_after_discount: 0,
-          total_amount_paid: 0,
-          total_amount_due: 0,
-          total_partial_paid: 0,
-        };
-  }, [invoiceResponse?.data]);
-
-  const expenseReport = useMemo(() => {
-    const parsed = DashboardExpenseReportSchema.safeParse(expenseResponse?.data);
-    return parsed.success
-      ? parsed.data
-      : { total_expense: 0, pending_expense: 0, approved_expense: 0 };
-  }, [expenseResponse?.data]);
-
   const expenseSummary = useMemo(() => {
     const parsed = DashboardExpenseSummarySchema.safeParse(expenseSummaryResponse?.data);
     return parsed.success
@@ -337,25 +265,6 @@ export function useDashboardData() {
     isInvoicePaidSummaryLoading,
     isInvoicePaidSummaryFetching,
     isInvoicePaidSummaryError,
-
-    resellerCount,
-    isResellerLoading,
-    isResellerFetching,
-    isResellerError,
-
-    invoiceDateFilter,
-    setInvoiceDateFilter,
-    invoiceReport,
-    isInvoiceLoading,
-    isInvoiceFetching,
-    isInvoiceError,
-
-    expenseDateFilter,
-    setExpenseDateFilter,
-    expenseReport,
-    isExpenseLoading,
-    isExpenseFetching,
-    isExpenseError,
 
     expenseSummary,
     isExpenseSummaryLoading,

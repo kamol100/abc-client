@@ -28,7 +28,7 @@ function FundSummaryCardSkeleton() {
           <Skeleton className="h-7 w-16" />
         </div>
       </div>
-      <div className="border-t bg-muted/40 px-4 py-3 space-y-2">
+      <div className="px-4 py-3 space-y-2">
         {METRICS.map(({ key }) => (
           <div key={key} className="flex items-center justify-between">
             <Skeleton className="h-3.5 w-20" />

@@ -37,26 +37,6 @@ export const DashboardClientCountSchema = z
   })
   .passthrough();
 
-export const DashboardResellerCountSchema = z
-  .object({
-    total_clients: NumberLikeSchema,
-    active_clients: NumberLikeSchema,
-    inactive_clients: NumberLikeSchema,
-  })
-  .passthrough();
-
-export const DashboardInvoiceReportSchema = z
-  .object({
-    month: z.string().nullable().optional(),
-    total_invoice: NumberLikeSchema.optional().default(0),
-    total_discount: NumberLikeSchema.optional().default(0),
-    total_after_discount: NumberLikeSchema.optional().default(0),
-    total_amount_paid: NumberLikeSchema.optional().default(0),
-    total_amount_due: NumberLikeSchema.optional().default(0),
-    total_partial_paid: NumberLikeSchema.optional().default(0),
-  })
-  .passthrough();
-
 export const DashboardGraphSeriesSchema = z
   .object({
     name: z.string(),
@@ -138,14 +118,6 @@ export const DashboardInvoicePaidSummarySchema = z
   })
   .passthrough();
 
-export const DashboardExpenseReportSchema = z
-  .object({
-    total_expense: NumberLikeSchema.optional().default(0),
-    pending_expense: NumberLikeSchema.optional().default(0),
-    approved_expense: NumberLikeSchema.optional().default(0),
-  })
-  .passthrough();
-
 export const DashboardExpenseSummarySchema = z
   .object({
     total_expense_amount: NumberLikeSchema.optional().default(0),
@@ -196,8 +168,6 @@ export const ProductCategoryDropdownItemSchema = z
   .passthrough();
 
 export type DashboardClientCount = z.infer<typeof DashboardClientCountSchema>;
-export type DashboardResellerCount = z.infer<typeof DashboardResellerCountSchema>;
-export type DashboardInvoiceReport = z.infer<typeof DashboardInvoiceReportSchema>;
 export type DashboardGraph = z.infer<typeof DashboardGraphSchema>;
 export type DashboardGraphSeries = z.infer<typeof DashboardGraphSeriesSchema>;
 export type DashboardTopDueInvoice = z.infer<typeof DashboardTopDueInvoiceSchema>;
@@ -209,7 +179,6 @@ export type DashboardZoneWiseTopInvoiceDue = z.infer<typeof DashboardZoneWiseTop
 export type DashboardInvoiceSummary = z.infer<typeof DashboardInvoiceSummarySchema>;
 export type DashboardInvoiceDueSummary = DashboardInvoiceSummary;
 export type DashboardInvoicePaidSummary = z.infer<typeof DashboardInvoicePaidSummarySchema>;
-export type DashboardExpenseReport = z.infer<typeof DashboardExpenseReportSchema>;
 export type DashboardExpenseSummary = z.infer<typeof DashboardExpenseSummarySchema>;
 export type DashboardFundSummary = z.infer<typeof DashboardFundSummarySchema>;
 export type DashboardProductStockCategory = z.infer<typeof DashboardProductStockCategorySchema>;
