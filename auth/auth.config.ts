@@ -10,14 +10,19 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-            // Allow public PWA routes without redirect
+            const pathname = nextUrl.pathname;
+
+            // Client portal routes are handled by middleware — never intercept here
+            if (pathname.startsWith('/client/')) return true;
+
+            const isOnAdminDashboard = pathname.startsWith('/dashboard');
             const isPublicPWARoute =
-                nextUrl.pathname === '/offline' ||
-                nextUrl.pathname.startsWith('/api/manifest');
-            if (isOnDashboard) {
+                pathname === '/offline' ||
+                pathname.startsWith('/api/manifest');
+
+            if (isOnAdminDashboard) {
                 if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
+                return false; // Redirect unauthenticated users to /admin (signIn page)
             } else if (isLoggedIn && !isPublicPWARoute) {
                 return Response.redirect(new URL('/dashboard', nextUrl));
             }

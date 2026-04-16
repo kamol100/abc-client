@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const LoginSchema = z.object({
+    api: z.string(),
     username: z.string().min(1, { message: "login.username.errors.required" }),
     password: z
         .string({

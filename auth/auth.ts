@@ -4,12 +4,35 @@ import { z } from 'zod';
 import { authConfig } from './auth.config';
 const BASE_URL = `${process.env.NEXTAPI_URL}/api/v1`;
 
-async function getLogin(credentials: any): Promise<any> {
+const loginRequestSchema = z.object({
+    api: z.string(),
+    username: z.string(), //for admin-login username:username for client-login username:phone
+    password: z.string().min(2),
+    host: z.string().optional(),
+});
+
+type LoginRequestCredentials = z.infer<typeof loginRequestSchema>;
+
+interface LoginApiUser {
+    name?: string;
+    email?: string;
+    reseller_id?: string | number;
+    company?: { logo?: string; favicon?: string };
+    staff?: unknown;
+}
+
+interface LoginApiResponse {
+    success?: boolean;
+    token?: string;
+    user?: LoginApiUser;
+}
+
+async function getLogin(credentials: LoginRequestCredentials): Promise<LoginApiResponse> {
     try {
         const hostQuery = credentials?.host
             ? `?host=${encodeURIComponent(credentials.host)}`
             : "";
-        const result = await fetch(`${BASE_URL}/auth/login${hostQuery}`, {
+        const result = await fetch(`${BASE_URL}${credentials.api}${hostQuery}`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",
@@ -32,9 +55,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     providers: [
         Credentials({
             async authorize(credentials) {
-                const parsedCredentials = z
-                    .object({ username: z.string(), password: z.string().min(6), host: z.string() })
-                    .safeParse(credentials);
+                const parsedCredentials = loginRequestSchema.safeParse(credentials);
 
                 if (parsedCredentials.success) {
                     const data = await getLogin(parsedCredentials.data);
@@ -46,7 +67,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         token: data?.token,
                         name: data?.user?.name,
                         email: data?.user?.email,
-                        reseller_id: data.user.reseller_id,
+                        reseller_id: data.user?.reseller_id,
                         logo: data.user?.company?.logo,
                         favicon: data.user?.company?.favicon,
                         company: data.user?.company,

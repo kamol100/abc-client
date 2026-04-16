@@ -214,6 +214,29 @@
             "something_went_wrong": "কিছু ভুল হয়েছে।"
         }
     },
+    "client_login": {
+        "title": "ক্লায়েন্ট পোর্টাল",
+        "phone": {
+            "label": "ফোন নম্বর",
+            "placeholder": "ফোন নম্বর লিখুন",
+            "errors": {
+                "required": "ফোন নম্বর আবশ্যক"
+            }
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "পাসওয়ার্ড",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক",
+                "min_length": "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে"
+            }
+        },
+        "submit": "লগইন",
+        "errors": {
+            "invalid_credentials": "ক্রেডেনশিয়াল ভুল।",
+            "something_went_wrong": "কিছু ভুল হয়েছে।"
+        }
+    },
     "user": {
         "title": "ইউজার",
         "title_plural": "ইউজার",

@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import InputField from "../form/input-field";
 import { Login, LoginSchema } from "../schema/login";
 
+const DEFAULT_LOGIN_API = "/auth/login";
+
 export function LoginForm({
   className,
   ...props
@@ -28,6 +30,11 @@ export function LoginForm({
   const [handledAuthError, setHandledAuthError] = useState<string | null>(null);
   const loginFrom = useForm<Login>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      api: DEFAULT_LOGIN_API,
+      username: "",
+      password: "",
+    },
     mode: "onChange",
   });
 
