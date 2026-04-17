@@ -5,11 +5,9 @@ const NumberLikeSchema = z.preprocess(
   z.coerce.number(),
 );
 
-export const ClientDashboardInvoiceSummarySchema = z
-  .object({
-    total_due_amount: NumberLikeSchema.optional().default(0),
-    total_paid_amount: NumberLikeSchema.optional().default(0),
-  })
-  .passthrough();
+export const ClientDashboardInvoiceSummarySchema = z.object({
+  total_due_amount: NumberLikeSchema.optional().default(0),
+  total_paid_amount: NumberLikeSchema.optional().default(0),
+});
 
 export type ClientDashboardInvoiceSummary = z.infer<typeof ClientDashboardInvoiceSummarySchema>;
