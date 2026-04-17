@@ -1422,6 +1422,11 @@
                 "placeholder": "Write note"
             }
         },
+        "pay_info": {
+            "title": "Payment Information",
+            "message": "To pay this invoice, please contact your ISP.",
+            "close": "Close"
+        },
         "discount_dialog": {
             "title": "Apply Discount",
             "submit": "Apply Discount",
@@ -4042,5 +4047,26 @@
         "company_profile": "Company Profile",
         "settings": "Settings",
         "sign_out": "Sign out"
+    },
+    "client_profile": {
+        "aria_label": "Client menu",
+        "menu": "Client menu",
+        "dashboard": "Dashboard",
+        "sign_out": "Sign out",
+        "fallback_name": "Client"
+    },
+    "client_portal": {
+        "title": "Client Portal"
+    },
+    "client_dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Welcome to your client portal.",
+        "coming_soon": "More features coming soon.",
+        "stats": {
+            "invoices": "Invoices",
+            "payments": "Payments",
+            "tickets": "Support Tickets",
+            "history": "History"
+        }
     }
 }

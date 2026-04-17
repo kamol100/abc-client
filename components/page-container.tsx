@@ -2,16 +2,18 @@
 import { TopNavbar } from "@/app/(dashboard)/top-navbar";
 import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
 
 interface PageContainerProps {
   children: ReactNode;
   className?: string;
+  navbar?: ComponentType;
 }
 
 export default function PageContainer({
   children,
   className = "",
+  navbar: Navbar = TopNavbar,
 }: PageContainerProps) {
   const { isFixed } = useTableLayoutMode();
 
@@ -22,7 +24,7 @@ export default function PageContainer({
         className
       )}
     >
-      <TopNavbar />
+      <Navbar />
       <div
         className={cn(
           "flex flex-col flex-1 min-h-0 p-4 pb-4",

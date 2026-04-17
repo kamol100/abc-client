@@ -1,4 +1,4 @@
-import { ClientLoginForm } from "@/components/client/login-form";
+import { ClientLoginForm } from "@/components/client-area/login-form";
 import { t } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
