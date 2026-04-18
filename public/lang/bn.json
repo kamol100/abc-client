@@ -214,6 +214,55 @@
             "something_went_wrong": "কিছু ভুল হয়েছে।"
         }
     },
+    "pay": {
+        "title": "ইনভয়েস পেমেন্ট",
+        "subtitle": "আপনার ইনভয়েস খুঁজতে ফোন নম্বর দিন",
+        "phone": {
+            "label": "ফোন নম্বর",
+            "placeholder": "আপনার ফোন নম্বর দিন",
+            "errors": {
+                "required": "ফোন নম্বর আবশ্যক"
+            }
+        },
+        "captcha": {
+            "label": "ক্যাপচা",
+            "placeholder": "ক্যাপচা কোড লিখুন",
+            "refresh": "ইমেজটি বোঝা যাচ্ছে না? ক্যাপচা রিফ্রেশ করুন",
+            "image_alt": "ক্যাপচা ইমেজ",
+            "errors": {
+                "required": "ক্যাপচা কোড আবশ্যক",
+                "incorrect": "ক্যাপচা উত্তর ভুল"
+            }
+        },
+        "submit": "ইনভয়েস খুঁজুন",
+        "submit_success": "ইনভয়েস অনুসন্ধান জমা হয়েছে",
+        "submit_error": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
+        "result": {
+            "client_info": "ক্লায়েন্ট তথ্য",
+            "package": "বর্তমান প্যাকেজ",
+            "bandwidth": "ব্যান্ডউইথ",
+            "price": "মূল্য",
+            "status": "স্ট্যাটাস",
+            "summary": "ইনভয়েস সারসংক্ষেপ",
+            "total_due": "মোট বকেয়া",
+            "total_discount": "মোট ছাড়",
+            "invoice_count": "ইনভয়েস",
+            "invoices": "ইনভয়েস সমূহ",
+            "invoice_id": "আইডি",
+            "invoice_type": "ধরন",
+            "month": "মাস",
+            "due_date": "বকেয়া তারিখ",
+            "amount": "পরিমাণ",
+            "discount": "ছাড়",
+            "no_invoices": "কোনো বকেয়া ইনভয়েস পাওয়া যায়নি।",
+            "search_again": "আবার খুঁজুন",
+            "back": "ফিরে যান",
+            "pay_bkash": "bKash দিয়ে পেমেন্ট করুন",
+            "bkash_coming_soon": "bKash পেমেন্ট খুব শিগগিরই আসছে।",
+            "not_found": "এই ফোন নম্বরে কোনো ক্লায়েন্ট পাওয়া যায়নি।",
+            "error": "ইনভয়েস ডেটা লোড করতে ব্যর্থ। আবার চেষ্টা করুন।"
+        }
+    },
     "client_login": {
         "title": "ক্লায়েন্ট পোর্টাল",
         "phone": {
@@ -348,6 +397,180 @@
         "create_title": "জোন যোগ করুন",
         "edit_title": "জোন এডিট",
         "delete_confirmation": "আপনি কি নিশ্চিত এই জোনটি মুছে ফেলতে চান?"
+    },
+    "payment_gateway": {
+        "title_plural": "পেমেন্ট গেটওয়ে",
+        "title_plural_count": "পেমেন্ট গেটওয়ে ({{count}})",
+        "create_title": "পেমেন্ট গেটওয়ে যোগ করুন",
+        "edit_title": "পেমেন্ট গেটওয়ে এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই পেমেন্ট গেটওয়েটি ডিলিট করতে চান?",
+        "status_updated": "পেমেন্ট গেটওয়ে স্ট্যাটাস আপডেট হয়েছে",
+        "default_updated": "ডিফল্ট পেমেন্ট গেটওয়ে আপডেট হয়েছে",
+        "make_default": "ডিফল্ট হিসেবে চিহ্নিত করুন",
+        "sections": {
+            "basic": "মূল তথ্য",
+            "credentials": "ক্রেডেনশিয়াল ও কনফিগারেশন",
+            "callbacks": "কলব্যাক URL",
+            "fees": "ট্রানজেকশন ফি",
+            "admin": "অ্যাডমিন স্কোপ"
+        },
+        "badges": {
+            "default": "ডিফল্ট"
+        },
+        "name": {
+            "label": "নাম",
+            "placeholder": "গেটওয়ের নাম",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "description": {
+            "label": "বিবরণ",
+            "placeholder": "ঐচ্ছিক বিবরণ"
+        },
+        "logo": {
+            "label": "লোগো URL",
+            "placeholder": "https://example.com/logo.png"
+        },
+        "provider": {
+            "label": "প্রোভাইডার",
+            "placeholder": "প্রোভাইডার সিলেক্ট করুন",
+            "errors": {
+                "required": "প্রোভাইডার আবশ্যক"
+            },
+            "options": {
+                "bkash": "বিকাশ",
+                "nagad": "নগদ",
+                "rocket": "রকেট",
+                "sslcommerz": "SSLCommerz",
+                "card": "ব্যাংক কার্ড",
+                "bank": "ব্যাংক ট্রান্সফার",
+                "manual": "ম্যানুয়াল"
+            }
+        },
+        "integration_type": {
+            "label": "ইন্টিগ্রেশন টাইপ",
+            "placeholder": "যেমন: tokenized, checkout, auth_capture"
+        },
+        "mode": {
+            "label": "মোড",
+            "placeholder": "মোড সিলেক্ট করুন",
+            "options": {
+                "sandbox": "স্যান্ডবক্স",
+                "live": "লাইভ"
+            }
+        },
+        "base_url": {
+            "label": "বেস URL",
+            "placeholder": "https://tokenized.sandbox.bka.sh/v1.2.0-beta",
+            "errors": {
+                "url": "সঠিক URL দিন"
+            }
+        },
+        "merchant_number": {
+            "label": "মার্চেন্ট নম্বর",
+            "placeholder": "মার্চেন্ট শর্ট কোড",
+            "errors": {
+                "required": "মার্চেন্ট নম্বর আবশ্যক"
+            }
+        },
+        "app_key": {
+            "label": "অ্যাপ কী",
+            "placeholder": "App key / X-APP-Key",
+            "errors": {
+                "required": "অ্যাপ কী আবশ্যক"
+            }
+        },
+        "app_secret": {
+            "label": "অ্যাপ সিক্রেট",
+            "placeholder": "অ্যাপ সিক্রেট",
+            "errors": {
+                "required": "অ্যাপ সিক্রেট আবশ্যক"
+            }
+        },
+        "username": {
+            "label": "ইউজারনেম",
+            "placeholder": "মার্চেন্ট ইউজারনেম",
+            "errors": {
+                "required": "ইউজারনেম আবশ্যক"
+            }
+        },
+        "password": {
+            "label": "পাসওয়ার্ড",
+            "placeholder": "মার্চেন্ট পাসওয়ার্ড",
+            "errors": {
+                "required": "পাসওয়ার্ড আবশ্যক"
+            }
+        },
+        "api_key": {
+            "label": "API কী",
+            "placeholder": "API কী",
+            "errors": {
+                "required": "API কী আবশ্যক"
+            }
+        },
+        "api_secret": {
+            "label": "API সিক্রেট",
+            "placeholder": "API সিক্রেট",
+            "errors": {
+                "required": "API সিক্রেট আবশ্যক"
+            }
+        },
+        "api_url": {
+            "label": "API URL",
+            "placeholder": "https://api.example.com",
+            "errors": {
+                "url": "সঠিক URL দিন"
+            }
+        },
+        "success_url": {
+            "label": "সাকসেস URL",
+            "placeholder": "https://yourapp.com/payment/success"
+        },
+        "fail_url": {
+            "label": "ফেইল URL",
+            "placeholder": "https://yourapp.com/payment/fail"
+        },
+        "cancel_url": {
+            "label": "ক্যানসেল URL",
+            "placeholder": "https://yourapp.com/payment/cancel"
+        },
+        "ipn_url": {
+            "label": "IPN / ওয়েবহুক URL",
+            "placeholder": "https://yourapp.com/webhooks/payment"
+        },
+        "currency": {
+            "label": "কারেন্সি",
+            "placeholder": "BDT"
+        },
+        "transaction_fee_percent": {
+            "label": "ট্রানজেকশন ফি (%)",
+            "placeholder": "0.00"
+        },
+        "transaction_fee_fixed": {
+            "label": "ট্রানজেকশন ফি (ফিক্সড)",
+            "placeholder": "0.00"
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস সিলেক্ট করুন",
+            "options": {
+                "active": "একটিভ",
+                "inactive": "ইনএকটিভ"
+            }
+        },
+        "is_default": {
+            "label": "ডিফল্ট গেটওয়ে"
+        },
+        "company": {
+            "label": "কোম্পানি",
+            "placeholder": "কোম্পানি সিলেক্ট করুন"
+        },
+        "reseller": {
+            "label": "রিসেলার",
+            "placeholder": "রিসেলার সিলেক্ট করুন"
+        }
     },
     "communication_gateway": {
         "title_plural": "কমিউনিকেশন গেটওয়ে",
@@ -1375,7 +1598,7 @@
             "success": "ইনভয়েস পেমেন্ট সফলভাবে সম্পন্ন হয়েছে",
             "summary": {
                 "client": "ক্লায়েন্ট",
-                "invoice_id": "ইনভয়েস আইডি",
+                "invoice_id": "আইডি",
                 "total": "মোট",
                 "due": "ডিউ"
             },
@@ -1432,7 +1655,7 @@
             "submit": "ডিসকাউন্ট অ্যাপ্লাই করুন",
             "success": "ডিসকাউন্ট সফলভাবে আপডেট হয়েছে",
             "summary": {
-                "invoice_id": "ইনভয়েস আইডি",
+                "invoice_id": "আইডি",
                 "type": "ইনভয়েস টাইপ",
                 "total": "মোট এমাউন্ট",
                 "current_discount": "বর্তমান ডিসকাউন্ট",
@@ -3532,7 +3755,10 @@
             "title": "পেমেন্ট ডিউ"
         },
         "payments": {
-            "title": "পেমেন্ট"
+            "title": "পেমেন্ট",
+            "gateways": {
+                "title": "পেমেন্ট গেটওয়ে"
+            }
         },
         "maps": {
             "title": "ম্যাপ",

@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from 'next-auth';
+import { isPublicPathname } from "@/lib/auth/public-routes";
 
 const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
@@ -16,14 +17,12 @@ export const authConfig = {
             if (pathname.startsWith('/client/')) return true;
 
             const isOnAdminDashboard = pathname.startsWith('/dashboard');
-            const isPublicPWARoute =
-                pathname === '/offline' ||
-                pathname.startsWith('/api/manifest');
+            const isPublicRoute = isPublicPathname(pathname);
 
             if (isOnAdminDashboard) {
                 if (isLoggedIn) return true;
                 return false; // Redirect unauthenticated users to /admin (signIn page)
-            } else if (isLoggedIn && !isPublicPWARoute) {
+            } else if (isLoggedIn && !isPublicRoute) {
                 return Response.redirect(new URL('/dashboard', nextUrl));
             }
             return true;

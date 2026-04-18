@@ -214,6 +214,55 @@
             "something_went_wrong": "Something went wrong."
         }
     },
+    "pay": {
+        "title": "Pay Invoice",
+        "subtitle": "Enter your phone number to find your invoice",
+        "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter your phone number",
+            "errors": {
+                "required": "Phone number is required"
+            }
+        },
+        "captcha": {
+            "label": "Captcha",
+            "placeholder": "Enter captcha code",
+            "refresh": "Can't read the image? Refresh captcha",
+            "image_alt": "Captcha image",
+            "errors": {
+                "required": "Captcha code is required",
+                "incorrect": "Incorrect captcha answer"
+            }
+        },
+        "submit": "Find Invoice",
+        "submit_success": "Invoice lookup submitted",
+        "submit_error": "Something went wrong. Please try again.",
+        "result": {
+            "client_info": "Client Information",
+            "package": "Current Package",
+            "bandwidth": "Bandwidth",
+            "price": "Price",
+            "status": "Status",
+            "summary": "Invoice Summary",
+            "total_due": "Total Due",
+            "total_discount": "Total Discount",
+            "invoice_count": "Invoices",
+            "invoices": "Invoices",
+            "invoice_id": "ID",
+            "invoice_type": "Type",
+            "month": "Month",
+            "due_date": "Due Date",
+            "amount": "Amount",
+            "discount": "Discount",
+            "no_invoices": "No outstanding invoices found.",
+            "search_again": "Search Again",
+            "back": "Back",
+            "pay_bkash": "Pay with bKash",
+            "bkash_coming_soon": "bKash payment is coming soon.",
+            "not_found": "No client found with this phone number.",
+            "error": "Failed to load invoice data. Please try again."
+        }
+    },
     "client_login": {
         "title": "Client Portal",
         "phone": {
@@ -348,6 +397,180 @@
         "create_title": "Add zone",
         "edit_title": "Edit zone",
         "delete_confirmation": "Are you sure you want to delete this zone?"
+    },
+    "payment_gateway": {
+        "title_plural": "Payment Gateways",
+        "title_plural_count": "Payment Gateways ({{count}})",
+        "create_title": "Add payment gateway",
+        "edit_title": "Edit payment gateway",
+        "delete_confirmation": "Are you sure you want to delete this payment gateway?",
+        "status_updated": "Payment gateway status updated",
+        "default_updated": "Default payment gateway updated",
+        "make_default": "Mark as default",
+        "sections": {
+            "basic": "Basic information",
+            "credentials": "Credentials & configuration",
+            "callbacks": "Callback URLs",
+            "fees": "Transaction fees",
+            "admin": "Admin scope"
+        },
+        "badges": {
+            "default": "Default"
+        },
+        "name": {
+            "label": "Name",
+            "placeholder": "Gateway name",
+            "errors": {
+                "required": "Name is required",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "description": {
+            "label": "Description",
+            "placeholder": "Optional description"
+        },
+        "logo": {
+            "label": "Logo URL",
+            "placeholder": "https://example.com/logo.png"
+        },
+        "provider": {
+            "label": "Provider",
+            "placeholder": "Select provider",
+            "errors": {
+                "required": "Provider is required"
+            },
+            "options": {
+                "bkash": "bKash",
+                "nagad": "Nagad",
+                "rocket": "Rocket",
+                "sslcommerz": "SSLCommerz",
+                "card": "Bank Card",
+                "bank": "Bank Transfer",
+                "manual": "Manual"
+            }
+        },
+        "integration_type": {
+            "label": "Integration Type",
+            "placeholder": "e.g. tokenized, checkout, auth_capture"
+        },
+        "mode": {
+            "label": "Mode",
+            "placeholder": "Select mode",
+            "options": {
+                "sandbox": "Sandbox",
+                "live": "Live"
+            }
+        },
+        "base_url": {
+            "label": "Base URL",
+            "placeholder": "https://tokenized.sandbox.bka.sh/v1.2.0-beta",
+            "errors": {
+                "url": "Must be a valid URL"
+            }
+        },
+        "merchant_number": {
+            "label": "Merchant Number",
+            "placeholder": "Merchant short code",
+            "errors": {
+                "required": "Merchant number is required"
+            }
+        },
+        "app_key": {
+            "label": "App Key",
+            "placeholder": "App key / X-APP-Key",
+            "errors": {
+                "required": "App key is required"
+            }
+        },
+        "app_secret": {
+            "label": "App Secret",
+            "placeholder": "App secret",
+            "errors": {
+                "required": "App secret is required"
+            }
+        },
+        "username": {
+            "label": "Username",
+            "placeholder": "Merchant username",
+            "errors": {
+                "required": "Username is required"
+            }
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Merchant password",
+            "errors": {
+                "required": "Password is required"
+            }
+        },
+        "api_key": {
+            "label": "API Key",
+            "placeholder": "API key",
+            "errors": {
+                "required": "API key is required"
+            }
+        },
+        "api_secret": {
+            "label": "API Secret",
+            "placeholder": "API secret",
+            "errors": {
+                "required": "API secret is required"
+            }
+        },
+        "api_url": {
+            "label": "API URL",
+            "placeholder": "https://api.example.com",
+            "errors": {
+                "url": "Must be a valid URL"
+            }
+        },
+        "success_url": {
+            "label": "Success URL",
+            "placeholder": "https://yourapp.com/payment/success"
+        },
+        "fail_url": {
+            "label": "Fail URL",
+            "placeholder": "https://yourapp.com/payment/fail"
+        },
+        "cancel_url": {
+            "label": "Cancel URL",
+            "placeholder": "https://yourapp.com/payment/cancel"
+        },
+        "ipn_url": {
+            "label": "IPN / Webhook URL",
+            "placeholder": "https://yourapp.com/webhooks/payment"
+        },
+        "currency": {
+            "label": "Currency",
+            "placeholder": "BDT"
+        },
+        "transaction_fee_percent": {
+            "label": "Transaction Fee (%)",
+            "placeholder": "0.00"
+        },
+        "transaction_fee_fixed": {
+            "label": "Transaction Fee (fixed)",
+            "placeholder": "0.00"
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status",
+            "options": {
+                "active": "Active",
+                "inactive": "Inactive"
+            }
+        },
+        "is_default": {
+            "label": "Default gateway"
+        },
+        "company": {
+            "label": "Company",
+            "placeholder": "Select company"
+        },
+        "reseller": {
+            "label": "Reseller",
+            "placeholder": "Select reseller"
+        }
     },
     "communication_gateway": {
         "title_plural": "Communication Gateways",
@@ -3532,7 +3755,10 @@
             "title": "Payment Due"
         },
         "payments": {
-            "title": "Payments"
+            "title": "Payments",
+            "gateways": {
+                "title": "Payment Gateways"
+            }
         },
         "maps": {
             "title": "Maps",

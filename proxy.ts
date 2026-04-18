@@ -1,5 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { isPublicPathname } from "@/lib/auth/public-routes";
 
 const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
@@ -8,8 +9,6 @@ const LEGACY_LOGIN = "/login";
 const ADMIN_DASHBOARD = "/dashboard";
 const CLIENT_LOGIN = "/client/login";
 const CLIENT_DASHBOARD = "/client/dashboard";
-
-const PUBLIC_ROUTES = new Set(["/", ADMIN_LOGIN, CLIENT_LOGIN]);
 
 const SYSTEM_PREFIXES = ["/api/", "/_next/", "/offline", "/static/"];
 
@@ -78,7 +77,7 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (!PUBLIC_ROUTES.has(pathname) && !isAuthenticated) {
+  if (!isPublicPathname(pathname) && !isAuthenticated) {
     const loginUrl = new URL(ADMIN_LOGIN, req.url);
     loginUrl.searchParams.set("callbackUrl", `${pathname}${search}`);
     return NextResponse.redirect(loginUrl);
