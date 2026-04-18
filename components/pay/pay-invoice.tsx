@@ -1,12 +1,10 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Building2, Package, User } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Loader2, User } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MyButton } from "@/components/my-button";
-import { useCompany } from "@/context/company-provider";
-import { toast } from "@/hooks/use-toast";
 import { formatMoney } from "@/lib/helper/helper";
 import {
   Table,
@@ -16,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useBkashPayment } from "@/components/bkash-payment/use-bkash-payment";
 import type { ClientPaymentData } from "@/types/pay-types";
 
 type PayInvoiceProps = {
@@ -34,12 +33,17 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
   const { t } = useTranslation();
-  const { company } = useCompany();
   const hasInvoices = data.invoice.length > 0;
+  const { startPayment, isCreating } = useBkashPayment();
 
   const handlePayBkash = () => {
-    console.info("bKash payment is not implemented yet.");
-    toast({ title: t("pay.result.bkash_coming_soon") });
+    if (!hasInvoices || Number(data.total_due) <= 0) return;
+    const invoiceTrack = data.invoice.map((inv) => inv.invoice_id).join(",");
+    startPayment({
+      clientId: data.id,
+      amount: data.total_due,
+      invoiceTrack,
+    });
   };
 
   return (
@@ -133,9 +137,11 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
           size="default"
           className="w-full sm:flex-1"
           onClick={handlePayBkash}
+          disabled={isCreating || !hasInvoices || Number(data.total_due) <= 0}
           icon={false}
         >
-          {t("pay.result.pay_bkash")}
+          {isCreating && <Loader2 className="size-4 animate-spin" />}
+          {isCreating ? t("pay.bkash.creating") : t("pay.result.pay_bkash")}
         </MyButton>
       </div>
     </div>

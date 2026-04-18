@@ -261,6 +261,19 @@
             "bkash_coming_soon": "bKash payment is coming soon.",
             "not_found": "No client found with this phone number.",
             "error": "Failed to load invoice data. Please try again."
+        },
+        "bkash": {
+            "creating": "Processing...",
+            "redirecting": "Redirecting to bKash...",
+            "executing": "Verifying your payment, please wait...",
+            "success": "Your payment has been completed successfully.",
+            "success_title": "Payment Successful",
+            "failed": "Payment could not be completed.",
+            "failed_title": "Payment Failed",
+            "cancelled": "You cancelled the payment.",
+            "cancelled_title": "Payment Cancelled",
+            "create_failed": "Could not initiate bKash payment. Please try again.",
+            "back_to_pay": "Back to Pay"
         }
     },
     "client_login": {
