@@ -14,7 +14,7 @@ import PayInvoice from "@/components/pay/pay-invoice";
 import type { ClientPaymentData, ClientPaymentResponse } from "@/types/pay-types";
 
 const CAPTCHA_CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const CAPTCHA_LENGTH = 6;
+const CAPTCHA_LENGTH = 4;
 const NOISE_LINE_COUNT = 5;
 const API_BASE = (process.env.NEXT_PUBLIC_API ?? "").replace(/\/$/, "");
 
