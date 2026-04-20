@@ -96,7 +96,8 @@ export function useBkashPayment() {
       setIsCreating(true);
       try {
         const host = window.location.hostname;
-        const callbackUrl = `${window.location.origin}${params.callbackPath ?? "/pay/bkash-callback"}`;
+        const callbackBase = `${window.location.origin}${params.callbackPath ?? "/pay/bkash-callback"}`;
+        const callbackUrl = `${callbackBase}?pid=${encodeURIComponent(params.clientId)}`;
 
         const result = await bkashCreate({
           host,
