@@ -1395,7 +1395,8 @@
             "connection_package": "কানেকশন / প্যাকেজ",
             "bill_payment": "বিল / পেমেন্ট",
             "online_info": "অনলাইন / তথ্য",
-            "deadline": "ডেডলাইন"
+            "deadline": "ডেডলাইন",
+            "total_due": "ডিউ"
         },
         "history": {
             "title": "হিস্ট্রি",

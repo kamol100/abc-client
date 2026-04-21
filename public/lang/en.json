@@ -1395,7 +1395,8 @@
             "connection_package": "Connection / Package",
             "bill_payment": "Bill / Payment",
             "online_info": "Online / Info",
-            "deadline": "Deadline"
+            "deadline": "Deadline",
+            "total_due": "Due"
         },
         "history": {
             "title": "History",

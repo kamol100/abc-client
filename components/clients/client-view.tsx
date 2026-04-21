@@ -23,6 +23,7 @@ import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog"
 import ClientChangePackageDialog from "./client-change-package-dialog";
 import TicketTable from "../tickets/ticket-table";
 import PaymentTable from "../payments/payment-table";
+import InvoiceTable from "../invoices/invoice-table";
 
 interface Props {
     clientId: string;
@@ -101,6 +102,10 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 <ClientBasicView
                     client={client as ClientRow}
                 />
+            </div>
+            <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
+                <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={false} />
             </div>
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('payment.title_plural')}:</div>

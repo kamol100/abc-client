@@ -15,23 +15,29 @@ import { InvoiceListApiResponse } from "./invoice-type";
 type InvoiceTableProps = {
     toolbarTitleKey?: string;
     showCreateAction?: boolean;
+    filterValue?: string;
+    tableToolBar?: boolean;
+    reportsToolbar?: boolean;
 };
 
 const InvoiceTable: FC<InvoiceTableProps> = ({
     toolbarTitleKey = "invoice.title_plural",
     showCreateAction = true,
+    filterValue = null,
+    tableToolBar = true,
+    reportsToolbar = true,
 }) => {
     const { t } = useTranslation();
     const { isMobile } = useSidebar();
     const { hasPermission } = usePermissions();
     const columns = useInvoiceColumns();
-    const [filterValue, setFilter] = useState<string | null>(null);
+    const [filter, setFilter] = useState<string | null>(filterValue);
 
     const params = useMemo(
         () => {
-            if (!filterValue) return undefined;
+            if (!filter) return undefined;
             const queryParams = Object.fromEntries(
-                new URLSearchParams(filterValue),
+                new URLSearchParams(filter),
             ) as Record<string, string>;
 
             // Keep backward compatibility for APIs expecting trackID.
@@ -41,7 +47,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
 
             return queryParams;
         },
-        [filterValue],
+        [filter],
     );
 
     const { data, isLoading, isFetching, setCurrentPage } = useApiQuery<InvoiceListApiResponse>({
@@ -72,7 +78,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
 
     return (
         <div className="space-y-4">
-            <InvoiceReports reports={reports} isLoading={isLoading} />
+            {reportsToolbar && <InvoiceReports reports={reports} isLoading={isLoading} />}
 
             <DataTable
                 data={invoices}
@@ -80,6 +86,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 columns={columns}
                 toolbarOptions={toolbarOptions}
                 toggleColumns={true}
+                toolbar={tableToolBar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
