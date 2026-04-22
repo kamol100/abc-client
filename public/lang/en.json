@@ -1,5 +1,17 @@
 {
     "common": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December",
         "fiber": "Fiber",
         "onu": "ONU",
         "filter": "Filter",
@@ -238,6 +250,7 @@
         "submit_success": "Invoice lookup submitted",
         "submit_error": "Something went wrong. Please try again.",
         "result": {
+            "invoice_total": "Total Invoices",
             "client_info": "Client Information",
             "package": "Current Package",
             "bandwidth": "Bandwidth",

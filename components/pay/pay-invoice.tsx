@@ -1,11 +1,12 @@
 "use client";
 
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, Loader2, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MyButton } from "@/components/my-button";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import {
   Table,
   TableBody,
@@ -16,6 +17,8 @@ import {
 } from "@/components/ui/table";
 import { useBkashPayment } from "@/components/bkash-payment/use-bkash-payment";
 import type { ClientPaymentData } from "@/types/pay-types";
+import DisplayCount from "@/components/display-count";
+import Image from "next/image";
 
 type PayInvoiceProps = {
   data: ClientPaymentData;
@@ -36,6 +39,29 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
   const hasInvoices = data.invoice.length > 0;
   const { startPayment, isCreating } = useBkashPayment();
 
+  const totalDiscountByInvoiceId = useMemo(() => {
+    const totals = new Map<string, number>();
+    for (const inv of data.invoice) {
+      totals.set(inv.id, toNumber(inv.discount) + toNumber(inv.line_total_discount));
+    }
+    return totals;
+  }, [data.invoice]);
+
+  const invoiceItemTotalByInvoiceId = useMemo(() => {
+    const totals = new Map<string, number>();
+    for (const inv of data.invoice) {
+      totals.set(inv.id, toNumber(inv.after_discount_amount) + toNumber(inv.discount) + toNumber(inv.line_total_discount));
+    }
+    return totals;
+  }, [data.invoice]);
+
+  const invoiceTotal = useMemo(() => {
+    return data.invoice.reduce((acc, inv) => acc + toNumber(inv.after_discount_amount) + toNumber(inv.discount) + toNumber(inv.line_total_discount), 0);
+  }, [data.invoice]);
+  const invoiceDiscountTotal = useMemo(() => {
+    return data.invoice.reduce((acc, inv) => acc + toNumber(inv.discount) + toNumber(inv.line_total_discount), 0);
+  }, [data.invoice]);
+
   const handlePayBkash = () => {
     if (!hasInvoices || Number(data.total_due) <= 0) return;
     const invoiceTrack = data.invoice.map((inv) => inv.invoice_id).join(",");
@@ -45,7 +71,6 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
       invoiceTrack,
     });
   };
-
   return (
     <div className="mx-auto w-full max-w-3xl space-y-2">
       <Card>
@@ -86,10 +111,18 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
                       <TableRow key={invoice.id}>
                         <TableCell className="font-mono">#{invoice.invoice_id}</TableCell>
                         <TableCell>{invoice.invoice_type ?? "-"}</TableCell>
-                        <TableCell>{invoice.month}</TableCell>
-                        <TableCell className="text-right">{formatMoney(invoice.discount)}</TableCell>
+                        <TableCell>{t(`common.${invoice.month.toLowerCase()}`)}</TableCell>
+                        <TableCell className="text-right">
+                          <DisplayCount
+                            amount={totalDiscountByInvoiceId.get(invoice.id) ?? 0}
+                            formatCurrency
+                          />
+                        </TableCell>
                         <TableCell className="text-right font-medium">
-                          {formatMoney(invoice.after_discount_amount)}
+                          <DisplayCount
+                            amount={invoiceItemTotalByInvoiceId.get(invoice.id) ?? 0}
+                            formatCurrency
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -105,15 +138,15 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
           <div className="ml-auto w-full max-w-sm rounded-md border bg-muted/20 p-3">
             <div className="mb-2 text-sm font-semibold">{t("pay.result.summary")}</div>
             <div className="space-y-1.5">
-              <InfoRow label={t("pay.result.invoice_count")} value={data.invoice.length} />
+              <InfoRow label={t("pay.result.invoice_total")} value={<DisplayCount amount={invoiceTotal} formatCurrency />} />
               <InfoRow
                 label={t("pay.result.total_discount")}
-                value={formatMoney(data.total_discount)}
+                value={<DisplayCount amount={invoiceDiscountTotal} formatCurrency />}
               />
               <Separator />
               <InfoRow
                 label={t("pay.result.total_due")}
-                value={<span className="text-base font-semibold">{formatMoney(data.total_due)}</span>}
+                value={<DisplayCount amount={toNumber(data.total_due)} formatCurrency />}
               />
             </div>
           </div>
@@ -135,12 +168,22 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
           type="button"
           variant="default"
           size="default"
-          className="w-full sm:flex-1"
+          className="w-full sm:flex-1 inline-flex items-center justify-center gap-2"
           onClick={handlePayBkash}
           disabled={isCreating || !hasInvoices || Number(data.total_due) <= 0}
           icon={false}
         >
-          {isCreating && <Loader2 className="size-4 animate-spin" />}
+          {isCreating ? (
+            <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
+          ) : (
+            <Image
+              src="/static/bkash.png"
+              alt=""
+              width={22}
+              height={22}
+              className="size-[22px] shrink-0 object-contain"
+            />
+          )}
           {isCreating ? t("pay.bkash.creating") : t("pay.result.pay_bkash")}
         </MyButton>
       </div>
