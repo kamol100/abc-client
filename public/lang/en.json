@@ -274,6 +274,19 @@
             "cancelled_title": "Payment Cancelled",
             "create_failed": "Could not initiate bKash payment. Please try again.",
             "back_to_pay": "Back to Pay"
+        },
+        "short_link": {
+            "title": "Pay Link Redirect",
+            "invalid_title": "Invalid or expired payment link",
+            "invalid_message": "This payment link is invalid or has expired.",
+            "support_message": "Please request a new payment link from your ISP or contact support.",
+            "back_to_pay": "Back to Pay"
+        },
+        "deep_link": {
+            "invalid_title": "Unable to load invoice details",
+            "invalid_message": "This payment link is invalid, expired, or does not match this domain.",
+            "support_message": "Please request a valid payment link from your ISP or contact support.",
+            "back_to_pay": "Back to Pay"
         }
     },
     "client_login": {
