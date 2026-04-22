@@ -741,7 +741,9 @@
             }
         },
         "body": {
-            "label": "বডি"
+            "label": "বডি",
+            "show_more": "আরও দেখুন",
+            "show_less": "কম দেখুন"
         },
         "sms_type": {
             "label": "টাইপ",
@@ -805,7 +807,9 @@
             "label": "কাউন্ট"
         },
         "message": {
-            "label": "মেসেজ"
+            "label": "মেসেজ",
+            "show_more": "আরও দেখুন",
+            "show_less": "কম দেখুন"
         },
         "status": {
             "label": "স্ট্যাটাস",

@@ -74,7 +74,7 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-2">
       <Card>
-        <CardContent className="space-y-2 pt-3">
+        <CardContent className="space-y-2 pt-3 px-3">
           <div className="grid gap-3 text-sm sm:grid-cols-2">
             <div className="space-y-1">
               <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">

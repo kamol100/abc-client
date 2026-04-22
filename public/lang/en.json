@@ -741,7 +741,9 @@
             }
         },
         "body": {
-            "label": "Body"
+            "label": "Body",
+            "show_more": "Show more",
+            "show_less": "Show less"
         },
         "sms_type": {
             "label": "Type",
@@ -805,7 +807,9 @@
             "label": "SMS Count"
         },
         "message": {
-            "label": "Message"
+            "label": "Message",
+            "show_more": "Show more",
+            "show_less": "Show less"
         },
         "status": {
             "label": "Status",

@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import MyTooltip from "@/components/my-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { usePermissions } from "@/context/app-provider";
 import { cellIndex } from "@/lib/helper/helper";
@@ -180,7 +180,13 @@ export function getCommunicationQueueColumns(
 }
 
 function CommunicationQueueMessageCell({ message }: { message?: string | null }) {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
   const text = message ?? "";
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [message]);
   const truncated =
     text.length > MESSAGE_MAX_LENGTH
       ? `${text.slice(0, MESSAGE_MAX_LENGTH)}…`
@@ -197,11 +203,27 @@ function CommunicationQueueMessageCell({ message }: { message?: string | null })
   }
 
   return (
-    <MyTooltip content={text} placement="top" className="max-w-sm break-words">
-      <span className="text-sm truncate max-w-[200px] inline-block cursor-default">
-        {truncated}
+    <div
+      className={
+        expanded
+          ? "max-w-[200px] text-sm"
+          : "flex max-w-[200px] flex-nowrap items-baseline gap-1 overflow-hidden text-sm"
+      }
+    >
+      <span className={expanded ? "break-words" : "min-w-0 flex-1 truncate"}>
+        {expanded ? text : truncated}
       </span>
-    </MyTooltip>
+      {!expanded ? null : " "}
+      <button
+        type="button"
+        className="shrink-0 whitespace-nowrap text-blue-600 hover:text-blue-700 hover:underline dark:text-blue-400 dark:hover:text-blue-300 text-xs font-normal p-0 align-baseline"
+        onClick={() => setExpanded((v) => !v)}
+      >
+        {expanded
+          ? t("communication_queue.message.show_less")
+          : t("communication_queue.message.show_more")}
+      </button>
+    </div>
   );
 }
 
