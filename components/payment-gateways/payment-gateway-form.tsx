@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { MyDialog } from "@/components/my-dialog";
-import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-builder";
+import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import {
   PaymentGatewayFormSchema,
@@ -12,36 +12,45 @@ import PaymentGatewayFormFieldSchema from "./payment-gateway-form-schema";
 
 type Props = {
   mode?: "create" | "edit";
+  api?: string;
+  method?: "GET" | "POST" | "PUT";
   data?: Partial<PaymentGatewayRow> & { id: string };
-  defaultOpen?: boolean;
+  /** When set, dialog is controlled (e.g. deep link). Omit for toolbar/row triggers like zone-form. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const PaymentGatewayForm: FC<Props> = ({
   mode = "create",
-  data,
-  defaultOpen = false,
+  api = "payment-gateways",
+  method: methodProp,
+  data = undefined,
+  open,
+  onOpenChange,
 }) => {
-  const title =
-    mode === "create"
-      ? "payment_gateway.create_title"
-      : "payment_gateway.edit_title";
+  const method = methodProp ?? (mode === "edit" ? "PUT" : "POST");
+  const isControlled = open !== undefined;
 
   return (
     <MyDialog
       size="4xl"
-      title={title}
-      trigger={mode === "create" ? <FormTrigger mode="create" /> : undefined}
-      defaultOpen={defaultOpen}
-      showFooter={false}
+      title={
+        mode === "create"
+          ? "payment_gateway.create_title"
+          : "payment_gateway.edit_title"
+      }
+      trigger={isControlled ? undefined : <FormTrigger mode={mode} />}
+      open={open}
+      onOpenChange={onOpenChange}
     >
-      <AccordionFormBuilder
+      <FormBuilder
         formSchema={PaymentGatewayFormFieldSchema()}
         grids={2}
         data={data}
-        api="payment-gateways"
+        api={api}
         mode={mode}
         schema={PaymentGatewayFormSchema}
-        method={mode === "edit" ? "PUT" : "POST"}
+        method={method}
         queryKey="paymentGateways"
       />
     </MyDialog>

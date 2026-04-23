@@ -1,17 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { CheckCircle2, CircleDashed } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import MyButton from "@/components/my-button";
 import { usePermissions } from "@/context/app-provider";
 import type { PaymentGatewayRow } from "./payment-gateway-type";
 import PaymentGatewayStatusToggle from "./payment-gateway-status-toggle";
 import PaymentGatewayDefaultAction from "./payment-gateway-default-action";
+import PaymentGatewayForm from "./payment-gateway-form";
 
 export function getPaymentGatewayColumns(): ColumnDef<PaymentGatewayRow>[] {
   return [
@@ -128,16 +127,19 @@ function PaymentGatewayActionsCell({ gateway }: { gateway: PaymentGatewayRow }) 
 
   return (
     <div className="flex items-center justify-end gap-2 mr-3">
-      {canSetDefault && (
+      {/* {canSetDefault && (
         <PaymentGatewayDefaultAction
           gatewayId={gateway.id}
           isDefault={Boolean(gateway.is_default)}
         />
-      )}
+      )} */}
       {canEdit && (
-        <Link href={`/payment-gateways?id=${gateway.id}`}>
-          <MyButton action="edit" icon />
-        </Link>
+        <PaymentGatewayForm
+          mode="edit"
+          data={{ id: gateway.id }}
+          api="payment-gateways"
+          method="PUT"
+        />
       )}
       {canDelete && (
         <DeleteModal
