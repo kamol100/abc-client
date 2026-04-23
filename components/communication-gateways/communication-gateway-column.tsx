@@ -1,14 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useSetting } from "@/context/app-provider";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import MyButton from "@/components/my-button";
 import type { CommunicationGatewayRow } from "./communication-gateway-type";
+import CommunicationGatewayForm from "./communication-gateway-form";
 
 const MASKED_API = "https://api.isptik.com/";
 
@@ -162,9 +161,7 @@ function CommunicationGatewayActionsCell({
   return (
     <div className="flex items-center justify-end gap-2 mr-3">
       {canEdit && (
-        <Link href={`/communication-gateways?id=${gateway.id}`}>
-          <MyButton action="edit" icon />
-        </Link>
+        <CommunicationGatewayForm mode="edit" data={{ id: gateway.id }} />
       )}
       {canDelete && (
         <DeleteModal

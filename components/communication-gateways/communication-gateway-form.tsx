@@ -13,13 +13,11 @@ import { CommunicationGatewayFormFieldSchema } from "./communication-gateway-for
 type Props = {
   mode?: "create" | "edit";
   data?: Partial<CommunicationGatewayRow> & { id: number };
-  defaultOpen?: boolean;
 };
 
 const CommunicationGatewayForm: FC<Props> = ({
   mode = "create",
   data,
-  defaultOpen = false,
 }) => {
   const title =
     mode === "create"
@@ -30,8 +28,7 @@ const CommunicationGatewayForm: FC<Props> = ({
     <MyDialog
       size="4xl"
       title={title}
-      trigger={mode === "create" ? <FormTrigger mode="create" /> : undefined}
-      defaultOpen={defaultOpen}
+      trigger={<FormTrigger mode={mode} />}
       showFooter={false}
     >
       <AccordionFormBuilder
