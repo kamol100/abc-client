@@ -6,9 +6,6 @@ import {
   useMemo,
   type PropsWithChildren,
 } from "react";
-import PublicFooter from "@/app/(public)/public-footer";
-import PublicPageContainer from "@/app/(public)/public-page-container";
-import PublicTopNav from "@/app/(public)/public-top-nav";
 import type { CompanyPublicData } from "@/types/company-public-type";
 
 const DEFAULT_LOGO = "/static/logo.png";
@@ -61,14 +58,7 @@ export default function CompanyProvider({
 
   return (
     <CompanyContext.Provider value={contextValue}>
-      <div className="flex min-h-svh flex-col bg-background">
-        <PublicTopNav
-          company={contextValue.company}
-          logoUrl={contextValue.logoUrl}
-        />
-        <PublicPageContainer>{children}</PublicPageContainer>
-        <PublicFooter company={contextValue.company} />
-      </div>
+      {children}
     </CompanyContext.Provider>
   );
 }

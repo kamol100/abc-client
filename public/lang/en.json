@@ -4338,5 +4338,351 @@
             "tickets": "Support Tickets",
             "history": "History"
         }
+    },
+    "marketing": {
+        "meta": {
+            "title": "ISP Management Platform",
+            "description": "All-in-one platform for ISP operations — subscriber management, billing, network control, and more."
+        },
+        "nav": {
+            "home": "Home",
+            "features": "Features",
+            "pricing": "Pricing",
+            "about": "About",
+            "demo_request": "Request Demo",
+            "toggle_menu": "Toggle menu"
+        },
+        "hero": {
+            "headline": "The Complete Platform for ISP Operations",
+            "subheadline": "Manage subscribers, automate billing, control your network, and grow your business — all from one place.",
+            "cta_primary": "Request a Demo",
+            "cta_secondary": "Explore Features"
+        },
+        "features": {
+            "title": "Everything You Need to Run Your ISP",
+            "subtitle": "Built for internet service providers who want reliable tools to manage every part of their operation.",
+            "clients": {
+                "title": "Client Management",
+                "description": "Manage subscribers with detailed profiles, connection tracking, package assignments, and status management."
+            },
+            "billing": {
+                "title": "Billing & Invoicing",
+                "description": "Generate invoices automatically, accept online payments, and track revenue with built-in financial tools."
+            },
+            "network": {
+                "title": "Network Control",
+                "description": "Integrate with Mikrotik routers for real-time bandwidth management, zone control, and network monitoring."
+            },
+            "communication": {
+                "title": "Communication",
+                "description": "Send SMS and email notifications to clients for invoices, payment reminders, and service updates."
+            },
+            "support": {
+                "title": "Support Tickets",
+                "description": "Built-in ticketing system so clients can report issues and your team can resolve them efficiently."
+            },
+            "client_map": {
+                "title": "Clients on Map",
+                "description": "Visualize subscriber locations on an interactive map for better coverage planning and service area management."
+            },
+            "device_map": {
+                "title": "Devices on Map",
+                "description": "Monitor network devices geographically — see router and ONU locations, status, and connectivity at a glance."
+            },
+            "staff": {
+                "title": "Staff Management",
+                "description": "Manage your team with role-based access, attendance tracking, salary processing, and performance oversight."
+            },
+            "finance": {
+                "title": "Finance Management",
+                "description": "Track income, expenses, fund transactions, and company wallets with a complete financial overview of your operation."
+            },
+            "reporting": {
+                "title": "Reports & Analytics",
+                "description": "Track business performance with revenue reports, client statistics, and operational dashboards."
+            },
+            "dashboard": {
+                "title": "Informative Dashboard",
+                "description": "Get a real-time overview of your entire operation — subscriber counts, revenue, due invoices, and key metrics at a glance."
+            },
+            "activity_log": {
+                "title": "Activity Log",
+                "description": "Track every action across the platform with a detailed audit trail — who did what, when, and where."
+            }
+        },
+        "pricing": {
+            "title": "Simple, Transparent Pricing",
+            "subtitle": "Choose the plan that fits your operation. Scale as you grow.",
+            "popular": "Most Popular",
+            "cta": "Get Started",
+            "starter": {
+                "name": "Starter",
+                "description": "For small ISPs getting started.",
+                "price": "Contact Us",
+                "bullet_count": "4",
+                "bullets": {
+                    "0": "Up to 500 subscribers",
+                    "1": "Billing & invoicing",
+                    "2": "Basic network integration",
+                    "3": "Email support"
+                }
+            },
+            "business": {
+                "name": "Business",
+                "description": "For growing ISPs that need more.",
+                "price": "Contact Us",
+                "bullet_count": "6",
+                "bullets": {
+                    "0": "Up to 5,000 subscribers",
+                    "1": "Advanced billing & wallet",
+                    "2": "Full Mikrotik integration",
+                    "3": "SMS & email notifications",
+                    "4": "Ticket system",
+                    "5": "Priority support"
+                }
+            },
+            "enterprise": {
+                "name": "Enterprise",
+                "description": "For large-scale operations.",
+                "price": "Contact Us",
+                "bullet_count": "6",
+                "bullets": {
+                    "0": "Unlimited subscribers",
+                    "1": "Multi-company management",
+                    "2": "Reseller support",
+                    "3": "Custom integrations",
+                    "4": "Dedicated account manager",
+                    "5": "SLA-backed uptime"
+                }
+            }
+        },
+        "about": {
+            "title": "Built for ISP Professionals",
+            "body": "We understand the challenges of running an internet service provider — from managing thousands of subscribers to keeping your network running smoothly. Our platform is built by people who know the ISP business, designed to help you reduce manual work, minimize errors, and focus on growing your operation."
+        },
+        "cta": {
+            "title": "Ready to Streamline Your ISP?",
+            "subtitle": "Get in touch and see how our platform can help you manage your operation more efficiently.",
+            "button": "Request a Demo"
+        },
+        "footer": {
+            "copyright": "© {{year}} {{name}}. All rights reserved."
+        }
+    },
+    "features_page": {
+        "meta": {
+            "title": "Features — ISP Management Platform",
+            "description": "Explore all the features of our ISP management platform — client management, billing, Mikrotik integration, and more."
+        },
+        "hero": {
+            "title": "Powerful Features for Every ISP",
+            "subtitle": "A comprehensive platform designed to manage every aspect of your internet service provider business — from subscriber management to network control."
+        },
+        "view_all": "View All Features",
+        "sections": {
+            "client_mgmt": {
+                "title": "Client Management",
+                "description": "Complete subscriber lifecycle management with detailed profiles, connection tracking, and self-service options.",
+                "bullets": {
+                    "0": "Detailed client profiles with connection and package info",
+                    "1": "PPPoE and Static IP client support",
+                    "2": "Bulk import from Mikrotik or Excel",
+                    "3": "Active, inactive, free, and left client tracking",
+                    "4": "Package assignment and scheduler system",
+                    "5": "Caller ID / MAC address bind and unbind",
+                    "6": "Client status change — individual or bulk",
+                    "7": "Data filtering, PDF and Excel export"
+                }
+            },
+            "billing": {
+                "title": "Billing & Invoicing",
+                "description": "Automate your entire billing cycle — from invoice generation to payment collection and receipts.",
+                "bullets": {
+                    "0": "Monthly auto bill generation system",
+                    "1": "Multiple invoice types and customizable templates",
+                    "2": "Auto payment reminders via SMS and email",
+                    "3": "Advance and due bill collection with discount",
+                    "4": "Online payment via bKash, Nagad, SSLCommerz",
+                    "5": "Billing date-wise auto disconnect",
+                    "6": "Auto-enable connectivity after full payment",
+                    "7": "Download and print invoices — PDF and Excel"
+                }
+            },
+            "mikrotik": {
+                "title": "Mikrotik Integration",
+                "description": "Deep integration with Mikrotik routers for real-time network management and synchronization.",
+                "bullets": {
+                    "0": "Integrated via Mikrotik API",
+                    "1": "Add and manage unlimited Mikrotik routers",
+                    "2": "Real-time sync of PPPoE and static IP profiles",
+                    "3": "Mikrotik package and command management",
+                    "4": "Online client monitoring through Mikrotik",
+                    "5": "Credentials can be changed directly from the platform",
+                    "6": "Full re-sync support between platform and router",
+                    "7": "No harmful effects on your Mikrotik configuration"
+                }
+            },
+            "network": {
+                "title": "Network & Infrastructure",
+                "description": "Organize your physical network with zones, devices, and topology management.",
+                "bullets": {
+                    "0": "Zone and sub-zone configuration",
+                    "1": "Device and device type management",
+                    "2": "TJ box tracking and mapping",
+                    "3": "Network topology visualization",
+                    "4": "POP / BOX and device setup",
+                    "5": "Distributed inventory items per zone"
+                }
+            },
+            "maps": {
+                "title": "Maps & Visualization",
+                "description": "See your subscribers and network devices on an interactive map for better planning and monitoring.",
+                "bullets": {
+                    "0": "Client locations on interactive map",
+                    "1": "Device and TJ box locations on map",
+                    "2": "Coverage area visualization",
+                    "3": "Zone-wise client distribution overview",
+                    "4": "Network device status at a glance",
+                    "5": "Configurable map settings and layers"
+                }
+            },
+            "hr": {
+                "title": "HR & Payroll",
+                "description": "Manage your team with role-based access, attendance, and salary processing.",
+                "bullets": {
+                    "0": "Staff profiles with detailed information",
+                    "1": "Role-based access and permissions",
+                    "2": "Salary generation and payment processing",
+                    "3": "Attendance tracking — manual or automatic",
+                    "4": "User management with permission controls",
+                    "5": "Salary history and employee performance",
+                    "6": "Multiple roles and fine-grained permissions"
+                }
+            },
+            "ticketing": {
+                "title": "Support & Ticketing",
+                "description": "Built-in support system so clients can report issues and your team can resolve them efficiently.",
+                "bullets": {
+                    "0": "Configurable problem categories",
+                    "1": "Ticket creation from admin or client portal",
+                    "2": "Assign staff to resolve tickets",
+                    "3": "Track resolution time and status updates",
+                    "4": "Client notifications on ticket progress via SMS",
+                    "5": "Complete ticket and support history"
+                }
+            },
+            "communication": {
+                "title": "Communication System",
+                "description": "Multi-channel communication to keep your clients informed at every step.",
+                "bullets": {
+                    "0": "SMS sending — individual or bulk",
+                    "1": "Reusable SMS templates",
+                    "2": "Communication gateways configuration",
+                    "3": "Communication queue and delivery logs",
+                    "4": "Email notification support",
+                    "5": "Telegram integration",
+                    "6": "Voice call notification support"
+                }
+            },
+            "finance": {
+                "title": "Finance Management",
+                "description": "Track every financial transaction across your operation with a complete accounting overview.",
+                "bullets": {
+                    "0": "Expense tracking with category management",
+                    "1": "Fund and fund transaction management",
+                    "2": "Client wallet system for prepaid balances",
+                    "3": "Company wallet management",
+                    "4": "Vendor management and purchase tracking",
+                    "5": "Income and expense reports",
+                    "6": "Complete financial transaction history"
+                }
+            },
+            "inventory": {
+                "title": "Inventory Management",
+                "description": "Track products, purchases, and stock across your organization.",
+                "bullets": {
+                    "0": "Product catalog with categories and units",
+                    "1": "Product in (purchase) and product out (sales)",
+                    "2": "Stock level tracking",
+                    "3": "Vendor and supplier management",
+                    "4": "Product reports and analytics",
+                    "5": "Unit type and category configuration"
+                }
+            },
+            "reseller": {
+                "title": "Reseller Management",
+                "description": "Create and manage resellers with their own packages, clients, and billing.",
+                "bullets": {
+                    "0": "Create unlimited resellers with dedicated panels",
+                    "1": "Reseller-specific package configuration",
+                    "2": "Resellers manage their own client base",
+                    "3": "Automatic billing and charge calculation",
+                    "4": "Reseller payment tracking and ledger",
+                    "5": "Reseller client payments via admin gateway"
+                }
+            },
+            "dashboard_feature": {
+                "title": "Informative Dashboard",
+                "description": "Get a real-time snapshot of your entire operation at a glance.",
+                "bullets": {
+                    "0": "Active, inactive, and blocked client counts",
+                    "1": "Paid, unpaid, and overdue invoice status",
+                    "2": "Monthly new client trends",
+                    "3": "Revenue and collection summaries",
+                    "4": "Zone-wise client distribution",
+                    "5": "Support ticket status overview",
+                    "6": "SMS balance and expense tracking"
+                }
+            },
+            "client_portal": {
+                "title": "Client Portal",
+                "description": "Give subscribers their own portal to view bills, make payments, and request support.",
+                "bullets": {
+                    "0": "Client dashboard with account overview",
+                    "1": "View and download invoices",
+                    "2": "Online bill payment through portal",
+                    "3": "Support ticket creation and tracking",
+                    "4": "Payment history and receipts",
+                    "5": "Package details and usage info",
+                    "6": "Secure client authentication"
+                }
+            },
+            "config": {
+                "title": "Business Configuration",
+                "description": "Flexible configuration options to tailor the platform to your specific business needs.",
+                "bullets": {
+                    "0": "Internet package configuration",
+                    "1": "Payment gateway setup — bKash, Nagad, SSLCommerz",
+                    "2": "Invoice and receipt template customization",
+                    "3": "SMS and communication gateway settings",
+                    "4": "Theme customization — light and dark mode",
+                    "5": "General, map, and table display settings",
+                    "6": "Multi-company management support"
+                }
+            },
+            "activity": {
+                "title": "Activity Log & Audit",
+                "description": "Full audit trail of every action across the platform for accountability and compliance.",
+                "bullets": {
+                    "0": "Detailed log of all user actions",
+                    "1": "Track who did what and when",
+                    "2": "Filterable activity history",
+                    "3": "Client and billing change history",
+                    "4": "Complete operational audit trail"
+                }
+            },
+            "reporting": {
+                "title": "Reports & Analytics",
+                "description": "Comprehensive reporting tools to measure business performance and make data-driven decisions.",
+                "bullets": {
+                    "0": "Revenue and collection reports",
+                    "1": "Client statistics and growth trends",
+                    "2": "Product and inventory reports",
+                    "3": "Income and expense summaries",
+                    "4": "Custom date range filtering",
+                    "5": "Export reports as PDF or Excel"
+                }
+            }
+        }
     }
 }
