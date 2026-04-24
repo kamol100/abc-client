@@ -29,7 +29,7 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
         .string()
         .trim()
         .max(320, err("demo_request.fields.email.errors.max"))
-        .optional().nullable(),
+        .optional(),
       website: z
         .string()
         .trim()

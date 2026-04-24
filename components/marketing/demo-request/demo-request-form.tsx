@@ -178,6 +178,7 @@ export default function DemoRequestForm() {
                           autoComplete="email"
                           placeholder={t("demo_request.fields.email.placeholder")}
                           {...field}
+                          value={field.value ?? ""}
                         />
                       </FormControl>
                       <I18nFormMessage />
