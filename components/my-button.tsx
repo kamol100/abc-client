@@ -100,7 +100,12 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
     }
 
     const Icon = action ? ACTION_ICONS[action] : null;
-    const content = children ?? (
+    const content = children ? (
+      <>
+        {loading && <Loader2 className="animate-spin" aria-hidden />}
+        {children}
+      </>
+    ) : (
       <>
         {loading ? (
           <Loader2 className="animate-spin" />

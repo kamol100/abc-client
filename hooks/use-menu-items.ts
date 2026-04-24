@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import {
   Banknote,
   Building2,
+  ClipboardList,
   CircleDollarSign,
   FileBarChart,
   FileText,
@@ -245,6 +246,13 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/activity-logs",
       icon: ScrollText,
       permissions: ["activity-logs.access"],
+    },
+    {
+      id: 32,
+      title: t("menu.demo_requests.title"),
+      url: "/demo-requests",
+      icon: ClipboardList,
+      permissions: ["demo-requests.access"],
     },
     {
       id: 20,

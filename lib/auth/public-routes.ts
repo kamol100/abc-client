@@ -1,5 +1,6 @@
 const PUBLIC_EXACT_PATHS = new Set(["/", "/offline"]);
-const PUBLIC_PREFIX_PATHS = ["/pay", "/api/manifest"];
+/** URL prefixes for `app/(public)` pages (the `(public)` segment is not in the path). Add a prefix when you add a route there. */
+const PUBLIC_PREFIX_PATHS = ["/home", "/features", "/pricing", "/demo-request", "/pay", "/api/manifest"];
 
 function isPrefixPathMatch(pathname: string, prefix: string): boolean {
   return pathname === prefix || pathname.startsWith(`${prefix}/`);

@@ -7,23 +7,23 @@ import { useTranslation } from "react-i18next";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCompany } from "@/context/company-provider";
-import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import MyButton from "@/components/my-button";
 
 type NavItem = { key: string; href: string };
 
 const SHARED_LINKS: NavItem[] = [
   { key: "marketing.nav.home", href: "/home" },
   { key: "marketing.nav.features", href: "/features" },
-  { key: "marketing.nav.pricing", href: "/home#pricing" },
-  { key: "marketing.nav.about", href: "/home#about" },
+  { key: "marketing.nav.pricing", href: "/pricing" },
+  // { key: "marketing.nav.about", href: "/home#about" },
 ];
 
 const HOME_ANCHORS: NavItem[] = [
   { key: "marketing.nav.home", href: "/home" },
   { key: "marketing.nav.features", href: "/features" },
-  { key: "marketing.nav.pricing", href: "#pricing" },
-  { key: "marketing.nav.about", href: "#about" },
+  { key: "marketing.nav.pricing", href: "/pricing" },
+  // { key: "marketing.nav.about", href: "#about" },
 ];
 
 export default function PublicTopNav() {
@@ -41,13 +41,13 @@ export default function PublicTopNav() {
 
     const classes = mobile
       ? cn(
-          "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-foreground",
-          isActive ? "text-foreground font-medium" : "text-muted-foreground"
-        )
+        "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-foreground",
+        isActive ? "text-foreground font-medium" : "text-muted-foreground"
+      )
       : cn(
-          "text-sm transition-colors hover:text-foreground",
-          isActive ? "text-foreground font-medium" : "text-muted-foreground"
-        );
+        "text-sm transition-colors hover:text-foreground",
+        isActive ? "text-foreground font-medium" : "text-muted-foreground"
+      );
 
     if (isAnchor) {
       return (
@@ -97,9 +97,9 @@ export default function PublicTopNav() {
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
 
-          <Button asChild size="sm">
-            <Link href="/home#cta">{t("marketing.nav.demo_request")}</Link>
-          </Button>
+          <MyButton url="/demo-request" size="sm" icon={false} variant="default">
+            {t("marketing.nav.demo_request")}
+          </MyButton>
 
           <button
             type="button"

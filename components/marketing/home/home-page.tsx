@@ -66,10 +66,10 @@ function HeroSection() {
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button asChild size="lg">
-            <a href="#cta">
+            <Link href="/demo-request">
               {t("marketing.hero.cta_primary")}
               <ArrowRight className="size-4" />
-            </a>
+            </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
             <a href="#features">{t("marketing.hero.cta_secondary")}</a>
@@ -189,12 +189,21 @@ function PricingSection() {
                     variant={highlighted ? "default" : "outline"}
                     className="mt-auto w-full"
                   >
-                    <a href="#cta">{t("marketing.pricing.cta")}</a>
+                    <Link href="/demo-request">{t("marketing.pricing.cta")}</Link>
                   </Button>
                 </CardContent>
               </Card>
             );
           })}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Button asChild variant="outline" size="lg">
+            <Link href="/pricing">
+              {t("marketing.pricing.view_full")}
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
@@ -234,7 +243,7 @@ function CtaSection() {
             {t("marketing.cta.subtitle")}
           </p>
           <Button asChild size="lg">
-            <Link href="/login">
+            <Link href="/demo-request">
               {t("marketing.cta.button")}
               <ArrowRight className="size-4" />
             </Link>

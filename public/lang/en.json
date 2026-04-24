@@ -2689,6 +2689,70 @@
             "label": "Date"
         }
     },
+    "admin_demo_request": {
+        "title": "Demo requests",
+        "title_plural": "Demo requests",
+        "edit_title": "Update status",
+        "view": "View",
+        "view_title": "Demo request details",
+        "load_error": "Could not load this demo request.",
+        "delete_confirmation": "Are you sure you want to delete this demo request? This action cannot be undone.",
+        "empty_value": "—",
+        "toast": {
+            "updated": "Status updated successfully."
+        },
+        "terms_accepted": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "fields": {
+            "full_name": {
+                "label": "Full name"
+            },
+            "isp_name": {
+                "label": "ISP name"
+            },
+            "email": {
+                "label": "Email"
+            },
+            "website": {
+                "label": "Website"
+            },
+            "phone": {
+                "label": "Phone"
+            },
+            "user_count": {
+                "label": "User count"
+            },
+            "whatsapp": {
+                "label": "WhatsApp"
+            },
+            "office_address": {
+                "label": "Office address"
+            },
+            "terms_accepted": {
+                "label": "Terms accepted"
+            },
+            "status": {
+                "label": "Status",
+                "placeholder": "Select status"
+            },
+            "created_at": {
+                "label": "Submitted"
+            },
+            "updated_at": {
+                "label": "Last updated"
+            }
+        },
+        "status": {
+            "pending": "Pending",
+            "approved": "Approved",
+            "rejected": "Rejected",
+            "errors": {
+                "required": "Status is required"
+            }
+        }
+    },
     "history": {
         "title": "History",
         "title_plural": "Histories",
@@ -3885,6 +3949,9 @@
         "activity_logs": {
             "title": "Activity Logs"
         },
+        "demo_requests": {
+            "title": "Demo requests"
+        },
         "history": {
             "title": "History"
         },
@@ -4415,6 +4482,7 @@
             "subtitle": "Choose the plan that fits your operation. Scale as you grow.",
             "popular": "Most Popular",
             "cta": "Get Started",
+            "view_full": "View package & pricing",
             "starter": {
                 "name": "Starter",
                 "description": "For small ISPs getting started.",
@@ -4467,6 +4535,208 @@
         },
         "footer": {
             "copyright": "© {{year}} {{name}}. All rights reserved."
+        }
+    },
+    "pricing_page": {
+        "meta": {
+            "title": "Package & Pricing — ISP Management Platform",
+            "description": "Compare Basic, Standard, and Premium plans. Monthly rates scale with your subscriber tier — transparent ISP billing software pricing."
+        },
+        "hero": {
+            "title": "Package & Pricing",
+            "subtitle": "Pick a plan that fits your operation. Rates adjust by subscriber range so you only pay for the scale you need.",
+            "image_alt": "Abstract illustration of software pricing tiers"
+        },
+        "tier_label": "Subscriber range",
+        "monthly_for_tier": "Monthly for this range",
+        "per_month_suffix": "/ month",
+        "popular": "Most popular",
+        "cta": "Get started",
+        "compare_title": "Compare software features",
+        "compare_subtitle": "What is included in each package. Add-ons can be enabled for an additional fee.",
+        "table": {
+            "feature_column": "Feature"
+        },
+        "footnote_1": "Each branch is billed as a separate subscription.",
+        "footnote_2": "5% VAT applies to all fees and charges where applicable.",
+        "footnote_3": "Add-on modules are billed separately when enabled.",
+        "cell": {
+            "yes": "Included",
+            "no": "Not included",
+            "addon": "Add-on"
+        },
+        "row_labels": {
+            "multi_branch": "Multiple branch management",
+            "client": "Client management",
+            "billing": "Billing management",
+            "hr": "HR & payroll",
+            "ticketing": "Support and ticketing",
+            "mac_reseller_portal": "MAC reseller portal",
+            "mac_reseller_app": "MAC reseller app",
+            "task": "Task management",
+            "product_purchase": "Product purchase management",
+            "inventory": "Inventory management",
+            "network_diagram": "Network diagram",
+            "accounts": "Accounts management",
+            "asset": "Asset management",
+            "bw_purchase": "Bandwidth purchase",
+            "bw_sale": "Bandwidth sale",
+            "bw_reseller": "Bandwidth reseller portal",
+            "reports": "Reports",
+            "sms_mailing": "Bulk SMS and mailing",
+            "client_portal": "Client portal (Android & web)",
+            "addon_admin": "Add-on: Admin & employee app (charge applicable)",
+            "addon_gateway": "Add-on: Payment gateway (charge applicable)",
+            "addon_olt": "Add-on: OLT integration for ONU (charge applicable)"
+        },
+        "plans": {
+            "basic": {
+                "name": "Basic",
+                "from_price": "From ৳2,000",
+                "description": "Core billing and operations for growing ISPs."
+            },
+            "standard": {
+                "name": "Standard",
+                "from_price": "From ৳3,000",
+                "description": "More modules and higher limits for busy teams."
+            },
+            "premium": {
+                "name": "Premium",
+                "from_price": "From ৳5,000",
+                "description": "Full feature set with premium positioning for large ISPs."
+            }
+        },
+        "tiers": {
+            "0": "1–300 users",
+            "1": "301–500 users",
+            "2": "501–1,000 users",
+            "3": "1,001–2,000 users",
+            "4": "2,001–3,000 users",
+            "5": "3,001–5,000 users",
+            "6": "5,001–8,000 users",
+            "7": "8,001–12,000 users"
+        },
+        "custom": {
+            "title": "Need a custom ISP solution?",
+            "subtitle": "From multi-branch billing to reseller workflows — we can shape the platform around how you operate.",
+            "c1": "Advanced module customization",
+            "c1_desc": "Tailor billing, OLT, CRM, or HR modules to your exact process.",
+            "c2": "Unlimited users & access",
+            "c2_desc": "Onboard admins, resellers, and field staff without artificial caps on the right plan.",
+            "c3": "Industry-specific features",
+            "c3_desc": "Compliance, reseller billing, and ISP-focused options you can turn on as you grow.",
+            "c4": "Priority support",
+            "c4_desc": "Dedicated follow-up for larger deployments and custom agreements.",
+            "primary_cta": "Request a demo",
+            "secondary_cta": "Contact sales"
+        }
+    },
+    "demo_request": {
+        "meta": {
+            "title": "Request a demo — ISP Management Platform",
+            "description": "Book a product demo. Tell us about your ISP, team size, and how we can reach you."
+        },
+        "breadcrumb": {
+            "aria": "Breadcrumb",
+            "home": "Home",
+            "current": "Demo request"
+        },
+        "hero": {
+            "title": "Demo request",
+            "subtitle": "Share your details and we will get back to you to schedule a walkthrough of the platform."
+        },
+        "optional": "optional",
+        "success_toast": "Thanks — your request was sent successfully.",
+        "form": {
+            "submit": "Submit your request"
+        },
+        "success": {
+            "title": "You are all set",
+            "message": "We received your demo request. Our team will contact you shortly to schedule a walkthrough.",
+            "back": "Back to home"
+        },
+        "api": {
+            "success": "Your request has been received.",
+            "errors": {
+                "bad_json": "Invalid request. Please try again.",
+                "validation": "Please check the form and try again."
+            }
+        },
+        "fields": {
+            "full_name": {
+                "label": "Full name",
+                "placeholder": "Your full name",
+                "errors": {
+                    "required": "Full name is required",
+                    "max": "Name is too long"
+                }
+            },
+            "isp_name": {
+                "label": "ISP name",
+                "placeholder": "Your company or ISP name",
+                "errors": {
+                    "required": "ISP name is required",
+                    "max": "Name is too long"
+                }
+            },
+            "email": {
+                "label": "Email address",
+                "placeholder": "you@example.com",
+                "errors": {
+                    "required": "Email is required",
+                    "invalid": "Enter a valid email address",
+                    "max": "Email is too long"
+                }
+            },
+            "website": {
+                "label": "Business website",
+                "placeholder": "https://example.com",
+                "errors": {
+                    "invalid": "Enter a valid URL (include https://)",
+                    "max": "URL is too long"
+                }
+            },
+            "phone": {
+                "label": "Phone number",
+                "placeholder": "Include country code if applicable",
+                "errors": {
+                    "required": "Phone number is required",
+                    "invalid": "Enter a valid phone number"
+                }
+            },
+            "user_count": {
+                "label": "Number of users",
+                "placeholder": "e.g. 500",
+                "errors": {
+                    "invalid": "Enter digits only",
+                    "max": "Value is too long"
+                }
+            },
+            "whatsapp": {
+                "label": "WhatsApp number",
+                "placeholder": "Number used for WhatsApp",
+                "errors": {
+                    "required": "WhatsApp number is required",
+                    "invalid": "Enter a valid number"
+                }
+            },
+            "office_address": {
+                "label": "Office address",
+                "placeholder": "Street, city, country",
+                "errors": {
+                    "max": "Address is too long"
+                }
+            },
+            "terms": {
+                "aria": "I agree to the terms and privacy policy",
+                "lead": "I have read and agree to the",
+                "conjunction": "and",
+                "terms_link": "Terms & conditions",
+                "privacy_link": "Privacy policy",
+                "errors": {
+                    "required": "You must accept the terms to continue"
+                }
+            }
         }
     },
     "features_page": {

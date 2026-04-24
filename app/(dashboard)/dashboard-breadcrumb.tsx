@@ -60,6 +60,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/device-types": "menu.networks.device_type.title",
   "/mikrotik-commands": "menu.mikrotik_commands.title",
   "/activity-logs": "menu.activity_logs.title",
+  "/demo-requests": "menu.demo_requests.title",
   "/histories": "menu.history.title",
   "/zones": "menu.zones.title",
   "/sub-zones": "menu.zones.sub_zone.title",

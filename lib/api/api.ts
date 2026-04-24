@@ -1,7 +1,13 @@
 
 import useToken from "@/lib/auth/auth-token";
 import { NextResponse } from "next/server";
-const BASE_URL = `${process.env.NEXTAPI_URL}/api/v1`;
+
+const API_ORIGIN = (
+  process.env.NEXT_PUBLIC_API ?? process.env.NEXTAPI_URL ?? ""
+)
+  .trim()
+  .replace(/\/$/, "");
+const BASE_URL = `${API_ORIGIN}/api/v1`;
 
 export async function getData(url: string) {
     //const api_url = `${BASE_URL}${url}`;
@@ -28,7 +34,21 @@ export async function getPublicData(url: string) {
             "X-Requested-With": "XMLHttpRequest",
         },
     });
-    const data = result.json();
+    const data = await result.json();
+    return data;
+}
+export async function postPublicData(url: string, formData: any) {
+    const api_url = `${BASE_URL}${url}`;
+    console.log(api_url, formData);
+    const result = await fetch(api_url, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify(formData),
+    });
+    const data = await result.json();
     return data;
 }
 
