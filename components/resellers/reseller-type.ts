@@ -47,6 +47,14 @@ export type InvoiceRef = z.infer<typeof InvoiceRefSchema>;
 export type ResellerPackageRow = z.infer<typeof ResellerPackageRowSchema>;
 export type ResellerClientRow = z.infer<typeof ResellerClientRowSchema>;
 
+export const ResellerExportFileRowSchema = z.object({
+    path: z.string(),
+    name: z.string(),
+    size: z.number(),
+    last_modified: z.number(),
+});
+export type ResellerExportFileRow = z.infer<typeof ResellerExportFileRowSchema>;
+
 export const ResellerRowSchema = z.object({
     id: z.coerce.number(),
     reseller_id: z.string().nullable().optional(),

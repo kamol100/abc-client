@@ -6,6 +6,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import { CompanyRow } from "@/components/companies/company-type";
 import { CompaniesColumns } from "@/components/companies/companies-column";
 import CompanyForm from "@/components/companies/company-form";
+import CompanyImportDialog from "@/components/companies/company-import-dialog";
 import { useTranslation } from "react-i18next";
 
 const CompanyTable: FC = () => {
@@ -45,6 +46,7 @@ const CompanyTable: FC = () => {
             isFetching={isFetching}
             form={CompanyForm}
             toolbarTitle={toolbarTitle}
+            toolbarBeforeForm={<CompanyImportDialog />}
         />
     );
 };

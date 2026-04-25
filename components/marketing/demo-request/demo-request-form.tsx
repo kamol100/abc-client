@@ -128,80 +128,17 @@ export default function DemoRequestForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <fieldset disabled={isPending} className="min-w-0 space-y-6 border-0 p-0">
-            <div className="grid gap-4 sm:grid-cols-1">
-              <FormField
-                control={form.control}
-                name="full_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("demo_request.fields.full_name.label")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        autoComplete="name"
-                        placeholder={t("demo_request.fields.full_name.placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <I18nFormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isp_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("demo_request.fields.isp_name.label")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        autoComplete="organization"
-                        placeholder={t("demo_request.fields.isp_name.placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <I18nFormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-1">
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="full_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("demo_request.fields.email.label")}</FormLabel>
+                      <FormLabel>{t("demo_request.fields.full_name.label")}</FormLabel>
                       <FormControl>
                         <Input
-                          type="email"
-                          autoComplete="email"
-                          placeholder={t("demo_request.fields.email.placeholder")}
-                          {...field}
-                          value={field.value ?? ""}
-                        />
-                      </FormControl>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="website"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("demo_request.fields.website.label")}
-                        <span className="ml-0.5 text-xs font-normal text-muted-foreground">
-                          ({t("demo_request.optional")})
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          inputMode="url"
-                          autoComplete="url"
-                          placeholder={t("demo_request.fields.website.placeholder")}
+                          autoComplete="name"
+                          placeholder={t("demo_request.fields.full_name.placeholder")}
                           {...field}
                         />
                       </FormControl>
@@ -209,20 +146,126 @@ export default function DemoRequestForm() {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="phone"
+                  name="isp_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("demo_request.fields.phone.label")}</FormLabel>
+                      <FormLabel>{t("demo_request.fields.isp_name.label")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          autoComplete="organization"
+                          placeholder={t("demo_request.fields.isp_name.placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <I18nFormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("demo_request.fields.email.label")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            autoComplete="email"
+                            placeholder={t("demo_request.fields.email.placeholder")}
+                            {...field}
+                            value={field.value ?? ""}
+                          />
+                        </FormControl>
+                        <I18nFormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="website"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("demo_request.fields.website.label")}
+                          <span className="ml-0.5 text-xs font-normal text-muted-foreground">
+                            ({t("demo_request.optional")})
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="url"
+                            inputMode="url"
+                            autoComplete="url"
+                            placeholder={"https://example.isptik.com"}
+                            {...field}
+                          />
+                        </FormControl>
+                        <I18nFormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("demo_request.fields.phone.label")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="tel"
+                            autoComplete="tel"
+                            placeholder={t("demo_request.fields.phone.placeholder")}
+                            {...field}
+                          />
+                        </FormControl>
+                        <I18nFormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="user_count"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          {t("demo_request.fields.user_count.label")}
+                          <span className="ml-0.5 text-xs font-normal text-muted-foreground">
+                            ({t("demo_request.optional")})
+                          </span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            inputMode="numeric"
+                            placeholder={t("demo_request.fields.user_count.placeholder")}
+                            {...field}
+                          />
+                        </FormControl>
+                        <I18nFormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="whatsapp"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("demo_request.fields.whatsapp.label")}</FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
                           autoComplete="tel"
-                          placeholder={t("demo_request.fields.phone.placeholder")}
+                          placeholder={t("demo_request.fields.whatsapp.placeholder")}
                           {...field}
                         />
                       </FormControl>
@@ -230,123 +273,80 @@ export default function DemoRequestForm() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
-                  name="user_count"
+                  name="office_address"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        {t("demo_request.fields.user_count.label")}
+                        {t("demo_request.fields.office_address.label")}
                         <span className="ml-0.5 text-xs font-normal text-muted-foreground">
                           ({t("demo_request.optional")})
                         </span>
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="text"
-                          inputMode="numeric"
-                          placeholder={t("demo_request.fields.user_count.placeholder")}
+                        <Textarea
+                          rows={4}
+                          autoComplete="street-address"
+                          placeholder={t("demo_request.fields.office_address.placeholder")}
+                          className="resize-y min-h-[100px]"
                           {...field}
                         />
                       </FormControl>
+                      <I18nFormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="terms_accepted"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2 rounded-md border p-4">
+                      <div className="flex items-start gap-3">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={(c) => field.onChange(c === true)}
+                            className="mt-0.5"
+                            aria-label={t("demo_request.fields.terms.aria")}
+                          />
+                        </FormControl>
+                        <p className="text-sm font-normal leading-snug text-foreground">
+                          <span>{t("demo_request.fields.terms.lead")} </span>
+                          <Link
+                            href="/home"
+                            className="text-primary underline"
+                          >
+                            {t("demo_request.fields.terms.terms_link")}
+                          </Link>
+                          <span> {t("demo_request.fields.terms.conjunction")} </span>
+                          <Link
+                            href="/home"
+                            className="text-primary underline"
+                          >
+                            {t("demo_request.fields.terms.privacy_link")}
+                          </Link>
+                          .
+                        </p>
+                      </div>
                       <I18nFormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="whatsapp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("demo_request.fields.whatsapp.label")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="tel"
-                        autoComplete="tel"
-                        placeholder={t("demo_request.fields.whatsapp.placeholder")}
-                        {...field}
-                      />
-                    </FormControl>
-                    <I18nFormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="office_address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("demo_request.fields.office_address.label")}
-                      <span className="ml-0.5 text-xs font-normal text-muted-foreground">
-                        ({t("demo_request.optional")})
-                      </span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        rows={4}
-                        autoComplete="street-address"
-                        placeholder={t("demo_request.fields.office_address.placeholder")}
-                        className="resize-y min-h-[100px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <I18nFormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="terms_accepted"
-                render={({ field }) => (
-                  <FormItem className="space-y-2 rounded-md border p-4">
-                    <div className="flex items-start gap-3">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={(c) => field.onChange(c === true)}
-                          className="mt-0.5"
-                          aria-label={t("demo_request.fields.terms.aria")}
-                        />
-                      </FormControl>
-                      <p className="text-sm font-normal leading-snug text-foreground">
-                        <span>{t("demo_request.fields.terms.lead")} </span>
-                        <Link
-                          href="/home"
-                          className="text-primary underline"
-                        >
-                          {t("demo_request.fields.terms.terms_link")}
-                        </Link>
-                        <span> {t("demo_request.fields.terms.conjunction")} </span>
-                        <Link
-                          href="/home"
-                          className="text-primary underline"
-                        >
-                          {t("demo_request.fields.terms.privacy_link")}
-                        </Link>
-                        .
-                      </p>
-                    </div>
-                    <I18nFormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <MyButton
-              type="submit"
-              className="w-full sm:w-auto"
-              size="default"
-              variant="default"
-              icon={false}
-              loading={isPending}
-            >
-              {t("demo_request.form.submit")}
-            </MyButton>
+              <MyButton
+                type="submit"
+                className="w-full sm:w-auto"
+                size="default"
+                variant="default"
+                icon={false}
+                loading={isPending}
+              >
+                {t("demo_request.form.submit")}
+              </MyButton>
             </fieldset>
           </form>
         </Form>

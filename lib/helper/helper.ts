@@ -141,6 +141,65 @@ export function parseApiError(error: unknown): string | false {
     );
 }
 
+/**
+ * Bangladesh mobile: local `01[3-9]XXXXXXXX`, intl `8801[3-9]XXXXXXXX`, or 10 digits `1[3-9]XXXXXXXX`.
+ * Accepts optional `+`, `00` prefix, and common separators.
+ */
+export function isBangladeshMobile(value: string): boolean {
+    const d = value.replace(/[\s\-().]/g, "");
+    if (!/^\+?\d+$/.test(d)) return false;
+    let n = d.startsWith("+") ? d.slice(1) : d;
+    if (n.startsWith("00")) n = n.slice(2);
+    if (n.length === 13 && n.startsWith("880")) {
+        return /^8801[3-9]\d{8}$/.test(n);
+    }
+    if (n.length === 11) {
+        return /^01[3-9]\d{8}$/.test(n);
+    }
+    if (n.length === 10) {
+        return /^1[3-9]\d{8}$/.test(n);
+    }
+    return false;
+}
+
+const HOSTNAME_LABEL = /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|xn--[a-z0-9-]+)$/i;
+
+function isPlausibleHostname(hostname: string): boolean {
+    if (!hostname || hostname.length > 253) return false;
+    const root = hostname.replace(/\.$/, "");
+    const parts = root.split(".");
+    if (parts.length < 2) return false;
+    return parts.every(
+        (label) => label.length >= 1 && label.length <= 63 && HOSTNAME_LABEL.test(label),
+    );
+}
+
+const ISPTIK_COM = "isptik.com";
+
+function isIsptikComHost(hostname: string): boolean {
+    const h = hostname.toLowerCase();
+    return h === ISPTIK_COM || h.endsWith(`.${ISPTIK_COM}`);
+}
+
+/**
+ * `http`/`https` only, hostname must be `isptik.com` or `*.isptik.com` (e.g. `https://test.isptik.com/`).
+ * Callers should treat empty string as "no website" when the field is optional.
+ */
+export function isValidHttpDomainUrl(value: string): boolean {
+    const t = value.trim();
+    if (!t) return false;
+    let u: URL;
+    try {
+        u = new URL(t);
+    } catch {
+        return false;
+    }
+    if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+    const host = u.hostname;
+    if (!isPlausibleHostname(host)) return false;
+    return isIsptikComHost(host);
+}
+
 export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: number }> {
     return new Promise((resolve, reject) => {
         if (!navigator?.geolocation) {

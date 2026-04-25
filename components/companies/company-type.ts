@@ -27,6 +27,14 @@ export const CompanyRowSchema = z.object({
 
 export type CompanyRow = z.infer<typeof CompanyRowSchema>;
 
+export const CompanyExportFileRowSchema = z.object({
+  path: z.string(),
+  name: z.string(),
+  size: z.number(),
+  last_modified: z.number(),
+});
+export type CompanyExportFileRow = z.infer<typeof CompanyExportFileRowSchema>;
+
 const baseCompanyFormSchema = {
     name: z.string({
         required_error: "company.name.errors.required",

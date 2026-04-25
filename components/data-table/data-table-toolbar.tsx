@@ -6,7 +6,7 @@ import { Table } from "@tanstack/react-table";
 
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import ChangePagination from "@/components/change-pagination";
 import FormFilter from "@/components/form-wrapper/form-filter";
@@ -29,6 +29,8 @@ interface DataTableToolbarProps<TData> {
   form?: any;
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
+  /** Rendered immediately before the create/edit form trigger (e.g. import). */
+  toolbarBeforeForm?: ReactNode;
 }
 
 export function DataTableToolbar<TData>({
@@ -41,6 +43,7 @@ export function DataTableToolbar<TData>({
   form,
   toolbarTitle = null,
   toolbarTitleClass = "",
+  toolbarBeforeForm,
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -202,6 +205,7 @@ export function DataTableToolbar<TData>({
             />
           )
         )}
+        {toolbarBeforeForm}
         {FormComponent && !showFilter && <FormComponent />}
       </div>
     </div>

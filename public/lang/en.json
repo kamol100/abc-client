@@ -1140,6 +1140,13 @@
             "label": "Clients"
         },
         "title_plural": "Companies",
+        "import": "Import",
+        "import_title": "Import company from export",
+        "import_description": "Select a server-side SQL export to restore a company. Files are read from company-exports storage.",
+        "import_empty": "No export files found. Deleting a company with export enabled creates files here.",
+        "import_select_placeholder": "Choose an export file",
+        "import_confirm": "Import",
+        "import_success": "Company imported successfully",
         "create_title": "Add Company",
         "edit_title": "Edit Company",
         "delete_confirmation": "Are you sure you want to delete this company?"
@@ -3058,6 +3065,13 @@
         "edit_title": "Edit Reseller",
         "view_title": "Reseller Details",
         "delete_confirmation": "Are you sure you want to delete this reseller?",
+        "import": "Import",
+        "import_title": "Import reseller from export",
+        "import_description": "Select a server-side SQL export to restore a reseller. Files are read from reseller-exports storage.",
+        "import_empty": "No export files found. Deleting a reseller with export enabled creates files here.",
+        "import_select_placeholder": "Choose an export file",
+        "import_confirm": "Import",
+        "import_success": "Reseller imported successfully",
         "sections": {
             "basic_information": "Basic Information",
             "billing_information": "Billing Information",

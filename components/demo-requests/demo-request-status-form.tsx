@@ -4,10 +4,10 @@ import { FC } from "react";
 import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import {
+    DemoRequestAdminEditFormSchema,
     DemoRequestRow,
-    DemoRequestStatusFormSchema,
 } from "@/components/demo-requests/demo-request-type";
-import DemoRequestStatusFormFieldSchema from "@/components/demo-requests/demo-request-status-form-schema";
+import DemoRequestAdminFormFieldSchema from "@/components/demo-requests/demo-request-admin-form-field-schema";
 import FormTrigger from "@/components/form-trigger";
 
 type Props = {
@@ -22,12 +22,18 @@ const DemoRequestStatusForm: FC<Props> = ({ row }) => {
             trigger={<FormTrigger mode="edit" />}
         >
             <FormBuilder
-                formSchema={DemoRequestStatusFormFieldSchema()}
+                formSchema={DemoRequestAdminFormFieldSchema()}
                 grids={1}
-                data={{ id: row.id, status: row.status }}
+                data={{
+                    id: row.id,
+                    status: row.status,
+                    website: row.website ?? "",
+                    phone: row.phone,
+                    isp_name: row.isp_name,
+                }}
                 api="/demo-requests"
                 mode="edit"
-                schema={DemoRequestStatusFormSchema}
+                schema={DemoRequestAdminEditFormSchema}
                 method="PUT"
                 queryKey="demo-requests"
                 hydrateOnEdit="never"

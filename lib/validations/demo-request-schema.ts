@@ -1,13 +1,8 @@
+import { isBangladeshMobile, isValidHttpDomainUrl } from "@/lib/helper/helper";
 import { z } from "zod";
 
 const TEXT_MAX = 200;
 const ADDRESS_MAX = 2000;
-const PHONE_MIN = 8;
-
-function isPhoneLike(value: string): boolean {
-  const d = value.replace(/[\s-]/g, "");
-  return d.length >= PHONE_MIN && /^\+?\d+$/.test(d);
-}
 
 /**
  * @param err - returns user-facing or translation key for error messages
@@ -35,14 +30,14 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
         .trim()
         .max(2000, err("demo_request.fields.website.errors.max"))
         .refine(
-          (s) => s.length === 0 || z.string().url().safeParse(s).success,
+          (s) => s.length === 0 || isValidHttpDomainUrl(s),
           err("demo_request.fields.website.errors.invalid")
         ),
       phone: z
         .string()
         .trim()
         .min(1, err("demo_request.fields.phone.errors.required"))
-        .refine(isPhoneLike, err("demo_request.fields.phone.errors.invalid")),
+        .refine(isBangladeshMobile, err("demo_request.fields.phone.errors.invalid")),
       user_count: z
         .string()
         .trim()
@@ -55,7 +50,7 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
         .string()
         .trim()
         .min(1, err("demo_request.fields.whatsapp.errors.required"))
-        .refine(isPhoneLike, err("demo_request.fields.whatsapp.errors.invalid")),
+        .refine(isBangladeshMobile, err("demo_request.fields.whatsapp.errors.invalid")),
       office_address: z
         .string()
         .trim()

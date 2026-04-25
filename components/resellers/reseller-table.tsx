@@ -10,6 +10,7 @@ import { usePermissions } from "@/context/app-provider";
 import { useResellerColumns } from "@/components/resellers/reseller-column";
 import ResellerFilterSchema from "@/components/resellers/reseller-filter-schema";
 import { ResellerRow } from "@/components/resellers/reseller-type";
+import ResellerImportDialog from "@/components/resellers/reseller-import-dialog";
 
 const ResellerTable: FC = () => {
     const { t } = useTranslation();
@@ -49,6 +50,10 @@ const ResellerTable: FC = () => {
         />
     );
 
+    const importControl = hasPermission("resellers.import")
+        ? <ResellerImportDialog />
+        : undefined;
+
     const toolbarTitle = pagination?.total
         ? `${t("reseller.title_plural")} (${pagination.total})`
         : t("reseller.title_plural");
@@ -67,6 +72,7 @@ const ResellerTable: FC = () => {
             queryKey="resellers"
             form={hasPermission("resellers.create") ? FormLink : undefined}
             toolbarTitle={toolbarTitle}
+            toolbarBeforeForm={importControl}
         />
     );
 };

@@ -48,6 +48,7 @@ interface DataTableProps<TData, TValue> {
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
   initialColumnVisibility?: VisibilityState;
+  toolbarBeforeForm?: React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -66,6 +67,7 @@ export function DataTable<TData, TValue>({
   toolbarTitle = null,
   toolbarTitleClass = "",
   initialColumnVisibility,
+  toolbarBeforeForm,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { t } = useTranslation();
@@ -122,6 +124,7 @@ export function DataTable<TData, TValue>({
             form={form}
             toolbarTitle={toolbarTitle}
             toolbarTitleClass={toolbarTitleClass}
+            toolbarBeforeForm={toolbarBeforeForm}
           />
         </div>
       )}

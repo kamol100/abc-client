@@ -46,6 +46,17 @@ export const demoRequestsColumns: ColumnDef<DemoRequestRow>[] = [
         enableSorting: false,
     },
     {
+        accessorKey: "website",
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title="admin_demo_request.fields.website.label"
+            />
+        ),
+        cell: ({ row }) => <OptionalTextCell value={row.original.website} />,
+        enableSorting: false,
+    },
+    {
         accessorKey: "isp_name",
         header: ({ column }) => (
             <DataTableColumnHeader
