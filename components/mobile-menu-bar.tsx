@@ -46,9 +46,8 @@ const MobileMenuBar: FC = () => {
   );
   const dashboardActive = isPathActive(pathname, dashboardTarget);
   const DashboardIcon = dashboardItem?.icon ?? LayoutDashboard;
-
   return (
-    <div className="flex h-full w-full items-center gap-2 border-t border-border bg-background px-4">
+    <div className="flex h-full w-full min-w-0 items-center gap-2 border-t border-border bg-background px-4">
       <MyButton
         variant={dashboardActive ? "default" : "ghost"}
         size="icon"
@@ -57,8 +56,10 @@ const MobileMenuBar: FC = () => {
       >
         <DashboardIcon className="size-5" />
       </MyButton>
-      <div className="min-w-0 flex-1 overflow-hidden">
-        <div className="flex w-max min-w-full items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div
+        className="min-w-0 flex-1 touch-pan-x overflow-x-auto overflow-y-hidden [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+      >
+        <div className="flex w-max min-w-0 flex-nowrap items-center gap-2 pr-0.5">
           {middleItems.map((item) => {
             const active = isItemActive(pathname, item);
             return (
