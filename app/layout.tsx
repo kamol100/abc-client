@@ -8,6 +8,7 @@ import TanstackProvider from "@/context/tanstack-provider";
 import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
+import { resolveApiAssetUrlWithFallback } from "@/lib/helper/helper";
 import type { Metadata, Viewport } from "next";
 import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius } from "@/types/theme-types";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -15,7 +16,7 @@ import { cookies } from "next/headers";
 import { ToastContainer } from "react-toastify";
 import { headers } from "next/headers";
 import "./globals.css";
-import { getPublicData } from "@/lib/api/api";
+import { getCompanyPublicData } from "@/lib/api/api";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +41,8 @@ export async function fetchHostName() {
 }
 
 async function getCompany() {
-  let host = await fetchHostName();
-  const data = await getPublicData(`/api/company-data?host=${host}`);
-  return data?.data ?? [];
+  const host = await fetchHostName();
+  return getCompanyPublicData(host);
 }
 
 export const viewport: Viewport = {
@@ -54,6 +54,7 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getCompany();
+  const faviconHref = resolveApiAssetUrlWithFallback(settings?.favicon, "/favicon.ico");
 
   return {
     title: {
@@ -62,6 +63,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: settings?.address ?? "Total ISP management company",
     manifest: "/api/manifest",
+    icons: {
+      icon: faviconHref,
+      shortcut: faviconHref,
+      apple: faviconHref,
+    },
     appleWebApp: {
       capable: true,
       statusBarStyle: "default",

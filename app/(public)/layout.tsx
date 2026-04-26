@@ -1,4 +1,4 @@
-import { getPublicData } from "@/lib/api/api";
+import { getCompanyPublicData } from "@/lib/api/api";
 import { fetchHostName } from "@/app/layout";
 import CompanyProvider from "@/context/company-provider";
 import PublicTopNav from "@/app/(public)/public-top-nav";
@@ -6,14 +6,13 @@ import PublicFooter from "@/app/(public)/public-footer";
 import type { CompanyPublicData } from "@/types/company-public-type";
 import type { PropsWithChildren } from "react";
 
-async function getCompanyPublicData(): Promise<CompanyPublicData> {
+async function loadCompanyPublicData(): Promise<CompanyPublicData> {
   const host = await fetchHostName();
-  const res = await getPublicData(`/company-data?host=${host}`);
-  return (res?.data as CompanyPublicData) ?? {};
+  return getCompanyPublicData(host);
 }
 
 export default async function PublicLayout({ children }: PropsWithChildren) {
-  const company = await getCompanyPublicData();
+  const company = await loadCompanyPublicData();
 
   return (
     <CompanyProvider initialCompany={company}>

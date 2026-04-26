@@ -1,5 +1,7 @@
 "use client";
 import { MyButton } from "@/components/my-button";
+import InputField from "@/components/form/input-field";
+import { Login, LoginSchema } from "@/components/schema/login";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
@@ -9,17 +11,21 @@ import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, type SubmitErrorHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import InputField from "../form/input-field";
-import { Login, LoginSchema } from "../schema/login";
 
 const DEFAULT_LOGIN_API = "/auth/login";
+const DEFAULT_LOGO = "/static/logo.png";
+
+type LoginFormProps = React.ComponentPropsWithoutRef<"div"> & {
+  companyLogoUrl?: string | null;
+};
 
 export function LoginForm({
   className,
+  companyLogoUrl,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: LoginFormProps) {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
@@ -28,6 +34,7 @@ export function LoginForm({
   const [isPending, setIsPending] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [handledAuthError, setHandledAuthError] = useState<string | null>(null);
+  const [logoSource, setLogoSource] = useState<string>(companyLogoUrl ?? DEFAULT_LOGO);
   const loginFrom = useForm<Login>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -47,6 +54,10 @@ export function LoginForm({
     const domain = window?.location?.hostname;
     setHost(domain ?? "");
   }, [mounted]);
+
+  useEffect(() => {
+    setLogoSource(companyLogoUrl ?? DEFAULT_LOGO);
+  }, [companyLogoUrl]);
 
   useEffect(() => {
     if (!authError || handledAuthError === authError) return;
@@ -105,7 +116,7 @@ export function LoginForm({
       setIsPending(false);
     }
   };
-  const onError = (data: any) => {
+  const onError: SubmitErrorHandler<Login> = (data) => {
     console.log(data);
   };
 
@@ -113,6 +124,12 @@ export function LoginForm({
     return (
       <div className={cn("flex flex-col gap-6", className)} {...props}>
         <div className="flex justify-center">
+          <img
+            src={logoSource}
+            alt="Company logo"
+            className="h-8 w-auto max-w-[160px] object-contain"
+            onError={() => setLogoSource(DEFAULT_LOGO)}
+          />
         </div>
         <Card className="min-w-[350px]">
           <CardHeader className="text-center">
@@ -144,6 +161,12 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex justify-center">
+        <img
+          src={logoSource}
+          alt="Company logo"
+          className="h-8 w-auto max-w-[160px] object-contain"
+          onError={() => setLogoSource(DEFAULT_LOGO)}
+        />
       </div>
       <Card className="min-w-[400px]">
         <CardHeader className="text-center">

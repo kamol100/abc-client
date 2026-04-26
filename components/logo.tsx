@@ -3,17 +3,9 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { useSafeProfile } from "@/context/app-provider";
+import { resolveApiAssetUrl } from "@/lib/helper/helper";
 
 const DEFAULT_LOGO = "/static/logo.png";
-
-function toAbsoluteUrl(value?: string | null): string | null {
-  if (!value) return null;
-  const trimmed = value.trim();
-  if (!trimmed) return null;
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  const base = (process.env.NEXT_PUBLIC_API ?? "").trim().replace(/\/$/, "");
-  return base ? `${base}${trimmed.startsWith("/") ? "" : "/"}${trimmed}` : trimmed;
-}
 
 const DefaultLogoImage = () => (
   <div className="max-w-[80px] h-6 overflow-hidden relative">
@@ -31,7 +23,7 @@ const Logo: FC = () => {
   const profileCtx = useSafeProfile();
   const [logoFailed, setLogoFailed] = useState(false);
 
-  const logoUrl = toAbsoluteUrl(profileCtx?.profile?.company?.logo);
+  const logoUrl = resolveApiAssetUrl(profileCtx?.profile?.company?.logo);
 
   useEffect(() => {
     setLogoFailed(false);

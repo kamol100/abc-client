@@ -7,6 +7,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import type { CompanyPublicData } from "@/types/company-public-type";
+import { resolveApiAssetUrlWithFallback } from "@/lib/helper/helper";
 
 const DEFAULT_LOGO = "/static/logo.png";
 
@@ -16,17 +17,6 @@ type CompanyContextValue = {
 };
 
 const CompanyContext = createContext<CompanyContextValue | null>(null);
-
-function toAbsoluteUrl(value?: string | null): string | null {
-  if (!value) return null;
-
-  const trimmed = value.trim();
-  if (!trimmed) return null;
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-
-  const base = (process.env.NEXT_PUBLIC_API ?? "").trim().replace(/\/$/, "");
-  return base ? `${base}${trimmed.startsWith("/") ? "" : "/"}${trimmed}` : trimmed;
-}
 
 export function useCompany(): CompanyContextValue {
   const context = useContext(CompanyContext);
@@ -51,7 +41,7 @@ export default function CompanyProvider({
   const contextValue = useMemo<CompanyContextValue>(
     () => ({
       company: initialCompany,
-      logoUrl: toAbsoluteUrl(initialCompany.logo) ?? DEFAULT_LOGO,
+      logoUrl: resolveApiAssetUrlWithFallback(initialCompany.logo, DEFAULT_LOGO),
     }),
     [initialCompany]
   );

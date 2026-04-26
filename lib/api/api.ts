@@ -1,6 +1,7 @@
 
 import useToken from "@/lib/auth/auth-token";
 import { NextResponse } from "next/server";
+import type { CompanyPublicData } from "@/types/company-public-type";
 
 const API_ORIGIN = (
   process.env.NEXT_PUBLIC_API ?? process.env.NEXTAPI_URL ?? ""
@@ -36,6 +37,13 @@ export async function getPublicData(url: string) {
     });
     const data = await result.json();
     return data;
+}
+
+export async function getCompanyPublicData(host?: string | null): Promise<CompanyPublicData> {
+    const hostname = host?.trim();
+    const queryHost = hostname ? `?host=${encodeURIComponent(hostname)}` : "";
+    const response = await getPublicData(`/company-data${queryHost}`);
+    return (response?.data as CompanyPublicData) ?? {};
 }
 export async function postPublicData(url: string, formData: any) {
     const api_url = `${BASE_URL}${url}`;

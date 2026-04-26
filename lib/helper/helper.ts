@@ -218,3 +218,25 @@ export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: 
         );
     });
 }
+
+export function resolveApiAssetUrl(value?: string | null): string | null {
+    if (!value) return null;
+    const trimmedValue = value.trim();
+    if (!trimmedValue) return null;
+    if (/^https?:\/\//i.test(trimmedValue)) return trimmedValue;
+
+    const apiOrigin = (process.env.NEXT_PUBLIC_API ?? process.env.NEXTAPI_URL ?? "")
+        .trim()
+        .replace(/\/$/, "");
+
+    if (!apiOrigin) return trimmedValue;
+
+    return `${apiOrigin}${trimmedValue.startsWith("/") ? "" : "/"}${trimmedValue}`;
+}
+
+export function resolveApiAssetUrlWithFallback(
+    value: string | null | undefined,
+    fallback: string
+): string {
+    return resolveApiAssetUrl(value) ?? fallback;
+}
