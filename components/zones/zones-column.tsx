@@ -19,15 +19,6 @@ export const ZonesColumns: ColumnDef<ZoneRow>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "name_bn",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="zone.name_bn.label" />
-        ),
-        cell: ({ row }) => (
-            <div>{row.original.name_bn ?? ""}</div>
-        ),
-    },
-    {
         accessorKey: "subZone",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="zone.sub_zones.label" />
