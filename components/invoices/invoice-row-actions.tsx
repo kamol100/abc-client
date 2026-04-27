@@ -59,7 +59,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                         onClick={async () => {
                             setLoading(true);
                             const data = await useFetch({
-                                url: `/clients/${invoice?.client?.uuid}`,
+                                url: `/client-invoice-due/${invoice?.client?.uuid}`,
                             });
                             const invoicesDue = await data?.data?.invoiceDue;
                             setInvoiceDue(invoicesDue);

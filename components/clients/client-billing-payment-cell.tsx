@@ -15,22 +15,21 @@ const ClientBillingPaymentCell: FC<Props> = ({ client }) => {
 
     return (
         <div className="flex flex-col gap-0.5 min-w-[120px]">
-            {totalDue && totalDue > 0 && (
+            {totalDue && totalDue > 0 ? (
                 <span className={cn("font-semibold text-sm capitalize", inactive && "text-destructive")}>
                     {t("client.table.total_due")}: {<DisplayCount amount={totalDue} formatCurrency />}
                 </span>
-            )}
-            <span className={cn("font-semibold text-sm capitalize", inactive && "text-destructive")}>
-                {client.billing_term || "—"}
-            </span>
-            <span className={cn("text-sm", inactive ? "text-destructive/80" : "text-foreground")}>
-                {t("client.table.deadline")}: {client.payment_deadline || "—"}
-            </span>
-            {client.discount && client.discount !== "0" && (
-                <span className={cn("text-xs", inactive ? "text-destructive/60" : "text-muted-foreground")}>
-                    {t("client.discount.label")}: {client.discount}
+            ) : (
+                <span className={cn("font-semibold text-sm capitalize", inactive && "text-destructive")}>
+                    {t("client.table.total_due")}: {<DisplayCount amount={0} formatCurrency />}
                 </span>
             )}
+            <span className={cn("text-sm capitalize", inactive && "text-destructive")}>
+                {client.billing_term || "—"}
+            </span>
+            <span className={cn("text-xs text-muted-foreground")}>
+                {t("client.table.deadline")}: {client.payment_deadline || "—"}
+            </span>
         </div>
     );
 };

@@ -132,8 +132,7 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                 ),
                 cell: ({ row }) => {
                     const status = row.original.status ?? "due";
-                    const normalizedStatus =
-                        status === "partial_paid" ? "partial" : status;
+                    const normalizedStatus = status === "partial_paid" ? "partial" : status;
                     const statusLabelKey = `invoice.filter.status_${normalizedStatus}`;
                     const type = STATUS_BADGE_TYPE[status] ?? "decline";
                     return (

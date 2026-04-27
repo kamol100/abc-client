@@ -42,7 +42,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
       name: "auto_client_mikrotik_status",
       label: { labelText: "network.auto_client_mikrotik_status.label" },
       direction: "row",
-      defaultValue: "0",
+      defaultValue: "1",
       options: toggleOptions,
     },
     {
@@ -50,7 +50,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
       name: "auto_sync_status",
       label: { labelText: "network.auto_sync_status.label" },
       direction: "row",
-      defaultValue: "0",
+      defaultValue: "1",
       options: toggleOptions,
     },
     {
@@ -58,7 +58,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
       name: "graph_status",
       label: { labelText: "network.graph_status.label" },
       direction: "row",
-      defaultValue: "0",
+      defaultValue: "1",
       options: toggleOptions,
     },
     {

@@ -46,9 +46,9 @@ export const NetworkFormSchema = z.object({
     .optional()
     .or(z.literal("")),
   web_port: z.coerce.number().optional().nullable(),
-  auto_client_mikrotik_status: z.coerce.number().min(0).max(1),
-  auto_sync_status: z.coerce.number().min(0).max(1),
-  graph_status: z.coerce.number().min(0).max(1),
+  auto_client_mikrotik_status: z.coerce.number().min(0).max(1).default(1),
+  auto_sync_status: z.coerce.number().min(0).max(1).default(1),
+  graph_status: z.coerce.number().min(0).max(1).default(1),
   notes: z.string().optional().nullable(),
 });
 
