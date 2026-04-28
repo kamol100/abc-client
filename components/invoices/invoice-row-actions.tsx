@@ -24,8 +24,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
     const [printOpen, setPrintOpen] = useState(false);
     const [invoiceDue, setInvoiceDue] = useState<InvoiceDueItem[]>([]);
     const [loading, setLoading] = useState(false);
-    const normalizedStatus =
-        invoice.status === "partial_paid" ? "partial" : invoice.status;
+    const normalizedStatus = invoice.status === "partial_paid" ? "partial" : invoice.status;
 
     const canEdit =
         hasPermission("invoices.edit") &&
@@ -59,7 +58,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
                         onClick={async () => {
                             setLoading(true);
                             const data = await useFetch({
-                                url: `/client-invoice-due/${invoice?.client?.uuid}`,
+                                url: `/invoice-due/${invoice?.id}`,
                             });
                             const invoicesDue = await data?.data?.invoiceDue;
                             setInvoiceDue(invoicesDue);

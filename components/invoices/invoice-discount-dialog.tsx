@@ -13,12 +13,13 @@ import { formatMoney, toNumber } from "@/lib/helper/helper";
 import {
     InvoiceDiscountInput,
     InvoiceDiscountSchema,
+    type InvoiceTypeRef,
 } from "@/components/invoices/invoice-type";
 
 type InvoiceDiscountTarget = {
     uuid: string;
     trackID?: string | null;
-    invoice_type?: string | null;
+    invoice_type?: string | InvoiceTypeRef | null;
     total_amount?: number | null;
     discount?: number | null;
     line_total_discount?: number | null;
@@ -155,7 +156,13 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                             <p className="text-muted-foreground">
                                 {t("invoice.discount_dialog.summary.type")}
                             </p>
-                            <p className="font-medium">{invoice.invoice_type || "—"}</p>
+                            <p className="font-medium">
+                                {invoice.invoice_type == null
+                                    ? "—"
+                                    : typeof invoice.invoice_type === "string"
+                                      ? invoice.invoice_type || "—"
+                                      : invoice.invoice_type.name || "—"}
+                            </p>
                         </div>
                         <div>
                             <p className="text-muted-foreground">

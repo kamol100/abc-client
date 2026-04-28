@@ -42,7 +42,7 @@ const ZoneRefSchema = z.object({
     name: z.string().nullable().optional(),
 });
 
-const InvoiceTypeRefSchema = z.object({
+export const InvoiceTypeRefSchema = z.object({
     id: z.coerce.number(),
     name: z.string().nullable().optional(),
 });

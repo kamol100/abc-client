@@ -22,7 +22,7 @@ const ResellerForm: FC<Props> = ({
     const router = useRouter();
 
     return (
-        <div className="w-full md:w-3/4 mx-auto flex flex-col flex-1 min-h-0">
+        <div className="w-full">
             <div className="mr-3">
                 <AccordionFormBuilder
                     formSchema={ResellerFormFieldSchema({ mode })}

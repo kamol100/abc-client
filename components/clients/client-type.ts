@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { InvoiceTypeRefSchema } from "@/components/invoices/invoice-type";
 
 const padDatePart = (value: number): string => value.toString().padStart(2, "0");
 
@@ -34,7 +35,7 @@ const RefSchema = z.object({
 export const InvoiceDueItemSchema = z.object({
     uuid: z.string(),
     trackID: z.string().optional(),
-    invoice_type: z.string().optional(),
+    invoice_type: InvoiceTypeRefSchema.nullable().optional(),
     amount: z.coerce.number().optional(),
     after_discount_amount: z.coerce.number().default(0),
     discount: z.coerce.number().default(0),

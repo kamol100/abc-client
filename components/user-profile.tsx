@@ -40,6 +40,8 @@ export function UserProfile() {
         window.location.assign(loginUrl);
     };
 
+    console.log(profile, 'profile');
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

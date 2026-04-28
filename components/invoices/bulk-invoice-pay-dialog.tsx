@@ -222,8 +222,9 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                             >
                                                 <p className="text-sm truncate font-medium">
                                                     {item.trackID}
-                                                    {item.invoice_type &&
-                                                        ` - ${item.invoice_type}`}
+                                                    {item.invoice_type?.name
+                                                        ? ` - ${item.invoice_type.name}`
+                                                        : null}
                                                 </p>
                                                 <p className="text-xs text-muted-foreground truncate">
                                                     {t(
