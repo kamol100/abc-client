@@ -26,6 +26,18 @@ export interface Company {
   domain?: string;
 }
 
+export interface ProfileReseller {
+  uuid: string;
+  name: string;
+  logo?: string | null;
+  avatar?: string | null;
+  email?: string | null;
+  company?: string | null;
+  company_phone?: string | null;
+  company_address?: string | null;
+  status?: number;
+}
+
 export interface Profile {
   id: string;
   phone?: number | string;
@@ -35,7 +47,8 @@ export interface Profile {
   current_address?: string | null;
   avatar?: string | null;
   staff?: Staff | null;
-  company?: Company | null
+  company?: Company | null;
+  reseller?: ProfileReseller | null;
 }
 
 export type AppPermission = string;

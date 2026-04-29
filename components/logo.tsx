@@ -23,7 +23,8 @@ const Logo: FC = () => {
   const profileCtx = useSafeProfile();
   const [logoFailed, setLogoFailed] = useState(false);
 
-  const logoUrl = resolveApiAssetUrl(profileCtx?.profile?.company?.logo);
+  const logo = profileCtx?.profile?.reseller?.logo || profileCtx?.profile?.company?.logo;
+  const logoUrl = resolveApiAssetUrl(logo);
 
   useEffect(() => {
     setLogoFailed(false);

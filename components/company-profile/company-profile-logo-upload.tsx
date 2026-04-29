@@ -94,11 +94,13 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
       const baseUrl = (uploadedPath ?? value ?? "").split("?")[0];
       const cacheBustedUrl = baseUrl ? `${baseUrl}?t=${Date.now()}` : undefined;
 
-      if (profile.company) {
-        const companyUpdate = type === "logo"
-          ? { logo: cacheBustedUrl }
-          : { favicon: cacheBustedUrl };
-        updateProfile({ company: { ...profile.company, ...companyUpdate } });
+      const imageUpdate = type === "logo"
+        ? { logo: cacheBustedUrl }
+        : { favicon: cacheBustedUrl };
+      if (scope === "reseller" && profile.reseller) {
+        updateProfile({ reseller: { ...profile.reseller, ...imageUpdate } });
+      } else if (scope === "company" && profile.company) {
+        updateProfile({ company: { ...profile.company, ...imageUpdate } });
       }
 
       setSelectedFile(null);
@@ -133,11 +135,13 @@ const CompanyProfileLogoUpload: FC<CompanyProfileLogoUploadProps> = ({
       queryClient.invalidateQueries({ queryKey: ["company-profile"] });
       toast.success(t(`company_profile.${type}.messages.delete_success`));
 
-      if (profile.company) {
-        const companyUpdate = type === "logo"
-          ? { logo: undefined }
-          : { favicon: undefined };
-        updateProfile({ company: { ...profile.company, ...companyUpdate } });
+      const imageUpdate = type === "logo"
+        ? { logo: undefined }
+        : { favicon: undefined };
+      if (scope === "reseller" && profile.reseller) {
+        updateProfile({ reseller: { ...profile.reseller, ...imageUpdate } });
+      } else if (scope === "company" && profile.company) {
+        updateProfile({ company: { ...profile.company, ...imageUpdate } });
       }
 
       setPreviewUrl(null);

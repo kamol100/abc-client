@@ -1,7 +1,6 @@
 "use client";
 
 import { FC } from "react";
-import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
@@ -12,29 +11,32 @@ import CompanyProfileForm from "@/components/company-profile/company-profile-for
 import CompanyProfileLogoUpload from "@/components/company-profile/company-profile-logo-upload";
 import { CompanyProfileRow } from "@/components/company-profile/company-profile-type";
 
-type SessionUser = {
-  reseller_id?: string | null;
-};
-
 type CompanyProfileClientProps = {
   companyId?: string;
+  resellerId?: string;
+  isReseller?: boolean;
 };
 
-const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
+const CompanyProfileClient: FC<CompanyProfileClientProps> = ({
+  companyId,
+  resellerId,
+  isReseller = false,
+}) => {
   const { t } = useTranslation();
   const { profile } = useProfile();
   const { hasPermission } = usePermissions();
-  const { data: session } = useSession();
 
   const canAccess = hasPermission("company-settings.access");
   const canEdit = hasPermission("company-settings.edit");
-  console.log(session)
-  const resolvedCompanyId = companyId ?? profile?.company?.uuid ?? "";
-  const isReseller = false;
+
+  // Route param takes priority; when absent, use the authenticated profile context.
+  const resolvedProfileId = isReseller
+    ? resellerId ?? profile?.reseller?.uuid ?? ""
+    : companyId ?? profile?.company?.uuid ?? "";
 
   const profileEndpoint = isReseller
-    ? `reseller/profile/${resolvedCompanyId}`
-    : `company/profile/${resolvedCompanyId}`;
+    ? `reseller/profile/${resolvedProfileId}`
+    : `company/profile/${resolvedProfileId}`;
 
   const {
     data: companyResponse,
@@ -42,28 +44,41 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
     isError,
     refetch,
   } = useApiQuery<ApiResponse<CompanyProfileRow>>({
-    queryKey: ["company-profile", resolvedCompanyId, isReseller ? "reseller" : "company"],
+    queryKey: [
+      "company-profile",
+      resolvedProfileId,
+      isReseller ? "reseller" : "company",
+    ],
     url: profileEndpoint,
     pagination: false,
-    enabled: canAccess && Boolean(resolvedCompanyId),
+    enabled: canAccess && Boolean(resolvedProfileId),
   });
+
+  const pageTitle = isReseller
+    ? t("reseller_profile.title")
+    : t("company_profile.title");
+  const noAccessMessage = isReseller
+    ? t("reseller_profile.messages.no_access")
+    : t("company_profile.messages.no_access");
+  const notFoundMessage = isReseller
+    ? t("reseller_profile.messages.not_found")
+    : t("company_profile.messages.company_not_found");
+  const failedToLoadMessage = isReseller
+    ? t("reseller_profile.messages.failed_to_load")
+    : t("company_profile.messages.failed_to_load");
 
   if (!canAccess) {
     return (
       <Card className="p-6">
-        <p className="text-sm text-destructive">
-          {t("company_profile.messages.no_access")}
-        </p>
+        <p className="text-sm text-destructive">{noAccessMessage}</p>
       </Card>
     );
   }
 
-  if (!resolvedCompanyId) {
+  if (!resolvedProfileId) {
     return (
       <Card className="p-6">
-        <p className="text-sm text-muted-foreground">
-          {t("company_profile.messages.company_not_found")}
-        </p>
+        <p className="text-sm text-muted-foreground">{notFoundMessage}</p>
       </Card>
     );
   }
@@ -81,9 +96,7 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
   if (isError) {
     return (
       <Card className="p-6 space-y-3">
-        <p className="text-sm text-destructive">
-          {t("company_profile.messages.failed_to_load")}
-        </p>
+        <p className="text-sm text-destructive">{failedToLoadMessage}</p>
         <MyButton
           type="button"
           action="reset"
@@ -95,8 +108,20 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
   }
 
   const company = companyResponse?.data;
-  if (!company) return null;
-  const uploadCompanyId = String(company.id ?? resolvedCompanyId);
+  if (!company) {
+    return (
+      <Card className="p-6 space-y-3">
+        <p className="text-sm text-muted-foreground">{notFoundMessage}</p>
+        <MyButton
+          type="button"
+          action="reset"
+          title="company_profile.actions.retry"
+          onClick={() => refetch()}
+        />
+      </Card>
+    );
+  }
+  const uploadCompanyId = String(company.id ?? resolvedProfileId);
 
   const normalizedStatus = String(company.status ?? "").toLowerCase();
   const isActive =
@@ -112,12 +137,12 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
     <div className="space-y-4 pr-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-lg sm:text-xl font-semibold">
-          {t("company_profile.title")}
+          {pageTitle}
         </h1>
         <div className="flex items-center gap-2">
           {canEdit && (
             <CompanyProfileForm
-              companyId={resolvedCompanyId}
+              companyId={resolvedProfileId}
               isReseller={isReseller}
               company={company}
             />
@@ -189,12 +214,6 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({ companyId }) => {
               scope={isReseller ? "reseller" : "company"}
               value={company.logo}
             />
-            {/* <CompanyProfileLogoUpload
-              type="favicon"
-              companyId={uploadCompanyId}
-              scope={isReseller ? "reseller" : "company"}
-              value={company.favicon}
-            /> */}
           </div>
         )}
       </Card>

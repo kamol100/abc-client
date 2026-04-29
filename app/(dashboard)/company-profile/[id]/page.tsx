@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CompanyProfileClient from "@/components/company-profile/company-profile-client";
+import CompanyProfileClient from "@/components/company-profile/company-profile";
 import { t } from "@/lib/i18n/server";
 
 type Props = {

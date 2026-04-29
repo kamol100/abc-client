@@ -3,7 +3,7 @@
 import { DashboardBreadcrumb } from "@/app/(dashboard)/dashboard-breadcrumb";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import ThemeCustomize from "@/components/theme-customizer";
-import { UserProfile } from "@/components/user-profile";
+import { Profile } from "@/components/profiles/profile";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 import { FC } from "react";
@@ -19,7 +19,7 @@ export const TopNavbar: FC = () => {
       <div className="flex items-center gap-2">
         <LanguageSwitcher />
         <ThemeCustomize />
-        <UserProfile />
+        <Profile />
       </div>
     </header>
   );

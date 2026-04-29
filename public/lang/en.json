@@ -1224,6 +1224,16 @@
             "no_access": "You do not have permission to access company profile."
         }
     },
+    "reseller_profile": {
+        "title": "Reseller Profile",
+        "edit_title": "Edit Reseller Profile",
+        "messages": {
+            "update_success": "Reseller profile updated successfully.",
+            "failed_to_load": "Failed to load reseller profile.",
+            "not_found": "Reseller profile not found.",
+            "no_access": "You do not have permission to access reseller profile."
+        }
+    },
     "company_wallet": {
         "recharge_title": "Recharge Company Wallet",
         "recharge_action": "Recharge wallet",
@@ -4020,6 +4030,10 @@
         "company_profile": {
             "title": "Company Profile"
         },
+        "reseller_profile": {
+            "title": "Reseller Profile",
+            "description": "View and manage reseller profile"
+        },
         "mikrotik_sync": {
             "title": "Mikrotik Sync",
             "import": {
@@ -4395,6 +4409,7 @@
         "aria_label": "User menu",
         "menu": "User menu",
         "dashboard": "Dashboard",
+        "reseller_profile": "Reseller Profile",
         "company_profile": "Company Profile",
         "settings": "Settings",
         "sign_out": "Sign out"

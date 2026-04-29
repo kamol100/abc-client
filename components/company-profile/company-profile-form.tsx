@@ -28,6 +28,12 @@ const CompanyProfileForm: FC<CompanyProfileFormProps> = ({
   const endpoint = isReseller
     ? `reseller-company-profile/${companyId}`
     : `company-profile/${company.id ?? companyId}`;
+  const dialogTitle = isReseller
+    ? "reseller_profile.edit_title"
+    : "company_profile.edit_title";
+  const successMessage = isReseller
+    ? "reseller_profile.messages.update_success"
+    : "company_profile.messages.update_success";
 
   const defaultValues = useMemo<CompanyProfileFormInput>(
     () => ({
@@ -44,7 +50,7 @@ const CompanyProfileForm: FC<CompanyProfileFormProps> = ({
       open={open}
       onOpenChange={setOpen}
       size="lg"
-      title="company_profile.edit_title"
+      title={dialogTitle}
       trigger={
         <MyButton action="edit" title="company_profile.actions.edit" />
       }
@@ -58,7 +64,7 @@ const CompanyProfileForm: FC<CompanyProfileFormProps> = ({
         schema={CompanyProfileFormSchema}
         method="PUT"
         queryKey="company-profile"
-        successMessage="company_profile.messages.update_success"
+        successMessage={successMessage}
       />
     </MyDialog>
   );
