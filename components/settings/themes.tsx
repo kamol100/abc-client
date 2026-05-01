@@ -4,9 +4,9 @@ import { Checked } from "@/components/icon";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { THEME_RADII, useThemeSettings } from "@/context/theme-data-provider";
+import { useTheme } from "@/context/theme-provider";
 import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius } from "@/types/theme-types";
 import { ArrowLeft, ArrowRight, Maximize, Minimize, Moon, Square, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
 const THEME_COLOR_OPTIONS: { value: ThemeColor; label: string; primary: string }[] = [
   { value: "green", label: "Green", primary: "142.1 76.2% 36.3%" },

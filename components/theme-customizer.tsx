@@ -21,7 +21,7 @@ import {
   Square,
   Sun,
 } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/context/theme-provider";
 import { useTranslation } from "react-i18next";
 
 const THEME_COLOR_OPTIONS: { value: ThemeColor; primary: string }[] = [

@@ -1262,6 +1262,10 @@
         }
     },
     "client": {
+        "any_search": {
+            "label": "Any",
+            "placeholder": "Search by name, phone, or PPPoE ID"
+        },
         "name": {
             "label": "Client Name",
             "placeholder": "Enter client name",

@@ -4,22 +4,8 @@ export const ClientFilterSchema = (): FieldConfig[] => {
     return [
         {
             type: "text",
-            name: "pppoe_username",
-            placeholder: "client.pppoe_username.placeholder",
-            permission: true,
-            watchForFilter: true,
-        },
-        {
-            type: "text",
-            name: "name",
-            placeholder: "client.name.placeholder",
-            permission: true,
-            watchForFilter: true,
-        },
-        {
-            type: "text",
-            name: "phone",
-            placeholder: "client.phone.placeholder",
+            name: "any",
+            placeholder: "client.any_search.placeholder",
             permission: true,
             watchForFilter: true,
         },

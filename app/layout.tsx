@@ -110,10 +110,8 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider
-          attribute={"class"}
           defaultTheme="light"
           enableSystem
-          disableTransitionOnChange
         >
           <AuthProvider>
             <ServiceWorkerRegistration />
