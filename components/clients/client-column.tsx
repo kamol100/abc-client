@@ -16,6 +16,17 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
 
     return [
         {
+            id: "sid",
+            accessorKey: "sid",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="client.table.sid" />
+            ),
+            cell: ({ row }) => <span className="text-sm font-semibold">{row.original.sid}</span>,
+            size: 50,
+            enableSorting: false,
+            enableHiding: false,
+        },
+        {
             id: "id_name_phone",
             accessorKey: "name",
             header: ({ column }) => (

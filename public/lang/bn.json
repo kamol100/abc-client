@@ -1442,6 +1442,7 @@
         },
         "table": {
             "id_name_phone": "আইডি / নাম / ফোন",
+            "sid": "আইডি",
             "zone_address_network": "জোন / ঠিকানা / নেটওয়ার্ক",
             "connection_package": "কানেকশন / প্যাকেজ",
             "bill_payment": "বিল / পেমেন্ট",

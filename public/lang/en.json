@@ -1442,6 +1442,7 @@
         },
         "table": {
             "id_name_phone": "ID / Name / Phone",
+            "sid": "SID",
             "zone_address_network": "Zone / Address / Network",
             "connection_package": "Connection / Package",
             "bill_payment": "Bill / Payment",

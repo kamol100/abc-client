@@ -48,6 +48,7 @@ export type InvoiceDueItem = z.infer<typeof InvoiceDueItemSchema>;
 
 export const ClientRowSchema = z.object({
     id: z.coerce.number(),
+    sid: z.string().nullable().optional(),
     name: z.string(),
     client_id: z.string().nullable().optional(),
     phone: z.string().nullable().optional(),
