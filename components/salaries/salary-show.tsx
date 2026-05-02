@@ -74,7 +74,7 @@ const SalaryShow: FC<Props> = ({ salary }) => {
             </div>
             <div>
               <span className="text-muted-foreground">{t("common.total_amount")}</span>
-              <p className="text-xl font-bold text-primary">
+              <p className="text-xl font-bold text-foreground">
                 ৳{formatMoney(salary.amount)}
               </p>
             </div>

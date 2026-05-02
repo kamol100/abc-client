@@ -47,7 +47,7 @@ export default function DashboardSectionCard({
         <div className="flex h-full flex-col animate-in fade-in duration-300">
           <div className="flex flex-1 flex-col p-4">
             <div className="flex items-start justify-between gap-4 min-h-8">
-              <p className="text-xl font-bold text-primary">{t(titleKey)}</p>
+              <p className="text-xl font-bold text-foreground">{t(titleKey)}</p>
               {filter && <div className="-mt-1 -mr-1">{filter}</div>}
             </div>
 

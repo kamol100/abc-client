@@ -62,7 +62,7 @@ export function DashboardMetricCard({
     <Card className="flex h-full flex-col overflow-hidden transition-all hover:shadow-sm">
       <div className="flex flex-1 flex-col p-4 animate-in fade-in duration-300">
         <div className={cn("flex items-center justify-between gap-3", children && "pb-2")}>
-          <div className="text-xl font-bold text-primary">{title}</div>
+          <div className="text-xl font-bold text-foreground">{title}</div>
           <div className="flex items-center gap-2">
             {value !== undefined && (
               <div className="text-xl font-bold tracking-tight text-foreground">

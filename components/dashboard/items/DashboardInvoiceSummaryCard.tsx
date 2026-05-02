@@ -56,7 +56,7 @@ export default function DashboardInvoiceSummaryCard({ data, isLoading, isRefresh
         <div className="flex h-full flex-col animate-in fade-in duration-300">
           <div className="flex flex-1 flex-col p-4">
             <div className="flex items-center justify-between gap-4 min-h-8">
-              <p className="text-xl font-bold text-primary">
+              <p className="text-xl font-bold text-foreground">
                 {t(titleKey)}
               </p>
               <p className="text-xl font-bold tracking-tight text-foreground">
