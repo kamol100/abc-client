@@ -200,6 +200,18 @@ export function isValidHttpDomainUrl(value: string): boolean {
     return isIsptikComHost(host);
 }
 
+export function hostnameHasTenantSubdomain(hostname: string | null | undefined): boolean {
+    if (!hostname) return false;
+    const host = hostname.toLowerCase().trim();
+    if (host === "localhost" || /^127\.\d+\.\d+\.\d+$/.test(host)) return false;
+    if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(host)) return false;
+
+    const labels = host.split(".").filter(Boolean);
+    if (labels.length < 3) return false;
+    if (labels.length === 3 && labels[0] === "www") return false;
+    return true;
+}
+
 export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: number }> {
     return new Promise((resolve, reject) => {
         if (!navigator?.geolocation) {
