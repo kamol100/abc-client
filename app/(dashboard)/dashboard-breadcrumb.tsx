@@ -82,9 +82,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/permissions": "menu.role_permission.permissions.title",
   "/settings/general": "menu.settings.general.title",
   "/settings/sms": "menu.settings.sms.title",
-  "/settings/voice-call": "menu.settings.voice_call.title",
   "/settings/map": "menu.settings.map.title",
-  "/settings/payments": "menu.settings.payments.title",
   "/settings/telegram": "menu.settings.telegram.title",
 };
 
