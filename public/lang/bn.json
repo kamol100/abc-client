@@ -4149,6 +4149,15 @@
             "reminder_day_15": "ডেডলাইনের ১৫ দিন আগে"
         },
         "fields": {
+            "pid_prefix": {
+                "label": "পেমেন্ট আইডি প্রিফিক্স"
+            },
+            "client_view_open_on_new_tab": {
+                "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"
+            },
+            "client_edit_open_on_new_tab": {
+                "label": "ক্লায়েন্ট এডিট ওপেন নতুন ট্যাবে"
+            },
             "invoice_due_reminder_voice_campaign_name": {
                 "label": "ভয়েস ক্যাম্পেইন নেম",
                 "placeholder": "ভয়েস ক্যাম্পেইন নেম দিন"

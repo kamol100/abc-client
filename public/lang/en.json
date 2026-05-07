@@ -4149,6 +4149,15 @@
             "reminder_day_15": "15 Days before deadline"
         },
         "fields": {
+            "pid_prefix": {
+                "label": "Payment ID Prefix"
+            },
+            "client_view_open_on_new_tab": {
+                "label": "Client view open on new tab"
+            },
+            "client_edit_open_on_new_tab": {
+                "label": "Client edit open on new tab"
+            },
             "invoice_due_reminder_voice_campaign_name": {
                 "label": "Voice Campaign Name",
                 "placeholder": "Enter voice campaign name"

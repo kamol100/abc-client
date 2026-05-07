@@ -12,7 +12,7 @@ import {
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Row } from "@tanstack/react-table";
 import {
@@ -41,6 +41,7 @@ interface ClientRowActionsProps {
 
 const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const { t } = useTranslation();
+    const { settings: { client_view_open_on_new_tab, client_edit_open_on_new_tab } } = useSettings();
     const { hasPermission } = usePermissions();
     const client = row.original;
     const [resetOpen, setResetOpen] = useState(false);
@@ -74,7 +75,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             <DataTableRowActions row={row}>
                 {hasPermission("clients.show") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link href={`/clients/view/${client.id}`}>
+                        <Link target={client_view_open_on_new_tab ? "_blank" : "_self"} href={`/clients/view/${client.id}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             {t("client.actions.view")}
                         </Link>
@@ -82,7 +83,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 )}
                 {hasPermission("clients.edit") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link href={`/clients/edit/${client.id}`}>
+                        <Link target={client_edit_open_on_new_tab ? "_blank" : "_self"} href={`/clients/edit/${client.id}`}>
                             <Edit className="mr-2 h-4 w-4" />
                             {t("client.actions.edit")}
                         </Link>
