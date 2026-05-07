@@ -9,9 +9,7 @@ import type {
 export type SettingsSectionKey =
     | "general"
     | "sms"
-    | "voice_call"
     | "map"
-    | "payments"
     | "telegram";
 
 type SettingsOptionConfig = {
@@ -48,8 +46,7 @@ export type SettingsSectionSchema = {
 };
 
 const SMS_CHANNEL_OPTIONS: SettingsOptionConfig[] = [
-    { value: "sms", label: "settings.options.reminder_channel_sms" },
-    { value: "voice", label: "settings.options.reminder_channel_voice" },
+    { value: "sms", label: "settings.options.reminder_channel_sms" }
 ];
 
 const SMS_REMINDER_DAY_OPTIONS: SettingsOptionConfig[] = Array.from(
@@ -107,15 +104,6 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "select", key: "sms_invoice_reminder_before_day", options: SMS_REMINDER_DAY_OPTIONS },
         ],
     },
-    voice_call: {
-        title: "settings.sections.voice_call.title",
-        description: "settings.sections.voice_call.description",
-        fields: [
-            { kind: "text", key: "voice_call_api" },
-            { kind: "text", key: "voice_call_api_key" },
-            { kind: "text", key: "voice_call_campaign_id" },
-        ],
-    },
     map: {
         title: "settings.sections.map.title",
         description: "settings.sections.map.description",
@@ -123,21 +111,6 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "gmap_api" },
             { kind: "text", key: "lat", inputType: "number" },
             { kind: "text", key: "lon", inputType: "number" },
-        ],
-    },
-    payments: {
-        title: "settings.sections.payments.title",
-        description: "settings.sections.payments.description",
-        fields: [
-            { kind: "text", key: "bkash_username" },
-            { kind: "text", key: "bkash_password", inputType: "password" },
-            { kind: "text", key: "bkash_app_key" },
-            { kind: "text", key: "bkash_app_secret", inputType: "password" },
-            { kind: "text", key: "bkash_token_url" },
-            { kind: "text", key: "bkash_create_url" },
-            { kind: "text", key: "bkash_execute_url" },
-            { kind: "text", key: "bkash_refresh_token_url" },
-            { kind: "text", key: "bkash_search_transaction_url" },
         ],
     },
     telegram: {

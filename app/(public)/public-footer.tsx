@@ -8,7 +8,7 @@ export default function PublicFooter() {
   const { t } = useTranslation();
 
   return (
-    <footer className="border-t bg-background">
+    <footer className="bg-background">
       <div className="mx-auto flex flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 max-w-7xl">
         <div className="space-y-0.5 text-xs text-muted-foreground">
           <div className="truncate font-medium">{company.name ?? ""}</div>

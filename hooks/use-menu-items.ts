@@ -369,9 +369,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       items: [
         { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
         { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
-        { title: t("menu.settings.voice_call.title"), url: "/settings/voice-call", permission: "company-settings.access" },
         { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
-        { title: t("menu.settings.payments.title"), url: "/settings/payments", permission: "company-settings.access" },
         { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
       ],
     },
