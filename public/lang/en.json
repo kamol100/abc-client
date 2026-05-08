@@ -1409,6 +1409,10 @@
             "confirm": "Select a new network package for this client.",
             "success": "Package changed successfully"
         },
+        "sms_dialog": {
+            "title": "Send SMS",
+            "description": "Send an SMS to this client only."
+        },
         "delete_mikrotik": "Delete from Mikrotik?",
         "view_title": "Client Details",
         "basic_view": {

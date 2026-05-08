@@ -128,6 +128,7 @@ type BuildPayloadOptions = {
   filterValues: SmsSentClientFilterValues;
   smsCount: number;
   selectedClientIds?: number[];
+  preferClientIdsForTemplate?: boolean;
 };
 
 export function buildSmsSentPayload({
@@ -135,10 +136,13 @@ export function buildSmsSentPayload({
   filterValues,
   smsCount,
   selectedClientIds,
+  preferClientIdsForTemplate = false,
 }: BuildPayloadOptions): SmsSentPayload {
   const hasTemplate =
     formValues.sms_template_id !== null && formValues.sms_template_id !== undefined;
-  const phoneNumber = formValues.phone?.trim() || null;
+  const shouldUseClientIdsForTemplate =
+    preferClientIdsForTemplate && hasTemplate && !!selectedClientIds?.length;
+  const phoneNumber = shouldUseClientIdsForTemplate ? null : formValues.phone?.trim() || null;
   const smsBody = formValues.sms_body.trim();
   const clientFilter = buildSmsSentClientParams(filterValues);
 

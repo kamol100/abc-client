@@ -27,8 +27,8 @@ import {
   buildSmsSentClientParams,
   buildSmsSentPayload,
 } from "@/components/sms-sent/sms-sent-type";
-import DisplayCount from "../display-count";
-import MyWallet from "../wallets/my-wallet";
+import DisplayCount from "@/components/display-count";
+import MyWallet from "@/components/wallets/my-wallet";
 
 const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
   pppoe_username: "",
@@ -39,20 +39,40 @@ const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
   client_status: "all",
 };
 
-type SmsSentFormProps = {
+type SmsSentFormPageProps = {
   phone?: string;
+  mode?: "page";
+  clientId?: never;
+  onSent?: () => void;
 };
 
-const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
+type SmsSentFormSingleClientProps = {
+  phone: string;
+  mode: "singleClient";
+  clientId: number;
+  onSent?: () => void;
+};
+
+type SmsSentFormProps = SmsSentFormPageProps | SmsSentFormSingleClientProps;
+
+const createDefaultSendFormValues = (phone?: string): SmsSentFormInput => ({
+  phone: phone ?? "",
+  sms_template_id: null,
+  sms_body: "",
+});
+
+const SmsSentForm: FC<SmsSentFormProps> = ({
+  phone,
+  mode = "page",
+  clientId,
+  onSent,
+}) => {
   const { t } = useTranslation();
+  const isSingleClientMode = mode === "singleClient";
 
   const sendForm = useForm<SmsSentFormInput>({
     resolver: zodResolver(SmsSentFormSchema),
-    defaultValues: {
-      phone: phone ?? "",
-      sms_template_id: null,
-      sms_body: "",
-    },
+    defaultValues: createDefaultSendFormValues(phone),
   });
 
   const filterForm = useForm<SmsSentClientFilterValues>({
@@ -90,9 +110,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
   });
 
   useEffect(() => {
-    if (phone) {
-      sendForm.setValue("phone", phone, { shouldValidate: true });
-    }
+    sendForm.reset(createDefaultSendFormValues(phone));
+    setHydratedTemplateId(null);
+    setBulkSmsCount(0);
+    setSelectedClientIds([]);
   }, [phone, sendForm]);
 
   useEffect(() => {
@@ -121,17 +142,28 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
 
   const clientParams = useMemo(
     () =>
-      hasTemplateSelected ? buildSmsSentClientParams(appliedFilters) : undefined,
-    [appliedFilters, hasTemplateSelected]
+      hasTemplateSelected && !isSingleClientMode
+        ? buildSmsSentClientParams(appliedFilters)
+        : undefined,
+    [appliedFilters, hasTemplateSelected, isSingleClientMode]
   );
 
-  const smsCount = hasTemplateSelected
-    ? selectedClientIds.length > 0
-      ? selectedClientIds.length
-      : bulkSmsCount
-    : phoneNumber?.trim()
-      ? 1
-      : 0;
+  const templateSelectedClientIds =
+    isSingleClientMode && clientId !== undefined ? [clientId] : selectedClientIds;
+
+  const smsCount = isSingleClientMode
+    ? hasTemplateSelected
+      ? templateSelectedClientIds.length
+      : phoneNumber?.trim()
+        ? 1
+        : 0
+    : hasTemplateSelected
+      ? selectedClientIds.length > 0
+        ? selectedClientIds.length
+        : bulkSmsCount
+      : phoneNumber?.trim()
+        ? 1
+        : 0;
 
   const { mutateAsync: sendSms, isPending } = useApiMutation<unknown, SmsSentPayload>({
     url: "sms-store",
@@ -184,20 +216,21 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
       formValues: normalizedForm,
       filterValues: appliedFilters,
       smsCount,
-      selectedClientIds,
+      selectedClientIds: hasTemplateSelected ? templateSelectedClientIds : selectedClientIds,
+      preferClientIdsForTemplate: isSingleClientMode,
     });
+
+    console.log(payload);
 
     await sendSms(payload);
 
-    sendForm.reset({
-      phone: phone ?? "",
-      sms_template_id: null,
-      sms_body: "",
-    } as any);
+    sendForm.reset(createDefaultSendFormValues(phone));
     filterForm.reset(DEFAULT_FILTER_VALUES);
     setAppliedFilters(DEFAULT_FILTER_VALUES);
     setSelectedClientIds([]);
     setBulkSmsCount(0);
+    setHydratedTemplateId(null);
+    onSent?.();
   };
 
   const phoneField = sendFields.find((field) => field.name === "phone");
@@ -206,207 +239,208 @@ const SmsSentForm: FC<SmsSentFormProps> = ({ phone }) => {
 
   return (
     <div className="space-y-5 pr-3">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {!isSingleClientMode && (
           <div>
             <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
             <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
           </div>
-          <div>
-            <MyWallet />
-          </div>
+        )}
+        <div className={isSingleClientMode ? "ml-auto" : undefined}>
+          <MyWallet />
         </div>
-
-        <Form {...sendForm}>
-          <form
-            onSubmit={sendForm.handleSubmit(onSubmit)}
-            className="space-y-4 rounded-lg border p-4 md:p-5"
-          >
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {phoneField?.type === "text" && (
-                <InputField
-                  name={phoneField.name}
-                  label={phoneField.label}
-                  placeholder={phoneField.placeholder}
-                  type="text"
-                />
-              )}
-
-              {templateField?.type === "dropdown" && (
-                <SelectDropdown
-                  name={templateField.name}
-                  label={templateField.label}
-                  placeholder={templateField.placeholder}
-                  api={templateField.api}
-                  isClearable={templateField.isClearable}
-                  onValueChange={(value) => {
-                    if (value === null) {
-                      setHydratedTemplateId(null);
-                    }
-                  }}
-                />
-              )}
-            </div>
-
-            {bodyField?.type === "textarea" && (
-              <TextareaField
-                name={bodyField.name}
-                label={bodyField.label}
-                placeholder={bodyField.placeholder}
-                rows={bodyField.rows}
+      </div>
+      <Form {...sendForm}>
+        <form
+          onSubmit={sendForm.handleSubmit(onSubmit)}
+          className="space-y-4 rounded-lg border p-4 md:p-5"
+        >
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {phoneField?.type === "text" && (
+              <InputField
+                name={phoneField.name}
+                label={phoneField.label}
+                placeholder={phoneField.placeholder}
+                type="text"
               />
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  {t("sms_sent.sms_count.label")}:
-                </span>
-                <span className="text-base font-semibold tabular-nums">
-                  <DisplayCount
-                    amount={smsCount}
-                    animate
-                  />
-                </span>
-              </div>
+            {templateField?.type === "dropdown" && (
+              <SelectDropdown
+                name={templateField.name}
+                label={templateField.label}
+                placeholder={templateField.placeholder}
+                api={templateField.api}
+                isClearable={templateField.isClearable}
+                onValueChange={(value) => {
+                  if (value === null) {
+                    setHydratedTemplateId(null);
+                  }
+                }}
+              />
+            )}
+          </div>
 
-              {smsCount > 0 ? (
+          {bodyField?.type === "textarea" && (
+            <TextareaField
+              name={bodyField.name}
+              label={bodyField.label}
+              placeholder={bodyField.placeholder}
+              rows={bodyField.rows}
+            />
+          )}
+
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                {t("sms_sent.sms_count.label")}:
+              </span>
+              <span className="text-base font-semibold tabular-nums">
+                <DisplayCount
+                  amount={smsCount}
+                  animate
+                />
+              </span>
+            </div>
+
+            {smsCount > 0 ? (
+              <MyButton
+                action="save"
+                type="submit"
+                variant="default"
+                size="default"
+                loading={isPending}
+                title={t("sms_sent.send")}
+              />
+            ) : (
+              <MyTooltip content="sms_sent.sms_count.zero_tooltip">
                 <MyButton
                   action="save"
-                  type="submit"
+                  type="button"
                   variant="default"
                   size="default"
-                  loading={isPending}
+                  disabled
                   title={t("sms_sent.send")}
                 />
-              ) : (
-                <MyTooltip content="sms_sent.sms_count.zero_tooltip">
+              </MyTooltip>
+            )}
+          </div>
+        </form>
+      </Form>
+
+      {hasTemplateSelected && !isSingleClientMode && (
+        <div className="space-y-4 rounded-lg border p-4 md:p-5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
+              <p className="text-sm text-muted-foreground">
+                {t("sms_sent.client_list.description")}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                {t("sms_sent.sort_option.label")}:
+              </span>
+
+              <MyButton
+                type="button"
+                icon={false}
+                size="sm"
+                variant={appliedFilters.client_status === "active" ? "default" : "outline"}
+                title={t("sms_sent.sort_option.active_clients")}
+                onClick={() => handleStatusChange("active")}
+              />
+
+              <MyButton
+                type="button"
+                icon={false}
+                size="sm"
+                variant={appliedFilters.client_status === "inactive" ? "default" : "outline"}
+                title={t("sms_sent.sort_option.inactive_clients")}
+                onClick={() => handleStatusChange("inactive")}
+              />
+
+              <MyTooltip content="sms_sent.sort_option.all_clients_tooltip" className="max-w-xs text-sm">
+                <span className="inline-flex items-center gap-1">
                   <MyButton
-                    action="save"
                     type="button"
-                    variant="default"
-                    size="default"
-                    disabled
-                    title={t("sms_sent.send")}
+                    icon={false}
+                    size="sm"
+                    variant={appliedFilters.client_status === "all" ? "default" : "outline"}
+                    title={t("sms_sent.sort_option.all_clients")}
+                    onClick={() => handleStatusChange("all")}
                   />
-                </MyTooltip>
-              )}
-            </div>
-          </form>
-        </Form>
-
-        {hasTemplateSelected && (
-          <div className="space-y-4 rounded-lg border p-4 md:p-5">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
-                <p className="text-sm text-muted-foreground">
-                  {t("sms_sent.client_list.description")}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  {t("sms_sent.sort_option.label")}:
+                  <Info className="h-4 w-4 text-muted-foreground" />
                 </span>
-
-                <MyButton
-                  type="button"
-                  icon={false}
-                  size="sm"
-                  variant={appliedFilters.client_status === "active" ? "default" : "outline"}
-                  title={t("sms_sent.sort_option.active_clients")}
-                  onClick={() => handleStatusChange("active")}
-                />
-
-                <MyButton
-                  type="button"
-                  icon={false}
-                  size="sm"
-                  variant={appliedFilters.client_status === "inactive" ? "default" : "outline"}
-                  title={t("sms_sent.sort_option.inactive_clients")}
-                  onClick={() => handleStatusChange("inactive")}
-                />
-
-                <MyTooltip content="sms_sent.sort_option.all_clients_tooltip" className="max-w-xs text-sm">
-                  <span className="inline-flex items-center gap-1">
-                    <MyButton
-                      type="button"
-                      icon={false}
-                      size="sm"
-                      variant={appliedFilters.client_status === "all" ? "default" : "outline"}
-                      title={t("sms_sent.sort_option.all_clients")}
-                      onClick={() => handleStatusChange("all")}
-                    />
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                  </span>
-                </MyTooltip>
-              </div>
+              </MyTooltip>
             </div>
+          </div>
 
-            <Form {...filterForm}>
-              <form
-                onSubmit={filterForm.handleSubmit(handleFilterSubmit)}
-                className="space-y-3"
-              >
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                  {filterFields.map((field) => {
-                    if (field.type === "dropdown") {
-                      return (
-                        <SelectDropdown
-                          key={field.name}
-                          name={field.name}
-                          label={field.label}
-                          placeholder={field.placeholder}
-                          api={field.api}
-                          options={field.options}
-                          isClearable={field.isClearable}
-                        />
-                      );
-                    }
-
+          <Form {...filterForm}>
+            <form
+              onSubmit={filterForm.handleSubmit(handleFilterSubmit)}
+              className="space-y-3"
+            >
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                {filterFields.map((field) => {
+                  if (field.type === "dropdown") {
                     return (
-                      <InputField
+                      <SelectDropdown
                         key={field.name}
                         name={field.name}
                         label={field.label}
                         placeholder={field.placeholder}
-                        type={field.type}
+                        api={field.api}
+                        options={field.options}
+                        isClearable={field.isClearable}
                       />
                     );
-                  })}
-                </div>
+                  }
 
-                <div className="flex flex-wrap items-center gap-2">
-                  <MyButton
-                    action="search"
-                    type="submit"
-                    variant="default"
-                    size="default"
-                    title={t("sms_sent.filters.apply")}
-                  />
-                  <MyButton
-                    action="cancel"
-                    type="button"
-                    variant="outline"
-                    size="default"
-                    title={t("sms_sent.filters.reset")}
-                    onClick={handleFilterReset}
-                  />
-                </div>
-              </form>
-            </Form>
+                  return (
+                    <InputField
+                      key={field.name}
+                      name={field.name}
+                      label={field.label}
+                      placeholder={field.placeholder}
+                      type={field.type}
+                    />
+                  );
+                })}
+              </div>
 
-            <SmsSentTable
-              enabled={hasTemplateSelected}
-              params={clientParams}
-              onTotalCountChange={setBulkSmsCount}
-              selectedClientIds={selectedClientIds}
-              onSelectRow={handleSelectRow}
-              onSelectAllCurrentPage={handleSelectAllCurrentPage}
-            />
-          </div>
-        )}
-      </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <MyButton
+                  action="search"
+                  type="submit"
+                  variant="default"
+                  size="default"
+                  title={t("sms_sent.filters.apply")}
+                />
+                <MyButton
+                  action="cancel"
+                  type="button"
+                  variant="outline"
+                  size="default"
+                  title={t("sms_sent.filters.reset")}
+                  onClick={handleFilterReset}
+                />
+              </div>
+            </form>
+          </Form>
+
+          <SmsSentTable
+            enabled={hasTemplateSelected}
+            params={clientParams}
+            onTotalCountChange={setBulkSmsCount}
+            selectedClientIds={selectedClientIds}
+            onSelectRow={handleSelectRow}
+            onSelectAllCurrentPage={handleSelectAllCurrentPage}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

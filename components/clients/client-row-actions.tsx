@@ -31,9 +31,10 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
-import ClientChangePackageDialog from "./client-change-package-dialog";
-import ClientSessionResetDialog from "./client-session-reset-dialog";
-import { ClientRow } from "./client-type";
+import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
+import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
+import ClientSmsDialog from "@/components/clients/client-sms";
+import { ClientRow } from "@/components/clients/client-type";
 
 interface ClientRowActionsProps {
     row: Row<ClientRow>;
@@ -47,6 +48,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
+    const [smsOpen, setSmsOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [mikrotikDelete, setMikrotikDelete] = useState(false);
 
@@ -112,11 +114,12 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
                 {hasPermission("sms-send.access") && client.phone && (
-                    <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link href={`/sms-send?phone=${client.phone}`}>
-                            <MessageSquare className="mr-2 h-4 w-4" />
-                            {t("client.actions.sms")}
-                        </Link>
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onSelect={() => setSmsOpen(true)}
+                    >
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        {t("client.actions.sms")}
                     </DropdownMenuItem>
                 )}
                 {hasPermission("tickets.create") && (
@@ -155,6 +158,12 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 invoiceDue={client.invoiceDue ?? []}
                 open={bulkPayOpen}
                 onOpenChange={setBulkPayOpen}
+            />
+
+            <ClientSmsDialog
+                client={client}
+                open={smsOpen}
+                onOpenChange={setSmsOpen}
             />
 
             <MyDialog

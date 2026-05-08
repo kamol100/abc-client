@@ -20,7 +20,7 @@ type SmsSentTableProps = {
 const SmsSentTable: FC<SmsSentTableProps> = ({
   enabled,
   params,
-  onTotalCountChange = () => {},
+  onTotalCountChange = () => { },
   selectedClientIds,
   onSelectRow,
   onSelectAllCurrentPage,
