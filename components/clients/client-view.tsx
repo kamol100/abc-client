@@ -1,12 +1,11 @@
 "use client";
 
 import { FC, useState } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import {
     ArrowLeft,
     CreditCard,
-    Edit,
-    FileText,
     MessageSquare,
     Package,
     Ticket,
@@ -14,16 +13,19 @@ import {
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
-import { ClientRow, RouterInfo } from "./client-type";
+import { ClientRow } from "@/components/clients/client-type";
 import { Badge } from "@/components/ui/badge";
-import ClientHistory from "./client-history";
-import ClientBasicView from "./basic-view";
-import ClientViewSkeleton from "./client-view-skeleton";
+import ClientHistory from "@/components/clients/client-history";
+import ClientBasicView from "@/components/clients/basic-view";
+import ClientViewSkeleton from "@/components/clients/client-view-skeleton";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
-import ClientChangePackageDialog from "./client-change-package-dialog";
-import TicketTable from "../tickets/ticket-table";
-import PaymentTable from "../payments/payment-table";
-import InvoiceTable from "../invoices/invoice-table";
+import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
+import TicketTable from "@/components/tickets/ticket-table";
+import PaymentTable from "@/components/payments/payment-table";
+import InvoiceTable from "@/components/invoices/invoice-table";
+
+const ClientSmsDialog = dynamic(() => import("@/components/clients/client-sms"), { ssr: false });
+const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
 
 interface Props {
     clientId: string;
@@ -34,7 +36,8 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const { hasPermission } = usePermissions();
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
-
+    const [smsOpen, setSmsOpen] = useState(false);
+    const [ticketOpen, setTicketOpen] = useState(false);
     const { data, isLoading } = useApiQuery<ApiResponse<ClientRow>>({
         queryKey: ["clients", "detail", clientId],
         url: `clients/${clientId}`,
@@ -50,7 +53,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
     if (!client) return null;
 
     const isActive = client.status === 1;
-    console.log(client, 'client', isActive);
+
     return (
         <div className="space-y-6 overflow-auto pr-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -71,12 +74,6 @@ const ClientView: FC<Props> = ({ clientId }) => {
                         <Package className="h-4 w-4" />
                         {t("client.actions.change_package")}
                     </MyButton>
-                    {hasPermission("invoices.access") && (
-                        <MyButton action="edit" icon={false} url={`/invoices/client/${client.id}`}>
-                            <FileText className="h-4 w-4" />
-                            {t("client.actions.invoice_history")}
-                        </MyButton>
-                    )}
                     {hasPermission("invoices.pay") && (
                         <MyButton action="edit" icon={false} onClick={() => setBulkPayOpen(true)}>
                             <CreditCard className="h-4 w-4" />
@@ -84,19 +81,30 @@ const ClientView: FC<Props> = ({ clientId }) => {
                         </MyButton>
                     )}
                     {hasPermission("tickets.create") && (
-                        <MyButton action="edit" icon={false} url={`/tickets?client_id=${client.id}`}>
+                        <MyButton action="edit" icon={false} onClick={() => setTicketOpen(true)}>
                             <Ticket className="h-4 w-4" />
                             {t("client.actions.tickets")}
                         </MyButton>
                     )}
                     {hasPermission("sms-send.access") && client.phone && (
-                        <MyButton action="edit" icon={false} url={`/sms-send?phone=${client.phone}`}>
+                        <MyButton action="edit" icon={false} onClick={() => setSmsOpen(true)}>
                             <MessageSquare className="h-4 w-4" />
                             {t("client.actions.sms")}
                         </MyButton>
                     )}
                 </div>
             </div>
+            <ClientSmsDialog
+                client={client}
+                open={smsOpen}
+                onOpenChange={setSmsOpen}
+            />
+            <ClientTicketDialog
+                client={client}
+                clientUuid={clientId}
+                open={ticketOpen}
+                onOpenChange={setTicketOpen}
+            />
 
             <div className="w-full">
                 <ClientBasicView

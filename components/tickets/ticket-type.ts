@@ -1,5 +1,15 @@
 import { z } from "zod";
 
+const optionalNumber = z.preprocess(
+    (value) => (value === "" || value === null || value === undefined ? undefined : value),
+    z.coerce.number().optional()
+);
+
+const optionalUuid = z.preprocess(
+    (value) => (value === "" || value === null || value === undefined ? undefined : value),
+    z.string().uuid().optional()
+);
+
 const RefSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -37,19 +47,39 @@ export const TicketMessageSchema = z.object({
 export type TicketMessage = z.infer<typeof TicketMessageSchema>;
 
 export const TicketCreateSchema = z.object({
-    client_id: z.coerce.number({
-        required_error: "ticket.client.errors.required",
-    }),
+    client_id: optionalNumber,
+    client_uuid: optionalUuid,
     subject_id: z.coerce.number({
         required_error: "ticket.subject.errors.required",
     }),
     tag_id: z.array(z.coerce.number()).optional(),
-    assigned_to: z.coerce.number().nullable().optional(),
+    assigned_to: optionalNumber,
+    assigned_to_uuid: optionalUuid,
     message: z.string({
         required_error: "ticket.message.errors.required",
     }).min(2, { message: "ticket.message.errors.min" }),
     priority: z.enum(["low", "medium", "high"]).default("medium"),
     status: z.enum(["open", "in_progress", "resolved", "closed"]).default("open"),
+}).superRefine((value, context) => {
+    const clientIdentifierCount = [value.client_id, value.client_uuid].filter(
+        (clientIdentifier) => clientIdentifier !== undefined
+    ).length;
+
+    if (clientIdentifierCount === 0) {
+        context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["client_id"],
+            message: "ticket.client.errors.required",
+        });
+    }
+
+    if (clientIdentifierCount > 1) {
+        context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["client_id"],
+            message: "ticket.client.errors.one_identifier",
+        });
+    }
 });
 
 export type TicketCreateInput = z.input<typeof TicketCreateSchema>;

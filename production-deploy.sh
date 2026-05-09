@@ -8,14 +8,20 @@ SERVICE="isptik-frontend.service"
 cd "$APP_DIR"
 
 echo "==> Pulling latest frontend code..."
+OLD_REV="$(git rev-parse HEAD)"
 git fetch origin "$BRANCH"
 git pull --ff-only origin "$BRANCH"
+NEW_REV="$(git rev-parse HEAD)"
 
-echo "==> Installing dependencies..."
-if [ -f package-lock.json ]; then
-  npm ci
+if git diff --quiet "$OLD_REV" "$NEW_REV" -- package.json package-lock.json npm-shrinkwrap.json; then
+  echo "==> Dependency files unchanged. Skipping dependency install."
 else
-  npm install
+  echo "==> Dependency files changed. Installing dependencies..."
+  if [ -f package-lock.json ]; then
+    npm ci
+  else
+    npm install
+  fi
 fi
 
 echo "==> Building Next.js app..."

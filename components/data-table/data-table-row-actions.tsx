@@ -32,7 +32,7 @@ export function DataTableRowActions<TData>({
             <span className="sr-only">Open menu</span>
           </MyButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuContent align="end">
           {children}
         </DropdownMenuContent>
       </DropdownMenu>

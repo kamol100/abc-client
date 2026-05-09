@@ -1413,6 +1413,10 @@
             "title": "Send SMS",
             "description": "Send an SMS to this client only."
         },
+        "ticket_dialog": {
+            "title": "Create Ticket",
+            "description": "Create a support ticket for this client."
+        },
         "delete_mikrotik": "Delete from Mikrotik?",
         "view_title": "Client Details",
         "basic_view": {
@@ -1550,7 +1554,8 @@
             "label": "Client",
             "placeholder": "Select client",
             "errors": {
-                "required": "Client is required"
+                "required": "Client is required",
+                "one_identifier": "Select either a client or client context, not both"
             }
         },
         "zone": "Zone",
@@ -1935,7 +1940,7 @@
         },
         "template": {
             "label": "SMS Template",
-            "placeholder": "Select template (optional)"
+            "placeholder": "Select template"
         },
         "send": "Send SMS",
         "success": "SMS sent successfully",
@@ -1953,7 +1958,7 @@
         },
         "sms_template": {
             "label": "SMS Template",
-            "placeholder": "Select template (optional)"
+            "placeholder": "Select template"
         },
         "sms_body": {
             "label": "SMS Body",
