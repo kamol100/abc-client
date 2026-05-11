@@ -35,6 +35,9 @@ import ClientChangePackageDialog from "@/components/clients/client-change-packag
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import ClientSmsDialog from "@/components/clients/client-sms";
 import { ClientRow } from "@/components/clients/client-type";
+import dynamic from "next/dynamic";
+
+const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
 
 interface ClientRowActionsProps {
     row: Row<ClientRow>;
@@ -44,6 +47,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const { t } = useTranslation();
     const { settings: { client_view_open_on_new_tab, client_edit_open_on_new_tab } } = useSettings();
     const { hasPermission } = usePermissions();
+    const [ticketOpen, setTicketOpen] = useState(false);
     const client = row.original;
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
@@ -123,11 +127,9 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
                 {hasPermission("tickets.create") && (
-                    <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link href={`/tickets?client_id=${client.id}`}>
-                            <Ticket className="mr-2 h-4 w-4" />
-                            {t("client.actions.tickets")}
-                        </Link>
+                    <DropdownMenuItem className="cursor-pointer" onSelect={() => setTicketOpen(true)}>
+                        <Ticket className="mr-2 h-4 w-4" />
+                        {t("client.actions.tickets")}
                     </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
@@ -164,6 +166,12 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 client={client}
                 open={smsOpen}
                 onOpenChange={setSmsOpen}
+            />
+            <ClientTicketDialog
+                client={client}
+                clientUuid={client.uuid}
+                open={ticketOpen}
+                onOpenChange={setTicketOpen}
             />
 
             <MyDialog

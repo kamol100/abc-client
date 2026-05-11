@@ -28,12 +28,6 @@ export const SubZoneFormFieldSchema = (): FieldConfig[] => {
         },
         {
             type: "text",
-            name: "name_bn",
-            label: { labelText: "sub_zone.name_bn.label" },
-            placeholder: "sub_zone.name_bn.placeholder",
-        },
-        {
-            type: "text",
             name: "location",
             label: { labelText: "sub_zone.location.label" },
             placeholder: "sub_zone.location.placeholder",

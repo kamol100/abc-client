@@ -834,7 +834,7 @@
     },
     "sub_zone": {
         "name": {
-            "label": "Sub Zone Name (English)",
+            "label": "Sub Zone Name",
             "placeholder": "Enter sub zone name",
             "errors": {
                 "required": "Sub zone name is required",
