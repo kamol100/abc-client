@@ -35,7 +35,6 @@ import type {
   ImpersonationResponse,
   AppData,
 } from "@/types/app";
-import { useRouter } from "next/navigation";
 export type ScopeLevel = "super_admin" | "company" | "reseller";
 
 export const scopeLabelKeyMap: Record<ScopeLevel, string> = {
@@ -56,7 +55,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const sessionToken = (session as { token?: string } | null)?.token ?? null;
-  const router = useRouter();
   const { settings, setSettings } = useSettings();
   const { setProfile } = useProfile();
   const { setPermissions } = usePermissions();
@@ -172,8 +170,7 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       }
 
       clearServiceWorkerCaches();
-      router.push("/");
-      window.location.reload();
+      window.location.assign("/");
     } catch (error: any) {
       console.error("Impersonation failed:", error);
       toast.error(error?.message || "Impersonation failed");
@@ -223,8 +220,7 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
 
       await refreshAppData(newToken ?? undefined);
       clearServiceWorkerCaches();
-      router.push("/");
-      window.location.reload();
+      window.location.assign("/");
     } catch (error: any) {
       console.error("Leave impersonation failed:", error);
       toast.error(error?.message || "Leave impersonation failed");
