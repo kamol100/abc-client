@@ -35,8 +35,7 @@ import type {
   ImpersonationResponse,
   AppData,
 } from "@/types/app";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
 export type ScopeLevel = "super_admin" | "company" | "reseller";
 
 export const scopeLabelKeyMap: Record<ScopeLevel, string> = {
