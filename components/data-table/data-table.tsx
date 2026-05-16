@@ -130,6 +130,7 @@ export function DataTable<TData, TValue>({
       )}
 
       <div
+        data-table-scroll-container
         className={cn(
           "rounded-md border border-border",
           isFixed ? "flex flex-col flex-1 min-h-0 overflow-auto" : "flex flex-col"

@@ -26,6 +26,7 @@ export default function PageContainer({
     >
       <Navbar />
       <div
+        data-page-scroll-container
         className={cn(
           "flex flex-col flex-1 min-h-0 p-4 pb-4",
           isFixed

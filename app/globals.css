@@ -9,6 +9,7 @@ body {
 }
 
 @layer base {
+
   /* ============================================
      Default theme (Zinc) + Comfortable spacing
      ============================================ */
@@ -129,6 +130,7 @@ body {
     --input: 240 5.9% 90%;
     --ring: 142.1 76.2% 36.3%;
   }
+
   .dark[data-theme-color="green"] {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -173,6 +175,7 @@ body {
     --input: 240 5.9% 90%;
     --ring: 346.8 77.2% 49.8%;
   }
+
   .dark[data-theme-color="rose"] {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -217,6 +220,7 @@ body {
     --input: 240 5.9% 90%;
     --ring: 0 84.2% 60.2%;
   }
+
   .dark[data-theme-color="red"] {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -261,6 +265,7 @@ body {
     --input: 20 5.9% 90%;
     --ring: 24.6 95% 53.1%;
   }
+
   .dark[data-theme-color="orange"] {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
@@ -305,6 +310,7 @@ body {
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
   }
+
   .dark[data-theme-color="blue"] {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -349,6 +355,7 @@ body {
     --input: 240 5.9% 90%;
     --ring: 330 81% 60%;
   }
+
   .dark[data-theme-color="pink"] {
     --background: 330 20% 4.1%;
     --foreground: 0 0% 95%;
@@ -393,6 +400,7 @@ body {
     --input: 220 13% 91%;
     --ring: 238.7 83.5% 58.6%;
   }
+
   .dark[data-theme-color="indigo"] {
     --background: 224 71.4% 4.1%;
     --foreground: 210 40% 98%;
@@ -437,6 +445,7 @@ body {
     --input: 260 5.9% 90%;
     --ring: 262.1 83.3% 57.8%;
   }
+
   .dark[data-theme-color="purple"] {
     --background: 260 20% 4.1%;
     --foreground: 210 40% 98%;
@@ -462,11 +471,25 @@ body {
   /* ============================================
      Radius presets
      ============================================ */
-  :root[data-radius="0"] { --radius: 0rem; }
-  :root[data-radius="0.3"] { --radius: 0.3rem; }
-  :root[data-radius="0.5"] { --radius: 0.5rem; }
-  :root[data-radius="0.75"] { --radius: 0.75rem; }
-  :root[data-radius="1.0"] { --radius: 1rem; }
+  :root[data-radius="0"] {
+    --radius: 0rem;
+  }
+
+  :root[data-radius="0.3"] {
+    --radius: 0.3rem;
+  }
+
+  :root[data-radius="0.5"] {
+    --radius: 0.5rem;
+  }
+
+  :root[data-radius="0.75"] {
+    --radius: 0.75rem;
+  }
+
+  :root[data-radius="1.0"] {
+    --radius: 1rem;
+  }
 
   /* ============================================
      Density presets
@@ -519,6 +542,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -534,6 +558,7 @@ body {
     scrollbar-color: transparent transparent;
     transition: scrollbar-color 0.15s ease;
   }
+
   [data-sidebar="sidebar"]:hover [data-sidebar="content"] {
     scrollbar-color: hsl(var(--sidebar-foreground) / 0.25) transparent;
   }
@@ -542,18 +567,105 @@ body {
   [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar {
     width: 4px;
   }
+
   [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-track {
     background: transparent;
   }
+
   [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 2px;
     transition: background 0.15s ease;
   }
+
   [data-sidebar="sidebar"]:hover [data-sidebar="content"]::-webkit-scrollbar-thumb {
     background: hsl(var(--sidebar-foreground) / 0.25);
   }
+
   [data-sidebar="sidebar"] [data-sidebar="content"]::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--sidebar-foreground) / 0.4);
+  }
+
+  /* ============================================
+     Page container: thin scrollbar, visible on content hover
+     Covers full mode scroll container and fixed mode direct child scrollers
+     ============================================ */
+
+  /* Firefox */
+  [data-page-scroll-container],
+  [data-page-scroll-container]>* {
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.15s ease;
+  }
+
+  [data-page-scroll-container],
+  [data-page-scroll-container]>* {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--foreground) / 0.25) transparent;
+  }
+
+  /* WebKit (Chrome, Edge, Safari) */
+  [data-page-scroll-container]::-webkit-scrollbar,
+  [data-page-scroll-container]>*::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  [data-page-scroll-container]:hover::-webkit-scrollbar,
+  [data-page-scroll-container]:hover>*::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  [data-page-scroll-container]::-webkit-scrollbar-track,
+  [data-page-scroll-container]>*::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  [data-page-scroll-container]::-webkit-scrollbar-thumb,
+  [data-page-scroll-container]>*::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 2px;
+    transition: background 0.15s ease;
+  }
+
+  [data-page-scroll-container]:hover::-webkit-scrollbar-thumb,
+  [data-page-scroll-container]:hover>*::-webkit-scrollbar-thumb {
+    background: hsl(var(--foreground) / 0.25);
+  }
+
+  [data-page-scroll-container]::-webkit-scrollbar-thumb:hover,
+  [data-page-scroll-container]>*::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground) / 0.4);
+  }
+
+  /* Data tables keep a visible thin scrollbar to avoid hover layout shifts */
+  [data-table-scroll-container],
+  [data-table-scroll-container] .overflow-auto {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--foreground) / 0.25) transparent;
+  }
+
+  [data-table-scroll-container]::-webkit-scrollbar,
+  [data-table-scroll-container] .overflow-auto::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  [data-table-scroll-container]::-webkit-scrollbar-track,
+  [data-table-scroll-container] .overflow-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  [data-table-scroll-container]::-webkit-scrollbar-thumb,
+  [data-table-scroll-container] .overflow-auto::-webkit-scrollbar-thumb {
+    background: hsl(var(--foreground) / 0.25);
+    border-radius: 2px;
+  }
+
+  [data-table-scroll-container]::-webkit-scrollbar-thumb:hover,
+  [data-table-scroll-container] .overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground) / 0.4);
   }
 }
