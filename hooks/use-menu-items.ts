@@ -151,7 +151,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       icon: Banknote,
       permissions: ["payments.access", "payment-gateways.access"],
       items: [
-        { title: t("menu.payments.title"), url: "/payments", permission: "products.access" },
+        { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
         { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
       ],
     },

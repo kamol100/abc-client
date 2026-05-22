@@ -10,6 +10,7 @@ const startCommand =
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  globalSetup: "./tests/e2e/global-setup.ts",
   fullyParallel: true,
   retries: process.env.CI ? 2 : 0,
   reporter: "list",
@@ -20,6 +21,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testIgnore: /global-setup\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },
   ],
