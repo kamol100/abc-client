@@ -1371,6 +1371,11 @@
         },
         "title": "Clients",
         "title_plural": "Clients",
+        "activity": {
+            "total": "Total",
+            "online": "Online",
+            "offline": "Offline"
+        },
         "create_title": "Add Client",
         "edit_title": "Edit Client",
         "delete_confirmation": "Are you sure you want to delete this client?",

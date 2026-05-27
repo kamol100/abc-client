@@ -142,6 +142,15 @@ export const ClientSpeedSchema = z.object({
 
 export type ClientSpeed = z.infer<typeof ClientSpeedSchema>;
 
+export const ClientActivitySchema = z.object({
+    total: z.coerce.number(),
+    online: z.coerce.number(),
+    offline: z.coerce.number(),
+    disabled: z.coerce.number(),
+}).passthrough();
+
+export type ClientActivity = z.infer<typeof ClientActivitySchema>;
+
 /** Router/session info from API (e.g. client detail with router_info). */
 export interface RouterInfo {
     ip_address?: string | null;

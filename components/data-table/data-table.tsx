@@ -32,8 +32,10 @@ import { DataTablePagination } from "@/components/data-table/data-table-paginati
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { useTranslation } from "react-i18next";
+import { ReactNode } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  toolbarInfoComponent?: ReactNode;
   data: TData[];
   toolbar?: boolean;
   toolbarOptions?: any;
@@ -53,6 +55,7 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
   columns,
+  toolbarInfoComponent = null,
   data,
   toolbar = true,
   toolbarOptions,
@@ -116,6 +119,7 @@ export function DataTable<TData, TValue>({
         <div className="shrink-0 pb-3">
           <DataTableToolbar
             table={table}
+            toolbarInfoComponent={toolbarInfoComponent}
             toolbarOptions={toolbarOptions}
             data={data}
             toggleColumns={toggleColumns}

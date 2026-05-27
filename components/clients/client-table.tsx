@@ -9,6 +9,9 @@ import MyButton from "@/components/my-button";
 import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
 import { ClientRow } from "@/components/clients/client-type";
+import dynamic from "next/dynamic";
+
+const ClientCount = dynamic(() => import("@/components/clients/client-count"), { ssr: false });
 
 const ClientTable: FC = () => {
     const { t } = useTranslation();
@@ -54,6 +57,7 @@ const ClientTable: FC = () => {
 
     return (
         <DataTable
+            toolbarInfoComponent={<ClientCount />}
             data={clients}
             setFilter={setFilter}
             columns={columns}

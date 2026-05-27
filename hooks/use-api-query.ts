@@ -72,6 +72,7 @@ export default function useApiQuery<TData = unknown>({
         url: buildUrl(),
         ...(version && { version }),
       });
+      console.log(response, 'response');
       if (!response?.success) {
         throw new Error(parseApiError(response) || "Request failed");
       }

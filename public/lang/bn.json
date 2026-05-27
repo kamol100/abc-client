@@ -1371,6 +1371,11 @@
         },
         "title": "ক্লায়েন্ট",
         "title_plural": "ক্লায়েন্ট",
+        "activity": {
+            "total": "মোট",
+            "online": "অনলাইন",
+            "offline": "অফলাইন"
+        },
         "create_title": "ক্লায়েন্ট যোগ করুন",
         "edit_title": "এডিট",
         "delete_confirmation": "আপনি কি নিশ্চিত এই ক্লায়েন্টটি মুছে ফেলতে চান?",

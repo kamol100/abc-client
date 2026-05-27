@@ -22,6 +22,7 @@ import { useFilterForm } from "@/hooks/use-filter-form";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   toolbarOptions?: any;
+  toolbarInfoComponent?: ReactNode;
   toggleColumns?: boolean;
   data: TData[];
   setFilter?: (x: string) => void;
@@ -42,6 +43,7 @@ export function DataTableToolbar<TData>({
   queryKey,
   form,
   toolbarTitle = null,
+  toolbarInfoComponent,
   toolbarTitleClass = "",
   toolbarBeforeForm,
 }: DataTableToolbarProps<TData>) {
@@ -93,6 +95,7 @@ export function DataTableToolbar<TData>({
         {toolbarTitle && !showFilter && !isMobile && (
           <div className={toolbarTitleClass}>{toolbarTitle}</div>
         )}
+        {toolbarInfoComponent && !showFilter && !isMobile && toolbarInfoComponent}
         {toolbarOptions?.input_filter && (
           <Form {...dataForm}>
             <InputField placeholder="Filter labels..." name="" />
