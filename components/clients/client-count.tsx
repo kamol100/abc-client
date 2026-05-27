@@ -10,6 +10,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { toNumber } from "@/lib/helper/helper";
 
 const DEFAULT_ACTIVITY: ClientActivity = {
     total: 0,
@@ -64,6 +65,10 @@ export default function ClientCount() {
         return parsed.success ? parsed.data : DEFAULT_ACTIVITY;
     }, [data?.data]);
 
+    const offlineCount = useMemo(() => {
+        return toNumber(activity.offline) + toNumber(activity.disabled);
+    }, [activity.disabled, activity.offline]);
+
     if (isLoading || isFetching) {
         return <ActivityCountSkeleton />;
     }
@@ -80,7 +85,7 @@ export default function ClientCount() {
                     />
                     <ActivityItem
                         label={t("client.activity.offline")}
-                        value={activity.offline}
+                        value={offlineCount}
                         valueClassName="text-destructive"
                     />
                 </div>
