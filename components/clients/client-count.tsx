@@ -43,7 +43,6 @@ function ActivityItem({ label, value, valueClassName }: ActivityItemProps) {
             <span className="text-muted-foreground">{label}</span>
             <DisplayCount
                 amount={value}
-                translation={false}
                 className={cn("font-semibold tabular-nums", valueClassName)}
             />
         </div>
