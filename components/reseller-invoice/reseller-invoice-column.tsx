@@ -9,7 +9,7 @@ import MyBadge from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
 import DisplayCount from "@/components/display-count";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
-import type { InvoiceRow } from "@/components/reseller-invoice/reseller-invoice-type";
+import type { InvoiceRow } from "@/components/invoices/invoice-type";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     paid: "success",
