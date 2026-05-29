@@ -41,7 +41,6 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice }) => {
     if (!hasActions) {
         return <div className="text-right text-muted-foreground mr-2">-</div>;
     }
-    console.log(invoice);
     return (
         <>
             <div className="flex items-center justify-end gap-2 mr-2">

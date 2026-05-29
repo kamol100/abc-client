@@ -1537,6 +1537,13 @@
             "download": "ডাউনলোড"
         }
     },
+    "reseller_invoice": {
+        "title_plural": "রিসেলার ইনভয়েস",
+        "empty": "কোনো ডিউ রিসেলার ইনভয়েস পাওয়া যায়নি।",
+        "reseller": {
+            "label": "রিসেলার"
+        }
+    },
     "invoice": {
         "title_plural": "ইনভয়েস",
         "client_invoices": "ক্লায়েন্ট ইনভয়েস",
@@ -3901,6 +3908,9 @@
             "type": {
                 "title": "ইনভয়েস টাইপ"
             }
+        },
+        "reseller_invoice": {
+            "title": "রিসেলার ইনভয়েস"
         },
         "payment_due": {
             "title": "পেমেন্ট ডিউ"
