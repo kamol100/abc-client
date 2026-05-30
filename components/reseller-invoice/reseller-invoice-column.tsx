@@ -10,6 +10,7 @@ import MyTooltip from "@/components/my-tooltip";
 import DisplayCount from "@/components/display-count";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
 import type { InvoiceRow } from "@/components/invoices/invoice-type";
+import { useProfile } from "@/context/app-provider";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     paid: "success",
@@ -30,6 +31,8 @@ const getResellerLabel = (reseller: ResellerRef | null | undefined): string => {
 
 export const useResellerInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
     const { t } = useTranslation();
+    const { profile } = useProfile();
+    const isReseller = !!profile?.reseller;
 
     return useMemo(
         () => [
@@ -158,7 +161,7 @@ export const useResellerInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                         title="common.actions"
                     />
                 ),
-                cell: ({ row }) => <InvoiceRowActions invoice={row.original} />,
+                cell: ({ row }) => <InvoiceRowActions invoice={row.original} resellerInvoice={isReseller} />,
                 enableSorting: false,
                 enableHiding: false,
             },
