@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-export const FundRefSchema = z
-  .object({
-    id: z.coerce.number().optional(),
-    name: z.string().nullable().optional(),
-  })
-  .passthrough();
-
 export const ClientRefSchema = z
   .object({
     id: z.coerce.string(),
@@ -14,14 +7,17 @@ export const ClientRefSchema = z
   })
   .passthrough();
 
-export const WalletRowSchema = z
+export const WalletTransactionRowSchema = z
   .object({
-    id: z.coerce.number().optional(),
-    payment_date: z.string().nullable().optional(),
+    id: z.string(),
+    transaction_id: z.coerce.number(),
     amount: z.coerce.number().default(0),
+    transaction_type: z.string(),
+    recharge_method: z.string().nullable().optional(),
+    currency: z.string().nullable().optional(),
+    reference: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
     created_at: z.string().nullable().optional(),
-    fund: FundRefSchema.nullable().optional(),
   })
   .passthrough();
 
@@ -73,7 +69,7 @@ export const ClientWalletRechargeFormSchema = z
     { message: "wallet.client.errors.required", path: ["client_id"] }
   );
 
-export type WalletRow = z.infer<typeof WalletRowSchema>;
+export type WalletTransactionRow = z.infer<typeof WalletTransactionRowSchema>;
 export type ClientWalletRow = z.infer<typeof ClientWalletRowSchema>;
 export type MyWalletBalance = z.infer<typeof MyWalletBalanceSchema>;
 

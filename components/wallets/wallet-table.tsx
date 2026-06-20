@@ -12,15 +12,11 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { BkashWalletForm, ClientWalletForm } from "./wallet-form";
-import { ClientWalletColumns, WalletColumns } from "./wallet-column";
-import {
-  ClientWalletRow,
-  ClientWalletRowSchema,
-  WalletRow,
-  WalletRowSchema,
-} from "./wallet-type";
-import MyWallet from "./my-wallet";
+import { BkashWalletForm, ClientWalletForm } from "@/components/wallets/wallet-transaction";
+import { ClientWalletColumns } from "@/components/wallets/wallet-column";
+import { ClientWalletRow, ClientWalletRowSchema } from "@/components/wallets/wallet-type";
+import MyWallet from "@/components/wallets/my-wallet";
+import { TransactionsTable } from "@/components/wallets/transactions-table";
 
 const StatusNotice: FC<{
   type: "success" | "error" | "info";
@@ -64,22 +60,6 @@ export const MyWalletTable: FC = () => {
   const queryClient = useQueryClient();
   const executeRef = useRef(false);
 
-  const [filterValue, setFilter] = useState<string | null>(null);
-  const parsedParams = useMemo(
-    () =>
-      filterValue
-        ? Object.fromEntries(new URLSearchParams(filterValue))
-        : undefined,
-    [filterValue]
-  );
-
-  const { data, isLoading, isFetching, setCurrentPage } =
-    useApiQuery<PaginatedApiResponse<WalletRow>>({
-      queryKey: ["wallet-transactions"],
-      url: "wallets",
-      params: parsedParams,
-    });
-
   const executeMutation = useMutation({
     mutationFn: async (payload: { paymentID: string; pid: string }) => {
       const response = await useFetch({
@@ -118,19 +98,6 @@ export const MyWalletTable: FC = () => {
     }
   }, [executeMutation, params]);
 
-  const rows = useMemo(() => {
-    const incoming = data?.data?.data ?? [];
-    return incoming
-      .map((item) => WalletRowSchema.safeParse(item))
-      .filter((item) => item.success)
-      .map((item) => item.data);
-  }, [data]);
-
-  const pagination = data?.data?.pagination;
-  const toolbarTitle = pagination?.total
-    ? `${t("wallet.title_plural")} (${pagination.total})`
-    : t("wallet.title_plural");
-
   const paymentStatus = params.get("payment");
 
   return (
@@ -150,17 +117,7 @@ export const MyWalletTable: FC = () => {
         <StatusNotice type="success" message={t("wallet.messages.payment_success")} />
       )}
 
-      <DataTable
-        data={rows}
-        setFilter={setFilter}
-        columns={WalletColumns}
-        toggleColumns
-        pagination={pagination}
-        setCurrentPage={setCurrentPage}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        toolbarTitle={toolbarTitle}
-      />
+      <TransactionsTable />
     </div>
   );
 };

@@ -1,12 +1,11 @@
 "use client";
 
 import DisplayMoney from "@/components/display-money";
-import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useMyWallet } from "@/hooks/use-my-wallet";
 import { cn } from "@/lib/utils";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { Skeleton } from "@/components/ui/skeleton";
-import { MyWalletBalance, MyWalletBalanceSchema } from "./wallet-type";
 
 type MyWalletProps = {
   label?: boolean;
@@ -24,13 +23,7 @@ const MyWallet: FC<MyWalletProps> = ({
   loadingClassName,
 }) => {
   const { t } = useTranslation();
-  const { data, isLoading } = useApiQuery<ApiResponse<MyWalletBalance>>({
-    queryKey: ["my-wallet"],
-    url: "my-wallet",
-    pagination: false,
-  });
-  const parsed = MyWalletBalanceSchema.safeParse(data?.data);
-  const balance = parsed.success ? parsed?.data?.balance : 0;
+  const { balance, isLoading } = useMyWallet();
 
   return (
     <div className={cn("inline-flex items-center gap-2", className)}>

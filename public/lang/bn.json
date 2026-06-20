@@ -2618,6 +2618,8 @@
     },
     "wallet": {
         "title_plural": "ওয়ালেট ট্রানজেকশন",
+        "view_transactions": "ট্রানজেকশন দেখুন",
+        "transactions_modal_title": "ওয়ালেট ট্রানজেকশন",
         "my_wallet_title": "আমার ওয়ালেট",
         "client_wallet_title": "ক্লায়েন্ট ওয়ালেট",
         "my_balance": "আমার ব্যালেন্স",
@@ -2633,6 +2635,13 @@
         },
         "method": {
             "label": "মেথড"
+        },
+        "transaction_type": {
+            "label": "টাইপ",
+            "options": {
+                "deposit": "ডিপোজিট",
+                "deduction": "ডিডাকশন"
+            }
         },
         "client": {
             "label": "ক্লায়েন্ট",

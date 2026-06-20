@@ -2618,6 +2618,8 @@
     },
     "wallet": {
         "title_plural": "Wallet Transactions",
+        "view_transactions": "View Transactions",
+        "transactions_modal_title": "Wallet Transactions",
         "my_wallet_title": "My Wallets",
         "client_wallet_title": "Client Wallets",
         "my_balance": "My Balance",
@@ -2633,6 +2635,13 @@
         },
         "method": {
             "label": "Method"
+        },
+        "transaction_type": {
+            "label": "Type",
+            "options": {
+                "deposit": "Deposit",
+                "deduction": "Deduction"
+            }
         },
         "client": {
             "label": "Client",
