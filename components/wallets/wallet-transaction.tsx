@@ -5,12 +5,11 @@ import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import InputField from "@/components/form/input-field";
 import TextareaField from "@/components/form/textarea-field";
-import SelectDropdown from "@/components/select-dropdown";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -21,8 +20,6 @@ import {
   WalletRechargeFormInput,
   WalletRechargeFormSchema,
 } from "@/components/wallets/wallet-type";
-import { Save } from "lucide-react";
-
 const pad2 = (value: number): string => value.toString().padStart(2, "0");
 
 export const BkashWalletForm: FC = () => {
@@ -79,7 +76,7 @@ export const BkashWalletForm: FC = () => {
       toast.error(t(String(parseApiError(error) || "wallet.messages.recharge_failed")));
     },
   });
-
+  //Bkash Wallet Recharge Dialog
   return (
     <MyDialog
       open={open}
@@ -127,19 +124,30 @@ export const BkashWalletForm: FC = () => {
   );
 };
 
-export const ClientWalletForm: FC = () => {
+interface ClientWalletRechargeDialogProps {
+  clientUuid: string;
+  clientName: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = ({
+  clientUuid,
+  clientName,
+  open,
+  onOpenChange,
+}) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
   const submitRef = useRef<HTMLInputElement>(null);
 
   const defaultValues = useMemo<ClientWalletRechargeFormInput>(
     () => ({
-      client_id: undefined,
+      clientUuid: clientUuid,
       balance: 0,
       note: "",
     }),
-    []
+    [clientUuid]
   );
 
   const form = useForm<ClientWalletRechargeFormInput>({
@@ -147,6 +155,12 @@ export const ClientWalletForm: FC = () => {
     mode: "onChange",
     defaultValues,
   });
+
+  useEffect(() => {
+    if (open) {
+      form.reset(defaultValues);
+    }
+  }, [open, defaultValues, form]);
 
   const rechargeMutation = useMutation({
     mutationFn: async (payload: ClientWalletRechargeFormInput) => {
@@ -163,7 +177,7 @@ export const ClientWalletForm: FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["client-wallets"] });
       toast.success(t("wallet.messages.client_recharge_success"));
-      setOpen(false);
+      onOpenChange(false);
       form.reset(defaultValues);
     },
     onError: (error) => {
@@ -173,20 +187,20 @@ export const ClientWalletForm: FC = () => {
     },
   });
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    onOpenChange(nextOpen);
+    if (!nextOpen) {
+      form.reset(defaultValues);
+    }
+  };
+
+  //Wallet Transaction Modal
   return (
     <MyDialog
       open={open}
-      onOpenChange={(nextOpen) => {
-        setOpen(nextOpen);
-        if (!nextOpen) {
-          form.reset(defaultValues);
-        }
-      }}
+      onOpenChange={handleOpenChange}
       size="md"
       title="wallet.client_recharge_title"
-      trigger={
-        <MyButton action="create" size="default" variant="default" title={t("common.add")} />
-      }
       footer={({ close }) => (
         <>
           <MyButton type="button" variant="outline" onClick={close}>
@@ -205,15 +219,12 @@ export const ClientWalletForm: FC = () => {
       )}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((values) => rechargeMutation.mutate(values))}>
+        <form onSubmit={form.handleSubmit((values) => rechargeMutation.mutate(values), (errors) => console.log(errors))}>
           <div className="space-y-4">
-            <SelectDropdown
-              name="client_id"
-              label={{ labelText: "wallet.client.label", mandatory: true }}
-              placeholder="wallet.client.placeholder"
-              api="/dropdown-clients"
-              isClearable={false}
-            />
+            <div className="space-y-1">
+              <p className="text-sm font-medium">{t("wallet.client.label")}</p>
+              <p className="text-sm capitalize text-muted-foreground">{clientName}</p>
+            </div>
             <InputField
               name="balance"
               type="number"

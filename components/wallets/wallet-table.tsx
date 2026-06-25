@@ -12,7 +12,7 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { BkashWalletForm, ClientWalletForm } from "@/components/wallets/wallet-transaction";
+import { BkashWalletForm } from "@/components/wallets/wallet-transaction";
 import { ClientWalletColumns } from "@/components/wallets/wallet-column";
 import { ClientWalletRow, ClientWalletRowSchema } from "@/components/wallets/wallet-type";
 import MyWallet from "@/components/wallets/my-wallet";
@@ -165,7 +165,6 @@ export const ClientWalletTable: FC = () => {
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
       toolbarTitle={toolbarTitle}
-      form={ClientWalletForm}
     />
   );
 };

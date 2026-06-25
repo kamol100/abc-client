@@ -30,6 +30,7 @@ export const SETTINGS_SWITCH_KEYS = [
     "sms_auto_invoice_due_reminder",
     "voice_call_invoice_reminder",
     "auto_inactive_client_invoice_due",
+    "auto_inactive_reseller_client_termination_date",
     "client_view_open_on_new_tab",
     "client_edit_open_on_new_tab",
     "telegram_client_create",

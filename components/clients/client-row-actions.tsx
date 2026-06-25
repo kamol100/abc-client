@@ -26,6 +26,7 @@ import {
     Ticket,
     Trash2,
     TriangleAlert,
+    Wallet,
 } from "lucide-react";
 import Link from "next/link";
 import { FC, useState } from "react";
@@ -36,6 +37,7 @@ import ClientSessionResetDialog from "@/components/clients/client-session-reset-
 import ClientSmsDialog from "@/components/clients/client-sms";
 import { ClientRow } from "@/components/clients/client-type";
 import dynamic from "next/dynamic";
+import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
 
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
 
@@ -53,6 +55,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
+    const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [mikrotikDelete, setMikrotikDelete] = useState(false);
 
@@ -132,6 +135,12 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                         {t("client.actions.tickets")}
                     </DropdownMenuItem>
                 )}
+                {hasPermission("wallets.access") && (
+                    <DropdownMenuItem onSelect={() => setWalletRechargeOpen(true)}>
+                        <Wallet className="mr-2 h-4 w-4" />
+                        {t("client.actions.wallet_recharge")}
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 {hasPermission("clients.delete") && (
                     <DropdownMenuItem
@@ -172,6 +181,13 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 clientUuid={client.uuid}
                 open={ticketOpen}
                 onOpenChange={setTicketOpen}
+            />
+
+            <ClientWalletRechargeDialog
+                clientUuid={client.id}
+                clientName={client.name}
+                open={walletRechargeOpen}
+                onOpenChange={setWalletRechargeOpen}
             />
 
             <MyDialog

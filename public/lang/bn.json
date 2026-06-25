@@ -1402,6 +1402,7 @@
             "pay": "পে",
             "sms": "এসএমএস পাঠান",
             "tickets": "টিকেট তৈরি",
+            "wallet_recharge": "ওয়ালেট রিচার্জ",
             "delete": "মুছুন"
         },
         "session_reset": {
@@ -2625,8 +2626,10 @@
         "my_balance": "আমার ব্যালেন্স",
         "recharge_title": "ওয়ালেট রিচার্জ",
         "client_recharge_title": "ক্লায়েন্ট ওয়ালেট রিচার্জ",
+        "recharge_action": "ওয়ালেট রিচার্জ",
         "recharge_with_bkash": "bKash দিয়ে রিচার্জ",
         "pay_with_bkash": "bKash দিয়ে পেমেন্ট",
+        "termination_date.label": "টার্মিনেশন তারিখ",
         "payment_date": {
             "label": "পেমেন্ট তারিখ"
         },
@@ -4311,6 +4314,9 @@
             },
             "auto_inactive_client_invoice_due": {
                 "label": "অটো ইনঅ্যাক্টিভ ক্লায়েন্ট ইনভয়েস ডিউ"
+            },
+            "auto_inactive_reseller_client_termination_date": {
+                "label": "অটো ইনঅ্যাক্টিভ রিসেলার ক্লায়েন্ট টার্মিনেশন তারিখ"
             },
             "telegram_client_create": {
                 "label": "টেলিগ্রাম ক্লায়েন্ট ক্রিয়েট"

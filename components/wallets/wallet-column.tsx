@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Eye } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
@@ -10,17 +10,22 @@ import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import DisplayCount from "@/components/display-count";
 import { TransactionModal } from "@/components/wallets/transaction-modal";
+import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
 import { ClientWalletRow } from "@/components/wallets/wallet-type";
 
 const ClientWalletActionsCell: FC<{ wallet: ClientWalletRow }> = ({ wallet }) => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [openTransactions, setOpenTransactions] = useState(false);
+  const [openRecharge, setOpenRecharge] = useState(false);
 
-  const canViewTransactions = hasPermission("wallets.access");
+  const canAccessWallets = hasPermission("wallets.access");
   const walletId = wallet.id;
+  const clientUuid = wallet.client?.uuid;
+  console.log(wallet.client?.uuid);
+  const clientName = wallet.client?.name ?? "";
 
-  if (!canViewTransactions || !walletId) {
+  if (!canAccessWallets || !walletId) {
     return null;
   }
 
@@ -30,11 +35,29 @@ const ClientWalletActionsCell: FC<{ wallet: ClientWalletRow }> = ({ wallet }) =>
         type="button"
         variant="outline"
         size="icon"
+        onClick={() => setOpenRecharge(true)}
+        title={t("wallet.recharge_action")}
+      >
+        <Plus className="h-4 w-4" />
+      </MyButton>
+      <MyButton
+        type="button"
+        variant="outline"
+        size="icon"
         onClick={() => setOpenTransactions(true)}
         title={t("common.view")}
       >
         <Eye className="h-4 w-4" />
       </MyButton>
+
+      {openRecharge && (
+        <ClientWalletRechargeDialog
+          clientUuid={clientUuid as string}
+          clientName={clientName}
+          open={openRecharge}
+          onOpenChange={setOpenRecharge}
+        />
+      )}
 
       {openTransactions && (
         <TransactionModal
@@ -67,6 +90,14 @@ export const ClientWalletColumns: ColumnDef<ClientWalletRow>[] = [
         <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
       </span>
     ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "termination_date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="wallet.termination_date.label" />
+    ),
+    cell: ({ row }) => <span>{row.original.client?.termination_date ?? "—"}</span>,
     enableSorting: false,
   },
   {

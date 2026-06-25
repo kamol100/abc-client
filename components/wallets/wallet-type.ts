@@ -27,7 +27,10 @@ export const ClientWalletRowSchema = z
     balance: z.coerce.number().default(0),
     note: z.string().nullable().optional(),
     created_at: z.string().nullable().optional(),
-    client: ClientRefSchema.nullable().optional(),
+    termination_date: z.string().nullable().optional(),
+    client: ClientRefSchema.extend({
+      termination_date: z.string().nullable().optional(),
+    }).passthrough().nullable().optional(),
   })
   .passthrough();
 
@@ -49,13 +52,10 @@ export const WalletRechargeFormSchema = z.object({
 
 export const ClientWalletRechargeFormSchema = z
   .object({
-    client_id: z.coerce
-      .number({
-        required_error: "wallet.client.errors.required",
-        invalid_type_error: "wallet.client.errors.required",
-      })
-      .min(1, { message: "wallet.client.errors.required" })
-      .optional(),
+    clientUuid: z.string({
+      required_error: "wallet.client.errors.required",
+      invalid_type_error: "wallet.client.errors.required",
+    }),
     balance: z.coerce
       .number({
         required_error: "wallet.amount.errors.required",
@@ -65,8 +65,8 @@ export const ClientWalletRechargeFormSchema = z
     note: z.string().nullable().optional(),
   })
   .refine(
-    (data) => data.client_id != null && data.client_id >= 1,
-    { message: "wallet.client.errors.required", path: ["client_id"] }
+    (data) => data.clientUuid != null && data.clientUuid.length > 0,
+    { message: "wallet.client.errors.required", path: ["clientUuid"] }
   );
 
 export type WalletTransactionRow = z.infer<typeof WalletTransactionRowSchema>;

@@ -1402,6 +1402,7 @@
             "pay": "Pay",
             "sms": "Send SMS",
             "tickets": "Create Ticket",
+            "wallet_recharge": "Recharge Wallet",
             "delete": "Delete"
         },
         "session_reset": {
@@ -2625,8 +2626,10 @@
         "my_balance": "My Balance",
         "recharge_title": "Recharge Wallet",
         "client_recharge_title": "Recharge Client Wallet",
+        "recharge_action": "Recharge wallet",
         "recharge_with_bkash": "Recharge with bKash",
         "pay_with_bkash": "Pay with bKash",
+        "termination_date.label": "Termination Date",
         "payment_date": {
             "label": "Payment Date"
         },
@@ -4311,6 +4314,9 @@
             },
             "auto_inactive_client_invoice_due": {
                 "label": "Auto Inactive Client Invoice Due"
+            },
+            "auto_inactive_reseller_client_termination_date": {
+                "label": "Auto Inactive Reseller Client Termination Date"
             },
             "telegram_client_create": {
                 "label": "Telegram Client Create"
