@@ -3,7 +3,7 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { Row } from "@tanstack/react-table";
-import { Edit, Eye, ShieldCheck, Trash2, TriangleAlert } from "lucide-react";
+import { Edit, Eye, ShieldCheck, Trash2, TriangleAlert, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
@@ -19,6 +19,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { ResellerRow } from "@/components/resellers/reseller-type";
+import { ResellerWalletRechargeDialog } from "@/components/resellers/reseller-wallet-recharge";
 
 type Props = {
     row: Row<ResellerRow>;
@@ -29,6 +30,7 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
     const { hasPermission } = usePermissions();
     const reseller = row.original;
     const [deleteOpen, setDeleteOpen] = useState(false);
+    const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
 
     const { mutateAsync: deleteReseller, isPending: isDeleting } = useApiMutation({
         url: `/resellers/${reseller.id}`,
@@ -73,6 +75,16 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
 
+                {(hasPermission("reseller-wallet.recharge") || hasPermission("wallets.edit")) && reseller.wallet?.id && (
+                    <DropdownMenuItem
+                        onSelect={() => setWalletRechargeOpen(true)}
+                        className="cursor-pointer"
+                    >
+                        <Wallet className="mr-2 h-4 w-4" />
+                        {t("reseller.actions.wallet_recharge")}
+                    </DropdownMenuItem>
+                )}
+
                 {hasPermission("resellers.delete") && (
                     <>
                         <DropdownMenuSeparator />
@@ -86,6 +98,12 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                     </>
                 )}
             </DataTableRowActions>
+
+            <ResellerWalletRechargeDialog
+                reseller={reseller}
+                open={walletRechargeOpen}
+                onOpenChange={setWalletRechargeOpen}
+            />
 
             <MyDialog
                 open={deleteOpen}

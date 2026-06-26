@@ -3128,7 +3128,34 @@
         "actions": {
             "edit": "Edit",
             "view": "View",
-            "permissions": "Permissions"
+            "permissions": "Permissions",
+            "wallet_recharge": "Recharge Wallet"
+        },
+        "wallet_recharge": {
+            "title": "Recharge Reseller Wallet",
+            "current_balance": "Current Balance",
+            "recharge_method": {
+                "label": "Recharge Method",
+                "placeholder": "Select recharge method",
+                "options": {
+                    "cash": "Cash",
+                    "bank": "Bank"
+                },
+                "errors": {
+                    "required": "Recharge method is required"
+                }
+            },
+            "balance": {
+                "label": "Amount",
+                "placeholder": "Enter recharge amount",
+                "errors": {
+                    "required": "Amount is required",
+                    "min": "Amount must be greater than 0"
+                }
+            },
+            "messages": {
+                "recharge_successful": "Reseller wallet recharged successfully."
+            }
         },
         "table": {
             "name": "Reseller Name",

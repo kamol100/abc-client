@@ -7,6 +7,7 @@ import MyBadge from "@/components/my-badge";
 import { toNumber } from "@/lib/helper/helper";
 import { ResellerRow } from "@/components/resellers/reseller-type";
 import ResellerRowActions from "@/components/resellers/reseller-row-actions";
+import DisplayCount from "../display-count";
 
 const getTotalDue = (reseller: ResellerRow): number => {
     const due = (reseller.invoices ?? []).reduce(
@@ -68,6 +69,14 @@ export function useResellerColumns(): ColumnDef<ResellerRow>[] {
                 <DataTableColumnHeader column={column} title="reseller.table.clients" />
             ),
             cell: ({ row }) => <div>{row.original.clients?.length ?? 0}</div>,
+            enableSorting: false,
+        },
+        {
+            accessorKey: "wallet.balance",
+            header: ({ column }) => (
+                <DataTableColumnHeader column={column} title="wallet.balance.label" />
+            ),
+            cell: ({ row }) => <div>{<DisplayCount amount={toNumber(row.original.wallet?.balance)} formatCurrency />}</div>,
             enableSorting: false,
         },
         {

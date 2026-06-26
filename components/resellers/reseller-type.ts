@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { WalletResourceRowSchema } from "@/components/wallets/wallet-type";
 
 const UserRefSchema = z.object({
     id: z.coerce.number().optional(),
@@ -58,6 +59,7 @@ export type ResellerExportFileRow = z.infer<typeof ResellerExportFileRowSchema>;
 export const ResellerRowSchema = z.object({
     id: z.coerce.number(),
     reseller_id: z.string().nullable().optional(),
+    wallet: WalletResourceRowSchema.nullable().optional(),
     name: z.string(),
     username: z.string().nullable().optional(),
     password: z.string().nullable().optional(),
@@ -166,3 +168,21 @@ export const ResellerFormSchema = getResellerFormSchema("create");
 
 export type ResellerFormInput = z.input<typeof ResellerFormSchema>;
 export type ResellerPayload = z.output<typeof ResellerFormSchema>;
+
+export const ResellerWalletMethodValues = ["cash", "bank"] as const;
+
+export const ResellerWalletRechargeFormSchema = z.object({
+    recharge_method: z.enum(ResellerWalletMethodValues, {
+        required_error: "reseller.wallet_recharge.recharge_method.errors.required",
+    }),
+    balance: z.coerce
+        .number({
+            required_error: "reseller.wallet_recharge.balance.errors.required",
+            invalid_type_error: "reseller.wallet_recharge.balance.errors.required",
+        })
+        .gt(0, { message: "reseller.wallet_recharge.balance.errors.min" }),
+    note: z.string().nullable().optional(),
+});
+
+export type ResellerWalletRechargeFormInput = z.input<typeof ResellerWalletRechargeFormSchema>;
+export type ResellerWalletRechargePayload = z.output<typeof ResellerWalletRechargeFormSchema>;

@@ -3128,7 +3128,34 @@
         "actions": {
             "edit": "এডিট",
             "view": "ভিউ",
-            "permissions": "পার্মিশন"
+            "permissions": "পার্মিশন",
+            "wallet_recharge": "ওয়ালেট রিচার্জ"
+        },
+        "wallet_recharge": {
+            "title": "রিসেলার ওয়ালেট রিচার্জ",
+            "current_balance": "বর্তমান ব্যালেন্স",
+            "recharge_method": {
+                "label": "রিচার্জ মেথড",
+                "placeholder": "রিচার্জ মেথড নির্বাচন করুন",
+                "options": {
+                    "cash": "ক্যাশ",
+                    "bank": "ব্যাংক"
+                },
+                "errors": {
+                    "required": "রিচার্জ মেথড আবশ্যক"
+                }
+            },
+            "balance": {
+                "label": "অ্যামাউন্ট",
+                "placeholder": "রিচার্জ অ্যামাউন্ট দিন",
+                "errors": {
+                    "required": "অ্যামাউন্ট আবশ্যক",
+                    "min": "অ্যামাউন্ট ০-এর বেশি হতে হবে"
+                }
+            },
+            "messages": {
+                "recharge_successful": "রিসেলার ওয়ালেট সফলভাবে রিচার্জ হয়েছে।"
+            }
         },
         "table": {
             "name": "রিসেলার নাম",

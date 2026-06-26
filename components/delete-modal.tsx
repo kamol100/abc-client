@@ -79,7 +79,7 @@ export function DeleteModal({
         </>
       )}
     >
-      <div className="flex flex-col items-center text-center gap-4">
+      <div className="flex flex-col items-center text-center gap-4 py-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
           <TriangleAlert className="h-8 w-8 text-destructive" />
         </div>
@@ -88,7 +88,7 @@ export function DeleteModal({
             {t("common.confirm_delete")}
           </DialogTitle>
           <DialogDescription className="text-center">
-            {t(confirmMessage ?? "delete_confirmation_message")}
+            {t(confirmMessage ?? "common.delete_confirmation_message")}
           </DialogDescription>
         </div>
       </div>

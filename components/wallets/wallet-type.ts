@@ -1,9 +1,26 @@
 import { z } from "zod";
 
-export const ClientRefSchema = z
+export const WalletClientRefSchema = z
   .object({
-    id: z.coerce.string(),
+    uuid: z.string(),
     name: z.string(),
+    pppoe_username: z.string().nullable().optional(),
+    termination_date: z.string().nullable().optional(),
+  })
+  .passthrough();
+
+export const WalletRefSchema = z
+  .object({
+    uuid: z.string(),
+    balance: z.coerce.number().default(0),
+    credit_balance: z.coerce.number().default(0),
+  })
+  .passthrough();
+
+export const WalletResellerRefSchema = z
+  .object({
+    id: z.string(),
+    name: z.string().nullable().optional(),
   })
   .passthrough();
 
@@ -18,6 +35,27 @@ export const WalletTransactionRowSchema = z
     reference: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
     created_at: z.string().nullable().optional(),
+    wallet: WalletRefSchema.nullable().optional(),
+  })
+  .passthrough();
+
+export const WalletResourceRowSchema = z
+  .object({
+    id: z.string(),
+    balance: z.coerce.number().default(0),
+    credit_balance: z.coerce.number().default(0),
+    client: WalletClientRefSchema.nullable().optional(),
+    reseller: WalletResellerRefSchema.nullable().optional(),
+    transactions: z.array(WalletTransactionRowSchema).nullable().optional(),
+    created_at: z.string().nullable().optional(),
+    note: z.string().nullable().optional(),
+  })
+  .passthrough();
+
+export const ClientRefSchema = z
+  .object({
+    id: z.coerce.string(),
+    name: z.string(),
   })
   .passthrough();
 
@@ -69,6 +107,10 @@ export const ClientWalletRechargeFormSchema = z
     { message: "wallet.client.errors.required", path: ["clientUuid"] }
   );
 
+export type WalletClientRef = z.infer<typeof WalletClientRefSchema>;
+export type WalletRef = z.infer<typeof WalletRefSchema>;
+export type WalletResellerRef = z.infer<typeof WalletResellerRefSchema>;
+export type WalletResourceRow = z.infer<typeof WalletResourceRowSchema>;
 export type WalletTransactionRow = z.infer<typeof WalletTransactionRowSchema>;
 export type ClientWalletRow = z.infer<typeof ClientWalletRowSchema>;
 export type MyWalletBalance = z.infer<typeof MyWalletBalanceSchema>;
