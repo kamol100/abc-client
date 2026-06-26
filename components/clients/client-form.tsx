@@ -11,7 +11,7 @@ type Props = {
   mode?: "create" | "edit";
   api?: string;
   method?: "GET" | "POST" | "PUT";
-  data?: { id?: string | number } & Omit<Partial<ClientRow>, "id">;
+  data?: Partial<ClientRow>;
 };
 
 const ClientForm: FC<Props> = ({

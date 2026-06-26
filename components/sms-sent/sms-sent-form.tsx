@@ -49,7 +49,7 @@ type SmsSentFormPageProps = {
 type SmsSentFormSingleClientProps = {
   phone: string;
   mode: "singleClient";
-  clientId: number;
+  clientId: string;
   onSent?: () => void;
 };
 

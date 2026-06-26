@@ -5,7 +5,7 @@ import useApiMutation from "@/hooks/use-api-mutation";
 import { FC, useState } from "react";
 
 interface ClientStatusToggleProps {
-    clientId: number;
+    clientId: string;
     initialStatus: 0 | 1;
 }
 

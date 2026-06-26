@@ -127,7 +127,7 @@ type BuildPayloadOptions = {
   formValues: SmsSentFormValues;
   filterValues: SmsSentClientFilterValues;
   smsCount: number;
-  selectedClientIds?: number[];
+  selectedClientIds?: (string | number)[];
   preferClientIdsForTemplate?: boolean;
 };
 

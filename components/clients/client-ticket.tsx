@@ -2,7 +2,7 @@
 
 import { FC, useMemo, useState } from "react";
 import { MyDialog } from "@/components/my-dialog";
-import type { ClientRow } from "@/components/clients/client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
 import { useProfile } from "@/context/app-provider";
 import TicketForm from "@/components/tickets/ticket-form";
 
@@ -27,9 +27,9 @@ const ClientTicketDialog: FC<ClientTicketDialogProps> = ({
         if (client.uuid) return client.uuid;
         if (providedClientUuid) return providedClientUuid;
 
-        const clientId = String(client.id);
-        return UUID_PATTERN.test(clientId) ? clientId : undefined;
-    }, [client.id, client.uuid, providedClientUuid]);
+        const resolvedClientId = getClientId(client);
+        return resolvedClientId && UUID_PATTERN.test(resolvedClientId) ? resolvedClientId : undefined;
+    }, [client, providedClientUuid]);
 
     const handleOpenChange = (nextOpen: boolean) => {
         onOpenChange(nextOpen);

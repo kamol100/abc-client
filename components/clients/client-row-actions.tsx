@@ -35,7 +35,7 @@ import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog"
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import ClientSmsDialog from "@/components/clients/client-sms";
-import { ClientRow } from "@/components/clients/client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
 import dynamic from "next/dynamic";
 import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
 
@@ -51,6 +51,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const { hasPermission } = usePermissions();
     const [ticketOpen, setTicketOpen] = useState(false);
     const client = row.original;
+    const clientId = getClientId(client) ?? "";
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
@@ -61,8 +62,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
 
     const { mutateAsync: deleteClient, isPending: isDeleting } = useApiMutation({
         url: mikrotikDelete
-            ? `/clients/${client.id}?mikrotik_delete=true`
-            : `/clients/${client.id}`,
+            ? `/clients/${clientId}?mikrotik_delete=true`
+            : `/clients/${clientId}`,
         method: "DELETE",
         invalidateKeys: "clients",
         successMessage: "common.item_deleted_successfully",
@@ -84,7 +85,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             <DataTableRowActions row={row}>
                 {hasPermission("clients.show") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link target={client_view_open_on_new_tab ? "_blank" : "_self"} href={`/clients/view/${client.id}`}>
+                        <Link target={client_view_open_on_new_tab ? "_blank" : "_self"} href={`/clients/view/${clientId}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             {t("client.actions.view")}
                         </Link>
@@ -92,7 +93,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 )}
                 {hasPermission("clients.edit") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link target={client_edit_open_on_new_tab ? "_blank" : "_self"} href={`/clients/edit/${client.id}`}>
+                        <Link target={client_edit_open_on_new_tab ? "_blank" : "_self"} href={`/clients/edit/${clientId}`}>
                             <Edit className="mr-2 h-4 w-4" />
                             {t("client.actions.edit")}
                         </Link>
@@ -108,7 +109,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 </DropdownMenuItem>
                 {hasPermission("invoices.access") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link href={`/invoices/client/${client.id}`}>
+                        <Link href={`/invoices/client/${clientId}`}>
                             <FileText className="mr-2 h-4 w-4" />
                             {t("client.actions.invoice_history")}
                         </Link>
@@ -154,7 +155,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             </DataTableRowActions>
 
             <ClientSessionResetDialog
-                clientId={client.id}
+                clientId={clientId}
                 open={resetOpen}
                 onOpenChange={setResetOpen}
             />
@@ -178,13 +179,13 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             />
             <ClientTicketDialog
                 client={client}
-                clientUuid={client.uuid}
+                clientUuid={clientId}
                 open={ticketOpen}
                 onOpenChange={setTicketOpen}
             />
 
             <ClientWalletRechargeDialog
-                clientUuid={client.id}
+                clientUuid={clientId}
                 clientName={client.name}
                 open={walletRechargeOpen}
                 onOpenChange={setWalletRechargeOpen}

@@ -9,7 +9,7 @@ import { Package } from "lucide-react";
 import { FC, ReactNode } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ClientRow } from "./client-type";
+import { ClientRow, getClientId } from "./client-type";
 
 interface ChangePackageForm {
     package_id: number | null;
@@ -30,12 +30,14 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    const clientId = getClientId(client) ?? "";
+
     const form = useForm<ChangePackageForm>({
         defaultValues: { package_id: client.package_id ?? null },
     });
 
     const { mutateAsync, isPending } = useApiMutation<unknown, ChangePackageForm>({
-        url: `/clients-change-package/${client.id}`,
+        url: `/clients-change-package/${clientId}`,
         method: "PUT",
         invalidateKeys: "clients",
         successMessage: "client.change_package.success",

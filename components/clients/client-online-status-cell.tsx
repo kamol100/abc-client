@@ -14,7 +14,7 @@ interface ClientOnlineStatus {
 }
 
 interface Props {
-    clientId: number;
+    clientId: string;
     inactive?: boolean;
 }
 

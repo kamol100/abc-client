@@ -13,7 +13,7 @@ import {
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
-import { ClientRow } from "@/components/clients/client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
 import { Badge } from "@/components/ui/badge";
 import ClientHistory from "@/components/clients/client-history";
 import ClientBasicView from "@/components/clients/basic-view";
@@ -68,7 +68,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
                     {hasPermission("clients.edit") && (
-                        <MyButton action="edit" url={`/clients/edit/${client.id}`} title={t("client.actions.edit")} />
+                        <MyButton action="edit" url={`/clients/edit/${getClientId(client) ?? clientId}`} title={t("client.actions.edit")} />
                     )}
                     <MyButton action="edit" icon={false} onClick={() => setChangePackageOpen(true)}>
                         <Package className="h-4 w-4" />

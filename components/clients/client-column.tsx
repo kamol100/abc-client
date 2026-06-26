@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { ClientRow } from "./client-type";
+import { ClientRow, getClientId } from "./client-type";
 import ClientNamePhoneCell from "./client-name-phone-cell";
 import ClientZoneAddressCell from "./client-zone-address-cell";
 import ClientPackageCell from "./client-package-cell";
@@ -70,7 +70,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             ),
             cell: ({ row }) => (
                 <ClientOnlineStatusCell
-                    clientId={row.original.id}
+                    clientId={getClientId(row.original) ?? ""}
                     inactive={row.original.status === 0}
                 />
             ),
@@ -85,7 +85,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
                 const statusValue = Number(row.original.status ?? 0) as 0 | 1;
                 return (
                     <ClientStatusToggle
-                        clientId={row.original.id}
+                        clientId={getClientId(row.original) ?? ""}
                         initialStatus={statusValue}
                     />
                 );

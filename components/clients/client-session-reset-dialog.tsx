@@ -12,7 +12,7 @@ import { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 interface ClientSessionResetDialogProps {
-    clientId: number;
+    clientId: string;
     trigger?: ReactNode;
     open?: boolean;
     onOpenChange?: (open: boolean) => void;

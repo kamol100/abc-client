@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Network } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClientRow, RouterInfo } from "./client-type";
+import { ClientRow, getClientId, RouterInfo } from "./client-type";
 import ClientSpeedWidget from "./client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
@@ -41,12 +41,13 @@ function ClientRouterInfoSkeleton() {
 
 const ClientRouterInfo: FC<Props> = ({ client }) => {
     const { t } = useTranslation();
+    const clientId = getClientId(client) ?? "";
     const {
         data: routerInfo,
         isLoading: isRouterInfoLoading,
     } = useApiQuery<ApiResponse<RouterInfo>>({
-        queryKey: ['client-router-info', client.id],
-        url: `client-router-info/${client.id}`,
+        queryKey: ['client-router-info', clientId],
+        url: `client-router-info/${clientId}`,
         pagination: false,
     });
 
@@ -56,7 +57,7 @@ const ClientRouterInfo: FC<Props> = ({ client }) => {
     return (
         <div className="space-y-0 px-3 py-3">
             <InfoRow label={t("client.basic_view.up_down")}>
-                <ClientSpeedWidget clientId={client.id.toString()} />
+                <ClientSpeedWidget clientId={clientId} />
             </InfoRow>
             {isRouterInfoLoading ? <ClientRouterInfoSkeleton /> : (
                 <>

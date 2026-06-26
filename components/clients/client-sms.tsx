@@ -3,7 +3,7 @@
 import { FC, useState } from "react";
 import { MyDialog } from "@/components/my-dialog";
 import SmsSentForm from "@/components/sms-sent/sms-sent-form";
-import type { ClientRow } from "@/components/clients/client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
 
 interface ClientSmsDialogProps {
     client: ClientRow;
@@ -39,7 +39,7 @@ const ClientSmsDialog: FC<ClientSmsDialogProps> = ({
                 <SmsSentForm
                     key={formKey}
                     mode="singleClient"
-                    clientId={client.id}
+                    clientId={getClientId(client) ?? ""}
                     phone={phone}
                     onSent={() => handleOpenChange(false)}
                 />

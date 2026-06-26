@@ -24,7 +24,7 @@ export const InvoiceDueItemSchema = z.object({
 export type InvoiceDueItem = z.infer<typeof InvoiceDueItemSchema>;
 
 export const ClientRowSchema = z.object({
-    id: z.coerce.number(),
+    id: z.coerce.string().optional(),
     uuid: z.string().optional(),
     sid: z.string().nullable().optional(),
     name: z.string(),
@@ -66,6 +66,10 @@ export const ClientRowSchema = z.object({
 }).passthrough();
 
 export type ClientRow = z.infer<typeof ClientRowSchema>;
+
+export function getClientId(client: Pick<ClientRow, "id" | "uuid">): string | undefined {
+    return client.id ?? client.uuid;
+}
 
 export const ClientFormSchema = z.object({
     name: z.string({
