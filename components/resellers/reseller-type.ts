@@ -172,9 +172,6 @@ export type ResellerPayload = z.output<typeof ResellerFormSchema>;
 export const ResellerWalletMethodValues = ["cash", "bank"] as const;
 
 export const ResellerWalletRechargeFormSchema = z.object({
-    recharge_method: z.enum(ResellerWalletMethodValues, {
-        required_error: "reseller.wallet_recharge.recharge_method.errors.required",
-    }),
     balance: z.coerce
         .number({
             required_error: "reseller.wallet_recharge.balance.errors.required",
