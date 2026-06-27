@@ -16,9 +16,10 @@ import { useFetch } from "@/app/actions";
 type InvoiceRowActionsProps = {
     invoice: InvoiceRow;
     resellerInvoice?: boolean;
+    queryKey?: string;
 };
 
-const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoice = false }) => {
+const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoice = false, queryKey = "invoices" }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const [payOpen, setPayOpen] = useState(false);
@@ -84,7 +85,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoic
                 {canDelete && !resellerInvoice && (
                     <DeleteModal
                         api_url={`invoices/${invoice.id}`}
-                        keys="invoices"
+                        keys={queryKey}
                         confirmMessage="invoice.delete_confirmation"
                         buttonText="invoice.actions.delete"
                     />

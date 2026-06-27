@@ -6,6 +6,7 @@ alwaysApply: true
 Next.js 16+ App Router project using shadcn/ui, TypeScript, and TailwindCSS.
 
 Rules:
+
 - Server Components by default
 - "use client" only where required
 - Extract types into {feature}-type.ts following this structure:
@@ -34,9 +35,7 @@ Rules:
 - Ensure using MyButton (components/my-button.tsx) instead Button
 - Ensure the dynamic form UI looks clean and well-structured. For example, when multiple items are added by clicking the plus button, the delete (trash) icon should be properly aligned with each item in the list.
 
------------------------------------------
- TRANSLATION WORKFLOW (MANDATORY)
------------------------------------------
+## TRANSLATION WORKFLOW (MANDATORY)
 
 feature MUST have full translation coverage.
 No hardcoded user-facing strings inside components — always use `t()` from `useTranslation()`.
@@ -58,6 +57,7 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
 3. Key structure and naming conventions:
 
    Menu items → nested under `menu`:
+
    ```json
    "menu": {
      "{feature}": {
@@ -68,6 +68,7 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
    ```
 
    Form fields → nested under `{feature}`:
+
    ```json
    "{feature}": {
      "{field_name}": {
@@ -100,6 +101,7 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
      - "Enter the email address" → "ইমেইল ঠিকানা দিন"
 
 6. Usage in components:
+
    ```tsx
    // Labels & placeholders
    <Label>"{feature}.{field}.label"</Label>
@@ -121,18 +123,19 @@ No hardcoded user-facing strings inside components — always use `t()` from `us
    - [ ] Bangla uses transliterated terms for technical words
    - [ ] `useTranslation()` is imported and used in every client component with text
 
------------------------------------------
- OUTPUT FORMAT
------------------------------------------
-   - Prefer using custom components built on top of shadcn. Only use the core shadcn components if a suitable custom component is not available.
+## OUTPUT FORMAT
 
-   ✅ **Correct:**
+- Prefer using custom components built on top of shadcn. Only use the core shadcn components if a suitable custom component is not available.
+
+✅ **Correct:**
+
 ```customComponent
 import Card from '@components/Card';
 import MyButton from "@/components/my-button";
 ```
 
 ❌ **Wrong:**
+
 ```typescript
 import { Button } from '@/components/ui/button';
 import { Card } from '../../../components/ui/card';

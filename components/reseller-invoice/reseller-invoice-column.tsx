@@ -161,7 +161,7 @@ export const useResellerInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                         title="common.actions"
                     />
                 ),
-                cell: ({ row }) => <InvoiceRowActions invoice={row.original} resellerInvoice={isReseller} />,
+                cell: ({ row }) => <InvoiceRowActions invoice={row.original} resellerInvoice={isReseller} queryKey="reseller-invoice" />,
                 enableSorting: false,
                 enableHiding: false,
             },

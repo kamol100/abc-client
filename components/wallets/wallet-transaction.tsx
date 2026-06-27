@@ -111,12 +111,14 @@ export const BkashWalletForm: FC = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit((values) => rechargeMutation.mutate(values))}>
-          <InputField
-            name="balance"
-            type="number"
-            label={{ labelText: "wallet.amount.label", mandatory: true }}
-            placeholder="wallet.amount.placeholder"
-          />
+          <div className="py-4">
+            <InputField
+              name="balance"
+              type="number"
+              label={{ labelText: "wallet.amount.label", mandatory: true }}
+              placeholder="wallet.amount.placeholder"
+            />
+          </div>
           <input ref={submitRef} type="submit" className="hidden" />
         </form>
       </Form>
