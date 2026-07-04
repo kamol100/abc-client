@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { WalletResourceRowSchema } from "@/components/wallets/wallet-type";
+import { toApiDateString } from "@/lib/helper/helper";
 
 const UserRefSchema = z.object({
     id: z.coerce.number().optional(),
@@ -140,8 +141,14 @@ const ResellerFormBaseSchema = z
         gender: z.enum(["male", "female"]).default("male"),
         marital_status: z.coerce.number().default(0),
         blood_group: z.string().nullable().optional().default(""),
-        date_of_birth: z.coerce.string().nullable().optional(),
-        join_date: z.coerce.string().nullable().optional(),
+        date_of_birth: z.preprocess(
+            (value) => (value instanceof Date ? toApiDateString(value, "dmy") : value),
+            z.string().nullable().optional().default(toApiDateString(new Date(), "dmy") ?? ""),
+        ),
+        join_date: z.preprocess(
+            (value) => (value instanceof Date ? toApiDateString(value, "dmy") : value),
+            z.string().nullable().optional().default(toApiDateString(new Date(), "dmy") ?? ""),
+        ),
     });
 
 export const getResellerFormSchema = (mode: "create" | "edit" = "create") =>
