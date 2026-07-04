@@ -223,7 +223,7 @@ export default function FormWrapper({
     };
 
     const onError = async (data: FieldValues) => {
-        console.log(data, 'data');
+        console.log(data, 'error-data');
     }
 
     // --- Save on change ---

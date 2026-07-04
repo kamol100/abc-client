@@ -57,7 +57,7 @@ export const ResellerExportFileRowSchema = z.object({
 export type ResellerExportFileRow = z.infer<typeof ResellerExportFileRowSchema>;
 
 export const ResellerRowSchema = z.object({
-    id: z.coerce.number(),
+    id: z.string().nullable().optional(),
     reseller_id: z.string().nullable().optional(),
     wallet: WalletResourceRowSchema.nullable().optional(),
     name: z.string(),
@@ -103,7 +103,7 @@ export type ResellerRow = z.infer<typeof ResellerRowSchema>;
 
 const ResellerFormBaseSchema = z
     .object({
-        id: z.coerce.number().nullable().optional(),
+        id: z.string().nullable().optional(),
         name: z.string({
             required_error: "reseller.name.errors.required",
             invalid_type_error: "reseller.name.errors.required",

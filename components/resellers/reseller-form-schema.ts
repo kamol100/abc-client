@@ -65,7 +65,7 @@ export const ResellerFormFieldSchema = ({ mode = "create" }: Props): AccordionSe
                     api: "/dropdown-reseller-packages",
                     isMulti: true,
                     valueKey: "package",
-                    valueMapping: { idKey: "id", labelKey: "name" },
+                    valueMapping: { idKey: "package_parent_id", labelKey: "name" },
                 },
                 {
                     type: "dropdown",
