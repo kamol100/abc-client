@@ -233,12 +233,34 @@ export function hostnameHasTenantSubdomain(hostname: string | null | undefined):
     return true;
 }
 
-export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: number }> {
-    return new Promise((resolve, reject) => {
-        if (!navigator?.geolocation) {
-            reject(new Error("Geolocation is not supported by your browser."));
-            return;
+export function getGeolocationErrorKey(error: unknown): string {
+    if (error instanceof Error) {
+        if (error.message.includes("secure connection")) {
+            return "common.get_location_secure_context";
         }
+        if (error.message.includes("not supported")) {
+            return "common.get_location_unsupported";
+        }
+    }
+
+    if (typeof error === "object" && error !== null && "code" in error) {
+        switch ((error as GeolocationPositionError).code) {
+            case 1:
+                return "common.get_location_permission_denied";
+            case 2:
+                return "common.get_location_unavailable";
+            case 3:
+                return "common.get_location_timeout";
+            default:
+                break;
+        }
+    }
+
+    return "common.get_location_error";
+}
+
+function readCurrentPosition(options: PositionOptions): Promise<GeolocationCoords> {
+    return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 resolve({
@@ -246,9 +268,52 @@ export function getCurrentGeolocation(): Promise<{ latitude: number; longitude: 
                     longitude: position.coords.longitude,
                 });
             },
-            (err) => reject(err),
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            reject,
+            options
         );
+    });
+}
+
+export type GeolocationCoords = { latitude: number; longitude: number };
+
+export function getCurrentGeolocation(): Promise<GeolocationCoords> {
+    if (typeof window === "undefined" || typeof navigator === "undefined") {
+        return Promise.reject(new Error("Geolocation is not supported by your browser."));
+    }
+
+    if (!navigator.geolocation) {
+        return Promise.reject(new Error("Geolocation is not supported by your browser."));
+    }
+
+    if (!window.isSecureContext) {
+        return Promise.reject(
+            new Error("Geolocation requires a secure connection (HTTPS).")
+        );
+    }
+
+    const lowAccuracyOptions: PositionOptions = {
+        enableHighAccuracy: false,
+        timeout: 15000,
+        maximumAge: 300000,
+    };
+
+    const highAccuracyOptions: PositionOptions = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+    };
+
+    return readCurrentPosition(highAccuracyOptions).catch((error) => {
+        if (
+            typeof error === "object" &&
+            error !== null &&
+            "code" in error &&
+            ((error as GeolocationPositionError).code === 2 ||
+                (error as GeolocationPositionError).code === 3)
+        ) {
+            return readCurrentPosition(lowAccuracyOptions);
+        }
+        return Promise.reject(error);
     });
 }
 

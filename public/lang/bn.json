@@ -78,6 +78,14 @@
         "delete_failed": "মুছে ফেলা ব্যর্থ",
         "prepaid": "প্রিপেইড",
         "postpaid": "পোস্টপেইড",
+        "get_current_location": "লোকেশন নিন",
+        "get_location_success": "লোকেশন সফলভাবে আপডেট হয়েছে",
+        "get_location_error": "লোকেশন পেতে ব্যর্থ",
+        "get_location_permission_denied": "লোকেশন অনুমতি প্রত্যাখ্যান হয়েছে। ব্রাউজার সেটিংসে লোকেশন অ্যাক্সেস চালু করুন।",
+        "get_location_unavailable": "এই ডিভাইসে লোকেশন পাওয়া যাচ্ছে না।",
+        "get_location_timeout": "লোকেশন অনুরোধের সময় শেষ। আবার চেষ্টা করুন।",
+        "get_location_secure_context": "লোকেশনের জন্য HTTPS প্রয়োজন। নিরাপদ সংযোগে অ্যাপ খুলুন।",
+        "get_location_unsupported": "আপনার ব্রাউজার জিওলোকেশন সমর্থন করে না।",
         "yes": "হ্যাঁ",
         "no": "না",
         "menu": "মেনু",
@@ -1337,6 +1345,9 @@
             "label": "লংগিটুড",
             "placeholder": "লংগিটুড দিন"
         },
+        "get_current_location": "লোকেশন নিন",
+        "get_location_success": "লোকেশন সফলভাবে আপডেট হয়েছে",
+        "get_location_error": "লোকেশন পেতে ব্যর্থ",
         "welcome_notification": {
             "label": "স্বাগত এসএমএস পাঠান"
         },

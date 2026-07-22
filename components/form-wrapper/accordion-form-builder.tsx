@@ -54,7 +54,7 @@ const AccordionFormBuilder = ({
                 {section.form.map((field) => {
                   if (field.permission === false) return null;
                   return (
-                    <div key={field.name}>
+                    <div key={field.name} className={field.className}>
                       {renderField(field)}
                     </div>
                   );

@@ -12,6 +12,7 @@ import InputField from "../form/input-field";
 import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
 import TextareaField from "../form/textarea-field";
+import GeolocationField from "../form/geolocation-field";
 import Label from "../label";
 import {
   AccordionSection,
@@ -383,6 +384,21 @@ const FormBuilder = ({
             rules={f.rules}
           />
         );
+      case "geolocation":
+        return (
+          <GeolocationField
+            latitudeName={namePrefix ? `${namePrefix}.${f.latitudeName}` : f.latitudeName}
+            longitudeName={namePrefix ? `${namePrefix}.${f.longitudeName}` : f.longitudeName}
+            latitudeLabel={f.latitudeLabel}
+            longitudeLabel={f.longitudeLabel}
+            latitudePlaceholder={f.latitudePlaceholder}
+            longitudePlaceholder={f.longitudePlaceholder}
+            getLocationLabel={f.getLocationLabel}
+            getLocationSuccess={f.getLocationSuccess}
+            getLocationError={f.getLocationError}
+            className={f.className}
+          />
+        );
       default:
         return null;
     }
@@ -430,7 +446,7 @@ const FormBuilder = ({
           {(formSchema as FormFieldConfig[]).map((field) => {
             if (field.permission === false) return null;
             return (
-              <div key={field.name}>
+              <div key={field.name} className={field.className}>
                 {renderField(field)}
               </div>
             );

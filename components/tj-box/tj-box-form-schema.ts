@@ -2,16 +2,18 @@ import { FieldConfig } from "../form-wrapper/form-builder-type";
 
 export const TjBoxFormFieldSchema = (): FieldConfig[] => [
     {
-        type: "number",
-        name: "latitude",
-        label: { labelText: "tj_box.latitude.label" },
-        placeholder: "tj_box.latitude.placeholder",
-    },
-    {
-        type: "number",
-        name: "longitude",
-        label: { labelText: "tj_box.longitude.label" },
-        placeholder: "tj_box.longitude.placeholder",
+        type: "geolocation",
+        name: "tj_box_location",
+        latitudeName: "latitude",
+        longitudeName: "longitude",
+        latitudeLabel: { labelText: "tj_box.latitude.label" },
+        longitudeLabel: { labelText: "tj_box.longitude.label" },
+        latitudePlaceholder: "tj_box.latitude.placeholder",
+        longitudePlaceholder: "tj_box.longitude.placeholder",
+        getLocationLabel: "tj_box.get_current_location",
+        getLocationSuccess: "tj_box.get_location_success",
+        getLocationError: "tj_box.get_location_error",
+        className: "col-span-full",
     },
     {
         type: "dropdown",

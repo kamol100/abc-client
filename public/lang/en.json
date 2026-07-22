@@ -78,6 +78,14 @@
         "delete_failed": "Delete failed",
         "prepaid": "Prepaid",
         "postpaid": "Postpaid",
+        "get_current_location": "Get Location",
+        "get_location_success": "Location updated successfully",
+        "get_location_error": "Failed to get location",
+        "get_location_permission_denied": "Location permission denied. Allow location access in your browser settings.",
+        "get_location_unavailable": "Location is unavailable on this device.",
+        "get_location_timeout": "Location request timed out. Please try again.",
+        "get_location_secure_context": "Location requires HTTPS. Open the app on a secure connection.",
+        "get_location_unsupported": "Geolocation is not supported by your browser.",
         "yes": "Yes",
         "no": "No",
         "menu": "Menu",
@@ -1337,6 +1345,9 @@
             "label": "Longitude",
             "placeholder": "Enter longitude"
         },
+        "get_current_location": "Get Location",
+        "get_location_success": "Location updated successfully",
+        "get_location_error": "Failed to get location",
         "welcome_notification": {
             "label": "Send Welcome SMS"
         },

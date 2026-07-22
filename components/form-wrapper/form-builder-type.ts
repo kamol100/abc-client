@@ -92,6 +92,19 @@ export type DateRangeFieldConfig = BaseFieldConfig & {
     required?: boolean;
 };
 
+export type GeolocationFieldConfig = BaseFieldConfig & {
+    type: "geolocation";
+    latitudeName: string;
+    longitudeName: string;
+    latitudeLabel?: LabelProps;
+    longitudeLabel?: LabelProps;
+    latitudePlaceholder?: string;
+    longitudePlaceholder?: string;
+    getLocationLabel?: string;
+    getLocationSuccess?: string;
+    getLocationError?: string;
+};
+
 export type FieldConfig =
     | TextFieldConfig
     | TextareaFieldConfig
@@ -100,7 +113,8 @@ export type FieldConfig =
     | SwitchFieldConfig
     | CheckboxFieldConfig
     | DateFieldConfig
-    | DateRangeFieldConfig;
+    | DateRangeFieldConfig
+    | GeolocationFieldConfig;
 
 export type FieldArrayConfig = {
     type: "fieldArray";

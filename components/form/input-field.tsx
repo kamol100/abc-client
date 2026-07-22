@@ -22,6 +22,7 @@ type InputFieldProps = {
     reserveErrorSpace?: boolean;
     /** Optional focus handler (e.g. for scrolling input into view on mobile) */
     onFocus?: React.FocusEventHandler<HTMLInputElement>;
+    labelSuffix?: React.ReactNode;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -38,13 +39,14 @@ const InputField: React.FC<InputFieldProps> = ({
     errorMessageEllipsis = false,
     reserveErrorSpace = false,
     onFocus,
+    labelSuffix,
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
     const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
-            {label && <Label label={label} />}
+            {label && <Label label={label} suffix={labelSuffix} />}
             <Controller
                 name={name}
                 control={control}
