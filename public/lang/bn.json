@@ -140,8 +140,8 @@
         "after_discount_amount": "পরিমাণ (ডিসকাউন্ট পর)",
         "device": "ডিভাইস",
         "zone": "জোন",
-        "latitude": "অক্ষাংশ",
-        "longitude": "দ্রাঘিমাংশ",
+        "latitude": "ল্যাটিটিউড",
+        "longitude": "লংগিটুড",
         "description": "বিবরণ",
         "key": "কি",
         "bandwidth": "ব্যান্ডউইডথ",
@@ -422,12 +422,12 @@
             "label": "জোনের নাম (বাংলা)"
         },
         "latitude": {
-            "label": "অক্ষাংশ",
-            "placeholder": "অক্ষাংশ দিন"
+            "label": "ল্যাটিটিউড",
+            "placeholder": "ল্যাটিটিউড দিন"
         },
         "longitude": {
-            "label": "দ্রাঘিমাংশ",
-            "placeholder": "দ্রাঘিমাংশ দিন"
+            "label": "লংগিটিউড",
+            "placeholder": "লংগিটুড দিন"
         },
         "sub_zones": {
             "label": "সাব জোন"
@@ -1330,12 +1330,12 @@
             "placeholder": "ডিভাইস"
         },
         "latitude": {
-            "label": "অক্ষাংশ",
-            "placeholder": "অক্ষাংশ দিন"
+            "label": "ল্যাটিটিউড",
+            "placeholder": "ল্যাটিটিউড দিন"
         },
         "longitude": {
-            "label": "দ্রাঘিমাংশ",
-            "placeholder": "দ্রাঘিমাংশ দিন"
+            "label": "লংগিটুড",
+            "placeholder": "লংগিটুড দিন"
         },
         "welcome_notification": {
             "label": "স্বাগত এসএমএস পাঠান"
@@ -3387,15 +3387,15 @@
             "placeholder": "ডিভাইস সিলেক্ট করুন"
         },
         "latitude": {
-            "label": "অক্ষাংশ",
-            "placeholder": "অক্ষাংশ দিন",
+            "label": "ল্যাটিটিউড",
+            "placeholder": "ল্যাটিটিউড দিন",
             "errors": {
                 "range": "অক্ষাংশ -৯০ থেকে ৯০ এর মধ্যে হতে হবে"
             }
         },
         "longitude": {
-            "label": "দ্রাঘিমাংশ",
-            "placeholder": "দ্রাঘিমাংশ দিন",
+            "label": "লংগিটুড",
+            "placeholder": "লংগিটুড দিন",
             "errors": {
                 "range": "দ্রাঘিমাংশ -১৮০ থেকে ১৮০ এর মধ্যে হতে হবে"
             }

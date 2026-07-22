@@ -166,11 +166,23 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           ],
         },
         {
+          type: "text",
+          name: "adr_latitude",
+          label: { labelText: "client.latitude.label" },
+          placeholder: "client.latitude.placeholder",
+        },
+        {
           type: "textarea",
           name: "current_address",
           label: { labelText: "client.current_address.label" },
           placeholder: "client.current_address.placeholder",
           rows: 2,
+        },
+        {
+          type: "text",
+          name: "adr_longitude",
+          label: { labelText: "client.longitude.label" },
+          placeholder: "client.longitude.placeholder",
         },
         {
           type: "textarea",

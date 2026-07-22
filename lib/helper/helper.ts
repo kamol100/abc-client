@@ -43,7 +43,7 @@ export function formatMoney(
     return new Intl.NumberFormat("en", { minimumFractionDigits }).format(toNumber(value));
 }
 
-export function toApiDateString(value: Date | string | null | undefined, format: "iso" | "dmy" = "iso",): string | null {
+export function toApiDateString(value: Date | string | null | undefined, format: "iso" | "dmy" = "iso"): string | null {
     if (!value) return null;
 
     if (value instanceof Date) {
