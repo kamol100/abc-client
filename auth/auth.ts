@@ -4,6 +4,9 @@ import { z } from 'zod';
 import { authConfig } from './auth.config';
 const BASE_URL = `${process.env.NEXTAPI_URL}/api/v1`;
 
+/** 1 year in seconds — keeps NextAuth JWT/cookie aligned with backend token lifetime */
+const SESSION_MAX_AGE_SECONDS = 365 * 24 * 60 * 60;
+
 const loginRequestSchema = z.object({
     api: z.string(),
     username: z.string(), //for admin-login username:username for client-login username:phone
@@ -81,6 +84,9 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     ],
     session: {
         strategy: "jwt",
-        maxAge: 1209600,
+        maxAge: SESSION_MAX_AGE_SECONDS,
+    },
+    jwt: {
+        maxAge: SESSION_MAX_AGE_SECONDS,
     },
 });
