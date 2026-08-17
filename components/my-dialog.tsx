@@ -43,6 +43,7 @@ type DialogVariant = "default" | "destructive";
 
 interface MyDialogProps {
   title?: string;
+  titleValues?: Record<string, string | number>;
   description?: string;
   children?: ReactNode;
   trigger?: ReactNode;
@@ -67,6 +68,7 @@ interface MyDialogProps {
 
 export function MyDialog({
   title,
+  titleValues,
   description,
   children,
   trigger,
@@ -158,7 +160,7 @@ export function MyDialog({
       >
         {(title || description) && (
           <DialogHeader className="shrink-0 pb-4">
-            {title && <DialogTitle>{t(title)}</DialogTitle>}
+            {title && <DialogTitle>{t(title, titleValues)}</DialogTitle>}
             {description && (
               <DialogDescription>{t(description)}</DialogDescription>
             )}

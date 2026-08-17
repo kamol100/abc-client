@@ -64,6 +64,7 @@
         "add_item": "আইটেম যোগ করুন",
         "add_deduction": "কর্তন যোগ করুন",
         "no_salary": "বেতন নেই",
+        "no_bill": "বিল নেই",
         "basic_information": "মৌলিক তথ্য",
         "salary_information": "বেতন তথ্য",
         "salary_and_allowance": "বেতন ও ভাতা",
@@ -1308,9 +1309,9 @@
             "label": "ডিসকাউন্ট",
             "placeholder": "০.০০"
         },
-        "payment_deadline": {
-            "label": "পেমেন্ট ডেডলাইন",
-            "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন",
+        "payment_date": {
+            "label": "পেমেন্ট ডেট",
+            "placeholder": "পেমেন্ট ডেট নির্বাচন করুন",
             "none": "কোনোটি না"
         },
         "payment_term": {
@@ -1431,7 +1432,7 @@
             "description": "শুধু এই ক্লায়েন্টকে এসএমএস পাঠান।"
         },
         "ticket_dialog": {
-            "title": "টিকেট তৈরি করুন",
+            "title": "টিকেট তৈরি করুন: {{name}}",
             "description": "এই ক্লায়েন্টের জন্য সাপোর্ট টিকেট তৈরি করুন।"
         },
         "delete_mikrotik": "মাইক্রোটিক থেকে মুছবেন?",
@@ -1449,7 +1450,7 @@
             "price": "দাম",
             "billing_deadline": "বিলিং ডেডলাইন",
             "billing_term": "বিলিং টার্ম",
-            "invoice_day": "ইনভয়েস ডে",
+            "invoice_date": "ইনভয়েস ডেট",
             "billing_type": "বিলিং টাইপ",
             "up_down": "আপ/ডাউন",
             "router_mac": "রাউটার ম্যাক",
@@ -1504,8 +1505,8 @@
             "label": "ক্যাবল লেন্থ (মিটার)",
             "placeholder": "যেমন: ২০০"
         },
-        "invoice_day": {
-            "label": "ইনভয়েস ডে",
+        "invoice_date": {
+            "label": "ইনভয়েস ডেট",
             "placeholder": "ইনভয়েস ডে নির্বাচন করুন"
         },
         "connection_date": {
@@ -1897,7 +1898,7 @@
             "placeholder": "ট্যাগ"
         },
         "assigned_to": {
-            "label": "স্টাফ",
+            "label": "স্টাফ (অ্যাসাইন করা)",
             "placeholder": "স্টাফ"
         },
         "message": {

@@ -3,7 +3,6 @@
 import { FC, useMemo, useState } from "react";
 import { MyDialog } from "@/components/my-dialog";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
-import { useProfile } from "@/context/app-provider";
 import TicketForm from "@/components/tickets/ticket-form";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -21,7 +20,6 @@ const ClientTicketDialog: FC<ClientTicketDialogProps> = ({
     open,
     onOpenChange,
 }) => {
-    const { profile } = useProfile();
     const [formKey, setFormKey] = useState(0);
     const clientUuid = useMemo(() => {
         if (client.uuid) return client.uuid;
@@ -43,6 +41,7 @@ const ClientTicketDialog: FC<ClientTicketDialogProps> = ({
             open={open}
             onOpenChange={handleOpenChange}
             title="client.ticket_dialog.title"
+            titleValues={{ name: client.name }}
             description="client.ticket_dialog.description"
             size="xl"
             contentClassName="w-[calc(100vw-2rem)] sm:w-full"
@@ -52,10 +51,9 @@ const ClientTicketDialog: FC<ClientTicketDialogProps> = ({
                     key={formKey}
                     mode="create"
                     embed
-                    omitFieldNames={["client_id", "assigned_to"]}
+                    omitFieldNames={["client_id"]}
                     defaultValues={{
                         client_uuid: clientUuid,
-                        assigned_to_uuid: profile.staff?.id,
                     }}
                     onClose={() => handleOpenChange(false)}
                 />

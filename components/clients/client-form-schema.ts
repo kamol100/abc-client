@@ -16,7 +16,7 @@ const invoiceDayOptions = Array.from({ length: 31 }, (_, i) => {
 });
 
 const paymentDeadlineOptions = Array.from({ length: 32 }, (_, i) => {
-  const label = i === 0 ? "client.payment_deadline.none" : i < 10 ? `0${i}` : String(i);
+  const label = i === 0 ? "client.payment_date.none" : i < 10 ? `0${i}` : String(i);
   return { value: String(i), label };
 });
 
@@ -75,8 +75,8 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
         {
           type: "dropdown",
           name: "payment_deadline",
-          label: { labelText: "client.payment_deadline.label" },
-          placeholder: "client.payment_deadline.placeholder",
+          label: { labelText: "client.payment_date.label" },
+          placeholder: "client.payment_date.placeholder",
           options: paymentDeadlineOptions,
         },
         {
@@ -85,6 +85,13 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.payment_term.label" },
           placeholder: "client.payment_term.placeholder",
           options: paymentTermOptions,
+        },
+        {
+          type: "dropdown",
+          name: "invoice_day",
+          label: { labelText: "client.invoice_date.label" },
+          placeholder: "client.invoice_date.placeholder",
+          options: invoiceDayOptions,
         },
         {
           type: "radio",
@@ -106,7 +113,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           options: [
             { label: "common.auto", value: "auto" },
             { label: "common.manual", value: "manual" },
-            { label: "common.no_salary", value: "no_bill" },
+            { label: "common.no_bill", value: "no_bill" },
           ],
         },
         {
@@ -293,13 +300,6 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           label: { labelText: "client.upazila.label" },
           placeholder: "client.upazila.placeholder",
           api: "/dropdown-upazilas",
-        },
-        {
-          type: "dropdown",
-          name: "invoice_day",
-          label: { labelText: "client.invoice_day.label" },
-          placeholder: "client.invoice_day.placeholder",
-          options: invoiceDayOptions,
         },
         {
           type: "date",

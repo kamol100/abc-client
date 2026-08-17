@@ -8,6 +8,7 @@ import {
     CreditCard,
     MessageSquare,
     Package,
+    RotateCcw,
     Ticket,
 } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
@@ -20,6 +21,7 @@ import ClientBasicView from "@/components/clients/basic-view";
 import ClientViewSkeleton from "@/components/clients/client-view-skeleton";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
+import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import TicketTable from "@/components/tickets/ticket-table";
 import PaymentTable from "@/components/payments/payment-table";
 import InvoiceTable from "@/components/invoices/invoice-table";
@@ -34,6 +36,7 @@ interface Props {
 const ClientView: FC<Props> = ({ clientId }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
@@ -70,6 +73,10 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     {hasPermission("clients.edit") && (
                         <MyButton action="edit" url={`/clients/edit/${getClientId(client) ?? clientId}`} title={t("client.actions.edit")} />
                     )}
+                    <MyButton action="edit" icon={false} onClick={() => setResetOpen(true)}>
+                        <RotateCcw className="h-4 w-4" />
+                        {t("client.actions.reset_session")}
+                    </MyButton>
                     <MyButton action="edit" icon={false} onClick={() => setChangePackageOpen(true)}>
                         <Package className="h-4 w-4" />
                         {t("client.actions.change_package")}
@@ -94,6 +101,11 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     )}
                 </div>
             </div>
+            <ClientSessionResetDialog
+                clientId={getClientId(client) ?? clientId}
+                open={resetOpen}
+                onOpenChange={setResetOpen}
+            />
             <ClientSmsDialog
                 client={client}
                 open={smsOpen}

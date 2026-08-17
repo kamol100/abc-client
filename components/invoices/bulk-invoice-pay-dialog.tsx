@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
@@ -36,7 +36,8 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
-    const canDiscount = hasPermission("invoices.edit");
+    const canDiscount = hasPermission("invoices.apply-discount");
+    const canChangePaymentDate = hasPermission("invoices.change-payment-date");
     const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
     const [selectedIds, setSelectedIds] = useState<string[]>(allUuids);
 
@@ -45,7 +46,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         defaultValues: {
             invoice_ids: allUuids,
             fund_id: undefined,
-            payment_date: "",
+            payment_date: new Date().toISOString().slice(0, 10),
             status: "paid",
             partial_amount: 0,
             confirmation_sms: 0,
@@ -55,6 +56,12 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 
     const { handleSubmit, watch, setValue, setError } = form;
     const status = watch("status");
+
+    useEffect(() => {
+        if (open) {
+            setValue("payment_date", new Date().toISOString().slice(0, 10));
+        }
+    }, [open, setValue]);
 
     const toggleInvoice = useCallback(
         (uuid: string, checked: boolean) => {
@@ -345,6 +352,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                     "invoice.bulk_pay.payment_date.placeholder",
                                 )}
                                 mode="single"
+                                disabled={!canChangePaymentDate}
                             />
                             <RadioField
                                 name="status"

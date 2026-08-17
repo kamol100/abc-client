@@ -64,6 +64,7 @@
         "add_item": "Add Item",
         "add_deduction": "Add Deduction",
         "no_salary": "No Salary",
+        "no_bill": "No Bill",
         "basic_information": "Basic Information",
         "salary_information": "Salary Information",
         "salary_and_allowance": "Salary & Allowance",
@@ -1308,9 +1309,9 @@
             "label": "Discount",
             "placeholder": "0.00"
         },
-        "payment_deadline": {
-            "label": "Payment Deadline",
-            "placeholder": "Select payment deadline",
+        "payment_date": {
+            "label": "Payment Date",
+            "placeholder": "Select payment date",
             "none": "None"
         },
         "payment_term": {
@@ -1431,7 +1432,7 @@
             "description": "Send an SMS to this client only."
         },
         "ticket_dialog": {
-            "title": "Create Ticket",
+            "title": "Create Ticket: {{name}}",
             "description": "Create a support ticket for this client."
         },
         "delete_mikrotik": "Delete from Mikrotik?",
@@ -1449,7 +1450,7 @@
             "price": "Price",
             "billing_deadline": "Billing Deadline",
             "billing_term": "Billing Term",
-            "invoice_day": "Invoice Day",
+            "invoice_date": "Invoice Date",
             "billing_type": "Billing Type",
             "up_down": "Up/down",
             "router_mac": "Router Mac",
@@ -1509,9 +1510,9 @@
             "label": "Cable Length (m)",
             "placeholder": "e.g. 200"
         },
-        "invoice_day": {
-            "label": "Invoice Day",
-            "placeholder": "Select invoice day"
+        "invoice_date": {
+            "label": "Invoice Date",
+            "placeholder": "Select invoice date"
         },
         "connection_date": {
             "label": "Connection Date",
