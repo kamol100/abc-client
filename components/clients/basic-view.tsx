@@ -131,7 +131,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                     <InfoRow labelWidth="w-36" label={t("client.basic_view.billing_term")}>
                         {client?.billing_term ? t(`common.${client.billing_term}`) : t("common.monthly")}
                     </InfoRow>
-                    <InfoRow labelWidth="w-36" label={t("client.basic_view.invoice_day")}>
+                    <InfoRow labelWidth="w-36" label={t("client.basic_view.invoice_date")}>
                         {client?.invoice_day ?? "—"}
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.basic_view.billing_type")}>
