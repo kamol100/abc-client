@@ -3,6 +3,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, Loader2, Network, Radio, X } from "lucide-react";
+import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -73,9 +74,16 @@ function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
             const reachable = Boolean(
                 result?.success && (result.data as { reachable?: boolean } | undefined)?.reachable
             );
-            setPingState(reachable ? "success" : "error");
+            if (reachable) {
+                setPingState("success");
+                toast.success(t("client.basic_view.ping_success", { ip: ipAddress }));
+            } else {
+                setPingState("error");
+                toast.error(t("client.basic_view.ping_failed", { ip: ipAddress }));
+            }
         } catch {
             setPingState("error");
+            toast.error(t("client.basic_view.ping_failed", { ip: ipAddress }));
         }
 
         scheduleReset();

@@ -1461,6 +1461,8 @@
             "offline": "Offline",
             "ping": "Ping IP address",
             "ping_unavailable": "No IP address to ping",
+            "ping_success": "{{ip}} is reachable",
+            "ping_failed": "{{ip}} is unreachable",
             "tk": "TK."
         },
         "online": {
