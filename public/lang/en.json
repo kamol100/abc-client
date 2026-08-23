@@ -1459,6 +1459,8 @@
             "is_online": "Is Online",
             "online": "Online",
             "offline": "Offline",
+            "ping": "Ping IP address",
+            "ping_unavailable": "No IP address to ping",
             "tk": "TK."
         },
         "online": {

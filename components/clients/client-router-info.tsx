@@ -1,13 +1,15 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Network } from "lucide-react";
+import { Check, Loader2, Network, Radio, X } from "lucide-react";
+import { useFetch } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ClientRow, getClientId, RouterInfo } from "./client-type";
 import ClientSpeedWidget from "./client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import MyButton from "@/components/my-button";
 
 type ClientWithRouter = Pick<ClientRow, "id" | "router_info" | "network">;
 
@@ -24,6 +26,88 @@ const InfoRow: FC<{ label: string; children: React.ReactNode }> = ({ label, chil
 );
 
 const ROUTER_INFO_ROW_COUNT = 7;
+const PING_RESULT_DISPLAY_MS = 2000;
+
+type PingState = "idle" | "loading" | "success" | "error";
+
+interface ClientIpPingButtonProps {
+    clientId: string;
+    ipAddress?: string | null;
+}
+
+function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
+    const { t } = useTranslation();
+    const [pingState, setPingState] = useState<PingState>("idle");
+    const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const hasIpAddress = Boolean(ipAddress);
+
+    useEffect(() => {
+        return () => {
+            if (resetTimeoutRef.current) {
+                clearTimeout(resetTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    const scheduleReset = () => {
+        if (resetTimeoutRef.current) {
+            clearTimeout(resetTimeoutRef.current);
+        }
+
+        resetTimeoutRef.current = setTimeout(() => {
+            setPingState("idle");
+        }, PING_RESULT_DISPLAY_MS);
+    };
+
+    const handlePing = async () => {
+        if (!hasIpAddress || !ipAddress || pingState === "loading") {
+            return;
+        }
+
+        setPingState("loading");
+
+        try {
+            const result = await useFetch({
+                url: `/client-ping/${clientId}?ip=${encodeURIComponent(ipAddress)}`,
+            });
+            const reachable = Boolean(
+                result?.success && (result.data as { reachable?: boolean } | undefined)?.reachable
+            );
+            setPingState(reachable ? "success" : "error");
+        } catch {
+            setPingState("error");
+        }
+
+        scheduleReset();
+    };
+
+    const pingIcon =
+        pingState === "loading" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+        ) : pingState === "success" ? (
+            <Check className="h-4 w-4 text-green-600" />
+        ) : pingState === "error" ? (
+            <X className="h-4 w-4 text-destructive" />
+        ) : (
+            <Radio className="h-4 w-4" />
+        );
+
+    return (
+        <MyButton
+            variant="outline"
+            size="icon"
+            disabled={!hasIpAddress || pingState === "loading"}
+            onClick={handlePing}
+            tooltip={
+                hasIpAddress
+                    ? t("client.basic_view.ping")
+                    : t("client.basic_view.ping_unavailable")
+            }
+        >
+            {pingIcon}
+        </MyButton>
+    );
+}
 
 function ClientRouterInfoSkeleton() {
     return (
@@ -61,7 +145,19 @@ const ClientRouterInfo: FC<Props> = ({ client }) => {
             </InfoRow>
             {isRouterInfoLoading ? <ClientRouterInfoSkeleton /> : (
                 <>
-                    <InfoRow label={t("client.ip_address.label")}>{routerData?.ip_address ?? "—"}</InfoRow>
+                    <InfoRow label={t("client.ip_address.label")}>
+                        <span className="inline-flex items-center gap-2">
+                            {routerData?.ip_address ?? "—"}
+                            {routerData?.ip_address && (
+                                <div>
+                                    <ClientIpPingButton
+                                        clientId={clientId}
+                                        ipAddress={routerData?.ip_address}
+                                    />
+                                </div>
+                            )}
+                        </span>
+                    </InfoRow>
                     <InfoRow label={t("client.basic_view.router_mac")}>
                         {routerData?.user_mac_address ?? "—"}
                     </InfoRow>
