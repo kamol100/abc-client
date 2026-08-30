@@ -4508,7 +4508,35 @@
         "reseller_profile": "Reseller Profile",
         "company_profile": "Company Profile",
         "settings": "Settings",
-        "sign_out": "Sign out"
+        "sign_out": "Sign out",
+        "change_password": {
+            "label": "Change Password",
+            "title": "Change Password",
+            "success": "Password changed successfully",
+            "current_password": {
+                "label": "Current password",
+                "placeholder": "Enter current password",
+                "errors": {
+                    "required": "Current password is required"
+                }
+            },
+            "password": {
+                "label": "New password",
+                "placeholder": "Enter new password",
+                "errors": {
+                    "required": "New password is required",
+                    "min": "Password must be at least 8 characters"
+                }
+            },
+            "password_confirmation": {
+                "label": "Confirm password",
+                "placeholder": "Re-enter new password",
+                "errors": {
+                    "required": "Please confirm your new password",
+                    "mismatch": "Passwords do not match"
+                }
+            }
+        }
     },
     "client_profile": {
         "aria_label": "Client menu",

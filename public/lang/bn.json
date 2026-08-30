@@ -4508,7 +4508,35 @@
         "company_profile": "কোম্পানি প্রোফাইল",
         "reseller_profile": "রিসেলার প্রোফাইল",
         "settings": "সেটিংস",
-        "sign_out": "সাইন আউট"
+        "sign_out": "সাইন আউট",
+        "change_password": {
+            "label": "পাসওয়ার্ড পরিবর্তন",
+            "title": "পাসওয়ার্ড পরিবর্তন",
+            "success": "পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে",
+            "current_password": {
+                "label": "বর্তমান পাসওয়ার্ড",
+                "placeholder": "বর্তমান পাসওয়ার্ড দিন",
+                "errors": {
+                    "required": "বর্তমান পাসওয়ার্ড আবশ্যক"
+                }
+            },
+            "password": {
+                "label": "নতুন পাসওয়ার্ড",
+                "placeholder": "নতুন পাসওয়ার্ড দিন",
+                "errors": {
+                    "required": "নতুন পাসওয়ার্ড আবশ্যক",
+                    "min": "পাসওয়ার্ড কমপক্ষে ৮ অক্ষর হতে হবে"
+                }
+            },
+            "password_confirmation": {
+                "label": "পাসওয়ার্ড নিশ্চিত করুন",
+                "placeholder": "নতুন পাসওয়ার্ড আবার দিন",
+                "errors": {
+                    "required": "নতুন পাসওয়ার্ড নিশ্চিত করুন",
+                    "mismatch": "পাসওয়ার্ড মিলছে না"
+                }
+            }
+        }
     },
     "client_profile": {
         "aria_label": "ক্লায়েন্ট মেনু",
