@@ -1414,6 +1414,7 @@
             "pay": "Pay",
             "sms": "Send SMS",
             "tickets": "Create Ticket",
+            "client_sync": "Client Sync",
             "wallet_recharge": "Recharge Wallet",
             "delete": "Delete"
         },
@@ -1421,6 +1422,11 @@
             "title": "Reset Session",
             "confirm": "Are you sure you want to reset the session for this client?",
             "success": "Session reset successfully"
+        },
+        "sync": {
+            "created": "Created new PPPoE user on Mikrotik",
+            "already_exists": "Client already exists on Mikrotik",
+            "failed": "Failed to sync client with Mikrotik"
         },
         "change_package": {
             "title": "Change Package",

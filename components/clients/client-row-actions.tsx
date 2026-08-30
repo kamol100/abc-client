@@ -16,6 +16,7 @@ import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Row } from "@tanstack/react-table";
 import {
+    CloudUpload,
     CreditCard,
     Edit,
     Eye,
@@ -31,6 +32,7 @@ import {
 import Link from "next/link";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
@@ -68,6 +70,23 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
         invalidateKeys: "clients",
         successMessage: "common.item_deleted_successfully",
         defaultErrorMessage: "common.delete_failed",
+    });
+
+    const { mutate: syncMikrotikClient, isPending: isSyncing } = useApiMutation<{
+        action?: "created" | "exists";
+        message?: string;
+    }>({
+        url: `/client-mikrotik-sync/${clientId}`,
+        method: "POST",
+        invalidateKeys: "clients",
+        defaultErrorMessage: "client.sync.failed",
+        onSuccess: (data) => {
+            if (data?.action === "exists") {
+                toast.info(t("client.sync.already_exists"));
+                return;
+            }
+            toast.success(t("client.sync.created"));
+        },
     });
 
     const handleDelete = async (close: () => void) => {
@@ -134,6 +153,18 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     <DropdownMenuItem className="cursor-pointer" onSelect={() => setTicketOpen(true)}>
                         <Ticket className="mr-2 h-4 w-4" />
                         {t("client.actions.tickets")}
+                    </DropdownMenuItem>
+                )}
+                {hasPermission("clients.mikrotik.sync") && (
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        disabled={isSyncing}
+                        onSelect={() => {
+                            if (!isSyncing) syncMikrotikClient();
+                        }}
+                    >
+                        <CloudUpload className="mr-2 h-4 w-4" />
+                        {t("client.actions.client_sync")}
                     </DropdownMenuItem>
                 )}
                 {hasPermission("wallets.access") && (
