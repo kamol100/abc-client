@@ -88,9 +88,10 @@ export function DataTableToolbar<TData>({
   };
 
   return (
-    <div
-      className={cn(!showFilter && "flex  justify-end")}
-    >
+    <div className="flex flex-col gap-2">
+      <div
+        className={cn(!showFilter && "flex  justify-end")}
+      >
       <div className="flex flex-1 flex-wrap items-center gap-x-2 w-full">
         {toolbarTitle && !showFilter && !isMobile && (
           <div className={toolbarTitleClass}>{toolbarTitle}</div>
@@ -211,6 +212,12 @@ export function DataTableToolbar<TData>({
         {toolbarBeforeForm}
         {FormComponent && !showFilter && <FormComponent />}
       </div>
+      </div>
+      {isMobile && toolbarInfoComponent && !showFilter && (
+        <div className="flex w-full justify-center">
+          {toolbarInfoComponent}
+        </div>
+      )}
     </div>
   );
 }

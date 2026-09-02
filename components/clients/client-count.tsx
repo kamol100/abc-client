@@ -6,6 +6,7 @@ import {
     ClientActivitySchema,
 } from "@/components/clients/client-type";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSidebar } from "@/components/ui/sidebar";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
@@ -19,10 +20,10 @@ const DEFAULT_ACTIVITY: ClientActivity = {
     disabled: 0,
 };
 
-function ActivityCountSkeleton() {
+function ActivityCountSkeleton({ showTotal }: { showTotal: boolean }) {
     return (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            {Array.from({ length: 2 }).map((_, index) => (
+            {Array.from({ length: showTotal ? 3 : 2 }).map((_, index) => (
                 <div key={index} className="flex items-center gap-1.5">
                     <Skeleton className="h-4 w-12" />
                     <Skeleton className="h-4 w-8" />
@@ -52,13 +53,13 @@ function ActivityItem({ label, value, valueClassName }: ActivityItemProps) {
 
 export default function ClientCount() {
     const { t } = useTranslation();
+    const { isMobile } = useSidebar();
 
-    const { data, isLoading, isFetching, isError, error } = useApiQuery<ApiResponse<unknown>>({
+    const { data, isLoading, isFetching, isError } = useApiQuery<ApiResponse<unknown>>({
         queryKey: ["client-activity"],
         url: "client-activity",
         pagination: false,
     });
-
 
     const activity = useMemo(() => {
         const parsed = ClientActivitySchema.safeParse(data?.data);
@@ -70,14 +71,21 @@ export default function ClientCount() {
     }, [activity.disabled, activity.offline]);
 
     if (isLoading || isFetching) {
-        return <ActivityCountSkeleton />;
+        return <ActivityCountSkeleton showTotal={isMobile} />;
     }
 
     return (
         <>
             {!isError && (
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                    {/* <ActivityItem label={t("client.activity.total")} value={activity.total} /> */}
+                    {isMobile && (
+                        <span className="inline-flex items-center gap-1 text-sm">
+                            <span>{t("client.title_plural")}</span>
+                            <span className="inline-flex items-center font-semibold tabular-nums">
+                                (<DisplayCount amount={toNumber(activity.total)} />)
+                            </span>
+                        </span>
+                    )}
                     <ActivityItem
                         label={t("client.activity.online")}
                         value={activity.online}
