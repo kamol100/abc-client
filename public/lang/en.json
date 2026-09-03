@@ -1386,7 +1386,8 @@
         "activity": {
             "total": "Total",
             "online": "Online",
-            "offline": "Offline"
+            "offline": "Offline",
+            "disabled": "Disabled"
         },
         "create_title": "Add Client",
         "edit_title": "Edit Client",

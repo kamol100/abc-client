@@ -1386,7 +1386,8 @@
         "activity": {
             "total": "মোট",
             "online": "অনলাইন",
-            "offline": "অফলাইন"
+            "offline": "অফলাইন",
+            "disabled": "ডিসেবল"
         },
         "create_title": "ক্লায়েন্ট যোগ করুন",
         "edit_title": "এডিট",
