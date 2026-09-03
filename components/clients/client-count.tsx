@@ -97,7 +97,7 @@ export default function ClientCount() {
 
     return (
         <>
-            {true && (
+            {!isError && (
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                     {isMobile && (
                         <span className="inline-flex items-center gap-1 text-sm">
