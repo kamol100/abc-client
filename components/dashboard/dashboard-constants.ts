@@ -1,5 +1,17 @@
+import type { DashboardDateFilter } from "@/components/dashboard/dashboard-type";
 import { formatMoney } from "@/lib/helper/helper";
-import type { DashboardDateFilter } from "./dashboard-type";
+
+export const DASHBOARD_CARD_PERMISSIONS = {
+  client: "dashboard-card.client",
+  invoice: "dashboard-card.invoice",
+  invoicePaid: "dashboard-card.invoice-paid",
+  invoiceDues: "dashboard-card.invoice-dues",
+  expense: "dashboard-card.expense",
+  fund: "dashboard-card.fund",
+  ticket: "dashboard-card.ticket",
+  productStock: "dashboard-card.product-stock",
+  invoiceExpenseGraph: "dashboard-card.invoice-expense-graph",
+} as const;
 
 export const CLIENT_DATE_FILTER_OPTIONS: ReadonlyArray<{ value: DashboardDateFilter; labelKey: string }> = [
   { value: "all", labelKey: "dashboard.filters.date.all" },

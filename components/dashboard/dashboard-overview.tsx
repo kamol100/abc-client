@@ -14,6 +14,7 @@ import DashboardProductStockCard from "@/components/dashboard/items/DashboardPro
 
 export default function DashboardOverview() {
   const {
+    canSee,
     clientCount,
     isClientLoading,
     isClientFetching,
@@ -69,61 +70,87 @@ export default function DashboardOverview() {
     isZoneWiseTopDueInvoiceError,
   } = useDashboardData();
 
+  const hasSummaryCards =
+    canSee.client ||
+    canSee.invoice ||
+    canSee.invoicePaid ||
+    canSee.invoiceDues ||
+    canSee.expense ||
+    canSee.fund ||
+    canSee.ticket ||
+    canSee.productStock;
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        <DashboardClientSummaryCard
-          data={clientCount}
-          isLoading={isClientLoading}
-          isRefreshing={isClientFetching}
-          isError={isClientError}
-        />
+      {hasSummaryCards && (
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {canSee.client && (
+            <DashboardClientSummaryCard
+              data={clientCount}
+              isLoading={isClientLoading}
+              isRefreshing={isClientFetching}
+              isError={isClientError}
+            />
+          )}
 
-        <DashboardInvoiceSummaryCard
-          data={invoiceSummary}
-          isLoading={isInvoiceSummaryLoading}
-          isRefreshing={isInvoiceSummaryFetching}
-          isError={isInvoiceSummaryError}
-        />
+          {canSee.invoice && (
+            <DashboardInvoiceSummaryCard
+              data={invoiceSummary}
+              isLoading={isInvoiceSummaryLoading}
+              isRefreshing={isInvoiceSummaryFetching}
+              isError={isInvoiceSummaryError}
+            />
+          )}
 
-        <DashboardInvoicePaidSummaryCard
-          data={invoicePaidSummary}
-          isLoading={isInvoicePaidSummaryLoading}
-          isRefreshing={isInvoicePaidSummaryFetching}
-          isError={isInvoicePaidSummaryError}
-        />
+          {canSee.invoicePaid && (
+            <DashboardInvoicePaidSummaryCard
+              data={invoicePaidSummary}
+              isLoading={isInvoicePaidSummaryLoading}
+              isRefreshing={isInvoicePaidSummaryFetching}
+              isError={isInvoicePaidSummaryError}
+            />
+          )}
 
-        <DashboardInvoiceSummaryCard
-          data={invoiceDueSummary}
-          isLoading={isInvoiceDueSummaryLoading}
-          isRefreshing={isInvoiceDueSummaryFetching}
-          isError={isInvoiceDueSummaryError}
-          titleKey="dashboard.cards.invoices_due"
-        />
+          {canSee.invoiceDues && (
+            <DashboardInvoiceSummaryCard
+              data={invoiceDueSummary}
+              isLoading={isInvoiceDueSummaryLoading}
+              isRefreshing={isInvoiceDueSummaryFetching}
+              isError={isInvoiceDueSummaryError}
+              titleKey="dashboard.cards.invoices_due"
+            />
+          )}
 
-        <DashboardExpenseSummaryCard
-          data={expenseSummary}
-          isLoading={isExpenseSummaryLoading}
-          isRefreshing={isExpenseSummaryFetching}
-          isError={isExpenseSummaryError}
-        />
+          {canSee.expense && (
+            <DashboardExpenseSummaryCard
+              data={expenseSummary}
+              isLoading={isExpenseSummaryLoading}
+              isRefreshing={isExpenseSummaryFetching}
+              isError={isExpenseSummaryError}
+            />
+          )}
 
-        <DashboardFundSummaryCard
-          data={fundSummary}
-          isLoading={isFundSummaryLoading}
-          isRefreshing={isFundSummaryFetching}
-          isError={isFundSummaryError}
-        />
+          {canSee.fund && (
+            <DashboardFundSummaryCard
+              data={fundSummary}
+              isLoading={isFundSummaryLoading}
+              isRefreshing={isFundSummaryFetching}
+              isError={isFundSummaryError}
+            />
+          )}
 
-        <DashboardSupportTicketCard
-          data={ticketSummary}
-          isLoading={isTicketSummaryLoading}
-          isRefreshing={isTicketSummaryFetching}
-          isError={isTicketSummaryError}
-        />
+          {canSee.ticket && (
+            <DashboardSupportTicketCard
+              data={ticketSummary}
+              isLoading={isTicketSummaryLoading}
+              isRefreshing={isTicketSummaryFetching}
+              isError={isTicketSummaryError}
+            />
+          )}
 
-        <DashboardProductStockCard />
-      </div>
+          {canSee.productStock && <DashboardProductStockCard />}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <DashboardTopDueInvoicesTable
@@ -144,14 +171,16 @@ export default function DashboardOverview() {
         />
       </div>
 
-      <DashboardRevenueChart
-        graph={graph}
-        yearFilter={yearFilter}
-        setYearFilter={setYearFilter}
-        isLoading={isGraphLoading}
-        isFetching={isGraphFetching}
-        isError={isGraphError}
-      />
+      {canSee.invoiceExpenseGraph && (
+        <DashboardRevenueChart
+          graph={graph}
+          yearFilter={yearFilter}
+          setYearFilter={setYearFilter}
+          isLoading={isGraphLoading}
+          isFetching={isGraphFetching}
+          isError={isGraphError}
+        />
+      )}
     </div>
   );
 }

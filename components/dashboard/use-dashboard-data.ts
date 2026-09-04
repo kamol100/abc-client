@@ -1,6 +1,8 @@
-import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
+import { DASHBOARD_CARD_PERMISSIONS } from "@/components/dashboard/dashboard-constants";
+import { usePermissions } from "@/context/app-provider";
+import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 import DashboardTopDueInvoiceFilterSchema, {
   DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT,
 } from "./dashboard-top-due-invoice-filter-schema";
@@ -28,6 +30,19 @@ function parseFilterParams(raw: string | null, defaultLimit: number): Record<str
 }
 
 export function useDashboardData() {
+  const { hasPermission } = usePermissions();
+  const canSee = {
+    client: hasPermission(DASHBOARD_CARD_PERMISSIONS.client),
+    invoice: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoice),
+    invoicePaid: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoicePaid),
+    invoiceDues: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoiceDues),
+    expense: hasPermission(DASHBOARD_CARD_PERMISSIONS.expense),
+    fund: hasPermission(DASHBOARD_CARD_PERMISSIONS.fund),
+    ticket: hasPermission(DASHBOARD_CARD_PERMISSIONS.ticket),
+    productStock: hasPermission(DASHBOARD_CARD_PERMISSIONS.productStock),
+    invoiceExpenseGraph: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoiceExpenseGraph),
+  };
+
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
   const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
   const [zoneWiseTopDueInvoiceFilter, setZoneWiseTopDueInvoiceFilter] = useState<string | null>(null);
@@ -75,6 +90,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-client-count"],
     url: "dashboard-client-count",
     pagination: false,
+    enabled: canSee.client,
   });
 
   const {
@@ -86,6 +102,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-invoice-summary"],
     url: "dashboard-invoice-summary",
     pagination: false,
+    enabled: canSee.invoice,
   });
 
   const {
@@ -97,6 +114,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-invoice-due-summary"],
     url: "dashboard-invoice-due-summary",
     pagination: false,
+    enabled: canSee.invoiceDues,
   });
 
   const {
@@ -108,6 +126,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-invoice-paid-summary"],
     url: "dashboard-invoice-paid-summary",
     pagination: false,
+    enabled: canSee.invoicePaid,
   });
 
   const {
@@ -119,6 +138,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-expense-summary"],
     url: "dashboard-expense-summary",
     pagination: false,
+    enabled: canSee.expense,
   });
 
   const {
@@ -130,6 +150,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-fund-summary"],
     url: "dashboard-fund-summary",
     pagination: false,
+    enabled: canSee.fund,
   });
 
   const {
@@ -141,6 +162,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-ticket-summary"],
     url: "dashboard-ticket-summary",
     pagination: false,
+    enabled: canSee.ticket,
   });
 
   const {
@@ -153,6 +175,7 @@ export function useDashboardData() {
     url: "dashboard-graph-chart",
     params: chartParams,
     pagination: false,
+    enabled: canSee.invoiceExpenseGraph,
   });
 
   const {
@@ -166,6 +189,7 @@ export function useDashboardData() {
     params: topDueInvoiceParams,
     pagination: false,
     placeholderData: keepPreviousData,
+    enabled: true,
   });
 
   const {
@@ -179,6 +203,7 @@ export function useDashboardData() {
     params: zoneWiseTopDueInvoiceParams,
     pagination: false,
     placeholderData: keepPreviousData,
+    enabled: true,
   });
 
   const clientCount = useMemo(() => {
@@ -246,6 +271,7 @@ export function useDashboardData() {
   }, [zoneWiseTopDueInvoiceResponse?.data]);
 
   return {
+    canSee,
     clientCount,
     isClientLoading,
     isClientFetching,
