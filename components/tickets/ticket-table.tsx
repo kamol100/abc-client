@@ -20,13 +20,15 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
     const [filter, setFilter] = useState<string | null>(filterValue ?? null);
 
     const params = useMemo(() => {
-        const base: Record<string, unknown> = {};
-        if (clientId) base.client_id = clientId;
-        if (filter) {
-            const parsed = Object.fromEntries(new URLSearchParams(filterValue));
-            Object.assign(base, parsed);
+        const queryParams: Record<string, string> = filter
+            ? (Object.fromEntries(new URLSearchParams(filter)) as Record<string, string>)
+            : {};
+
+        if (clientId && !queryParams.client_id && !queryParams.client_uuid) {
+            queryParams.client_id = clientId;
         }
-        return Object.keys(base).length > 0 ? base : undefined;
+
+        return Object.keys(queryParams).length > 0 ? queryParams : undefined;
     }, [clientId, filter]);
 
     const { data, isLoading, isFetching, setCurrentPage } =
@@ -42,9 +44,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
         ? `${t("ticket.title_plural")} (${pagination.total})`
         : t("ticket.title_plural");
 
-    const toolbarOptions = {
-        filter: TicketFilterSchema(),
-    };
+    const toolbarOptions = useMemo(() => ({ filter: TicketFilterSchema() }), []);
 
     return (
         <DataTable
