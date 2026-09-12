@@ -2930,7 +2930,7 @@
             }
         },
         "web_port": {
-            "label": "ওয়েব পোর্ট",
+            "label": "API পোর্ট",
             "placeholder": "মাইক্রোটিক > IP > সার্ভিস > API পোর্ট"
         },
         "auto_client_mikrotik_status": {

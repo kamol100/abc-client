@@ -2930,7 +2930,7 @@
             }
         },
         "web_port": {
-            "label": "Web Port",
+            "label": "API Port",
             "placeholder": "Mikrotik > IP > Service > API Port"
         },
         "auto_client_mikrotik_status": {

@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { NetworkRow } from "./network-type";
-import NetworkStatusCell from "./network-status-cell";
-import NetworkConnectionStatusCell from "./network-connection-status-cell";
-import NetworkActionsCell from "./network-actions-cell";
+import { NetworkRow } from "@/components/network/network-type";
+import NetworkStatusCell from "@/components/network/network-status-cell";
+import NetworkConnectionStatusCell from "@/components/network/network-connection-status-cell";
+import NetworkActionsCell from "@/components/network/network-actions-cell";
 
 export const NetworkColumns: ColumnDef<NetworkRow>[] = [
   {
@@ -26,14 +26,6 @@ export const NetworkColumns: ColumnDef<NetworkRow>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: "status_meta",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="network.status.label" />
-    ),
-    cell: ({ row }) => <NetworkStatusCell network={row.original} />,
-    enableSorting: false,
-  },
-  {
     accessorKey: "connection",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="network.connection.label" />
@@ -41,6 +33,14 @@ export const NetworkColumns: ColumnDef<NetworkRow>[] = [
     cell: ({ row }) => (
       <NetworkConnectionStatusCell networkId={row.original.id} />
     ),
+    enableSorting: false,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="network.status.label" />
+    ),
+    cell: ({ row }) => <NetworkStatusCell status={row.original.status} />,
     enableSorting: false,
   },
   {

@@ -1,10 +1,5 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-const toggleOptions = [
-  { label: "common.yes", value: 1 },
-  { label: "common.no", value: 0 },
-];
-
 export const NetworkFormFieldSchema = (): FieldConfig[] => {
   return [
     {
@@ -38,28 +33,14 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
       placeholder: "network.web_port.placeholder",
     },
     {
-      type: "radio",
-      name: "auto_client_mikrotik_status",
-      label: { labelText: "network.auto_client_mikrotik_status.label" },
-      direction: "row",
-      defaultValue: "1",
-      options: toggleOptions,
-    },
-    {
-      type: "radio",
-      name: "auto_sync_status",
-      label: { labelText: "network.auto_sync_status.label" },
-      direction: "row",
-      defaultValue: "1",
-      options: toggleOptions,
-    },
-    {
-      type: "radio",
-      name: "graph_status",
-      label: { labelText: "network.graph_status.label" },
-      direction: "row",
-      defaultValue: "1",
-      options: toggleOptions,
+      type: "dropdown",
+      name: "status",
+      label: { labelText: "network.status.label", mandatory: true },
+      placeholder: "network.status.placeholder",
+      options: [
+        { value: 1, label: "common.active" },
+        { value: 0, label: "common.inactive" },
+      ],
     },
     {
       type: "textarea",
