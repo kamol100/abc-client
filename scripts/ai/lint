@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+cd "$AI_ROOT"
+
+ESLINT="$AI_ROOT/node_modules/.bin/eslint"
+if [[ ! -x "$ESLINT" ]]; then
+  echo "Missing node_modules/.bin/eslint. Ask a human to run npm install." >&2
+  exit 1
+fi
+
+# Next 16 removed `next lint`. package.json still calls it, so npm run lint is not a lint.
+# eslint.config.mjs (FlatCompat + next/core-web-vitals) currently crashes ESLint 9 with
+# "Converting circular structure to JSON". Keep this wrapper so the failure is explicit.
+set +e
+if [[ $# -lt 1 ]]; then
+  "$ESLINT" .
+  status=$?
+else
+  "$ESLINT" "$@"
+  status=$?
+fi
+set -e
+
+if [[ "$status" -ne 0 ]]; then
+  echo "ESLint failed. Do not rebuild eslint.config.mjs unless that is the task. Use scripts/ai/typecheck and scripts/ai/test." >&2
+  exit "$status"
+fi

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+cd "$AI_ROOT"
+if [[ ! -x "$AI_ROOT/node_modules/.bin/tsc" ]]; then
+  echo "Missing node_modules/.bin/tsc. Ask a human to run npm install. Do not install packages unless they approved it." >&2
+  exit 1
+fi
+exec "$AI_ROOT/node_modules/.bin/tsc" --noEmit --pretty false "$@"

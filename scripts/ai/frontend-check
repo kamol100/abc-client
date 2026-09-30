@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$DIR/typecheck"
+"$DIR/test"
+echo "ESLint was not run. npm run lint and eslint.config.mjs do not currently succeed. See .ai/commands.md."

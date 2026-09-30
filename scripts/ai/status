@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+cd "$AI_ROOT"
+echo "branch: $(git rev-parse --abbrev-ref HEAD)"
+git status --short
+echo
+git status -sb

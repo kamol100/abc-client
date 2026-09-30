@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+cd "$AI_ROOT"
+echo "=== unstaged ==="
+git diff
+echo "=== staged ==="
+git diff --cached
