@@ -47,25 +47,12 @@ export const PackageFormFieldSchema = ({
     },
     {
       type: "number",
-      name: "price",
+      name: isReseller ? "buying_price" : "price",
       label: {
-        labelText: isReseller ? "package.cost.label" : "package.price.label",
+        labelText: "package.price.label",
       },
-      placeholder: isReseller
-        ? "package.cost.placeholder"
-        : "package.price.placeholder",
-    },
-    {
-      type: "number",
-      name: "buying_price",
-      label: {
-        labelText: isReseller
-          ? "package.reseller_price.label"
-          : "package.buying_price.label",
-      },
-      placeholder: isReseller
-        ? "package.reseller_price.placeholder"
-        : "package.buying_price.placeholder",
+      placeholder:
+        "package.price.placeholder",
     },
     {
       type: "textarea",

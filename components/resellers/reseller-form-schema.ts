@@ -2,6 +2,7 @@ import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
 
 type Props = {
     mode?: "create" | "edit";
+    resellerId?: string;
 };
 
 const bloodGroupOptions = [
@@ -15,7 +16,7 @@ const bloodGroupOptions = [
     { value: "O-", label: "O-" },
 ];
 
-export const ResellerFormFieldSchema = ({ mode = "create" }: Props): AccordionSection[] => {
+export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props): AccordionSection[] => {
     return [
         {
             name: "reseller.sections.basic_information",
@@ -62,10 +63,12 @@ export const ResellerFormFieldSchema = ({ mode = "create" }: Props): AccordionSe
                     name: "package_id",
                     label: { labelText: "reseller.package.label" },
                     placeholder: "reseller.package.placeholder",
-                    api: "/dropdown-reseller-packages",
+                    api: resellerId
+                        ? `/dropdown-reseller-packages?reseller=${encodeURIComponent(resellerId)}`
+                        : "/dropdown-reseller-packages",
                     isMulti: true,
                     valueKey: "package",
-                    valueMapping: { idKey: "package_parent_id", labelKey: "name" },
+                    valueMapping: { idKey: "id", labelKey: "name" },
                 },
                 {
                     type: "dropdown",

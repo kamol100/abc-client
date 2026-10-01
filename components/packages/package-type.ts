@@ -22,23 +22,10 @@ export const ClientRefSchema = z
   })
   .passthrough();
 
-export const PackageChildSchema = z
-  .object({
-    id: z.coerce.number(),
-    name: z.string().nullable().optional(),
-    mikrotik_profile: z.string().nullable().optional(),
-    bandwidth: z.string().nullable().optional(),
-    reseller: ResellerRefSchema.nullable().optional(),
-    clients: z.array(ClientRefSchema).nullable().optional(),
-    is_reseller_package: z.coerce.number().nullable().optional(),
-  })
-  .passthrough();
-
 export const PackageRowSchema = z
   .object({
     id: z.coerce.number(),
     network_id: z.coerce.number().nullable().optional(),
-    package_parent_id: z.coerce.number().nullable().optional(),
     name: z.string(),
     mikrotik_profile: z.string().nullable().optional(),
     bandwidth: z.string().nullable().optional(),
@@ -49,16 +36,12 @@ export const PackageRowSchema = z
     network: NetworkRefSchema.nullable().optional(),
     reseller: ResellerRefSchema.nullable().optional(),
     clients: z.array(ClientRefSchema).nullable().optional(),
-    children: z.array(PackageChildSchema).nullable().optional(),
     active_clients: z.coerce.number().default(0),
     inactive_clients: z.coerce.number().default(0),
-    reseller_count: z.coerce.number().default(0),
-    reseller_clients: z.coerce.number().default(0),
   })
   .passthrough();
 
 export type PackageRow = z.infer<typeof PackageRowSchema>;
-export type PackageChildRow = z.infer<typeof PackageChildSchema>;
 
 export const PackageFormSchema = z.object({
   network_id: z.coerce.number({

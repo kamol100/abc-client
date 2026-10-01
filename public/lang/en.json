@@ -3651,19 +3651,8 @@
             "title": "Package Details",
             "basic_information": "Basic Information",
             "usage_information": "Usage Information",
-            "assigned_resellers": "Assigned Resellers",
-            "reseller_name": "Reseller Name",
-            "clients": "Clients",
             "active_clients": "Active Clients",
-            "inactive_clients": "Inactive Clients",
-            "reseller_count": "Reseller Count",
-            "reseller_clients": "Reseller Clients"
-        },
-        "remove": {
-            "button": "Remove",
-            "confirm_button": "Remove Package",
-            "confirmation": "Are you sure you want to remove this package from reseller?",
-            "success": "Package removed from reseller successfully"
+            "inactive_clients": "Inactive Clients"
         }
     },
     "import_client": {

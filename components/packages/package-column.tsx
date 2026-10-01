@@ -58,17 +58,9 @@ export function usePackageColumns(
       {
         accessorKey: "price",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={priceTitle} />
+          <DataTableColumnHeader column={column} title="package.table.price" />
         ),
         cell: ({ row }) => <div>{formatMoney(row.original.price)}</div>,
-        enableSorting: false,
-      },
-      {
-        accessorKey: "buying_price",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={buyingPriceTitle} />
-        ),
-        cell: ({ row }) => <div>{formatMoney(row.original.buying_price)}</div>,
         enableSorting: false,
       },
       {

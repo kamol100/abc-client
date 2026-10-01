@@ -20,12 +20,13 @@ const ResellerForm: FC<Props> = ({
     data,
 }) => {
     const router = useRouter();
+    const resellerId = mode === "edit" && typeof data?.id === "string" ? data.id : undefined;
 
     return (
         <div className="w-full">
             <div className="mr-3">
                 <AccordionFormBuilder
-                    formSchema={ResellerFormFieldSchema({ mode })}
+                    formSchema={ResellerFormFieldSchema({ mode, resellerId })}
                     grids={2}
                     data={data}
                     api={api}

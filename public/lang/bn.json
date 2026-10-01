@@ -3651,19 +3651,8 @@
             "title": "প্যাকেজ ডিটেইলস",
             "basic_information": "বেসিক ইনফরমেশন",
             "usage_information": "ইউজেজ ইনফরমেশন",
-            "assigned_resellers": "অ্যাসাইন্ড রিসেলার",
-            "reseller_name": "রিসেলার নাম",
-            "clients": "ক্লায়েন্ট",
             "active_clients": "অ্যাক্টিভ ক্লায়েন্ট",
-            "inactive_clients": "ইনঅ্যাক্টিভ ক্লায়েন্ট",
-            "reseller_count": "রিসেলার কাউন্ট",
-            "reseller_clients": "রিসেলার ক্লায়েন্ট"
-        },
-        "remove": {
-            "button": "রিমুভ",
-            "confirm_button": "প্যাকেজ রিমুভ করুন",
-            "confirmation": "আপনি কি নিশ্চিত এই প্যাকেজটি রিসেলার থেকে রিমুভ করতে চান?",
-            "success": "রিসেলার থেকে প্যাকেজ সফলভাবে রিমুভ হয়েছে"
+            "inactive_clients": "ইনঅ্যাক্টিভ ক্লায়েন্ট"
         }
     },
     "import_client": {
