@@ -64,25 +64,25 @@ export function usePackageColumns(
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="package.table.price" />
         ),
-        cell: ({ row }) => <div>{formatMoney(row.original.price)}</div>,
+        cell: ({ row }) => <div>{formatMoney(packageType === "reseller" ? row.original.buying_price : row.original.price)}</div>,
         enableSorting: false,
       },
       ...(isReseller
         ? [
-            {
-              accessorKey: "buying_price",
-              header: ({ column }) => (
-                <DataTableColumnHeader
-                  column={column}
-                  title="package.table.buying_price"
-                />
-              ),
-              cell: ({ row }) => (
-                <div>{formatMoney(row.original.buying_price)}</div>
-              ),
-              enableSorting: false,
-            } satisfies ColumnDef<PackageRow>,
-          ]
+          {
+            accessorKey: "buying_price",
+            header: ({ column }) => (
+              <DataTableColumnHeader
+                column={column}
+                title="package.table.buying_price"
+              />
+            ),
+            cell: ({ row }) => (
+              <div>{formatMoney(row.original.buying_price)}</div>
+            ),
+            enableSorting: false,
+          } satisfies ColumnDef<PackageRow>,
+        ]
         : []),
       {
         id: "actions",
