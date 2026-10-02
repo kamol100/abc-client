@@ -84,6 +84,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           name: "payment_term",
           label: { labelText: "client.payment_term.label" },
           placeholder: "client.payment_term.placeholder",
+          defaultValue: paymentTermOptions[0].value,
           options: paymentTermOptions,
         },
         {
@@ -91,6 +92,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           name: "invoice_day",
           label: { labelText: "client.invoice_date.label" },
           placeholder: "client.invoice_date.placeholder",
+          defaultValue: invoiceDayOptions[0].value,
           options: invoiceDayOptions,
         },
         {
@@ -171,6 +173,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
             { value: 1, label: "common.active" },
             { value: 0, label: "common.inactive" },
           ],
+          defaultValue: 1,
         },
         {
           type: "geolocation",

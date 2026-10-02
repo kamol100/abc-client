@@ -7,10 +7,14 @@ import { formatMoney } from "@/lib/helper/helper";
 import PackageRowActions from "@/components/packages/package-row-actions";
 import { PackageRow } from "@/components/packages/package-type";
 import { PackageFormType } from "@/components/packages/package-form-schema";
+import { useProfile } from "@/context/app-provider";
 
 export function usePackageColumns(
   packageType: PackageFormType
 ): ColumnDef<PackageRow>[] {
+  const { profile } = useProfile();
+  const isReseller = !!profile?.reseller;
+
   return useMemo(() => {
     const priceTitle =
       packageType === "reseller"
@@ -63,6 +67,23 @@ export function usePackageColumns(
         cell: ({ row }) => <div>{formatMoney(row.original.price)}</div>,
         enableSorting: false,
       },
+      ...(isReseller
+        ? [
+            {
+              accessorKey: "buying_price",
+              header: ({ column }) => (
+                <DataTableColumnHeader
+                  column={column}
+                  title="package.table.buying_price"
+                />
+              ),
+              cell: ({ row }) => (
+                <div>{formatMoney(row.original.buying_price)}</div>
+              ),
+              enableSorting: false,
+            } satisfies ColumnDef<PackageRow>,
+          ]
+        : []),
       {
         id: "actions",
         header: ({ column }) => (
@@ -78,5 +99,5 @@ export function usePackageColumns(
         enableSorting: false,
       },
     ];
-  }, [packageType]);
+  }, [packageType, isReseller]);
 }

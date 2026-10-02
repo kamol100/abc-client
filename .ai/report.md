@@ -1,26 +1,28 @@
 ## Summary
 
-The reseller edit form now asks `/dropdown-reseller-packages?reseller={uuid}` so an already assigned package is in the option list and can stay selected. Create still calls the dropdown without a reseller id.
+The package table shows `buying_price` only when the signed-in user is a reseller (`profile.reseller`). Company users keep the price column and do not see buying price.
 
 ## Files Changed
 
-- `components/resellers/reseller-form.tsx` — passes the route id into the field schema on edit
-- `components/resellers/reseller-form-schema.ts` — package dropdown api includes `reseller` when that id is present
+- `components/packages/package-column.tsx` — `useProfile()`; `buying_price` is included only when `!!profile?.reseller`
+- `tests/unit/packages/package-column.test.tsx` — reseller shows the column; a company user does not
 
 ## Tests
 
 `scripts/ai/typecheck` — exit 0.
 
-No reseller form unit test exists. ESLint was not run; `npm run lint` is already broken in this repo. The edit page redirected the Cursor browser to `/admin` because that session is not logged in, so the selected package chip was not confirmed in the browser.
+`scripts/ai/test` — exit 0 (Vitest: 4 files, 9 tests).
+
+ESLint was not run. `npm run lint` is already broken in this repo. `/packages` redirected the browser to `/admin` because that session is not logged in, so the column was not confirmed on the page.
 
 ## Security
 
-The form sends the reseller uuid already used by the edit route. It does not send `company_id`. The API decides which packages that uuid may see.
+The column is hidden in the UI. The packages API still returns `buying_price`. This does not change tenant or reseller scope.
 
 ## Risks
 
-The package chip appears only after the API change is running. A company admin editing `a2e03479-e7b5-40ff-aff9-4f341aa6d696` should see package `20Mb` (id 6) selected.
+A reseller whose profile has not loaded yet (`profile.reseller` empty) will not see the column until profile data is present.
 
 ## Git Diff
 
-Branch `master`. The working tree still contains the earlier package-parent UI removal in `components/packages/`, language files, and the previous report. Those edits are not part of this dropdown fix.
+Branch `master`, ahead of `origin/master` by 1. Unrelated working-tree changes remain: client payment-term defaults, form `disabled` / dropdown defaults, and the package edit price lock (`components/clients/`, `components/form-wrapper/`, `components/form/textarea-field.tsx`, `components/packages/package-form.tsx`, `components/packages/package-form-schema.ts`, `tests/unit/clients/`, `tests/unit/packages/package-form-schema.test.ts`).

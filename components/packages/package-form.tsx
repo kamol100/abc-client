@@ -9,6 +9,7 @@ import {
   PackageFormSchema,
   PackageRow,
 } from "@/components/packages/package-type";
+import { useProfile } from "@/context/app-provider";
 
 type Props = {
   mode?: "create" | "edit";
@@ -25,6 +26,9 @@ const PackageForm: FC<Props> = ({
   data = undefined,
   packageType = "client",
 }) => {
+  const { profile } = useProfile();
+  const lockExceptPrice = mode === "edit" && !!profile?.reseller;
+
   const mergedData = useMemo(() => {
     if (mode === "create") {
       return {
@@ -51,7 +55,7 @@ const PackageForm: FC<Props> = ({
       trigger={<FormTrigger mode={mode} />}
     >
       <FormBuilder
-        formSchema={PackageFormFieldSchema({ packageType })}
+        formSchema={PackageFormFieldSchema({ packageType, lockExceptPrice })}
         grids={2}
         data={mergedData}
         api={api}

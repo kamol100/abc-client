@@ -116,6 +116,23 @@ const transformFieldValues = (
   return formValues;
 };
 
+const applyDropdownDefaults = (
+  values: Record<string, unknown> | undefined,
+  formSchema: FormFieldConfig[] | AccordionSection[]
+): Record<string, unknown> => {
+  const next: Record<string, unknown> = { ...(values ?? {}) };
+
+  for (const field of flattenFieldConfigs(formSchema)) {
+    if (field.type !== "dropdown" || field.defaultValue == null) continue;
+    const current = next[field.name];
+    if (current === undefined || current === null || current === "") {
+      next[field.name] = field.defaultValue;
+    }
+  }
+
+  return next;
+};
+
 const transformDataToFormValues = (
   data: Record<string, unknown>,
   formSchema: FormFieldConfig[] | AccordionSection[]
@@ -285,15 +302,19 @@ const FormBuilder = ({
   const [saveOnChange, setSaveOnChange] = useState(false);
 
   const transformedData = useMemo(() => {
-    if (mode === "edit" && data) {
-      return transformDataToFormValues(data, formSchema);
-    }
-    return data;
+    const base =
+      mode === "edit" && data
+        ? transformDataToFormValues(data, formSchema)
+        : data;
+    return applyDropdownDefaults(base, formSchema);
   }, [data, mode, formSchema]);
 
   const transformCallback = useCallback(
     (rawData: Record<string, unknown>) =>
-      transformDataToFormValues(rawData, formSchema),
+      applyDropdownDefaults(
+        transformDataToFormValues(rawData, formSchema),
+        formSchema
+      ),
     [formSchema]
   );
 
@@ -305,9 +326,27 @@ const FormBuilder = ({
       case "email":
       case "password":
       case "number":
-        return <InputField name={name} label={f.label} placeholder={f.placeholder} type={f.type} rules={f.rules} />;
+        return (
+          <InputField
+            name={name}
+            label={f.label}
+            placeholder={f.placeholder}
+            type={f.type}
+            rules={f.rules}
+            disabled={f.disabled}
+          />
+        );
       case "textarea":
-        return <TextareaField name={name} label={f.label} placeholder={f.placeholder} rows={f.rows} rules={f.rules} />;
+        return (
+          <TextareaField
+            name={name}
+            label={f.label}
+            placeholder={f.placeholder}
+            rows={f.rows}
+            rules={f.rules}
+            disabled={f.disabled}
+          />
+        );
       case "dropdown":
         return (
           <SelectDropdown
@@ -317,7 +356,7 @@ const FormBuilder = ({
             api={f.api}
             options={f.options}
             isMulti={f.isMulti}
-            isDisabled={f.isDisabled}
+            isDisabled={f.isDisabled || f.disabled}
             isLoading={f.isLoading}
             isClearable={f.isClearable}
             rules={f.rules}
@@ -345,6 +384,7 @@ const FormBuilder = ({
               label={f.label}
               onValueChange={f.saveOnChange ? () => setSaveOnChange(true) : undefined}
               rules={f.rules}
+              disabled={f.disabled}
             />
           </div>
         );
@@ -369,6 +409,7 @@ const FormBuilder = ({
             required={f.required}
             dateFormat={f.dateFormat}
             rules={f.rules}
+            disabled={f.disabled}
           />
         );
       case "dateRange":
@@ -382,6 +423,7 @@ const FormBuilder = ({
             dateFormat={f.dateFormat}
             rangeDateFormat={f.dateFormat}
             rules={f.rules}
+            disabled={f.disabled}
           />
         );
       case "geolocation":

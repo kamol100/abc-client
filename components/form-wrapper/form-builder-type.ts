@@ -24,6 +24,7 @@ type BaseFieldConfig = {
     label?: LabelProps;
     placeholder?: string;
     permission?: boolean;
+    disabled?: boolean;
     className?: string;
     order?: number;
     rules?: RegisterOptions;
@@ -49,6 +50,7 @@ export type DropdownFieldConfig = BaseFieldConfig & {
     type: "dropdown";
     api?: string;
     options?: SelectOption[];
+    defaultValue?: string | number;
     isMulti?: boolean;
     isSearchable?: boolean;
     isClearable?: boolean;

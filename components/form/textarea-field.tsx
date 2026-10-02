@@ -14,6 +14,7 @@ type TextareaFieldProps = {
     rows?: number;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
+    disabled?: boolean;
 };
 
 const TextareaField: React.FC<TextareaFieldProps> = ({
@@ -24,6 +25,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
     rows = 4,
     control: controlProp,
     rules,
+    disabled = false,
 }) => {
     const { control: ctxControl } = useFormContext();
     const control = controlProp ?? ctxControl;
@@ -44,6 +46,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
                         onBlur={onBlur}
                         ref={ref}
                         rows={rows}
+                        disabled={disabled}
                         className={cn(error && "border-destructive dark:border-destructive")}
                     />
                 )}

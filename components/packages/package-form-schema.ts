@@ -4,14 +4,17 @@ export type PackageFormType = "client" | "reseller";
 
 type Props = {
   packageType?: PackageFormType;
+  lockExceptPrice?: boolean;
 };
 
 export const PackageFormFieldSchema = ({
   packageType = "client",
+  lockExceptPrice = false,
 }: Props = {}): FieldConfig[] => {
   const isReseller = packageType === "reseller";
+  const priceFieldName = isReseller ? "buying_price" : "price";
 
-  return [
+  const fields: FieldConfig[] = [
     {
       type: "dropdown",
       name: "network_id",
@@ -47,7 +50,7 @@ export const PackageFormFieldSchema = ({
     },
     {
       type: "number",
-      name: isReseller ? "buying_price" : "price",
+      name: priceFieldName,
       label: {
         labelText: "package.price.label",
       },
@@ -62,6 +65,12 @@ export const PackageFormFieldSchema = ({
       rows: 3,
     },
   ];
+
+  if (!lockExceptPrice) return fields;
+
+  return fields.map((field) =>
+    field.name === priceFieldName ? field : { ...field, disabled: true }
+  );
 };
 
 export default PackageFormFieldSchema;
