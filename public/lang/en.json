@@ -2661,6 +2661,9 @@
                 "min": "Commission cannot be negative"
             }
         },
+        "balance": {
+            "label": "Balance"
+        },
         "note": {
             "label": "Note",
             "placeholder": "Enter a note"
@@ -2674,6 +2677,26 @@
                 "required": "Status is required",
                 "invalid": "Status must be active or inactive"
             }
+        }
+    },
+    "agent_transaction": {
+        "title_plural": "Agent Transactions",
+        "sl": "SL",
+        "created_at": {
+            "label": "Date"
+        },
+        "transaction_type": {
+            "label": "Transaction Type",
+            "options": {
+                "commission": "Commission",
+                "deposit": "Deposit"
+            }
+        },
+        "amount": {
+            "label": "Amount"
+        },
+        "description": {
+            "label": "Description"
         }
     },
     "tag": {

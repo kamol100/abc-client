@@ -2661,6 +2661,9 @@
                 "min": "কমিশন ঋণাত্মক হতে পারবে না"
             }
         },
+        "balance": {
+            "label": "ব্যালেন্স"
+        },
         "note": {
             "label": "নোট",
             "placeholder": "নোট দিন"
@@ -2674,6 +2677,26 @@
                 "required": "স্ট্যাটাস আবশ্যক",
                 "invalid": "স্ট্যাটাস সক্রিয় বা নিষ্ক্রিয় হতে হবে"
             }
+        }
+    },
+    "agent_transaction": {
+        "title_plural": "এজেন্ট ট্রানজেকশন",
+        "sl": "ক্রম",
+        "created_at": {
+            "label": "তারিখ"
+        },
+        "transaction_type": {
+            "label": "ট্রানজেকশন টাইপ",
+            "options": {
+                "commission": "কমিশন",
+                "deposit": "ডিপোজিট"
+            }
+        },
+        "amount": {
+            "label": "পরিমাণ"
+        },
+        "description": {
+            "label": "বিবরণ"
         }
     },
     "tag": {

@@ -6,6 +6,7 @@ export const AgentRowSchema = z
         name: z.string(),
         phone: z.string().nullable().optional(),
         commission: z.coerce.number(),
+        balance: z.coerce.number().default(0),
         note: z.string().nullable().optional(),
         status: z.enum(["active", "inactive"]),
     })
