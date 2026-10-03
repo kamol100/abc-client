@@ -118,9 +118,53 @@ export type MyWalletBalance = z.infer<typeof MyWalletBalanceSchema>;
 export type WalletRechargeFormInput = z.input<typeof WalletRechargeFormSchema>;
 export type WalletRechargePayload = z.output<typeof WalletRechargeFormSchema>;
 
+export const ResellerClientRechargeFormSchema = z
+  .object({
+    clientUuid: z.string().min(1, { message: "wallet.client.errors.required" }),
+    days: z.union([z.string(), z.number()]),
+  })
+  .superRefine((data, ctx) => {
+    const raw = typeof data.days === "string" ? data.days.trim() : data.days;
+    if (raw === "") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["days"],
+        message: "wallet.days.errors.required",
+      });
+      return;
+    }
+
+    const parsed = typeof raw === "number" ? raw : Number(raw);
+    if (!Number.isFinite(parsed)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["days"],
+        message: "wallet.days.errors.invalid",
+      });
+      return;
+    }
+
+    if (parsed <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["days"],
+        message: "wallet.days.errors.min",
+      });
+    }
+  });
+
 export type ClientWalletRechargeFormInput = z.input<
   typeof ClientWalletRechargeFormSchema
 >;
 export type ClientWalletRechargePayload = z.output<
   typeof ClientWalletRechargeFormSchema
 >;
+export type ResellerClientRechargeFormInput = z.input<
+  typeof ResellerClientRechargeFormSchema
+>;
+export type ResellerClientRechargePayload = {
+  clientUuid: string;
+  cost: number;
+  days: number;
+  note: string;
+};

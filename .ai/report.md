@@ -1,45 +1,37 @@
 ## Summary
 
-The admin Agents screen is a dialog CRUD page, matching invoice types for permissions and vendors for name, phone, and status filters. Agent status is the string `active` or `inactive`. Create, edit, and delete stay behind `agents.create`, `agents.edit`, and `agents.delete`.
+The client table termination date now shows as `DD-MMM-YY` plus the calendar-day gap from today. A future date reads `05-Oct-26 (2-days)`. Today reads `03-Oct-26 (0-days)`. A past date reads `01-Oct-26 (expired 2-days)` and uses the destructive text color. A missing date still shows `—`.
+
+The count uses calendar days. An ISO value such as `2026-10-05T00:00:00.000Z` stays 5 Oct, so a timezone offset cannot move it to the previous day.
 
 ## Files Changed
 
 Created:
 
-- `app/(dashboard)/agents/page.tsx`
-- `components/agents/agent-type.ts`
-- `components/agents/agent-form-schema.ts`
-- `components/agents/agent-form.tsx`
-- `components/agents/agent-filter-schema.ts`
-- `components/agents/agent-column.tsx`
-- `components/agents/agent-table.tsx`
-- `tests/unit/agents/agent-form-schema.test.ts`
-- `tests/unit/agents/agent-column.test.tsx`
+- `components/clients/client-termination-date.ts`
+- `tests/unit/clients/client-termination-date.test.ts`
+- `tests/unit/clients/client-package-cell.test.tsx`
 
 Modified:
 
-- `hooks/use-menu-items.ts` — Agents nav item after Resellers, permission `agents.access`
+- `components/clients/client-package-cell.tsx`
 - `public/lang/en.json`
 - `public/lang/bn.json`
 
+Unrelated working-tree changes were left untouched: reseller recharge, reseller form, form builder, label, and their tests.
+
 ## Tests
+
+`npx vitest run tests/unit/clients/client-termination-date.test.ts tests/unit/clients/client-package-cell.test.tsx` — 10 tests passed.
 
 `scripts/ai/typecheck` — exit 0.
 
-`scripts/ai/frontend-check` — exit 0. Vitest: 6 files, 14 tests.
-
-ESLint was not run. `npm run lint` is already broken in this repo.
-
-`/agents` redirected to `/admin?callbackUrl=%2Fagents` because that browser session is not logged in, so create, edit, delete, and the empty state were not confirmed on the page.
+The clients page was not opened in a browser. No dev server was running, and the table needs a signed-in user. The cell test renders the future, today, expired, and empty cases, including the destructive class on an expired date.
 
 ## Security
 
-The menu and row actions use the backend route names. The API still enforces the permission and the company scope.
+Display only. The date still comes from the client list payload. No new request or tenant field.
 
 ## Risks
 
-The Agents menu stays hidden until the signed-in role has `agents.access`. The list query key is `agents`.
-
-## Git Diff
-
-Branch `master`. Unrelated untracked tests remain: `tests/unit/clients/` and `tests/unit/packages/`.
+English month abbreviations stay `Oct` even in Bangla; only the day suffix is translated. Two-digit years follow date-fns' window around the current year, which matches near-term ISP dates such as `26` → 2026.

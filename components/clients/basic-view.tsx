@@ -14,7 +14,12 @@ import { cn } from "@/lib/utils";
 type ClientDetail = ClientRow & {
     pppoe_password?: string | null;
     wallet?: { balance?: number } | null;
-    package?: { name?: string; price?: number } | null;
+    package?: {
+        name?: string;
+        price?: number | string | null;
+        bandwidth?: string | null;
+        buying_price?: number | string | null;
+    } | null;
     billing_type?: string | null;
     invoice_day?: string | null;
 };
@@ -62,7 +67,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
     };
 
     const balance = client?.wallet?.balance ?? 0;
-    const packagePrice = client?.package && "price" in client.package ? (client.package as { price?: number }).price : undefined;
+    const packagePrice = client?.package && "price" in client.package ? client.package.price : undefined;
 
     return (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

@@ -6,11 +6,12 @@ import {
   MyWalletBalanceSchema,
 } from "@/components/wallets/wallet-type";
 
-export function useMyWallet() {
+export function useMyWallet(enabled = true) {
   const query = useApiQuery<ApiResponse<MyWalletBalance>>({
     queryKey: ["my-wallet"],
     url: "my-wallet",
     pagination: false,
+    enabled,
   });
 
   const parsed = MyWalletBalanceSchema.safeParse(query.data?.data);

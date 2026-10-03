@@ -1481,11 +1481,13 @@
             "id_name_phone": "আইডি / নাম / ফোন",
             "sid": "আইডি",
             "zone_address_network": "জোন / ঠিকানা / নেটওয়ার্ক",
-            "connection_package": "কানেকশন / প্যাকেজ",
+            "connection_package": "টার্মিনেশন / প্যাকেজ",
             "bill_payment": "বিল / পেমেন্ট",
             "online_info": "অনলাইন / তথ্য",
             "deadline": "ডেডলাইন",
-            "total_due": "ডিউ"
+            "total_due": "ডিউ",
+            "termination_days": "({{count}}-দিন)",
+            "termination_expired_days": "(মেয়াদোত্তীর্ণ {{count}}-দিন)"
         },
         "history": {
             "title": "হিস্ট্রি",
@@ -2727,6 +2729,33 @@
         "balance": {
             "label": "ব্যালেন্স"
         },
+        "empty_value": "—",
+        "client_summary": {
+            "name": "ক্লায়েন্টের নাম",
+            "pppoe_username": "পিপিপিওই ইউজারনেম",
+            "phone": "ফোন নম্বর",
+            "address": "ঠিকানা",
+            "package": "প্যাকেজের নাম",
+            "bandwidth": "ব্যান্ডউইথ",
+            "buying_price": "প্যাকেজ ক্রয় মূল্য",
+            "termination_date": "টার্মিনেশন ডেট"
+        },
+        "days": {
+            "label": "দিন",
+            "placeholder": "দিনের সংখ্যা দিন",
+            "errors": {
+                "required": "দিনের সংখ্যা আবশ্যক",
+                "invalid": "সঠিক দিনের সংখ্যা দিন",
+                "min": "দিন ০ এর বেশি হতে হবে"
+            }
+        },
+        "recharge_cost": {
+            "label": "রিচার্জ কস্ট",
+            "errors": {
+                "invalid_package": "প্যাকেজ ক্রয় মূল্য নেই, তাই রিচার্জ কস্ট হিসাব করা যাচ্ছে না।",
+                "invalid_price": "প্যাকেজের মূল্য নেই, তাই এই রিচার্জ জমা দেওয়া যাবে না।"
+            }
+        },
         "amount": {
             "label": "অ্যামাউন্ট",
             "placeholder": "রিচার্জ অ্যামাউন্ট দিন",
@@ -2747,7 +2776,9 @@
             "recharge_failed": "ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।",
             "redirecting_to_payment": "পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হচ্ছে...",
             "client_recharge_success": "ক্লায়েন্ট ওয়ালেট সফলভাবে রিচার্জ হয়েছে।",
-            "client_recharge_failed": "ক্লায়েন্ট ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।"
+            "client_recharge_failed": "ক্লায়েন্ট ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।",
+            "insufficient_balance": "এই রিচার্জের জন্য ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়।",
+            "wallet_unavailable": "ওয়ালেট ব্যালেন্স লোড করা যায়নি।"
         }
     },
     "role": {
@@ -3346,6 +3377,26 @@
             "label": "সিরিয়াল স্টার্ট ফ্রম",
             "placeholder": "সিরিয়াল শুরুর মান দিন"
         },
+        "agent": {
+            "label": "এজেন্ট",
+            "placeholder": "এজেন্ট নির্বাচন করুন",
+            "errors": {
+                "invalid": "সঠিক এজেন্ট নির্বাচন করুন"
+            }
+        },
+        "commission": {
+            "label": "কমিশন",
+            "placeholder": "কমিশন দিন",
+            "errors": {
+                "required": "কমিশন আবশ্যক",
+                "invalid": "কমিশন একটি সংখ্যা হতে হবে",
+                "integer": "কমিশন পূর্ণ সংখ্যা হতে হবে",
+                "min": "কমিশন ঋণাত্মক হতে পারবে না"
+            }
+        },
+        "count_commission": {
+            "label": "কাউন্ট কমিশন"
+        },
         "father_name": {
             "label": "ফাদার নেম",
             "placeholder": "ফাদার নেম দিন"
@@ -3376,17 +3427,6 @@
         },
         "gender": {
             "label": "জেন্ডার"
-        },
-        "marital_status": {
-            "label": "ম্যারিটাল স্ট্যাটাস"
-        },
-        "blood_group": {
-            "label": "ব্লাড গ্রুপ",
-            "placeholder": "ব্লাড গ্রুপ নির্বাচন করুন"
-        },
-        "date_of_birth": {
-            "label": "ডেট অফ বার্থ",
-            "placeholder": "ডেট অফ বার্থ নির্বাচন করুন"
         },
         "join_date": {
             "label": "জয়েন ডেট",

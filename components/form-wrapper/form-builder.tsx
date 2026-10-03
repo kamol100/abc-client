@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ReactNode, useCallback, useMemo, useState } from "react";
-import { FieldValues, useFieldArray, useFormContext } from "react-hook-form";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { FieldValues, useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { z } from "zod";
 import FormWrapper from "./form-wrapper";
@@ -21,6 +21,7 @@ import {
   FormFieldConfig,
   GRID_STYLES,
   HydratePolicy,
+  VisibleWhen,
 } from "@/components/form-wrapper/form-builder-type";
 import MyButton from "../my-button";
 
@@ -279,6 +280,60 @@ export type FormBuilderProps = {
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
 };
 
+const hasFilledValue = (value: unknown): boolean => {
+  if (value === null || value === undefined || value === "") return false;
+  if (Array.isArray(value)) return value.length > 0;
+  return true;
+};
+
+const ConditionalFormField = ({
+  field,
+  visibleWhen,
+  children,
+}: {
+  field: FormFieldConfig;
+  visibleWhen: VisibleWhen;
+  children: ReactNode;
+}) => {
+  const { getValues, setValue } = useFormContext();
+  const watched = useWatch({ name: visibleWhen.field });
+  const visible = hasFilledValue(watched);
+  const resetValue = visibleWhen.resetValue ?? null;
+
+  useEffect(() => {
+    if (visible) return;
+    if (Object.is(getValues(field.name), resetValue)) return;
+    setValue(field.name, resetValue, {
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
+    });
+  }, [visible, field.name, resetValue, getValues, setValue]);
+
+  if (!visible) return null;
+
+  return <div className={field.className}>{children}</div>;
+};
+
+export const VisibleFormField = ({
+  field,
+  children,
+}: {
+  field: FormFieldConfig;
+  children: ReactNode;
+}) => {
+  if (field.permission === false) return null;
+  if (!field.visibleWhen) {
+    return <div className={field.className}>{children}</div>;
+  }
+
+  return (
+    <ConditionalFormField field={field} visibleWhen={field.visibleWhen}>
+      {children}
+    </ConditionalFormField>
+  );
+};
+
 const FormBuilder = ({
   formSchema,
   grids = 1,
@@ -485,14 +540,11 @@ const FormBuilder = ({
         children((field) => renderField(field))
       ) : (
         <div className={`grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`}>
-          {(formSchema as FormFieldConfig[]).map((field) => {
-            if (field.permission === false) return null;
-            return (
-              <div key={field.name} className={field.className}>
-                {renderField(field)}
-              </div>
-            );
-          })}
+          {(formSchema as FormFieldConfig[]).map((field) => (
+            <VisibleFormField key={field.name} field={field}>
+              {renderField(field)}
+            </VisibleFormField>
+          ))}
         </div>
       )}
     </FormWrapper>

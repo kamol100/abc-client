@@ -50,10 +50,7 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                 ? t("common.female")
                 : reseller.gender || placeholder;
 
-    const maritalStatus =
-        Number(reseller.marital_status ?? 0) === 1
-            ? t("common.married")
-            : t("common.unmarried");
+    const hasAgent = Boolean(reseller.agent_id || reseller.agent);
 
     return (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -71,8 +68,7 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                     <InfoRow label={t("reseller.package.label")} value={packageNames || placeholder} />
                     <InfoRow label={t("reseller.view.thana_upazila")} value={upazilaNames || placeholder} />
                     <InfoRow label={t("reseller.gender.label")} value={gender} />
-                    <InfoRow label={t("reseller.marital_status.label")} value={maritalStatus} />
-                    <InfoRow label={t("reseller.blood_group.label")} value={reseller.blood_group || placeholder} />
+                    <InfoRow label={t("reseller.agent.label")} value={reseller.agent?.name || placeholder} />
                 </div>
             </Card>
 
@@ -93,7 +89,14 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                     <InfoRow label={t("reseller.terminate_minute.label")} value={reseller.terminate_minute ?? placeholder} />
                     <InfoRow label={t("reseller.serial_start_from.label")} value={reseller.serial_start_from ?? placeholder} />
                     <InfoRow label={t("reseller.prefix.label")} value={reseller.prefix || placeholder} />
-                    <InfoRow label={t("reseller.date_of_birth.label")} value={reseller.date_of_birth || placeholder} />
+                    <InfoRow
+                        label={t("reseller.commission.label")}
+                        value={hasAgent ? (reseller.commission ?? placeholder) : placeholder}
+                    />
+                    <InfoRow
+                        label={t("reseller.count_commission.label")}
+                        value={hasAgent ? (reseller.count_commission ? t("common.yes") : t("common.no")) : placeholder}
+                    />
                     <InfoRow label={t("reseller.join_date.label")} value={reseller.join_date || placeholder} />
                 </div>
             </Card>

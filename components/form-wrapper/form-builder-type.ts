@@ -12,11 +12,17 @@ export type LabelProps = {
     mandatory?: boolean;
     tooltip?: string | null;
     tooltipClass?: string;
+    labelSuffix?: string;
 };
 
 export type SelectOption = {
     value: string | number;
     label: string;
+};
+
+export type VisibleWhen = {
+    field: string;
+    resetValue?: string | number | boolean | null;
 };
 
 type BaseFieldConfig = {
@@ -28,6 +34,7 @@ type BaseFieldConfig = {
     className?: string;
     order?: number;
     rules?: RegisterOptions;
+    visibleWhen?: VisibleWhen;
 };
 
 export type TextFieldConfig = BaseFieldConfig & {
@@ -124,6 +131,7 @@ export type FieldArrayConfig = {
     label?: LabelProps;
     permission?: boolean;
     className?: string;
+    visibleWhen?: VisibleWhen;
     itemFields: FieldConfig[];
     defaultItem: Record<string, unknown>;
     allowAppend?: boolean;

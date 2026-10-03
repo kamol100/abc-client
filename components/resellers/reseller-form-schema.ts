@@ -5,18 +5,7 @@ type Props = {
     resellerId?: string;
 };
 
-const bloodGroupOptions = [
-    { value: "A+", label: "A+" },
-    { value: "A-", label: "A-" },
-    { value: "B+", label: "B+" },
-    { value: "B-", label: "B-" },
-    { value: "AB+", label: "AB+" },
-    { value: "AB-", label: "AB-" },
-    { value: "O+", label: "O+" },
-    { value: "O-", label: "O-" },
-];
-
-export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props): AccordionSection[] => {
+export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props = {}): AccordionSection[] => {
     return [
         {
             name: "reseller.sections.basic_information",
@@ -165,6 +154,29 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props):
                     label: { labelText: "reseller.serial_start_from.label" },
                     placeholder: "reseller.serial_start_from.placeholder",
                 },
+                {
+                    type: "dropdown",
+                    name: "agent_id",
+                    label: { labelText: "reseller.agent.label" },
+                    placeholder: "reseller.agent.placeholder",
+                    api: "/dropdown-agents",
+                    valueKey: "agent",
+                    isClearable: true,
+                    valueMapping: { idKey: "id", labelKey: "name" },
+                },
+                {
+                    type: "number",
+                    name: "commission",
+                    label: { labelText: "reseller.commission.label", mandatory: true, labelSuffix: "%" },
+                    placeholder: "reseller.commission.placeholder",
+                    visibleWhen: { field: "agent_id", resetValue: null },
+                },
+                {
+                    type: "switch",
+                    name: "count_commission",
+                    label: { labelText: "reseller.count_commission.label" },
+                    visibleWhen: { field: "agent_id", resetValue: false },
+                },
             ],
         },
         {
@@ -224,30 +236,6 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props):
                         { label: "common.male", value: "male" },
                         { label: "common.female", value: "female" },
                     ],
-                },
-                {
-                    type: "radio",
-                    name: "marital_status",
-                    label: { labelText: "reseller.marital_status.label" },
-                    direction: "row",
-                    defaultValue: "0",
-                    options: [
-                        { label: "common.married", value: 1 },
-                        { label: "common.unmarried", value: 0 },
-                    ],
-                },
-                {
-                    type: "dropdown",
-                    name: "blood_group",
-                    label: { labelText: "reseller.blood_group.label" },
-                    placeholder: "reseller.blood_group.placeholder",
-                    options: bloodGroupOptions,
-                },
-                {
-                    type: "date",
-                    name: "date_of_birth",
-                    label: { labelText: "reseller.date_of_birth.label" },
-                    placeholder: "reseller.date_of_birth.placeholder",
                 },
                 {
                     type: "date",

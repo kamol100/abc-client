@@ -9,6 +9,12 @@ const RefSchema = z.object({
     name: z.string(),
 }).passthrough();
 
+export const ClientPackageRefSchema = RefSchema.extend({
+    bandwidth: z.string().nullable().optional(),
+    price: z.union([z.number(), z.string(), z.null()]).optional(),
+    buying_price: z.union([z.number(), z.string(), z.null()]).optional(),
+}).passthrough();
+
 export const InvoiceDueItemSchema = z.object({
     uuid: z.string(),
     trackID: z.string().optional(),
@@ -43,11 +49,12 @@ export const ClientRowSchema = z.object({
     payment_deadline: z.string().nullable().optional(),
     current_address: z.string().nullable().optional(),
     permanent_address: z.string().nullable().optional(),
+    termination_date: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
     zone: RefSchema.nullable().optional(),
     sub_zone: RefSchema.nullable().optional(),
     network: RefSchema.nullable().optional(),
-    package: RefSchema.nullable().optional(),
+    package: ClientPackageRefSchema.nullable().optional(),
     device: RefSchema.nullable().optional(),
     upazila: RefSchema.nullable().optional(),
     zone_id: z.coerce.number().nullable().optional(),

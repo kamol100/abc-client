@@ -30,7 +30,10 @@ const Label = ({
     >
       <div className={cn("flex gap-2", suffix && "items-center gap-4")}>
         <div className="flex gap-2">
-          <div className={`capitalize ${label?.labelClass}`}>{t(label?.labelText || "") as string}</div>
+          <div className={`capitalize ${label?.labelClass}`}>
+            {t(label?.labelText || "") as string}
+            {label?.labelSuffix ? <span className="normal-case"> {label.labelSuffix}</span> : null}
+          </div>
           {label?.mandatory && <div className="text-destructive ml-1"> *</div>}
           {label?.tooltip && (
             <MyTooltip

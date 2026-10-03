@@ -12,7 +12,7 @@ import {
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions, useProfile, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Row } from "@tanstack/react-table";
 import {
@@ -39,6 +39,7 @@ import ClientSessionResetDialog from "@/components/clients/client-session-reset-
 import ClientSmsDialog from "@/components/clients/client-sms";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import dynamic from "next/dynamic";
+import { ResellerRechargeDialog } from "@/components/wallets/reseller-recharge";
 import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
 
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
@@ -51,6 +52,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const { t } = useTranslation();
     const { settings: { client_view_open_on_new_tab, client_edit_open_on_new_tab } } = useSettings();
     const { hasPermission } = usePermissions();
+    const { profile } = useProfile();
+    const isResellerUser = !!profile?.reseller;
     const [ticketOpen, setTicketOpen] = useState(false);
     const client = row.original;
     const clientId = getClientId(client) ?? "";
@@ -215,12 +218,20 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 onOpenChange={setTicketOpen}
             />
 
-            <ClientWalletRechargeDialog
-                clientUuid={clientId}
-                clientName={client.name}
-                open={walletRechargeOpen}
-                onOpenChange={setWalletRechargeOpen}
-            />
+            {isResellerUser ? (
+                <ResellerRechargeDialog
+                    client={client}
+                    open={walletRechargeOpen}
+                    onOpenChange={setWalletRechargeOpen}
+                />
+            ) : (
+                <ClientWalletRechargeDialog
+                    clientUuid={clientId}
+                    clientName={client.name}
+                    open={walletRechargeOpen}
+                    onOpenChange={setWalletRechargeOpen}
+                />
+            )}
 
             <MyDialog
                 open={deleteOpen}

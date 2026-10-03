@@ -84,9 +84,10 @@ export const ResellerRowSchema = z.object({
     permanent_address: z.string().nullable().optional(),
     social_media_account: z.string().nullable().optional(),
     nid: z.string().nullable().optional(),
-    marital_status: z.coerce.number().nullable().optional(),
-    blood_group: z.string().nullable().optional(),
-    date_of_birth: z.string().nullable().optional(),
+    agent_id: z.coerce.number().nullable().optional(),
+    commission: z.coerce.number().nullable().optional(),
+    count_commission: z.boolean().nullable().optional(),
+    agent: NamedRefSchema.nullable().optional(),
     join_date: z.string().nullable().optional(),
     user: UserRefSchema.nullable().optional(),
     network: NamedRefSchema.nullable().optional(),
@@ -139,12 +140,19 @@ const ResellerFormBaseSchema = z
         email: z.string().nullable().optional().default(""),
         nid: z.string().nullable().optional().default(""),
         gender: z.enum(["male", "female"]).default("male"),
-        marital_status: z.coerce.number().default(0),
-        blood_group: z.string().nullable().optional().default(""),
-        date_of_birth: z.preprocess(
-            (value) => (value instanceof Date ? toApiDateString(value, "dmy") : value),
-            z.string().nullable().optional().default(toApiDateString(new Date(), "dmy") ?? ""),
+        agent_id: z.preprocess(
+            (value) => (value === "" || value === undefined || value === null ? null : value),
+            z.coerce.number({
+                invalid_type_error: "reseller.agent.errors.invalid",
+            }).int().positive({ message: "reseller.agent.errors.invalid" }).nullable(),
         ),
+        commission: z.preprocess(
+            (value) => (value === "" || value === undefined || value === null ? null : value),
+            z.coerce.number({
+                invalid_type_error: "reseller.commission.errors.invalid",
+            }).int({ message: "reseller.commission.errors.integer" }).min(0, { message: "reseller.commission.errors.min" }).nullable(),
+        ),
+        count_commission: z.boolean().optional().default(false),
         join_date: z.preprocess(
             (value) => (value instanceof Date ? toApiDateString(value, "dmy") : value),
             z.string().nullable().optional().default(toApiDateString(new Date(), "dmy") ?? ""),
@@ -168,6 +176,13 @@ export const getResellerFormSchema = (mode: "create" | "edit" = "create") =>
                     message: "reseller.password.errors.required",
                 });
             }
+        }
+        if (data.agent_id != null && data.commission == null) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["commission"],
+                message: "reseller.commission.errors.required",
+            });
         }
     });
 

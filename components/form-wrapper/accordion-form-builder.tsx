@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
 import { AccordionSection, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
-import FormBuilder, { FormBuilderProps } from "./form-builder";
+import FormBuilder, { FormBuilderProps, VisibleFormField } from "./form-builder";
 import { useTranslation } from "react-i18next";
 
 type AccordionFormBuilderProps = Omit<FormBuilderProps, "children" | "formSchema"> & {
@@ -51,14 +51,11 @@ const AccordionFormBuilder = ({
                   accordionBodyClass
                 )}
               >
-                {section.form.map((field) => {
-                  if (field.permission === false) return null;
-                  return (
-                    <div key={field.name} className={field.className}>
-                      {renderField(field)}
-                    </div>
-                  );
-                })}
+                {section.form.map((field) => (
+                  <VisibleFormField key={field.name} field={field}>
+                    {renderField(field)}
+                  </VisibleFormField>
+                ))}
               </AccordionContent>
             </AccordionItem>
           ))}

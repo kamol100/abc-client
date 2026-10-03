@@ -177,7 +177,7 @@
         "company": "Company",
         "subject": "Subject",
         "updated_at": "Updated At",
-        "connection_package": "Connection / Package",
+        "connection_package": "Termination / Package",
         "bill_payment": "Bill / Payment",
         "payment_deadline": "Payment Deadline",
         "online_info": "Online Info",
@@ -1481,11 +1481,13 @@
             "id_name_phone": "ID / Name / Phone",
             "sid": "SID",
             "zone_address_network": "Zone / Address / Network",
-            "connection_package": "Connection / Package",
+            "connection_package": "Termination / Package",
             "bill_payment": "Bill / Payment",
             "online_info": "Online / Info",
             "deadline": "Deadline",
-            "total_due": "Due"
+            "total_due": "Due",
+            "termination_days": "({{count}}-days)",
+            "termination_expired_days": "(expired {{count}}-days)"
         },
         "history": {
             "title": "History",
@@ -2727,6 +2729,33 @@
         "balance": {
             "label": "Balance"
         },
+        "empty_value": "—",
+        "client_summary": {
+            "name": "Client Name",
+            "pppoe_username": "PPPoE Username",
+            "phone": "Phone Number",
+            "address": "Address",
+            "package": "Package Name",
+            "bandwidth": "Bandwidth",
+            "buying_price": "Package Buying Price",
+            "termination_date": "Termination Date"
+        },
+        "days": {
+            "label": "Days",
+            "placeholder": "Enter number of days",
+            "errors": {
+                "required": "Number of days is required",
+                "invalid": "Enter a valid number of days",
+                "min": "Days must be greater than 0"
+            }
+        },
+        "recharge_cost": {
+            "label": "Recharge Cost",
+            "errors": {
+                "invalid_package": "Package buying price is missing, so the recharge cost cannot be calculated.",
+                "invalid_price": "Package price is missing, so this recharge cannot be submitted."
+            }
+        },
         "amount": {
             "label": "Amount",
             "placeholder": "Enter recharge amount",
@@ -2747,7 +2776,9 @@
             "recharge_failed": "Wallet recharge failed.",
             "redirecting_to_payment": "Redirecting to payment gateway...",
             "client_recharge_success": "Client wallet recharged successfully.",
-            "client_recharge_failed": "Client wallet recharge failed."
+            "client_recharge_failed": "Client wallet recharge failed.",
+            "insufficient_balance": "Wallet balance is insufficient for this recharge.",
+            "wallet_unavailable": "Wallet balance could not be loaded."
         }
     },
     "role": {
@@ -3346,6 +3377,26 @@
             "label": "Serial Start From",
             "placeholder": "Enter serial start value"
         },
+        "agent": {
+            "label": "Agent",
+            "placeholder": "Select agent",
+            "errors": {
+                "invalid": "Select a valid agent"
+            }
+        },
+        "commission": {
+            "label": "Commission",
+            "placeholder": "Enter commission",
+            "errors": {
+                "required": "Commission is required",
+                "invalid": "Commission must be a number",
+                "integer": "Commission must be a whole number",
+                "min": "Commission cannot be negative"
+            }
+        },
+        "count_commission": {
+            "label": "Count Commission"
+        },
         "father_name": {
             "label": "Father Name",
             "placeholder": "Enter father name"
@@ -3376,17 +3427,6 @@
         },
         "gender": {
             "label": "Gender"
-        },
-        "marital_status": {
-            "label": "Marital Status"
-        },
-        "blood_group": {
-            "label": "Blood Group",
-            "placeholder": "Select blood group"
-        },
-        "date_of_birth": {
-            "label": "Date of Birth",
-            "placeholder": "Select date of birth"
         },
         "join_date": {
             "label": "Join Date",
