@@ -166,21 +166,16 @@ export function ClientSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
         {...props}
         side={isMobile ? themeSettings.navDrawerSide : "left"}
       >
-        <SidebarHeader className="border-b h-[64px]">
+        <SidebarHeader className="h-16 shrink-0 justify-center gap-0 overflow-hidden border-b p-2 group-data-[collapsible=icon]:h-12">
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" asChild>
+              <SidebarMenuButton size="lg" className="h-12 py-1" asChild>
                 <Link href={CLIENT_DASHBOARD_ROUTE}>
-                  <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <Logo />
-                    <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
-                      <span className="truncate text-xs font-medium text-muted-foreground">
-                        {settings?.company != null
-                          ? String(settings.company)
-                          : t("client_portal.title")}
-                      </span>
-                    </div>
-                  </div>
+                  <Logo
+                    name={
+                      settings?.company != null ? String(settings.company) : t("client_portal.title")
+                    }
+                  />
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

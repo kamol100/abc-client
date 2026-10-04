@@ -62,39 +62,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         }
       `}</style>
       <Sidebar collapsible="icon" {...props} side={isMobile ? themeSettings.navDrawerSide : "left"}>
-        <SidebarHeader className="border-b h-[64px]">
+        <SidebarHeader className="h-16 shrink-0 justify-center gap-0 overflow-hidden border-b p-2 group-data-[collapsible=icon]:h-12">
           <SidebarMenu>
             <SidebarMenuItem>
               <TenantSwitcher
                 renderTrigger={(switching) => (
                   <SidebarMenuButton
                     size="lg"
-                    className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isImpersonating
+                    className={`h-12 py-1 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isImpersonating
                       ? "ring-2 ring-orange-500/50 ring-offset-1 ring-offset-sidebar"
                       : ""
                       }`}
                   >
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <div>
-                        <Logo />
-                        <div className="grid flex-1 text-left text-sm leading-tight min-w-0">
-                          <span className="truncate text-xs font-medium text-muted-foreground">
-                            {settings?.company != null
-                              ? String(settings.company)
-                              : t(scopeLabelKeyMap[scope])}
-                          </span>
-                          {isImpersonating && (
-                            <span className="truncate text-[10px] font-medium text-orange-500">
-                              {t("tenant_switcher.scope.impersonating")}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    <Logo
+                      name={
+                        settings?.company != null
+                          ? String(settings.company)
+                          : t(scopeLabelKeyMap[scope])
+                      }
+                    >
+                      {isImpersonating && (
+                        <span className="truncate text-[10px] font-medium text-orange-500">
+                          {t("tenant_switcher.scope.impersonating")}
+                        </span>
+                      )}
+                    </Logo>
                     {switching ? (
-                      <Loader2 className="ml-auto h-4 w-4 animate-spin" />
+                      <Loader2 className="ml-auto h-4 w-4 animate-spin group-data-[collapsible=icon]:hidden" />
                     ) : (
-                      <ChevronsUpDown className="ml-auto h-4 w-4" />
+                      <ChevronsUpDown className="ml-auto h-4 w-4 group-data-[collapsible=icon]:hidden" />
                     )}
                   </SidebarMenuButton>
                 )}
