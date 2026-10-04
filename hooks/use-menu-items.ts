@@ -324,10 +324,10 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.wallets.title"),
       url: "#",
       icon: Wallet,
-      permissions: ["wallets.access"],
+      permissions: ["wallets.access", "wallets.client"],
       items: [
         { title: t("menu.wallets.my_wallets.title"), url: "/my-wallets", permission: "wallets.access" },
-        { title: t("menu.wallets.client_wallets.title"), url: "/client-wallets", permission: "wallets.access" },
+        { title: t("menu.wallets.client_wallets.title"), url: "/client-wallets", permission: "wallets.client" },
       ],
     },
     {
