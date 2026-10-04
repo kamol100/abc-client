@@ -295,6 +295,24 @@ export type InvoiceFormInput = z.input<typeof InvoiceFormSchema>;
 export type InvoiceFormValues = z.output<typeof InvoiceFormSchema>;
 export type InvoicePayload = z.output<typeof InvoicePayloadSchema>;
 export type InvoiceDetail = z.infer<typeof InvoiceDetailSchema>;
+const BulkPayResponseSchema = z.union([
+    z.array(z.record(z.unknown())),
+    z.object({ data: z.array(z.record(z.unknown())) }).transform(({ data }) => data),
+]).catch([]);
+
+/**
+ * The bulk-pay response is display-only and keys invoices by uuid under `id`.
+ * It is deliberately not run through InvoiceDetailSchema, whose form rules
+ * (e.g. line amount > 0) would silently drop paid invoices from the receipt.
+ */
+export const toPaidInvoices = (response: unknown): InvoiceDetail[] =>
+    BulkPayResponseSchema.parse(response).flatMap((item) => {
+        const parsed = InvoiceRowSchema.safeParse({ ...item, uuid: item.id, id: undefined });
+        if (!parsed.success || parsed.data.status === "due") return [];
+        const lines = Array.isArray(item.lines) ? item.lines : [];
+        return [{ ...parsed.data, lines } as InvoiceDetail];
+    });
+
 export type InvoicePayFormInput = z.input<typeof InvoicePaySchema>;
 export type InvoicePayInput = z.infer<typeof InvoicePaySchema>;
 export type InvoiceDiscountInput = z.infer<typeof InvoiceDiscountSchema>;

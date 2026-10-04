@@ -91,8 +91,9 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoic
                     />
                 )}
             </div>
-            {payOpen && (
+            {invoiceDue.length > 0 && (
                 <BulkInvoicePayDialog
+                    key={invoiceDue.map((item) => item.uuid).join(",")}
                     invoiceDue={invoiceDue}
                     open={payOpen}
                     onOpenChange={setPayOpen}
