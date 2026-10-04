@@ -24,8 +24,8 @@ export const ClientMapsFilterSchema = (): FieldConfig[] => [
     name: "status",
     placeholder: "client_map.filter.status",
     options: [
-      { value: "1", label: "client_map.status.active" },
-      { value: "0", label: "client_map.status.inactive" },
+      { value: "active", label: "client_map.status.active" },
+      { value: "inactive", label: "client_map.status.inactive" },
     ],
   },
 ];
