@@ -18,6 +18,13 @@ export const UserFilterSchema = (): FieldConfig[] => {
         },
         {
             type: "dropdown",
+            name: "company_id",
+            placeholder: "common.company",
+            permission: true,
+            api: "/dropdown-companies",
+        },
+        {
+            type: "dropdown",
             name: "roles_id",
             placeholder: "common.roles",
             permission: true,
