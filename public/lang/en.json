@@ -2681,22 +2681,50 @@
     },
     "agent_transaction": {
         "title_plural": "Agent Transactions",
+        "create_title": "Commission Transaction",
+        "current_balance": "Commission Balance",
         "sl": "SL",
         "created_at": {
-            "label": "Date"
+            "label": "Date",
+            "placeholder": "Search by date"
+        },
+        "agent": {
+            "label": "Agent",
+            "placeholder": "Select agent"
+        },
+        "balance": {
+            "label": "Balance"
         },
         "transaction_type": {
             "label": "Transaction Type",
+            "placeholder": "Select transaction type",
             "options": {
-                "commission": "Commission",
-                "deposit": "Deposit"
+                "commission": "Add Commission",
+                "deposit": "Deposit",
+                "withdrawal": "Withdraw Commission"
+            },
+            "errors": {
+                "invalid": "Select add commission or withdraw commission"
             }
         },
         "amount": {
-            "label": "Amount"
+            "label": "Amount",
+            "placeholder": "Enter amount",
+            "errors": {
+                "required": "Amount is required",
+                "min": "Amount must be greater than 0",
+                "exceeds_balance": "Amount exceeds the available commission balance"
+            }
         },
         "description": {
-            "label": "Description"
+            "label": "Description",
+            "placeholder": "Optional description",
+            "errors": {
+                "max": "Description must be at most 255 characters"
+            }
+        },
+        "messages": {
+            "created": "Commission transaction saved."
         }
     },
     "tag": {
@@ -4130,6 +4158,9 @@
         },
         "agents": {
             "title": "Agents"
+        },
+        "agent_transactions": {
+            "title": "Agent Transactions"
         },
         "communication": {
             "title": "Communication",

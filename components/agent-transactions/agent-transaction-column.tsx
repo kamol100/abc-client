@@ -4,16 +4,27 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import DisplayCount from "@/components/display-count";
-import MyBadge from "@/components/my-badge";
+import { Badge } from "@/components/ui/badge";
 import { AgentTransactionRow } from "@/components/agent-transactions/agent-transaction-type";
 import { cellIndex, toNumber } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 
 type GetPagination = () => Pagination | undefined;
 
-const TYPE_BADGE = {
-  commission: "success",
-  deposit: "info",
-} as const;
+const TYPE_BADGE_STYLES: Record<string, string> = {
+  commission:
+    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
+  deposit:
+    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
+  withdrawal:
+    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const TYPE_AMOUNT_STYLES: Record<string, string> = {
+  commission: "text-green-600 dark:text-green-400",
+  deposit: "text-green-600 dark:text-green-400",
+  withdrawal: "text-red-600 dark:text-red-400",
+};
 
 function TransactionTypeCell({
   transactionType,
@@ -22,20 +33,19 @@ function TransactionTypeCell({
 }) {
   const { t } = useTranslation();
   const key = `agent_transaction.transaction_type.options.${transactionType}`;
-  const label = t(key);
-  const badgeType = TYPE_BADGE[transactionType as keyof typeof TYPE_BADGE] ?? "info";
 
   return (
-    <MyBadge type={badgeType} variant="soft" className="capitalize">
-      {label === key ? transactionType : label}
-    </MyBadge>
+    <Badge className={cn(TYPE_BADGE_STYLES[transactionType])}>
+      {t(key)}
+    </Badge>
   );
 }
 
 export function getAgentTransactionColumns(
-  getPagination: GetPagination
+  getPagination: GetPagination,
+  showAgentColumn = true
 ): ColumnDef<AgentTransactionRow>[] {
-  return [
+  const columns: ColumnDef<AgentTransactionRow>[] = [
     {
       id: "sl",
       header: ({ column }) => (
@@ -59,6 +69,20 @@ export function getAgentTransactionColumns(
       enableSorting: false,
       enableHiding: false,
     },
+  ];
+
+  if (showAgentColumn) {
+    columns.push({
+      accessorKey: "agent.name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="agent_transaction.agent.label" />
+      ),
+      cell: ({ row }) => <span>{row.original.agent?.name ?? "—"}</span>,
+      enableSorting: false,
+    });
+  }
+
+  columns.push(
     {
       accessorKey: "transaction_type",
       header: ({ column }) => (
@@ -78,26 +102,42 @@ export function getAgentTransactionColumns(
         <DataTableColumnHeader column={column} title="agent_transaction.amount.label" />
       ),
       cell: ({ row }) => (
-        <span className="font-semibold text-primary">
+        <span className={cn("font-semibold", TYPE_AMOUNT_STYLES[row.original.transaction_type])}>
           <DisplayCount amount={toNumber(row.original.amount)} formatCurrency />
         </span>
       ),
       enableSorting: false,
-    },
-    {
-      accessorKey: "description",
+    }
+  );
+
+  if (showAgentColumn) {
+    columns.push({
+      accessorKey: "agent.balance",
       header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title="agent_transaction.description.label"
-        />
+        <DataTableColumnHeader column={column} title="agent_transaction.balance.label" />
       ),
       cell: ({ row }) => (
-        <div className="max-w-[240px] truncate" title={row.original.description ?? undefined}>
-          {row.original.description || "—"}
-        </div>
+        <DisplayCount amount={toNumber(row.original.agent?.balance)} formatCurrency />
       ),
       enableSorting: false,
-    },
-  ];
+    });
+  }
+
+  columns.push({
+    accessorKey: "description",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="agent_transaction.description.label"
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="max-w-[240px] truncate" title={row.original.description ?? undefined}>
+        {row.original.description || "—"}
+      </div>
+    ),
+    enableSorting: false,
+  });
+
+  return columns;
 }

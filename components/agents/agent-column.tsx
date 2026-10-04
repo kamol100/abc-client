@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Eye } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -11,6 +11,7 @@ import MyBadge from "@/components/my-badge";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import AgentForm from "@/components/agents/agent-form";
+import AgentTransactionForm from "@/components/agent-transactions/agent-transaction-form";
 import AgentTransactionTable from "@/components/agent-transactions/agent-transaction-table";
 import { AgentRow } from "@/components/agents/agent-type";
 import { usePermissions } from "@/context/app-provider";
@@ -29,13 +30,15 @@ function AgentStatusCell({ status }: { status: AgentRow["status"] }) {
 const AgentActionsCell: FC<{ agent: AgentRow }> = ({ agent }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const [openTransactionForm, setOpenTransactionForm] = useState(false);
     const [openTransactions, setOpenTransactions] = useState(false);
 
     const canEdit = hasPermission("agents.edit");
     const canDelete = hasPermission("agents.delete");
     const canViewTransactions = hasPermission("agent-transactions.show");
+    const canCreateTransaction = hasPermission("agent-transactions.create");
 
-    if (!canEdit && !canDelete && !canViewTransactions) {
+    if (!canEdit && !canDelete && !canViewTransactions && !canCreateTransaction) {
         return null;
     }
 
@@ -49,13 +52,25 @@ const AgentActionsCell: FC<{ agent: AgentRow }> = ({ agent }) => {
                     method="PUT"
                 />
             )}
-            {canDelete && (
-                <DeleteModal
-                    api_url={`/agents/${agent.id}`}
-                    keys="agents"
-                    confirmMessage="agent.delete_confirmation"
-                    buttonText="common.confirm_delete"
-                />
+            {canCreateTransaction && (
+                <>
+                    <MyButton
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setOpenTransactionForm(true)}
+                        tooltip={t("agent_transaction.create_title")}
+                    >
+                        <Plus className="h-4 w-4" />
+                    </MyButton>
+                    <AgentTransactionForm
+                        agentId={agent.id}
+                        agentName={agent.name}
+                        agentBalance={agent.balance}
+                        open={openTransactionForm}
+                        onOpenChange={setOpenTransactionForm}
+                    />
+                </>
             )}
             {canViewTransactions && (
                 <>
@@ -78,10 +93,21 @@ const AgentActionsCell: FC<{ agent: AgentRow }> = ({ agent }) => {
                             <AgentTransactionTable
                                 apiUrl={`agent-transactions/${agent.id}`}
                                 queryKey={`agent-transactions-${agent.id}`}
+                                includeAgentFilter={false}
+                                showAgentColumn={false}
+                                hideCreateAction
                             />
                         </MyDialog>
                     )}
                 </>
+            )}
+            {canDelete && (
+                <DeleteModal
+                    api_url={`/agents/${agent.id}`}
+                    keys="agents"
+                    confirmMessage="agent.delete_confirmation"
+                    buttonText="common.confirm_delete"
+                />
             )}
         </div>
     );

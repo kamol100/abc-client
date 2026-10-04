@@ -197,14 +197,12 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.resellers.title"),
       url: "/resellers",
       icon: UserCheck,
-      permissions: ["resellers.access"],
-    },
-    {
-      id: 33,
-      title: t("menu.agents.title"),
-      url: "/agents",
-      icon: UserCog,
-      permissions: ["agents.access"],
+      permissions: ["resellers.access", "agents.access", "agent-transactions.access"],
+      items: [
+        { title: t("menu.resellers.title"), url: "/resellers", permission: "resellers.access" },
+        { title: t("menu.agents.title"), url: "/agents", permission: "agents.access" },
+        { title: t("menu.agent_transactions.title"), url: "/agent-transactions", permission: "agent-transactions.access" },
+      ],
     },
     {
       id: 15,

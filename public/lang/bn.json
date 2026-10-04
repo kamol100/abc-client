@@ -2681,22 +2681,50 @@
     },
     "agent_transaction": {
         "title_plural": "এজেন্ট ট্রানজেকশন",
+        "create_title": "কমিশন ট্রানজেকশন",
+        "current_balance": "কমিশন ব্যালেন্স",
         "sl": "ক্রম",
         "created_at": {
-            "label": "তারিখ"
+            "label": "তারিখ",
+            "placeholder": "তারিখ দিয়ে সার্চ করুন"
+        },
+        "agent": {
+            "label": "এজেন্ট",
+            "placeholder": "এজেন্ট নির্বাচন করুন"
+        },
+        "balance": {
+            "label": "ব্যালেন্স"
         },
         "transaction_type": {
             "label": "ট্রানজেকশন টাইপ",
+            "placeholder": "ট্রানজেকশন টাইপ নির্বাচন করুন",
             "options": {
-                "commission": "কমিশন",
-                "deposit": "ডিপোজিট"
+                "commission": "কমিশন যোগ",
+                "deposit": "ডিপোজিট",
+                "withdrawal": "কমিশন উত্তোলন"
+            },
+            "errors": {
+                "invalid": "কমিশন যোগ বা কমিশন উত্তোলন নির্বাচন করুন"
             }
         },
         "amount": {
-            "label": "পরিমাণ"
+            "label": "পরিমাণ",
+            "placeholder": "পরিমাণ দিন",
+            "errors": {
+                "required": "পরিমাণ আবশ্যক",
+                "min": "পরিমাণ ০ এর বেশি হতে হবে",
+                "exceeds_balance": "পরিমাণ কমিশন ব্যালেন্সের চেয়ে বেশি"
+            }
         },
         "description": {
-            "label": "বিবরণ"
+            "label": "বিবরণ",
+            "placeholder": "ঐচ্ছিক বিবরণ",
+            "errors": {
+                "max": "বিবরণ সর্বোচ্চ ২৫৫ অক্ষরের হতে হবে"
+            }
+        },
+        "messages": {
+            "created": "কমিশন ট্রানজেকশন সেভ হয়েছে।"
         }
     },
     "tag": {
@@ -4130,6 +4158,9 @@
         },
         "agents": {
             "title": "এজেন্ট"
+        },
+        "agent_transactions": {
+            "title": "এজেন্ট ট্রানজেকশন"
         },
         "communication": {
             "title": "কমিউনিকেশন",

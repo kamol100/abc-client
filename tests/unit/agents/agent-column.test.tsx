@@ -1,4 +1,5 @@
-import { renderHook } from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
+import type { ReactElement } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { describe, expect, it, vi } from "vitest";
 import { useAgentColumns } from "@/components/agents/agent-column";
@@ -8,6 +9,12 @@ const { allowed } = vi.hoisted(() => ({
     allowed: new Set<string>(["agents.edit", "agents.delete"]),
 }));
 
+vi.mock("react-i18next", () => ({
+    useTranslation: () => ({
+        t: (key: string) => key,
+    }),
+}));
+
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: (name: string) => allowed.has(name),
@@ -15,6 +22,14 @@ vi.mock("@/context/app-provider", () => ({
 }));
 
 vi.mock("@/components/agents/agent-form", () => ({
+    default: () => null,
+}));
+
+vi.mock("@/components/agent-transactions/agent-transaction-form", () => ({
+    default: () => null,
+}));
+
+vi.mock("@/components/agent-transactions/agent-transaction-table", () => ({
     default: () => null,
 }));
 
@@ -41,6 +56,7 @@ describe("useAgentColumns", () => {
             "name",
             "phone",
             "commission",
+            "balance",
             "status",
             "note",
             "actions",
@@ -61,6 +77,7 @@ describe("useAgentColumns", () => {
             row: { original: { id: "agent-uuid", status: "active" } },
         } as never);
 
-        expect(rendered).toBeNull();
+        const view = render(rendered as ReactElement);
+        expect(view.container).toBeEmptyDOMElement();
     });
 });

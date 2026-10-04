@@ -69,6 +69,8 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/reseller-packages": "menu.packages.reseller_package.title",
   "/vendors": "menu.vendors.title",
   "/funds": "menu.funds.title",
+  "/agents": "menu.agents.title",
+  "/agent-transactions": "menu.agent_transactions.title",
   "/fund-transactions": "menu.funds.transaction.title",
   "/staffs": "menu.staffs.title",
   "/salaries": "menu.staffs.salaries.title",
