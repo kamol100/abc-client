@@ -1,26 +1,39 @@
 ## Summary
 
-After a successful `invoices/bulk-pay` response, `BulkInvoicePayDialog` closes and opens the existing `InvoicePrintDialog` for the invoices the API returned as paid or partial. The dialog is not opened on error, because `useApiMutation` only calls `onSuccess` for a successful response. It is also not opened when no returned invoice is paid or partial.
+Removed the reseller invoice page, its table, the Invoice menu item, and the reseller list Due and Paid columns. Those columns only summed reseller bills. Client invoice listing, payment, and printing are unchanged.
 
-The print dialog gets the invoice objects from the pay response (updated status, `amount_paid`, lines, client), so it does no extra fetch. The response `id` is the UUID, so `toPaidInvoices` (in `invoice-type.ts`) maps it to `uuid` and parses with the lenient `InvoiceRowSchema`. The strict `InvoiceDetailSchema` was dropping invoices (e.g. line `amount > 0`), so the print dialog never opened.
+## Files changed
 
-The `clients` and `invoices` list refresh now runs when the print dialog closes (or right away if there is nothing to print). Before, it ran on payment success, and `InvoiceTable` swaps its rows for a skeleton while fetching. That unmounted the row, the pay dialog and the print dialog, so the print dialog never appeared.
-
-## Files Changed
-
-- `components/invoices/bulk-invoice-pay-dialog.tsx`
+- `hooks/use-menu-items.ts`
 - `components/invoices/invoice-row-actions.tsx`
-- `components/invoices/invoice-type.ts`
-- `tests/unit/invoices/paid-invoices.test.ts`
+- `components/resellers/reseller-column.tsx`
+- `components/resellers/reseller-type.ts`
+- `public/lang/en.json`
+- `public/lang/bn.json`
 
-`invoice-row-actions.tsx` used to mount the pay dialog only while it was open, which would also have unmounted the print dialog. It now mounts once the due list is loaded, with a `key` built from the due UUIDs so the selection state resets when the list changes.
+## Files deleted
+
+- `app/(dashboard)/reseller-invoices/page.tsx`
+- `components/reseller-invoice/reseller-invoice-table.tsx`
+- `components/reseller-invoice/reseller-invoice-column.tsx`
+- `components/reseller-invoice/reseller-invoice-type.ts`
+
+## Menu and permissions
+
+Removed the Invoice submenu item "Reseller Invoice" (`/reseller-invoices`, permission `reseller-invoices.access`).
+
+Removed translation keys `reseller_invoice` and `menu.reseller_invoice`, plus `reseller.table.due` and `reseller.table.paid`.
 
 ## Tests
 
-`scripts/ai/typecheck` exit 0. `scripts/ai/test` completed. `vitest run tests/unit/invoices` passed 4 tests. Not checked in a browser.
+`scripts/ai/frontend-check`: typecheck passed, then Vitest 16 files / 60 tests passed. ESLint was not run; the repo lint script does not succeed.
 
-## Risks
+The local Next route types under `.next/types` still named `/reseller-invoices` and were updated so `tsc` could pass. They are generated and not part of the source diff.
 
-- If the list refetch after payment removes the row or client that hosts the dialog (for example under a "due only" filter), the print dialog unmounts with it.
-- With a partial payment, only invoices that are no longer `due` are printed.
-- `Invoices::whereIn(...)` in the backend returns every requested UUID, so the status filter on the client is what excludes untouched invoices.
+## Browser
+
+`/invoices` redirected to the login page. The seeded `admin` / `password` login was rejected by the running app, so the invoice menu and reseller table were not opened while signed in.
+
+## Retained on purpose
+
+Client invoice columns, pay, print, and edit/delete actions. `InvoiceRowActions` no longer has a reseller-invoice flag; edit and delete follow the same invoice permissions as before.

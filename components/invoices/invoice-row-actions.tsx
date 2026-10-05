@@ -15,11 +15,10 @@ import { useFetch } from "@/app/actions";
 
 type InvoiceRowActionsProps = {
     invoice: InvoiceRow;
-    resellerInvoice?: boolean;
     queryKey?: string;
 };
 
-const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoice = false, queryKey = "invoices" }) => {
+const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "invoices" }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const [payOpen, setPayOpen] = useState(false);
@@ -46,7 +45,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoic
     return (
         <>
             <div className="flex items-center justify-end gap-2 mr-2">
-                {canEdit && !resellerInvoice && (
+                {canEdit && (
                     <MyButton
                         variant="outline"
                         url={`/invoices/edit/${invoice.id}`}
@@ -82,7 +81,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, resellerInvoic
                     </MyButton>
                 )}
 
-                {canDelete && !resellerInvoice && (
+                {canDelete && (
                     <DeleteModal
                         api_url={`invoices/${invoice.id}`}
                         keys={queryKey}

@@ -138,10 +138,9 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.invoice.title"),
       url: "#",
       icon: FileText,
-      permissions: ["invoices.access", "invoice-types.access", "reseller-invoices.access"],
+      permissions: ["invoices.access", "invoice-types.access"],
       items: [
         { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
-        { title: t("menu.reseller_invoice.title"), url: "/reseller-invoices", permission: "reseller-invoices.access" },
         { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
       ],
     },

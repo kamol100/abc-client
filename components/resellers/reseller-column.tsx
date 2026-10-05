@@ -9,25 +9,6 @@ import { ResellerRow } from "@/components/resellers/reseller-type";
 import ResellerRowActions from "@/components/resellers/reseller-row-actions";
 import DisplayCount from "../display-count";
 
-const getTotalDue = (reseller: ResellerRow): number => {
-    const due = (reseller.invoices ?? []).reduce(
-        (sum, invoice) => sum + toNumber(invoice.after_discount_amount),
-        0
-    );
-    const paid = (reseller.invoices ?? []).reduce(
-        (sum, invoice) => sum + toNumber(invoice.amount_paid),
-        0
-    );
-    return due - paid;
-};
-
-const getTotalPaid = (reseller: ResellerRow): number => {
-    return (reseller.invoices ?? []).reduce(
-        (sum, invoice) => sum + toNumber(invoice.amount_paid),
-        0
-    );
-};
-
 export function useResellerColumns(): ColumnDef<ResellerRow>[] {
     const { t } = useTranslation();
 
@@ -85,22 +66,6 @@ export function useResellerColumns(): ColumnDef<ResellerRow>[] {
                 <DataTableColumnHeader column={column} title="reseller.table.prefix" />
             ),
             cell: ({ row }) => <div>{row.original.prefix ?? "-"}</div>,
-            enableSorting: false,
-        },
-        {
-            id: "due",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="reseller.table.due" />
-            ),
-            cell: ({ row }) => <div>{getTotalDue(row.original)}</div>,
-            enableSorting: false,
-        },
-        {
-            id: "paid",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="reseller.table.paid" />
-            ),
-            cell: ({ row }) => <div>{getTotalPaid(row.original)}</div>,
             enableSorting: false,
         },
         {

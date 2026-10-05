@@ -1563,13 +1563,6 @@
             "placeholder": "Enter fund"
         }
     },
-    "reseller_invoice": {
-        "title_plural": "Reseller Invoices",
-        "empty": "No due reseller invoices found.",
-        "reseller": {
-            "label": "Reseller"
-        }
-    },
     "invoice": {
         "title_plural": "Invoices",
         "client_invoices": "Client Invoices",
@@ -3315,9 +3308,7 @@
             "username": "Username",
             "phone": "Phone",
             "clients": "Clients",
-            "prefix": "Prefix",
-            "due": "Due",
-            "paid": "Paid"
+            "prefix": "Prefix"
         },
         "view": {
             "tabs": {
@@ -4098,9 +4089,6 @@
             "type": {
                 "title": "Invoice Type"
             }
-        },
-        "reseller_invoice": {
-            "title": "Reseller Invoice"
         },
         "payment_due": {
             "title": "Payment Due"

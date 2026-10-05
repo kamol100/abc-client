@@ -37,15 +37,8 @@ const ResellerClientRowSchema = z.object({
     zone: NamedRefSchema.nullable().optional(),
 }).passthrough();
 
-const InvoiceRefSchema = z.object({
-    id: z.coerce.number().optional(),
-    after_discount_amount: z.coerce.number().default(0),
-    amount_paid: z.coerce.number().default(0),
-}).passthrough();
-
 export type UserRef = z.infer<typeof UserRefSchema>;
 export type NamedRef = z.infer<typeof NamedRefSchema>;
-export type InvoiceRef = z.infer<typeof InvoiceRefSchema>;
 export type ResellerPackageRow = z.infer<typeof ResellerPackageRowSchema>;
 export type ResellerClientRow = z.infer<typeof ResellerClientRowSchema>;
 
@@ -95,7 +88,6 @@ export const ResellerRowSchema = z.object({
     upazilas: z.array(UpazilaRefSchema).nullable().optional(),
     package: z.array(ResellerPackageRowSchema).nullable().optional(),
     clients: z.array(NamedRefSchema).nullable().optional(),
-    invoices: z.array(InvoiceRefSchema).nullable().optional(),
     network_id: z.coerce.number().nullable().optional(),
     zone_id: z.coerce.number().nullable().optional(),
     package_id: z.array(z.coerce.number()).nullable().optional(),
