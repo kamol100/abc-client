@@ -1,5 +1,6 @@
 ## Summary
 
+<<<<<<< Updated upstream
 Removed the reseller invoice page, its table, the Invoice menu item, and the reseller list Due and Paid columns. Those columns only summed reseller bills. Client invoice listing, payment, and printing are unchanged.
 
 ## Files changed
@@ -37,3 +38,21 @@ The local Next route types under `.next/types` still named `/reseller-invoices` 
 ## Retained on purpose
 
 Client invoice columns, pay, print, and edit/delete actions. `InvoiceRowActions` no longer has a reseller-invoice flag; edit and delete follow the same invoice permissions as before.
+=======
+`DisplayCount` appends `/-` after currency amounts by default. `currencySuffix={false}` hides it. Plain counts are unchanged. `hideCurrency` still defaults to hiding `BDT`.
+
+## Files changed
+
+- `components/display-count.tsx`
+- `tests/unit/components/display-count.test.tsx`
+
+Earlier reseller client-count edits remain uncommitted in `components/resellers/reseller-column.tsx` and `components/resellers/reseller-type.ts`.
+
+## Tests
+
+`scripts/ai/test`: 15 files, 57 tests, passed. `scripts/ai/typecheck` passed. ESLint was not run.
+
+## Not verified
+
+The wallet amount was not checked in the browser. `/resellers` redirects to login.
+>>>>>>> Stashed changes

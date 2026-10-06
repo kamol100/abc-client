@@ -49,6 +49,8 @@ export interface DisplayCountProps
     translation?: boolean;
     abbreviate?: boolean;
     formatCurrency?: boolean;
+    hideCurrency?: boolean;
+    currencySuffix?: boolean;
     formatter?: DisplayCountFormatter;
 }
 
@@ -96,6 +98,38 @@ function createIntlFormatter(
     }
 }
 
+function formatAmount(
+    formatterPack: NumberFormatterResult,
+    value: number,
+    currency: string,
+    formatCurrency: boolean,
+    includeCurrency: boolean,
+): string {
+    if (!formatCurrency) {
+        return formatterPack.formatter.format(value);
+    }
+
+    if (!includeCurrency) {
+        if (!formatterPack.hasCurrencyStyle) {
+            return formatterPack.formatter.format(value);
+        }
+
+        return formatterPack.formatter
+            .formatToParts(value)
+            .filter((part) => part.type !== "currency")
+            .map((part) => part.value)
+            .join("")
+            .replace(/\u00a0/g, " ")
+            .trim();
+    }
+
+    if (!formatterPack.hasCurrencyStyle) {
+        return `${formatterPack.formatter.format(value)} ${currency}`;
+    }
+
+    return formatterPack.formatter.format(value);
+}
+
 function toDurationSeconds(duration: number): number {
     if (!Number.isFinite(duration) || duration <= 0) return 0;
     return duration > 10 ? duration / 1000 : duration;
@@ -113,6 +147,8 @@ function DisplayCount({
     translation = true,
     abbreviate = false,
     formatCurrency = false,
+    hideCurrency = true,
+    currencySuffix = true,
     formatter,
     ...rest
 }: DisplayCountProps) {
@@ -156,13 +192,15 @@ function DisplayCount({
     }, [currency, formatCurrency, fullValueFormatter]);
 
     const formatValue = useCallback(
-        (value: number, useCompact: boolean): string => {
+        (value: number, useCompact: boolean, includeCurrency: boolean): string => {
             const formatterPack = useCompact ? displayFormatter : fullValueFormatter;
-            const baseFormatted = formatterPack.formatter.format(value);
-            const defaultFormatted =
-                formatCurrency && !formatterPack.hasCurrencyStyle
-                    ? `${baseFormatted} ${currency}`
-                    : baseFormatted;
+            const defaultFormatted = formatAmount(
+                formatterPack,
+                value,
+                currency,
+                formatCurrency,
+                includeCurrency,
+            );
 
             if (!formatter) {
                 return defaultFormatted;
@@ -204,9 +242,12 @@ function DisplayCount({
     }, [amount, animate, durationInSeconds, motionValue, prefersReducedMotion]);
 
     const valueToRender = animate && !prefersReducedMotion ? animatedValue : amount;
-    const finalText = formatValue(amount, abbreviate);
-    const visibleText = formatValue(valueToRender, abbreviate);
-    const accessibleText = formatValue(amount, false);
+    const showCurrencyLabel = formatCurrency && !hideCurrency;
+    const withCurrencySuffix = (text: string) =>
+        formatCurrency && currencySuffix ? `${text}/-` : text;
+    const finalText = withCurrencySuffix(formatValue(amount, abbreviate, showCurrencyLabel));
+    const visibleText = withCurrencySuffix(formatValue(valueToRender, abbreviate, showCurrencyLabel));
+    const accessibleText = formatValue(amount, false, formatCurrency);
     const isNegative = amount < 0;
     const iconToRender = icon ?? defaultIcon;
     const shouldRenderIcon = showIcon && Boolean(iconToRender);

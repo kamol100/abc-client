@@ -49,7 +49,16 @@ export function useResellerColumns(): ColumnDef<ResellerRow>[] {
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="reseller.table.clients" />
             ),
-            cell: ({ row }) => <div>{row.original.clients?.length ?? 0}</div>,
+            cell: ({ row }) => (
+                <div className="flex flex-wrap items-center gap-1">
+                    <MyBadge type="success" variant="soft" size="sm" icon={false}>
+                        {t("common.active")} {row.original.active_clients ?? 0}
+                    </MyBadge>
+                    <MyBadge type="error" variant="soft" size="sm" icon={false}>
+                        {t("common.inactive")} {row.original.inactive_clients ?? 0}
+                    </MyBadge>
+                </div>
+            ),
             enableSorting: false,
         },
         {
