@@ -3275,7 +3275,11 @@
             "edit": "এডিট",
             "view": "ভিউ",
             "permissions": "পার্মিশন",
-            "wallet_recharge": "ওয়ালেট রিচার্জ"
+            "wallet_recharge": "ওয়ালেট রিচার্জ",
+            "settings": "রিসেলার সেটিংস"
+        },
+        "settings": {
+            "title": "রিসেলার সেটিংস"
         },
         "wallet_recharge": {
             "title": "রিসেলার ওয়ালেট রিচার্জ",

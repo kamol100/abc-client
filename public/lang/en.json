@@ -3275,7 +3275,11 @@
             "edit": "Edit",
             "view": "View",
             "permissions": "Permissions",
-            "wallet_recharge": "Recharge Wallet"
+            "wallet_recharge": "Recharge Wallet",
+            "settings": "Reseller settings"
+        },
+        "settings": {
+            "title": "Reseller Settings"
         },
         "wallet_recharge": {
             "title": "Recharge Reseller Wallet",
