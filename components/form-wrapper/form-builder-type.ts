@@ -18,6 +18,12 @@ export type LabelProps = {
 export type SelectOption = {
     value: string | number;
     label: string;
+    meta?: Record<string, unknown>;
+};
+
+export type DropdownPopulate = {
+    field: string;
+    from: string;
 };
 
 export type VisibleWhen = {
@@ -66,6 +72,7 @@ export type DropdownFieldConfig = BaseFieldConfig & {
     valueKey?: string;
     valueMapping?: ValueMapping;
     dependsOn?: DropdownDependsOn;
+    populate?: DropdownPopulate[];
 };
 
 export type RadioFieldConfig = BaseFieldConfig & {

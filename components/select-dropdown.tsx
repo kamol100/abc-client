@@ -4,7 +4,7 @@ import { useFetch } from "@/app/actions";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { FC, useEffect, useMemo, useRef } from "react";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions, UseFormSetValue, useFormContext } from "react-hook-form";
 import { ChevronDown, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Select, {
@@ -18,6 +18,7 @@ import type {
   GroupBase,
 } from "react-select";
 import type {
+  DropdownPopulate,
   LabelProps,
   SelectOption,
 } from "./form-wrapper/form-builder-type";
@@ -57,6 +58,37 @@ const selectDropdownSelectComponents = {
   ClearIndicator: SelectClearIndicator,
 };
 
+type DropdownApiItem = {
+  id: string | number;
+  name: string;
+  [key: string]: unknown;
+};
+
+const toSelectOption = (
+  item: DropdownApiItem,
+  translate: (value: string) => string,
+): SelectOption => ({
+  value: item.id,
+  label: translate(item.name),
+  meta: item,
+});
+
+const applyDropdownPopulate = (
+  setValue: UseFormSetValue<FieldValues>,
+  populate: DropdownPopulate[] | undefined,
+  selected: SingleValue<SelectOption>,
+) => {
+  if (!populate?.length || !selected?.meta) return;
+
+  for (const { field, from } of populate) {
+    if (!Object.hasOwn(selected.meta, from)) continue;
+    setValue(field, selected.meta[from], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  }
+};
+
 type SelectDropdownProps = {
   name: string;
   label?: LabelProps;
@@ -74,6 +106,7 @@ type SelectDropdownProps = {
   parentFieldName?: string;
   buildApi?: (parentValue: string | number) => string;
   resetOnParentChange?: boolean;
+  populate?: DropdownPopulate[];
 };
 
 const SelectDropdown: FC<SelectDropdownProps> = ({
@@ -93,6 +126,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   parentFieldName,
   buildApi,
   resetOnParentChange = true,
+  populate,
 }) => {
   const { t } = useTranslation();
   const { control: ctxControl, watch, setValue } = useFormContext();
@@ -131,12 +165,17 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     queryKey: [`${name}-dropdown`, api],
     queryFn: async (): Promise<SelectOption[]> => {
       const result = await useFetch({ url: api as string });
-      return (
-        result?.data?.map((item: { id: string | number; name: string }) => ({
-          value: item.id,
-          label: t(item.name),
-        })) ?? []
-      );
+      const items: unknown[] = Array.isArray(result?.data) ? result.data : [];
+      return items
+        .filter((item: unknown): item is DropdownApiItem => {
+          if (!item || typeof item !== "object") return false;
+          const row = item as Record<string, unknown>;
+          return (
+            (typeof row.id === "string" || typeof row.id === "number") &&
+            typeof row.name === "string"
+          );
+        })
+        .map((item) => toSelectOption(item, t));
     },
     enabled: !!api,
     retry: 0,
@@ -202,10 +241,11 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                   onChange(values);
                   onValueChange?.(values);
                 } else {
-                  const val =
-                    (newValue as SingleValue<SelectOption>)?.value ?? null;
+                  const selected = newValue as SingleValue<SelectOption>;
+                  const val = selected?.value ?? null;
                   onChange(val);
                   onValueChange?.(val);
+                  applyDropdownPopulate(setValue, populate, selected);
                 }
               }}
               styles={{

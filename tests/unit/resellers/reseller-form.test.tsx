@@ -36,7 +36,12 @@ vi.mock("@/hooks/use-api-mutation", () => ({
 vi.mock("@/app/actions", () => ({
     useFetch: vi.fn(async ({ url }: { url: string }) => {
         if (url.includes("dropdown-agents")) {
-            return { data: [{ id: 7, name: "Karim Agent" }] };
+            return {
+                data: [
+                    { id: 7, name: "Karim Agent", commission: 12 },
+                    { id: 8, name: "Rahim Agent", commission: 20 },
+                ],
+            };
         }
         return { data: [] };
     }),
@@ -123,7 +128,33 @@ describe("reseller agent commission fields", () => {
         });
     });
 
-    it("shows the saved agent and commission when editing", async () => {
+    it("fills commission from the selected agent and keeps the field editable", async () => {
+        renderBilling();
+        const user = await openAgentMenu();
+
+        const commission = await screen.findByPlaceholderText("reseller.commission.placeholder");
+        expect(commission).toHaveValue(12);
+
+        await user.clear(commission);
+        await user.type(commission, "18");
+        expect(commission).toHaveValue(18);
+    });
+
+    it("updates commission when the agent changes and leaves count commission untouched", async () => {
+        renderBilling();
+        const user = await openAgentMenu();
+
+        await user.click(screen.getByRole("switch"));
+        expect(screen.getByRole("switch")).toBeChecked();
+
+        await user.click(screen.getByRole("combobox", { hidden: true }));
+        await user.click(await screen.findByText("Rahim Agent"));
+
+        expect(screen.getByPlaceholderText("reseller.commission.placeholder")).toHaveValue(20);
+        expect(screen.getByRole("switch")).toBeChecked();
+    });
+
+    it("keeps the saved commission when editing until the agent changes", async () => {
         renderBilling({
             id: "reseller-uuid",
             agent_id: 7,
@@ -135,7 +166,15 @@ describe("reseller agent commission fields", () => {
         });
 
         expect(await screen.findByText("Karim Agent")).toBeInTheDocument();
-        expect(screen.getByPlaceholderText("reseller.commission.placeholder")).toHaveValue(15);
+        const commission = screen.getByPlaceholderText("reseller.commission.placeholder");
+        expect(commission).toHaveValue(15);
+        expect(screen.getByRole("switch")).toBeChecked();
+
+        const user = userEvent.setup();
+        await user.click(screen.getByRole("combobox", { hidden: true }));
+        await user.click(await screen.findByText("Rahim Agent"));
+
+        expect(commission).toHaveValue(20);
         expect(screen.getByRole("switch")).toBeChecked();
     });
 });

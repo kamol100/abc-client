@@ -418,6 +418,10 @@ const FormBuilder = ({
             parentFieldName={f.dependsOn?.field}
             buildApi={f.dependsOn?.buildApi}
             resetOnParentChange={f.dependsOn?.resetOnChange}
+            populate={f.populate?.map((item) => ({
+              field: namePrefix ? `${namePrefix}.${item.field}` : item.field,
+              from: item.from,
+            }))}
           />
         );
       case "radio":

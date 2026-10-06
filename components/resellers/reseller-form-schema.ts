@@ -163,6 +163,7 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props =
                     valueKey: "agent",
                     isClearable: true,
                     valueMapping: { idKey: "id", labelKey: "name" },
+                    populate: [{ field: "commission", from: "commission" }],
                 },
                 {
                     type: "number",

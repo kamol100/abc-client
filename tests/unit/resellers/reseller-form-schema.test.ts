@@ -27,6 +27,7 @@ describe("ResellerFormFieldSchema", () => {
             api: "/dropdown-agents",
             valueKey: "agent",
             valueMapping: { idKey: "id", labelKey: "name" },
+            populate: [{ field: "commission", from: "commission" }],
         });
         expect(commission).toMatchObject({
             type: "number",
