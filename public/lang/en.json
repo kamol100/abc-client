@@ -3999,7 +3999,7 @@
         "metrics": {
             "active": "Active",
             "inactive": "Inactive",
-            "client": "Client",
+            "client": "Clients",
             "today": "Today",
             "this_month": "This month",
             "last_month": "Last month",
@@ -4298,6 +4298,9 @@
             "general": {
                 "title": "General"
             },
+            "dashboard": {
+                "title": "Dashboard"
+            },
             "sms": {
                 "title": "SMS"
             },
@@ -4349,6 +4352,11 @@
             "telegram": {
                 "title": "Telegram Settings",
                 "description": "Configure Telegram token and event notifications."
+            },
+            "dashboard": {
+                "title": "Dashboard Settings",
+                "description": "Choose which dashboard items stay on the dashboard. An item stays visible until its switch is turned off.",
+                "empty": "No dashboard items are available for your permissions."
             }
         },
         "options": {
@@ -4592,6 +4600,42 @@
             },
             "telegram_vendor_delete": {
                 "label": "Telegram Vendor Delete"
+            },
+            "dashboard_show_client": {
+                "label": "Client Card"
+            },
+            "dashboard_show_reseller": {
+                "label": "Reseller Card"
+            },
+            "dashboard_show_invoice": {
+                "label": "Invoice Card"
+            },
+            "dashboard_show_invoice_paid": {
+                "label": "Invoice Paid Card"
+            },
+            "dashboard_show_invoice_dues": {
+                "label": "Invoice Due Card"
+            },
+            "dashboard_show_expense": {
+                "label": "Expense Card"
+            },
+            "dashboard_show_fund": {
+                "label": "Fund Card"
+            },
+            "dashboard_show_ticket": {
+                "label": "Support Ticket Card"
+            },
+            "dashboard_show_product_stock": {
+                "label": "Product Stock Card"
+            },
+            "dashboard_show_top_due_invoices": {
+                "label": "Top Due Invoices"
+            },
+            "dashboard_show_zone_due": {
+                "label": "Zone-wise Top Due"
+            },
+            "dashboard_show_invoice_expense_graph": {
+                "label": "Invoice and Expense Chart"
             }
         }
     },

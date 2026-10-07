@@ -1,6 +1,7 @@
 "use client";
 
 import { useDashboardData } from "@/components/dashboard/use-dashboard-data";
+import { cn } from "@/lib/utils";
 import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardClientSummaryCard";
 import DashboardResellerSummaryCard from "@/components/dashboard/items/DashboardResellerSummaryCard";
 import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
@@ -168,24 +169,35 @@ export default function DashboardOverview() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <DashboardTopDueInvoicesTable
-          invoices={topDueInvoiceData.top_due_invoices}
-          totalAmount={topDueInvoiceData.total_amount}
-          isLoading={isTopDueInvoiceLoading}
-          isFetching={isTopDueInvoiceFetching}
-          isError={isTopDueInvoiceError}
-          setFilter={handleTopDueInvoiceFilter}
-        />
-        <DashboardZoneDueSummaryTable
-          dueItems={zoneWiseTopDueInvoice.zone_wise_due}
-          totalAmount={zoneWiseTopDueInvoice.total_amount}
-          isLoading={isZoneWiseTopDueInvoiceLoading}
-          isFetching={isZoneWiseTopDueInvoiceFetching}
-          isError={isZoneWiseTopDueInvoiceError}
-          setFilter={handleZoneWiseDueFilter}
-        />
-      </div>
+      {(canSee.topDueInvoices || canSee.zoneDue) && (
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-3",
+            canSee.topDueInvoices && canSee.zoneDue && "xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]",
+          )}
+        >
+          {canSee.topDueInvoices && (
+            <DashboardTopDueInvoicesTable
+              invoices={topDueInvoiceData.top_due_invoices}
+              totalAmount={topDueInvoiceData.total_amount}
+              isLoading={isTopDueInvoiceLoading}
+              isFetching={isTopDueInvoiceFetching}
+              isError={isTopDueInvoiceError}
+              setFilter={handleTopDueInvoiceFilter}
+            />
+          )}
+          {canSee.zoneDue && (
+            <DashboardZoneDueSummaryTable
+              dueItems={zoneWiseTopDueInvoice.zone_wise_due}
+              totalAmount={zoneWiseTopDueInvoice.total_amount}
+              isLoading={isZoneWiseTopDueInvoiceLoading}
+              isFetching={isZoneWiseTopDueInvoiceFetching}
+              isError={isZoneWiseTopDueInvoiceError}
+              setFilter={handleZoneWiseDueFilter}
+            />
+          )}
+        </div>
+      )}
 
       {canSee.invoiceExpenseGraph && (
         <DashboardRevenueChart

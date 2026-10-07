@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+    isDashboardItemVisible,
+    isDashboardVisibilitySettingKey,
+    type DashboardVisibilitySettingKey,
+} from "@/components/dashboard/dashboard-visibility";
 import type { ApiResponse } from "@/hooks/use-api-query";
 
 export const SETTINGS_TEXT_KEYS = [
@@ -58,6 +63,18 @@ export const SETTINGS_SWITCH_KEYS = [
     "telegram_vendor_create",
     "telegram_vendor_update",
     "telegram_vendor_delete",
+    "dashboard_show_client",
+    "dashboard_show_reseller",
+    "dashboard_show_invoice",
+    "dashboard_show_invoice_paid",
+    "dashboard_show_invoice_dues",
+    "dashboard_show_expense",
+    "dashboard_show_fund",
+    "dashboard_show_ticket",
+    "dashboard_show_product_stock",
+    "dashboard_show_top_due_invoices",
+    "dashboard_show_zone_due",
+    "dashboard_show_invoice_expense_graph",
 ] as const;
 
 export const SETTINGS_FIELD_KEYS = [
@@ -77,6 +94,23 @@ const NullableBooleanLikeSchema = z
     .union([z.boolean(), z.number(), z.string()])
     .nullable()
     .optional();
+
+function dashboardVisibilityFields<T extends z.ZodTypeAny>(schema: T) {
+    return {
+        dashboard_show_client: schema,
+        dashboard_show_reseller: schema,
+        dashboard_show_invoice: schema,
+        dashboard_show_invoice_paid: schema,
+        dashboard_show_invoice_dues: schema,
+        dashboard_show_expense: schema,
+        dashboard_show_fund: schema,
+        dashboard_show_ticket: schema,
+        dashboard_show_product_stock: schema,
+        dashboard_show_top_due_invoices: schema,
+        dashboard_show_zone_due: schema,
+        dashboard_show_invoice_expense_graph: schema,
+    } satisfies Record<DashboardVisibilitySettingKey, T>;
+}
 
 export const SettingsReminderChannelSchema = z.enum(["sms", "voice"]);
 
@@ -131,12 +165,14 @@ export const SettingsRowSchema = z
         telegram_vendor_create: NullableBooleanLikeSchema,
         telegram_vendor_update: NullableBooleanLikeSchema,
         telegram_vendor_delete: NullableBooleanLikeSchema,
+        ...dashboardVisibilityFields(NullableBooleanLikeSchema),
     })
     .passthrough();
 
 const NullableTextFormSchema = z.string().nullable().optional();
 const NullableNumberFormSchema = z.union([z.string(), z.number()]).nullable().optional();
 const NullableSwitchFormSchema = z.boolean().nullable().optional();
+const dashboardVisibilityFormFields = dashboardVisibilityFields(NullableSwitchFormSchema);
 
 export const SettingsFormSchema = z
     .object({
@@ -186,6 +222,7 @@ export const SettingsFormSchema = z
         telegram_vendor_create: NullableSwitchFormSchema,
         telegram_vendor_update: NullableSwitchFormSchema,
         telegram_vendor_delete: NullableSwitchFormSchema,
+        ...dashboardVisibilityFormFields,
     })
     .passthrough();
 
@@ -243,6 +280,9 @@ export function normalizeSettingValueForForm(
     value: unknown
 ): SettingsFormInput[SettingsFieldKey] {
     if (isSettingsSwitchKey(key)) {
+        if (isDashboardVisibilitySettingKey(key)) {
+            return isDashboardItemVisible(value);
+        }
         return toBoolean(value);
     }
 

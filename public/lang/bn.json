@@ -4298,6 +4298,9 @@
             "general": {
                 "title": "জেনারেল"
             },
+            "dashboard": {
+                "title": "ড্যাশবোর্ড"
+            },
             "sms": {
                 "title": "এসএমএস"
             },
@@ -4349,6 +4352,11 @@
             "telegram": {
                 "title": "টেলিগ্রাম সেটিংস",
                 "description": "টেলিগ্রাম টোকেন এবং ইভেন্ট নোটিফিকেশন কনফিগার করুন।"
+            },
+            "dashboard": {
+                "title": "ড্যাশবোর্ড সেটিংস",
+                "description": "ড্যাশবোর্ডে কোন আইটেম দেখাবে তা বেছে নিন। সুইচ বন্ধ না করা পর্যন্ত আইটেম দৃশ্যমান থাকে।",
+                "empty": "আপনার পারমিশনে কোনো ড্যাশবোর্ড আইটেম নেই।"
             }
         },
         "options": {
@@ -4592,6 +4600,42 @@
             },
             "telegram_vendor_delete": {
                 "label": "টেলিগ্রাম ভেন্ডর ডিলিট"
+            },
+            "dashboard_show_client": {
+                "label": "ক্লায়েন্ট কার্ড"
+            },
+            "dashboard_show_reseller": {
+                "label": "রিসেলার কার্ড"
+            },
+            "dashboard_show_invoice": {
+                "label": "ইনভয়েস কার্ড"
+            },
+            "dashboard_show_invoice_paid": {
+                "label": "ইনভয়েস পেইড কার্ড"
+            },
+            "dashboard_show_invoice_dues": {
+                "label": "ইনভয়েস ডিউ কার্ড"
+            },
+            "dashboard_show_expense": {
+                "label": "এক্সপেন্স কার্ড"
+            },
+            "dashboard_show_fund": {
+                "label": "ফান্ড কার্ড"
+            },
+            "dashboard_show_ticket": {
+                "label": "সাপোর্ট টিকেট কার্ড"
+            },
+            "dashboard_show_product_stock": {
+                "label": "প্রোডাক্ট স্টক কার্ড"
+            },
+            "dashboard_show_top_due_invoices": {
+                "label": "টপ ডিউ ইনভয়েস"
+            },
+            "dashboard_show_zone_due": {
+                "label": "জোন-ওয়াইজ টপ ডিউ"
+            },
+            "dashboard_show_invoice_expense_graph": {
+                "label": "ইনভয়েস এবং এক্সপেন্স চার্ট"
             }
         }
     },

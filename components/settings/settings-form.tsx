@@ -5,7 +5,7 @@ import Switch from "@/components/form/switch";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import SelectDropdown from "@/components/select-dropdown";
-import { useSettings } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Loader2 } from "lucide-react";
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
@@ -13,11 +13,12 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import {
-    buildSettingsFormSchema,
+    buildSettingsFieldConfigs,
+    filterSettingsFieldsByPermission,
     SETTINGS_SECTION_SCHEMA,
     type SettingsFieldSchema,
     type SettingsSectionKey,
-} from "./settings-form-schema";
+} from "@/components/settings/settings-form-schema";
 import {
     normalizeSettingsForForm,
     normalizeSettingValueForForm,
@@ -27,7 +28,7 @@ import {
     type SettingsPayload,
     SettingsPayloadSchema,
     toSettingsPayloadValue,
-} from "./settings-type";
+} from "@/components/settings/settings-type";
 
 type SettingsFormProps = {
     section: SettingsSectionKey;
@@ -161,6 +162,13 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
             </div>
 
             <div className="space-y-3">
+                {section === "dashboard" && sectionFields.length === 0 ? (
+                    <div className="rounded-md border p-3 sm:p-4">
+                        <p className="text-sm text-muted-foreground">
+                            {t("settings.sections.dashboard.empty")}
+                        </p>
+                    </div>
+                ) : null}
                 {sectionFields.map((field) => {
                     const fieldKey = field.key;
                     const fieldConfig = formFieldsMap.get(fieldKey);
@@ -275,8 +283,16 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
 const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
     const { t } = useTranslation();
     const { settings, updateSettings } = useSettings();
+    const { hasPermission } = usePermissions();
     const sectionConfig = SETTINGS_SECTION_SCHEMA[section];
-    const formSchema = useMemo(() => buildSettingsFormSchema(section), [section]);
+    const sectionFields = useMemo(
+        () => filterSettingsFieldsByPermission(sectionConfig.fields, hasPermission),
+        [hasPermission, sectionConfig.fields],
+    );
+    const formSchema = useMemo(
+        () => buildSettingsFieldConfigs(sectionFields),
+        [sectionFields],
+    );
     const formFieldsMap = useMemo(
         () => new Map(formSchema.map((field) => [field.name, field])),
         [formSchema]
@@ -352,7 +368,7 @@ const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
                 {(renderField) => (
                     <SettingsSectionContent
                         section={section}
-                        sectionFields={sectionConfig.fields}
+                        sectionFields={sectionFields}
                         formFieldsMap={formFieldsMap}
                         syncedValues={syncedValues}
                         pendingKeys={pendingKeys}

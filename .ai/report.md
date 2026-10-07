@@ -1,32 +1,39 @@
 ## Summary
 
-The dashboard shows a Reseller Overview card beside the client card when the user has `dashboard-card.reseller`.
+`/settings/dashboard` lets a user show or hide dashboard items with the existing company settings switches. A missing setting stays visible. A switch is shown only when the user has that item's dashboard card permission.
 
 ## Files changed
 
-- `components/dashboard/items/DashboardResellerSummaryCard.tsx`
+- `app/(dashboard)/settings/dashboard/page.tsx`
+- `components/dashboard/dashboard-visibility.ts`
 - `components/dashboard/dashboard-overview.tsx`
 - `components/dashboard/use-dashboard-data.ts`
-- `components/dashboard/dashboard-type.ts`
-- `components/dashboard/dashboard-constants.ts`
+- `components/settings/settings-form.tsx`
+- `components/settings/settings-form-schema.ts`
+- `components/settings/settings-type.ts`
+- `hooks/use-menu-items.ts`
 - `public/lang/en.json`
 - `public/lang/bn.json`
-- `tests/unit/dashboard/dashboard-reseller-summary-card.test.tsx`
+- `tests/unit/dashboard/dashboard-visibility.test.ts`
 
 ## Behavior
 
-The card reads `GET dashboard-reseller-count`. The header is `Total Resellers(count)` with `Client` and the client total. The rows are active clients, inactive clients, and resellers created this month. Loading and error states use the same metric card as the client overview.
+The page uses `SettingsForm` and `POST /company/settings`, the same path as General, SMS, Map, and Telegram. The menu entry is under Settings and requires `company-settings.access`.
 
-The card stays hidden until `dashboard-card.reseller` exists on the user's permission list.
+Each card switch is tied to its `dashboard-card.*` permission. Top Due Invoices and Zone-wise Top Due have no card permission, so those two switches are always listed. Turning a switch off saves `0` and hides that item. `null`, missing, `1`, and `true` keep it visible. Permission is still required before the setting is applied.
+
+A new dashboard item is one entry in `DASHBOARD_VISIBILITY_ITEMS`, plus the matching settings key, schema field, and translation labels.
 
 ## Tests
 
-`npx vitest run tests/unit/dashboard/dashboard-reseller-summary-card.test.tsx` passed (4 tests).
+`npx vitest run tests/unit/dashboard/dashboard-visibility.test.ts` passed (6 tests).
+
+`scripts/ai/test` passed (20 files, 79 tests).
 
 `scripts/ai/typecheck` passed.
 
-The signed-in dashboard was not opened. No app server was running, and the new permission is not in the database until `update:permission` runs.
+The signed-in settings page was not exercised. `http://127.0.0.1:3000/settings/dashboard` redirects to `/admin?callbackUrl=/settings/dashboard`, and the login form stayed on its pre-hydration skeleton, so the switches were not clicked.
 
 ## Left untouched
 
-Unrelated working-tree changes in `components/invoices/invoice-receipt.tsx` and `components/invoices/invoice-type.ts` were not edited. Existing `client_id` translation lines in `en.json` and `bn.json` were left in place.
+`dashboard.metrics.client` in `en.json` was already `Clients` in the working tree and was left as-is. The older `/setting/dashboard` page was not changed.

@@ -1,16 +1,18 @@
 import type { FormFieldConfig, SelectOption } from "@/components/form-wrapper/form-builder-type";
+import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
 import type {
     SettingsFieldKey,
     SettingsSelectKey,
     SettingsSwitchKey,
     SettingsTextKey,
-} from "./settings-type";
+} from "@/components/settings/settings-type";
 
 export type SettingsSectionKey =
     | "general"
     | "sms"
     | "map"
-    | "telegram";
+    | "telegram"
+    | "dashboard";
 
 type SettingsOptionConfig = {
     value: string | number;
@@ -26,6 +28,7 @@ type SettingsTextFieldSchema = {
 type SettingsSwitchFieldSchema = {
     kind: "switch";
     key: SettingsSwitchKey;
+    permission?: string;
 };
 
 type SettingsSelectFieldSchema = {
@@ -113,6 +116,15 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "lon", inputType: "number" },
         ],
     },
+    dashboard: {
+        title: "settings.sections.dashboard.title",
+        description: "settings.sections.dashboard.description",
+        fields: DASHBOARD_VISIBILITY_ITEMS.map((item): SettingsSwitchFieldSchema =>
+            item.permission
+                ? { kind: "switch", key: item.settingKey, permission: item.permission }
+                : { kind: "switch", key: item.settingKey },
+        ),
+    },
     telegram: {
         title: "settings.sections.telegram.title",
         description: "settings.sections.telegram.description",
@@ -148,11 +160,17 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
     },
 };
 
-export function buildSettingsFormSchema(
-    section: SettingsSectionKey
-): FormFieldConfig[] {
-    const fields = SETTINGS_SECTION_SCHEMA[section].fields;
+export function filterSettingsFieldsByPermission(
+    fields: SettingsFieldSchema[],
+    hasPermission: (permission: string) => boolean,
+): SettingsFieldSchema[] {
+    return fields.filter((field) => {
+        if (field.kind !== "switch" || !field.permission) return true;
+        return hasPermission(field.permission);
+    });
+}
 
+export function buildSettingsFieldConfigs(fields: SettingsFieldSchema[]): FormFieldConfig[] {
     return fields.map((field): FormFieldConfig => {
         if (field.kind === "text") {
             return {
@@ -177,6 +195,12 @@ export function buildSettingsFormSchema(
             isClearable: false,
         };
     });
+}
+
+export function buildSettingsFormSchema(
+    section: SettingsSectionKey
+): FormFieldConfig[] {
+    return buildSettingsFieldConfigs(SETTINGS_SECTION_SCHEMA[section].fields);
 }
 
 export function getSectionFieldKeys(section: SettingsSectionKey): SettingsFieldKey[] {

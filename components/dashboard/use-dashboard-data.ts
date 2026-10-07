@@ -1,7 +1,7 @@
 import { keepPreviousData } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
-import { DASHBOARD_CARD_PERMISSIONS } from "@/components/dashboard/dashboard-constants";
-import { usePermissions } from "@/context/app-provider";
+import { resolveDashboardVisibility } from "@/components/dashboard/dashboard-visibility";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 import DashboardTopDueInvoiceFilterSchema, {
   DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT,
@@ -32,18 +32,11 @@ function parseFilterParams(raw: string | null, defaultLimit: number): Record<str
 
 export function useDashboardData() {
   const { hasPermission } = usePermissions();
-  const canSee = {
-    client: hasPermission(DASHBOARD_CARD_PERMISSIONS.client),
-    reseller: hasPermission(DASHBOARD_CARD_PERMISSIONS.reseller),
-    invoice: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoice),
-    invoicePaid: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoicePaid),
-    invoiceDues: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoiceDues),
-    expense: hasPermission(DASHBOARD_CARD_PERMISSIONS.expense),
-    fund: hasPermission(DASHBOARD_CARD_PERMISSIONS.fund),
-    ticket: hasPermission(DASHBOARD_CARD_PERMISSIONS.ticket),
-    productStock: hasPermission(DASHBOARD_CARD_PERMISSIONS.productStock),
-    invoiceExpenseGraph: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoiceExpenseGraph),
-  };
+  const { settings } = useSettings();
+  const canSee = useMemo(
+    () => resolveDashboardVisibility(hasPermission, settings),
+    [hasPermission, settings],
+  );
 
   const [yearFilter, setYearFilter] = useState(() => String(new Date().getFullYear()));
   const [topDueInvoiceFilter, setTopDueInvoiceFilter] = useState<string | null>(null);
@@ -203,7 +196,7 @@ export function useDashboardData() {
     params: topDueInvoiceParams,
     pagination: false,
     placeholderData: keepPreviousData,
-    enabled: true,
+    enabled: canSee.topDueInvoices,
   });
 
   const {
@@ -217,7 +210,7 @@ export function useDashboardData() {
     params: zoneWiseTopDueInvoiceParams,
     pagination: false,
     placeholderData: keepPreviousData,
-    enabled: true,
+    enabled: canSee.zoneDue,
   });
 
   const clientCount = useMemo(() => {
