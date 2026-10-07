@@ -11,12 +11,14 @@ import ProductInFormFieldSchema from "@/components/products/product-in-form-sche
 import {
     ProductInFormSchema,
     ProductInFormState,
+    resolveProductInProductId,
 } from "@/components/products/product-in-type";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 
 type ProductInFormProps = {
     mode?: "create" | "edit";
     data?: Record<string, unknown>;
+    productId?: string;
 };
 
 type ProductInContentProps = {
@@ -140,14 +142,30 @@ const ProductInFormContent: FC<ProductInContentProps> = ({
     );
 };
 
-const ProductInForm: FC<ProductInFormProps> = ({ mode = "create", data }) => {
+const ProductInForm: FC<ProductInFormProps> = ({ mode = "create", data, productId }) => {
     const router = useRouter();
     const formSchema = ProductInFormFieldSchema();
-    const formData = mode === "edit" && data ? data : defaultValues;
+    const formData = useMemo(() => {
+        if (mode === "edit" && data) return data;
+
+        const selectedProductId = resolveProductInProductId(productId);
+        if (selectedProductId === 0) return defaultValues;
+
+        return {
+            ...defaultValues,
+            product: [
+                {
+                    ...defaultValues.product[0],
+                    product_id: selectedProductId,
+                },
+            ],
+        };
+    }, [data, mode, productId]);
 
     return (
         <div>
             <FormBuilder
+                key={mode === "edit" ? "edit" : String(resolveProductInProductId(productId))}
                 formSchema={formSchema}
                 grids={3}
                 data={formData}

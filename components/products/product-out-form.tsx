@@ -8,6 +8,7 @@ import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import ProductOutLinesEditor from "@/components/products/product-out-lines-editor";
 import ProductOutFormFieldSchema from "@/components/products/product-out-form-schema";
+import { resolveProductInProductId } from "@/components/products/product-in-type";
 import {
     ProductOutFormSchema,
     ProductOutFormState,
@@ -17,6 +18,7 @@ import { formatMoney, toNumber } from "@/lib/helper/helper";
 type ProductOutFormProps = {
     mode?: "create" | "edit";
     data?: Record<string, unknown>;
+    productId?: string;
 };
 
 type ProductOutContentProps = {
@@ -131,14 +133,30 @@ const ProductOutFormContent: FC<ProductOutContentProps> = ({
     );
 };
 
-const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data }) => {
+const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data, productId }) => {
     const router = useRouter();
     const formSchema = ProductOutFormFieldSchema();
-    const formData = mode === "edit" && data ? data : defaultValues;
+    const formData = useMemo(() => {
+        if (mode === "edit" && data) return data;
+
+        const selectedProductId = resolveProductInProductId(productId);
+        if (selectedProductId === 0) return defaultValues;
+
+        return {
+            ...defaultValues,
+            product: [
+                {
+                    ...defaultValues.product[0],
+                    product_id: selectedProductId,
+                },
+            ],
+        };
+    }, [data, mode, productId]);
 
     return (
         <div className="w-full">
             <FormBuilder
+                key={mode === "edit" ? "edit" : String(resolveProductInProductId(productId))}
                 formSchema={formSchema}
                 grids={3}
                 data={formData}

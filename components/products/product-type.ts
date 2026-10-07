@@ -12,6 +12,7 @@ export const ProductCategoryRefSchema = z.object({
 
 export const ProductRowSchema = z.object({
     id: z.coerce.number(),
+    product_id: z.coerce.number().nullable().optional(),
     name: z.string(),
     has_serial: z.coerce.number().nullable().optional(),
     vat: z.coerce.number().nullable().optional(),

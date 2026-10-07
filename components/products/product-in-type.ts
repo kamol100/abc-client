@@ -272,6 +272,12 @@ export const ProductInFormSchema = ProductInFormSchemaBase
         return ProductInPayloadSchema.parse(payload);
     });
 
+export const resolveProductInProductId = (productId?: string | number | null): number => {
+    const parsed = Number(productId);
+    if (!Number.isFinite(parsed) || parsed <= 0) return 0;
+    return Math.trunc(parsed);
+};
+
 export type ProductInLine = z.infer<typeof ProductInLineSchema>;
 export type ProductInFormState = z.infer<typeof ProductInFormSchemaBase>;
 export type ProductInFormInput = z.input<typeof ProductInFormSchema>;

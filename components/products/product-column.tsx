@@ -165,7 +165,11 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
                                 action="create"
                                 variant="outline"
                                 size="sm"
-                                url={`/products/in`}
+                                url={
+                                    product.product_id
+                                        ? `/products/in?product_id=${product.product_id}`
+                                        : "/products/in"
+                                }
                                 tooltip={t("product_in.title")}
                                 aria-label={t("product_in.title")}
                             />
@@ -175,7 +179,11 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
                                 action="minus"
                                 variant="outline"
                                 size="sm"
-                                url={`/products/out`}
+                                url={
+                                    product.product_id
+                                        ? `/products/out?product_id=${product.product_id}`
+                                        : "/products/out"
+                                }
                                 tooltip={t("product_out.title")}
                                 aria-label={t("product_out.title")}
                             />
