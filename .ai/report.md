@@ -1,33 +1,19 @@
 ## Summary
 
-The stock-in and stock-out buttons pass the numeric product id. Each form selects that product on the first line.
+Merged `feature/demo-seed-and-security-fixes` into `master`. No conflicts.
 
 ## Files changed
 
-- `components/products/product-column.tsx`
-- `components/products/product-type.ts`
-- `app/(dashboard)/products/in/page.tsx`
-- `components/products/product-in-form.tsx`
-- `components/products/product-in-type.ts`
-- `app/(dashboard)/products/out/page.tsx`
-- `components/products/product-out-form.tsx`
-- `tests/unit/products/product-in-product-id.test.ts`
-
-Backend:
-
-- `app/Http/Resources/ProductResource.php`
-- `tests/Feature/ProductControllerTest.php`
+- `components/maps/client-maps-filter-schema.ts`
 
 ## Behavior
 
-The public `id` stays the UUID used by edit and delete. `product_id` is the numeric id the dropdown uses. Stock-in opens `/products/in?product_id={product_id}` and stock-out opens `/products/out?product_id={product_id}`. The first line starts with that product selected.
+The client map status filter sends `active` and `inactive` instead of `1` and `0`, matching device status on the API.
 
 ## Tests
 
-`scripts/ai/backend-test tests/Feature/ProductControllerTest.php --filter="lists products"` passed.
+Not run. One-line filter value change.
 
-`npx vitest run tests/unit/products/product-in-product-id.test.ts` passed earlier (2 tests).
+## Left untouched
 
-`scripts/ai/typecheck` passed.
-
-Signed in and opened `/products`. The table stayed on its loading skeleton, so the stock-in button was not clicked in the browser.
+Not pushed.
