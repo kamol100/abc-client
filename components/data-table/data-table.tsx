@@ -50,6 +50,7 @@ interface DataTableProps<TData, TValue> {
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
   initialColumnVisibility?: VisibilityState;
+  toolbarBeforeViewOptions?: React.ReactNode;
   toolbarBeforeForm?: React.ReactNode;
 }
 
@@ -70,6 +71,7 @@ export function DataTable<TData, TValue>({
   toolbarTitle = null,
   toolbarTitleClass = "",
   initialColumnVisibility,
+  toolbarBeforeViewOptions,
   toolbarBeforeForm,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -128,6 +130,7 @@ export function DataTable<TData, TValue>({
             form={form}
             toolbarTitle={toolbarTitle}
             toolbarTitleClass={toolbarTitleClass}
+            toolbarBeforeViewOptions={toolbarBeforeViewOptions}
             toolbarBeforeForm={toolbarBeforeForm}
           />
         </div>

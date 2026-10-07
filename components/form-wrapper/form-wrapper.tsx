@@ -70,6 +70,7 @@ type FormWrapperProps = {
     successMessage?: string;
     onClose?: () => void;
     actionButton?: boolean;
+    submitTitle?: string;
     saveOnChange?: boolean;
     setSaveOnChange?: (x: boolean) => void;
     actionButtonClass?: string;
@@ -96,6 +97,7 @@ export default function FormWrapper({
     successMessage,
     onClose,
     actionButton = true,
+    submitTitle,
     saveOnChange: save = false,
     setSaveOnChange = () => { },
     actionButtonClass = "justify-between",
@@ -202,6 +204,7 @@ export default function FormWrapper({
     });
 
     const onSubmit = async (formValues: FieldValues) => {
+        if (!api) return;
         console.log(formValues, 'payload');
         const transformedValues = transformPayload
             ? transformPayload(formValues)
@@ -282,7 +285,8 @@ export default function FormWrapper({
                     />
                     <MyButton
                         action="save"
-                        title={t("common.save")}
+                        title={submitTitle ?? t("common.save")}
+                        icon={submitTitle ? false : undefined}
                         size="default"
                         type="submit"
                         variant="default"

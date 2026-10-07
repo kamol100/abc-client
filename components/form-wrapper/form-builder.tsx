@@ -273,6 +273,7 @@ export type FormBuilderProps = {
   onClose?: () => void | undefined;
   actionButton?: boolean;
   actionButtonClass?: string;
+  submitTitle?: string;
   hydrateOnEdit?: HydratePolicy;
   fullPage?: boolean;
   extraPayload?: Record<string, unknown>;
@@ -297,7 +298,10 @@ const ConditionalFormField = ({
 }) => {
   const { getValues, setValue } = useFormContext();
   const watched = useWatch({ name: visibleWhen.field });
-  const visible = hasFilledValue(watched);
+  const visible =
+    visibleWhen.equals === undefined
+      ? hasFilledValue(watched)
+      : watched === visibleWhen.equals || String(watched) === String(visibleWhen.equals);
   const resetValue = visibleWhen.resetValue ?? null;
 
   useEffect(() => {
@@ -348,6 +352,7 @@ const FormBuilder = ({
   onClose,
   actionButton = true,
   actionButtonClass,
+  submitTitle,
   hydrateOnEdit = "ifNeeded",
   fullPage = false,
   extraPayload,
@@ -414,6 +419,7 @@ const FormBuilder = ({
             isDisabled={f.isDisabled || f.disabled}
             isLoading={f.isLoading}
             isClearable={f.isClearable}
+            optionValueKey={f.valueMapping?.idKey}
             rules={f.rules}
             parentFieldName={f.dependsOn?.field}
             buildApi={f.dependsOn?.buildApi}
@@ -532,6 +538,7 @@ const FormBuilder = ({
       saveOnChange={saveOnChange}
       setSaveOnChange={setSaveOnChange}
       actionButtonClass={actionButtonClass}
+      submitTitle={submitTitle}
       hydrateOnEdit={hydrateOnEdit}
       formSchema={formSchema}
       transformToFormValues={transformCallback}

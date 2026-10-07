@@ -30,6 +30,8 @@ interface DataTableToolbarProps<TData> {
   form?: any;
   toolbarTitle?: string | null;
   toolbarTitleClass?: string;
+  /** Rendered immediately before the column visibility control. */
+  toolbarBeforeViewOptions?: ReactNode;
   /** Rendered immediately before the create/edit form trigger (e.g. import). */
   toolbarBeforeForm?: ReactNode;
 }
@@ -45,6 +47,7 @@ export function DataTableToolbar<TData>({
   toolbarTitle = null,
   toolbarInfoComponent,
   toolbarTitleClass = "",
+  toolbarBeforeViewOptions,
   toolbarBeforeForm,
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
@@ -135,6 +138,7 @@ export function DataTableToolbar<TData>({
       <div
         className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
       >
+        {!showFilter && toolbarBeforeViewOptions}
         {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
         {!showFilter && (
           <MyButton

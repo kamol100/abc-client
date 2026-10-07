@@ -3806,6 +3806,8 @@
         },
         "table": {
             "sl": "SL",
+            "select": "Select row",
+            "select_all": "Select all",
             "name": "Name",
             "service": "Service",
             "password": "Password",
@@ -3852,10 +3854,30 @@
         "actions": {
             "import": "Import"
         },
+        "bulk": {
+            "title": "Import clients",
+            "description": "Choose how the selected clients should be imported.",
+            "import_as": {
+                "label": "Import as",
+                "options": {
+                    "own": "Import as Own Client",
+                    "reseller": "Import as Reseller Client"
+                }
+            },
+            "reseller": {
+                "label": "Reseller",
+                "placeholder": "Select reseller",
+                "errors": {
+                    "required": "Reseller is required"
+                }
+            }
+        },
         "messages": {
             "sync_success": "Mikrotik sync completed successfully",
             "import_success": "Client imported successfully",
-            "delete_confirmation": "Are you sure you want to delete this synced client?"
+            "delete_confirmation": "Are you sure you want to delete this synced client?",
+            "select_all_pages": "All clients ({{count}}) across every page will be imported.",
+            "bulk_import_queued": "Bulk import queued"
         },
         "mikrotik_profile": {
             "label": "Mikrotik Profile",

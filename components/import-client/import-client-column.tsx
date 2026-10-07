@@ -6,24 +6,56 @@ import { usePermissions } from "@/context/app-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
-import { cellIndex } from "@/lib/helper/helper";
+import { Checkbox } from "@/components/ui/checkbox";
 import { SyncClientRow } from "@/components/import-client/import-client-type";
 
+export function isImportable(row: SyncClientRow) {
+    return row.syncd_status !== "imported";
+}
+
 export function useImportClientColumns(
-    pagination?: Pagination
+    selectedIds: number[],
+    onSelectRow: (id: number, selected: boolean) => void,
+    onSelectAllCurrentPage: (ids: number[], selected: boolean) => void,
+    currentPageRows: SyncClientRow[]
 ): ColumnDef<SyncClientRow>[] {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const importableIds = currentPageRows.filter(isImportable).map((row) => row.id);
+    const isAllSelected =
+        importableIds.length > 0 && importableIds.every((id) => selectedIds.includes(id));
+    const isSomeSelected = importableIds.some((id) => selectedIds.includes(id));
 
     return [
         {
-            id: "sl",
-            header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="import_client.table.sl" />
+            id: "select",
+            header: () => (
+                <Checkbox
+                    checked={
+                        isAllSelected ? true : isSomeSelected ? "indeterminate" : false
+                    }
+                    onCheckedChange={(value) => onSelectAllCurrentPage(importableIds, !!value)}
+                    disabled={importableIds.length === 0}
+                    aria-label={t("import_client.table.select_all")}
+                    className="translate-y-[2px]"
+                />
             ),
-            cell: ({ row }) => (
-                <div className="font-medium">{cellIndex(row.index, pagination)}</div>
-            ),
+            cell: ({ row }) => {
+                const syncClient = row.original;
+                const importable = isImportable(syncClient);
+
+                return (
+                    <Checkbox
+                        checked={importable && selectedIds.includes(syncClient.id)}
+                        onCheckedChange={(value) => {
+                            if (importable) onSelectRow(syncClient.id, !!value);
+                        }}
+                        disabled={!importable}
+                        aria-label={t("import_client.table.select")}
+                        className="translate-y-[2px]"
+                    />
+                );
+            },
             enableSorting: false,
             enableHiding: false,
         },

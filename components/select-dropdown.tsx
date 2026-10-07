@@ -67,11 +67,18 @@ type DropdownApiItem = {
 const toSelectOption = (
   item: DropdownApiItem,
   translate: (value: string) => string,
-): SelectOption => ({
-  value: item.id,
-  label: translate(item.name),
-  meta: item,
-});
+  optionValueKey = "id",
+): SelectOption | null => {
+  const rawValue = item[optionValueKey];
+  if (typeof rawValue !== "string" && typeof rawValue !== "number") return null;
+  if (typeof item.name !== "string") return null;
+
+  return {
+    value: rawValue,
+    label: translate(item.name),
+    meta: item,
+  };
+};
 
 const applyDropdownPopulate = (
   setValue: UseFormSetValue<FieldValues>,
@@ -100,6 +107,7 @@ type SelectDropdownProps = {
   isClearable?: boolean;
   isSearchable?: boolean;
   placeholder?: string;
+  optionValueKey?: string;
   onValueChange?: (value: unknown) => void;
   control?: Control<FieldValues>;
   rules?: RegisterOptions;
@@ -120,6 +128,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   isClearable = true,
   isSearchable = true,
   placeholder = "common.select_option",
+  optionValueKey = "id",
   onValueChange,
   control: controlProp,
   rules,
@@ -162,20 +171,15 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   }, [parentValue, hasDependency, resetOnParentChange, name, isMulti, setValue]);
 
   const { data: apiOptions, isLoading: isApiLoading } = useQuery({
-    queryKey: [`${name}-dropdown`, api],
+    queryKey: [`${name}-dropdown`, api, optionValueKey],
     queryFn: async (): Promise<SelectOption[]> => {
       const result = await useFetch({ url: api as string });
       const items: unknown[] = Array.isArray(result?.data) ? result.data : [];
-      return items
-        .filter((item: unknown): item is DropdownApiItem => {
-          if (!item || typeof item !== "object") return false;
-          const row = item as Record<string, unknown>;
-          return (
-            (typeof row.id === "string" || typeof row.id === "number") &&
-            typeof row.name === "string"
-          );
-        })
-        .map((item) => toSelectOption(item, t));
+      return items.flatMap((item: unknown) => {
+        if (!item || typeof item !== "object") return [];
+        const option = toSelectOption(item as DropdownApiItem, t, optionValueKey);
+        return option ? [option] : [];
+      });
     },
     enabled: !!api,
     retry: 0,

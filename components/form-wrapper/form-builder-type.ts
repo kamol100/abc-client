@@ -28,6 +28,7 @@ export type DropdownPopulate = {
 
 export type VisibleWhen = {
     field: string;
+    equals?: string | number | boolean;
     resetValue?: string | number | boolean | null;
 };
 

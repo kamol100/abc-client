@@ -41,6 +41,7 @@ export const NetworkFormFieldSchema = (): FieldConfig[] => {
         { value: 1, label: "common.active" },
         { value: 0, label: "common.inactive" },
       ],
+      defaultValue: 1,
     },
     {
       type: "textarea",
