@@ -32,6 +32,7 @@ const OptionalDateValueSchema = z.preprocess(
 const ClientRefSchema = z.object({
     id: z.coerce.number(),
     uuid: z.string().nullable().optional(),
+    sid: z.union([z.number(), z.string()]).nullable().optional(),
     name: z.string().nullable().optional(),
     phone: z.string().nullable().optional(),
     current_address: z.string().nullable().optional(),

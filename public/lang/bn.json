@@ -1784,6 +1784,7 @@
         "receipt": {
             "default_company": "আইএসপি ক্লায়েন্ট",
             "phone": "ফোন",
+            "client_id": "আইডি",
             "client": "ক্লায়েন্ট",
             "client_phone": "ক্লায়েন্ট ফোন",
             "invoice_id": "আইডি",
@@ -3998,6 +3999,7 @@
         "metrics": {
             "active": "অ্যাক্টিভ",
             "inactive": "ইনঅ্যাক্টিভ",
+            "client": "ক্লায়েন্ট",
             "today": "আজ",
             "this_month": "এই মাস",
             "last_month": "গত মাস",

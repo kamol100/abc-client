@@ -3,6 +3,7 @@ import { formatMoney } from "@/lib/helper/helper";
 
 export const DASHBOARD_CARD_PERMISSIONS = {
   client: "dashboard-card.client",
+  reseller: "dashboard-card.reseller",
   invoice: "dashboard-card.invoice",
   invoicePaid: "dashboard-card.invoice-paid",
   invoiceDues: "dashboard-card.invoice-dues",

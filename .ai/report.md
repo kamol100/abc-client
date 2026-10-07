@@ -1,23 +1,32 @@
 ## Summary
 
-The import dialog submits a bulk import using integer ids. Individual checkboxes send sync-client ids with `all_import: false`. Select all sends an empty id list with `all_import: true`. A chosen reseller id is included, or `null` for an own client.
+The dashboard shows a Reseller Overview card beside the client card when the user has `dashboard-card.reseller`.
 
 ## Files changed
 
-- `components/import-client/import-client-bulk-dialog.tsx`
-- `components/import-client/import-client-table.tsx`
-- `components/import-client/import-client-column.tsx`
-- `components/import-client/import-client-type.ts`
-- `components/select-dropdown.tsx`
-- `components/form-wrapper/form-builder.tsx`
-- `components/form-wrapper/form-wrapper.tsx`
+- `components/dashboard/items/DashboardResellerSummaryCard.tsx`
+- `components/dashboard/dashboard-overview.tsx`
+- `components/dashboard/use-dashboard-data.ts`
+- `components/dashboard/dashboard-type.ts`
+- `components/dashboard/dashboard-constants.ts`
 - `public/lang/en.json`
 - `public/lang/bn.json`
+- `tests/unit/dashboard/dashboard-reseller-summary-card.test.tsx`
 
 ## Behavior
 
-Selection stores `row.id`. The dialog posts those ids to `/sync-clients/bulk-import` and clears the selection after a successful queue response. The reseller dropdown stores the reseller id.
+The card reads `GET dashboard-reseller-count`. The header is `Total Resellers(count)` with `Client` and the client total. The rows are active clients, inactive clients, and resellers created this month. Loading and error states use the same metric card as the client overview.
+
+The card stays hidden until `dashboard-card.reseller` exists on the user's permission list.
 
 ## Tests
 
-`scripts/ai/typecheck` passed. The dialog was not opened in the browser; no app server was running.
+`npx vitest run tests/unit/dashboard/dashboard-reseller-summary-card.test.tsx` passed (4 tests).
+
+`scripts/ai/typecheck` passed.
+
+The signed-in dashboard was not opened. No app server was running, and the new permission is not in the database until `update:permission` runs.
+
+## Left untouched
+
+Unrelated working-tree changes in `components/invoices/invoice-receipt.tsx` and `components/invoices/invoice-type.ts` were not edited. Existing `client_id` translation lines in `en.json` and `bn.json` were left in place.

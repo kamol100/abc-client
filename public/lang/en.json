@@ -1784,6 +1784,7 @@
         "receipt": {
             "default_company": "ISP Client",
             "phone": "Phone",
+            "client_id": "ID",
             "client": "Client",
             "client_phone": "Client Phone",
             "invoice_id": "Invoice ID",
@@ -3988,7 +3989,7 @@
             "invoices": "Invoices",
             "invoices_due": "Invoices Due",
             "invoice_paid": "Invoice Paid",
-            "total_resellers": "Total Reseller",
+            "total_resellers": "Total Resellers",
             "total_invoice": "Total Invoice",
             "total_expense": "Total Expense",
             "expense": "Expense",
@@ -3998,6 +3999,7 @@
         "metrics": {
             "active": "Active",
             "inactive": "Inactive",
+            "client": "Client",
             "today": "Today",
             "this_month": "This month",
             "last_month": "Last month",

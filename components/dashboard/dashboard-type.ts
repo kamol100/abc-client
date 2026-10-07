@@ -37,6 +37,18 @@ export const DashboardClientCountSchema = z
   })
   .passthrough();
 
+export const DashboardResellerCountSchema = z
+  .object({
+    total_resellers: NumberLikeSchema,
+    total_reseller_clients: NumberLikeSchema,
+    active_resellers: NumberLikeSchema,
+    inactive_resellers: NumberLikeSchema,
+    active_clients: NumberLikeSchema,
+    inactive_clients: NumberLikeSchema,
+    new_resellers_this_month: NumberLikeSchema.optional().default(0),
+  })
+  .passthrough();
+
 export const DashboardGraphSeriesSchema = z
   .object({
     name: z.string(),
@@ -168,6 +180,7 @@ export const ProductCategoryDropdownItemSchema = z
   .passthrough();
 
 export type DashboardClientCount = z.infer<typeof DashboardClientCountSchema>;
+export type DashboardResellerCount = z.infer<typeof DashboardResellerCountSchema>;
 export type DashboardGraph = z.infer<typeof DashboardGraphSchema>;
 export type DashboardGraphSeries = z.infer<typeof DashboardGraphSeriesSchema>;
 export type DashboardTopDueInvoice = z.infer<typeof DashboardTopDueInvoiceSchema>;

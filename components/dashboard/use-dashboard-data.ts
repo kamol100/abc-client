@@ -11,6 +11,7 @@ import DashboardZoneWiseTopInvoiceDueFilterSchema, {
 } from "./dashboard-zone-wise-top-invoice-due-filter-schema";
 import {
   DashboardClientCountSchema,
+  DashboardResellerCountSchema,
   DashboardExpenseSummarySchema,
   DashboardFundSummarySchema,
   DashboardGraphSchema,
@@ -33,6 +34,7 @@ export function useDashboardData() {
   const { hasPermission } = usePermissions();
   const canSee = {
     client: hasPermission(DASHBOARD_CARD_PERMISSIONS.client),
+    reseller: hasPermission(DASHBOARD_CARD_PERMISSIONS.reseller),
     invoice: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoice),
     invoicePaid: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoicePaid),
     invoiceDues: hasPermission(DASHBOARD_CARD_PERMISSIONS.invoiceDues),
@@ -91,6 +93,18 @@ export function useDashboardData() {
     url: "dashboard-client-count",
     pagination: false,
     enabled: canSee.client,
+  });
+
+  const {
+    data: resellerResponse,
+    isLoading: isResellerLoading,
+    isFetching: isResellerFetching,
+    isError: isResellerError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-reseller-count"],
+    url: "dashboard-reseller-count",
+    pagination: false,
+    enabled: canSee.reseller,
   });
 
   const {
@@ -213,6 +227,21 @@ export function useDashboardData() {
       : { total_clients: 0, active_clients: 0, inactive_clients: 0, new_clients_this_month: 0, new_clients: 0 };
   }, [clientResponse?.data]);
 
+  const resellerCount = useMemo(() => {
+    const parsed = DashboardResellerCountSchema.safeParse(resellerResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : {
+          total_resellers: 0,
+          total_reseller_clients: 0,
+          active_resellers: 0,
+          inactive_resellers: 0,
+          active_clients: 0,
+          inactive_clients: 0,
+          new_resellers_this_month: 0,
+        };
+  }, [resellerResponse?.data]);
+
   const invoiceSummary = useMemo(() => {
     const parsed = DashboardInvoiceSummarySchema.safeParse(invoiceSummaryResponse?.data);
     return parsed.success
@@ -276,6 +305,11 @@ export function useDashboardData() {
     isClientLoading,
     isClientFetching,
     isClientError,
+
+    resellerCount,
+    isResellerLoading,
+    isResellerFetching,
+    isResellerError,
 
     invoiceSummary,
     isInvoiceSummaryLoading,

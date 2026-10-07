@@ -63,6 +63,14 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
     ]);
     const companyPhone = getSettingString(settings, ["company_phone", "phone"]);
 
+    const clientIds = useMemo(() => {
+        const ids = safeInvoices
+            .map((invoice) => invoice.client?.sid)
+            .filter((sid): sid is number | string => sid !== null && sid !== undefined && String(sid).trim() !== "")
+            .map((sid) => `#${sid}`);
+        return Array.from(new Set(ids));
+    }, [safeInvoices]);
+
     const clientNames = useMemo(() => {
         const names = safeInvoices
             .map((invoice) => invoice.client?.name?.trim())
@@ -153,6 +161,12 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                 </div>
 
                 <div className="border-b pt-2 pb-3">
+                    {clientIds.length > 0 && (
+                        <div className="flex justify-between gap-2">
+                            <span className="font-medium text-xs">{t("invoice.receipt.client_id")}:</span>
+                            <span className="text-right font-medium text-xs">{clientIds.join(", ")}</span>
+                        </div>
+                    )}
                     <div className="flex justify-between gap-2">
                         <span className="font-medium text-xs ">{t("invoice.receipt.client")}:</span>
                         <span className="text-right font-medium text-xs">

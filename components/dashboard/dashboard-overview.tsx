@@ -2,6 +2,7 @@
 
 import { useDashboardData } from "@/components/dashboard/use-dashboard-data";
 import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardClientSummaryCard";
+import DashboardResellerSummaryCard from "@/components/dashboard/items/DashboardResellerSummaryCard";
 import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
 import DashboardInvoicePaidSummaryCard from "@/components/dashboard/items/DashboardInvoicePaidSummaryCard";
 import DashboardExpenseSummaryCard from "@/components/dashboard/items/DashboardExpenseSummaryCard";
@@ -19,6 +20,11 @@ export default function DashboardOverview() {
     isClientLoading,
     isClientFetching,
     isClientError,
+
+    resellerCount,
+    isResellerLoading,
+    isResellerFetching,
+    isResellerError,
 
     invoiceSummary,
     isInvoiceSummaryLoading,
@@ -72,6 +78,7 @@ export default function DashboardOverview() {
 
   const hasSummaryCards =
     canSee.client ||
+    canSee.reseller ||
     canSee.invoice ||
     canSee.invoicePaid ||
     canSee.invoiceDues ||
@@ -90,6 +97,15 @@ export default function DashboardOverview() {
               isLoading={isClientLoading}
               isRefreshing={isClientFetching}
               isError={isClientError}
+            />
+          )}
+
+          {canSee.reseller && (
+            <DashboardResellerSummaryCard
+              data={resellerCount}
+              isLoading={isResellerLoading}
+              isRefreshing={isResellerFetching}
+              isError={isResellerError}
             />
           )}
 
