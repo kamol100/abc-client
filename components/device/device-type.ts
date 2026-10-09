@@ -76,7 +76,7 @@ export const DeviceFormSchema = z.object({
   fiber_code: z.string().nullable().optional().default(""),
   note: z.string().nullable().optional().default(""),
   status: z.union([z.enum(["active", "inactive"]), z.coerce.number()]).optional(),
-  // OLT credentials, create only; the API stores them encrypted in olt_accesses.
+  // OLT access; the API stores the secrets encrypted in olt_accesses and never returns them.
   snmp_community: z.string().max(255, { message: "olt.access.errors.max" }).nullable().optional(),
   cli_protocol: z.enum(["telnet", "ssh"]).nullable().optional(),
   cli_username: z.string().max(100).nullable().optional(),
