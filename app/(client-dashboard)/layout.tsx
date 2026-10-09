@@ -8,10 +8,12 @@ import type { AppData } from "@/types/app";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
+import { redirect } from "next/navigation";
 
 export default async function ClientDashboardLayout({ children }: PropsWithChildren) {
   const res = await useFetch({ url: "/client-profile" });
   const initialData = res?.data as AppData;
+  if (!initialData) redirect("/api/session-expired?to=/client/login");
   return (
     <AppProvider initialData={initialData}>
       <TableLayoutProvider>

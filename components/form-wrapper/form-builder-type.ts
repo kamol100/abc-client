@@ -30,6 +30,8 @@ export type VisibleWhen = {
     field: string;
     equals?: string | number | boolean;
     resetValue?: string | number | boolean | null;
+    /** Custom visibility test on the watched value; takes precedence over `equals`. */
+    when?: (value: unknown) => boolean;
 };
 
 type BaseFieldConfig = {

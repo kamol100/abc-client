@@ -204,7 +204,15 @@
         "priority": "অগ্রাধিকার",
         "type": "টাইপ",
         "expensetype_name": "খরচের ধরন",
-        "no_results": "কোনো ফলাফল পাওয়া যায়নি"
+        "no_results": "কোনো ফলাফল পাওয়া যায়নি",
+        "olt_state": "স্ট্যাটাস",
+        "olt_ip": "আইপি",
+        "olt_vendor": "ভেন্ডর / মডেল",
+        "olt_network": "নেটওয়ার্ক / জোন",
+        "olt_onus": "অনলাইন ওএনইউ",
+        "olt_clients": "ক্লায়েন্ট",
+        "olt_uptime": "আপটাইম (২৪ ঘণ্টা)",
+        "olt_checked": "সর্বশেষ চেক"
     },
     "data_table": {
         "no_results": "কোনো ফলাফল পাওয়া যায়নি"
@@ -4206,6 +4214,9 @@
             },
             "device_type": {
                 "title": "ডিভাইস টাইপ"
+            },
+            "olts": {
+                "title": "ওএলটি"
             }
         },
         "mikrotik_commands": {
@@ -4316,6 +4327,9 @@
             "telegram": {
                 "title": "টেলিগ্রাম"
             }
+        },
+        "noc": {
+            "title": "এনওসি"
         }
     },
     "settings": {
@@ -5307,6 +5321,294 @@
                     "5": "PDF বা Excel হিসেবে রিপোর্ট এক্সপোর্ট"
                 }
             }
+        }
+    },
+    "olt": {
+        "title_plural": "ওএলটি",
+        "view_title": "ওএলটি বিবরণ",
+        "monitoring_title": "ওএলটি মনিটরিং",
+        "filters": {
+            "search": "নাম বা আইপি দিয়ে খুঁজুন"
+        },
+        "table": {
+            "name": "ওএলটি",
+            "status": "স্ট্যাটাস",
+            "ip": "আইপি",
+            "vendor_model": "ভেন্ডর / মডেল",
+            "network": "নেটওয়ার্ক / জোন",
+            "onus": "অনলাইন ওএনইউ",
+            "clients": "ক্লায়েন্ট",
+            "uptime_24h": "আপটাইম (২৪ ঘণ্টা)",
+            "last_checked": "সর্বশেষ চেক"
+        },
+        "vendor": {
+            "vsol": "VSOL",
+            "bdcom": "BDCOM",
+            "huawei": "Huawei",
+            "generic": "জেনেরিক (শুধু পিং)"
+        },
+        "actions": {
+            "view": "ওএলটি দেখুন"
+        },
+        "view": {
+            "back": "ওএলটি তালিকায় ফিরুন",
+            "direct": "অ্যাপ সার্ভার থেকে সরাসরি"
+        },
+        "monitoring_card": {
+            "title": "মনিটরিং",
+            "bars_label": "গত ২৪ ঘণ্টা, ৩০ মিনিটের বারে",
+            "ago_24h": "২৪ ঘণ্টা আগে",
+            "now": "এখন",
+            "latency": "ল্যাটেন্সি",
+            "checked": "চেক",
+            "details": "বিবরণ",
+            "bar_down_for": "ডাউন {{duration}}",
+            "bar_none": "কোনো চেক নেই",
+            "aria": "মনিটরিং: {{state}}, গত ২৪ ঘণ্টায় {{uptime}}। মনিটরিং বিবরণ খুলুন"
+        },
+        "metrics": {
+            "clients": "ক্লায়েন্ট",
+            "online": "অনলাইন",
+            "offline": "অফলাইন",
+            "disabled": "নিষ্ক্রিয়",
+            "onus": "ওএনইউ",
+            "los": "LOS (ফাইবার)",
+            "dying_gasp": "পাওয়ার বন্ধ",
+            "optical": "অপটিক্যাল সিগন্যাল",
+            "low_value": "{{count}} দুর্বল",
+            "below_threshold": "{{threshold}} dBm-এর নিচে",
+            "near_limit": "সীমার কাছাকাছি",
+            "too_strong": "অতিরিক্ত শক্তিশালী",
+            "threshold": "থ্রেশহোল্ড",
+            "billing": "বিলিং",
+            "clients_with_due": "ডিউ আছে এমন ক্লায়েন্ট",
+            "expired": "মেয়াদোত্তীর্ণ",
+            "due_this_week": "এই সপ্তাহে ডিউ"
+        },
+        "attention": {
+            "title": "মনোযোগ প্রয়োজন এমন ক্লায়েন্ট ({{count}})",
+            "empty": "এই মুহূর্তে কোনো ক্লায়েন্টের মনোযোগ প্রয়োজন নেই।",
+            "since": "{{time}} থেকে",
+            "create_ticket": "টিকেট তৈরি করুন",
+            "reason": {
+                "los": "LOS (ফাইবার)",
+                "dying_gasp": "পাওয়ার বন্ধ",
+                "offline": "অফলাইন",
+                "disabled": "অফলাইন · নিষ্ক্রিয়",
+                "low_signal": "দুর্বল সিগন্যাল {{dbm}}",
+                "near_limit": "সীমার কাছাকাছি {{dbm}}",
+                "too_strong": "অতিরিক্ত শক্তিশালী {{dbm}}"
+            }
+        },
+        "pon_ports": {
+            "title": "PON পোর্ট",
+            "empty": "এখনও কোনো PON পোর্ট পোল করা হয়নি।",
+            "online": "{{online}}/{{total}} অনলাইন",
+            "link_down": "লিংক ডাউন",
+            "no_onus": "কোনো ওএনইউ নেই"
+        },
+        "access": {
+            "title": "অ্যাক্সেস (SNMP / CLI)",
+            "connects": "সরাসরি {{host}}-এ সংযোগ করে (SNMP {{snmp_port}})",
+            "connects_cli": "সরাসরি {{host}}-এ সংযোগ করে (SNMP {{snmp_port}} / {{protocol}} {{cli_port}})",
+            "insecure_telnet": "SNMP v2c ও Telnet ক্রেডেনশিয়াল এনক্রিপশন ছাড়া পাঠায়।",
+            "insecure_snmp": "SNMP v2c কমিউনিটি এনক্রিপশন ছাড়া পাঠায়।",
+            "last_poll": "সর্বশেষ পোল {{time}}",
+            "never_polled": "এখনও পোল করা হয়নি।",
+            "not_configured": "কোনো SNMP / CLI অ্যাক্সেস সংরক্ষিত নেই। মনিটরিং শুধু পিং ব্যবহার করে।",
+            "edit": "অ্যাক্সেস সম্পাদনা",
+            "edit_title": "ওএলটি অ্যাক্সেস সম্পাদনা",
+            "saved": "অ্যাক্সেস সংরক্ষিত হয়েছে",
+            "snmp_v2c": "SNMP v2c",
+            "protocol": {
+                "telnet": "Telnet",
+                "ssh": "SSH"
+            },
+            "fields": {
+                "snmp_version": "SNMP ভার্সন",
+                "snmp_community": "SNMP কমিউনিটি",
+                "cli_protocol": "CLI প্রোটোকল",
+                "cli_protocol_placeholder": "নেই (শুধু SNMP)",
+                "cli_username": "CLI ইউজারনেম",
+                "cli_password": "CLI পাসওয়ার্ড",
+                "keep_placeholder": "খালি রাখলে অপরিবর্তিত থাকবে"
+            },
+            "errors": {
+                "snmp_version": "SNMP ভার্সন নির্বাচন করুন",
+                "community_required": "SNMP কমিউনিটি লিখুন",
+                "max": "সর্বোচ্চ ২৫৫ অক্ষর"
+            }
+        },
+        "clients": {
+            "title": "ক্লায়েন্ট",
+            "total": "মোট",
+            "online": "অনলাইন",
+            "offline": "অফলাইন",
+            "disabled": "নিষ্ক্রিয়",
+            "pon_port": "PON পোর্ট",
+            "all_ports": "সব পোর্ট",
+            "onu_rx": "ওএনইউ / Rx পাওয়ার",
+            "no_onu": "ওএনইউ নেই",
+            "since": "থেকে: {{time}}",
+            "view_client": "ক্লায়েন্ট দেখুন"
+        },
+        "monitoring": {
+            "back": "ওএলটি বিবরণে ফিরুন",
+            "heading": "মনিটরিং: {{name}}"
+        }
+    },
+    "monitoring": {
+        "state": {
+            "up": "আপ",
+            "down": "ডাউন",
+            "unknown": "অজানা"
+        },
+        "live": "লাইভ",
+        "never": "কখনও না",
+        "no_checks": "এখনও কোনো চেক নেই",
+        "not_monitored": "মনিটরিং বন্ধ",
+        "uptime_value": "{{value}} আপটাইম",
+        "checked_ago": "চেক করা হয়েছে {{time}}",
+        "every_minutes": "অ্যাপ সার্ভার থেকে প্রতি {{count}} মিনিটে",
+        "duration": {
+            "d": "{{count}} দিন",
+            "h": "{{count}} ঘণ্টা",
+            "m": "{{count}} মিনিট",
+            "s": "{{count}} সেকেন্ড"
+        },
+        "ping": {
+            "button": "এখনই পিং করুন",
+            "title": "{{name}} পিং",
+            "close": "বন্ধ করুন",
+            "again": "আবার পিং করুন",
+            "running": "পিং চলছে…",
+            "failed": "পিং ব্যর্থ হয়েছে",
+            "summary": "{{sent}} পাঠানো · {{received}} প্রাপ্ত · {{loss}} লস",
+            "rtt": "রাউন্ড ট্রিপ সর্বনিম্ন / গড় / সর্বোচ্চ: {{min}} / {{avg}} / {{max}} ms",
+            "reply": "#{{seq}} উত্তর {{ms}} ms-এ",
+            "timed_out": "#{{seq}} সময় শেষ",
+            "reason": {
+                "no_ip": "এই ডিভাইসের কোনো আইপি ঠিকানা নেই।",
+                "ping_failed": "অ্যাপ সার্ভারে পিং চালানো যায়নি।"
+            }
+        },
+        "period": {
+            "label": "সময়কাল",
+            "24h": "২৪ ঘণ্টা",
+            "7d": "৭ দিন",
+            "30d": "৩০ দিন",
+            "last_24h": "গত ২৪ ঘণ্টা",
+            "last_7d": "গত ৭ দিন",
+            "last_30d": "গত ৩০ দিন"
+        },
+        "stats": {
+            "uptime": "আপটাইম",
+            "avg_latency": "গড় ল্যাটেন্সি",
+            "p95": "p95 {{value}}",
+            "loss": "প্যাকেট লস",
+            "loss_sub": "ব্যর্থ উত্তর",
+            "outages": "আউটেজ",
+            "down_total": "মোট {{duration}} ডাউন",
+            "mttr": "মেরামতের গড় সময়",
+            "longest": "সর্বোচ্চ {{duration}}",
+            "checks": "চেক"
+        },
+        "legend": {
+            "bar_colours": "বারের রং"
+        },
+        "uptime_90d": {
+            "title": "আপটাইম, গত ৯০ দিন",
+            "label": "গত ৯০ দিনের দৈনিক আপটাইম",
+            "no_downtime": "কোনো ডাউনটাইম নেই",
+            "short": "৩০ মিনিটের কম ডাউন",
+            "long": "৩০ মিনিট বা বেশি ডাউন",
+            "not_monitored": "মনিটর করা হয়নি",
+            "down_for": "{{duration}} ডাউন",
+            "start": "৯০ দিন আগে",
+            "today": "আজ"
+        },
+        "latency": {
+            "title": "ল্যাটেন্সি (ms)",
+            "avg": "গড়",
+            "avg_10m": "১০ মিনিটের গড়",
+            "avg_1h": "ঘণ্টাভিত্তিক গড়",
+            "avg_3h": "৩ ঘণ্টার গড়",
+            "range": "সর্বনিম্ন – সর্বোচ্চ",
+            "no_reply": "উত্তর নেই",
+            "label": "গত {{period}}-এর ল্যাটেন্সি",
+            "empty": "এই সময়কালে কোনো ল্যাটেন্সি ডেটা নেই।"
+        },
+        "timeline": {
+            "title": "আপ / ডাউন",
+            "legend": "ডিভাইসের সংযোগযোগ্যতা",
+            "label": "গত {{period}}-এর আপ / ডাউন টাইমলাইন"
+        },
+        "outages": {
+            "title": "আউটেজ ({{count}})",
+            "started": "শুরু",
+            "ended": "শেষ",
+            "ongoing": "চলমান",
+            "duration": "স্থায়িত্ব",
+            "type": "ধরন",
+            "affected_clients": "প্রভাবিত ক্লায়েন্ট",
+            "acknowledged": "স্বীকৃত",
+            "status": "স্ট্যাটাস",
+            "open": "খোলা",
+            "resolved": "সমাধান হয়েছে"
+        },
+        "outage_type": {
+            "device_down": "ডিভাইস ডাউন",
+            "router_unreachable": "নেটওয়ার্কে পৌঁছানো যাচ্ছে না"
+        },
+        "checks": {
+            "title": "চেক",
+            "title_count": "চেক ({{total}})",
+            "checked_at": "চেকের সময়",
+            "source": "উৎস",
+            "result": "ফলাফল",
+            "latency": "ল্যাটেন্সি",
+            "sent_received": "পাঠানো / প্রাপ্ত",
+            "loss": "লস",
+            "all": "সব",
+            "auto": "স্বয়ংক্রিয়",
+            "manual": "ম্যানুয়াল"
+        },
+        "category": {
+            "router": "রাউটার",
+            "olt": "ওএলটি",
+            "switch": "সুইচ",
+            "splitter": "স্প্লিটার",
+            "onu": "ওএনইউ",
+            "other": "ডিভাইস"
+        }
+    },
+    "noc": {
+        "title": "এনওসি",
+        "updated": "হালনাগাদ {{time}} · প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
+        "refreshes": "প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
+        "counts": {
+            "down": "ডাউন",
+            "unknown": "অজানা",
+            "up": "আপ",
+            "open_outages": "চলমান আউটেজ"
+        },
+        "maintenance": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত",
+        "maintenance_reason": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত: {{reason}}",
+        "maintenance_all": "সব ডিভাইস",
+        "down_devices": "ডাউন ডিভাইস",
+        "no_down_devices": "মনিটর করা সব ডিভাইসে পৌঁছানো যাচ্ছে।",
+        "down_for": "{{duration}} ধরে ডাউন",
+        "clients": "{{count}} ক্লায়েন্ট",
+        "directions": "দিকনির্দেশনা",
+        "map_label": "ডাউন ডিভাইসের মানচিত্র",
+        "open_outages": "চলমান আউটেজ",
+        "no_open_outages": "কোনো চলমান আউটেজ নেই।",
+        "outage_started": "{{ago}} আগে শুরু · {{count}} ক্লায়েন্ট",
+        "ticket": "টিকেট #{{number}}",
+        "badges": {
+            "maintenance": "রক্ষণাবেক্ষণ",
+            "downstream": "ডাউনস্ট্রিম",
+            "acknowledged": "স্বীকৃত"
         }
     }
 }
