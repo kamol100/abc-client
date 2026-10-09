@@ -6,11 +6,13 @@ import { TableLayoutProvider } from "@/context/table-layout-provider";
 import type { AppData } from "@/types/app";
 import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
+import { redirect } from "next/navigation";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const res = await useFetch({ url: "/user-settings" });
   const initialData = res?.data as AppData;
+  if (!initialData) redirect("/api/session-expired");
   return (
     <AppProvider initialData={initialData}>
       <TableLayoutProvider>
