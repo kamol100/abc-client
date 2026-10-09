@@ -58,6 +58,8 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/networks": "menu.networks.title",
   "/devices": "menu.networks.devices.title",
   "/device-types": "menu.networks.device_type.title",
+  "/olts": "menu.networks.olts.title",
+  "/noc": "menu.noc.title",
   "/mikrotik-commands": "menu.mikrotik_commands.title",
   "/activity-logs": "menu.activity_logs.title",
   "/demo-requests": "menu.demo_requests.title",
@@ -100,6 +102,8 @@ const DYNAMIC_ROUTE_PATTERNS: { pattern: RegExp; key: string }[] = [
   { pattern: /^\/invoices\/edit\/[^/]+$/, key: "menu.invoice.title" },
   { pattern: /^\/staffs\/edit\/[^/]+$/, key: "menu.staffs.title" },
   { pattern: /^\/salaries\/edit\/[^/]+$/, key: "menu.staffs.salaries.title" },
+  { pattern: /^\/olts\/view\/[^/]+$/, key: "olt.view_title" },
+  { pattern: /^\/olts\/view\/[^/]+\/monitoring$/, key: "olt.monitoring_title" },
 ];
 
 function getPageTitleKey(pathname: string): string {

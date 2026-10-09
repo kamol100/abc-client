@@ -21,6 +21,7 @@ type DashboardFilterSelectProps = {
   onValueChange: (value: string) => void;
   placeholderKey: string;
   className?: string;
+  ariaLabel?: string;
 };
 
 export default function DashboardFilterSelect({
@@ -29,12 +30,13 @@ export default function DashboardFilterSelect({
   onValueChange,
   placeholderKey,
   className,
+  ariaLabel,
 }: DashboardFilterSelectProps) {
   const { t } = useTranslation();
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className={className}>
+      <SelectTrigger className={className} aria-label={ariaLabel}>
         <SelectValue placeholder={t(placeholderKey)} />
       </SelectTrigger>
       <SelectContent>

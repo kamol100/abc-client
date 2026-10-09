@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import {
+  Activity,
   Banknote,
   Building2,
   ClipboardList,
@@ -69,6 +70,13 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/dashboard",
       icon: LayoutDashboard,
       permissions: ["dashboard.access", "client.dashboard"],
+    },
+    {
+      id: 33,
+      title: t("menu.noc.title"),
+      url: "/noc",
+      icon: Activity,
+      permissions: ["monitoring.summary"],
     },
     {
       id: 2,
@@ -231,11 +239,12 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.networks.title"),
       url: "#",
       icon: Network,
-      permissions: ["networks.access", "devices.access", "device-types.access"],
+      permissions: ["networks.access", "devices.access", "device-types.access", "olts.access"],
       items: [
         { title: t("menu.networks.title"), url: "/networks", permission: "networks.access" },
         { title: t("menu.networks.devices.title"), url: "/devices", permission: "devices.access" },
         { title: t("menu.networks.device_type.title"), url: "/device-types", permission: "device-types.access" },
+        { title: t("menu.networks.olts.title"), url: "/olts", permission: "olts.access" },
       ],
     },
     {

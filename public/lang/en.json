@@ -204,7 +204,15 @@
         "priority": "Priority",
         "type": "Type",
         "expensetype_name": "Expense Type",
-        "no_results": "No results"
+        "no_results": "No results",
+        "olt_state": "Status",
+        "olt_ip": "IP",
+        "olt_vendor": "Vendor / Model",
+        "olt_network": "Network / Zone",
+        "olt_onus": "ONUs online",
+        "olt_clients": "Clients",
+        "olt_uptime": "Uptime (24 h)",
+        "olt_checked": "Last checked"
     },
     "data_table": {
         "no_results": "No results"
@@ -4206,6 +4214,9 @@
             },
             "device_type": {
                 "title": "Device Types"
+            },
+            "olts": {
+                "title": "OLTs"
             }
         },
         "mikrotik_commands": {
@@ -4316,6 +4327,9 @@
             "telegram": {
                 "title": "Telegram"
             }
+        },
+        "noc": {
+            "title": "NOC"
         }
     },
     "settings": {
@@ -5307,6 +5321,294 @@
                     "5": "Export reports as PDF or Excel"
                 }
             }
+        }
+    },
+    "olt": {
+        "title_plural": "OLTs",
+        "view_title": "OLT Details",
+        "monitoring_title": "OLT Monitoring",
+        "filters": {
+            "search": "Search name or IP"
+        },
+        "table": {
+            "name": "OLT",
+            "status": "Status",
+            "ip": "IP",
+            "vendor_model": "Vendor / Model",
+            "network": "Network / Zone",
+            "onus": "ONUs online",
+            "clients": "Clients",
+            "uptime_24h": "Uptime (24 h)",
+            "last_checked": "Last checked"
+        },
+        "vendor": {
+            "vsol": "VSOL",
+            "bdcom": "BDCOM",
+            "huawei": "Huawei",
+            "generic": "Generic (ping only)"
+        },
+        "actions": {
+            "view": "View OLT"
+        },
+        "view": {
+            "back": "Back to OLTs",
+            "direct": "Direct from app server"
+        },
+        "monitoring_card": {
+            "title": "Monitoring",
+            "bars_label": "Last 24 hours in 30-minute bars",
+            "ago_24h": "24 h ago",
+            "now": "Now",
+            "latency": "Latency",
+            "checked": "Checked",
+            "details": "Details",
+            "bar_down_for": "down {{duration}}",
+            "bar_none": "no checks",
+            "aria": "Monitoring: {{state}}, {{uptime}} in the last 24 hours. Open monitoring details"
+        },
+        "metrics": {
+            "clients": "Clients",
+            "online": "Online",
+            "offline": "Offline",
+            "disabled": "Disabled",
+            "onus": "ONUs",
+            "los": "LOS (fiber)",
+            "dying_gasp": "Power off",
+            "optical": "Optical signal",
+            "low_value": "{{count}} low",
+            "below_threshold": "Below {{threshold}} dBm",
+            "near_limit": "Near limit",
+            "too_strong": "Too strong",
+            "threshold": "Threshold",
+            "billing": "Billing",
+            "clients_with_due": "Clients with due",
+            "expired": "Expired",
+            "due_this_week": "Due this week"
+        },
+        "attention": {
+            "title": "Clients needing attention ({{count}})",
+            "empty": "No clients need attention right now.",
+            "since": "since {{time}}",
+            "create_ticket": "Create ticket",
+            "reason": {
+                "los": "LOS (fiber)",
+                "dying_gasp": "Power off",
+                "offline": "Offline",
+                "disabled": "Offline · disabled",
+                "low_signal": "Low signal {{dbm}}",
+                "near_limit": "Near limit {{dbm}}",
+                "too_strong": "Too strong {{dbm}}"
+            }
+        },
+        "pon_ports": {
+            "title": "PON ports",
+            "empty": "No PON ports polled yet.",
+            "online": "{{online}}/{{total}} online",
+            "link_down": "Link down",
+            "no_onus": "no ONUs"
+        },
+        "access": {
+            "title": "Access (SNMP / CLI)",
+            "connects": "Connects directly to {{host}} (SNMP {{snmp_port}})",
+            "connects_cli": "Connects directly to {{host}} (SNMP {{snmp_port}} / {{protocol}} {{cli_port}})",
+            "insecure_telnet": "SNMP v2c and Telnet send credentials unencrypted.",
+            "insecure_snmp": "SNMP v2c sends the community unencrypted.",
+            "last_poll": "Last poll {{time}}",
+            "never_polled": "Not polled yet.",
+            "not_configured": "No SNMP / CLI access saved. Monitoring uses ping only.",
+            "edit": "Edit access",
+            "edit_title": "Edit OLT access",
+            "saved": "Access saved",
+            "snmp_v2c": "SNMP v2c",
+            "protocol": {
+                "telnet": "Telnet",
+                "ssh": "SSH"
+            },
+            "fields": {
+                "snmp_version": "SNMP version",
+                "snmp_community": "SNMP community",
+                "cli_protocol": "CLI protocol",
+                "cli_protocol_placeholder": "None (SNMP only)",
+                "cli_username": "CLI username",
+                "cli_password": "CLI password",
+                "keep_placeholder": "Unchanged if left empty"
+            },
+            "errors": {
+                "snmp_version": "Select the SNMP version",
+                "community_required": "Enter the SNMP community",
+                "max": "Must be 255 characters or fewer"
+            }
+        },
+        "clients": {
+            "title": "Clients",
+            "total": "Total",
+            "online": "Online",
+            "offline": "Offline",
+            "disabled": "Disabled",
+            "pon_port": "PON port",
+            "all_ports": "All ports",
+            "onu_rx": "ONU / Rx power",
+            "no_onu": "No ONU",
+            "since": "Since: {{time}}",
+            "view_client": "View client"
+        },
+        "monitoring": {
+            "back": "Back to OLT details",
+            "heading": "Monitoring: {{name}}"
+        }
+    },
+    "monitoring": {
+        "state": {
+            "up": "Up",
+            "down": "Down",
+            "unknown": "Unknown"
+        },
+        "live": "Live",
+        "never": "Never",
+        "no_checks": "No checks yet",
+        "not_monitored": "Monitoring is off",
+        "uptime_value": "{{value}} uptime",
+        "checked_ago": "checked {{time}}",
+        "every_minutes": "every {{count}} min from the app server",
+        "duration": {
+            "d": "{{count}} d",
+            "h": "{{count}} h",
+            "m": "{{count}} min",
+            "s": "{{count}} s"
+        },
+        "ping": {
+            "button": "Ping now",
+            "title": "Ping {{name}}",
+            "close": "Close",
+            "again": "Ping again",
+            "running": "Pinging…",
+            "failed": "Ping failed",
+            "summary": "{{sent}} sent · {{received}} received · {{loss}} loss",
+            "rtt": "Round trip min / avg / max: {{min}} / {{avg}} / {{max}} ms",
+            "reply": "#{{seq}} reply in {{ms}} ms",
+            "timed_out": "#{{seq}} timed out",
+            "reason": {
+                "no_ip": "This device has no IP address.",
+                "ping_failed": "Ping could not run on the app server."
+            }
+        },
+        "period": {
+            "label": "Period",
+            "24h": "24 h",
+            "7d": "7 days",
+            "30d": "30 days",
+            "last_24h": "last 24 hours",
+            "last_7d": "last 7 days",
+            "last_30d": "last 30 days"
+        },
+        "stats": {
+            "uptime": "Uptime",
+            "avg_latency": "Avg. latency",
+            "p95": "p95 {{value}}",
+            "loss": "Packet loss",
+            "loss_sub": "failed replies",
+            "outages": "Outages",
+            "down_total": "{{duration}} down in total",
+            "mttr": "Avg. time to repair",
+            "longest": "longest {{duration}}",
+            "checks": "Checks"
+        },
+        "legend": {
+            "bar_colours": "Bar colours"
+        },
+        "uptime_90d": {
+            "title": "Uptime, last 90 days",
+            "label": "Daily uptime for the last 90 days",
+            "no_downtime": "No downtime",
+            "short": "Under 30 min down",
+            "long": "30 min or more down",
+            "not_monitored": "Not monitored",
+            "down_for": "{{duration}} down",
+            "start": "90 days ago",
+            "today": "Today"
+        },
+        "latency": {
+            "title": "Latency (ms)",
+            "avg": "Average",
+            "avg_10m": "10-minute average",
+            "avg_1h": "Hourly average",
+            "avg_3h": "3-hour average",
+            "range": "Min – max",
+            "no_reply": "No reply",
+            "label": "Latency over the last {{period}}",
+            "empty": "No latency data for this period."
+        },
+        "timeline": {
+            "title": "Up / down",
+            "legend": "Device reachability",
+            "label": "Up / down timeline over the last {{period}}"
+        },
+        "outages": {
+            "title": "Outages ({{count}})",
+            "started": "Started",
+            "ended": "Ended",
+            "ongoing": "Ongoing",
+            "duration": "Duration",
+            "type": "Type",
+            "affected_clients": "Affected clients",
+            "acknowledged": "Acknowledged",
+            "status": "Status",
+            "open": "Open",
+            "resolved": "Resolved"
+        },
+        "outage_type": {
+            "device_down": "Device down",
+            "router_unreachable": "Network unreachable"
+        },
+        "checks": {
+            "title": "Checks",
+            "title_count": "Checks ({{total}})",
+            "checked_at": "Checked at",
+            "source": "Source",
+            "result": "Result",
+            "latency": "Latency",
+            "sent_received": "Sent / received",
+            "loss": "Loss",
+            "all": "All",
+            "auto": "Automatic",
+            "manual": "Manual"
+        },
+        "category": {
+            "router": "Router",
+            "olt": "OLT",
+            "switch": "Switch",
+            "splitter": "Splitter",
+            "onu": "ONU",
+            "other": "Device"
+        }
+    },
+    "noc": {
+        "title": "NOC",
+        "updated": "Updated {{time}} · refreshes every 30 s",
+        "refreshes": "Refreshes every 30 s",
+        "counts": {
+            "down": "Down",
+            "unknown": "Unknown",
+            "up": "Up",
+            "open_outages": "Open outages"
+        },
+        "maintenance": "Planned maintenance on {{target}} until {{until}}",
+        "maintenance_reason": "Planned maintenance on {{target}} until {{until}}: {{reason}}",
+        "maintenance_all": "all devices",
+        "down_devices": "Down devices",
+        "no_down_devices": "All monitored devices are reachable.",
+        "down_for": "Down for {{duration}}",
+        "clients": "{{count}} clients",
+        "directions": "Directions",
+        "map_label": "Map of down devices",
+        "open_outages": "Open outages",
+        "no_open_outages": "No open outages.",
+        "outage_started": "Started {{ago}} ago · {{count}} clients",
+        "ticket": "Ticket #{{number}}",
+        "badges": {
+            "maintenance": "Maintenance",
+            "downstream": "Downstream",
+            "acknowledged": "Acknowledged"
         }
     }
 }
