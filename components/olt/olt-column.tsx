@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -19,7 +20,9 @@ export function useOltColumns(): ColumnDef<OltRow>[] {
     const { relative } = useMonitoringFormat();
     const canShow = hasPermission("olts.show");
 
-    return [
+    // Memoized: flexRender treats each `cell` function as a component type, so new functions on every
+    // render remount the cells, which closed the row's Ping dialog when the list refetched after a ping.
+    return useMemo<ColumnDef<OltRow>[]>(() => [
         {
             id: "name",
             header: ({ column }) => <DataTableColumnHeader column={column} title="olt.table.name" />,
@@ -134,5 +137,5 @@ export function useOltColumns(): ColumnDef<OltRow>[] {
             enableSorting: false,
             enableHiding: false,
         },
-    ];
+    ], [t, canShow, relative]);
 }
