@@ -298,8 +298,9 @@ const ConditionalFormField = ({
 }) => {
   const { getValues, setValue } = useFormContext();
   const watched = useWatch({ name: visibleWhen.field });
-  const visible =
-    visibleWhen.equals === undefined
+  const visible = visibleWhen.when
+    ? visibleWhen.when(watched)
+    : visibleWhen.equals === undefined
       ? hasFilledValue(watched)
       : watched === visibleWhen.equals || String(watched) === String(visibleWhen.equals);
   const resetValue = visibleWhen.resetValue ?? null;

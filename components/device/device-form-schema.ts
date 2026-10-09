@@ -1,6 +1,48 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-export const DeviceFormFieldSchema = (): FieldConfig[] => {
+/** OLT credentials (saved to olt_accesses), shown only while an OLT device type is selected. */
+const oltAccessFields = (oltTypeIds: (string | number)[]): FieldConfig[] => {
+  const isOlt = (value: unknown) => oltTypeIds.some((id) => String(id) === String(value));
+  return [
+    {
+      type: "password",
+      name: "snmp_community",
+      label: { labelText: "olt.access.fields.snmp_community" },
+      placeholder: "olt.access.fields.snmp_community",
+      visibleWhen: { field: "device_type_id", when: isOlt },
+    },
+    {
+      type: "dropdown",
+      name: "cli_protocol",
+      label: { labelText: "olt.access.fields.cli_protocol" },
+      placeholder: "olt.access.fields.cli_protocol_placeholder",
+      options: [
+        { value: "telnet", label: "olt.access.protocol.telnet" },
+        { value: "ssh", label: "olt.access.protocol.ssh" },
+      ],
+      isClearable: true,
+      visibleWhen: { field: "device_type_id", when: isOlt },
+    },
+    // Hidden with cli_protocol, which is itself cleared when the type is not an OLT.
+    {
+      type: "text",
+      name: "cli_username",
+      label: { labelText: "olt.access.fields.cli_username" },
+      placeholder: "olt.access.fields.cli_username",
+      visibleWhen: { field: "cli_protocol" },
+    },
+    {
+      type: "password",
+      name: "cli_password",
+      label: { labelText: "olt.access.fields.cli_password" },
+      placeholder: "olt.access.fields.cli_password",
+      visibleWhen: { field: "cli_protocol" },
+    },
+  ];
+};
+
+/** Pass `oltTypeIds` to add the OLT credential inputs (create mode, olts.access-settings only). */
+export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = []): FieldConfig[] => {
   return [
     {
       type: "dropdown",
@@ -42,6 +84,7 @@ export const DeviceFormFieldSchema = (): FieldConfig[] => {
       label: { labelText: "device.device_ip.label" },
       placeholder: "device.device_ip.placeholder",
     },
+    ...(oltTypeIds.length ? oltAccessFields(oltTypeIds) : []),
     {
       type: "dropdown",
       name: "zone_id",

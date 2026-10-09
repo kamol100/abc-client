@@ -4,6 +4,8 @@ import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import DeviceFormFieldSchema from "./device-form-schema";
 import { DeviceFormSchema, DeviceRow } from "./device-type";
+import { usePermissions } from "@/context/app-provider";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
 type Props = {
   mode?: "create" | "edit";
@@ -18,6 +20,16 @@ const DeviceForm: FC<Props> = ({
   method = "POST",
   data = undefined,
 }) => {
+  const { hasPermission } = usePermissions();
+  const withOltAccess = mode === "create" && hasPermission("olts.access-settings");
+  const { data: types } = useApiQuery<ApiResponse<{ id: number; category: string }[]>>({
+    queryKey: ["dropdown-device-types"],
+    url: "dropdown-device-types",
+    pagination: false,
+    enabled: withOltAccess,
+  });
+  const oltTypeIds = withOltAccess ? (types?.data ?? []).filter((type) => type.category === "olt").map((type) => type.id) : [];
+
   return (
     <MyDialog
       size="4xl"
@@ -25,7 +37,7 @@ const DeviceForm: FC<Props> = ({
       trigger={<FormTrigger mode={mode} />}
     >
       <FormBuilder
-        formSchema={DeviceFormFieldSchema()}
+        formSchema={DeviceFormFieldSchema(oltTypeIds)}
         grids={2}
         data={data}
         api={api}

@@ -76,6 +76,11 @@ export const DeviceFormSchema = z.object({
   fiber_code: z.string().nullable().optional().default(""),
   note: z.string().nullable().optional().default(""),
   status: z.union([z.enum(["active", "inactive"]), z.coerce.number()]).optional(),
+  // OLT credentials, create only; the API stores them encrypted in olt_accesses.
+  snmp_community: z.string().max(255, { message: "olt.access.errors.max" }).nullable().optional(),
+  cli_protocol: z.enum(["telnet", "ssh"]).nullable().optional(),
+  cli_username: z.string().max(100).nullable().optional(),
+  cli_password: z.string().max(255, { message: "olt.access.errors.max" }).nullable().optional(),
 });
 
 export type DeviceFormInput = z.input<typeof DeviceFormSchema>;
