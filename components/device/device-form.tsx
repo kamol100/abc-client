@@ -21,7 +21,7 @@ const DeviceForm: FC<Props> = ({
   data = undefined,
 }) => {
   const { hasPermission } = usePermissions();
-  const withOltAccess = mode === "create" && hasPermission("olts.access-settings");
+  const withOltAccess = hasPermission("olts.access-settings");
   const { data: types } = useApiQuery<ApiResponse<{ id: number; category: string }[]>>({
     queryKey: ["dropdown-device-types"],
     url: "dropdown-device-types",
@@ -37,7 +37,7 @@ const DeviceForm: FC<Props> = ({
       trigger={<FormTrigger mode={mode} />}
     >
       <FormBuilder
-        formSchema={DeviceFormFieldSchema(oltTypeIds)}
+        formSchema={DeviceFormFieldSchema(oltTypeIds, mode === "edit")}
         grids={2}
         data={data}
         api={api}

@@ -1,14 +1,17 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-/** OLT credentials (saved to olt_accesses), shown only while an OLT device type is selected. */
-const oltAccessFields = (oltTypeIds: (string | number)[]): FieldConfig[] => {
+/**
+ * OLT credentials (saved to olt_accesses), shown only while an OLT device type is selected.
+ * When editing, the saved secrets are never sent back: a blank community / password keeps them.
+ */
+const oltAccessFields = (oltTypeIds: (string | number)[], keepSecrets: boolean): FieldConfig[] => {
   const isOlt = (value: unknown) => oltTypeIds.some((id) => String(id) === String(value));
   return [
     {
       type: "password",
       name: "snmp_community",
       label: { labelText: "olt.access.fields.snmp_community" },
-      placeholder: "olt.access.fields.snmp_community",
+      placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.snmp_community",
       visibleWhen: { field: "device_type_id", when: isOlt },
     },
     {
@@ -35,14 +38,14 @@ const oltAccessFields = (oltTypeIds: (string | number)[]): FieldConfig[] => {
       type: "password",
       name: "cli_password",
       label: { labelText: "olt.access.fields.cli_password" },
-      placeholder: "olt.access.fields.cli_password",
+      placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.cli_password",
       visibleWhen: { field: "cli_protocol" },
     },
   ];
 };
 
-/** Pass `oltTypeIds` to add the OLT credential inputs (create mode, olts.access-settings only). */
-export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = []): FieldConfig[] => {
+/** Pass `oltTypeIds` to add the OLT credential inputs (users with olts.access-settings only). */
+export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = [], keepSecrets = false): FieldConfig[] => {
   return [
     {
       type: "dropdown",
@@ -84,7 +87,7 @@ export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = []): Fie
       label: { labelText: "device.device_ip.label" },
       placeholder: "device.device_ip.placeholder",
     },
-    ...(oltTypeIds.length ? oltAccessFields(oltTypeIds) : []),
+    ...(oltTypeIds.length ? oltAccessFields(oltTypeIds, keepSecrets) : []),
     {
       type: "dropdown",
       name: "zone_id",
