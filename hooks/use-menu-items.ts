@@ -82,6 +82,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/noc",
       icon: Activity,
       permissions: ["monitoring.summary"],
+      feature: "olts",
     },
     {
       id: 2,
