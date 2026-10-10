@@ -13,6 +13,7 @@ import DashboardTopDueInvoicesTable from "@/components/dashboard/items/Dashboard
 import DashboardZoneDueSummaryTable from "@/components/dashboard/items/DashboardZoneDueSummaryTable";
 import DashboardRevenueChart from "@/components/dashboard/items/DashboardRevenueChart";
 import DashboardProductStockCard from "@/components/dashboard/items/DashboardProductStockCard";
+import SubscriptionBanner from "@/components/subscription/subscription-banner";
 
 export default function DashboardOverview() {
   const {
@@ -90,6 +91,7 @@ export default function DashboardOverview() {
 
   return (
     <div className="space-y-4">
+      <SubscriptionBanner />
       {hasSummaryCards && (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
           {canSee.client && (

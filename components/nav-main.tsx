@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Lock } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -56,6 +56,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                       </div>
                     )}
                     <span>{item.title}</span>
+                    {item.disabled && <Lock />}
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
@@ -70,6 +71,12 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                           "bg-primary text-primary-foreground rounded-md"
                         )}
                       >
+                        {subItem.disabled ? (
+                          <SidebarMenuSubButton aria-disabled className="pointer-events-none opacity-50">
+                            <Lock />
+                            <span className="truncate">{subItem.title}</span>
+                          </SidebarMenuSubButton>
+                        ) : (
                         <SidebarMenuSubButton
                           asChild
                           className={cn(
@@ -81,6 +88,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                             <span className="truncate">{subItem.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
+                        )}
                       </SidebarMenuSubItem>
                     ))}
                   </SidebarMenuSub>
@@ -89,6 +97,12 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.id}>
+              {item.disabled ? (
+                <SidebarMenuButton tooltip={item.title} aria-disabled className="pointer-events-none opacity-50">
+                  <Lock />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              ) : (
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
@@ -107,6 +121,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
+              )}
             </SidebarMenuItem>
           )
         )}

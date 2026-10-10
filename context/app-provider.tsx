@@ -15,6 +15,7 @@ import type {
   ImpersonationState,
   Profile,
   Settings,
+  SubscriptionSummary,
 } from "@/types/app";
 
 // ─── Settings ────────────────────────────────────────────────────────
@@ -65,6 +66,19 @@ interface PermissionsContextValue {
 }
 
 const PermissionsContext = createContext<PermissionsContextValue | null>(null);
+
+interface SubscriptionContextValue {
+  subscription: SubscriptionSummary | null;
+  setSubscription: React.Dispatch<React.SetStateAction<SubscriptionSummary | null>>;
+}
+
+const SubscriptionContext = createContext<SubscriptionContextValue | null>(null);
+
+export function useSubscription(): SubscriptionContextValue {
+  const ctx = useContext(SubscriptionContext);
+  if (!ctx) throw new Error("useSubscription must be used within <AppProvider>");
+  return ctx;
+}
 
 export function usePermissions(): PermissionsContextValue {
   const ctx = useContext(PermissionsContext);
@@ -130,6 +144,9 @@ export default function AppProvider({
   const [profile, setProfile] = useState<Profile>(initialData.profile);
   const [permissions, setPermissions] = useState<AppPermission[]>(
     initialData.permissions
+  );
+  const [subscription, setSubscription] = useState<SubscriptionSummary | null>(
+    initialData.subscription ?? null
   );
   const [impersonation, setImpersonationRaw] = useState<ImpersonationState>(
     loadImpersonationState
@@ -203,6 +220,11 @@ export default function AppProvider({
     [permissions, hasPermission]
   );
 
+  const subscriptionValue = useMemo<SubscriptionContextValue>(
+    () => ({ subscription, setSubscription }),
+    [subscription]
+  );
+
   const impersonationValue = useMemo<ImpersonationContextValue>(
     () => ({
       impersonation,
@@ -219,9 +241,11 @@ export default function AppProvider({
     <SettingsContext.Provider value={settingsValue}>
       <ProfileContext.Provider value={profileValue}>
         <PermissionsContext.Provider value={permissionsValue}>
-          <ImpersonationContext.Provider value={impersonationValue}>
-            {children}
-          </ImpersonationContext.Provider>
+          <SubscriptionContext.Provider value={subscriptionValue}>
+            <ImpersonationContext.Provider value={impersonationValue}>
+              {children}
+            </ImpersonationContext.Provider>
+          </SubscriptionContext.Provider>
         </PermissionsContext.Provider>
       </ProfileContext.Provider>
     </SettingsContext.Provider>

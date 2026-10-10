@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
   devIndicators: false,
-  allowedDevOrigins: ['192.168.0.102', 'isp.test', 'isp.local'],
+  allowedDevOrigins: ['192.168.0.102', 'isp.test', 'isp.local', 'app.isp.test', 'vp.isp.test'],
   reactStrictMode: true,
   logging: {
     fetches: {

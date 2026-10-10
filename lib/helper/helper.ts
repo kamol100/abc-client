@@ -136,6 +136,7 @@ interface ApiErrorShape {
     };
     error?: { message?: string };
     message?: string;
+    code?: string;
 }
 
 export function cellIndex(rowIndex: number, pagination?: Pagination): number {
@@ -151,8 +152,24 @@ export function formatKey(key: string): string {
         .join(" ");
 }
 
+export function isMenuFeatureLocked(
+    state: string | null | undefined,
+    disabledFeatures: string[] | undefined,
+    feature?: string,
+): boolean {
+    return state === "expired" && Boolean(feature) && (disabledFeatures ?? []).includes(feature ?? "");
+}
+
+export function subscriptionErrorKey(code: string | undefined): string | null {
+    if (code === "subscription_expired") return "subscription.expired_action";
+    if (code === "feature_not_in_plan") return "subscription.feature_not_in_plan";
+    return null;
+}
+
 export function parseApiError(error: unknown): string | false {
     const err = error as ApiErrorShape;
+    const subscriptionKey = subscriptionErrorKey(err?.code);
+    if (subscriptionKey) return subscriptionKey;
     return (
         err?.response?.data?.error?.error?.message ??
         err?.response?.data?.error?.message ??

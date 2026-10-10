@@ -4279,6 +4279,12 @@
         "companies": {
             "title": "Companies"
         },
+        "subscription": {
+            "title": "Subscription",
+            "plans": "Subscription plans",
+            "features": "Features",
+            "companies": "Company subscriptions"
+        },
         "company_profile": {
             "title": "Company Profile"
         },
@@ -5609,6 +5615,104 @@
             "maintenance": "Maintenance",
             "downstream": "Downstream",
             "acknowledged": "Acknowledged"
+        }
+    },
+    "subscription": {
+        "title": "Subscription",
+        "empty": "No subscription is assigned to this company.",
+        "status": "Status",
+        "starts_at": "Starts",
+        "ends_at": "Ends",
+        "canceled_at": "Canceled",
+        "status_value": {
+            "trialing": "Trial",
+            "active": "Active",
+            "past_due": "Past due",
+            "canceled": "Canceled",
+            "expired": "Expired"
+        },
+        "features": "Features",
+        "expired_action": "Your subscription has expired. This action is not available.",
+        "feature_not_in_plan": "This feature is not included in your subscription plan.",
+        "banner": {
+            "grace": "Your {{plan}} subscription plan will end in {{days}} days. Please pay ৳{{amount}} to continue your subscription.",
+            "grace_one": "Your {{plan}} subscription plan will end in {{days}} day. Please pay ৳{{amount}} to continue your subscription.",
+            "grace_today": "Your {{plan}} subscription plan ends today. Please pay ৳{{amount}} to continue your subscription.",
+            "expired": "Your subscription has ended. The application is running in limited mode. Please pay ৳{{amount}} to continue.",
+            "view": "View subscription",
+            "close": "Dismiss subscription alert"
+        },
+        "state": {
+            "active": "Active",
+            "trialing": "Trial",
+            "grace": "Grace period",
+            "expired": "Expired",
+            "none": "None"
+        },
+        "mode": {
+            "full": "Full access after expiry",
+            "read_only": "Read-only after expiry",
+            "disabled": "Locked after expiry",
+            "read": "Read",
+            "write": "Write"
+        },
+        "interval": {
+            "month": "Monthly",
+            "year": "Yearly"
+        },
+        "plan": {
+            "title": "Subscription plans",
+            "name": "Name",
+            "description": "Description",
+            "price": "Price",
+            "interval": "Billing interval",
+            "min_clients": "Minimum clients",
+            "max_clients": "Maximum clients",
+            "active": "Active",
+            "create": "Create plan",
+            "edit": "Edit plan",
+            "features": "Plan features",
+            "features_saved": "Plan features saved",
+            "delete_confirm": "Delete this subscription plan?",
+            "name_required": "Name is required",
+            "price_required": "Price is required"
+        },
+        "feature": {
+            "title": "Features",
+            "name": "Name",
+            "key": "Key",
+            "permissions": "Permissions",
+            "description": "Description",
+            "sort_order": "Sort order",
+            "create": "Add feature",
+            "edit": "Edit feature",
+            "delete_confirm": "Delete this feature?",
+            "name_required": "Name is required",
+            "key_required": "Key is required",
+            "key_invalid": "Use lowercase letters, numbers, and underscores",
+            "sort_order_invalid": "Sort order must be zero or greater",
+            "permission_name": "Permission name",
+            "permission_name_required": "Permission name is required",
+            "access_type": "Access",
+            "permissions_empty": "No permissions assigned",
+            "remove": "Remove",
+            "removed": "Permission removed",
+            "saved": "Feature permissions saved"
+        },
+        "company": {
+            "title": "Company subscriptions",
+            "assign": "Assign plan",
+            "edit": "Edit subscription",
+            "delete_confirm": "Delete this company subscription?",
+            "company": "Company",
+            "company_id": "Company id",
+            "plan_id": "Plan id",
+            "company_required": "Company is required",
+            "plan_required": "Plan is required",
+            "trial_days": "Trial days",
+            "grace_days": "Grace days",
+            "cancel": "Cancel",
+            "canceled": "Subscription canceled"
         }
     }
 }
