@@ -5,6 +5,7 @@ import {
   Edit,
   FilterIcon,
   Loader2,
+  Lock,
   Minus,
   Plus,
   RotateCcw,
@@ -33,6 +34,7 @@ const ACTION_ICONS = {
   create: Plus,
   add: Plus,
   minus: Minus,
+  lock: Lock,
 } as const;
 
 export type MyButtonActionType = keyof typeof ACTION_ICONS;
@@ -123,7 +125,7 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
       size: size ?? "sm",
       className: cn(
         unstyled &&
-          "p-0 shadow-none border-0 hover:bg-transparent hover:shadow-none",
+        "p-0 shadow-none border-0 hover:bg-transparent hover:shadow-none",
         useActionHover && "hover:bg-primary hover:text-primary-foreground",
         className
       ),

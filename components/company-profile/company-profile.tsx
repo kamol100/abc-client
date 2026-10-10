@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { usePermissions, useProfile } from "@/context/app-provider";
+import { usePermissions, useProfile, useSubscription } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import Card from "@/components/card";
 import MyButton from "@/components/my-button";
@@ -25,6 +25,7 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({
   const { t } = useTranslation();
   const { profile } = useProfile();
   const { hasPermission } = usePermissions();
+  const { subscription } = useSubscription();
 
   const canAccess = hasPermission("company-settings.access");
   const canEdit = hasPermission("company-settings.edit");
@@ -217,6 +218,19 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({
           </div>
         )}
       </Card>
+
+      {!isReseller && subscription && (
+        <Card className="space-y-2 p-4 sm:p-5">
+          <h2 className="text-sm font-medium">{t("subscription.title")}</h2>
+          <p className="text-sm text-muted-foreground">
+            {subscription.plan_name} · {t(`subscription.state.${subscription.state}`, { defaultValue: subscription.state })}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t("subscription.ends_at")}: {subscription.ends_at ?? "-"}
+          </p>
+          <MyButton action="edit" icon={false} title="subscription.banner.view" url="/subscription" />
+        </Card>
+      )}
     </div>
   );
 };

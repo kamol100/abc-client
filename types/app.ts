@@ -54,10 +54,21 @@ export interface Profile {
 
 export type AppPermission = string;
 
+export interface SubscriptionSummary {
+  status: string;
+  state: "active" | "trialing" | "grace" | "expired" | "none";
+  plan_name: string;
+  plan_id: string;
+  ends_at: string | null;
+  read_only_features: string[];
+  disabled_features: string[];
+}
+
 export interface AppData {
   settings: Settings;
   profile: Profile;
   permissions: AppPermission[];
+  subscription?: SubscriptionSummary | null;
 }
 
 // ─── Impersonation ──────────────────────────────────────────────────

@@ -4,6 +4,7 @@ import {
   Building2,
   ClipboardList,
   CircleDollarSign,
+  CreditCard,
   FileBarChart,
   FileText,
   Headset,
@@ -31,7 +32,8 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useSubscription } from "@/context/app-provider";
+import { isMenuFeatureLocked } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 
 // ─── Types ────────────────────────────────────────────────────────────
@@ -48,6 +50,8 @@ interface MenuItemConfig {
   url: string;
   icon: LucideIcon;
   permissions: string[];
+  feature?: string;
+  always?: boolean;
   items?: MenuSubItemConfig[];
 }
 
@@ -56,7 +60,8 @@ export interface NavMenuItem {
   title: string;
   url: string;
   icon: LucideIcon;
-  items?: { title: string; url: string }[];
+  disabled?: boolean;
+  items?: { title: string; url: string; disabled?: boolean }[];
 }
 
 // ─── Menu Configuration ──────────────────────────────────────────────
@@ -76,6 +81,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/clients",
       icon: Users,
       permissions: ["clients.access"],
+      feature: "clients",
     },
     {
       id: 3,
@@ -139,6 +145,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: FileText,
       permissions: ["invoices.access", "invoice-types.access"],
+      feature: "billing",
       items: [
         { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
         { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
@@ -150,6 +157,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Banknote,
       permissions: ["payments.access", "payment-gateways.access"],
+      feature: "billing",
       items: [
         { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
         { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
@@ -161,6 +169,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: PackageOpen,
       permissions: ["products.access", "product-categories.access", "products-in.report", "unit-types.access"],
+      feature: "inventory",
       items: [
         { title: t("menu.products.title"), url: "/products", permission: "products.access" },
         { title: t("menu.products.reports.title"), url: "/products/reports", permission: "products-in.report" },
@@ -174,6 +183,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: CircleDollarSign,
       permissions: ["expenses.access", "expense-types.access"],
+      feature: "finance",
       items: [
         { title: t("menu.expense.title"), url: "/expenses", permission: "expenses.access" },
         { title: t("menu.expense.types.title"), url: "/expense-types", permission: "expense-types.access" },
@@ -185,6 +195,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: LifeBuoy,
       permissions: ["tickets.access", "subjects.access", "tags.access"],
+      feature: "support",
       items: [
         { title: t("menu.support_tickets.title"), url: "/tickets", permission: "tickets.access" },
         { title: t("menu.support_tickets.subjects.title"), url: "/subjects", permission: "subjects.access" },
@@ -197,6 +208,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/resellers",
       icon: UserCheck,
       permissions: ["resellers.access", "agents.access", "agent-transactions.access"],
+      feature: "resellers",
       items: [
         { title: t("menu.resellers.title"), url: "/resellers", permission: "resellers.access" },
         { title: t("menu.agents.title"), url: "/agents", permission: "agents.access" },
@@ -209,6 +221,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Radio,
       permissions: ["communication-gateways.access", "communication-logs.access", "communication-queue.access"],
+      feature: "sms",
       items: [
         { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
         { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
@@ -221,6 +234,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: MessageSquare,
       permissions: ["sms-send.access", "sms-templates.access"],
+      feature: "sms",
       items: [
         { title: t("menu.sms.send.title"), url: "/sms-send", permission: "sms-send.access" },
         { title: t("menu.sms.templates.title"), url: "/sms-templates", permission: "sms-templates.access" },
@@ -232,6 +246,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Network,
       permissions: ["networks.access", "devices.access", "device-types.access"],
+      feature: "network",
       items: [
         { title: t("menu.networks.title"), url: "/networks", permission: "networks.access" },
         { title: t("menu.networks.devices.title"), url: "/devices", permission: "devices.access" },
@@ -244,6 +259,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/mikrotik-commands",
       icon: SquareTerminal,
       permissions: ["mikrotik-command.access"],
+      feature: "network",
     },
     {
       id: 19,
@@ -272,6 +288,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: MapPin,
       permissions: ["zones.access", "sub-zones.access"],
+      feature: "clients",
       items: [
         { title: t("menu.zones.title"), url: "/zones", permission: "zones.access" },
         { title: t("menu.zones.sub_zone.title"), url: "/sub-zones", permission: "sub-zones.access" },
@@ -295,6 +312,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/vendors",
       icon: Store,
       permissions: ["vendors.access"],
+      feature: "inventory",
     },
     {
       id: 24,
@@ -302,6 +320,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Landmark,
       permissions: ["funds.access", "fund-transactions.access"],
+      feature: "finance",
       items: [
         { title: t("menu.funds.title"), url: "/funds", permission: "funds.access" },
         { title: t("menu.funds.transaction.title"), url: "/fund-transactions", permission: "fund-transactions.access" },
@@ -313,6 +332,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: UserCog,
       permissions: ["staffs.access", "salaries.access"],
+      feature: "hr",
       items: [
         { title: t("menu.staffs.title"), url: "/staffs", permission: "staffs.access" },
         { title: t("menu.staffs.salaries.title"), url: "/salaries", permission: "salaries.access" },
@@ -324,6 +344,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Wallet,
       permissions: ["wallets.access", "wallets.client"],
+      feature: "finance",
       items: [
         { title: t("menu.wallets.my_wallets.title"), url: "/my-wallets", permission: "wallets.access" },
         { title: t("menu.wallets.client_wallets.title"), url: "/client-wallets", permission: "wallets.client" },
@@ -349,6 +370,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: RefreshCw,
       permissions: ["sync-clients.access", "client-sync.access"],
+      feature: "network",
       items: [
         { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access" },
         { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access" },
@@ -360,6 +382,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: ShieldCheck,
       permissions: ["roles.access", "permissions.access"],
+      feature: "core",
       items: [
         { title: t("menu.role_permission.roles.title"), url: "/roles", permission: "roles.access" },
         { title: t("menu.role_permission.permissions.title"), url: "/permissions", permission: "permissions.access" },
@@ -371,6 +394,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "#",
       icon: Settings,
       permissions: ["company-settings.access"],
+      feature: "core",
       items: [
         { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
         { title: t("menu.settings.dashboard.title"), url: "/settings/dashboard", permission: "company-settings.access" },
@@ -378,6 +402,35 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
         { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
       ],
+    },
+    {
+      id: 33,
+      title: t("menu.subscription.title"),
+      url: "/subscription",
+      icon: CreditCard,
+      permissions: [],
+      always: true,
+    },
+    {
+      id: 34,
+      title: t("menu.subscription.plans"),
+      url: "/subscription-plans",
+      icon: CreditCard,
+      permissions: ["subscription-plans.access"],
+    },
+    {
+      id: 35,
+      title: t("menu.subscription.features"),
+      url: "/subscription-features",
+      icon: ShieldCheck,
+      permissions: ["features.access"],
+    },
+    {
+      id: 36,
+      title: t("menu.subscription.companies"),
+      url: "/company-subscriptions",
+      icon: Building2,
+      permissions: ["company-subscriptions.access"],
     },
   ];
 }
@@ -387,11 +440,17 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
 export function useMenuItems(): NavMenuItem[] {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
+  const { subscription } = useSubscription();
 
   return useMemo(() => {
     const menuConfig = buildMenuConfig(t);
     return menuConfig.reduce<NavMenuItem[]>((acc, config) => {
-      const hasAccess = config.permissions.some((p) => hasPermission(p));
+      const locked = isMenuFeatureLocked(
+        subscription?.state,
+        subscription?.disabled_features,
+        config.feature,
+      );
+      const hasAccess = config.always || locked || config.permissions.some((p) => hasPermission(p));
       if (!hasAccess) return acc;
 
       if (!config.items) {
@@ -400,12 +459,13 @@ export function useMenuItems(): NavMenuItem[] {
           title: config.title,
           url: config.url,
           icon: config.icon,
+          disabled: locked,
         });
         return acc;
       }
 
-      const visibleSubItems = config.items.filter((sub) =>
-        hasPermission(sub.permission)
+      const visibleSubItems = config.items.filter(
+        (sub) => locked || hasPermission(sub.permission),
       );
       if (visibleSubItems.length === 0) return acc;
 
@@ -414,9 +474,10 @@ export function useMenuItems(): NavMenuItem[] {
         title: config.title,
         url: config.url,
         icon: config.icon,
-        items: visibleSubItems.map(({ title, url }) => ({ title, url })),
+        disabled: locked,
+        items: visibleSubItems.map(({ title, url }) => ({ title, url, disabled: locked })),
       });
       return acc;
     }, []);
-  }, [t, hasPermission]);
+  }, [t, hasPermission, subscription]);
 }

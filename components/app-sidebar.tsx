@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useSettings, useProfile, usePermissions, useImpersonation } from "@/context/app-provider";
+import { useSettings, useProfile, usePermissions, useImpersonation, useSubscription } from "@/context/app-provider";
 import { useThemeSettings } from "@/context/theme-data-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useMenuItems } from "@/hooks/use-menu-items";
@@ -29,6 +29,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { settings, setSettings } = useSettings();
   const { setProfile } = useProfile();
   const { setPermissions } = usePermissions();
+  const { setSubscription } = useSubscription();
   const { impersonation } = useImpersonation();
   const { t } = useTranslation();
 
@@ -47,8 +48,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       setSettings(settingsResponse.data.settings);
       setProfile(settingsResponse.data.profile);
       setPermissions(settingsResponse.data.permissions);
+      setSubscription(settingsResponse.data.subscription ?? null);
     }
-  }, [settingsResponse, setSettings, setProfile, setPermissions]);
+  }, [settingsResponse, setSettings, setProfile, setPermissions, setSubscription]);
 
   const { isMobile } = useSidebar();
   const { settings: themeSettings } = useThemeSettings();

@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import SubscriptionBanner from "@/components/subscription/subscription-banner";
 import PageContainer from "@/components/page-container";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppProvider from "@/context/app-provider";
@@ -11,12 +12,14 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const res = await useFetch({ url: "/user-settings" });
   const initialData = res?.data as AppData;
+  console.log(initialData);
   return (
     <AppProvider initialData={initialData}>
       <TableLayoutProvider>
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
+            <SubscriptionBanner />
             <PageContainer>
               <TooltipProvider>
                 {children}
