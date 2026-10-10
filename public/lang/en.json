@@ -5333,12 +5333,12 @@
         "expired_action": "Your subscription has expired. This action is not available.",
         "feature_not_in_plan": "This feature is not included in your subscription plan.",
         "banner": {
-            "expired": "Your subscription has expired. Some features are read-only or locked.",
-            "grace": "Your subscription is in the grace period.",
-            "ends": "Ended {{date}}.",
-            "read_only": "Read-only: {{features}}",
-            "disabled": "Locked: {{features}}",
-            "view": "View subscription"
+            "grace": "Your {{plan}} subscription plan will end in {{days}} days. Please pay ৳{{amount}} to continue your subscription.",
+            "grace_one": "Your {{plan}} subscription plan will end in {{days}} day. Please pay ৳{{amount}} to continue your subscription.",
+            "grace_today": "Your {{plan}} subscription plan ends today. Please pay ৳{{amount}} to continue your subscription.",
+            "expired": "Your subscription has ended. The application is running in limited mode. Please pay ৳{{amount}} to continue.",
+            "view": "View subscription",
+            "close": "Dismiss subscription alert"
         },
         "state": {
             "active": "Active",

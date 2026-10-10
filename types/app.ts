@@ -60,6 +60,11 @@ export interface SubscriptionSummary {
   plan_name: string;
   plan_id: string;
   ends_at: string | null;
+  grace_days: number;
+  grace_ends_at: string | null;
+  days_remaining: number | null;
+  due_amount: number;
+  today: string;
   read_only_features: string[];
   disabled_features: string[];
 }

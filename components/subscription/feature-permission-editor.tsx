@@ -26,6 +26,11 @@ interface AddPermissionForm {
 
 const READ_SUFFIXES = [".access", ".show", ".report", ".map", ".by-wallet"];
 
+function formatPermissionLabel(name: string): string {
+  const label = name.replace(/[.\-_]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+  return label.charAt(0).toUpperCase() + label.slice(1);
+}
+
 const accessTypeFor = (name: string): PermissionRow["access_type"] => {
   if (name.includes("dashboard") || READ_SUFFIXES.some((suffix) => name.endsWith(suffix))) {
     return "read";
@@ -85,7 +90,7 @@ export default function FeaturePermissionEditor({ featureId }: { featureId: stri
     const assigned = new Set(permissions.map((permission) => permission.name));
     return permissionNames(catalog?.data)
       .filter((name) => !assigned.has(name))
-      .map((name) => ({ value: name, label: name }));
+      .map((name) => ({ value: name, label: formatPermissionLabel(name) }));
   }, [catalog?.data, permissions]);
 
   const add = form.handleSubmit((values) => {
@@ -141,7 +146,7 @@ export default function FeaturePermissionEditor({ featureId }: { featureId: stri
             ) : (
               permissions.map((permission) => (
                 <li key={permission.name} className="flex items-center justify-between gap-2">
-                  <span>{permission.name}</span>
+                  <span>{formatPermissionLabel(permission.name)}</span>
                   <MyButton
                     type="button"
                     action="delete"

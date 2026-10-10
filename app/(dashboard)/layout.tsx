@@ -1,5 +1,4 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import SubscriptionBanner from "@/components/subscription/subscription-banner";
 import PageContainer from "@/components/page-container";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import AppProvider from "@/context/app-provider";
@@ -19,7 +18,6 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <SubscriptionBanner />
             <PageContainer>
               <TooltipProvider>
                 {children}

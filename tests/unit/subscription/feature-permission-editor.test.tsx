@@ -31,6 +31,7 @@ vi.mock("@/hooks/use-api-query", () => ({
         permissions: [
           { name: "clients.index", access_type: "read" },
           { name: "clients.store", access_type: "write" },
+          { name: "sub-zones.access", access_type: "read" },
         ],
       },
     },
@@ -67,7 +68,7 @@ describe("FeaturePermissionEditor", () => {
     await user.click(screen.getByRole("button", { name: "subscription.feature.permissions" }));
 
     const nameField = await screen.findByPlaceholderText("subscription.feature.permission_name");
-    const assignedPermission = screen.getByText("clients.index");
+    const assignedPermission = screen.getByText("Sub zones access");
 
     expect(
       nameField.compareDocumentPosition(assignedPermission) & Node.DOCUMENT_POSITION_FOLLOWING
@@ -88,12 +89,15 @@ describe("FeaturePermissionEditor", () => {
 
     await user.click(screen.getByRole("button", { name: "subscription.feature.permissions" }));
 
-    const row = (await screen.findByText("clients.index")).closest("li");
+    const row = (await screen.findByText("Clients index")).closest("li");
     expect(row).not.toBeNull();
     await user.click(within(row as HTMLElement).getByRole("button", { name: "subscription.feature.remove" }));
 
     expect(mutate).toHaveBeenCalledWith({
-      permissions: [{ name: "clients.store", access_type: "write" }],
+      permissions: [
+        { name: "clients.store", access_type: "write" },
+        { name: "sub-zones.access", access_type: "read" },
+      ],
     });
   });
 
@@ -117,6 +121,7 @@ describe("FeaturePermissionEditor", () => {
       permissions: [
         { name: "clients.index", access_type: "read" },
         { name: "clients.store", access_type: "write" },
+        { name: "sub-zones.access", access_type: "read" },
         { name: "invoices.show", access_type: "read" },
       ],
     });

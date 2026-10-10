@@ -413,24 +413,15 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
     },
     {
       id: 34,
-      title: t("menu.subscription.plans"),
-      url: "/subscription-plans",
+      title: t("menu.subscription.title"),
+      url: "#",
       icon: CreditCard,
-      permissions: ["subscription-plans.access"],
-    },
-    {
-      id: 35,
-      title: t("menu.subscription.features"),
-      url: "/subscription-features",
-      icon: ShieldCheck,
-      permissions: ["features.access"],
-    },
-    {
-      id: 36,
-      title: t("menu.subscription.companies"),
-      url: "/company-subscriptions",
-      icon: Building2,
-      permissions: ["company-subscriptions.access"],
+      permissions: ["subscription-plans.access", "features.access", "company-subscriptions.access"],
+      items: [
+        { title: t("menu.subscription.companies"), url: "/company-subscriptions", permission: "company-subscriptions.access" },
+        { title: t("menu.subscription.plans"), url: "/subscription-plans", permission: "subscription-plans.access" },
+        { title: t("menu.subscription.features"), url: "/subscription-features", permission: "features.access" },
+      ],
     },
   ];
 }
