@@ -59,7 +59,7 @@ export default function DashboardFundSummaryCard({ data, isLoading, isRefreshing
                 {t("dashboard.cards.fund")}
               </p>
               <p className="text-xl font-bold tracking-tight text-foreground">
-                <DisplayCount amount={data.total_fund_amount} abbreviate translation={false} />
+                <DisplayCount amount={data.total_fund_amount} translation={false} />
               </p>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function DashboardFundSummaryCard({ data, isLoading, isRefreshing
               <div key={key} className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">{t(labelKey)}:</span>
                 <span className="font-semibold text-foreground">
-                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} abbreviate translation={false} />
+                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} />
                 </span>
               </div>
             ))}

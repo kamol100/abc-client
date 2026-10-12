@@ -1,6 +1,16 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-export const FundTransactionFormFieldSchema = (): FieldConfig[] => {
+const transferFundApi = (excludeFundId?: string | number | null) => {
+  if (excludeFundId === undefined || excludeFundId === null || excludeFundId === "") {
+    return "/dropdown-funds";
+  }
+
+  return `/dropdown-funds?filter=${encodeURIComponent(String(excludeFundId))}`;
+};
+
+export const FundTransactionFormFieldSchema = (
+  excludeFundId?: string | number | null
+): FieldConfig[] => {
 
   return [
     {
@@ -52,7 +62,7 @@ export const FundTransactionFormFieldSchema = (): FieldConfig[] => {
         labelText: "fund_transaction.transfer_by.label",
       },
       placeholder: "fund_transaction.transfer_by.placeholder",
-      api: "/dropdown-funds",
+      api: transferFundApi(excludeFundId),
       isClearable: true,
     },
     {

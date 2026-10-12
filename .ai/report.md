@@ -1,19 +1,20 @@
 ## Summary
 
-The `/subscription` sidebar item is hidden when the signed-in profile has a reseller.
+A fund transfer destination dropdown no longer includes the fund the transfer is started from.
 
 ## Files changed
 
-- `hooks/use-menu-items.ts`: the always-visible subscription item sets `hideForReseller`. `useMenuItems` skips those items when `profile.reseller` is set.
+- `components/fund-transactions/fund-transaction-form-schema.ts`: the transfer account dropdown requests `/dropdown-funds?filter={fund id}` so the current fund is excluded.
+- `components/fund-transactions/fund-transaction-form.tsx`: passes the selected fund id into that field schema.
 
 ## Behavior
 
-Company users still see the subscription link. Reseller users do not. The permission-gated subscription admin menu is unchanged.
+Choosing Transfer loads every other fund. The fund named at the top of the dialog is omitted. Other transaction types still hide that dropdown.
 
 ## Tests
 
-No diagnostics on the edited file. The sidebar was not checked in the browser because the app requires login.
+No frontend test covers this form. The backend already excludes a fund when `dropdown.funds` receives `filter` as that fund’s id. The dialog was not exercised in the browser because the app is not running and the screen requires login.
 
 ## Left untouched
 
-`components/subscription/my-subscription.tsx`, `next.config.ts`.
+`components/import-client/import-client-table.tsx` and the untracked skill files in this working tree.

@@ -11,7 +11,7 @@ import FundTransactionFormFieldSchema from "./fund-transaction-form-schema";
 import { FundTransactionFormSchema } from "./fund-transaction-type";
 
 type FundTransactionFormProps = {
-  fundId: number;
+  fundId: string | number;
   fundName?: string | null;
   fundBalance?: number | string | null;
   open?: boolean;
@@ -57,7 +57,7 @@ const FundTransactionForm = ({
   trigger,
 }: FundTransactionFormProps) => {
   const { t } = useTranslation();
-  const formSchema = FundTransactionFormFieldSchema();
+  const formSchema = FundTransactionFormFieldSchema(fundId);
 
   return (
     <MyDialog

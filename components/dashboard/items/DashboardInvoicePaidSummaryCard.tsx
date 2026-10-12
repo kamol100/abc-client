@@ -60,7 +60,7 @@ export default function DashboardInvoicePaidSummaryCard({ data, isLoading, isRef
                 {t("dashboard.cards.invoice_paid")}
               </p>
               <p className="text-xl font-bold tracking-tight text-foreground">
-                <DisplayCount amount={data.total_paid_amount} abbreviate translation={false} />
+                <DisplayCount amount={data.total_paid_amount} translation={false} />
               </p>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function DashboardInvoicePaidSummaryCard({ data, isLoading, isRef
               <div key={key} className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">{t(labelKey)}:</span>
                 <span className="font-semibold text-foreground">
-                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} abbreviate translation={false} />
+                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} />
                 </span>
               </div>
             ))}

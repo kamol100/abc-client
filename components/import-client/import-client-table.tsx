@@ -90,7 +90,7 @@ const ImportClientTable: FC = () => {
                 toolbarTitle={toolbarTitle}
                 toolbarInfoComponent={
                     selectAllActive ? (
-                        <MyBadge type="warning" variant="soft" size="sm" className="shrink-0">
+                        <MyBadge type="error" variant="soft" size="md" className="shrink-0">
                             {t("import_client.messages.select_all_pages", {
                                 count: pagination?.total ?? 0,
                             })}
