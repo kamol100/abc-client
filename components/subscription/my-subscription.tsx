@@ -1,6 +1,7 @@
 "use client";
 
 import Card from "@/components/card";
+import MyBadge from "@/components/my-badge";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useTranslation } from "react-i18next";
 
@@ -50,19 +51,18 @@ export default function MySubscription() {
         <p className="text-sm text-muted-foreground">
           {t("subscription.ends_at")}: {summary.ends_at ?? "-"}
         </p>
-      </Card>
-      <Card className="p-4">
-        <h2 className="mb-3 text-sm font-medium">{t("subscription.features")}</h2>
-        <ul className="space-y-2">
-          {(payload?.features ?? []).map((feature) => (
-            <li key={feature.id} className="flex items-center justify-between gap-3 text-sm">
-              <span>{feature.name}</span>
-              <span className="text-muted-foreground">
-                {t(`subscription.mode.${feature.expired_mode}`, { defaultValue: feature.expired_mode })}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-2">
+          <h2 className="mb-3 text-sm font-medium">{t("subscription.features")}:</h2>
+          <ul className="flex flex-wrap gap-2">
+            {(payload?.features ?? []).map((feature) => (
+              <li key={feature.id}>
+                <MyBadge type="success" variant="soft" size="sm">
+                  {feature.name}
+                </MyBadge>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Card>
     </div>
   );

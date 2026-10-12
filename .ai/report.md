@@ -1,20 +1,19 @@
 ## Summary
 
-Resolved the merge conflict at the end of the English and Bengali translation files. Both sides added a top-level object, so both are kept.
+Each feature on the subscription page is a soft success badge with the check icon from `MyBadge`.
 
 ## Files changed
 
-- `public/lang/en.json`
-- `public/lang/bn.json`
+- `components/subscription/my-subscription.tsx`: feature names render inside `MyBadge` (`type="success"`, `variant="soft"`, `size="sm"`). The success type supplies the check icon.
 
 ## Behavior
 
-`olt`, `monitoring`, and `noc` from the current branch stay in place. `subscription` from the subscription branch follows them. Both files parse as JSON and contain all four keys.
+Features wrap in a row of badges. Loading and empty subscription states are unchanged.
 
 ## Tests
 
-`python3` `json.loads` succeeded for both files. No app tests were run; this change only removes conflict markers and restores the closing braces.
+The editor reports no diagnostics on the edited file. The subscription page redirects to login, so the rendered badges were not checked in the browser.
 
 ## Left untouched
 
-Other uncommitted subscription and dashboard work was not modified.
+`next.config.ts` and the earlier host-proxy work.
