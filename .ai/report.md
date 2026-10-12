@@ -1,19 +1,19 @@
 ## Summary
 
-Each feature on the subscription page is a soft success badge with the check icon from `MyBadge`.
+The `/subscription` sidebar item is hidden when the signed-in profile has a reseller.
 
 ## Files changed
 
-- `components/subscription/my-subscription.tsx`: feature names render inside `MyBadge` (`type="success"`, `variant="soft"`, `size="sm"`). The success type supplies the check icon.
+- `hooks/use-menu-items.ts`: the always-visible subscription item sets `hideForReseller`. `useMenuItems` skips those items when `profile.reseller` is set.
 
 ## Behavior
 
-Features wrap in a row of badges. Loading and empty subscription states are unchanged.
+Company users still see the subscription link. Reseller users do not. The permission-gated subscription admin menu is unchanged.
 
 ## Tests
 
-The editor reports no diagnostics on the edited file. The subscription page redirects to login, so the rendered badges were not checked in the browser.
+No diagnostics on the edited file. The sidebar was not checked in the browser because the app requires login.
 
 ## Left untouched
 
-`next.config.ts` and the earlier host-proxy work.
+`components/subscription/my-subscription.tsx`, `next.config.ts`.

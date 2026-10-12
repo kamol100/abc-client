@@ -33,7 +33,7 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { usePermissions, useSubscription } from "@/context/app-provider";
+import { usePermissions, useProfile, useSubscription } from "@/context/app-provider";
 import { isMenuFeatureLocked } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 
@@ -53,6 +53,7 @@ interface MenuItemConfig {
   permissions: string[];
   feature?: string;
   always?: boolean;
+  hideForReseller?: boolean;
   items?: MenuSubItemConfig[];
 }
 
@@ -420,6 +421,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       icon: CreditCard,
       permissions: [],
       always: true,
+      hideForReseller: true,
     },
     {
       id: 34,
@@ -442,10 +444,14 @@ export function useMenuItems(): NavMenuItem[] {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const { subscription } = useSubscription();
+  const { profile } = useProfile();
+  const isReseller = !!profile?.reseller;
 
   return useMemo(() => {
     const menuConfig = buildMenuConfig(t);
     return menuConfig.reduce<NavMenuItem[]>((acc, config) => {
+      if (config.hideForReseller && isReseller) return acc;
+
       const locked = isMenuFeatureLocked(
         subscription?.state,
         subscription?.disabled_features,
@@ -480,5 +486,5 @@ export function useMenuItems(): NavMenuItem[] {
       });
       return acc;
     }, []);
-  }, [t, hasPermission, subscription]);
+  }, [t, hasPermission, subscription, isReseller]);
 }
