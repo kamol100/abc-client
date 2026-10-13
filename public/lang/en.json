@@ -1,5 +1,6 @@
 {
     "common": {
+        "no_data": "No data",
         "january": "January",
         "february": "February",
         "march": "March",
@@ -5638,6 +5639,16 @@
             "expired": "Expired"
         },
         "features": "Features",
+        "invoices": {
+            "title": "Invoices",
+            "id": "ID",
+            "date": "Date",
+            "type": "Type",
+            "note": "Note",
+            "amount": "Amount",
+            "status": "Status",
+            "pay": "Pay"
+        },
         "expired_action": "Your subscription has expired. This action is not available.",
         "feature_not_in_plan": "This feature is not included in your subscription plan.",
         "banner": {

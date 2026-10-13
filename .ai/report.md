@@ -1,21 +1,22 @@
 ## Summary
 
-The company table client column now uses the API `client_count` instead of the length of an empty clients list.
+The My Subscription page lists the company's subscription invoices under the plan card. Columns are ID, date, type, note, amount, status, and a pay action. The pay button does not start a payment yet.
 
 ## Files changed
 
-- `components/companies/companies-column.tsx`: the clients cell reads `client_count`.
+- `components/subscription/my-subscription.tsx`: the invoice table and its columns live in this file, under the plan card. Unpaid rows show a pay button with no handler. Paid rows show a dash.
+- `public/lang/en.json` and `public/lang/bn.json`: `subscription.invoices` labels.
 
 ## Behavior
 
-A company with no counted clients shows 0. A company with clients shows the count returned by `GET /companies`.
+The table uses the invoice list envelope (`data.data` and `data.data.pagination`). Status labels reuse the invoice status keys. The pay control is present for due and partial invoices and does not call the pay API.
 
 ## Tests
 
 `scripts/ai/typecheck` passed.
 
-The companies table was not opened in the browser. No dev server was running, and the page needs a signed-in session.
+The subscription page redirected to `/admin` because there is no signed-in session. The table was not exercised in the browser.
 
 ## Left untouched
 
-`dashboard-breadcrumb.tsx`, `components/clients/client-row-actions.tsx`, `components/expenses/expense-type.ts`, `company-form-schema.ts`, `company-type.ts`, and the other language-file edits were already dirty and were not part of this change.
+`public/lang/en.json` and `public/lang/bn.json` already contained an uncommitted `common.no_data` key. That key was left as it was.
