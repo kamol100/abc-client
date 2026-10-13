@@ -123,8 +123,8 @@ export default async function RootLayout({
               >
                 <TanstackProvider>{children}</TanstackProvider>
               </ThemeSettingsProvider>
+              <InstallPrompt />
             </I18nProvider>
-            <InstallPrompt />
             <ToastContainer
               position="bottom-right"
               pauseOnFocusLoss={false}
