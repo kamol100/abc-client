@@ -3,10 +3,11 @@
 export type CliProtocol = "telnet" | "ssh";
 
 /** Always sent, in this order. */
-export const TEST_STEP_KEYS = ["reachable", "cli_port", "cli_login", "snmp"] as const;
+// snmp_community: the v2c community read from the OLT configuration over the CLI (BDCOM, VSOL), before `snmp`.
+export const TEST_STEP_KEYS = ["reachable", "cli_port", "cli_login", "snmp_community", "snmp"] as const;
 export type TestStepKey = (typeof TEST_STEP_KEYS)[number];
 
-/** Steps the UI has a label for: the API's four, plus "address" (a Device IP refused by the address policy). */
+/** Steps the UI has a label for: the API's five, plus "address" (a Device IP refused by the address policy). */
 export const LABELLED_STEP_KEYS: readonly string[] = ["address", ...TEST_STEP_KEYS];
 
 /** 422 of POST /access/test when the Device IP is refused (loopback, link-local, reserved, deny list). */
@@ -107,10 +108,18 @@ function tidy(text: string): string {
 }
 
 /** `t(message_key, params)`, falling back to the English `message` when the key is unknown. */
+/** "read-only" / "read-write" (or ro / rw) as the reader's language says it. */
+export function translateAccessType(value: unknown, t: Translate): unknown {
+    const short = value === "read-only" || value === "ro" ? "ro" : value === "read-write" || value === "rw" ? "rw" : null;
+    return short ? t(`olt.community.access_type.${short}`) : value;
+}
+
 export function stepMessage(step: OltTestStep, t: Translate): string | null {
     const fallback = step.message ?? "";
     if (step.message_key) {
-        const text = t(step.message_key, { ...(step.params ?? {}), defaultValue: fallback });
+        const params: Record<string, unknown> = { ...(step.params ?? {}) };
+        if ("access_type" in params) params.access_type = translateAccessType(params.access_type, t);
+        const text = t(step.message_key, { ...params, defaultValue: fallback });
         // i18next returns the key itself for a missing key when no default applies.
         if (text && text !== step.message_key) return tidy(text);
     }

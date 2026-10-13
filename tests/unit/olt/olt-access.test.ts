@@ -23,11 +23,15 @@ const saved: OltAccess = {
 describe("buildOltAccessSchema", () => {
     const base = { snmp_version: "v2c", cli_protocol: "telnet", cli_username: "admin" };
 
-    it("requires the community and CLI password on the first save", () => {
+    it("requires the CLI password on the first save, and the community only without a CLI login", () => {
         const first = buildOltAccessSchema({});
-        expect(first.safeParse({ ...base, snmp_community: "", cli_password: "pw" }).success).toBe(false);
+        // With a CLI login the community may stay empty: the app reads it from the OLT (BDCOM, VSOL).
+        expect(first.safeParse({ ...base, snmp_community: "", cli_password: "pw" }).success).toBe(true);
         expect(first.safeParse({ ...base, snmp_community: "public", cli_password: "" }).success).toBe(false);
         expect(first.safeParse({ ...base, snmp_community: "public", cli_password: "pw" }).success).toBe(true);
+        const noCli = first.safeParse({ snmp_version: "v2c", cli_protocol: null, snmp_community: "" });
+        expect(noCli.success).toBe(false);
+        expect(noCli.error?.issues[0]).toMatchObject({ path: ["snmp_community"], message: "olt.access.errors.community_required_without_cli" });
     });
 
     it("lets empty secrets keep the stored ones", () => {

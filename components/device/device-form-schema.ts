@@ -1,19 +1,13 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
 /**
- * OLT credentials (saved to olt_accesses), shown only while an OLT device type is selected.
+ * OLT credentials (saved to olt_accesses), shown only while an OLT device type is selected: the CLI login first,
+ * then the SNMP community, which the app can read from the OLT when it is left empty.
  * When editing, the saved secrets are never sent back: a blank community / password keeps them.
  */
 const oltAccessFields = (oltTypeIds: (string | number)[], keepSecrets: boolean): FieldConfig[] => {
   const isOlt = (value: unknown) => oltTypeIds.some((id) => String(id) === String(value));
   return [
-    {
-      type: "password",
-      name: "snmp_community",
-      label: { labelText: "olt.access.fields.snmp_community", tooltip: "olt.access.fields.snmp_community_tooltip" },
-      placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.snmp_community",
-      visibleWhen: { field: "device_type_id", when: isOlt },
-    },
     {
       type: "dropdown",
       name: "cli_protocol",
@@ -40,6 +34,15 @@ const oltAccessFields = (oltTypeIds: (string | number)[], keepSecrets: boolean):
       label: { labelText: "olt.access.fields.cli_password", tooltip: "olt.access.fields.cli_password_tooltip" },
       placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.cli_password",
       visibleWhen: { field: "cli_protocol" },
+    },
+    // Last, after the CLI login: with one, it may stay empty and the app reads it from the OLT (BDCOM, VSOL).
+    // The brand is not known here, so the tooltip covers BDCOM, VSOL and Huawei.
+    {
+      type: "password",
+      name: "snmp_community",
+      label: { labelText: "olt.access.fields.snmp_community", tooltip: "olt.access.fields.snmp_community_tooltip" },
+      placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.snmp_community_auto_placeholder",
+      visibleWhen: { field: "device_type_id", when: isOlt },
     },
   ];
 };
