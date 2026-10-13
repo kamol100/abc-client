@@ -145,6 +145,11 @@ export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = [], keep
       ],
     },
     {
+      type: "switch",
+      name: "monitor_enabled",
+      label: { labelText: "device.monitor_enabled.label", tooltip: "device.monitor_enabled.tooltip" },
+    },
+    {
       type: "textarea",
       name: "note",
       label: { labelText: "device.note.label" },

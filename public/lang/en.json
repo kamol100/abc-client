@@ -3189,6 +3189,10 @@
             "network": "Filter by network",
             "device_type": "Filter by device type",
             "status": "Filter by status"
+        },
+        "monitor_enabled": {
+            "label": "Monitor automatically",
+            "tooltip": "Check this device on a schedule. Needs a Device IP, and automatic checks must be on under Settings → Monitoring."
         }
     },
     "fund": {
@@ -4338,6 +4342,9 @@
             },
             "telegram": {
                 "title": "Telegram"
+            },
+            "monitoring": {
+                "title": "Monitoring"
             }
         },
         "noc": {
@@ -4383,6 +4390,10 @@
                 "title": "Dashboard Settings",
                 "description": "Choose which dashboard items stay on the dashboard. An item stays visible until its switch is turned off.",
                 "empty": "No dashboard items are available for your permissions."
+            },
+            "monitoring": {
+                "title": "Monitoring Settings",
+                "description": "Control automatic device checks. Checks run only for devices that have “Monitor automatically” turned on."
             }
         },
         "options": {
@@ -4416,7 +4427,25 @@
             "reminder_day_12": "12 Days before deadline",
             "reminder_day_13": "13 Days before deadline",
             "reminder_day_14": "14 Days before deadline",
-            "reminder_day_15": "15 Days before deadline"
+            "reminder_day_15": "15 Days before deadline",
+            "monitor_interval_off": "Off",
+            "monitor_interval_1": "Every 1 minute",
+            "monitor_interval_2": "Every 2 minutes",
+            "monitor_interval_5": "Every 5 minutes",
+            "monitor_interval_10": "Every 10 minutes",
+            "monitor_interval_15": "Every 15 minutes",
+            "monitor_interval_30": "Every 30 minutes",
+            "monitor_interval_60": "Every 60 minutes",
+            "monitor_fail_threshold_1": "1 failed check in a row",
+            "monitor_fail_threshold_2": "2 failed checks in a row",
+            "monitor_fail_threshold_3": "3 failed checks in a row",
+            "monitor_fail_threshold_4": "4 failed checks in a row",
+            "monitor_fail_threshold_5": "5 failed checks in a row",
+            "monitor_fail_threshold_6": "6 failed checks in a row",
+            "monitor_fail_threshold_7": "7 failed checks in a row",
+            "monitor_fail_threshold_8": "8 failed checks in a row",
+            "monitor_fail_threshold_9": "9 failed checks in a row",
+            "monitor_fail_threshold_10": "10 failed checks in a row"
         },
         "fields": {
             "pid_prefix": {
@@ -4662,6 +4691,14 @@
             },
             "dashboard_show_invoice_expense_graph": {
                 "label": "Invoice and Expense Chart"
+            },
+            "device_monitor_interval": {
+                "label": "Automatic checks",
+                "placeholder": "Select how often to check"
+            },
+            "device_monitor_fail_threshold": {
+                "label": "Mark down after",
+                "placeholder": "Select failed checks"
             }
         }
     },
@@ -5592,6 +5629,12 @@
             "splitter": "Splitter",
             "onu": "ONU",
             "other": "Device"
+        },
+        "off_hint": {
+            "device": "Automatic checks are off for this device. Turn on “Monitor automatically” when you edit the device.",
+            "devices": "Edit devices",
+            "company": "Automatic checks are off for your company. Choose how often to check under Settings → Monitoring → “Automatic checks”.",
+            "settings": "Monitoring settings"
         }
     },
     "noc": {

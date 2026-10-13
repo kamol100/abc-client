@@ -12,9 +12,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardMetricCard, DashboardMetricRow } from "@/components/dashboard/items/DashboardMetricCard";
 import LoadError from "@/components/monitoring/load-error";
 import MonitorStateBadge from "@/components/monitoring/monitor-state-badge";
+import MonitoringOffHint from "@/components/monitoring/monitoring-off-hint";
 import PingDialog from "@/components/monitoring/ping-dialog";
 import { StatusBars } from "@/components/monitoring/monitoring-charts";
-import { formatMs, formatPct, toDate, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
+import { formatMs, formatPct, monitoringStatus, toDate, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
@@ -80,6 +81,7 @@ const OltView: FC<Props> = ({ oltId }) => {
 
     const { olt, monitoring, clients, onus, optical, billing } = detail;
     const canMonitor = hasPermission("devices.monitoring");
+    const { deviceOff, companyOff, live } = monitoringStatus(olt.monitor_enabled, olt.automatic_checks);
     const facts = [
         olt.vendor && t(`olt.vendor.${olt.vendor}`, { defaultValue: olt.vendor }),
         olt.model,
@@ -110,7 +112,7 @@ const OltView: FC<Props> = ({ oltId }) => {
         <>
             <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold">{t("olt.monitoring_card.title")}</h2>
-                {olt.monitor_enabled && (
+                {live && (
                     <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                         <span className="h-2 w-2 rounded-full bg-green-600 ring-[3px] ring-green-600/20" />
                         {t("monitoring.live")}
@@ -162,6 +164,8 @@ const OltView: FC<Props> = ({ oltId }) => {
                     <PingDialog deviceId={olt.id} deviceName={olt.name} />
                 </div>
             </div>
+
+            <MonitoringOffHint deviceOff={deviceOff} companyOff={companyOff} />
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
                 {canMonitor ? (

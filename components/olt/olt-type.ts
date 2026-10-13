@@ -70,6 +70,8 @@ export interface OltDetail {
         longitude: number | null;
         last_loss_pct: number | null;
         check_interval_minutes: number | null;
+        /** False while the company's automatic check interval is off, whatever `monitor_enabled` says. */
+        automatic_checks: boolean;
     };
     monitoring: {
         uptime_24h: number | null;

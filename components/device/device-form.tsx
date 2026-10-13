@@ -7,6 +7,8 @@ import { DeviceFormSchema, DeviceRow } from "./device-type";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
+const CREATE_DEFAULTS = { monitor_enabled: true };
+
 type Props = {
   mode?: "create" | "edit";
   api?: string;
@@ -39,7 +41,7 @@ const DeviceForm: FC<Props> = ({
       <FormBuilder
         formSchema={DeviceFormFieldSchema(oltTypeIds, mode === "edit")}
         grids={2}
-        data={data}
+        data={mode === "create" ? CREATE_DEFAULTS : data}
         api={api}
         mode={mode}
         schema={DeviceFormSchema}

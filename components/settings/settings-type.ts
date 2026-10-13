@@ -21,6 +21,8 @@ export const SETTINGS_SELECT_KEYS = [
     "sms_auto_invoice_schedule",
     "invoice_due_reminder_channel",
     "sms_invoice_reminder_before_day",
+    "device_monitor_interval",
+    "device_monitor_fail_threshold",
 ] as const;
 
 export const SETTINGS_SWITCH_KEYS = [
@@ -129,6 +131,8 @@ export const SettingsRowSchema = z
         sms_auto_invoice_schedule: NullableStringOrNumberSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableStringOrNumberSchema,
+        device_monitor_interval: NullableStringOrNumberSchema,
+        device_monitor_fail_threshold: NullableStringOrNumberSchema,
         sms_after_client_create: NullableBooleanLikeSchema,
         sms_after_client_activated: NullableBooleanLikeSchema,
         sms_after_client_deactivated: NullableBooleanLikeSchema,
@@ -186,6 +190,8 @@ export const SettingsFormSchema = z
         sms_auto_invoice_schedule: NullableNumberFormSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableNumberFormSchema,
+        device_monitor_interval: NullableNumberFormSchema,
+        device_monitor_fail_threshold: NullableNumberFormSchema,
         sms_after_client_create: NullableSwitchFormSchema,
         sms_after_client_activated: NullableSwitchFormSchema,
         sms_after_client_deactivated: NullableSwitchFormSchema,
@@ -239,7 +245,14 @@ const NUMBER_INPUT_KEYS = new Set<SettingsTextKey>(["lat", "lon"]);
 const NUMBER_SELECT_KEYS = new Set<SettingsSelectKey>([
     "sms_auto_invoice_schedule",
     "sms_invoice_reminder_before_day",
+    "device_monitor_interval",
+    "device_monitor_fail_threshold",
 ]);
+// Shown when the company never saved the setting: automatic checks off, mark down after 2 failed checks.
+const NUMBER_SELECT_DEFAULTS: Partial<Record<SettingsSelectKey, number>> = {
+    device_monitor_interval: 0,
+    device_monitor_fail_threshold: 2,
+};
 
 export function isSettingsSwitchKey(key: SettingsFieldKey): key is SettingsSwitchKey {
     return (SETTINGS_SWITCH_KEYS as readonly string[]).includes(key);
@@ -288,7 +301,7 @@ export function normalizeSettingValueForForm(
 
     if (isSettingsSelectKey(key)) {
         if (NUMBER_SELECT_KEYS.has(key)) {
-            return toNumberOrNull(value);
+            return toNumberOrNull(value) ?? NUMBER_SELECT_DEFAULTS[key] ?? null;
         }
         if (key === "invoice_due_reminder_channel") {
             return value === "voice" ? "voice" : "sms";

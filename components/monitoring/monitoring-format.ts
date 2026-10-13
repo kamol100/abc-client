@@ -93,3 +93,10 @@ export function useMonitoringFormat() {
         return { duration, relative, secondsSince };
     }, [t, locale]);
 }
+
+/** Why a device is not checked automatically: its own switch, the company's interval, or both. */
+export function monitoringStatus(monitorEnabled: boolean, automaticChecks: boolean) {
+    const deviceOff = !monitorEnabled;
+    const companyOff = !automaticChecks;
+    return { deviceOff, companyOff, live: !deviceOff && !companyOff };
+}

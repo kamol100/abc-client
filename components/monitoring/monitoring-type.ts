@@ -43,6 +43,8 @@ export interface DeviceMonitoring {
         last_checked_at: string | null;
         last_rtt_ms: number | null;
         check_interval_minutes: number | null;
+        /** False while the company's automatic check interval is off, whatever `monitor_enabled` says. */
+        automatic_checks: boolean;
         olt_id: string | null;
     };
     period: MonitoringPeriod;

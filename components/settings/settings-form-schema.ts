@@ -12,7 +12,8 @@ export type SettingsSectionKey =
     | "sms"
     | "map"
     | "telegram"
-    | "dashboard";
+    | "dashboard"
+    | "monitoring";
 
 type SettingsOptionConfig = {
     value: string | number;
@@ -75,6 +76,17 @@ const SMS_SCHEDULE_OPTIONS: SettingsOptionConfig[] = Array.from(
     }
 );
 
+// Minutes between automatic device checks (0 = off), and the failed checks in a row before a device is marked down.
+const MONITOR_INTERVAL_OPTIONS: SettingsOptionConfig[] = [0, 1, 2, 5, 10, 15, 30, 60].map((minutes) => ({
+    value: minutes,
+    label: `settings.options.monitor_interval_${minutes === 0 ? "off" : minutes}`,
+}));
+
+const MONITOR_FAIL_THRESHOLD_OPTIONS: SettingsOptionConfig[] = Array.from({ length: 10 }, (_, index) => ({
+    value: index + 1,
+    label: `settings.options.monitor_fail_threshold_${index + 1}`,
+}));
+
 export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSectionSchema> = {
     general: {
         title: "settings.sections.general.title",
@@ -124,6 +136,14 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
                 ? { kind: "switch", key: item.settingKey, permission: item.permission }
                 : { kind: "switch", key: item.settingKey },
         ),
+    },
+    monitoring: {
+        title: "settings.sections.monitoring.title",
+        description: "settings.sections.monitoring.description",
+        fields: [
+            { kind: "select", key: "device_monitor_interval", options: MONITOR_INTERVAL_OPTIONS },
+            { kind: "select", key: "device_monitor_fail_threshold", options: MONITOR_FAIL_THRESHOLD_OPTIONS },
+        ],
     },
     telegram: {
         title: "settings.sections.telegram.title",
