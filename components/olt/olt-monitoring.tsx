@@ -30,6 +30,7 @@ import type { DeviceMonitoring, DeviceOutage, MonitoringPeriod } from "@/compone
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import OltChecksTable from "./olt-checks-table";
+import NotAnsweringBadge from "@/components/monitoring/not-answering-badge";
 
 const PERIODS: { value: MonitoringPeriod; labelKey: string; tick: string }[] = [
     { value: "24h", labelKey: "monitoring.period.24h", tick: "HH:mm" },
@@ -235,6 +236,7 @@ export default function OltMonitoring({ deviceId }: Props) {
                     <div className="flex flex-wrap items-center gap-2.5">
                         <h1 className="text-lg font-semibold">{t("olt.monitoring.heading", { name: device.name })}</h1>
                         <MonitorStateBadge state={device.monitor_state} />
+                        <NotAnsweringBadge state={device.monitor_state} failures={device.consecutive_failures} threshold={device.fail_threshold} />
                     </div>
                     <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
                         {live && (

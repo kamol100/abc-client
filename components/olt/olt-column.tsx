@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye } from "lucide-react";
+import { AlertTriangle, Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { staleNoteText } from "@/components/onu/onu-freshness";
+import { cn } from "@/lib/utils";
 import MyButton from "@/components/my-button";
 import { usePermissions } from "@/context/app-provider";
 import MonitorStateBadge from "@/components/monitoring/monitor-state-badge";
@@ -26,14 +28,35 @@ export function useOltColumns(): ColumnDef<OltRow>[] {
         {
             id: "name",
             header: ({ column }) => <DataTableColumnHeader column={column} title="olt.table.name" />,
-            cell: ({ row }) =>
-                canShow ? (
-                    <Link href={`/olts/view/${row.original.id}`} className="font-semibold hover:underline">
-                        {row.original.name}
-                    </Link>
-                ) : (
-                    <span className="font-semibold">{row.original.name}</span>
-                ),
+            cell: ({ row }) => {
+                const access = row.original.access;
+                // The last poll or connection test failed: PON/ONU data may be stale.
+                // Users without olts.access-settings get `last_poll_failed` but no error text.
+                const problem = access?.last_poll_error
+                    ? t("olt.table.poll_failed", { error: access.last_poll_error })
+                    : access?.last_poll_failed
+                        ? t("olt.poll.failed")
+                        : access?.last_test_ok === false
+                        ? t("olt.table.test_failed")
+                        : null;
+                return (
+                    <div className="flex items-center gap-1.5">
+                        {canShow ? (
+                            <Link href={`/olts/view/${row.original.id}`} className="font-semibold hover:underline">
+                                {row.original.name}
+                            </Link>
+                        ) : (
+                            <span className="font-semibold">{row.original.name}</span>
+                        )}
+                        {problem && (
+                            <span title={problem} className="inline-flex text-destructive">
+                                <AlertTriangle className="h-4 w-4" aria-hidden />
+                                <span className="sr-only">{problem}</span>
+                            </span>
+                        )}
+                    </div>
+                );
+            },
             enableSorting: false,
             enableHiding: false,
         },
@@ -81,11 +104,16 @@ export function useOltColumns(): ColumnDef<OltRow>[] {
         {
             id: "olt_onus",
             header: ({ column }) => <DataTableColumnHeader column={column} title="olt.table.onus" />,
-            cell: ({ row }) => (
-                <span className="tabular-nums">
-                    {row.original.onus_online}/{row.original.onus_total}
-                </span>
-            ),
+            cell: ({ row }) => {
+                // Last polled count while the OLT is down / not polled: muted, with how old it is.
+                const note = staleNoteText(row.original.onu_data, t);
+                return (
+                    <span className={cn("tabular-nums", note && "text-muted-foreground")} title={note ?? undefined}>
+                        {row.original.onus_online}/{row.original.onus_total}
+                        {note && <span className="sr-only"> ({note})</span>}
+                    </span>
+                );
+            },
             enableSorting: false,
         },
         {

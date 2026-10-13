@@ -25,6 +25,8 @@ import ClientSessionResetDialog from "@/components/clients/client-session-reset-
 import TicketTable from "@/components/tickets/ticket-table";
 import PaymentTable from "@/components/payments/payment-table";
 import InvoiceTable from "@/components/invoices/invoice-table";
+import ClientOnuSection from "@/components/clients/client-onu-section";
+import type { OnuSummary } from "@/components/onu/onu-type";
 
 const ClientSmsDialog = dynamic(() => import("@/components/clients/client-sms"), { ssr: false });
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
@@ -123,6 +125,12 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     client={client as ClientRow}
                 />
             </div>
+            {hasPermission("onus.access") && (client.onus?.length ?? 0) > 0 && (
+                <ClientOnuSection
+                    onus={(client.onus ?? []) as unknown as OnuSummary[]}
+                    client={{ id: getClientId(client) ?? clientId, name: client.name }}
+                />
+            )}
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
                 <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={false} />

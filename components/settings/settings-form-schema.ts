@@ -9,6 +9,7 @@ import type {
 
 export type SettingsSectionKey =
     | "general"
+    | "olt"
     | "sms"
     | "map"
     | "telegram"
@@ -48,6 +49,12 @@ export type SettingsSectionSchema = {
     description: string;
     fields: SettingsFieldSchema[];
 };
+
+/** Minutes between OLT polls (PON ports and ONUs); 0 = off. Same values as the API's monitoring.olt.poll_intervals. */
+export const OLT_POLL_INTERVAL_OPTIONS: SettingsOptionConfig[] = [0, 5, 15, 30].map((minutes) => ({
+    value: minutes,
+    label: `settings.options.olt_poll_interval_${minutes}`,
+}));
 
 const SMS_CHANNEL_OPTIONS: SettingsOptionConfig[] = [
     { value: "sms", label: "settings.options.reminder_channel_sms" }
@@ -117,6 +124,15 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "invoice_due_reminder_voice_campaign_name" },
             { kind: "switch", key: "voice_call_invoice_reminder" },
             { kind: "select", key: "sms_invoice_reminder_before_day", options: SMS_REMINDER_DAY_OPTIONS },
+        ],
+    },
+    olt: {
+        title: "settings.sections.olt.title",
+        description: "settings.sections.olt.description",
+        fields: [
+            { kind: "select", key: "olt_poll_interval", options: OLT_POLL_INTERVAL_OPTIONS },
+            { kind: "text", key: "onu_rx_power_low_dbm", inputType: "number" },
+            { kind: "switch", key: "telegram_onu_low_power" },
         ],
     },
     map: {

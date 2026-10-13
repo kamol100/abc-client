@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { parseApiError } from "@/lib/helper/helper";
+import { apiErrorText } from "@/lib/helper/helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -57,8 +57,8 @@ export default function useApiMutation<
       onSuccess?.(data);
     },
     onError: (error) => {
-      const errorMsg = parseApiError(error);
-      toast.error(t(String(errorMsg || defaultErrorMessage)));
+      // A translated message_key when the API sends one, a friendly text for 429, else the API message.
+      toast.error(apiErrorText(error, t, defaultErrorMessage));
       onError?.(error);
     },
   });

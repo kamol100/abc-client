@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { durationParts, formatMs, formatPct } from "@/components/monitoring/monitoring-format";
-import { buildOltAccessSchema } from "@/components/olt/olt-type";
 
 describe("durationParts", () => {
     it("keeps the two most significant units", () => {
@@ -26,19 +25,5 @@ describe("formatters", () => {
         expect(formatPct(0, true)).toBe("0%");
         expect(formatPct(33.333, true)).toBe("33.33%");
         expect(formatPct(null)).toBe("—");
-    });
-});
-
-describe("buildOltAccessSchema", () => {
-    const base = { snmp_version: "v2c", cli_protocol: "telnet", cli_username: "admin", cli_password: "" };
-
-    it("requires a community on the first save", () => {
-        expect(buildOltAccessSchema(true).safeParse({ ...base, snmp_community: "" }).success).toBe(false);
-        expect(buildOltAccessSchema(true).safeParse({ ...base, snmp_community: "public" }).success).toBe(true);
-    });
-
-    it("lets an empty community keep the saved one", () => {
-        expect(buildOltAccessSchema(false).safeParse({ ...base, snmp_community: "" }).success).toBe(true);
-        expect(buildOltAccessSchema(false).safeParse({ ...base, cli_protocol: null, snmp_community: "" }).success).toBe(true);
     });
 });

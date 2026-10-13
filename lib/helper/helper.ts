@@ -179,6 +179,46 @@ export function parseApiError(error: unknown): string | false {
     );
 }
 
+/** Laravel's throttle body (`{ message }`, HTTP 429). */
+export const TOO_MANY_ATTEMPTS = "Too Many Attempts.";
+
+type KeyedApiError = { key: string; params: Record<string, unknown>; message: string | null };
+
+/** A controller error that carries a translation key: `{ error: { message, message_key, params } }`. */
+export function apiErrorKey(error: unknown): KeyedApiError | null {
+    const err = error as { error?: Record<string, unknown> | null; message_key?: unknown; params?: unknown; message?: unknown } | null;
+    const source = err?.error && typeof err.error === "object" && typeof err.error.message_key === "string" ? err.error : err;
+    if (!source || typeof source.message_key !== "string" || source.message_key === "") return null;
+    const params = source.params && typeof source.params === "object" ? (source.params as Record<string, unknown>) : {};
+    return { key: source.message_key, params, message: typeof source.message === "string" ? source.message : null };
+}
+
+/** Laravel validation errors (`{ message, errors: { field: [..] } }`) as field → first message. */
+export function serverFieldErrors(error: unknown): Record<string, string> {
+    const err = error as { errors?: unknown; response?: { data?: { errors?: unknown } } } | null;
+    const errors = err?.errors ?? err?.response?.data?.errors;
+    if (!errors || typeof errors !== "object" || Array.isArray(errors)) return {};
+    const result: Record<string, string> = {};
+    Object.entries(errors as Record<string, unknown>).forEach(([field, messages]) => {
+        const first = Array.isArray(messages) ? messages[0] : messages;
+        if (typeof first === "string" && first !== "") result[field] = first;
+    });
+    return result;
+}
+
+/** The toast text of a failed request: a translated `message_key`, a friendly throttle text, else the API message. */
+export function apiErrorText(
+    error: unknown,
+    t: (key: string, options?: Record<string, unknown>) => string,
+    fallbackKey = "common.request_failed"
+): string {
+    const keyed = apiErrorKey(error);
+    if (keyed) return t(keyed.key, { ...keyed.params, defaultValue: keyed.message ?? t(fallbackKey) });
+    const message = parseApiError(error);
+    if (message === TOO_MANY_ATTEMPTS) return t("common.too_many_attempts");
+    return t(String(message || fallbackKey));
+}
+
 /**
  * Bangladesh mobile: local `01[3-9]XXXXXXXX`, intl `8801[3-9]XXXXXXXX`, or 10 digits `1[3-9]XXXXXXXX`.
  * Accepts optional `+`, `00` prefix, and common separators.

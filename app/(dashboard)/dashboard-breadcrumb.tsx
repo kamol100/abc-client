@@ -58,6 +58,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/devices": "menu.networks.devices.title",
   "/device-types": "menu.networks.device_type.title",
   "/olts": "menu.networks.olts.title",
+  "/onus": "menu.networks.onus.title",
   "/noc": "menu.noc.title",
   "/mikrotik-commands": "menu.mikrotik_commands.title",
   "/activity-logs": "menu.activity_logs.title",
@@ -88,6 +89,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/settings/map": "menu.settings.map.title",
   "/settings/monitoring": "menu.settings.monitoring.title",
   "/settings/telegram": "menu.settings.telegram.title",
+  "/settings/olt": "menu.settings.olt.title",
 };
 
 /**

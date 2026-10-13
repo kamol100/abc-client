@@ -79,10 +79,26 @@ export const DeviceFormSchema = z.object({
   // Ping the device automatically (the API turns it off when not sent); the add form starts with it on.
   monitor_enabled: z.boolean().nullable().optional(),
   // OLT access; the API stores the secrets encrypted in olt_accesses and never returns them.
-  snmp_community: z.string().max(255, { message: "olt.access.errors.max" }).nullable().optional(),
+  // Same rules as the OLT access form: community = printable ASCII without spaces (max 64), the rest printable ASCII.
+  snmp_community: z
+    .string()
+    .max(64, { message: "olt.access.errors.max_64" })
+    .regex(/^[\x21-\x7E]*$/, { message: "olt.access.errors.community_chars" })
+    .nullable()
+    .optional(),
   cli_protocol: z.enum(["telnet", "ssh"]).nullable().optional(),
-  cli_username: z.string().max(100).nullable().optional(),
-  cli_password: z.string().max(255, { message: "olt.access.errors.max" }).nullable().optional(),
+  cli_username: z
+    .string()
+    .max(100, { message: "olt.access.errors.max_100" })
+    .regex(/^[\x20-\x7E]*$/, { message: "olt.access.errors.printable" })
+    .nullable()
+    .optional(),
+  cli_password: z
+    .string()
+    .max(255, { message: "olt.access.errors.max" })
+    .regex(/^[\x20-\x7E]*$/, { message: "olt.access.errors.printable" })
+    .nullable()
+    .optional(),
 });
 
 export type DeviceFormInput = z.input<typeof DeviceFormSchema>;

@@ -212,7 +212,14 @@
         "olt_onus": "ONUs online",
         "olt_clients": "Clients",
         "olt_uptime": "Uptime (24 h)",
-        "olt_checked": "Last checked"
+        "olt_checked": "Last checked",
+        "onu_olt": "OLT",
+        "onu_status": "Status",
+        "onu_rx": "Rx power",
+        "onu_distance": "Distance",
+        "onu_client": "Client",
+        "onu_last_seen": "Last seen",
+        "too_many_attempts": "Too many attempts. Wait a minute and try again."
     },
     "data_table": {
         "no_results": "No results"
@@ -3137,6 +3144,7 @@
             "placeholder": "Select parent device"
         },
         "device_ip": {
+            "tooltip": "The address the app pings to check this device. For an OLT: its management IP, the one you use to open its web panel or log in with Telnet/SSH. The app server must be able to reach it.",
             "label": "Device IP",
             "placeholder": "Enter device IP address"
         },
@@ -4227,6 +4235,9 @@
             },
             "olts": {
                 "title": "OLTs"
+            },
+            "onus": {
+                "title": "ONUs"
             }
         },
         "mikrotik_commands": {
@@ -4321,6 +4332,9 @@
             }
         },
         "settings": {
+            "olt": {
+                "title": "OLT Polling"
+            },
             "title": "Settings",
             "general": {
                 "title": "General"
@@ -4362,6 +4376,10 @@
             "not_set": "Not set"
         },
         "sections": {
+            "olt": {
+                "title": "OLT Polling Settings",
+                "description": "Read PON ports and ONUs from OLTs with saved SNMP access. Polling is off by default; the low-power threshold colours ONU signal levels and triggers the Telegram alert."
+            },
             "general": {
                 "title": "General Settings",
                 "description": "Manage invoice defaults and account-level behavior."
@@ -4397,6 +4415,10 @@
             }
         },
         "options": {
+            "olt_poll_interval_0": "Off",
+            "olt_poll_interval_5": "Every 5 minutes",
+            "olt_poll_interval_15": "Every 15 minutes",
+            "olt_poll_interval_30": "Every 30 minutes",
             "reminder_channel_sms": "SMS",
             "reminder_channel_voice": "Voice Call",
             "schedule_07": "07:00 AM",
@@ -4448,6 +4470,20 @@
             "monitor_fail_threshold_10": "10 failed checks in a row"
         },
         "fields": {
+            "olt_poll_interval": {
+                "label": "Poll OLTs automatically",
+                "placeholder": "Select how often"
+            },
+            "onu_rx_power_low_dbm": {
+                "label": "Low ONU optical power below (dBm)",
+                "placeholder": "-27",
+                "errors": {
+                    "range": "Enter a value from -40 to -10"
+                }
+            },
+            "telegram_onu_low_power": {
+                "label": "Telegram alert for low ONU power"
+            },
             "pid_prefix": {
                 "label": "Payment ID Prefix"
             },
@@ -5388,7 +5424,9 @@
             "onus": "ONUs online",
             "clients": "Clients",
             "uptime_24h": "Uptime (24 h)",
-            "last_checked": "Last checked"
+            "last_checked": "Last checked",
+            "poll_failed": "Last poll failed: {{error}}",
+            "test_failed": "Last connection test failed"
         },
         "vendor": {
             "vsol": "VSOL",
@@ -5432,7 +5470,8 @@
             "billing": "Billing",
             "clients_with_due": "Clients with due",
             "expired": "Expired",
-            "due_this_week": "Due this week"
+            "due_this_week": "Due this week",
+            "unknown": "Unknown"
         },
         "attention": {
             "title": "Clients needing attention ({{count}})",
@@ -5454,9 +5493,24 @@
             "empty": "No PON ports polled yet.",
             "online": "{{online}}/{{total}} online",
             "link_down": "Link down",
-            "no_onus": "no ONUs"
+            "no_onus": "no ONUs",
+            "admin_down": "Disabled",
+            "view_onus": "Show the ONUs of {{port}}"
         },
         "access": {
+            "where": {
+                "title": "Where do I find these settings?",
+                "general_title": "Any OLT:",
+                "general": "Log in to the OLT the way your technician does (web panel, or Telnet/SSH with a program like PuTTY). The CLI username and password are that login. The SNMP community is in the OLT's SNMP settings.",
+                "bdcom_title": "BDCOM:",
+                "bdcom": "after logging in, type enable, then show running-config. The community is on the line snmp-server community <name> ro (or rw). The CLI user is on a username … line.",
+                "vsol_title": "VSOL:",
+                "vsol": "the web panel's SNMP page shows the read community. Use the same admin login as the web panel for Telnet/SSH.",
+                "huawei_title": "Huawei:",
+                "huawei": "type display current-configuration | include snmp-agent. If the community is shown encrypted, ask whoever set it up or create a new read-only one.",
+                "missing_title": "Can't find it?",
+                "missing": "Ask whoever installed the OLT to create a read-only SNMP community and to allow the app server's IP. On BDCOM: snmp-server community <name> ro; on Huawei: snmp-agent community read <name>."
+            },
             "title": "Access (SNMP / CLI)",
             "connects": "Connects directly to {{host}} (SNMP {{snmp_port}})",
             "connects_cli": "Connects directly to {{host}} (SNMP {{snmp_port}} / {{protocol}} {{cli_port}})",
@@ -5474,19 +5528,61 @@
                 "ssh": "SSH"
             },
             "fields": {
+                "cli_enable_password_tooltip": "Only if the OLT asks for a password after you type \"enable\" (BDCOM, VSOL). Huawei OLTs usually don't need it.",
+                "cli_password_tooltip": "The password for that username. It is stored encrypted and never shown again; leave it empty to keep the saved one.",
+                "cli_username_tooltip": "The username you use to log in to the OLT with Telnet/SSH (often the same as its web panel login).",
+                "snmp_v3_priv_pass_tooltip": "The privacy (encryption) passphrase of the SNMPv3 user. Leave it empty if the user has no encryption.",
+                "snmp_v3_priv_protocol_tooltip": "Encryption type of the SNMPv3 user. Must match the OLT. AES is the most common.",
+                "snmp_v3_auth_pass_tooltip": "The authentication passphrase of the SNMPv3 user (at least 8 characters), as set on the OLT.",
+                "snmp_v3_auth_protocol_tooltip": "Must match the authentication type of that SNMPv3 user on the OLT. SHA is the most common.",
+                "snmp_v3_user_tooltip": "The SNMPv3 user created on the OLT for monitoring (ask whoever set up the OLT). Only needed for SNMP v3.",
+                "snmp_version_tooltip": "Use v2c (community) unless the OLT is set up for SNMPv3. Most BDCOM, VSOL and Huawei OLTs use v2c.",
                 "snmp_version": "SNMP version",
                 "snmp_community": "SNMP community",
                 "cli_protocol": "CLI protocol",
                 "cli_protocol_placeholder": "None (SNMP only)",
                 "cli_username": "CLI username",
                 "cli_password": "CLI password",
-                "keep_placeholder": "Unchanged if left empty"
+                "keep_placeholder": "Unchanged if left empty",
+                "snmp_v3_user": "SNMPv3 user",
+                "snmp_v3_auth_protocol": "Authentication",
+                "snmp_v3_auth_pass": "Authentication passphrase",
+                "snmp_v3_priv_protocol": "Privacy (encryption)",
+                "snmp_v3_priv_pass": "Privacy passphrase",
+                "passphrase_placeholder": "At least 8 characters",
+                "priv_pass_placeholder": "At least 8 characters (empty = no encryption)",
+                "cli_enable_password": "Enable password",
+                "cli_enable_password_placeholder": "Only if the OLT asks for one",
+                "snmp_community_tooltip": "The SNMP \"password\" the app uses to read ONUs, PON ports and light levels. Needed for OLT data; without it the app only pings the OLT. Find it in the OLT's SNMP settings (on BDCOM: show running-config, line \"snmp-server community\") or ask whoever set up the OLT. A read-only (RO) community is enough and safer. New OLTs often use \"public\".",
+                "cli_protocol_tooltip": "How the app logs in to the OLT's command line: needed to reboot ONUs and for some OLT data. Pick the one your OLT accepts; Test connection tells you if it is the wrong one. SSH is encrypted, Telnet is not. Leave it empty for SNMP only.",
+                "reset_host_key": "Forget the saved SSH host key",
+                "reset_host_key_tooltip": "Turn this on after the OLT was replaced or reinstalled: the next SSH login saves its new host key."
             },
             "errors": {
                 "snmp_version": "Select the SNMP version",
                 "community_required": "Enter the SNMP community",
-                "max": "Must be 255 characters or fewer"
-            }
+                "max": "Must be 255 characters or fewer",
+                "max_64": "Must be 64 characters or fewer",
+                "max_100": "Must be 100 characters or fewer",
+                "community_chars": "Use printable characters without spaces",
+                "passphrase_min": "At least 8 characters",
+                "v3_user_required": "Enter the SNMPv3 user",
+                "v3_auth_pass_required": "Enter the authentication passphrase",
+                "cli_username_required": "Enter the CLI username",
+                "cli_password_required": "Enter the CLI password",
+                "printable": "Use plain ASCII letters, digits and symbols only (no line breaks)"
+            },
+            "configure": "Configure access",
+            "connects_to": "Connects directly to {{host}}",
+            "no_cli": "No CLI (SNMP only)",
+            "snmp_v3": "SNMP v3",
+            "help_direct": "The app server connects straight to the OLT at {{host}} (SNMP UDP 161, SSH 22 or Telnet 23). Use a read-only SNMP community or an SNMPv3 user that the OLT accepts from the app server's IP. Empty password fields keep the saved value.",
+            "remove": "Remove access",
+            "remove_confirm": "Remove the SNMP / CLI access of this OLT? Polling stops; PON ports and ONUs are kept.",
+            "removed": "Access removed",
+            "auto_poll_every": "Automatic polling every {{count}} min.",
+            "auto_poll_off": "Automatic polling is off.",
+            "auto_poll_change": "Change"
         },
         "clients": {
             "title": "Clients",
@@ -5499,14 +5595,112 @@
             "onu_rx": "ONU / Rx power",
             "no_onu": "No ONU",
             "since": "Since: {{time}}",
-            "view_client": "View client"
+            "view_client": "View client",
+            "unknown": "Unknown"
         },
         "monitoring": {
             "back": "Back to OLT details",
             "heading": "Monitoring: {{name}}"
+        },
+        "alert": {
+            "poll_failed": "Last poll failed ({{time}}):",
+            "test_failed": "Last connection test failed ({{time}}).",
+            "details": "See the access details",
+            "retest_title": "Device IP changed — polling is paused",
+            "retest_text": "Run Test connection to resume polling and ONU reboot. A passing test confirms the new address."
+        },
+        "onus": {
+            "title": "ONUs",
+            "open_list": "Open in the ONU list"
+        },
+        "poll": {
+            "button": "Poll now",
+            "running": "Polling…",
+            "queued": "Poll queued. The page updates when it finishes.",
+            "done": "Poll finished. PON ports and ONUs are up to date.",
+            "failed": "The last poll failed.",
+            "timeout": "The poll has not finished yet. Check again in a minute.",
+            "last": "Polled {{time}}",
+            "last_error": "Last poll error",
+            "needs_vendor": "PON/ONU polling needs a VSOL, BDCOM or Huawei vendor. Run Test connection: it detects the vendor over SNMP.",
+            "done_failed": "The poll failed: {{error}}",
+            "retest_required": "Polling and ONU reboot are paused because the OLT's Device IP changed. Run Test connection to resume.",
+            "internal_error": "Internal error while polling. Ask an administrator to check the app log (the reference is in the message).",
+            "job_stopped": "The poll was stopped before it finished (worker timeout or restart). It runs again at the next interval."
+        },
+        "test": {
+            "button": "Test connection",
+            "running": "Testing the connection…",
+            "passed": "Connection OK",
+            "passed_with_warning": "Connection OK, with a warning",
+            "failed": "Connection test failed",
+            "tested": "tested {{time}}",
+            "never": "Not tested yet. Press Test connection to check the saved settings.",
+            "show_steps": "Show steps",
+            "hide_steps": "Hide steps",
+            "request_failed": "The connection test could not run",
+            "offer": "The OLT was saved with access settings. Test the connection now?",
+            "switch_hint": "The test found {{protocol}} open: change the access type to {{protocol}}.",
+            "switch_to": "Switch to {{protocol}}",
+            "detected_applied": "Detected over SNMP and saved on the device: {{vendor}} {{model}}",
+            "step": {
+                "reachable": "Reachable (ping)",
+                "cli_port": "CLI port",
+                "cli_login": "CLI login",
+                "snmp": "SNMP",
+                "address": "Device IP"
+            },
+            "status": {
+                "ok": "OK",
+                "fail": "Failed",
+                "warning": "Warning",
+                "skipped": "Not run"
+            },
+            "reachable": {
+                "ok": "{{host}} answers ping ({{rtt_ms}} ms).",
+                "no_reply": "No reply to ping from {{host}}. Check that the app server has a route to the OLT's management network and that the OLT is powered on.",
+                "no_ping_but_services": "No reply to ping from {{host}}, but the OLT answered on other ports (it probably blocks ping).",
+                "ping_unavailable": "Ping could not run on the app server."
+            },
+            "cli_port": {
+                "open": "{{protocol}} port {{port}} is open.",
+                "use_other": "{{protocol}} (port {{port}}) is closed but {{other_protocol}} (port {{other_port}}) is open — change the access type to {{other_protocol}}.",
+                "both_closed": "Neither SSH (port 22) nor Telnet (port 23) is open on {{host}}. Enable SSH or Telnet on the OLT, or check firewalls between the app server and the OLT.",
+                "no_answer": "No answer on {{protocol}} port {{port}} within {{seconds}} s (a firewall may drop it), and {{other_protocol}} (port {{other_port}}) is not open either.",
+                "error": "Could not connect to {{protocol}} port {{port}}: {{error}}",
+                "not_configured": "No CLI access (SSH/Telnet) configured."
+            },
+            "cli_login": {
+                "ok": "Logged in as {{username}} over {{protocol}}.",
+                "auth_failed": "Login failed: the OLT rejected user {{username}}. Check the CLI username and password.",
+                "timeout": "Connected to {{protocol}} port {{port}}, but the OLT did not show a login or command prompt within {{seconds}} s.",
+                "host_key_changed": "The SSH host key of the OLT changed. If the OLT was replaced, reset the stored host key in the access settings.",
+                "connect_failed": "Could not open the {{protocol}} session: {{error}}",
+                "error": "{{protocol}} login error: {{error}}",
+                "skipped_port": "Login not tried: the CLI port is not open.",
+                "not_configured": "No CLI access (SSH/Telnet) configured."
+            },
+            "snmp": {
+                "ok": "SNMP works: {{vendor}} {{model}} ({{sys_name}}).",
+                "vendor_mismatch": "SNMP works, but this looks like a {{detected_vendor}} OLT while the device's vendor is {{vendor}}. Polling uses the vendor's driver.",
+                "timeout": "No SNMP answer from {{host}}:161 within {{seconds}} s: wrong community, SNMP disabled on the OLT, or UDP 161 blocked (also check that the OLT accepts SNMP from the app server's IP).",
+                "empty": "The OLT answered SNMP but returned no system information. Check the SNMP view on the OLT.",
+                "error": "SNMP error: {{error}}"
+            },
+            "last_ok": "Last connection test passed {{time}}",
+            "last_failed": "Last connection test failed {{time}}"
+        },
+        "address": {
+            "denied": "The OLT's Device IP {{address}} is not allowed ({{reason}}). Use the OLT's management address in the ISP network."
+        },
+        "onu_data": {
+            "olt_down": "As of {{time}} — OLT down",
+            "stale": "As of {{time}} — not polled since then",
+            "never_polled": "Never polled"
         }
     },
     "monitoring": {
+        "not_answering": "Not answering — {{count}} of {{threshold}} failed checks; marked Down if it continues",
         "state": {
             "up": "Up",
             "down": "Down",
@@ -5762,6 +5956,86 @@
             "grace_days": "Grace days",
             "cancel": "Cancel",
             "canceled": "Subscription canceled"
+        }
+    },
+    "onu": {
+        "title_plural": "ONUs",
+        "columns": {
+            "onu": "ONU",
+            "olt": "OLT",
+            "status": "Status",
+            "rx": "Rx power",
+            "olt_rx": "OLT Rx",
+            "distance": "Distance",
+            "client": "Client",
+            "last_seen": "Last seen",
+            "down_since": "Went down"
+        },
+        "status": {
+            "online": "Online",
+            "offline": "Offline",
+            "los": "LOS (fiber)",
+            "dying_gasp": "Power off",
+            "unknown": "Unknown"
+        },
+        "not_reported": "No longer reported by the OLT",
+        "low_for": "Low for {{duration}}",
+        "went_down": "Went down {{time}}",
+        "unbound": "Not bound",
+        "bound_hidden": "Bound (other reseller)",
+        "binding": {
+            "auto": "Auto",
+            "manual": "Manual",
+            "none": "Unbound"
+        },
+        "filters": {
+            "search": "Name, serial, MAC or description",
+            "olt": "OLT",
+            "status": "Status",
+            "low_power": "Low optical power",
+            "unbound": "Not bound to a client",
+            "yes": "Yes"
+        },
+        "actions": {
+            "menu": "Actions for {{name}}"
+        },
+        "bind": {
+            "button": "Bind client",
+            "title": "Bind ONU {{name}}",
+            "current": "Now",
+            "client": "Client",
+            "client_placeholder": "Select a client",
+            "save": "Bind",
+            "unbind": "Unbind",
+            "auto": "Reset to automatic",
+            "auto_help": "Automatic binding uses the serial number (GPON) or MAC address (EPON) of the ONU given to a client in Inventory → Product Out.",
+            "saved": "ONU updated",
+            "errors": {
+                "client": "Select a client"
+            }
+        },
+        "reboot": {
+            "button": "Reboot",
+            "title": "Reboot ONU",
+            "confirm": "Reboot ONU {{name}} now?",
+            "warning": "The customer's internet connection drops for about 1–2 minutes while the ONU restarts.",
+            "confirm_button": "Reboot now",
+            "success": "Reboot command sent to the ONU",
+            "failed": "The ONU could not be rebooted",
+            "offline_short": "(offline)",
+            "retest_short": "(test connection first)",
+            "unknown_short": "(status unknown)"
+        },
+        "client_card": {
+            "title": "ONU",
+            "none": "No ONU is bound to this client."
+        },
+        "unknown": {
+            "olt_down": "OLT is down — status from the last poll {{time}}",
+            "olt_down_no_time": "OLT is down — no current status",
+            "stale": "Not polled since {{time}}",
+            "never_polled": "Never polled",
+            "generic": "No current status from the OLT"
         }
     }
 }
