@@ -6,6 +6,10 @@ import DeviceFormFieldSchema from "./device-form-schema";
 import { DeviceFormSchema, DeviceRow } from "./device-type";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { useTranslation } from "react-i18next";
+import { offerOltConnectionTest, savedOltAccess } from "@/components/olt/olt-test-offer";
+
+const CREATE_DEFAULTS = { monitor_enabled: true };
 
 type Props = {
   mode?: "create" | "edit";
@@ -29,6 +33,14 @@ const DeviceForm: FC<Props> = ({
     enabled: withOltAccess,
   });
   const oltTypeIds = withOltAccess ? (types?.data ?? []).filter((type) => type.category === "olt").map((type) => type.id) : [];
+  const { t } = useTranslation();
+  // OLT saved with SNMP/CLI access: offer "Test connection" (it runs on the OLT page).
+  const canTestOlt = withOltAccess && hasPermission("olts.access-test");
+  const onSaved = (response: Record<string, unknown> | undefined, payload: Record<string, unknown>) => {
+    if (typeof response?.id === "string" && savedOltAccess(payload, oltTypeIds)) {
+      offerOltConnectionTest(response.id, { message: t("olt.test.offer"), button: t("olt.test.button") });
+    }
+  };
 
   return (
     <MyDialog
@@ -39,12 +51,13 @@ const DeviceForm: FC<Props> = ({
       <FormBuilder
         formSchema={DeviceFormFieldSchema(oltTypeIds, mode === "edit")}
         grids={2}
-        data={data}
+        data={mode === "create" ? CREATE_DEFAULTS : data}
         api={api}
         mode={mode}
         schema={DeviceFormSchema}
         method={method}
         queryKey="devices"
+        onSuccess={canTestOlt ? onSaved : undefined}
       />
     </MyDialog>
   );

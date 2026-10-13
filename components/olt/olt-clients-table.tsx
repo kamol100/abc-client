@@ -13,6 +13,9 @@ import ClientNamePhoneCell from "@/components/clients/client-name-phone-cell";
 import { getClientTerminationDateDisplay } from "@/components/clients/client-termination-date";
 import MonitorStateBadge from "@/components/monitoring/monitor-state-badge";
 import { formatDateTime, formatDbm } from "@/components/monitoring/monitoring-format";
+import { isStale, type OnuDataFreshness } from "@/components/onu/onu-freshness";
+import { rxClass } from "@/components/onu/onu-power";
+import { UnknownStatusBadge } from "@/components/onu/onu-status-badge";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
@@ -20,23 +23,17 @@ import { isInactiveClient, OltClientRow, OltDetail } from "./olt-type";
 
 const ALL_PORTS = "all";
 
-/** Same buckets as the API's optical summary: low < threshold ≤ near limit < threshold + 2; too strong > −8. */
-function rxClass(rx: number | null | undefined, threshold: number): string {
-    if (rx == null) return "text-muted-foreground";
-    if (rx < threshold) return "text-destructive";
-    if (rx < threshold + 2 || rx > -8) return "text-amber-700 dark:text-amber-400";
-    return "text-green-700 dark:text-green-400";
-}
-
 interface Props {
     oltId: string;
     summary: OltDetail["clients"];
     ponPorts: OltDetail["pon_ports"];
     thresholdDbm: number;
+    /** GET /olts/{id} `onu_data`; the clients response's own meta wins when present. */
+    onuData?: OnuDataFreshness | null;
 }
 
 /** "Clients:" section of the OLT page: counters, PON port filter and the paginated client list. */
-export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm }: Props) {
+export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm, onuData }: Props) {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const [ponPort, setPonPort] = useState(ALL_PORTS);
@@ -48,6 +45,11 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
         url: `olts/${oltId}/clients`,
         params,
     });
+
+    // ONU statuses from an old poll (OLT down, stale, never polled): clients show "Unknown", readings muted.
+    const payload = data?.data as { meta?: { onu_data?: OnuDataFreshness | null }; onu_data?: OnuDataFreshness | null } | undefined;
+    const freshness = payload?.meta?.onu_data ?? payload?.onu_data ?? onuData ?? null;
+    const statusUnknown = (online: boolean | null | undefined) => online === null || online === undefined || isStale(freshness);
 
     const columns: ColumnDef<OltClientRow>[] = [
         {
@@ -75,10 +77,11 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
             cell: ({ row }) => {
                 const onu = row.original.onu;
                 if (!onu) return <span className="text-sm text-muted-foreground">{t("olt.clients.no_onu")}</span>;
+                const muted = statusUnknown(row.original.online);
                 return (
-                    <div className="flex flex-col gap-0.5 text-sm">
+                    <div className={cn("flex flex-col gap-0.5 text-sm", muted && "opacity-60")}>
                         <span className="font-semibold">{onu.name}</span>
-                        <span className={cn("tabular-nums", rxClass(onu.rx_power_dbm, thresholdDbm))}>
+                        <span className={cn("tabular-nums", muted ? "text-muted-foreground" : rxClass(onu.rx_power_dbm, thresholdDbm))}>
                             {formatDbm(onu.rx_power_dbm)}
                         </span>
                     </div>
@@ -130,6 +133,9 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
             header: ({ column }) => <DataTableColumnHeader column={column} title="client.table.online_info" />,
             cell: ({ row }) => {
                 const { online, onu } = row.original;
+                if (onu && statusUnknown(online)) {
+                    return <UnknownStatusBadge reason={freshness?.reason} asOf={freshness?.as_of ?? null} />;
+                }
                 const since = online ? onu?.last_online_at : onu?.last_offline_at;
                 return (
                     <div className="flex flex-col items-start gap-1">
@@ -173,8 +179,9 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
 
     const counters = [
         { key: "total", value: summary.total, className: "" },
-        { key: "online", value: summary.online, className: "text-green-700 dark:text-green-400" },
-        { key: "offline", value: summary.offline, className: "text-destructive" },
+        { key: "online", value: summary.online ?? "—", className: summary.online == null ? "text-muted-foreground" : "text-green-700 dark:text-green-400" },
+        { key: "offline", value: summary.offline ?? "—", className: summary.offline == null ? "text-muted-foreground" : "text-destructive" },
+        ...(summary.unknown ? [{ key: "unknown", value: summary.unknown, className: "text-muted-foreground" }] : []),
         { key: "disabled", value: summary.disabled, className: "text-muted-foreground" },
     ];
 

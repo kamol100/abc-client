@@ -15,12 +15,14 @@ import MyButton from "@/components/my-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import LoadError from "@/components/monitoring/load-error";
 import MonitorStateBadge from "@/components/monitoring/monitor-state-badge";
+import MonitoringOffHint from "@/components/monitoring/monitoring-off-hint";
 import PingDialog from "@/components/monitoring/ping-dialog";
 import { BarTone, LatencyChart, Legend, StatusBars, TimelineBar, TONE_BG } from "@/components/monitoring/monitoring-charts";
 import {
     formatDateTime,
     formatMs,
     formatPct,
+    monitoringStatus,
     toDate,
     useMonitoringFormat,
 } from "@/components/monitoring/monitoring-format";
@@ -28,6 +30,7 @@ import type { DeviceMonitoring, DeviceOutage, MonitoringPeriod } from "@/compone
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import OltChecksTable from "./olt-checks-table";
+import NotAnsweringBadge from "@/components/monitoring/not-answering-badge";
 
 const PERIODS: { value: MonitoringPeriod; labelKey: string; tick: string }[] = [
     { value: "24h", labelKey: "monitoring.period.24h", tick: "HH:mm" },
@@ -92,6 +95,7 @@ export default function OltMonitoring({ deviceId }: Props) {
     if (!monitoring) return <LoadError error={error} onRetry={() => refetch()} loading={isFetching} />;
 
     const { device, stats } = monitoring;
+    const { deviceOff, companyOff, live } = monitoringStatus(device.monitor_enabled, device.automatic_checks);
     const periodInfo = PERIODS.find((item) => item.value === monitoring.period) ?? PERIODS[1];
     const downSeconds = monitoring.timeline
         .filter((segment) => segment.state === "down")
@@ -128,7 +132,7 @@ export default function OltMonitoring({ deviceId }: Props) {
         {
             label: t("monitoring.stats.checks"),
             value: stats.checks.toLocaleString("en-US"),
-            sub: device.check_interval_minutes
+            sub: live && device.check_interval_minutes
                 ? t("monitoring.every_minutes", { count: device.check_interval_minutes })
                 : "",
         },
@@ -144,7 +148,7 @@ export default function OltMonitoring({ deviceId }: Props) {
         return { tone: dayTone(day), title: `${label} · ${text}` };
     });
 
-    const liveLine = device.monitor_enabled
+    const liveLine = live
         ? [
               t("monitoring.live"),
               t("monitoring.checked_ago", { time: relative(device.last_checked_at) }),
@@ -232,9 +236,10 @@ export default function OltMonitoring({ deviceId }: Props) {
                     <div className="flex flex-wrap items-center gap-2.5">
                         <h1 className="text-lg font-semibold">{t("olt.monitoring.heading", { name: device.name })}</h1>
                         <MonitorStateBadge state={device.monitor_state} />
+                        <NotAnsweringBadge state={device.monitor_state} failures={device.consecutive_failures} threshold={device.fail_threshold} />
                     </div>
                     <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-                        {device.monitor_enabled && (
+                        {live && (
                             <span className="h-2 w-2 shrink-0 rounded-full bg-green-600 ring-[3px] ring-green-600/20" />
                         )}
                         {liveLine.filter(Boolean).join(" · ")}
@@ -256,6 +261,8 @@ export default function OltMonitoring({ deviceId }: Props) {
                     />
                 </div>
             </div>
+
+            <MonitoringOffHint deviceOff={deviceOff} companyOff={companyOff} />
 
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
                 {statCards.map((card) => (

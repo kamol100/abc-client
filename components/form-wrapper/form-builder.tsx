@@ -271,6 +271,8 @@ export type FormBuilderProps = {
   successMessage?: string;
   data?: Record<string, unknown>;
   onClose?: () => void | undefined;
+  /** After a successful save: the response `data` and the payload that was sent (see FormWrapper). */
+  onSuccess?: (response: Record<string, unknown> | undefined, payload: FieldValues) => void;
   actionButton?: boolean;
   actionButtonClass?: string;
   submitTitle?: string;
@@ -351,6 +353,7 @@ const FormBuilder = ({
   queryKey,
   successMessage,
   onClose,
+  onSuccess,
   actionButton = true,
   actionButtonClass,
   submitTitle,
@@ -535,6 +538,7 @@ const FormBuilder = ({
       successMessage={successMessage}
       data={transformedData}
       onClose={onClose}
+      onSuccess={onSuccess}
       actionButton={actionButton}
       saveOnChange={saveOnChange}
       setSaveOnChange={setSaveOnChange}

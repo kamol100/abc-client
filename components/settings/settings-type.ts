@@ -6,7 +6,15 @@ import {
 } from "@/components/dashboard/dashboard-visibility";
 import type { ApiResponse } from "@/hooks/use-api-query";
 
+// OLT polling (phase 3, Settings → OLT polling). Kept in their own lists so other sections merge cleanly.
+export const OLT_SETTINGS_TEXT_KEYS = ["onu_rx_power_low_dbm"] as const;
+export const OLT_SETTINGS_SELECT_KEYS = ["olt_poll_interval"] as const;
+export const OLT_SETTINGS_SWITCH_KEYS = ["telegram_onu_low_power"] as const;
+/** The API accepts −40 … −10 dBm (default −27). */
+export const ONU_RX_LOW_DBM_RANGE = { min: -40, max: -10 } as const;
+
 export const SETTINGS_TEXT_KEYS = [
+    ...OLT_SETTINGS_TEXT_KEYS,
     "invoice_due_reminder_voice_campaign_name",
     "gmap_api",
     "lat",
@@ -18,12 +26,16 @@ export const SETTINGS_TEXT_KEYS = [
 ] as const;
 
 export const SETTINGS_SELECT_KEYS = [
+    ...OLT_SETTINGS_SELECT_KEYS,
     "sms_auto_invoice_schedule",
     "invoice_due_reminder_channel",
     "sms_invoice_reminder_before_day",
+    "device_monitor_interval",
+    "device_monitor_fail_threshold",
 ] as const;
 
 export const SETTINGS_SWITCH_KEYS = [
+    ...OLT_SETTINGS_SWITCH_KEYS,
     "sms_after_client_create",
     "sms_after_client_activated",
     "sms_after_client_deactivated",
@@ -116,6 +128,9 @@ export const SettingsReminderChannelSchema = z.enum(["sms", "voice"]);
 
 export const SettingsRowSchema = z
     .object({
+        olt_poll_interval: NullableStringOrNumberSchema,
+        onu_rx_power_low_dbm: NullableStringOrNumberSchema,
+        telegram_onu_low_power: NullableBooleanLikeSchema,
         invoice_due_reminder_voice_campaign_name: NullableStringSchema,
         gmap_api: NullableStringSchema,
         lat: NullableStringOrNumberSchema,
@@ -129,6 +144,8 @@ export const SettingsRowSchema = z
         sms_auto_invoice_schedule: NullableStringOrNumberSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableStringOrNumberSchema,
+        device_monitor_interval: NullableStringOrNumberSchema,
+        device_monitor_fail_threshold: NullableStringOrNumberSchema,
         sms_after_client_create: NullableBooleanLikeSchema,
         sms_after_client_activated: NullableBooleanLikeSchema,
         sms_after_client_deactivated: NullableBooleanLikeSchema,
@@ -176,6 +193,16 @@ const dashboardVisibilityFormFields = dashboardVisibilityFields(NullableSwitchFo
 
 export const SettingsFormSchema = z
     .object({
+        olt_poll_interval: NullableNumberFormSchema,
+        onu_rx_power_low_dbm: NullableNumberFormSchema.refine(
+            (value) =>
+                value === null ||
+                value === undefined ||
+                value === "" ||
+                (Number(value) >= ONU_RX_LOW_DBM_RANGE.min && Number(value) <= ONU_RX_LOW_DBM_RANGE.max),
+            { message: "settings.fields.onu_rx_power_low_dbm.errors.range" }
+        ),
+        telegram_onu_low_power: NullableSwitchFormSchema,
         invoice_due_reminder_voice_campaign_name: NullableTextFormSchema,
         gmap_api: NullableTextFormSchema,
         lat: NullableNumberFormSchema,
@@ -186,6 +213,8 @@ export const SettingsFormSchema = z
         sms_auto_invoice_schedule: NullableNumberFormSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableNumberFormSchema,
+        device_monitor_interval: NullableNumberFormSchema,
+        device_monitor_fail_threshold: NullableNumberFormSchema,
         sms_after_client_create: NullableSwitchFormSchema,
         sms_after_client_activated: NullableSwitchFormSchema,
         sms_after_client_deactivated: NullableSwitchFormSchema,
@@ -235,11 +264,20 @@ export type SettingsFormInput = z.infer<typeof SettingsFormSchema>;
 export type SettingsPayload = z.infer<typeof SettingsPayloadSchema>;
 export type SettingsApiResponse = ApiResponse<{ settings: SettingsRow }>;
 
-const NUMBER_INPUT_KEYS = new Set<SettingsTextKey>(["lat", "lon"]);
+const NUMBER_INPUT_KEYS = new Set<SettingsTextKey>(["onu_rx_power_low_dbm", "lat", "lon"]);
 const NUMBER_SELECT_KEYS = new Set<SettingsSelectKey>([
+    "olt_poll_interval",
     "sms_auto_invoice_schedule",
     "sms_invoice_reminder_before_day",
+    "device_monitor_interval",
+    "device_monitor_fail_threshold",
 ]);
+// Shown when the company never saved the setting: automatic checks off, mark down after 2 failed checks.
+const NUMBER_SELECT_DEFAULTS: Partial<Record<SettingsSelectKey, number>> = {
+    device_monitor_interval: 0,
+    device_monitor_fail_threshold: 2,
+    olt_poll_interval: 0,
+};
 
 export function isSettingsSwitchKey(key: SettingsFieldKey): key is SettingsSwitchKey {
     return (SETTINGS_SWITCH_KEYS as readonly string[]).includes(key);
@@ -288,7 +326,7 @@ export function normalizeSettingValueForForm(
 
     if (isSettingsSelectKey(key)) {
         if (NUMBER_SELECT_KEYS.has(key)) {
-            return toNumberOrNull(value);
+            return toNumberOrNull(value) ?? NUMBER_SELECT_DEFAULTS[key] ?? null;
         }
         if (key === "invoice_due_reminder_channel") {
             return value === "voice" ? "voice" : "sms";

@@ -10,14 +10,14 @@ const oltAccessFields = (oltTypeIds: (string | number)[], keepSecrets: boolean):
     {
       type: "password",
       name: "snmp_community",
-      label: { labelText: "olt.access.fields.snmp_community" },
+      label: { labelText: "olt.access.fields.snmp_community", tooltip: "olt.access.fields.snmp_community_tooltip" },
       placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.snmp_community",
       visibleWhen: { field: "device_type_id", when: isOlt },
     },
     {
       type: "dropdown",
       name: "cli_protocol",
-      label: { labelText: "olt.access.fields.cli_protocol" },
+      label: { labelText: "olt.access.fields.cli_protocol", tooltip: "olt.access.fields.cli_protocol_tooltip" },
       placeholder: "olt.access.fields.cli_protocol_placeholder",
       options: [
         { value: "telnet", label: "olt.access.protocol.telnet" },
@@ -30,14 +30,14 @@ const oltAccessFields = (oltTypeIds: (string | number)[], keepSecrets: boolean):
     {
       type: "text",
       name: "cli_username",
-      label: { labelText: "olt.access.fields.cli_username" },
+      label: { labelText: "olt.access.fields.cli_username", tooltip: "olt.access.fields.cli_username_tooltip" },
       placeholder: "olt.access.fields.cli_username",
       visibleWhen: { field: "cli_protocol" },
     },
     {
       type: "password",
       name: "cli_password",
-      label: { labelText: "olt.access.fields.cli_password" },
+      label: { labelText: "olt.access.fields.cli_password", tooltip: "olt.access.fields.cli_password_tooltip" },
       placeholder: keepSecrets ? "olt.access.fields.keep_placeholder" : "olt.access.fields.cli_password",
       visibleWhen: { field: "cli_protocol" },
     },
@@ -84,7 +84,7 @@ export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = [], keep
     {
       type: "text",
       name: "device_ip",
-      label: { labelText: "device.device_ip.label" },
+      label: { labelText: "device.device_ip.label", tooltip: "device.device_ip.tooltip" },
       placeholder: "device.device_ip.placeholder",
     },
     ...(oltTypeIds.length ? oltAccessFields(oltTypeIds, keepSecrets) : []),
@@ -143,6 +143,11 @@ export const DeviceFormFieldSchema = (oltTypeIds: (string | number)[] = [], keep
         { value: "active", label: "device.status.active" },
         { value: "inactive", label: "device.status.inactive" },
       ],
+    },
+    {
+      type: "switch",
+      name: "monitor_enabled",
+      label: { labelText: "device.monitor_enabled.label", tooltip: "device.monitor_enabled.tooltip" },
     },
     {
       type: "textarea",

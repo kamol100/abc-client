@@ -255,13 +255,14 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.networks.title"),
       url: "#",
       icon: Network,
-      permissions: ["networks.access", "devices.access", "device-types.access", "olts.access"],
+      permissions: ["networks.access", "devices.access", "device-types.access", "olts.access", "onus.access"],
       feature: "network",
       items: [
         { title: t("menu.networks.title"), url: "/networks", permission: "networks.access" },
         { title: t("menu.networks.devices.title"), url: "/devices", permission: "devices.access" },
         { title: t("menu.networks.device_type.title"), url: "/device-types", permission: "device-types.access" },
         { title: t("menu.networks.olts.title"), url: "/olts", permission: "olts.access" },
+        { title: t("menu.networks.onus.title"), url: "/onus", permission: "onus.access" },
       ],
     },
     {
@@ -411,7 +412,10 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.dashboard.title"), url: "/settings/dashboard", permission: "company-settings.access" },
         { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
         { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
+        { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
         { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
+        // OLT polling (phase 3): its own page, separate from the device monitoring settings.
+        { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
       ],
     },
     {

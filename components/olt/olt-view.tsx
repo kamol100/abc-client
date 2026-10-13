@@ -1,7 +1,8 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useCallback, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -12,15 +13,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardMetricCard, DashboardMetricRow } from "@/components/dashboard/items/DashboardMetricCard";
 import LoadError from "@/components/monitoring/load-error";
 import MonitorStateBadge from "@/components/monitoring/monitor-state-badge";
+import MonitoringOffHint from "@/components/monitoring/monitoring-off-hint";
 import PingDialog from "@/components/monitoring/ping-dialog";
 import { StatusBars } from "@/components/monitoring/monitoring-charts";
-import { formatMs, formatPct, toDate, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
+import { formatMs, formatPct, monitoringStatus, toDate, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
+import { formatDateTime } from "@/components/monitoring/monitoring-format";
+import NotAnsweringBadge from "@/components/monitoring/not-answering-badge";
+import { staleNoteText } from "@/components/onu/onu-freshness";
+import OnuTable from "@/components/onu/onu-table";
 import OltAccessPanel from "./olt-access";
+import OltAccessAlert from "./olt-access-alert";
 import OltAttention from "./olt-attention";
 import OltClientsTable from "./olt-clients-table";
+import type { PollWait } from "./olt-poll";
+import OltPollButton from "./olt-poll-button";
+import { useOltAccessTest } from "./use-olt-access-test";
 import { OltDetail } from "./olt-type";
 
 const GREEN = "text-green-700 dark:text-green-400";
@@ -30,9 +40,33 @@ const RED = "text-destructive";
 /** Colours a counter only when it is non-zero. */
 const tone = (count: number, className: string) => (count > 0 ? className : undefined);
 
-function Metric({ title, value, rows }: { title: string; value: ReactNode; rows: [string, ReactNode, string?][] }) {
+/** Amber "As of {time} — OLT down" under a card title: the numbers are from the last successful poll. */
+function StaleNote({ note, className }: { note: string | null | undefined; className?: string }) {
+    if (!note) return null;
+    return <p className={cn("text-xs font-normal text-amber-700 dark:text-amber-400", className)}>{note}</p>;
+}
+
+function Metric({
+    title,
+    value,
+    rows,
+    note,
+}: {
+    title: string;
+    value: ReactNode;
+    rows: [string, ReactNode, string?][];
+    note?: string | null;
+}) {
     return (
-        <DashboardMetricCard title={<h2 className="text-sm font-semibold">{title}</h2>} value={value}>
+        <DashboardMetricCard
+            title={
+                <div className="flex flex-col">
+                    <h2 className="text-sm font-semibold">{title}</h2>
+                    <StaleNote note={note} />
+                </div>
+            }
+            value={value}
+        >
             {rows.map(([label, rowValue, className]) => (
                 <DashboardMetricRow
                     key={label}
@@ -47,18 +81,33 @@ function Metric({ title, value, rows }: { title: string; value: ReactNode; rows:
 
 interface Props {
     oltId: string;
+    /** /olts/view/<id>?test=1 (offered after saving an OLT in the device form): run "Test connection" once. */
+    autoTest?: boolean;
 }
 
-const OltView: FC<Props> = ({ oltId }) => {
+const OltView: FC<Props> = ({ oltId, autoTest = false }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const { duration, relative } = useMonitoringFormat();
+    const router = useRouter();
+    const pathname = usePathname();
+    // Set while a "Poll now" is queued: the page refetches every 3 s until access.last_poll_at moves.
+    const [pollWait, setPollWait] = useState<PollWait | null>(null);
     const { data, isLoading, isFetching, error, refetch } = useApiQuery<ApiResponse<OltDetail>>({
         queryKey: ["olts", "detail", oltId],
         url: `olts/${oltId}`,
         pagination: false,
-        refetchInterval: 60_000,
+        refetchInterval: pollWait !== null ? 3_000 : 60_000,
     });
+
+    // "Test connection" is shared by the access card and the retest banner (Device IP changed).
+    const accessTest = useOltAccessTest(oltId);
+
+    // Drop ?test=1 once used, so a reload does not test again; bring the result into view.
+    const onAutoTestDone = useCallback(() => {
+        router.replace(pathname, { scroll: false });
+        document.getElementById("olt-access")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, [router, pathname]);
 
     if (isLoading) {
         return (
@@ -78,8 +127,17 @@ const OltView: FC<Props> = ({ oltId }) => {
     const detail = data?.data;
     if (!detail) return <LoadError error={error} onRetry={() => refetch()} loading={isFetching} />;
 
+    // Phase 3: access (poll/test state) and the ONU list.
+    const access = detail.access;
+    const canListOnus = hasPermission("onus.access");
+    // Device IP changed: Poll now and ONU reboot answer 422 until a Test connection passes.
+    const retestReason = access.retest_required ? t("olt.poll.retest_required") : null;
+    // ONU / PON / optical numbers from an old poll (OLT down, stale, never polled): keep them, say how old.
+    const staleNote = staleNoteText(detail.onu_data, t);
+
     const { olt, monitoring, clients, onus, optical, billing } = detail;
     const canMonitor = hasPermission("devices.monitoring");
+    const { deviceOff, companyOff, live } = monitoringStatus(olt.monitor_enabled, olt.automatic_checks);
     const facts = [
         olt.vendor && t(`olt.vendor.${olt.vendor}`, { defaultValue: olt.vendor }),
         olt.model,
@@ -110,7 +168,7 @@ const OltView: FC<Props> = ({ oltId }) => {
         <>
             <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold">{t("olt.monitoring_card.title")}</h2>
-                {olt.monitor_enabled && (
+                {live && (
                     <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                         <span className="h-2 w-2 rounded-full bg-green-600 ring-[3px] ring-green-600/20" />
                         {t("monitoring.live")}
@@ -118,6 +176,12 @@ const OltView: FC<Props> = ({ oltId }) => {
                 )}
                 <MonitorStateBadge state={olt.monitor_state} className="ml-auto" />
             </div>
+            <NotAnsweringBadge
+                state={olt.monitor_state}
+                failures={olt.consecutive_failures}
+                threshold={olt.fail_threshold}
+                className="self-start"
+            />
             <StatusBars bars={bars} label={t("olt.monitoring_card.bars_label")} className="h-[30px]" />
             <div className="flex justify-between text-xs text-muted-foreground">
                 <span>{t("olt.monitoring_card.ago_24h")}</span>
@@ -155,13 +219,46 @@ const OltView: FC<Props> = ({ oltId }) => {
                     <div className="flex flex-wrap items-center gap-2.5">
                         <h1 className="text-lg font-semibold">{olt.name}</h1>
                         <MonitorStateBadge state={olt.monitor_state} />
+                        <NotAnsweringBadge state={olt.monitor_state} failures={olt.consecutive_failures} threshold={olt.fail_threshold} />
                     </div>
                     <span className="text-sm text-muted-foreground">{facts.join(" · ")}</span>
                 </div>
-                <div className="ml-auto">
+                <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+                    {access.configured && (
+                        <span
+                            className="text-xs text-muted-foreground"
+                            title={access.last_poll_at ? formatDateTime(access.last_poll_at) : undefined}
+                        >
+                            {access.last_poll_at
+                                ? t("olt.poll.last", { time: relative(access.last_poll_at) })
+                                : t("olt.access.never_polled")}
+                        </span>
+                    )}
                     <PingDialog deviceId={olt.id} deviceName={olt.name} />
+                    {access.configured && hasPermission("olts.poll") && (
+                        <OltPollButton
+                            oltId={oltId}
+                            lastPollAt={access.last_poll_at}
+                            lastPollError={access.last_poll_error}
+                            lastPollFailed={access.last_poll_failed}
+                            lastPollErrorKey={access.last_poll_error_key}
+                            wait={pollWait}
+                            onWaitChange={setPollWait}
+                            // Polling reads PON/ONU data with the vendor's driver; "generic" is ping only.
+                            disabledReason={
+                                retestReason ?? (!olt.vendor || olt.vendor === "generic" ? t("olt.poll.needs_vendor") : null)
+                            }
+                        />
+                    )}
                 </div>
             </div>
+
+            <MonitoringOffHint deviceOff={deviceOff} companyOff={companyOff} />
+            <OltAccessAlert
+                access={access}
+                onTest={hasPermission("olts.access-test") ? accessTest.run : undefined}
+                testing={accessTest.running}
+            />
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
                 {canMonitor ? (
@@ -183,15 +280,21 @@ const OltView: FC<Props> = ({ oltId }) => {
                 )}
                 <Metric
                     title={t("olt.metrics.clients")}
+                    note={staleNote}
                     value={clients.total}
                     rows={[
-                        [t("olt.metrics.online"), clients.online, GREEN],
-                        [t("olt.metrics.offline"), clients.offline, tone(clients.offline, RED)],
+                        // null while the ONU data is old: those clients count as unknown instead.
+                        [t("olt.metrics.online"), clients.online ?? "—", clients.online == null ? "text-muted-foreground" : GREEN],
+                        [t("olt.metrics.offline"), clients.offline ?? "—", tone(clients.offline ?? 0, RED)],
+                        ...(clients.unknown
+                            ? [[t("olt.metrics.unknown"), clients.unknown, "text-muted-foreground"] as [string, ReactNode, string]]
+                            : []),
                         [t("olt.metrics.disabled"), clients.disabled, "text-muted-foreground"],
                     ]}
                 />
                 <Metric
                     title={t("olt.metrics.onus")}
+                    note={staleNote}
                     value={`${onus.online}/${onus.total}`}
                     rows={[
                         [t("olt.metrics.los"), onus.los, tone(onus.los, RED)],
@@ -201,6 +304,7 @@ const OltView: FC<Props> = ({ oltId }) => {
                 />
                 <Metric
                     title={t("olt.metrics.optical")}
+                    note={staleNote}
                     value={<span className={tone(optical.low, RED)}>{t("olt.metrics.low_value", { count: optical.low })}</span>}
                     rows={[
                         [t("olt.metrics.below_threshold", { threshold: optical.threshold_dbm }), optical.low, tone(optical.low, RED)],
@@ -224,22 +328,36 @@ const OltView: FC<Props> = ({ oltId }) => {
                 <OltAttention items={detail.attention} className="lg:col-span-2" />
                 <div className="flex min-w-0 flex-col gap-4">
                     <Card className="overflow-hidden">
-                        <h2 className="border-b bg-muted/60 px-3.5 py-2.5 text-sm font-semibold">{t("olt.pon_ports.title")}</h2>
+                        <div className="border-b bg-muted/60 px-3.5 py-2.5">
+                            <h2 className="text-sm font-semibold">{t("olt.pon_ports.title")}</h2>
+                            <StaleNote note={staleNote} />
+                        </div>
                         <div className="flex flex-col gap-2.5 px-3.5 py-2.5">
                             {detail.pon_ports.length === 0 && (
                                 <p className="py-4 text-center text-sm text-muted-foreground">{t("olt.pon_ports.empty")}</p>
                             )}
                             {detail.pon_ports.map((port) => {
-                                const linkDown = port.oper_state === "down";
+                                const adminDown = port.admin_state === "down";
+                                const linkDown = adminDown || port.oper_state === "down";
                                 const pct = port.onu_total ? Math.round((port.onu_online / port.onu_total) * 100) : 0;
                                 const online = t("olt.pon_ports.online", { online: port.onu_online, total: port.onu_total });
                                 const text = linkDown
-                                    ? `${t("olt.pon_ports.link_down")} · ${port.onu_total ? online : t("olt.pon_ports.no_onus")}`
+                                    ? `${t(adminDown ? "olt.pon_ports.admin_down" : "olt.pon_ports.link_down")} · ${port.onu_total ? online : t("olt.pon_ports.no_onus")}`
                                     : online;
                                 return (
                                     <div key={port.id} className="flex flex-col gap-1">
                                         <div className="flex justify-between gap-2 text-sm">
-                                            <span className="font-semibold">{port.name}</span>
+                                            {canListOnus ? (
+                                                <Link
+                                                    href={`/onus?olt=${oltId}&pon_port=${port.id}`}
+                                                    className="font-semibold hover:underline"
+                                                    title={t("olt.pon_ports.view_onus", { port: port.name })}
+                                                >
+                                                    {port.name}
+                                                </Link>
+                                            ) : (
+                                                <span className="font-semibold">{port.name}</span>
+                                            )}
                                             <span className={cn("tabular-nums", linkDown ? RED : "text-muted-foreground")}>{text}</span>
                                         </div>
                                         <div
@@ -257,7 +375,14 @@ const OltView: FC<Props> = ({ oltId }) => {
                             })}
                         </div>
                     </Card>
-                    <OltAccessPanel oltId={oltId} access={detail.access} />
+                    <OltAccessPanel
+                        oltId={oltId}
+                        access={access}
+                        test={accessTest}
+                        deviceIp={olt.device_ip}
+                        autoTest={autoTest}
+                        onAutoTestDone={onAutoTestDone}
+                    />
                 </div>
             </div>
 
@@ -268,8 +393,27 @@ const OltView: FC<Props> = ({ oltId }) => {
                         summary={clients}
                         ponPorts={detail.pon_ports}
                         thresholdDbm={optical.threshold_dbm}
+                        onuData={detail.onu_data}
                     />
                 </div>
+            )}
+
+            {canListOnus && (
+                <section className="flex flex-col gap-3 border-t pt-4">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        <h2 className="text-base font-semibold">{t("olt.onus.title")}:</h2>
+                        <Link href={`/onus?olt=${oltId}`} className="text-sm font-medium hover:underline sm:ml-auto">
+                            {t("olt.onus.open_list")}
+                        </Link>
+                    </div>
+                    <OnuTable
+                        filterValue={`olt=${oltId}`}
+                        tableToolBar={false}
+                        showOlt={false}
+                        thresholdDbm={optical.threshold_dbm}
+                        rebootBlocked={!!access.retest_required}
+                    />
+                </section>
             )}
         </div>
     );

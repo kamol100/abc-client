@@ -4,7 +4,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Form } from "@/components/ui/form";
 import { FormLoader } from "@/components/loader";
-import { parseApiError } from "@/lib/helper/helper";
+import { parseApiError, serverFieldErrors } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useRef } from "react";
@@ -69,6 +69,8 @@ type FormWrapperProps = {
     queryKey?: string;
     successMessage?: string;
     onClose?: () => void;
+    /** After a successful save, before the dialog closes: the response `data` and the payload that was sent. */
+    onSuccess?: (response: Record<string, unknown> | undefined, payload: FieldValues) => void;
     actionButton?: boolean;
     submitTitle?: string;
     saveOnChange?: boolean;
@@ -96,6 +98,7 @@ export default function FormWrapper({
     queryKey = "data",
     successMessage,
     onClose,
+    onSuccess,
     actionButton = true,
     submitTitle,
     saveOnChange: save = false,
@@ -113,6 +116,7 @@ export default function FormWrapper({
     const handleClose = onClose ?? dialogClose ?? (() => { });
     const { t } = useTranslation();
     const submitRef = useRef<HTMLInputElement>(null);
+    const lastPayloadRef = useRef<FieldValues>({});
 
     const entityId = (
         data as Record<string, unknown> & { id?: string | number }
@@ -159,7 +163,7 @@ export default function FormWrapper({
         mode: "onChange",
         defaultValues: data as Record<string, unknown>,
     });
-    const { handleSubmit, reset } = form;
+    const { handleSubmit, reset, setError } = form;
 
     // --- Hydrate form values on fetch success ---
     useEffect(() => {
@@ -199,7 +203,15 @@ export default function FormWrapper({
             if (!successMessage && responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
+            onSuccess?.(responseData as Record<string, unknown> | undefined, lastPayloadRef.current);
             handleClose();
+        },
+        // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
+        onError: (error) => {
+            const visible = new Set(flattenFields(formSchema).map((field) => field.name));
+            Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
+                if (visible.has(field)) setError(field, { type: "server", message });
+            });
         },
     });
 
@@ -214,6 +226,7 @@ export default function FormWrapper({
                 ? ({ ...transformedValues, ...extraPayload } as FieldValues)
                 : transformedValues;
 
+        lastPayloadRef.current = payload;
         if (isFormData) {
             const fd = new FormData();
             Object.entries(payload).forEach(([key, value]) => {

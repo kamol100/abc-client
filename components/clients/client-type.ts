@@ -63,6 +63,8 @@ export const ClientRowSchema = z.object({
     package_id: z.coerce.number().nullable().optional(),
     device_id: z.coerce.number().nullable().optional(),
     invoiceDue: z.array(InvoiceDueItemSchema).nullable().optional(),
+    /** Bound ONUs (OnuSummary in components/onu/onu-type.ts); only read for display. */
+    onus: z.array(z.object({ id: z.string() }).passthrough()).nullable().optional(),
     router_info: z.object({
         ip_address: z.string().nullable().optional(),
         user_mac_address: z.string().nullable().optional(),
