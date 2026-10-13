@@ -37,6 +37,19 @@ export const CompanyFormFieldSchema = (mode: "create" | "edit"): FieldConfig[] =
             ],
         },
         {
+            type: "dropdown" as const,
+            name: "subscription_plan_id",
+            label: { labelText: "company.subscription_plan.label", mandatory: true },
+            placeholder: "company.subscription_plan.placeholder",
+            api: "/dropdown-subscription-plans",
+            valueKey: "subscription_plan",
+            isClearable: false,
+            valueMapping: {
+                idKey: "id",
+                labelKey: "name",
+            },
+        },
+        {
             type: "textarea" as const,
             name: "address",
             label: { labelText: "company.address.label" },

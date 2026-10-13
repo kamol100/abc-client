@@ -1129,6 +1129,14 @@
                 "required": "Status is required"
             }
         },
+        "subscription_plan": {
+            "label": "Subscription Plan",
+            "placeholder": "Select a subscription plan",
+            "errors": {
+                "required": "Subscription plan is required",
+                "invalid": "Select a valid subscription plan"
+            }
+        },
         "username": {
             "label": "Username",
             "placeholder": "Enter username",
@@ -1425,6 +1433,7 @@
             "tickets": "Create Ticket",
             "client_sync": "Client Sync",
             "wallet_recharge": "Recharge Wallet",
+            "recharge_client": "Recharge Client",
             "delete": "Delete"
         },
         "session_reset": {
@@ -4161,9 +4170,6 @@
         },
         "expense": {
             "title": "Expense",
-            "category": {
-                "title": "Expense Category"
-            },
             "types": {
                 "title": "Expense Types"
             }

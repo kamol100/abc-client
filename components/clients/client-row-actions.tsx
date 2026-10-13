@@ -173,7 +173,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 {hasPermission("wallets.access") && (
                     <DropdownMenuItem onSelect={() => setWalletRechargeOpen(true)}>
                         <Wallet className="mr-2 h-4 w-4" />
-                        {t("client.actions.wallet_recharge")}
+                        {t("client.actions.recharge_client")}
                     </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />

@@ -18,6 +18,10 @@ export const CompanyRowSchema = z.object({
     phone: z.string().nullable().optional(),
     address: z.string().nullable().optional(),
     status: z.string().nullable().optional(),
+    subscription_plan: z.object({
+        id: z.string(),
+        name: z.string(),
+    }).nullable().optional(),
     username: z.string().nullable().optional(),
     client_count: z.coerce.number().nullable().optional(),
     clients: z.array(z.unknown()).optional(),
@@ -53,6 +57,10 @@ const baseCompanyFormSchema = {
     status: z.string({
         required_error: "company.status.errors.required",
     }).min(1, { message: "company.status.errors.required" }),
+    subscription_plan_id: z.string({
+        required_error: "company.subscription_plan.errors.required",
+        invalid_type_error: "company.subscription_plan.errors.invalid",
+    }).min(1, { message: "company.subscription_plan.errors.required" }),
 };
 
 const passwordRefine = (data: { password?: string | null; confirm?: string | null }) => {

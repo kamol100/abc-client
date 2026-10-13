@@ -46,29 +46,28 @@ export const CompaniesColumns: ColumnDef<CompanyRow>[] = [
             <DataTableColumnHeader column={column} title="company.name.label" />
         ),
         cell: ({ row }) => (
-            <div className="font-medium capitalize">{row.original.name}</div>
+            <div className="flex flex-col">
+                <span className="font-medium capitalize">{row.original.name}</span>
+            </div>
         ),
         enableSorting: false,
         enableHiding: false,
     },
     {
-        accessorKey: "domain",
+        accessorKey: "subscription_plan",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="company.domain.label" />
+            <DataTableColumnHeader column={column} title="company.subscription_plan.label" />
         ),
-        cell: ({ row }) => <div>{row.original.domain}</div>,
+        cell: ({ row }) => <div>{row.original.subscription_plan?.name}</div>,
         enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: "client_count",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="company.clients.label" />
         ),
-        cell: ({ row }) => {
-            const company = row.original;
-            const count = company.client_count ?? company.clients?.length ?? 0;
-            return <div>{count}</div>;
-        },
+        cell: ({ row }) => <div>{row.original.client_count ?? 0}</div>,
         enableSorting: false,
     },
     {

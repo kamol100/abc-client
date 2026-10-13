@@ -44,7 +44,6 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/product-categories": "menu.products.category.title",
   "/unit-types": "menu.products.unit_types.title",
   "/expenses": "menu.expense.title",
-  "/expense-categories": "menu.expense.category.title",
   "/expense-types": "menu.expense.types.title",
   "/tickets": "menu.support_tickets.title",
   "/subjects": "menu.support_tickets.subjects.title",

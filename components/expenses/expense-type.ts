@@ -21,11 +21,6 @@ const ExpenseTypeRefSchema = z.object({
     name: z.string(),
 });
 
-const ExpenseCategoryRefSchema = z.object({
-    id: z.coerce.number(),
-    name: z.string(),
-});
-
 const VendorRefSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -49,8 +44,6 @@ export const ExpenseRowSchema = z.object({
     zone: ZoneRefSchema.nullable().optional(),
     expense_type_id: z.coerce.number().nullable().optional(),
     expenseType: ExpenseTypeRefSchema.nullable().optional(),
-    expense_category_id: z.coerce.number().nullable().optional(),
-    expense_category: ExpenseCategoryRefSchema.nullable().optional(),
     vendor_id: z.coerce.number().nullable().optional(),
     vendor: VendorRefSchema.nullable().optional(),
 }).passthrough();
