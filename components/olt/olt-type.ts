@@ -191,12 +191,28 @@ const passphrase = z
     .nullable()
     .optional();
 
+/** POST /olts/{id}/access/detect-community: the community read from the OLT's configuration (saved when ok). */
+export interface DetectCommunityResult {
+    ok: boolean;
+    /** not_found | not_supported_vendor | command_failed | cli_login_failed (null when ok). */
+    reason?: string | null;
+    /** olt.community.<detected | reason>. */
+    message?: string | null;
+    message_key?: string | null;
+    params?: Record<string, unknown> | null;
+    /** ro | rw of the community found. */
+    access_type?: string | null;
+    /** A different saved community was overwritten. */
+    replaced?: boolean;
+}
+
 /** What is already stored (secrets are never returned, only these flags). */
 type StoredSecrets = Pick<OltAccess, "has_snmp_community" | "has_snmp_v3_auth_pass" | "has_cli_password">;
 
 /**
  * PUT /olts/{id}/access. Empty secrets keep the saved value, so a secret is only required when none is
- * stored: the community for v2c, the auth passphrase for v3, the CLI password once a protocol is chosen.
+ * stored: the community for v2c without a CLI login, the auth passphrase for v3, the CLI password once a
+ * protocol is chosen.
  */
 export const buildOltAccessSchema = (stored: StoredSecrets = {}) =>
     z
@@ -222,8 +238,10 @@ export const buildOltAccessSchema = (stored: StoredSecrets = {}) =>
         })
         .superRefine((value, ctx) => {
             const missing = (field: string, message: string) => ctx.addIssue({ code: "custom", path: [field], message });
-            if (value.snmp_version === "v2c" && !value.snmp_community && !stored.has_snmp_community) {
-                missing("snmp_community", "olt.access.errors.community_required");
+            // With a CLI login the community may stay empty: the app reads it from the OLT's configuration
+            // (BDCOM, VSOL) during Test connection / Detect from OLT.
+            if (value.snmp_version === "v2c" && !value.snmp_community && !stored.has_snmp_community && !value.cli_protocol) {
+                missing("snmp_community", "olt.access.errors.community_required_without_cli");
             }
             if (value.snmp_version === "v3") {
                 if (!value.snmp_v3_user) missing("snmp_v3_user", "olt.access.errors.v3_user_required");

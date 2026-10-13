@@ -380,6 +380,7 @@ const OltView: FC<Props> = ({ oltId, autoTest = false }) => {
                         access={access}
                         test={accessTest}
                         deviceIp={olt.device_ip}
+                        vendor={olt.vendor}
                         autoTest={autoTest}
                         onAutoTestDone={onAutoTestDone}
                     />
