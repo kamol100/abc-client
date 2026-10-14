@@ -7,7 +7,7 @@ import { FormLoader } from "@/components/loader";
 import { parseApiError, serverFieldErrors } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -73,6 +73,8 @@ type FormWrapperProps = {
     onSuccess?: (response: Record<string, unknown> | undefined, payload: FieldValues) => void;
     actionButton?: boolean;
     submitTitle?: string;
+    /** Keep the submit button spinning at least this long after a valid submit, then close. */
+    submitHoldMs?: number;
     saveOnChange?: boolean;
     setSaveOnChange?: (x: boolean) => void;
     actionButtonClass?: string;
@@ -101,6 +103,7 @@ export default function FormWrapper({
     onSuccess,
     actionButton = true,
     submitTitle,
+    submitHoldMs,
     saveOnChange: save = false,
     setSaveOnChange = () => { },
     actionButtonClass = "justify-between",
@@ -114,9 +117,55 @@ export default function FormWrapper({
 }: FormWrapperProps) {
     const dialogClose = useMyDialogClose();
     const handleClose = onClose ?? dialogClose ?? (() => { });
+    const handleCloseRef = useRef(handleClose);
+    handleCloseRef.current = handleClose;
     const { t } = useTranslation();
     const submitRef = useRef<HTMLInputElement>(null);
     const lastPayloadRef = useRef<FieldValues>({});
+    const submitStartedAtRef = useRef(0);
+    const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const mountedRef = useRef(true);
+    const [holdingSubmit, setHoldingSubmit] = useState(false);
+
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+            if (holdTimerRef.current) {
+                clearTimeout(holdTimerRef.current);
+                holdTimerRef.current = null;
+            }
+        };
+    }, []);
+
+    const clearSubmitHold = () => {
+        if (holdTimerRef.current) {
+            clearTimeout(holdTimerRef.current);
+            holdTimerRef.current = null;
+        }
+        setHoldingSubmit(false);
+    };
+
+    const closeAfterHold = () => {
+        const holdMs = submitHoldMs ?? 0;
+        const elapsed = Date.now() - submitStartedAtRef.current;
+        const remaining = Math.max(0, holdMs - elapsed);
+        const finish = () => {
+            if (!mountedRef.current) return;
+            setHoldingSubmit(false);
+            handleCloseRef.current();
+        };
+
+        if (remaining === 0) {
+            finish();
+            return;
+        }
+
+        holdTimerRef.current = setTimeout(() => {
+            holdTimerRef.current = null;
+            finish();
+        }, remaining);
+    };
 
     const entityId = (
         data as Record<string, unknown> & { id?: string | number }
@@ -204,10 +253,11 @@ export default function FormWrapper({
                 toast.success(t(String(responseData.message)));
             }
             onSuccess?.(responseData as Record<string, unknown> | undefined, lastPayloadRef.current);
-            handleClose();
+            closeAfterHold();
         },
         // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
         onError: (error) => {
+            clearSubmitHold();
             const visible = new Set(flattenFields(formSchema).map((field) => field.name));
             Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
                 if (visible.has(field)) setError(field, { type: "server", message });
@@ -227,6 +277,10 @@ export default function FormWrapper({
                 : transformedValues;
 
         lastPayloadRef.current = payload;
+        if (submitHoldMs && submitHoldMs > 0) {
+            submitStartedAtRef.current = Date.now();
+            setHoldingSubmit(true);
+        }
         if (isFormData) {
             const fd = new FormData();
             Object.entries(payload).forEach(([key, value]) => {
@@ -294,7 +348,10 @@ export default function FormWrapper({
                         type="button"
                         title={t("common.cancel")}
                         size="default"
-                        onClick={handleClose}
+                        onClick={() => {
+                            clearSubmitHold();
+                            handleClose();
+                        }}
                     />
                     <MyButton
                         action="save"
@@ -303,7 +360,7 @@ export default function FormWrapper({
                         size="default"
                         type="submit"
                         variant="default"
-                        loading={isPending}
+                        loading={isPending || holdingSubmit}
                     />
                 </div>
             )}

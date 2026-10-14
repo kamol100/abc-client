@@ -30,7 +30,7 @@ const ImportClientTable: FC = () => {
         [filterValue]
     );
 
-    const { data, isLoading, isFetching, setCurrentPage } =
+    const { data, isLoading, isFetching, setCurrentPage, refetch } =
         useApiQuery<PaginatedApiResponse<SyncClientRow>>({
             queryKey: ["sync-clients"],
             url: "sync-clients",
@@ -102,7 +102,10 @@ const ImportClientTable: FC = () => {
                         <ImportClientBulkDialog
                             allImport={selectAllActive}
                             importIds={selectAllActive ? [] : selectedIds}
-                            onImported={() => setSelectedIds([])}
+                            onImported={() => {
+                                setSelectedIds([]);
+                                void refetch();
+                            }}
                             trigger={
                                 <MyButton
                                     type="button"

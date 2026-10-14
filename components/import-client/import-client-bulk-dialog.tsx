@@ -70,6 +70,7 @@ const ImportClientBulkForm = ({
             queryKey="sync-clients"
             successMessage="import_client.messages.bulk_import_queued"
             submitTitle="import_client.actions.import"
+            submitHoldMs={10_000}
             grids={1}
             onClose={() => {
                 onImported();

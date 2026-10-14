@@ -276,6 +276,8 @@ export type FormBuilderProps = {
   actionButton?: boolean;
   actionButtonClass?: string;
   submitTitle?: string;
+  /** Keep the submit button spinning at least this long after a valid submit, then close. */
+  submitHoldMs?: number;
   hydrateOnEdit?: HydratePolicy;
   fullPage?: boolean;
   extraPayload?: Record<string, unknown>;
@@ -357,6 +359,7 @@ const FormBuilder = ({
   actionButton = true,
   actionButtonClass,
   submitTitle,
+  submitHoldMs,
   hydrateOnEdit = "ifNeeded",
   fullPage = false,
   extraPayload,
@@ -544,6 +547,7 @@ const FormBuilder = ({
       setSaveOnChange={setSaveOnChange}
       actionButtonClass={actionButtonClass}
       submitTitle={submitTitle}
+      submitHoldMs={submitHoldMs}
       hydrateOnEdit={hydrateOnEdit}
       formSchema={formSchema}
       transformToFormValues={transformCallback}
