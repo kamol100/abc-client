@@ -2,8 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { format, isSameDay } from "date-fns";
+import { CalendarIcon, X } from "lucide-react";
 import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import type { DateRange, DayPickerLocale } from "react-day-picker";
 import { enUS, bn } from "react-day-picker/locale";
@@ -38,7 +38,46 @@ type DatePickerProps = {
     rules?: RegisterOptions;
     onValueChange?: (value: DatePickerValue) => void;
     closeOnSelectDate?: boolean;
+    clearable?: boolean;
+    hide_calendar_icon_on_date_range?: boolean;
     locale?: Partial<DayPickerLocale>;
+};
+
+const RANGE_SEPARATOR = " - ";
+
+const rangeEndpointFormats = (rangeDateFormat: string) => {
+    const splitAt = rangeDateFormat.indexOf(RANGE_SEPARATOR);
+    if (splitAt === -1) {
+        return { fromFormat: rangeDateFormat, toFormat: rangeDateFormat };
+    }
+    return {
+        fromFormat: rangeDateFormat.slice(0, splitAt),
+        toFormat: rangeDateFormat.slice(splitAt + RANGE_SEPARATOR.length),
+    };
+};
+
+export const formatDatePickerDisplay = (
+    value: DatePickerValue,
+    mode: DatePickerMode,
+    dateFormat = "MM/dd/yyyy",
+    rangeDateFormat = "MM/dd/yyyy - MM/dd/yyyy",
+): string | null => {
+    if (mode !== "range") {
+        return value instanceof Date ? format(value, dateFormat) : null;
+    }
+
+    const range = value instanceof Date ? undefined : value;
+    if (!range?.from) return null;
+
+    const { fromFormat, toFormat } = rangeEndpointFormats(rangeDateFormat);
+    const fromLabel = format(range.from, fromFormat);
+    if (!range.to || isSameDay(range.from, range.to)) return fromLabel;
+    return `${fromLabel}${RANGE_SEPARATOR}${format(range.to, toFormat)}`;
+};
+
+export const hasSelectedDateRange = (value: DatePickerValue): boolean => {
+    if (!value || value instanceof Date || !value.from || !value.to) return false;
+    return !isSameDay(value.from, value.to);
 };
 
 const parseValue = (
@@ -71,6 +110,8 @@ const DatePicker = ({
     rules: rulesProp,
     onValueChange,
     closeOnSelectDate = true,
+    clearable = true,
+    hide_calendar_icon_on_date_range = true,
 }: DatePickerProps) => {
     const { t, i18n } = useTranslation();
     const language = parseLanguage(i18n.language);
@@ -80,20 +121,8 @@ const DatePicker = ({
     const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
     const [open, setOpen] = useState(false);
 
-    const formatSingle = (date: Date | undefined) =>
-        date ? format(date, dateFormat) : null;
-
-    const formatRange = (range: DateRange | undefined) => {
-        if (!range?.from) return null;
-        const fromStr = format(range.from, rangeDateFormat);
-        const toStr = range.to ? format(range.to, rangeDateFormat) : null;
-        return toStr ? `${fromStr} – ${toStr}` : fromStr;
-    };
-
     const displayValue = (value: DatePickerValue) =>
-        mode === "range"
-            ? formatRange(value as DateRange | undefined)
-            : formatSingle(value as Date | undefined);
+        formatDatePickerDisplay(value, mode, dateFormat, rangeDateFormat);
 
     const handleSelect = useCallback((next: Date | DateRange | undefined, onChange: (value: DatePickerValue) => void) => {
         onChange(next);
@@ -110,6 +139,12 @@ const DatePicker = ({
         [closeOnSelectDate, mode, onValueChange]
     );
 
+    const handleClear = useCallback((onChange: (value: null) => void) => {
+        onChange(null);
+        onValueChange?.(undefined);
+        setOpen(false);
+    }, [onValueChange]);
+
     return (
         <div className={cn("flex flex-col gap-1", className)}>
             {label && <Label label={label} />}
@@ -119,51 +154,77 @@ const DatePicker = ({
                 rules={rules}
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error: fieldError } }) => {
                     const parsed = parseValue(value, mode);
+                    const showClear = clearable && !disabled && Boolean(parsed);
+                    const showCalendarIcon = !(
+                        hide_calendar_icon_on_date_range &&
+                        mode === "range" &&
+                        hasSelectedDateRange(parsed)
+                    );
                     return (
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <MyButton
-                                    ref={ref}
-                                    variant="outline"
-                                    onBlur={onBlur}
-                                    disabled={disabled}
-                                    className={cn(
-                                        "w-full justify-start text-left font-normal bg-background",
-                                        !parsed && "text-muted-foreground",
-                                        fieldError && "border-destructive"
+                        <div className="relative w-full">
+                            <Popover open={open} onOpenChange={setOpen}>
+                                <PopoverTrigger asChild>
+                                    <MyButton
+                                        ref={ref}
+                                        variant="outline"
+                                        size="default"
+                                        onBlur={onBlur}
+                                        disabled={disabled}
+                                        className={cn(
+                                            "h-9 w-full min-w-0 justify-start overflow-hidden px-3 text-left font-normal bg-background shadow-sm",
+                                            showClear && "pr-8",
+                                            !parsed && "text-muted-foreground",
+                                            fieldError && "border-destructive"
+                                        )}
+                                    >
+                                        {showCalendarIcon && <CalendarIcon />}
+                                        <span className="min-w-0 truncate">
+                                            {displayValue(parsed) ?? t(placeholder)}
+                                        </span>
+                                    </MyButton>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                    {mode === "range" ? (
+                                        <Calendar
+                                            locale={locale}
+                                            mode="range"
+                                            selected={parsed as DateRange | undefined}
+                                            onSelect={(next) => handleSelect(next, onChange)}
+                                            autoFocus
+                                            numberOfMonths={1}
+                                            defaultMonth={
+                                                (parsed as DateRange | undefined)?.from ?? new Date()
+                                            }
+                                        />
+                                    ) : (
+                                        <Calendar
+                                            locale={locale}
+                                            mode="single"
+                                            selected={parsed as Date | undefined}
+                                            onSelect={(next) => handleSelect(next, onChange)}
+                                            autoFocus
+                                            defaultMonth={
+                                                (parsed as Date | undefined) ?? new Date()
+                                            }
+                                        />
                                     )}
+                                </PopoverContent>
+                            </Popover>
+                            {showClear && (
+                                <button
+                                    type="button"
+                                    aria-label={t("common.clear")}
+                                    className="absolute right-2 top-1/2 z-10 flex size-5 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        handleClear(onChange);
+                                    }}
                                 >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {displayValue(parsed) ?? t(placeholder)}
-                                </MyButton>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                                {mode === "range" ? (
-                                    <Calendar
-                                        locale={locale}
-                                        mode="range"
-                                        selected={parsed as DateRange | undefined}
-                                        onSelect={(next) => handleSelect(next, onChange)}
-                                        autoFocus
-                                        numberOfMonths={1}
-                                        defaultMonth={
-                                            (parsed as DateRange | undefined)?.from ?? new Date()
-                                        }
-                                    />
-                                ) : (
-                                    <Calendar
-                                        locale={locale}
-                                        mode="single"
-                                        selected={parsed as Date | undefined}
-                                        onSelect={(next) => handleSelect(next, onChange)}
-                                        autoFocus
-                                        defaultMonth={
-                                            (parsed as Date | undefined) ?? new Date()
-                                        }
-                                    />
-                                )}
-                            </PopoverContent>
-                        </Popover>
+                                    <X className="size-4" />
+                                </button>
+                            )}
+                        </div>
                     );
                 }}
             />

@@ -17,6 +17,7 @@
         "onu": "ONU",
         "filter": "Filter",
         "reset": "Reset",
+        "clear": "Clear",
         "apply_filter": "Apply Filter",
         "toggle_columns": "Toggle columns",
         "view": "View",
@@ -2254,7 +2255,11 @@
         "decline": "Decline",
         "declined": "Declined",
         "status_updated": "Expense status updated successfully",
-        "delete_confirmation": "Are you sure you want to delete this expense?"
+        "delete_confirmation": "Are you sure you want to delete this expense?",
+        "reports": {
+            "total": "Total Expense",
+            "pending": "Total Pending"
+        }
     },
     "product_category": {
         "title_plural": "Product Categories",

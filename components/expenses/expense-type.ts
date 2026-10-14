@@ -1,5 +1,6 @@
-import { toApiDateString } from "@/lib/helper/helper";
 import { z } from "zod";
+import type { ApiResponse } from "@/hooks/use-api-query";
+import { toApiDateString } from "@/lib/helper/helper";
 
 const StaffRefSchema = z.object({
     id: z.coerce.number(),
@@ -49,6 +50,19 @@ export const ExpenseRowSchema = z.object({
 }).passthrough();
 
 export type ExpenseRow = z.infer<typeof ExpenseRowSchema>;
+
+export type ExpenseReports = {
+    total_amount?: number | null;
+    pending_amount?: number | null;
+};
+
+export type ExpenseListPayload = {
+    data: ExpenseRow[];
+    pagination: Pagination;
+    reports?: ExpenseReports | null;
+};
+
+export type ExpenseListApiResponse = ApiResponse<ExpenseListPayload>;
 
 export const ExpenseFormSchema = z.object({
     amount: z.coerce.number({

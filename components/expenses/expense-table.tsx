@@ -1,13 +1,14 @@
 "use client";
 
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import { ExpenseColumns } from "./expense-column";
-import ExpenseForm from "./expense-form";
-import { ExpenseRow } from "./expense-type";
-import ExpenseFilterSchema from "./expense-filter-schema";
+import ExpenseFilterSchema from "@/components/expenses/expense-filter-schema";
+import ExpenseForm from "@/components/expenses/expense-form";
+import { ExpenseColumns } from "@/components/expenses/expense-column";
+import ExpenseReports from "@/components/expenses/expense-reports";
+import { ExpenseListApiResponse } from "@/components/expenses/expense-type";
+import useApiQuery from "@/hooks/use-api-query";
 
 type ExpenseTableProps = {
     toolbarTitleKey?: string;
@@ -28,7 +29,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
     );
 
     const { data, isLoading, isFetching, setCurrentPage } =
-        useApiQuery<PaginatedApiResponse<ExpenseRow>>({
+        useApiQuery<ExpenseListApiResponse>({
             queryKey: ["expenses"],
             url: "expenses",
             params,
@@ -36,6 +37,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
 
     const expenses = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
+    const reports = data?.data?.reports;
     const { t } = useTranslation();
 
     const toolbarOptions = {
@@ -47,20 +49,23 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
         : t(toolbarTitleKey);
 
     return (
-        <DataTable
-            data={expenses}
-            setFilter={setFilter}
-            columns={ExpenseColumns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns
-            pagination={pagination}
-            setCurrentPage={setCurrentPage}
-            isLoading={isLoading || isFetching}
-            isFetching={isFetching}
-            form={showCreateAction ? ExpenseForm : undefined}
-            toolbarTitle={toolbarTitle}
-            queryKey="expenses"
-        />
+        <div className="space-y-4">
+            <ExpenseReports reports={reports} isLoading={isLoading} />
+            <DataTable
+                data={expenses}
+                setFilter={setFilter}
+                columns={ExpenseColumns}
+                toolbarOptions={toolbarOptions}
+                toggleColumns
+                pagination={pagination}
+                setCurrentPage={setCurrentPage}
+                isLoading={isLoading || isFetching}
+                isFetching={isFetching}
+                form={showCreateAction ? ExpenseForm : undefined}
+                toolbarTitle={toolbarTitle}
+                queryKey="expenses"
+            />
+        </div>
     );
 };
 
