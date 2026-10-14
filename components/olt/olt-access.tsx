@@ -4,24 +4,26 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, KeyRound, PlugZap, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import Card from "@/components/card";
 import { DeleteModal } from "@/components/delete-modal";
-import FormBuilder from "@/components/form-wrapper/form-builder";
+import FormBuilder, { VisibleFormField } from "@/components/form-wrapper/form-builder";
+import { GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { formatDateTime, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
 import { usePermissions, useSetting } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { cn } from "@/lib/utils";
-import OltAccessFormFieldSchema from "./olt-access-form-schema";
-import { suggestedProtocol, switchProtocolPayload, type CliProtocol } from "./olt-test-result";
+import OltAccessCommunityField from "./olt-access-community-field";
+import OltAccessFormFieldSchema, { whereToFindRows } from "./olt-access-form-schema";
+import { suggestedProtocol, switchProtocolPayload, translateAccessType, type CliProtocol } from "./olt-test-result";
 import OltTestResultView from "./olt-test-result-view";
-import { buildOltAccessSchema, OltAccess, toAccessFormValues, toAccessPayload } from "./olt-type";
+import { buildOltAccessSchema, OltAccess, toAccessFormValues, toAccessPayload, type DetectCommunityResult } from "./olt-type";
 import { pollFailed } from "./olt-access-alert";
 import { newestTestResult, type OltAccessTest } from "./use-olt-access-test";
 
-/** Help rows in the Edit access dialog (olt.access.where.<key> + <key>_title). */
-const WHERE_TO_FIND = ["general", "bdcom", "vsol", "huawei", "missing"] as const;
+
 
 /** Small label chip of the access summary; `alert` rings it amber (the test suggests changing it). */
 function Chip({ children, alert, title }: { children: React.ReactNode; alert?: boolean; title?: string }) {
@@ -48,6 +50,8 @@ interface Props {
     test: OltAccessTest;
     /** The OLT's Device IP, shown before access is configured (the access object has `host` after). */
     deviceIp?: string | null;
+    /** The OLT's vendor (bdcom | vsol | huawei | generic | null): brand-specific community help. */
+    vendor?: string | null;
     /** Run "Test connection" once on mount (link from the device form: /olts/view/<id>?test=1). */
     autoTest?: boolean;
     onAutoTestDone?: () => void;
@@ -57,7 +61,7 @@ interface Props {
  * Access (SNMP / CLI) card of the OLT page: what the app connects to, the last poll and the last
  * "Test connection" result (shown without pressing anything), and the Test / Edit / Remove actions.
  */
-export default function OltAccessPanel({ oltId, access, test, deviceIp, autoTest, onAutoTestDone }: Props) {
+export default function OltAccessPanel({ oltId, access, test, deviceIp, vendor, autoTest, onAutoTestDone }: Props) {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const { relative } = useMonitoringFormat();
@@ -79,6 +83,33 @@ export default function OltAccessPanel({ oltId, access, test, deviceIp, autoTest
         invalidateKeys: "olts",
         successMessage: "olt.access.saved",
         onSuccess: () => {
+            if (canTest) test.run();
+        },
+    });
+
+    // "Detect from OLT" (olts.access-settings): logs in with the saved CLI access and reads the community from the
+    // OLT's configuration (BDCOM, VSOL); found → saved, then Test connection runs with it. 422 (no CLI login, v3,
+    // refused IP) and 429 are the hook's toast.
+    const detect = useApiMutation<DetectCommunityResult>({
+        url: `/olts/${oltId}/access/detect-community`,
+        method: "POST",
+        invalidateKeys: "olts",
+        defaultErrorMessage: "olt.access.detect.failed",
+        onSuccess: (data) => {
+            const fallback = t(data?.ok ? "olt.access.detect.found" : "olt.access.detect.failed");
+            const params = {
+                protocol: access.cli_protocol ? t(`olt.access.protocol.${access.cli_protocol}`) : "",
+                ...(data?.params ?? {}),
+                access_type: translateAccessType(data?.access_type ?? data?.params?.access_type, t),
+            };
+            const text = data?.message_key
+                ? t(data.message_key, { ...params, defaultValue: data.message ?? fallback })
+                : (data?.message ?? fallback);
+            if (!data?.ok) {
+                toast.error(text);
+                return;
+            }
+            toast.success(data.replaced ? `${text} ${t("olt.access.detect.replaced")}` : text);
             if (canTest) test.run();
         },
     });
@@ -257,8 +288,8 @@ export default function OltAccessPanel({ oltId, access, test, deviceIp, autoTest
                     <details className="mb-4 rounded-md border p-3 text-xs">
                         <summary className="cursor-pointer font-medium">{t("olt.access.where.title")}</summary>
                         <div className="mt-2 space-y-1.5 text-muted-foreground">
-                            {WHERE_TO_FIND.map((key) => (
-                                <p key={key}>
+                            {whereToFindRows(vendor).map((key) => (
+                                <p key={key} className={cn(key === vendor && "rounded bg-muted/60 px-1.5 py-1")}>
                                     <span className="font-medium text-foreground">{t(`olt.access.where.${key}_title`)}</span>{" "}
                                     {t(`olt.access.where.${key}`)}
                                 </p>
@@ -266,7 +297,7 @@ export default function OltAccessPanel({ oltId, access, test, deviceIp, autoTest
                         </div>
                     </details>
                     <FormBuilder
-                        formSchema={OltAccessFormFieldSchema(access)}
+                        formSchema={OltAccessFormFieldSchema(access, vendor)}
                         grids={2}
                         schema={buildOltAccessSchema(access)}
                         api={`/olts/${oltId}/access`}
@@ -281,7 +312,29 @@ export default function OltAccessPanel({ oltId, access, test, deviceIp, autoTest
                         onSuccess={() => {
                             if (canTest) test.run();
                         }}
-                    />
+                    >
+                        {(renderField) => (
+                            <div className={`m-auto grid w-full gap-4 ${GRID_STYLES[2]}`}>
+                                {OltAccessFormFieldSchema(access, vendor).map((field) =>
+                                    field.name === "snmp_community" ? (
+                                        <OltAccessCommunityField
+                                            key={field.name}
+                                            field={field}
+                                            renderField={renderField}
+                                            access={access}
+                                            vendor={vendor}
+                                            onDetect={() => detect.mutate()}
+                                            detecting={detect.isPending}
+                                        />
+                                    ) : (
+                                        <VisibleFormField key={field.name} field={field}>
+                                            {renderField(field)}
+                                        </VisibleFormField>
+                                    )
+                                )}
+                            </div>
+                        )}
+                    </FormBuilder>
                 </MyDialog>
             )}
         </Card>

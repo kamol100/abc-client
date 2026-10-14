@@ -5502,15 +5502,17 @@
             "where": {
                 "title": "Where do I find these settings?",
                 "general_title": "Any OLT:",
-                "general": "Log in to the OLT the way your technician does (web panel, or Telnet/SSH with a program like PuTTY). The CLI username and password are that login. The SNMP community is in the OLT's SNMP settings.",
+                "general": "Log in to the OLT the way your technician does (web panel, or Telnet/SSH with a program like PuTTY). The CLI username and password are that login. The SNMP community is in the OLT's SNMP settings — or let the app read it (see Automatic).",
                 "bdcom_title": "BDCOM:",
-                "bdcom": "after logging in, type enable, then show running-config. The community is on the line snmp-server community <name> ro (or rw). The CLI user is on a username … line.",
+                "bdcom": "log in with Telnet, type enable, then show running-config. The community is on the line snmp-server community <name> ro (or rw). The CLI user is on a username … line.",
                 "vsol_title": "VSOL:",
-                "vsol": "the web panel's SNMP page shows the read community. Use the same admin login as the web panel for Telnet/SSH.",
+                "vsol": "the web panel's SNMP page shows the read community, or use show running-config on the command line. Use the same admin login as the web panel for Telnet/SSH.",
                 "huawei_title": "Huawei:",
-                "huawei": "type display current-configuration | include snmp-agent. If the community is shown encrypted, ask whoever set it up or create a new read-only one.",
+                "huawei": "type display current-configuration | include snmp-agent. The community is usually shown encrypted (the app cannot read it): ask whoever installed the OLT, or create a read-only one with snmp-agent community read <name>.",
                 "missing_title": "Can't find it?",
-                "missing": "Ask whoever installed the OLT to create a read-only SNMP community and to allow the app server's IP. On BDCOM: snmp-server community <name> ro; on Huawei: snmp-agent community read <name>."
+                "missing": "Ask whoever installed the OLT to create a read-only SNMP community and to allow the app server's IP. On BDCOM: snmp-server community <name> ro; on Huawei: snmp-agent community read <name>.",
+                "auto_title": "Automatic (BDCOM, VSOL):",
+                "auto": "fill in the CLI login (access type, username, password) and leave the SNMP community empty. Test connection or \"Detect from OLT\" reads it from the OLT's configuration and saves it."
             },
             "title": "Access (SNMP / CLI)",
             "connects": "Connects directly to {{host}} (SNMP {{snmp_port}})",
@@ -5554,10 +5556,14 @@
                 "priv_pass_placeholder": "At least 8 characters (empty = no encryption)",
                 "cli_enable_password": "Enable password",
                 "cli_enable_password_placeholder": "Only if the OLT asks for one",
-                "snmp_community_tooltip": "The SNMP \"password\" the app uses to read ONUs, PON ports and light levels. Needed for OLT data; without it the app only pings the OLT. Find it in the OLT's SNMP settings (on BDCOM: show running-config, line \"snmp-server community\") or ask whoever set up the OLT. A read-only (RO) community is enough and safer. New OLTs often use \"public\".",
+                "snmp_community_tooltip": "The SNMP \"password\" the app uses to read ONUs, PON ports and light levels (a read-only community is enough). BDCOM: log in with Telnet, type enable, then show running-config — the line snmp-server community <name> ro (or rw). VSOL: the web panel's SNMP page, or show running-config. Huawei: display current-configuration | include snmp-agent — if it is shown encrypted, ask whoever installed the OLT or create a read-only one with snmp-agent community read <name>. For BDCOM and VSOL you can leave it empty: the app reads it automatically when the CLI login works.",
                 "cli_protocol_tooltip": "How the app logs in to the OLT's command line: needed to reboot ONUs and for some OLT data. Pick the one your OLT accepts; Test connection tells you if it is the wrong one. SSH is encrypted, Telnet is not. Leave it empty for SNMP only.",
                 "reset_host_key": "Forget the saved SSH host key",
-                "reset_host_key_tooltip": "Turn this on after the OLT was replaced or reinstalled: the next SSH login saves its new host key."
+                "reset_host_key_tooltip": "Turn this on after the OLT was replaced or reinstalled: the next SSH login saves its new host key.",
+                "snmp_community_tooltip_bdcom": "BDCOM: log in with Telnet/SSH, type enable, then show running-config. The community is on the line snmp-server community <name> ro (or rw); enter that name. Or leave it empty: when the CLI login above works, the app reads it from the OLT automatically.",
+                "snmp_community_tooltip_vsol": "VSOL: the web panel's SNMP page shows the read community; on the command line use show running-config (line snmp-server community <name>). Or leave it empty: when the CLI login above works, the app reads it from the OLT automatically.",
+                "snmp_community_tooltip_huawei": "Huawei: type display current-configuration | include snmp-agent. The community is usually shown encrypted, so the app cannot read it: ask whoever installed the OLT, or create a read-only one with snmp-agent community read <name> and enter that name here.",
+                "snmp_community_auto_placeholder": "Leave empty to read it from the OLT (BDCOM, VSOL)"
             },
             "errors": {
                 "snmp_version": "Select the SNMP version",
@@ -5571,7 +5577,8 @@
                 "v3_auth_pass_required": "Enter the authentication passphrase",
                 "cli_username_required": "Enter the CLI username",
                 "cli_password_required": "Enter the CLI password",
-                "printable": "Use plain ASCII letters, digits and symbols only (no line breaks)"
+                "printable": "Use plain ASCII letters, digits and symbols only (no line breaks)",
+                "community_required_without_cli": "Enter the SNMP community, or add a CLI login so the app can read it from the OLT"
             },
             "configure": "Configure access",
             "connects_to": "Connects directly to {{host}}",
@@ -5583,7 +5590,17 @@
             "removed": "Access removed",
             "auto_poll_every": "Automatic polling every {{count}} min.",
             "auto_poll_off": "Automatic polling is off.",
-            "auto_poll_change": "Change"
+            "auto_poll_change": "Change",
+            "detect": {
+                "button": "Detect from OLT",
+                "hint": "Logs in with the saved CLI access and reads the community from the OLT's configuration.",
+                "needs_cli": "Save a CLI login (Telnet or SSH) first, then detect.",
+                "v3": "This OLT uses SNMPv3: there is no community to read.",
+                "huawei": "Huawei OLTs store the community encrypted: it cannot be read automatically.",
+                "found": "SNMP community found and saved",
+                "failed": "The SNMP community could not be read from the OLT",
+                "replaced": "The saved community was replaced."
+            }
         },
         "clients": {
             "title": "Clients",
@@ -5627,7 +5644,8 @@
             "done_failed": "The poll failed: {{error}}",
             "retest_required": "Polling and ONU reboot are paused because the OLT's Device IP changed. Run Test connection to resume.",
             "internal_error": "Internal error while polling. Ask an administrator to check the app log (the reference is in the message).",
-            "job_stopped": "The poll was stopped before it finished (worker timeout or restart). It runs again at the next interval."
+            "job_stopped": "The poll was stopped before it finished (worker timeout or restart). It runs again at the next interval.",
+            "no_community": "No SNMP community is saved and it could not be read from the OLT. Enter it in Edit access, or check the CLI login."
         },
         "test": {
             "button": "Test connection",
@@ -5649,7 +5667,8 @@
                 "cli_port": "CLI port",
                 "cli_login": "CLI login",
                 "snmp": "SNMP",
-                "address": "Device IP"
+                "address": "Device IP",
+                "snmp_community": "SNMP community"
             },
             "status": {
                 "ok": "OK",
@@ -5686,10 +5705,21 @@
                 "vendor_mismatch": "SNMP works, but this looks like a {{detected_vendor}} OLT while the device's vendor is {{vendor}}. Polling uses the vendor's driver.",
                 "timeout": "No SNMP answer from {{host}}:161 within {{seconds}} s: wrong community, SNMP disabled on the OLT, or UDP 161 blocked (also check that the OLT accepts SNMP from the app server's IP).",
                 "empty": "The OLT answered SNMP but returned no system information. Check the SNMP view on the OLT.",
-                "error": "SNMP error: {{error}}"
+                "error": "SNMP error: {{error}}",
+                "no_community": "No SNMP community: enter one, or save a CLI login so the app can read it from the OLT."
             },
             "last_ok": "Last connection test passed {{time}}",
-            "last_failed": "Last connection test failed {{time}}"
+            "last_failed": "Last connection test failed {{time}}",
+            "snmp_community": {
+                "detected": "Community read from the OLT configuration ({{access_type}}).",
+                "replaced": "The saved community was wrong; replaced with the one from the OLT configuration ({{access_type}}).",
+                "unchanged": "The OLT configuration has the same community as saved; SNMP does not answer for another reason.",
+                "not_found": "No SNMP community found in the OLT configuration. Add one on the OLT (read-only recommended) or enter it here.",
+                "not_supported_vendor": "Reading the community from the configuration is not supported for this vendor. Enter the SNMP community.",
+                "command_failed": "Could not read the OLT configuration over {{protocol}}.",
+                "not_needed": "A community is saved.",
+                "no_cli": "Needs a working CLI login to read the community."
+            }
         },
         "address": {
             "denied": "The OLT's Device IP {{address}} is not allowed ({{reason}}). Use the OLT's management address in the ISP network."
@@ -5698,6 +5728,17 @@
             "olt_down": "As of {{time}} — OLT down",
             "stale": "As of {{time}} — not polled since then",
             "never_polled": "Never polled"
+        },
+        "community": {
+            "access_type": {
+                "ro": "read-only",
+                "rw": "read-write"
+            },
+            "detected": "Community read from the OLT configuration ({{access_type}}).",
+            "not_found": "No SNMP community found in the OLT configuration. Add one on the OLT (read-only recommended) or enter it here.",
+            "not_supported_vendor": "Reading the community from the configuration is not supported for this vendor. Enter the SNMP community.",
+            "command_failed": "Could not read the OLT configuration over {{protocol}}.",
+            "cli_login_failed": "Could not log in to the OLT over {{protocol}} to read its configuration. Run Test connection for details."
         }
     },
     "monitoring": {
