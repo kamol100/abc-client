@@ -5970,6 +5970,35 @@
             "status": "Status",
             "pay": "Pay"
         },
+        "payment": {
+            "title": "Pay subscription invoices",
+            "select_all": "Select all",
+            "due_date": "Due date",
+            "total": "Total",
+            "method": "Payment method",
+            "wallet": "Pay from Wallet",
+            "bkash": "Pay using bKash",
+            "submit": "Pay now",
+            "empty": "No unpaid invoices.",
+            "balance": "Available balance: ৳{{available}}",
+            "success": "Invoices paid.",
+            "processing": "Confirming bKash payment…",
+            "cancelled": "Payment was cancelled.",
+            "success_notice": "Payment completed.",
+            "failure_notice": "Payment failed.",
+            "pending_notice": "Payment is still pending.",
+            "errors": {
+                "select_invoice": "Select at least one invoice",
+                "insufficient": "Wallet balance is not enough. Available ৳{{available}}, required ৳{{required}}.",
+                "ineligible": "One or more invoices cannot be paid.",
+                "no_wallet": "No wallet is available for this company.",
+                "failed": "Payment failed.",
+                "pending": "Payment is still pending.",
+                "session": "Payment session was not found.",
+                "amount": "Paid amount does not match the selected invoices.",
+                "bkash": "bKash is not available for subscription payments."
+            }
+        },
         "expired_action": "Your subscription has expired. This action is not available.",
         "feature_not_in_plan": "This feature is not included in your subscription plan.",
         "banner": {

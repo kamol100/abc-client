@@ -1,9 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { CreditCard } from "lucide-react";
+import { useFetch } from "@/app/actions";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -12,8 +15,11 @@ import { InvoiceListApiResponse, InvoiceRow } from "@/components/invoices/invoic
 import MyBadge from "@/components/my-badge";
 import MyButton from "@/components/my-button";
 import MyTooltip from "@/components/my-tooltip";
+import SubscriptionPayDialog from "@/components/subscription/subscription-pay-dialog";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { toNumber } from "@/lib/helper/helper";
+import { apiErrorKey, parseApiError, toNumber } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
+import { toast } from "react-toastify";
 
 interface PlanFeature {
   id: string;
@@ -42,7 +48,13 @@ const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
 const canPayInvoice = (status: string | null | undefined) =>
   status === "due" || status === "partial" || status === "partial_paid";
 
-function useSubscriptionInvoiceColumns(): ColumnDef<InvoiceRow>[] {
+const subscriptionInvoiceId = (invoice: { id?: unknown; uuid?: string | null }) => {
+  if (typeof invoice.id === "string" && invoice.id !== "") return invoice.id;
+  if (typeof invoice.uuid === "string" && invoice.uuid !== "") return invoice.uuid;
+  return "";
+};
+
+function useSubscriptionInvoiceColumns(onPay: (invoiceId: string) => void): ColumnDef<InvoiceRow>[] {
   const { t } = useTranslation();
 
   return useMemo(
@@ -156,6 +168,7 @@ function useSubscriptionInvoiceColumns(): ColumnDef<InvoiceRow>[] {
                 type="button"
                 aria-label={t("subscription.invoices.pay")}
                 tooltip={t("subscription.invoices.pay")}
+                onClick={() => onPay(subscriptionInvoiceId(row.original))}
               >
                 <CreditCard className="h-4 w-4" />
               </MyButton>
@@ -166,13 +179,17 @@ function useSubscriptionInvoiceColumns(): ColumnDef<InvoiceRow>[] {
         enableHiding: false,
       },
     ],
-    [t],
+    [onPay, t],
   );
 }
 
 function SubscriptionInvoiceTable() {
   const { t } = useTranslation();
-  const columns = useSubscriptionInvoiceColumns();
+  const [payInvoiceId, setPayInvoiceId] = useState<string | null>(null);
+  const onPay = useCallback((invoiceId: string) => {
+    if (invoiceId !== "") setPayInvoiceId(invoiceId);
+  }, []);
+  const columns = useSubscriptionInvoiceColumns(onPay);
   const { data, isLoading, isFetching, setCurrentPage } = useApiQuery<InvoiceListApiResponse>({
     queryKey: ["my-subscription-invoices"],
     url: "my-subscription/invoices",
@@ -185,21 +202,131 @@ function SubscriptionInvoiceTable() {
     : t("subscription.invoices.title");
 
   return (
-    <DataTable
-      data={invoices}
-      columns={columns}
-      pagination={pagination}
-      setCurrentPage={setCurrentPage}
-      isLoading={isLoading}
-      isFetching={isFetching}
-      queryKey="my-subscription-invoices"
-      toolbarTitle={toolbarTitle}
-    />
+    <>
+      <DataTable
+        data={invoices}
+        columns={columns}
+        pagination={pagination}
+        setCurrentPage={setCurrentPage}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        queryKey="my-subscription-invoices"
+        toolbarTitle={toolbarTitle}
+      />
+      <SubscriptionPayDialog
+        open={payInvoiceId !== null}
+        invoiceId={payInvoiceId}
+        onOpenChange={(open) => {
+          if (!open) setPayInvoiceId(null);
+        }}
+      />
+    </>
   );
+}
+
+function PaymentNotice({
+  type,
+  message,
+}: {
+  type: "success" | "error" | "info";
+  message: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-md border px-4 py-3 text-sm",
+        type === "success" && "border-primary/30 bg-primary/10 text-primary",
+        type === "error" && "border-destructive/30 bg-destructive/10 text-destructive",
+        type === "info" && "border-primary/30 bg-primary/10 text-primary",
+      )}
+    >
+      {message}
+    </div>
+  );
+}
+
+function useSubscriptionPaymentNotice() {
+  const { t } = useTranslation();
+  const params = useSearchParams();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const executeRef = useRef(false);
+
+  const executeMutation = useMutation({
+    mutationFn: async (paymentID: string) => {
+      const response = await useFetch({
+        url: "/my-subscription/invoices/pay/bkash/execute",
+        method: "POST",
+        data: { paymentID },
+      });
+      if (!response?.success) {
+        throw response;
+      }
+      return response?.data;
+    },
+    onSuccess: () => {
+      ["my-subscription-invoices", "my-subscription", "my-subscription-payable", "my-wallet"].forEach((key) => {
+        queryClient.invalidateQueries({ queryKey: [key] });
+      });
+      toast.success(t("subscription.payment.success"));
+      router.replace("/subscription?payment=success");
+    },
+    onError: (error) => {
+      const keyed = apiErrorKey(error);
+      const pending = keyed?.key === "subscription.payment.errors.pending";
+      toast.error(
+        keyed
+          ? t(keyed.key, { ...keyed.params, defaultValue: keyed.message ?? t("subscription.payment.errors.failed") })
+          : t(String(parseApiError(error) || "subscription.payment.errors.failed")),
+      );
+      router.replace(pending ? "/subscription?payment=pending" : "/subscription?payment=failure");
+    },
+  });
+
+  useEffect(() => {
+    const status = params.get("status");
+    const paymentID = params.get("paymentID");
+
+    if (status === "cancel") {
+      router.replace("/subscription?payment=cancel");
+      return;
+    }
+    if (status === "failure") {
+      router.replace("/subscription?payment=failure");
+      return;
+    }
+    if (status === "success" && paymentID && !executeRef.current) {
+      executeRef.current = true;
+      executeMutation.mutate(paymentID);
+    }
+  }, [executeMutation, params, router]);
+
+  const status = params.get("status");
+  const payment = params.get("payment");
+  const paymentID = params.get("paymentID");
+
+  if (executeMutation.isPending || (status === "success" && paymentID)) {
+    return <PaymentNotice type="info" message={t("subscription.payment.processing")} />;
+  }
+  if (payment === "cancel") {
+    return <PaymentNotice type="error" message={t("subscription.payment.cancelled")} />;
+  }
+  if (payment === "failure") {
+    return <PaymentNotice type="error" message={t("subscription.payment.failure_notice")} />;
+  }
+  if (payment === "pending") {
+    return <PaymentNotice type="info" message={t("subscription.payment.pending_notice")} />;
+  }
+  if (payment === "success") {
+    return <PaymentNotice type="success" message={t("subscription.payment.success_notice")} />;
+  }
+
+  return null;
 }
 
 export default function MySubscription() {
   const { t } = useTranslation();
+  const paymentNotice = useSubscriptionPaymentNotice();
   const { data, isLoading } = useApiQuery<ApiResponse<MySubscriptionPayload>>({
     queryKey: ["my-subscription"],
     url: "my-subscription",
@@ -209,38 +336,39 @@ export default function MySubscription() {
   const payload = data?.data;
   const summary = payload?.summary;
 
-  if (isLoading) {
-    return <p className="text-sm text-muted-foreground">{t("common.loading")}</p>;
-  }
-
-  if (!summary) {
-    return <p className="text-sm text-muted-foreground">{t("subscription.empty")}</p>;
-  }
-
   return (
     <div className="space-y-4">
-      <Card className="space-y-2 p-4">
-        <h1 className="text-lg font-medium">{summary.plan_name}</h1>
-        <p className="text-sm text-muted-foreground">
-          {t("subscription.status")}: {t(`subscription.state.${summary.state}`, { defaultValue: summary.state })}
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {t("subscription.ends_at")}: {summary.ends_at ?? "-"}
-        </p>
-        <div className="space-y-2">
-          <h2 className="mb-3 text-sm font-medium">{t("subscription.features")}:</h2>
-          <ul className="flex flex-wrap gap-2">
-            {(payload?.features ?? []).map((feature) => (
-              <li key={feature.id}>
-                <MyBadge type="success" variant="soft" size="sm">
-                  {feature.name}
-                </MyBadge>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Card>
-      <SubscriptionInvoiceTable />
+      {paymentNotice}
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+      ) : !summary ? (
+        <p className="text-sm text-muted-foreground">{t("subscription.empty")}</p>
+      ) : (
+        <>
+          <Card className="space-y-2 p-4">
+            <h1 className="text-lg font-medium">{summary.plan_name}</h1>
+            <p className="text-sm text-muted-foreground">
+              {t("subscription.status")}: {t(`subscription.state.${summary.state}`, { defaultValue: summary.state })}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {t("subscription.ends_at")}: {summary.ends_at ?? "-"}
+            </p>
+            <div className="space-y-2">
+              <h2 className="mb-3 text-sm font-medium">{t("subscription.features")}:</h2>
+              <ul className="flex flex-wrap gap-2">
+                {(payload?.features ?? []).map((feature) => (
+                  <li key={feature.id}>
+                    <MyBadge type="success" variant="soft" size="sm">
+                      {feature.name}
+                    </MyBadge>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Card>
+          <SubscriptionInvoiceTable />
+        </>
+      )}
     </div>
   );
 }
