@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import {
   Activity,
+  Archive,
   Banknote,
   Building2,
   ClipboardList,
@@ -91,6 +92,14 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/clients",
       icon: Users,
       permissions: ["clients.access"],
+      feature: "clients",
+    },
+    {
+      id: 35,
+      title: t("menu.archived_clients.title"),
+      url: "/archived-clients",
+      icon: Archive,
+      permissions: ["archived-clients.access"],
       feature: "clients",
     },
     {
@@ -419,7 +428,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       ],
     },
     {
-      id: 33,
+      id: 36,
       title: t("menu.subscription.title"),
       url: "/subscription",
       icon: CreditCard,

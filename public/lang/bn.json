@@ -4108,12 +4108,50 @@
             }
         }
     },
+    "archived_client": {
+        "title": "আর্কাইভ ক্লায়েন্ট",
+        "title_plural": "আর্কাইভ ক্লায়েন্ট",
+        "company_owned": "কোম্পানি",
+        "deleted_at": "আর্কাইভ",
+        "restore_title": "ক্লায়েন্ট রিস্টোর",
+        "restore_description": "এই ক্লায়েন্ট কীভাবে রিস্টোর হবে তা বেছে নিন।",
+        "permanent_delete_title": "ক্লায়েন্ট স্থায়ীভাবে ডিলিট",
+        "delete_confirmation": "এটি আর্কাইভ ক্লায়েন্টটি স্থায়ীভাবে মুছে ফেলবে। এটি আর ফেরানো যাবে না।",
+        "actions": {
+            "restore": "রিস্টোর",
+            "permanent_delete": "স্থায়ী ডিলিট"
+        },
+        "mode": {
+            "label": "রিস্টোর ধরন",
+            "errors": {
+                "required": "রিস্টোরের ধরন বেছে নিন"
+            },
+            "options": {
+                "own": "নিজের ক্লায়েন্ট হিসেবে রিস্টোর",
+                "reseller": "রিসেলার ক্লায়েন্ট হিসেবে রিস্টোর"
+            }
+        },
+        "reseller": {
+            "label": "রিসেলার",
+            "placeholder": "রিসেলার সিলেক্ট করুন",
+            "errors": {
+                "required": "রিসেলার আবশ্যক"
+            }
+        },
+        "messages": {
+            "restored": "ক্লায়েন্ট রিস্টোর হয়েছে",
+            "deleted": "আর্কাইভ ক্লায়েন্ট স্থায়ীভাবে ডিলিট হয়েছে"
+        }
+    },
     "menu": {
         "dashboard": {
             "title": "ড্যাশবোর্ড"
         },
         "clients": {
             "title": "ক্লায়েন্ট"
+        },
+        "archived_clients": {
+            "title": "আর্কাইভ ক্লায়েন্ট"
         },
         "reports": {
             "title": "রিপোর্ট",

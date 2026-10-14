@@ -4108,12 +4108,50 @@
             }
         }
     },
+    "archived_client": {
+        "title": "Archived Client",
+        "title_plural": "Archived Clients",
+        "company_owned": "Company",
+        "deleted_at": "Archived",
+        "restore_title": "Restore client",
+        "restore_description": "Choose how this client should be restored.",
+        "permanent_delete_title": "Permanently delete client",
+        "delete_confirmation": "This permanently removes the archived client. This cannot be undone.",
+        "actions": {
+            "restore": "Restore",
+            "permanent_delete": "Permanently Delete"
+        },
+        "mode": {
+            "label": "Restore as",
+            "errors": {
+                "required": "Choose how to restore this client"
+            },
+            "options": {
+                "own": "Restore as Own Client",
+                "reseller": "Restore as Reseller Client"
+            }
+        },
+        "reseller": {
+            "label": "Reseller",
+            "placeholder": "Select reseller",
+            "errors": {
+                "required": "Reseller is required"
+            }
+        },
+        "messages": {
+            "restored": "Client restored",
+            "deleted": "Archived client permanently deleted"
+        }
+    },
     "menu": {
         "dashboard": {
             "title": "Dashboard"
         },
         "clients": {
             "title": "Clients"
+        },
+        "archived_clients": {
+            "title": "Archived Clients"
         },
         "reports": {
             "title": "Reports",
