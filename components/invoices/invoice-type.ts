@@ -328,7 +328,7 @@ export type InvoiceListApiResponse = ApiResponse<InvoiceListPayload>;
 
 const bulkPayPaymentDateSchema = z.preprocess(
     (val) => {
-        if (val instanceof Date) return val.toISOString().slice(0, 10);
+        if (val instanceof Date) return toApiDateString(val) ?? "";
         if (typeof val === "string") return val;
         return val;
     },

@@ -14,7 +14,7 @@ import RadioField from "@/components/form/radio-field";
 import TextareaField from "@/components/form/textarea-field";
 import InputField from "@/components/form/input-field";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { formatMoney } from "@/lib/helper/helper";
+import { formatMoney, toApiDateString } from "@/lib/helper/helper";
 import { InvoiceDueItem } from "@/components/clients/client-type";
 import {
     BulkInvoicePayFormInput,
@@ -56,7 +56,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         defaultValues: {
             invoice_ids: allUuids,
             fund_id: undefined,
-            payment_date: new Date().toISOString().slice(0, 10),
+            payment_date: toApiDateString(new Date()) ?? "",
             status: "paid",
             partial_amount: 0,
             confirmation_sms: 0,
@@ -69,7 +69,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 
     useEffect(() => {
         if (open) {
-            setValue("payment_date", new Date().toISOString().slice(0, 10));
+            setValue("payment_date", toApiDateString(new Date()) ?? "");
         }
     }, [open, setValue]);
 

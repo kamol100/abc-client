@@ -95,127 +95,127 @@ export function DataTableToolbar<TData>({
       <div
         className={cn(!showFilter && "flex  justify-end")}
       >
-      <div className="flex flex-1 flex-wrap items-center gap-x-2 w-full">
-        {toolbarTitle && !showFilter && !isMobile && (
-          <div className={toolbarTitleClass}>{toolbarTitle}</div>
-        )}
-        {toolbarInfoComponent && !showFilter && !isMobile && toolbarInfoComponent}
-        {toolbarOptions?.input_filter && (
-          <Form {...dataForm}>
-            <InputField placeholder="Filter labels..." name="" />
-          </Form>
-        )}
-        {toolbarOptions?.columns?.map((column: string) => {
-          return (
-            table.getColumn(column) && (
-              <DataTableFacetedFilter
-                key={column}
-                column={table.getColumn(column)}
-                title={column}
-                options={columns(data, column)}
-              />
-            )
-          );
-        })}
-        {isMobile && !showFilter && (
-          <div className="flex justify-between w-full">
-            <div>
-              <ChangePagination queryKey={queryKey} />
-            </div>
-          </div>
-        )}
-        {isFiltered && (
-          <MyButton
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="h-4 w-4" />
-          </MyButton>
-        )}
-      </div>
-      <div
-        className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
-      >
-        {!showFilter && toolbarBeforeViewOptions}
-        {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
-        {!showFilter && (
-          <MyButton
-            size="default"
-            variant="outline"
-            onClick={toggleMode}
-            aria-label={isFixed ? "Switch to full layout" : "Switch to fixed layout"}
-          >
-            {isFixed ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
-          </MyButton>
-        )}
-
-        {toolbarOptions?.filter && (
-          isMobile ? (
-            <MyDrawer
-              open={filterDrawerOpen}
-              onOpenChange={setFilterDrawerOpen}
-              trigger={
-                <MyButton
-                  action="filter"
-                  size="default"
-                  variant="outline"
+        <div className="flex flex-1 flex-wrap items-center gap-x-2 w-full">
+          {toolbarTitle && !showFilter && !isMobile && (
+            <div className={toolbarTitleClass}>{toolbarTitle}</div>
+          )}
+          {toolbarInfoComponent && !showFilter && !isMobile && toolbarInfoComponent}
+          {toolbarOptions?.input_filter && (
+            <Form {...dataForm}>
+              <InputField placeholder="Filter labels..." name="" />
+            </Form>
+          )}
+          {toolbarOptions?.columns?.map((column: string) => {
+            return (
+              table.getColumn(column) && (
+                <DataTableFacetedFilter
+                  key={column}
+                  column={table.getColumn(column)}
+                  title={column}
+                  options={columns(data, column)}
                 />
-              }
-              title="common.filter"
-              side="bottom"
-              footer={
-                <div className="flex gap-2 w-full">
-                  <MyButton
-                    action="reset"
-                    onClick={handleResetFilter}
-                    variant="outline"
-                    className="flex-1"
-                    size={'default'}
-                    title="common.reset"
-                  />
-                  <MyButton
-                    action="search"
-                    size={'default'}
-                    icon={true}
-                    variant={isFiltered ? "default" : "outline"}
-                    onClick={() => {
-                      triggerFilterSubmit();
-                      setFilterDrawerOpen(false);
-                    }}
-                    className="flex-1"
-                    title="common.apply_filter"
-                  />
-                </div>
-              }
+              )
+            );
+          })}
+          {isMobile && !showFilter && (
+            <div className="flex justify-between w-full">
+              <div>
+                <ChangePagination queryKey={queryKey} />
+              </div>
+            </div>
+          )}
+          {isFiltered && (
+            <MyButton
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
             >
+              Reset
+              <Cross2Icon className="h-4 w-4" />
+            </MyButton>
+          )}
+        </div>
+        <div
+          className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
+        >
+          {!showFilter && toolbarBeforeViewOptions}
+          {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}
+          {!showFilter && (
+            <MyButton
+              size="default"
+              variant="outline"
+              onClick={toggleMode}
+              aria-label={isFixed ? "Switch to full layout" : "Switch to fixed layout"}
+            >
+              {isFixed ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+            </MyButton>
+          )}
+
+          {toolbarOptions?.filter && (
+            isMobile ? (
+              <MyDrawer
+                open={filterDrawerOpen}
+                onOpenChange={setFilterDrawerOpen}
+                trigger={
+                  <MyButton
+                    action="filter"
+                    size="default"
+                    variant="outline"
+                  />
+                }
+                title="common.filter"
+                side="bottom"
+                footer={
+                  <div className="flex gap-2 w-full">
+                    <MyButton
+                      action="reset"
+                      onClick={handleResetFilter}
+                      variant="outline"
+                      className="flex-1"
+                      size={'default'}
+                      title="common.reset"
+                    />
+                    <MyButton
+                      action="search"
+                      size={'default'}
+                      icon={true}
+                      variant={isFiltered ? "default" : "outline"}
+                      onClick={() => {
+                        triggerFilterSubmit();
+                        setFilterDrawerOpen(false);
+                      }}
+                      className="flex-1"
+                      title="common.apply_filter"
+                    />
+                  </div>
+                }
+              >
+                <FormFilter
+                  formSchema={toolbarOptions.filter}
+                  grids={1}
+                  setFilter={setFilter}
+                  watchFields={toolbarOptions?.watchFields}
+                  searchButton
+                  forceOpen
+                  hideTrigger
+                  className="flex flex-col gap-4"
+                  formHook={filterHook}
+                />
+              </MyDrawer>
+            ) : (
               <FormFilter
                 formSchema={toolbarOptions.filter}
-                grids={1}
+                grids={toolbarOptions?.filter?.length}
                 setFilter={setFilter}
                 watchFields={toolbarOptions?.watchFields}
                 searchButton
-                forceOpen
-                hideTrigger
-                className="flex flex-col gap-4"
-                formHook={filterHook}
+                setShowFilter={setShowFilter}
               />
-            </MyDrawer>
-          ) : (
-            <FormFilter
-              formSchema={toolbarOptions.filter}
-              grids={toolbarOptions?.filter?.length}
-              setFilter={setFilter}
-              watchFields={toolbarOptions?.watchFields}
-              searchButton
-              setShowFilter={setShowFilter}
-            />
-          )
-        )}
-        {toolbarBeforeForm}
-        {FormComponent && !showFilter && <FormComponent />}
-      </div>
+            )
+          )}
+          {toolbarBeforeForm}
+          {FormComponent && !showFilter && <FormComponent />}
+        </div>
       </div>
       {isMobile && toolbarInfoComponent && !showFilter && (
         <div className="flex w-full justify-center">

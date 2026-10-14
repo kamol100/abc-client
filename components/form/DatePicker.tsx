@@ -80,20 +80,44 @@ export const hasSelectedDateRange = (value: DatePickerValue): boolean => {
     return !isSameDay(value.from, value.to);
 };
 
+const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+const parseCalendarDate = (value: string | Date): Date | undefined => {
+    if (value instanceof Date) {
+        return Number.isNaN(value.getTime()) ? undefined : value;
+    }
+
+    const trimmed = value.trim();
+    if (!trimmed) return undefined;
+
+    const match = DATE_ONLY_PATTERN.exec(trimmed);
+    if (match) {
+        const year = Number(match[1]);
+        const monthIndex = Number(match[2]) - 1;
+        const day = Number(match[3]);
+        return new Date(year, monthIndex, day);
+    }
+
+    const parsed = new Date(trimmed);
+    return Number.isNaN(parsed.getTime()) ? undefined : parsed;
+};
+
 const parseValue = (
     value: unknown,
     mode: DatePickerMode
 ): Date | DateRange | undefined => {
-    if (value == null) return undefined;
+    if (value == null || value === "") return undefined;
     if (mode === "range") {
         const range = value as { from?: string | Date; to?: string | Date };
-        const from = range?.from ? (range.from instanceof Date ? range.from : new Date(range.from)) : undefined;
-        const to = range?.to ? (range.to instanceof Date ? range.to : new Date(range.to)) : undefined;
+        const from = range?.from ? parseCalendarDate(range.from) : undefined;
+        const to = range?.to ? parseCalendarDate(range.to) : undefined;
         if (!from) return undefined;
         return { from, to };
     }
-    const d = value as string | Date;
-    return d instanceof Date ? d : d ? new Date(d) : undefined;
+    if (value instanceof Date || typeof value === "string") {
+        return parseCalendarDate(value);
+    }
+    return undefined;
 };
 
 const DatePicker = ({

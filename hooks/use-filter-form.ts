@@ -1,4 +1,4 @@
-import { objectToQueryString } from "@/lib/helper/helper";
+import { objectToQueryString, toApiDateString } from "@/lib/helper/helper";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import type { FieldConfig, TextFieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -22,15 +22,11 @@ function resolveWatchFields(
 }
 
 function formatDateValue(value: unknown): string | undefined {
-  if (!value) return undefined;
-  if (value instanceof Date) {
-    return value.toISOString().slice(0, 10);
-  }
-  if (typeof value === "string") {
-    if (value.includes("T")) return value.slice(0, 10);
-    return value.trim() || undefined;
-  }
-  return undefined;
+  if (value instanceof Date) return toApiDateString(value) ?? undefined;
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  return toApiDateString(trimmed) ?? undefined;
 }
 
 function serializeFilterParams(

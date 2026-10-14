@@ -140,6 +140,11 @@ const FormFilter = ({
     const next = !isOpen;
     setIsOpen(next);
     setShowFilter(next);
+
+    const fieldsWillHide = !next && !forceOpen;
+    if (fieldsWillHide && isFilterActive) {
+      handleReset();
+    }
   };
 
   const showSearchButton = searchButton && hasManualSearchFields && (isOpen || forceOpen);

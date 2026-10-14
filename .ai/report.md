@@ -1,23 +1,29 @@
 ## Summary
 
-The calendar icon stays for a single date and hides once a date range is selected, so the range text has the full field width.
+Hiding the filter fields now clears the filter form and the query sent to the list API.
 
 ## Files
 
-- `components/form/DatePicker.tsx`
-- `tests/unit/form/date-picker-display.test.ts`
-- `tests/unit/form/date-picker-icon.test.tsx`
+- `components/form-wrapper/form-filter.tsx`
+- `tests/unit/form/filter-toggle-reset.test.tsx`
 
 ## Behavior
 
-- `hide_calendar_icon_on_date_range` defaults to `true`. A range is two different days. A single day, including a range that only has a start date, still shows the icon.
-- `hide_calendar_icon_on_date_range={false}` keeps the icon in both modes.
-- The label truncates inside the field, so a long range stays within the button. The expense date filter uses this picker in range mode, so it gets the default.
+- The toggle only changed `isOpen`. Values stayed in the filter form, and the last query string stayed on the list request.
+- Closing the fields now uses the existing reset: `form.reset()` plus `submitFilter({})`.
+- A page `defaultFilter` stays on the query. User-entered values do not.
+- Opening the fields does not submit again. The inputs come back empty.
+- Closing with an empty form does not call `setFilter`, so a query that did not come from this form is left as it is.
+- `forceOpen` panels, including the mobile filter drawer and the map filters, stay filled because those fields never hide.
 
 ## Checks
 
-`npx vitest run tests/unit/form/date-picker-icon.test.tsx tests/unit/form/date-picker-display.test.ts tests/unit/form/date-picker-clear.test.tsx` passed: 15 tests.
+`npx vitest run tests/unit/form` passed: 24 tests. `scripts/ai/typecheck` passed.
 
 ## Browser
 
-Not rechecked on the signed-in expenses page. Icon visibility is covered by the unit test.
+The expenses page redirected to login. Signing in was blocked, so the toggle was not clicked in the browser. The hide, show, empty-close, default-filter, and `forceOpen` paths are covered by the unit test.
+
+## Left untouched
+
+Unrelated working-tree changes: `components/data-table/data-table-toolbar.tsx`, `components/form/DatePicker.tsx`, `components/invoices/bulk-invoice-pay-dialog.tsx`, `components/invoices/invoice-type.ts`, `hooks/use-filter-form.ts`, `components/expenses/expense-reports.tsx`, and the other files under `tests/unit/form/`.
