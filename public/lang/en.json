@@ -1503,6 +1503,7 @@
             "mac": "MAC",
             "uptime": "UT"
         },
+        "whatsapp": "Open WhatsApp",
         "table": {
             "id_name_phone": "ID / Name / Phone",
             "sid": "SID",

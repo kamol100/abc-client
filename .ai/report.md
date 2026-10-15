@@ -1,23 +1,26 @@
 ## Summary
 
-The subscription payment success notice now shows green text with a check mark.
+The client details phone row now shows the same WhatsApp icon as the clients table.
 
 ## Files
 
-- `components/subscription/my-subscription.tsx`
+- `components/clients/client-whatsapp-link.tsx`
+- `components/clients/basic-view.tsx`
+- `components/clients/client-name-phone-cell.tsx`
+- `tests/unit/clients/client-name-phone-cell.test.tsx`
 
 ## Behavior
 
-When `payment=success`, the notice uses green text and a light green background, with a check icon beside “Payment completed.” Cancel, failure, pending, and processing notices are unchanged.
+On the client details card, the phone number stays a call link, and a green WhatsApp icon sits beside it. The icon opens `https://wa.me/` for that number. The table cell uses the same link component.
 
 ## Checks
 
-No new unit test. Linter reports no issues on the edited file.
+`npx vitest run tests/unit/clients/client-name-phone-cell.test.tsx` — 4 passed, including the details phone row. Linter reports no issues on the edited files.
 
 ## Browser
 
-Opened `http://127.0.0.1:3000/subscription?payment=success` while signed in. The success notice shows a check mark and green text in light mode, and the same treatment in dark mode. The subscription body below the notice was still loading.
+Opened `http://127.0.0.1:3000/clients` while signed in. The clients table stayed on skeleton rows, so the details page could not be opened.
 
 ## Left untouched
 
-No other files were changed.
+`components/clients/client-online-status-cell.tsx` and `components/import-client/import-client-bulk-dialog.tsx` were already modified and were not changed for this task.

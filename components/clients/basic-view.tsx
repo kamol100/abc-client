@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Copy, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 import Card from "@/components/card";
+import ClientWhatsAppLink from "@/components/clients/client-whatsapp-link";
 import { ClientRow } from "./client-type";
 import ClientRouterInfo from "./client-router-info";
 import { formatMoney } from "@/lib/helper/helper";
@@ -92,13 +93,16 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                     <InfoRow label={t("common.name")}>{client?.name ?? "—"}</InfoRow>
                     <InfoRow label={t("common.phone")}>
                         {client?.phone ? (
-                            <a
-                                href={`tel:${client.phone}`}
-                                className="inline-flex items-center gap-1 text-primary hover:underline"
-                            >
-                                <Phone className="h-3.5 w-3.5" />
-                                {client.phone}
-                            </a>
+                            <span className="inline-flex items-center gap-1.5">
+                                <a
+                                    href={`tel:${client.phone}`}
+                                    className="inline-flex items-center gap-1 text-primary hover:underline"
+                                >
+                                    <Phone className="h-3.5 w-3.5" />
+                                    {client.phone}
+                                </a>
+                                <ClientWhatsAppLink phone={client.phone} />
+                            </span>
                         ) : (
                             "—"
                         )}

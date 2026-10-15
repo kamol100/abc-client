@@ -2,6 +2,7 @@
 
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { Wifi, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useInView from "@/hooks/use-in-view";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,6 +12,7 @@ interface ClientOnlineStatus {
     ip_address?: string | null;
     router_mac_address?: string | null;
     uptime?: string | null;
+    is_online?: boolean;
 }
 
 interface Props {
@@ -22,7 +24,7 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
     const { t } = useTranslation();
     const { ref, inView } = useInView();
 
-    const { data, isLoading } = useApiQuery<ApiResponse<ClientOnlineStatus>>({
+    const { data, isLoading, isFetched } = useApiQuery<ApiResponse<ClientOnlineStatus>>({
         queryKey: ["client-online-status", clientId],
         url: `client-online-status/${clientId}`,
         pagination: false,
@@ -31,6 +33,9 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
     });
 
     const status = data?.data;
+    const isOnline = status?.is_online === true;
+    const onlineLabel = t(isOnline ? "client.basic_view.online" : "client.basic_view.offline");
+    const OnlineIcon = isOnline ? Wifi : WifiOff;
 
     return (
         <div ref={ref} className="min-w-[130px]">
@@ -48,8 +53,18 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
                     <span className={cn("text-sm font-mono", inactive ? "text-destructive/80" : "text-muted-foreground")}>
                         {t("client.online.mac")}: {status?.router_mac_address || "—"}
                     </span>
-                    <span className={cn("text-xs font-mono", inactive ? "text-destructive/60" : "text-muted-foreground")}>
+                    <span className={cn("inline-flex items-center gap-1 text-xs font-mono", inactive ? "text-destructive/60" : "text-muted-foreground")}>
                         {t("client.online.uptime")}: {status?.uptime || "—"}
+                        {isFetched && (
+                            <OnlineIcon
+                                className={cn(
+                                    "h-3.5 w-3.5 shrink-0",
+                                    isOnline ? "text-green-600 dark:text-green-400" : "text-destructive"
+                                )}
+                                aria-hidden={false}
+                                aria-label={onlineLabel}
+                            />
+                        )}
                     </span>
                 </div>
             )}
