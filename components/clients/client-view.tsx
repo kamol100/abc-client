@@ -26,6 +26,7 @@ import TicketTable from "@/components/tickets/ticket-table";
 import PaymentTable from "@/components/payments/payment-table";
 import InvoiceTable from "@/components/invoices/invoice-table";
 import ClientOnuSection from "@/components/clients/client-onu-section";
+import { ClientIpPingButton } from "@/components/clients/client-router-info";
 import type { OnuSummary } from "@/components/onu/onu-type";
 
 const ClientSmsDialog = dynamic(() => import("@/components/clients/client-sms"), { ssr: false });
@@ -73,34 +74,71 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 </div>
                 <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
                     {hasPermission("clients.edit") && (
-                        <MyButton action="edit" url={`/clients/edit/${getClientId(client) ?? clientId}`} title={t("client.actions.edit")} />
+                        <MyButton
+                            action="edit"
+                            size="icon"
+                            url={`/clients/edit/${getClientId(client) ?? clientId}`}
+                            tooltip="client.actions.edit"
+                            aria-label={t("client.actions.edit")}
+                        />
                     )}
-                    <MyButton action="edit" icon={false} onClick={() => setResetOpen(true)}>
+                    <MyButton
+                        action="edit"
+                        icon={false}
+                        size="icon"
+                        onClick={() => setResetOpen(true)}
+                        tooltip="client.actions.reset_session"
+                        aria-label={t("client.actions.reset_session")}
+                    >
                         <RotateCcw className="h-4 w-4" />
-                        {t("client.actions.reset_session")}
                     </MyButton>
-                    <MyButton action="edit" icon={false} onClick={() => setChangePackageOpen(true)}>
+                    <MyButton
+                        action="edit"
+                        icon={false}
+                        size="icon"
+                        onClick={() => setChangePackageOpen(true)}
+                        tooltip="client.actions.change_package"
+                        aria-label={t("client.actions.change_package")}
+                    >
                         <Package className="h-4 w-4" />
-                        {t("client.actions.change_package")}
                     </MyButton>
                     {hasPermission("invoices.pay") && (
-                        <MyButton action="edit" icon={false} onClick={() => setBulkPayOpen(true)}>
+                        <MyButton
+                            action="edit"
+                            icon={false}
+                            size="icon"
+                            onClick={() => setBulkPayOpen(true)}
+                            tooltip="client.actions.pay"
+                            aria-label={t("client.actions.pay")}
+                        >
                             <CreditCard className="h-4 w-4" />
-                            {t("client.actions.pay")}
                         </MyButton>
                     )}
                     {hasPermission("tickets.create") && (
-                        <MyButton action="edit" icon={false} onClick={() => setTicketOpen(true)}>
+                        <MyButton
+                            action="edit"
+                            icon={false}
+                            size="icon"
+                            onClick={() => setTicketOpen(true)}
+                            tooltip="client.actions.tickets"
+                            aria-label={t("client.actions.tickets")}
+                        >
                             <Ticket className="h-4 w-4" />
-                            {t("client.actions.tickets")}
                         </MyButton>
                     )}
                     {hasPermission("sms-send.access") && client.phone && (
-                        <MyButton action="edit" icon={false} onClick={() => setSmsOpen(true)}>
+                        <MyButton
+                            action="edit"
+                            icon={false}
+                            size="icon"
+                            onClick={() => setSmsOpen(true)}
+                            tooltip="client.actions.sms"
+                            aria-label={t("client.actions.sms")}
+                        >
                             <MessageSquare className="h-4 w-4" />
-                            {t("client.actions.sms")}
                         </MyButton>
                     )}
+                    <ClientIpPingButton clientId={getClientId(client) ?? clientId} />
                 </div>
             </div>
             <ClientSessionResetDialog

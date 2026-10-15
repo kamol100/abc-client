@@ -1492,10 +1492,11 @@
             "is_online": "Is Online",
             "online": "Online",
             "offline": "Offline",
-            "ping": "Ping IP address",
-            "ping_unavailable": "No IP address to ping",
+            "ping": "Ping on this ip",
+            "ping_unavailable": "ip not found",
             "ping_success": "{{ip}} is reachable",
             "ping_failed": "{{ip}} is unreachable",
+            "open_ip": "Open {{url}}",
             "tk": "TK."
         },
         "online": {

@@ -2,13 +2,13 @@
 
 import { FC, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, Loader2, Network, Radio, X } from "lucide-react";
+import { Check, Loader2, LogIn, Network, Radio, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClientRow, getClientId, RouterInfo } from "./client-type";
-import ClientSpeedWidget from "./client-speed-widget";
+import { ClientRow, getClientId, RouterInfo } from "@/components/clients/client-type";
+import ClientSpeedWidget from "@/components/clients/client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import MyButton from "@/components/my-button";
 
@@ -28,6 +28,8 @@ const InfoRow: FC<{ label: string; children: React.ReactNode }> = ({ label, chil
 
 const ROUTER_INFO_ROW_COUNT = 7;
 const PING_RESULT_DISPLAY_MS = 2000;
+const ROUTER_INFO_STALE_MS = 30_000;
+const CLIENT_DEVICE_PORT = 80;
 
 type PingState = "idle" | "loading" | "success" | "error";
 
@@ -36,11 +38,73 @@ interface ClientIpPingButtonProps {
     ipAddress?: string | null;
 }
 
-function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
+function isValidIpv4(ip: string): boolean {
+    const octets = ip.split(".");
+    if (octets.length !== 4) {
+        return false;
+    }
+
+    return octets.every((octet) => {
+        if (!/^\d{1,3}$/.test(octet)) {
+            return false;
+        }
+
+        const value = Number(octet);
+        return value >= 0 && value <= 255;
+    });
+}
+
+function isValidIpv6(ip: string): boolean {
+    if (!ip.includes(":")) {
+        return false;
+    }
+
+    try {
+        return new URL(`http://[${ip}]`).hostname.includes(":");
+    } catch {
+        return false;
+    }
+}
+
+function validIpAddress(value?: string | null): string | null {
+    if (typeof value !== "string") {
+        return null;
+    }
+
+    const ip = value.trim();
+    if (!ip || (!isValidIpv4(ip) && !isValidIpv6(ip))) {
+        return null;
+    }
+
+    return ip;
+}
+
+function clientDeviceUrl(ip: string): string {
+    const host = ip.includes(":") ? `[${ip}]` : ip;
+    return `http://${host}:${CLIENT_DEVICE_PORT}`;
+}
+
+function useClientRouterInfo(clientId: string) {
+    return useApiQuery<ApiResponse<RouterInfo>>({
+        queryKey: ["client-router-info", clientId],
+        url: `client-router-info/${clientId}`,
+        pagination: false,
+        enabled: clientId.length > 0,
+        staleTime: ROUTER_INFO_STALE_MS,
+        retry: false,
+    });
+}
+
+function ClientIpPingControl({ clientId, ipAddress }: ClientIpPingButtonProps) {
     const { t } = useTranslation();
     const [pingState, setPingState] = useState<PingState>("idle");
     const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const hasIpAddress = Boolean(ipAddress);
+    const pingIp = validIpAddress(ipAddress);
+    const tooltipKey = pingIp ? "client.basic_view.ping" : "client.basic_view.ping_unavailable";
+    const deviceUrl = pingIp ? clientDeviceUrl(pingIp) : null;
+    const openLabel = deviceUrl
+        ? t("client.basic_view.open_ip", { url: deviceUrl })
+        : t("client.basic_view.ping_unavailable");
 
     useEffect(() => {
         return () => {
@@ -61,7 +125,7 @@ function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
     };
 
     const handlePing = async () => {
-        if (!hasIpAddress || !ipAddress || pingState === "loading") {
+        if (!pingIp || pingState === "loading") {
             return;
         }
 
@@ -69,24 +133,32 @@ function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
 
         try {
             const result = await useFetch({
-                url: `/client-ping/${clientId}?ip=${encodeURIComponent(ipAddress)}`,
+                url: `/client-ping/${clientId}?ip=${encodeURIComponent(pingIp)}`,
             });
             const reachable = Boolean(
                 result?.success && (result.data as { reachable?: boolean } | undefined)?.reachable
             );
             if (reachable) {
                 setPingState("success");
-                toast.success(t("client.basic_view.ping_success", { ip: ipAddress }));
+                toast.success(t("client.basic_view.ping_success", { ip: pingIp }));
             } else {
                 setPingState("error");
-                toast.error(t("client.basic_view.ping_failed", { ip: ipAddress }));
+                toast.error(t("client.basic_view.ping_failed", { ip: pingIp }));
             }
         } catch {
             setPingState("error");
-            toast.error(t("client.basic_view.ping_failed", { ip: ipAddress }));
+            toast.error(t("client.basic_view.ping_failed", { ip: pingIp }));
         }
 
         scheduleReset();
+    };
+
+    const handleOpenDevice = () => {
+        if (!deviceUrl) {
+            return;
+        }
+
+        window.open(deviceUrl, "_blank", "noopener,noreferrer");
     };
 
     const pingIcon =
@@ -101,19 +173,57 @@ function ClientIpPingButton({ clientId, ipAddress }: ClientIpPingButtonProps) {
         );
 
     return (
-        <MyButton
-            variant="outline"
-            size="icon"
-            disabled={!hasIpAddress || pingState === "loading"}
-            onClick={handlePing}
-            tooltip={
-                hasIpAddress
-                    ? t("client.basic_view.ping")
-                    : t("client.basic_view.ping_unavailable")
-            }
-        >
-            {pingIcon}
-        </MyButton>
+        <div className="flex items-center gap-2">
+            <MyButton
+                type="button"
+                variant="outline"
+                size="icon"
+                disabled={!pingIp || pingState === "loading"}
+                onClick={handlePing}
+                tooltip={tooltipKey}
+                aria-label={t(tooltipKey)}
+            >
+                {pingIcon}
+            </MyButton>
+            <MyButton
+                type="button"
+                variant="outline"
+                size="icon"
+                disabled={!deviceUrl}
+                onClick={handleOpenDevice}
+                tooltip={deviceUrl ? openLabel : "client.basic_view.ping_unavailable"}
+                aria-label={openLabel}
+            >
+                <LogIn className="h-4 w-4" />
+            </MyButton>
+        </div>
+    );
+}
+
+export function ClientIpPingButton({ clientId }: { clientId: string }) {
+    const { t } = useTranslation();
+    const { data, isLoading, isError } = useClientRouterInfo(clientId);
+    const showLoading = clientId.length > 0 && isLoading && !isError;
+
+    if (showLoading) {
+        return (
+            <MyButton
+                type="button"
+                variant="outline"
+                size="icon"
+                loading
+                aria-busy
+                aria-label={t("client.basic_view.ping")}
+                tooltip="client.basic_view.ping"
+            />
+        );
+    }
+
+    return (
+        <ClientIpPingControl
+            clientId={clientId}
+            ipAddress={data?.data?.ip_address}
+        />
     );
 }
 
@@ -137,34 +247,21 @@ const ClientRouterInfo: FC<Props> = ({ client }) => {
     const {
         data: routerInfo,
         isLoading: isRouterInfoLoading,
-    } = useApiQuery<ApiResponse<RouterInfo>>({
-        queryKey: ['client-router-info', clientId],
-        url: `client-router-info/${clientId}`,
-        pagination: false,
-    });
+        isError: isRouterInfoError,
+    } = useClientRouterInfo(clientId);
 
     const routerData: RouterInfo = routerInfo?.data ?? {};
-
+    const showRouterInfoLoading = clientId.length > 0 && isRouterInfoLoading && !isRouterInfoError;
 
     return (
         <div className="space-y-0 px-3 py-3">
             <InfoRow label={t("client.basic_view.up_down")}>
                 <ClientSpeedWidget clientId={clientId} />
             </InfoRow>
-            {isRouterInfoLoading ? <ClientRouterInfoSkeleton /> : (
+            {showRouterInfoLoading ? <ClientRouterInfoSkeleton /> : (
                 <>
                     <InfoRow label={t("client.ip_address.label")}>
-                        <span className="inline-flex items-center gap-2">
-                            {routerData?.ip_address ?? "—"}
-                            {routerData?.ip_address && (
-                                <div>
-                                    <ClientIpPingButton
-                                        clientId={clientId}
-                                        ipAddress={routerData?.ip_address}
-                                    />
-                                </div>
-                            )}
-                        </span>
+                        {routerData?.ip_address?.trim() ? routerData.ip_address : "—"}
                     </InfoRow>
                     <InfoRow label={t("client.basic_view.router_mac")}>
                         {routerData?.user_mac_address ?? "—"}
