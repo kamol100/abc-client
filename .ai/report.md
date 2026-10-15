@@ -1,29 +1,23 @@
 ## Summary
 
-The subscription invoice pay button opens a dialog. One unpaid invoice is shown selected. Several unpaid invoices are listed with checkboxes, and the total follows the selection. The user pays that total from the company wallet or with bKash.
+The subscription payment success notice now shows green text with a check mark.
 
 ## Files
 
-- `components/subscription/subscription-pay-dialog.tsx`
 - `components/subscription/my-subscription.tsx`
-- `public/lang/en.json`
-- `public/lang/bn.json`
 
 ## Behavior
 
-- Payable invoices and the owner wallet come from `GET my-subscription/invoices/payable`.
-- Wallet pay posts the selected invoice ids to `my-subscription/invoices/pay/wallet`. If the available balance is below the total, the dialog shows the balance and the required amount and the pay button stays disabled.
-- bKash posts the same ids to `my-subscription/invoices/pay/bkash` and redirects to `bkashURL`. The return to `/subscription` runs `my-subscription/invoices/pay/bkash/execute` once. Success, failure, cancel, and pending each show a notice, then the subscription and invoice queries refresh.
-- Copy is in `subscription.payment` in both language files.
+When `payment=success`, the notice uses green text and a light green background, with a check icon beside “Payment completed.” Cancel, failure, pending, and processing notices are unchanged.
 
 ## Checks
 
-`scripts/ai/typecheck` passed.
+No new unit test. Linter reports no issues on the edited file.
 
 ## Browser
 
-`http://127.0.0.1:3000/subscription` redirects to `/admin?callbackUrl=%2Fsubscription`. There is no signed-in session, so the dialog was not opened in the browser.
+Opened `http://127.0.0.1:3000/subscription?payment=success` while signed in. The success notice shows a check mark and green text in light mode, and the same treatment in dark mode. The subscription body below the notice was still loading.
 
 ## Left untouched
 
-No unrelated working-tree changes.
+No other files were changed.

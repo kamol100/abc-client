@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { CreditCard } from "lucide-react";
+import { Check, CreditCard } from "lucide-react";
 import { useFetch } from "@/app/actions";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
@@ -234,12 +234,14 @@ function PaymentNotice({
   return (
     <div
       className={cn(
-        "rounded-md border px-4 py-3 text-sm",
-        type === "success" && "border-primary/30 bg-primary/10 text-primary",
+        "flex items-center gap-2 rounded-md border px-4 py-3 text-sm",
+        type === "success" &&
+          "border-green-600/30 bg-green-600/10 text-green-600 dark:border-green-400/30 dark:bg-green-400/10 dark:text-green-400",
         type === "error" && "border-destructive/30 bg-destructive/10 text-destructive",
         type === "info" && "border-primary/30 bg-primary/10 text-primary",
       )}
     >
+      {type === "success" ? <Check className="h-4 w-4 shrink-0" aria-hidden /> : null}
       {message}
     </div>
   );
