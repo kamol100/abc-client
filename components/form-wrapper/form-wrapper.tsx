@@ -47,7 +47,7 @@ function isDataComplete(
     if (!formSchema) return true;
     const fields = flattenFields(formSchema);
     return fields
-        .filter((f) => f.permission !== false)
+        .filter((field) => field.permission !== false && field.type !== "slot")
         .every((field) => getSourceKey(field) in data);
 }
 
@@ -307,7 +307,7 @@ export default function FormWrapper({
 
     // --- Visible field count for skeleton ---
     const visibleFieldCount = flattenFields(formSchema).filter(
-        (f) => f.permission !== false
+        (field) => field.permission !== false && field.type !== "slot"
     ).length;
 
     const formContent = isHydrating ? (

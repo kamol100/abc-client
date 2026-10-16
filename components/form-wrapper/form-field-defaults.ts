@@ -21,7 +21,7 @@ export const flattenFieldConfigs = (
     for (const field of flattenFormSchema(formSchema)) {
         if (field.type === "fieldArray") {
             result.push(...field.itemFields);
-        } else {
+        } else if (field.type !== "slot") {
             result.push(field);
         }
     }

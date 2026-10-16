@@ -1,4 +1,27 @@
-import { AccordionSection } from "../form-wrapper/form-builder-type";
+import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
+
+export const clientImageFields = [
+  {
+    name: "photo",
+    label: "client.images.photo.label",
+    hint: "client.images.photo.hint",
+    aspect: "aspect-[85/54]",
+  },
+  {
+    name: "nid_front",
+    label: "client.images.nid_front.label",
+    hint: "client.images.nid_front.hint",
+    aspect: "aspect-[85/54]",
+  },
+  {
+    name: "nid_back",
+    label: "client.images.nid_back.label",
+    hint: "client.images.nid_back.hint",
+    aspect: "aspect-[85/54]",
+  },
+] as const;
+
+export type ClientImageFieldName = (typeof clientImageFields)[number]["name"];
 
 type Props = {
   mode?: "create" | "edit";
@@ -317,6 +340,12 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
           name: "fund",
           label: { labelText: "client.fund.label" },
           placeholder: "client.fund.placeholder",
+        },
+        {
+          type: "slot",
+          name: "client_images",
+          slot: "client_images",
+          className: "col-span-full",
         },
       ],
     },

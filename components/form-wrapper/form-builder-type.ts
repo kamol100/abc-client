@@ -124,6 +124,11 @@ export type GeolocationFieldConfig = BaseFieldConfig & {
     getLocationError?: string;
 };
 
+export type SlotFieldConfig = BaseFieldConfig & {
+    type: "slot";
+    slot: string;
+};
+
 export type FieldConfig =
     | TextFieldConfig
     | TextareaFieldConfig
@@ -154,7 +159,7 @@ export type FieldArrayConfig = {
     addButtonLabel?: string;
 };
 
-export type FormFieldConfig = FieldConfig | FieldArrayConfig;
+export type FormFieldConfig = FieldConfig | FieldArrayConfig | SlotFieldConfig;
 
 export type AccordionSection = {
     name: string;

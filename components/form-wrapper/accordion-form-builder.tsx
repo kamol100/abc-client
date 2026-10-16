@@ -2,16 +2,18 @@
 
 import { cn } from "@/lib/utils";
 import { AccordionItem } from "@radix-ui/react-accordion";
-import { Accordion, AccordionContent, AccordionTrigger } from "../ui/accordion";
-import { AccordionSection, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
-import FormBuilder, { FormBuilderProps, VisibleFormField } from "./form-builder";
+import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { Accordion, AccordionContent, AccordionTrigger } from "@/components/ui/accordion";
+import { AccordionSection, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
+import FormBuilder, { FormBuilderProps, VisibleFormField } from "@/components/form-wrapper/form-builder";
 
 type AccordionFormBuilderProps = Omit<FormBuilderProps, "children" | "formSchema"> & {
   formSchema: AccordionSection[];
   accordionClass?: string | null;
   accordionTitleClass?: string | null;
   accordionBodyClass?: string | null;
+  sectionSlots?: Record<string, ReactNode>;
 };
 
 const AccordionFormBuilder = ({
@@ -21,6 +23,7 @@ const AccordionFormBuilder = ({
   accordionClass = null,
   accordionTitleClass = null,
   accordionBodyClass = null,
+  sectionSlots,
   ...rest
 }: AccordionFormBuilderProps) => {
   const { t } = useTranslation();
@@ -51,11 +54,17 @@ const AccordionFormBuilder = ({
                   accordionBodyClass
                 )}
               >
-                {section.form.map((field) => (
-                  <VisibleFormField key={field.name} field={field}>
-                    {renderField(field)}
-                  </VisibleFormField>
-                ))}
+                {section.form.map((field) =>
+                  field.type === "slot" ? (
+                    <div key={field.name} className={field.className}>
+                      {sectionSlots?.[field.slot]}
+                    </div>
+                  ) : (
+                    <VisibleFormField key={field.name} field={field}>
+                      {renderField(field)}
+                    </VisibleFormField>
+                  )
+                )}
               </AccordionContent>
             </AccordionItem>
           ))}

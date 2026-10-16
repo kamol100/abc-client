@@ -106,7 +106,7 @@ const transformDataToFormValues = (
   for (const field of allFields) {
     if (field.type === "fieldArray") {
       arrayFields.push(field);
-    } else {
+    } else if (field.type !== "slot") {
       staticFields.push(field);
     }
   }
@@ -488,6 +488,7 @@ const FormBuilder = ({
         />
       );
     }
+    if (field.type === "slot") return null;
     return renderStaticField(field, namePrefix);
   };
 
