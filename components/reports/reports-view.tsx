@@ -13,6 +13,7 @@ const REPORT_LINKS = [
     { href: "/reports/expenses", titleKey: "menu.reports.expenses.title" },
     { href: "/reports/product-in", titleKey: "menu.reports.product_in.title" },
     { href: "/reports/product-out", titleKey: "menu.reports.product_out.title" },
+    { href: "/reports/btrc", titleKey: "menu.reports.btrc.title" },
 ] as const;
 
 const ReportsView = () => {

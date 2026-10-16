@@ -2214,6 +2214,65 @@
         },
         "empty": "No data found"
     },
+    "btrc": {
+        "title": "BTRC Reports",
+        "download": "Download XLS Report",
+        "download_success": "Report downloaded",
+        "download_failed": "Could not generate the report",
+        "client": {
+            "title": "Client Report",
+            "zone": {
+                "label": "Zone",
+                "placeholder": "Select zone",
+                "all": "All Zones",
+                "errors": {
+                    "required": "Zone is required"
+                }
+            },
+            "status": {
+                "label": "Client Status",
+                "placeholder": "Select client status",
+                "all": "All Clients",
+                "active": "Active Clients",
+                "inactive": "Inactive Clients",
+                "errors": {
+                    "required": "Client status is required",
+                    "invalid": "Select a client status"
+                }
+            }
+        },
+        "reseller": {
+            "title": "Reseller Report",
+            "reseller": {
+                "label": "Reseller",
+                "placeholder": "Select reseller",
+                "all": "All Resellers",
+                "errors": {
+                    "required": "Reseller is required"
+                }
+            }
+        },
+        "columns": {
+            "sl": "SL",
+            "sid": "SID",
+            "name": "Name",
+            "phone": "Phone",
+            "email": "Email",
+            "username": "Username",
+            "zone": "Zone",
+            "address": "Address",
+            "network": "Network",
+            "package": "Package",
+            "bandwidth": "Bandwidth",
+            "connection_date": "Connection Date",
+            "status": "Status",
+            "prefix": "Prefix",
+            "active_clients": "Active Clients",
+            "inactive_clients": "Inactive Clients",
+            "commission": "Commission",
+            "balance": "Balance"
+        }
+    },
     "expense": {
         "title_plural": "Expenses",
         "create_title": "Add Expense",
@@ -4193,6 +4252,9 @@
             },
             "product_out": {
                 "title": "Product Out"
+            },
+            "btrc": {
+                "title": "BTRC"
             }
         },
         "tickets": {

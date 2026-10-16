@@ -38,7 +38,7 @@ export function getActivityLogColumns(
                 />
             ),
             cell: ({ row }) => (
-                <div className="capitalize">{row.original.company ?? "—"}</div>
+                <div className="min-w-[150px] whitespace-nowrap capitalize">{row.original.company ?? "—"}</div>
             ),
             enableSorting: false,
             enableHiding: true,

@@ -244,6 +244,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
             { value: "2", label: "client.type.corporate" },
             { value: "3", label: "client.type.others" },
           ],
+          defaultValue: "1",
         },
         {
           type: "dropdown",
@@ -254,6 +255,7 @@ export const ClientFormFieldSchema = ({ mode = "create" }: Props): AccordionSect
             { value: "1", label: "client.connection_type.shared" },
             { value: "2", label: "client.connection_type.dedicated" },
           ],
+          defaultValue: "1",
         },
         {
           type: "text",

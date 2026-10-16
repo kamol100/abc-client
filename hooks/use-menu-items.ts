@@ -116,6 +116,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.reports.expenses.title"), url: "/reports/expenses", permission: "expenses.access" },
         { title: t("menu.reports.product_in.title"), url: "/reports/product-in", permission: "products-in.report" },
         { title: t("menu.reports.product_out.title"), url: "/reports/product-out", permission: "products-in.report" },
+        { title: t("menu.reports.btrc.title"), url: "/reports/btrc", permission: "reports.access" },
       ],
     },
     {
