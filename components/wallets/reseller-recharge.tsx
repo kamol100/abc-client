@@ -1,6 +1,7 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
+import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import DisplayMoney from "@/components/display-money";
 import InputField from "@/components/form/input-field";
@@ -101,6 +102,7 @@ export const BkashWalletForm: FC = () => {
       title="wallet.recharge_title"
       trigger={
         <MyButton size="default" variant="default">
+          <BkashIcon />
           {t("wallet.recharge_with_bkash")}
         </MyButton>
       }
@@ -115,6 +117,7 @@ export const BkashWalletForm: FC = () => {
             onClick={() => submitRef.current?.click()}
             loading={rechargeMutation.isPending}
           >
+            <BkashIcon />
             {t("wallet.pay_with_bkash")}
           </MyButton>
         </>

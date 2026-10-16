@@ -20,6 +20,7 @@ import {
   WalletRechargeFormInput,
   WalletRechargeFormSchema,
 } from "@/components/wallets/wallet-type";
+import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
 const pad2 = (value: number): string => value.toString().padStart(2, "0");
 
 export const BkashWalletForm: FC = () => {
@@ -90,6 +91,7 @@ export const BkashWalletForm: FC = () => {
       title="wallet.recharge_title"
       trigger={
         <MyButton size="default" variant="default">
+          <BkashIcon />
           {t("wallet.recharge_with_bkash")}
         </MyButton>
       }
@@ -104,6 +106,7 @@ export const BkashWalletForm: FC = () => {
             onClick={() => submitRef.current?.click()}
             loading={rechargeMutation.isPending}
           >
+            <BkashIcon />
             {t("wallet.pay_with_bkash")}
           </MyButton>
         </>

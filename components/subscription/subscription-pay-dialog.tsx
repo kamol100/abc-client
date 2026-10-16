@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { FileText } from "lucide-react";
+import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
 import RadioField from "@/components/form/radio-field";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
@@ -210,8 +211,16 @@ const SubscriptionPayDialog: FC<SubscriptionPayDialogProps> = ({
               onClick={handleSubmit(onSubmit)}
               loading={loading}
               disabled={walletBlocked || selectedIds.length === 0}
-              title="subscription.payment.submit"
-            />
+              icon={method !== "bkash"}
+              title={method === "bkash" ? undefined : "subscription.payment.submit"}
+            >
+              {method === "bkash" ? (
+                <>
+                  <BkashIcon />
+                  {t("subscription.payment.submit")}
+                </>
+              ) : null}
+            </MyButton>
           )}
         </>
       )}

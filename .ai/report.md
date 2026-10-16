@@ -1,24 +1,16 @@
 ## Summary
 
-The BTRC page downloads two Excel-compatible CSV files from the API. All Zones, All Clients, and All Resellers are omitted from the query so they do not filter the file. Each Download button shows a loading state, ignores a second click while a request is in flight, and toasts success or the API error.
-
-The browser calls `/api/reports/btrc/clients` or `/api/reports/btrc/resellers`. That route forwards the session token to `GET /api/v1/btrc/clients` and `GET /api/v1/btrc/resellers` and streams the file back.
+The dashboard top bar now shows the signed-in user's wallet balance in a theme-tinted button, placed before the language switcher. It uses the existing `my-wallet` balance and opens My Wallets. Users without the `wallets.my` permission do not see it.
 
 ## Files
 
-- `components/reports/btrc-report.tsx`
-- `app/api/reports/btrc/[kind]/route.ts`
-- `tests/unit/reports/btrc-report.test.tsx`
+- `components/wallets/my-wallet.tsx` — `WalletBalanceButton`
+- `app/(dashboard)/top-navbar.tsx` — button before `LanguageSwitcher`
 
 ## Checks
 
-- `scripts/ai/typecheck` passed.
-- `npx vitest run tests/unit/reports/btrc-report.test.tsx` passed (4 tests).
-
-## Browser
-
-`/reports/btrc` on the running app redirects to `/admin?callbackUrl=/reports/btrc`. Login was not available, so the live download was not clicked. The unit tests cover both download buttons, the All-filter query, the loading lock, and the error toast. The local API returns 401 for both report URLs when no token is sent.
+`scripts/ai/typecheck` passed. The local app is running, but login with the e2e test account was rejected, so the navbar was not checked in a signed-in session.
 
 ## Left untouched
 
-`tests/unit/activity-logs/` is still untracked and was not changed.
+bKash icon work already in the working tree: `components/bkash-payment/bkash-icon.tsx`, `components/pay/pay-invoice.tsx`, `components/subscription/subscription-pay-dialog.tsx`, `components/wallets/reseller-recharge.tsx`, `components/wallets/wallet-transaction.tsx`, and `public/images/logos/bkash.svg`.

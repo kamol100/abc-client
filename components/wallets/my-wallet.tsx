@@ -1,11 +1,14 @@
 "use client";
 
-import DisplayMoney from "@/components/display-money";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useMyWallet } from "@/hooks/use-my-wallet";
-import { cn } from "@/lib/utils";
+import { Wallet } from "lucide-react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import DisplayMoney from "@/components/display-money";
+import { MyButton } from "@/components/my-button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { usePermissions } from "@/context/app-provider";
+import { useMyWallet } from "@/hooks/use-my-wallet";
+import { cn } from "@/lib/utils";
 
 type MyWalletProps = {
   label?: boolean;
@@ -46,5 +49,44 @@ const MyWallet: FC<MyWalletProps> = ({
     </div>
   );
 };
+
+export function WalletBalanceButton() {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const canViewWallet = hasPermission("wallets.my");
+  const { balance, isLoading } = useMyWallet(canViewWallet);
+
+  if (!canViewWallet) {
+    return null;
+  }
+
+  return (
+    <MyButton
+      url="/my-wallets"
+      variant="outline"
+      size="sm"
+      tooltip={t("wallet.my_balance")}
+      aria-label={t("wallet.my_balance")}
+      className="h-9 shrink-0 rounded-[var(--radius)] border-primary/25 bg-primary/10 px-2.5 font-normal text-foreground shadow-none hover:border-primary/40 hover:bg-primary/15 hover:text-foreground"
+    >
+      <Wallet className="text-primary" aria-hidden />
+      <span className="hidden text-xs text-muted-foreground sm:inline">
+        {t("wallet.balance.label")}
+      </span>
+      {isLoading ? (
+        <Skeleton className="h-4 w-16 bg-primary/20" />
+      ) : (
+        <DisplayMoney
+          amount={balance}
+          formatCurrency
+          className={cn(
+            "text-sm font-semibold",
+            balance >= 0 && "text-primary",
+          )}
+        />
+      )}
+    </MyButton>
+  );
+}
 
 export default MyWallet;

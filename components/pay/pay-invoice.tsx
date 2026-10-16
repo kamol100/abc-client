@@ -15,10 +15,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
 import { useBkashPayment } from "@/components/bkash-payment/use-bkash-payment";
 import type { ClientPaymentData } from "@/types/pay-types";
 import DisplayCount from "@/components/display-count";
-import Image from "next/image";
 
 type PayInvoiceProps = {
   data: ClientPaymentData;
@@ -176,13 +176,7 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
           {isCreating ? (
             <Loader2 className="size-4 shrink-0 animate-spin" aria-hidden />
           ) : (
-            <Image
-              src="/static/bkash.png"
-              alt=""
-              width={22}
-              height={22}
-              className="size-[22px] shrink-0 object-contain"
-            />
+            <BkashIcon />
           )}
           {isCreating ? t("pay.bkash.creating") : t("pay.result.pay_bkash")}
         </MyButton>
