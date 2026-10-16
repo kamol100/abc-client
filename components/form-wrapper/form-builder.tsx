@@ -23,6 +23,10 @@ import {
   HydratePolicy,
   VisibleWhen,
 } from "@/components/form-wrapper/form-builder-type";
+import {
+  applyFormFieldDefaults,
+  flattenFormSchema,
+} from "./form-field-defaults";
 import MyButton from "../my-button";
 
 // --- Date helpers ---
@@ -40,33 +44,6 @@ const parseDateRangeForForm = (v: unknown): { from: Date; to?: Date } | undefine
   const from = parseDateForForm(obj.from);
   if (!from) return undefined;
   return { from, to: parseDateForForm(obj.to) ?? undefined };
-};
-
-// --- Schema helpers ---
-
-export const flattenFormSchema = (
-  formSchema: FormFieldConfig[] | AccordionSection[]
-): FormFieldConfig[] => {
-  if (!formSchema.length) return [];
-  if ("form" in formSchema[0]) {
-    return (formSchema as AccordionSection[]).flatMap((s) => s.form);
-  }
-  return formSchema as FormFieldConfig[];
-};
-
-export const flattenFieldConfigs = (
-  formSchema: FormFieldConfig[] | AccordionSection[]
-): FieldConfig[] => {
-  const all = flattenFormSchema(formSchema);
-  const result: FieldConfig[] = [];
-  for (const field of all) {
-    if (field.type === "fieldArray") {
-      result.push(...field.itemFields);
-    } else {
-      result.push(field);
-    }
-  }
-  return result;
 };
 
 // --- Data transform helpers ---
@@ -115,23 +92,6 @@ const transformFieldValues = (
   });
 
   return formValues;
-};
-
-const applyDropdownDefaults = (
-  values: Record<string, unknown> | undefined,
-  formSchema: FormFieldConfig[] | AccordionSection[]
-): Record<string, unknown> => {
-  const next: Record<string, unknown> = { ...(values ?? {}) };
-
-  for (const field of flattenFieldConfigs(formSchema)) {
-    if (field.type !== "dropdown" || field.defaultValue == null) continue;
-    const current = next[field.name];
-    if (current === undefined || current === null || current === "") {
-      next[field.name] = field.defaultValue;
-    }
-  }
-
-  return next;
 };
 
 const transformDataToFormValues = (
@@ -373,12 +333,12 @@ const FormBuilder = ({
       mode === "edit" && data
         ? transformDataToFormValues(data, formSchema)
         : data;
-    return applyDropdownDefaults(base, formSchema);
+    return applyFormFieldDefaults(base, formSchema, { radios: mode === "create" });
   }, [data, mode, formSchema]);
 
   const transformCallback = useCallback(
     (rawData: Record<string, unknown>) =>
-      applyDropdownDefaults(
+      applyFormFieldDefaults(
         transformDataToFormValues(rawData, formSchema),
         formSchema
       ),

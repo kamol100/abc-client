@@ -1353,11 +1353,17 @@
         },
         "network": {
             "label": "নেটওয়ার্ক",
-            "placeholder": "নেটওয়ার্ক"
+            "placeholder": "নেটওয়ার্ক",
+            "errors": {
+                "required": "নেটওয়ার্ক নির্বাচন করুন।"
+            }
         },
         "package": {
             "label": "নেটওয়ার্ক প্যাকেজ",
-            "placeholder": "নেটওয়ার্ক প্যাকেজ"
+            "placeholder": "নেটওয়ার্ক প্যাকেজ",
+            "errors": {
+                "required": "প্যাকেজ নির্বাচন করুন।"
+            }
         },
         "device": {
             "label": "ডিভাইস",

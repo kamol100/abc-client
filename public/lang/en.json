@@ -1353,11 +1353,17 @@
         },
         "network": {
             "label": "Network",
-            "placeholder": "Select network"
+            "placeholder": "Select network",
+            "errors": {
+                "required": "Please select a network."
+            }
         },
         "package": {
             "label": "Network Package",
-            "placeholder": "Select network package"
+            "placeholder": "Select network package",
+            "errors": {
+                "required": "Please select a package."
+            }
         },
         "device": {
             "label": "Device",

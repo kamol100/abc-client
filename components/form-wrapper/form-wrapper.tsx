@@ -5,6 +5,7 @@ import useApiMutation from "@/hooks/use-api-mutation";
 import { Form } from "@/components/ui/form";
 import { FormLoader } from "@/components/loader";
 import { parseApiError, serverFieldErrors } from "@/lib/helper/helper";
+import { sanitizeServerActionPayload } from "@/lib/helper/server-action-payload";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -267,14 +268,14 @@ export default function FormWrapper({
 
     const onSubmit = async (formValues: FieldValues) => {
         if (!api) return;
-        console.log(formValues, 'payload');
         const transformedValues = transformPayload
             ? transformPayload(formValues)
             : formValues;
-        const payload =
+        const mergedPayload =
             extraPayload && Object.keys(extraPayload).length > 0
                 ? ({ ...transformedValues, ...extraPayload } as FieldValues)
                 : transformedValues;
+        const payload = sanitizeServerActionPayload(mergedPayload);
 
         lastPayloadRef.current = payload;
         if (submitHoldMs && submitHoldMs > 0) {

@@ -2,6 +2,7 @@
 
 import { useFetch } from "@/app/actions";
 import { apiErrorText } from "@/lib/helper/helper";
+import { sanitizeServerActionPayload } from "@/lib/helper/server-action-payload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -38,10 +39,13 @@ export default function useApiMutation<
   return useMutation<TData, unknown, TVariables>({
     mutationFn: async (variables?: TVariables) => {
       const apiUrl = url.startsWith("/") ? url : `/${url}`;
+      const payload = variables instanceof FormData
+        ? variables
+        : sanitizeServerActionPayload(variables);
       const result = await useFetch({
         url: apiUrl,
         method,
-        ...(variables !== undefined && { data: variables }),
+        ...(payload !== undefined && { data: payload }),
       });
       if (!result?.success) throw result;
       return result?.data as TData;

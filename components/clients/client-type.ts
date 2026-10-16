@@ -2,7 +2,43 @@ import { z } from "zod";
 import { InvoiceTypeRefSchema } from "@/components/invoices/invoice-type";
 import { normalizeDateOnlyInput } from "@/lib/helper/helper";
 
-const dateOnlyField = z.preprocess(normalizeDateOnlyInput, z.string().optional());
+const isBlankClientValue = (value: unknown): boolean =>
+    value === undefined ||
+    value === null ||
+    value === "" ||
+    value === "$undefined" ||
+    value === "undefined";
+
+const nullableText = z.preprocess(
+    (value) => (isBlankClientValue(value) ? null : value),
+    z.string().nullable(),
+);
+
+const nullableCoercedText = z.preprocess(
+    (value) => (isBlankClientValue(value) || value === "null" ? null : value),
+    z.coerce.string().nullable(),
+);
+
+const nullableInt = z.preprocess(
+    (value) => (isBlankClientValue(value) || value === "null" ? null : value),
+    z.coerce.number().int().nullable(),
+);
+
+const requiredSelection = (message: string) =>
+    z.preprocess((value) => {
+        if (isBlankClientValue(value) || value === "null") return undefined;
+        const parsed = typeof value === "number" ? value : Number(value);
+        return Number.isFinite(parsed) ? parsed : undefined;
+    }, z.number({
+        required_error: message,
+        invalid_type_error: message,
+    }).int().min(1, { message }));
+
+const dateOnlyField = z.preprocess((value) => {
+    if (isBlankClientValue(value)) return null;
+    const normalized = normalizeDateOnlyInput(value);
+    return normalized === undefined ? null : normalized;
+}, z.string().nullable());
 
 const RefSchema = z.object({
     id: z.coerce.number(),
@@ -84,54 +120,95 @@ export const ClientFormSchema = z.object({
     name: z.string({
         required_error: "client.name.errors.required",
     }).min(2, { message: "client.name.errors.min" }),
-    phone: z.string().nullable().optional(),
-    email: z.string().nullable().optional(),
-    pppoe_username: z.string().min(1, {
+    phone: nullableText,
+    email: nullableText,
+    pppoe_username: z.string({
+        required_error: "client.pppoe_username.errors.required",
+        invalid_type_error: "client.pppoe_username.errors.required",
+    }).min(1, {
         message: "client.pppoe_username.errors.required",
     }),
-    pppoe_password: z.string().min(1, {
+    pppoe_password: z.string({
+        required_error: "client.pppoe_password.errors.required",
+        invalid_type_error: "client.pppoe_password.errors.required",
+    }).min(1, {
         message: "client.pppoe_password.errors.required",
     }),
-    ip_address: z.string().nullable().optional(),
-    mac_address: z.string().nullable().optional(),
-    zone_id: z.coerce.number().nullable().optional(),
-    sub_zone_id: z.coerce.number().nullable().optional(),
-    network_id: z.coerce.number().min(1),
-    package_id: z.coerce.number().min(1),
-    device_id: z.coerce.number().nullable().optional(),
-    upazila_id: z.coerce.number().optional(),
-    payment_term: z.coerce.number(),
-    payment_deadline: z.coerce.string().nullable().optional(),
-    discount: z.string().nullable().optional(),
-    billing_term: z.enum(["prepaid", "postpaid"]).optional(),
-    connection_type: z.string().optional(),
-    connection_mode: z.string().optional(),
-    connection_date: dateOnlyField.nullable().optional(),
-    termination_date: dateOnlyField.nullable().optional(),
-    current_address: z.string().nullable().optional(),
-    permanent_address: z.string().nullable().optional(),
-    adr_latitude: z.coerce.string().nullable().optional(),
-    adr_longitude: z.coerce.string().nullable().optional(),
-    father_name: z.string().nullable().optional(),
-    occupation: z.string().nullable().optional(),
-    nid: z.string().nullable().optional(),
-    nid_front: z.string().nullable().optional(),
-    nid_back: z.string().nullable().optional(),
-    photo: z.string().nullable().optional(),
-    note: z.string().nullable().optional(),
-    status: z.coerce.number().optional(),
-    welcome_notification: z.coerce.number().optional(),
-    login_sms_notification: z.coerce.number().nullable().optional(),
-    cable_type: z.string().nullable().optional(),
-    cable_length: z.coerce.string().optional().default("0"),
-    cable_id: z.coerce.string().nullable().optional(),
-    cable_invoice: z.coerce.number().optional().default(0),
-    billing_type: z.string().optional(),
-    invoice_day: z.string().default("01"),
-    fund: z.string().optional(),
-    reseller_id: z.coerce.string().optional(),
-    type: z.coerce.string().optional(),
-    created_by: z.coerce.string().optional(),
+    ip_address: nullableText,
+    mac_address: nullableText,
+    zone_id: nullableInt,
+    sub_zone_id: nullableInt,
+    network_id: requiredSelection("client.network.errors.required"),
+    package_id: requiredSelection("client.package.errors.required"),
+    device_id: nullableInt,
+    upazila_id: z.preprocess((value) => {
+        if (isBlankClientValue(value) || value === "null") return undefined;
+        return value;
+    }, z.coerce.number().int().optional()),
+    payment_term: z.preprocess(
+        (value) => (isBlankClientValue(value) ? 1 : value),
+        z.coerce.number().int().min(1),
+    ),
+    payment_deadline: nullableInt,
+    discount: nullableText,
+    billing_term: z.preprocess(
+        (value) => (isBlankClientValue(value) ? null : value),
+        z.enum(["prepaid", "postpaid"]).nullable(),
+    ),
+    connection_type: nullableText,
+    connection_mode: nullableText,
+    connection_date: dateOnlyField,
+    termination_date: dateOnlyField,
+    current_address: nullableText,
+    permanent_address: nullableText,
+    adr_latitude: nullableCoercedText,
+    adr_longitude: nullableCoercedText,
+    father_name: nullableText,
+    occupation: nullableText,
+    nid: nullableText,
+    nid_front: nullableText,
+    nid_back: nullableText,
+    photo: nullableText,
+    note: nullableText,
+    status: z.preprocess(
+        (value) => (isBlankClientValue(value) ? 1 : value),
+        z.coerce.number().int(),
+    ),
+    welcome_notification: z.preprocess(
+        (value) => (isBlankClientValue(value) ? null : value),
+        z.coerce.number().int().nullable(),
+    ),
+    login_sms_notification: z.preprocess(
+        (value) => (value === undefined ? undefined : isBlankClientValue(value) || value === "null" ? null : value),
+        z.coerce.number().int().nullable().optional(),
+    ),
+    cable_type: nullableText,
+    cable_length: z.preprocess(
+        (value) => (isBlankClientValue(value) ? 0 : value),
+        z.coerce.number().int(),
+    ),
+    cable_id: z.preprocess(
+        (value) => (value === undefined ? undefined : isBlankClientValue(value) || value === "null" ? null : value),
+        z.string().nullable().optional(),
+    ),
+    cable_invoice: z.preprocess(
+        (value) => (isBlankClientValue(value) ? 0 : value),
+        z.coerce.number().int(),
+    ),
+    billing_type: nullableText,
+    invoice_day: z.preprocess(
+        (value) => (isBlankClientValue(value) ? "01" : value),
+        z.string(),
+    ),
+    fund: nullableText,
+    reseller_id: nullableInt,
+    type: nullableText,
+    created_by: z.preprocess((value) => {
+        if (isBlankClientValue(value) || value === "null" || (typeof value === "object" && value !== null)) {
+            return undefined;
+        }
+        return value;
+    }, z.coerce.number().int().optional()),
 });
 
 export type ClientFormInput = z.input<typeof ClientFormSchema>;
