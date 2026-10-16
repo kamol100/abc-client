@@ -1,20 +1,21 @@
 ## Summary
 
-PPPoE ID and password now show their translated required messages instead of the English word "Required".
+The client IP ping buttons now use a `buttonVariant` prop. The default is `outline`.
 
 ## Cause
 
-An untouched field is `undefined`. `z.string().min(1)` only uses the custom message for an empty string, so a missing value fell through to Zod’s default `"Required"`. The form translates that string as a key, and `"Required"` has no translation.
+`ClientIpPingButton` accepted `buttonVariant` and never passed it to `MyButton`, so every button stayed hardcoded to outline.
 
 ## Files
 
-- `components/clients/client-type.ts`
-- `tests/unit/clients/client-payload.test.ts`
+- `components/clients/client-router-info.tsx`
+- `components/clients/client-online-status-cell.tsx`
+- `tests/unit/clients/client-router-info.test.tsx`
 
 ## Checks
 
-`npx vitest run tests/unit/clients/client-payload.test.ts` — 8 passed.
+`npx vitest run tests/unit/clients/client-router-info.test.tsx` — 6 passed.
 
 ## Browser
 
-The create form was not submitted in the browser. The test covers a missing username and an empty password.
+The client list was not opened. The test checks the default outline classes and a ghost override.

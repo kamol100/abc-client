@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ClientRow, getClientId, RouterInfo } from "@/components/clients/client-type";
 import ClientSpeedWidget from "@/components/clients/client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import MyButton from "@/components/my-button";
+import MyButton, { type ButtonProps } from "@/components/my-button";
 
 type ClientWithRouter = Pick<ClientRow, "id" | "router_info" | "network">;
 
@@ -36,6 +36,7 @@ type PingState = "idle" | "loading" | "success" | "error";
 interface ClientIpPingButtonProps {
     clientId: string;
     ipAddress?: string | null;
+    buttonVariant?: ButtonProps["variant"];
 }
 
 function isValidIpv4(ip: string): boolean {
@@ -95,7 +96,11 @@ function useClientRouterInfo(clientId: string) {
     });
 }
 
-function ClientIpPingControl({ clientId, ipAddress }: ClientIpPingButtonProps) {
+function ClientIpPingControl({
+    clientId,
+    ipAddress,
+    buttonVariant = "outline",
+}: ClientIpPingButtonProps) {
     const { t } = useTranslation();
     const [pingState, setPingState] = useState<PingState>("idle");
     const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -176,7 +181,7 @@ function ClientIpPingControl({ clientId, ipAddress }: ClientIpPingButtonProps) {
         <div className="flex items-center gap-2">
             <MyButton
                 type="button"
-                variant="outline"
+                variant={buttonVariant}
                 size="icon"
                 disabled={!pingIp || pingState === "loading"}
                 onClick={handlePing}
@@ -187,7 +192,7 @@ function ClientIpPingControl({ clientId, ipAddress }: ClientIpPingButtonProps) {
             </MyButton>
             <MyButton
                 type="button"
-                variant="outline"
+                variant={buttonVariant}
                 size="icon"
                 disabled={!deviceUrl}
                 onClick={handleOpenDevice}
@@ -200,7 +205,10 @@ function ClientIpPingControl({ clientId, ipAddress }: ClientIpPingButtonProps) {
     );
 }
 
-export function ClientIpPingButton({ clientId }: { clientId: string }) {
+export function ClientIpPingButton({
+    clientId,
+    buttonVariant = "outline",
+}: Pick<ClientIpPingButtonProps, "clientId" | "buttonVariant">) {
     const { t } = useTranslation();
     const { data, isLoading, isError } = useClientRouterInfo(clientId);
     const showLoading = clientId.length > 0 && isLoading && !isError;
@@ -209,7 +217,7 @@ export function ClientIpPingButton({ clientId }: { clientId: string }) {
         return (
             <MyButton
                 type="button"
-                variant="outline"
+                variant={buttonVariant}
                 size="icon"
                 loading
                 aria-busy
@@ -223,6 +231,7 @@ export function ClientIpPingButton({ clientId }: { clientId: string }) {
         <ClientIpPingControl
             clientId={clientId}
             ipAddress={data?.data?.ip_address}
+            buttonVariant={buttonVariant}
         />
     );
 }

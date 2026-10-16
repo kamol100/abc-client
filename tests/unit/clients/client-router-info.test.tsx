@@ -86,6 +86,27 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(1);
     });
 
+    it("applies the button variant, defaulting to outline", async () => {
+        useFetch.mockResolvedValue({
+            success: true,
+            data: { ip_address: "10.0.0.8", is_online: true },
+        });
+
+        const { rerender } = renderPing();
+
+        const outlined = await screen.findByRole("button", { name: "Ping on this ip" });
+        expect(outlined.className).toContain("border-input");
+
+        rerender(
+            <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+                <ClientIpPingButton clientId="client-1" buttonVariant="ghost" />
+            </QueryClientProvider>
+        );
+
+        const ghost = await screen.findByRole("button", { name: "Ping on this ip" });
+        expect(ghost.className).not.toContain("border-input");
+    });
+
     it("replaces the loading button when router information fails", async () => {
         useFetch.mockResolvedValue({ success: false, message: "Client is offline" });
 

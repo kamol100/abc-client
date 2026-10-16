@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import useInView from "@/hooks/use-in-view";
 import { Skeleton } from "@/components/ui/skeleton";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { ClientIpPingButton } from "./client-router-info";
 
 interface ClientOnlineStatus {
     ip_address?: string | null;
@@ -48,7 +49,12 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
             ) : (
                 <div className="flex flex-col gap-0.5">
                     <span className={cn("text-sm font-medium font-mono", inactive ? "text-destructive" : "text-foreground")}>
-                        {t("client.online.ip")}: {status?.ip_address || "—"}
+                        {t("client.online.ip")}: {status?.ip_address ? (<div className="inline-flex items-center gap-1">
+                            <span className="text-xs text-muted-foreground">
+                                {status?.ip_address}
+                            </span>
+                            <ClientIpPingButton clientId={clientId} buttonVariant="ghost" />
+                        </div>) : ("-")}
                     </span>
                     <span className={cn("text-sm font-mono", inactive ? "text-destructive/80" : "text-muted-foreground")}>
                         {t("client.online.mac")}: {status?.router_mac_address || "—"}
