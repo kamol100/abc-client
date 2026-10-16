@@ -194,6 +194,39 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(1);
     });
 
+    it("uses a provided IP without fetching router information", async () => {
+        useFetch.mockImplementation(async ({ url }: { url: string }) => {
+            if (url.includes("client-ping")) {
+                return { success: true, data: { reachable: true } };
+            }
+
+            return { success: true, data: { ip_address: "10.9.9.9" } };
+        });
+        const open = vi.spyOn(window, "open").mockImplementation(() => null);
+        const user = userEvent.setup();
+
+        render(
+            <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+                <ClientIpPingButton clientId="client-1" ipAddress="10.0.0.8" buttonVariant="ghost" />
+            </QueryClientProvider>
+        );
+
+        const pingButton = screen.getByRole("button", { name: "Ping on this ip" });
+        const openButton = screen.getByRole("button", { name: "Open http://10.0.0.8:80" });
+        expect(pingButton).toBeEnabled();
+        expect(pingButton.className).not.toContain("border-input");
+        expect(routerCalls()).toHaveLength(0);
+
+        await user.click(pingButton);
+        await waitFor(() => expect(pingCalls()).toHaveLength(1));
+        expect(pingCalls()[0][0].url).toBe("/client-ping/client-1?ip=10.0.0.8");
+        expect(routerCalls()).toHaveLength(0);
+
+        await user.click(openButton);
+        expect(open).toHaveBeenCalledWith("http://10.0.0.8:80", "_blank", "noopener,noreferrer");
+        open.mockRestore();
+    });
+
     it("opens the device address on port 80", async () => {
         useFetch.mockResolvedValue({
             success: true,

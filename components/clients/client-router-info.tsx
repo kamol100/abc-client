@@ -85,12 +85,12 @@ function clientDeviceUrl(ip: string): string {
     return `http://${host}:${CLIENT_DEVICE_PORT}`;
 }
 
-function useClientRouterInfo(clientId: string) {
+function useClientRouterInfo(clientId: string, enabled = true) {
     return useApiQuery<ApiResponse<RouterInfo>>({
         queryKey: ["client-router-info", clientId],
         url: `client-router-info/${clientId}`,
         pagination: false,
-        enabled: clientId.length > 0,
+        enabled: enabled && clientId.length > 0,
         staleTime: ROUTER_INFO_STALE_MS,
         retry: false,
     });
@@ -207,11 +207,14 @@ function ClientIpPingControl({
 
 export function ClientIpPingButton({
     clientId,
+    ipAddress,
     buttonVariant = "outline",
-}: Pick<ClientIpPingButtonProps, "clientId" | "buttonVariant">) {
+}: ClientIpPingButtonProps) {
     const { t } = useTranslation();
-    const { data, isLoading, isError } = useClientRouterInfo(clientId);
-    const showLoading = clientId.length > 0 && isLoading && !isError;
+    const hasLocalIp = ipAddress !== undefined;
+    const { data, isLoading, isError } = useClientRouterInfo(clientId, !hasLocalIp);
+    const resolvedIp = hasLocalIp ? ipAddress : data?.data?.ip_address;
+    const showLoading = !hasLocalIp && clientId.length > 0 && isLoading && !isError;
 
     if (showLoading) {
         return (
@@ -230,7 +233,7 @@ export function ClientIpPingButton({
     return (
         <ClientIpPingControl
             clientId={clientId}
-            ipAddress={data?.data?.ip_address}
+            ipAddress={resolvedIp}
             buttonVariant={buttonVariant}
         />
     );
