@@ -1,22 +1,20 @@
 ## Summary
 
-The client list ping and device buttons now use the IP already loaded by online status, so that cell no longer requests router info for the same address.
-
-## Cause
-
-`ClientIpPingButton` always called `client-router-info`, even when `ClientOnlineStatusCell` already had `ip_address` from `client-online-status`.
+The activity log Action by and Date columns now stay at least 150px wide, on one line. The Summary column still takes the leftover width.
 
 ## Files
 
-- `components/clients/client-online-status-cell.tsx`
-- `components/clients/client-router-info.tsx`
-- `tests/unit/clients/client-router-info.test.tsx`
+- `components/activity-logs/activity-log-column.tsx`
+- `tests/unit/activity-logs/activity-log-summary.test.tsx`
 
 ## Checks
 
-`npx vitest run tests/unit/clients/client-router-info.test.tsx` — 7 passed.
-`scripts/ai/typecheck` — passed.
+`npx vitest run tests/unit/activity-logs/activity-log-summary.test.tsx` — 6 passed. The show-more fixture is longer than the 120-character summary limit.
 
 ## Browser
 
-The clients list was not opened. No app session was running, so the skipped request was checked in the unit test: a provided IP pings and opens port 80 with zero `client-router-info` calls. The client detail view still loads router info when no IP is passed in.
+The signed-in activity log page stayed on its loading skeleton, so the live column widths were not measured.
+
+## Left untouched
+
+`auth/auth.ts`, `components/data-table/data-table.tsx`, `public/lang/en.json`, and `public/lang/bn.json`.

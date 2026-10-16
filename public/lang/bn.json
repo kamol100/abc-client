@@ -2927,6 +2927,11 @@
         },
         "date": {
             "label": "তারিখ"
+        },
+        "summary": {
+            "label": "সারাংশ",
+            "show_more": "আরও দেখুন",
+            "show_less": "কম দেখুন"
         }
     },
     "admin_demo_request": {

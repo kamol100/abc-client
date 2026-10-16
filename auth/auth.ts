@@ -30,17 +30,21 @@ interface LoginApiResponse {
     user?: LoginApiUser;
 }
 
-async function getLogin(credentials: LoginRequestCredentials): Promise<LoginApiResponse> {
+async function getLogin(credentials: LoginRequestCredentials, userAgent: string): Promise<LoginApiResponse> {
     try {
         const hostQuery = credentials?.host
             ? `?host=${encodeURIComponent(credentials.host)}`
             : "";
+        const headers: Record<string, string> = {
+            "Content-type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+        };
+        if (userAgent !== "") {
+            headers["X-Client-User-Agent"] = userAgent;
+        }
         const result = await fetch(`${BASE_URL}${credentials.api}${hostQuery}`, {
             method: "POST",
-            headers: {
-                "Content-type": "application/json",
-                "X-Requested-With": "XMLHttpRequest",
-            },
+            headers,
             mode: "cors",
             credentials: "include",
             body: JSON.stringify(credentials),
@@ -57,11 +61,12 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     ...authConfig,
     providers: [
         Credentials({
-            async authorize(credentials) {
+            async authorize(credentials, request) {
                 const parsedCredentials = loginRequestSchema.safeParse(credentials);
 
                 if (parsedCredentials.success) {
-                    const data = await getLogin(parsedCredentials.data);
+                    const userAgent = request.headers.get("user-agent") ?? "";
+                    const data = await getLogin(parsedCredentials.data, userAgent);
                     const isAuthenticated = data?.success ?? Boolean(data?.token);
                     if (!isAuthenticated || !data?.token) {
                         return null;

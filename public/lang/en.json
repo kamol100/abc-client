@@ -2927,6 +2927,11 @@
         },
         "date": {
             "label": "Date"
+        },
+        "summary": {
+            "label": "Summary",
+            "show_more": "Show more",
+            "show_less": "Show less"
         }
     },
     "admin_demo_request": {

@@ -33,6 +33,13 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { useTranslation } from "react-i18next";
 import { ReactNode } from "react";
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData, TValue> {
+    className?: string;
+  }
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   toolbarInfoComponent?: ReactNode;
@@ -159,7 +166,11 @@ export function DataTable<TData, TValue>({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className={header.column.columnDef.meta?.className}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -179,7 +190,10 @@ export function DataTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell
+                        key={cell.id}
+                        className={cell.column.columnDef.meta?.className}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
