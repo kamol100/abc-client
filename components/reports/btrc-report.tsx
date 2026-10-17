@@ -167,16 +167,6 @@ function clientFields(zoneOptions: { value: string | number; label: string }[], 
     return [
         {
             type: "dropdown",
-            name: "zone_id",
-            label: { labelText: "btrc.client.zone.label" },
-            placeholder: "btrc.client.zone.placeholder",
-            options: zoneOptions,
-            defaultValue: "all",
-            isClearable: false,
-            isLoading: loading,
-        },
-        {
-            type: "dropdown",
             name: "status",
             label: { labelText: "btrc.client.status.label" },
             placeholder: "btrc.client.status.placeholder",
@@ -187,6 +177,16 @@ function clientFields(zoneOptions: { value: string | number; label: string }[], 
             ],
             defaultValue: "all",
             isClearable: false,
+        },
+        {
+            type: "dropdown",
+            name: "zone_id",
+            label: { labelText: "btrc.client.zone.label" },
+            placeholder: "btrc.client.zone.placeholder",
+            options: zoneOptions,
+            defaultValue: "all",
+            isClearable: false,
+            isLoading: loading,
         },
     ];
 }
