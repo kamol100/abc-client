@@ -148,11 +148,16 @@ describe("DatePicker range selection", () => {
 
         expect(start).toHaveAttribute("data-range-start", "true");
         expect(start.className).toContain("data-[range-start=true]:bg-primary");
+        expect(start.className).toContain("group-data-[focused=true]/day:ring-[3px]");
+        expect(start).toHaveAttribute("data-range-end", "false");
+        expect(start.closest("td")).toHaveClass("[&:not(:has([data-range-end=true]))_button]:![border:2px_solid_transparent]");
         expect(middle).toHaveAttribute("data-range-middle", "true");
         expect(middle.className).toContain("data-[range-middle=true]:bg-accent");
-        expect(middle.closest("td")).toHaveClass("bg-accent");
+        expect(middle.closest("td")).toHaveClass("bg-accent", "[&_button]:![border:2px_solid_transparent]");
         expect(end).toHaveAttribute("data-range-end", "true");
+        expect(end).toHaveAttribute("data-range-start", "false");
         expect(end.className).toContain("data-[range-end=true]:bg-primary");
+        expect(end.closest("td")).toHaveClass("[&:not(:has([data-range-start=true]))_button]:![border:2px_solid_transparent]");
     });
 
     it("clears the hover preview when the pointer leaves the calendar", async () => {

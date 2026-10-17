@@ -104,9 +104,12 @@ const previewRange = (
 };
 
 const RANGE_CLASS_NAMES = {
-    range_start: "bg-accent text-accent-foreground rounded-l-md",
-    range_middle: "bg-accent text-accent-foreground rounded-none",
-    range_end: "bg-accent text-accent-foreground rounded-r-md",
+    range_start:
+        "bg-accent text-accent-foreground rounded-l-md [&:not(:has([data-range-end=true]))_button]:![border:2px_solid_transparent]",
+    range_middle:
+        "bg-accent text-accent-foreground rounded-none [&_button]:![border:2px_solid_transparent]",
+    range_end:
+        "bg-accent text-accent-foreground rounded-r-md [&:not(:has([data-range-start=true]))_button]:![border:2px_solid_transparent]",
 };
 
 const PREVIEW_CLASS_NAMES = {
