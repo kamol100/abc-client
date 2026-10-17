@@ -199,6 +199,7 @@ function clientFields(zoneOptions: { value: string | number; label: string }[], 
             ],
             defaultValue: "all",
             isClearable: false,
+            visibleWhen: { field: "scope", equals: CLIENT_SCOPE_OWN, resetValue: "all" },
         },
         {
             type: "dropdown",
