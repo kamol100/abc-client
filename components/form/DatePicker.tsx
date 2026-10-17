@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
-import { format, isSameDay } from "date-fns";
+import { format, isAfter, isBefore, isSameDay } from "date-fns";
 import { CalendarIcon, X } from "lucide-react";
 import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
 import type { DateRange, DayPickerLocale } from "react-day-picker";
@@ -80,6 +80,42 @@ export const hasSelectedDateRange = (value: DatePickerValue): boolean => {
     return !isSameDay(value.from, value.to);
 };
 
+const isCompleteDateRange = (
+    range: DateRange | undefined,
+): range is DateRange & { from: Date; to: Date } =>
+    Boolean(range?.from && range.to && !isSameDay(range.from, range.to));
+
+const isDayStrictlyBetween = (date: Date, from: Date, to: Date) => {
+    const start = isBefore(from, to) ? from : to;
+    const end = start === from ? to : from;
+    return isAfter(date, start) && isBefore(date, end);
+};
+
+const previewRange = (
+    pending: DateRange | undefined,
+    hoveredDay: Date | undefined,
+    choosing: boolean,
+): DateRange | undefined => {
+    if (!choosing || !pending?.from || pending.to || !hoveredDay) return undefined;
+    if (isSameDay(pending.from, hoveredDay)) return undefined;
+    return isBefore(hoveredDay, pending.from)
+        ? { from: hoveredDay, to: pending.from }
+        : { from: pending.from, to: hoveredDay };
+};
+
+const RANGE_CLASS_NAMES = {
+    range_start: "bg-accent text-accent-foreground rounded-l-md",
+    range_middle: "bg-accent text-accent-foreground rounded-none",
+    range_end: "bg-accent text-accent-foreground rounded-r-md",
+};
+
+const PREVIEW_CLASS_NAMES = {
+    preview_middle:
+        "range-preview-middle bg-accent text-accent-foreground [&_button]:bg-accent [&_button]:text-accent-foreground [&_button]:rounded-none",
+    preview_edge:
+        "range-preview-edge bg-accent [&_button]:bg-primary [&_button]:text-primary-foreground [&_button]:hover:bg-primary [&_button]:hover:text-primary-foreground",
+};
+
 const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 const parseCalendarDate = (value: string | Date): Date | undefined => {
@@ -144,30 +180,81 @@ const DatePicker = ({
     const control = controlProp ?? ctxControl;
     const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
     const [open, setOpen] = useState(false);
+    const [isChoosingRange, setIsChoosingRange] = useState(false);
+    const [pendingRange, setPendingRange] = useState<DateRange | undefined>();
+    const [hoveredDay, setHoveredDay] = useState<Date | undefined>();
 
     const displayValue = (value: DatePickerValue) =>
         formatDatePickerDisplay(value, mode, dateFormat, rangeDateFormat);
 
-    const handleSelect = useCallback((next: Date | DateRange | undefined, onChange: (value: DatePickerValue) => void) => {
+    const resetPendingRange = useCallback(() => {
+        setIsChoosingRange(false);
+        setPendingRange(undefined);
+        setHoveredDay(undefined);
+    }, []);
+
+    const clearHoverPreview = useCallback(() => {
+        setHoveredDay((current) => (current ? undefined : current));
+    }, []);
+
+    const handleCalendarMouseLeave = useCallback((event: MouseEvent<HTMLDivElement>) => {
+        const nextTarget = event.relatedTarget;
+        if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) return;
+        clearHoverPreview();
+    }, [clearHoverPreview]);
+
+    const handleOpenChange = useCallback((nextOpen: boolean) => {
+        setOpen(nextOpen);
+        if (!nextOpen) resetPendingRange();
+    }, [resetPendingRange]);
+
+    const commitValue = useCallback((
+        next: DatePickerValue,
+        onChange: (value: DatePickerValue) => void,
+        shouldClose: boolean,
+    ) => {
         onChange(next);
         onValueChange?.(next);
-        if (!closeOnSelectDate) {
+        resetPendingRange();
+        if (shouldClose) setOpen(false);
+    }, [onValueChange, resetPendingRange]);
+
+    const handleSelect = useCallback((next: Date | undefined, onChange: (value: DatePickerValue) => void) => {
+        commitValue(next, onChange, closeOnSelectDate && Boolean(next));
+    }, [closeOnSelectDate, commitValue]);
+
+    const handleRangeSelect = useCallback((
+        next: DateRange | undefined,
+        onChange: (value: DatePickerValue) => void,
+    ) => {
+        setHoveredDay(undefined);
+        if (isCompleteDateRange(next)) {
+            commitValue(next, onChange, closeOnSelectDate);
             return;
         }
-        const shouldClose = mode === "range" ? Boolean(next && "from" in next && next.from && next.to) : Boolean(next);
+        setIsChoosingRange(true);
+        setPendingRange(next);
+    }, [closeOnSelectDate, commitValue]);
 
-        if (shouldClose) {
-            setOpen(false);
-        }
-    },
-        [closeOnSelectDate, mode, onValueChange]
-    );
+    const handleApplyRange = useCallback((onChange: (value: DatePickerValue) => void) => {
+        if (!pendingRange?.from) return;
+        const committed = pendingRange.to
+            ? pendingRange
+            : { from: pendingRange.from, to: pendingRange.from };
+        commitValue(committed, onChange, closeOnSelectDate);
+    }, [closeOnSelectDate, commitValue, pendingRange]);
 
     const handleClear = useCallback((onChange: (value: null) => void) => {
         onChange(null);
         onValueChange?.(undefined);
+        resetPendingRange();
         setOpen(false);
-    }, [onValueChange]);
+    }, [onValueChange, resetPendingRange]);
+
+    const hoveredPreview = previewRange(pendingRange, hoveredDay, isChoosingRange);
+    const canApplyRange = Boolean(
+        isChoosingRange && pendingRange?.from && !isCompleteDateRange(pendingRange),
+    );
 
     return (
         <div className={cn("flex flex-col gap-1", className)}>
@@ -178,6 +265,8 @@ const DatePicker = ({
                 rules={rules}
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error: fieldError } }) => {
                     const parsed = parseValue(value, mode);
+                    const committedRange = parsed instanceof Date ? undefined : parsed;
+                    const selectedRange = isChoosingRange ? pendingRange : committedRange;
                     const showClear = clearable && !disabled && Boolean(parsed);
                     const showCalendarIcon = !(
                         hide_calendar_icon_on_date_range &&
@@ -186,7 +275,7 @@ const DatePicker = ({
                     );
                     return (
                         <div className="relative w-full">
-                            <Popover open={open} onOpenChange={setOpen}>
+                            <Popover open={open} onOpenChange={handleOpenChange}>
                                 <PopoverTrigger asChild>
                                     <MyButton
                                         ref={ref}
@@ -209,17 +298,65 @@ const DatePicker = ({
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0" align="start">
                                     {mode === "range" ? (
-                                        <Calendar
-                                            locale={locale}
-                                            mode="range"
-                                            selected={parsed as DateRange | undefined}
-                                            onSelect={(next) => handleSelect(next, onChange)}
-                                            autoFocus
-                                            numberOfMonths={1}
-                                            defaultMonth={
-                                                (parsed as DateRange | undefined)?.from ?? new Date()
-                                            }
-                                        />
+                                        <div className="flex flex-col">
+                                            <div
+                                                data-slot="range-calendar"
+                                                className="w-fit"
+                                                onMouseLeave={handleCalendarMouseLeave}
+                                            >
+                                                <Calendar
+                                                    locale={locale}
+                                                    mode="range"
+                                                    min={1}
+                                                    selected={selectedRange}
+                                                    onSelect={(next) => handleRangeSelect(next, onChange)}
+                                                    onDayMouseEnter={(date) => {
+                                                        if (!isChoosingRange || pendingRange?.to) return;
+                                                        setHoveredDay((current) =>
+                                                            current && isSameDay(current, date) ? current : date,
+                                                        );
+                                                    }}
+                                                    modifiers={{
+                                                        preview_middle: (date) => Boolean(
+                                                            hoveredPreview?.from &&
+                                                            hoveredPreview.to &&
+                                                            isDayStrictlyBetween(date, hoveredPreview.from, hoveredPreview.to),
+                                                        ),
+                                                        preview_edge: (date) => Boolean(
+                                                            hoveredPreview?.from &&
+                                                            hoveredPreview.to &&
+                                                            pendingRange?.from &&
+                                                            !isSameDay(date, pendingRange.from) &&
+                                                            (isSameDay(date, hoveredPreview.from) || isSameDay(date, hoveredPreview.to)),
+                                                        ),
+                                                    }}
+                                                    modifiersClassNames={PREVIEW_CLASS_NAMES}
+                                                    classNames={RANGE_CLASS_NAMES}
+                                                    autoFocus
+                                                    numberOfMonths={1}
+                                                    defaultMonth={selectedRange?.from ?? new Date()}
+                                                />
+                                            </div>
+                                            <div
+                                                className="border-t border-border p-2"
+                                                onMouseEnter={clearHoverPreview}
+                                            >
+                                                <MyButton
+                                                    type="button"
+                                                    variant="default"
+                                                    size="sm"
+                                                    className="w-full"
+                                                    disabled={!canApplyRange}
+                                                    onMouseEnter={clearHoverPreview}
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        handleApplyRange(onChange);
+                                                    }}
+                                                >
+                                                    {t("common.apply")}
+                                                </MyButton>
+                                            </div>
+                                        </div>
                                     ) : (
                                         <Calendar
                                             locale={locale}

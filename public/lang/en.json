@@ -18,6 +18,7 @@
         "filter": "Filter",
         "reset": "Reset",
         "clear": "Clear",
+        "apply": "Apply",
         "apply_filter": "Apply Filter",
         "toggle_columns": "Toggle columns",
         "view": "View",

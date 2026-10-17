@@ -102,6 +102,7 @@ export type DateFieldConfig = BaseFieldConfig & {
     dateFormat?: string;
     valueKey?: string;
     required?: boolean;
+    closeOnSelectDate?: boolean;
 };
 
 export type DateRangeFieldConfig = BaseFieldConfig & {
@@ -109,6 +110,7 @@ export type DateRangeFieldConfig = BaseFieldConfig & {
     dateFormat?: string;
     valueKey?: string;
     required?: boolean;
+    closeOnSelectDate?: boolean;
 };
 
 export type GeolocationFieldConfig = BaseFieldConfig & {

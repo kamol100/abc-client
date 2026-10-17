@@ -102,6 +102,7 @@ function FilterDateField({
       name={field.name}
       placeholder={field.placeholder}
       mode={field.type === "dateRange" ? "range" : "single"}
+      closeOnSelectDate={field.closeOnSelectDate}
       onValueChange={onValueChange}
     />
   );

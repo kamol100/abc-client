@@ -1,24 +1,22 @@
 ## Summary
 
-Design D is the only filter-row layout. A table that sets `filter_row` splits its filters into that many flexible rows. Each row grows to the available width and wraps on its own. The invoice table uses `filter_row: 2`. Tables that omit `filter_row` keep the previous single-row grid. The comparison page and layouts A, B, and C are removed.
+The range hover preview was only cleared when a day was selected, Apply was clicked, or the popover closed. Moving the pointer off the calendar, or onto Apply, left the last hovered span painted.
+
+Hover state is still separate from the selected day. Leaving the calendar, or entering the Apply area, clears only that preview. A finished start-and-end range stays highlighted. Apply still commits the selected day, and a completed range still submits immediately.
 
 ## Files
 
-- `components/form-wrapper/form-filter.tsx` — `filterRows` renders the flexible rows
-- `components/data-table/filter-layout.ts` — row splitting only
-- `components/data-table/data-table-toolbar-options.ts` — `filter_row` documents the final behavior
-- `components/data-table/data-table-toolbar.tsx` — passes `filter_row` through
-- `components/invoices/invoice-table.tsx` — `filter_row: 2`
-- Removed `app/(dashboard)/dev/filter-layouts/page.tsx` and `components/data-table/filter-layout-demo.tsx`
-- Removed `filter_layout_demo` from `public/lang/en.json` and `public/lang/bn.json`
-- `tests/unit/data-table/filter-layout.test.ts`, `tests/unit/data-table/filter-layout-preview.test.tsx`
+- `components/form/DatePicker.tsx` — clear the hover preview on calendar leave and on Apply
+- `tests/unit/form/date-picker-range.test.tsx` — leave, Apply, in-calendar move, and completed range
 
 ## Checks
 
-`scripts/ai/typecheck` passed. Filter layout and filter toggle tests passed (3 files / 10 tests).
+`scripts/ai/typecheck` passed. Date picker and filter date tests passed (6 files / 28 tests).
 
-The open invoice filter was not checked in the browser.
+The invoice page is behind the login screen at `/admin?callbackUrl=/invoices`, so the live calendar was not hovered in the browser.
 
 ## Assumptions
 
-Phone filters stay in the existing bottom drawer. Ten invoice filters with `filter_row: 2` form two rows of five.
+Other range filters use the same picker, so they follow this hover-reset behavior too.
+
+Unrelated working-tree changes were left as they were: form builder, form filter, invoice filter schema, language files, and the earlier date-picker tests.

@@ -11,6 +11,7 @@ export const InvoiceFilterSchema = (): FieldConfig[] => [
         type: "dateRange",
         name: "create_date",
         placeholder: "invoice.filter.create_date",
+        closeOnSelectDate: false,
     },
     {
         type: "dateRange",

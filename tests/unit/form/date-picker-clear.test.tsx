@@ -45,12 +45,15 @@ describe("DatePicker clear", () => {
     });
 
     it("clears a selected range and submits the filter without that date", async () => {
-        const user = userEvent.setup();
+        const user = userEvent.setup({ skipHover: true });
         const onFilter = vi.fn();
         render(<ExpenseDateFilter onFilter={onFilter} />);
 
         await user.click(screen.getByRole("button", { name: "expense.expense_date.label" }));
-        await user.click(screen.getByRole("button", { name: "Wednesday, October 21st, 2026" }));
+        await user.click(screen.getByRole("button", { name: /October 21st, 2026/ }));
+        expect(onFilter).not.toHaveBeenCalled();
+
+        await user.click(screen.getByRole("button", { name: "common.apply" }));
 
         await waitFor(() => {
             expect(onFilter).toHaveBeenCalled();
@@ -67,12 +70,17 @@ describe("DatePicker clear", () => {
         expect(screen.getByRole("button", { name: "expense.expense_date.label" })).toBeInTheDocument();
     });
 
-    it("shows the clear button after only the start date is selected", async () => {
-        const user = userEvent.setup();
+    it("shows the clear button after a single day is applied", async () => {
+        const user = userEvent.setup({ skipHover: true });
         render(<ExpenseDateFilter onFilter={vi.fn()} />);
 
         await user.click(screen.getByRole("button", { name: "expense.expense_date.label" }));
-        await user.click(screen.getByRole("button", { name: "Wednesday, October 21st, 2026" }));
+        await user.click(screen.getByRole("button", { name: /October 21st, 2026/ }));
+
+        expect(screen.queryByRole("button", { name: "common.clear" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /October 21st, 2026/ })).toBeInTheDocument();
+
+        await user.click(screen.getByRole("button", { name: "common.apply" }));
 
         expect(screen.getByRole("button", { name: "common.clear" })).toBeInTheDocument();
         expect(screen.getByRole("button", { name: "10/21/2026" })).toBeInTheDocument();

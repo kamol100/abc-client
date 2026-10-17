@@ -440,6 +440,7 @@ const FormBuilder = ({
             mode="single"
             required={f.required}
             dateFormat={f.dateFormat}
+            closeOnSelectDate={f.closeOnSelectDate}
             rules={f.rules}
             disabled={f.disabled}
           />
@@ -454,6 +455,7 @@ const FormBuilder = ({
             required={f.required}
             dateFormat={f.dateFormat}
             rangeDateFormat={f.dateFormat}
+            closeOnSelectDate={f.closeOnSelectDate}
             rules={f.rules}
             disabled={f.disabled}
           />
