@@ -42,6 +42,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
 
     const toolbarOptions = {
         filter: ExpenseFilterSchema(),
+        filter_row: 2,
     };
 
     const toolbarTitle = pagination?.total

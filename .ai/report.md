@@ -1,20 +1,24 @@
 ## Summary
 
-The BTRC client report now has a Report Type dropdown. **All Clients with Resellers** is the default and hides the zone filter. **Own Clients** keeps the previous company-only export: same request shape, same zone and status filters, and the same `BTRC_Clients_List.xls` file.
+Design D is the only filter-row layout. A table that sets `filter_row` splits its filters into that many flexible rows. Each row grows to the available width and wraps on its own. The invoice table uses `filter_row: 2`. Tables that omit `filter_row` keep the previous single-row grid. The comparison page and layouts A, B, and C are removed.
 
 ## Files
 
-- `components/reports/btrc-report.tsx` — report type field, zone hidden unless Own Clients
-- `app/api/reports/btrc/[kind]/route.ts` — forwards `scope`
-- `public/lang/en.json`, `public/lang/bn.json` — `btrc.client.type`
-- `tests/unit/reports/btrc-report.test.tsx`
+- `components/form-wrapper/form-filter.tsx` — `filterRows` renders the flexible rows
+- `components/data-table/filter-layout.ts` — row splitting only
+- `components/data-table/data-table-toolbar-options.ts` — `filter_row` documents the final behavior
+- `components/data-table/data-table-toolbar.tsx` — passes `filter_row` through
+- `components/invoices/invoice-table.tsx` — `filter_row: 2`
+- Removed `app/(dashboard)/dev/filter-layouts/page.tsx` and `components/data-table/filter-layout-demo.tsx`
+- Removed `filter_layout_demo` from `public/lang/en.json` and `public/lang/bn.json`
+- `tests/unit/data-table/filter-layout.test.ts`, `tests/unit/data-table/filter-layout-preview.test.tsx`
 
 ## Checks
 
-`scripts/ai/frontend-check` passed (typecheck, then 53 unit files / 236 tests).
+`scripts/ai/typecheck` passed. Filter layout and filter toggle tests passed (3 files / 10 tests).
 
-The signed-in page at `/reports/btrc` redirects to `/admin`. The dropdown, hidden zone, and download URLs were exercised in the unit test. Light/dark layout was not checked in the browser.
+The open invoice filter was not checked in the browser.
 
 ## Assumptions
 
-Client Status still says “All Clients” for every status. “Own Clients” is the report type, not a status. Choosing it omits `scope` so the API call matches the previous default. The inclusive download sends `scope=with_resellers` and does not send `zone_id`.
+Phone filters stay in the existing bottom drawer. Ten invoice filters with `filter_row: 2` form two rows of five.

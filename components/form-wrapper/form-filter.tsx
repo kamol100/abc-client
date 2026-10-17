@@ -10,7 +10,12 @@ import InputField from "@/components/form/input-field";
 import DatePicker from "@/components/form/DatePicker";
 import { Close } from "@/components/icon";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
-import { useSidebar } from "../ui/sidebar";
+import {
+  FILTER_ITEM_CLASS,
+  FILTER_ROW_CLASS,
+  splitFilterFields,
+  visibleFilterFields,
+} from "@/components/data-table/filter-layout";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
   loading: () => null,
@@ -29,6 +34,8 @@ type FormFilterProps = {
   forceOpen?: boolean;
   hideTrigger?: boolean;
   formHook?: ReturnType<typeof useFilterForm>;
+  /** How many flexible rows to use. Omitted keeps the single `grids` row. */
+  filterRows?: number;
 };
 
 function FilterTextField({
@@ -109,13 +116,13 @@ const FormFilter = ({
   searchButton = false,
   defaultFilter,
   setFilter = () => { },
-  className = "h-9 mt-1 !ml-[1px]",
+  className,
   forceOpen = false,
   hideTrigger = false,
   formHook,
+  filterRows,
 }: FormFilterProps) => {
   const [isOpen, setIsOpen] = useState(forceOpen);
-  const { isMobile } = useSidebar();
 
   const internalHook = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
   const {
@@ -173,31 +180,58 @@ const FormFilter = ({
     return null;
   };
 
+  const fields = visibleFilterFields(formSchema);
+  const rowCount = typeof filterRows === "number" && filterRows >= 1 ? Math.floor(filterRows) : undefined;
+  const fieldsOpen = isOpen || forceOpen;
+
+  const renderFilterFields = () => {
+    if (rowCount != null) {
+      return (
+        <div className="flex w-full min-w-0 flex-col gap-3">
+          {splitFilterFields(fields, rowCount).map((row, rowIndex) => (
+            <div key={rowIndex} className={FILTER_ROW_CLASS}>
+              {row.map((field, index) => (
+                <div key={field.name ?? index} className={FILTER_ITEM_CLASS}>
+                  {renderField(field)}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className={cn("w-full grid ", gridGap, GRID_STYLES[grids])}>
+        {formSchema.map((field, index) => {
+          if (field.permission === false) return null;
+          return (
+            <div key={field.name ?? index}>
+              {renderField(field)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className={cn("flex-none md:flex lg:flex gap-3", className)}>
-      {(isOpen || forceOpen) && (
-        <div className="w-full">
+    <div
+      className={cn(
+        "flex-none gap-3 md:flex lg:flex",
+        rowCount != null && "mt-1 h-auto min-w-0 items-start",
+        rowCount != null && fieldsOpen && "w-full",
+        className ?? (rowCount != null ? undefined : "mt-1 h-9 !ml-[1px]"),
+      )}
+    >
+      {fieldsOpen && (
+        <div className={cn("w-full", rowCount != null && "min-w-0")}>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(submitFilter)}
-              className="flex w-full"
+              className={cn("flex w-full", rowCount != null && "min-w-0")}
             >
-              <div
-                className={cn(
-                  "w-full grid ",
-                  gridGap,
-                  GRID_STYLES[grids],
-                )}
-              >
-                {formSchema.map((field, index) => {
-                  if (field.permission === false) return null;
-                  return (
-                    <div key={field.name ?? index}>
-                      {renderField(field)}
-                    </div>
-                  );
-                })}
-              </div>
+              {renderFilterFields()}
             </form>
           </Form>
         </div>

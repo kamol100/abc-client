@@ -60,7 +60,13 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
     const pagination = data?.data?.pagination;
     const reports = data?.data?.reports;
 
-    const toolbarOptions = useMemo(() => ({ filter: InvoiceFilterSchema() }), []);
+    const toolbarOptions = useMemo(
+        () => ({
+            filter: InvoiceFilterSchema(),
+            filter_row: 2,
+        }),
+        [],
+    );
 
     const toolbarTitle = pagination?.total
         ? `${t(toolbarTitleKey)} (${pagination.total})`

@@ -31,6 +31,7 @@ import { cn } from "@/lib/utils";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
+import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
 import { useTranslation } from "react-i18next";
 import { ReactNode } from "react";
 
@@ -45,7 +46,7 @@ interface DataTableProps<TData, TValue> {
   toolbarInfoComponent?: ReactNode;
   data: TData[];
   toolbar?: boolean;
-  toolbarOptions?: any;
+  toolbarOptions?: DataTableToolbarOptions;
   toggleColumns?: boolean;
   pagination?: Pagination;
   setCurrentPage?: (page: number) => void;

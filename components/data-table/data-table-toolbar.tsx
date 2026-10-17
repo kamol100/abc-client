@@ -18,10 +18,11 @@ import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { MyDrawer } from "@/components/my-drawer";
 import { useFilterForm } from "@/hooks/use-filter-form";
+import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
-  toolbarOptions?: any;
+  toolbarOptions?: DataTableToolbarOptions;
   toolbarInfoComponent?: ReactNode;
   toggleColumns?: boolean;
   data: TData[];
@@ -205,7 +206,8 @@ export function DataTableToolbar<TData>({
             ) : (
               <FormFilter
                 formSchema={toolbarOptions.filter}
-                grids={toolbarOptions?.filter?.length}
+                grids={toolbarOptions.filter.length}
+                filterRows={toolbarOptions.filter_row}
                 setFilter={setFilter}
                 watchFields={toolbarOptions?.watchFields}
                 searchButton
