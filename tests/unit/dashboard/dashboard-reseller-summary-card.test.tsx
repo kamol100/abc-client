@@ -19,6 +19,7 @@ const stats: DashboardResellerCount = {
   active_clients: 55,
   inactive_clients: 5,
   new_resellers_this_month: 10,
+  new_clients_this_month: 7,
 };
 
 describe("DashboardResellerSummaryCard", () => {
@@ -31,6 +32,7 @@ describe("DashboardResellerSummaryCard", () => {
       active_clients: "55",
       inactive_clients: "5",
       new_resellers_this_month: "10",
+      new_clients_this_month: "7",
     });
 
     expect(parsed).toMatchObject(stats);
@@ -50,10 +52,10 @@ describe("DashboardResellerSummaryCard", () => {
     expect(document.body).toHaveTextContent("dashboard.metrics.client");
     expect(screen.getByText("dashboard.metrics.active:")).toBeInTheDocument();
     expect(screen.getByText("dashboard.metrics.inactive:")).toBeInTheDocument();
-    expect(screen.getByText("dashboard.metrics.this_month:")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.new_client:")).toBeInTheDocument();
     expect(
       Array.from(document.querySelectorAll(".sr-only"), (node) => node.textContent),
-    ).toEqual(["3", "60", "55", "5", "10"]);
+    ).toEqual(["3", "60", "55", "5", "7"]);
   });
 
   it("shows the shared loading skeleton", () => {

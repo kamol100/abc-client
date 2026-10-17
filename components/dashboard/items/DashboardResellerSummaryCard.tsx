@@ -13,10 +13,10 @@ type Props = {
   isError: boolean;
 };
 
-const METRICS: Array<{ labelKey: string; key: "active_clients" | "inactive_clients" | "new_resellers_this_month" }> = [
+const METRICS: Array<{ labelKey: string; key: "active_clients" | "inactive_clients" | "new_clients_this_month" }> = [
   { labelKey: "dashboard.metrics.active", key: "active_clients" },
   { labelKey: "dashboard.metrics.inactive", key: "inactive_clients" },
-  { labelKey: "dashboard.metrics.this_month", key: "new_resellers_this_month" },
+  { labelKey: "dashboard.metrics.new_client", key: "new_clients_this_month" },
 ];
 
 export default function DashboardResellerSummaryCard({ data, isLoading, isRefreshing, isError }: Props) {

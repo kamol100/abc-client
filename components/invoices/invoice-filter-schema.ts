@@ -17,6 +17,7 @@ export const InvoiceFilterSchema = (): FieldConfig[] => [
         type: "dateRange",
         name: "due_date",
         placeholder: "invoice.filter.due_date",
+        closeOnSelectDate: false,
     },
     {
         type: "dropdown",

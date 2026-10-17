@@ -4146,6 +4146,8 @@
             "active": "অ্যাক্টিভ",
             "inactive": "ইনঅ্যাক্টিভ",
             "client": "ক্লায়েন্ট",
+            "new_client": "নতুন ক্লায়েন্ট",
+            "new_clients": "নতুন ক্লায়েন্ট",
             "today": "আজ",
             "this_month": "এই মাস",
             "last_month": "গত মাস",

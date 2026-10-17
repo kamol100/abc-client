@@ -4146,6 +4146,8 @@
             "active": "Active",
             "inactive": "Inactive",
             "client": "Clients",
+            "new_client": "New client",
+            "new_clients": "New clients",
             "today": "Today",
             "this_month": "This month",
             "last_month": "Last month",

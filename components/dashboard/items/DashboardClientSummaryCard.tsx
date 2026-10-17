@@ -16,7 +16,7 @@ type Props = {
 const METRICS: Array<{ labelKey: string; key: keyof DashboardClientCount }> = [
   { labelKey: "dashboard.metrics.active", key: "active_clients" },
   { labelKey: "dashboard.metrics.inactive", key: "inactive_clients" },
-  { labelKey: "dashboard.metrics.this_month", key: "new_clients_this_month" },
+  { labelKey: "dashboard.metrics.new_clients", key: "new_clients_this_month" },
 ];
 
 export default function DashboardClientSummaryCard({ data, isLoading, isRefreshing, isError }: Props) {

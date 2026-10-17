@@ -46,6 +46,7 @@ export const DashboardResellerCountSchema = z
     active_clients: NumberLikeSchema,
     inactive_clients: NumberLikeSchema,
     new_resellers_this_month: NumberLikeSchema.optional().default(0),
+    new_clients_this_month: NumberLikeSchema.optional().default(0),
   })
   .passthrough();
 

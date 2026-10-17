@@ -232,6 +232,7 @@ export function useDashboardData() {
           active_clients: 0,
           inactive_clients: 0,
           new_resellers_this_month: 0,
+          new_clients_this_month: 0,
         };
   }, [resellerResponse?.data]);
 
