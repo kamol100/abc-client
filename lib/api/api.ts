@@ -14,7 +14,6 @@ export async function getData(url: string) {
     //const api_url = `${BASE_URL}${url}`;
     const api_url = `${BASE_URL}${url}`;
     const token = await useToken();
-    console.log(token, api_url);
     const result = await fetch(api_url, {
         method: "GET",
         headers: {
@@ -26,7 +25,7 @@ export async function getData(url: string) {
     const data = await result.json();
     return data;
 }
-export async function getPublicData(url: string) {
+export async function getPublicData(url: string, init?: RequestInit) {
     const api_url = `${BASE_URL}${url}`;
     const result = await fetch(api_url, {
         method: "GET",
@@ -34,6 +33,7 @@ export async function getPublicData(url: string) {
             "Content-type": "application/json",
             "X-Requested-With": "XMLHttpRequest",
         },
+        ...init,
     });
     const data = await result.json();
     return data;
@@ -42,12 +42,12 @@ export async function getPublicData(url: string) {
 export async function getCompanyPublicData(host?: string | null): Promise<CompanyPublicData> {
     const hostname = host?.trim();
     const queryHost = hostname ? `?host=${encodeURIComponent(hostname)}` : "";
-    const response = await getPublicData(`/company-data${queryHost}`);
+    // Company branding rarely changes; cache per host for 5 min instead of one API call per render.
+    const response = await getPublicData(`/company-data${queryHost}`, { next: { revalidate: 300 } });
     return (response?.data as CompanyPublicData) ?? {};
 }
 export async function postPublicData(url: string, formData: any) {
     const api_url = `${BASE_URL}${url}`;
-    console.log(api_url, formData);
     const result = await fetch(api_url, {
         method: "POST",
         headers: {
