@@ -61,10 +61,23 @@ describe("btrcReportSearch", () => {
     it("omits All so the report is not restricted to one record", () => {
         expect(btrcReportSearch({ zone_id: "all", status: "all" })).toBe("");
         expect(btrcReportSearch({ reseller_id: "all" })).toBe("");
-        expect(btrcReportSearch({ zone_id: 2, status: "active" })).toBe("zone_id=2&status=active");
+        expect(btrcReportSearch({ scope: "own", zone_id: 2, status: "active" })).toBe("zone_id=2&status=active");
         expect(btrcReportSearch({ reseller_id: 9 })).toBe("reseller_id=9");
     });
+
+    it("sends the reseller-inclusive scope and drops zone", () => {
+        expect(btrcReportSearch({ scope: "with_resellers", zone_id: 2, status: "all" })).toBe("scope=with_resellers");
+        expect(btrcReportSearch({ scope: "with_resellers", zone_id: 2, status: "inactive" })).toBe(
+            "scope=with_resellers&status=inactive",
+        );
+    });
 });
+
+class ResizeObserverStub {
+    observe() { }
+    unobserve() { }
+    disconnect() { }
+}
 
 describe("BtrcReports", () => {
     beforeEach(() => {
@@ -72,15 +85,39 @@ describe("BtrcReports", () => {
         toast.error.mockReset();
         URL.createObjectURL = vi.fn(() => "blob:btrc");
         URL.revokeObjectURL = vi.fn();
+        vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     });
 
-    it("renders the client and reseller report sections with download buttons", () => {
+    it("renders the client and reseller report sections with download buttons", async () => {
         renderReports();
 
         expect(screen.getByRole("heading", { name: "btrc.title" })).toBeInTheDocument();
         expect(screen.getByText("btrc.client.title")).toBeInTheDocument();
         expect(screen.getByText("btrc.reseller.title")).toBeInTheDocument();
+        expect(await screen.findByText("btrc.client.type.with_resellers")).toBeInTheDocument();
+        expect(screen.queryByText("btrc.client.zone.label")).not.toBeInTheDocument();
         expect(screen.getAllByRole("button", { name: "btrc.download" })).toHaveLength(2);
+    });
+
+    it("shows the zone filter for own clients and keeps that download on the existing request", async () => {
+        const user = userEvent.setup();
+        const fetchMock = vi.fn(async () => new Response(new Blob(["rows"]), {
+            status: 200,
+            headers: { "Content-Disposition": 'attachment; filename="BTRC_Clients_List.xls"' },
+        }));
+        vi.stubGlobal("fetch", fetchMock);
+        renderReports();
+
+        const [scopeSelect] = await screen.findAllByRole("combobox", { hidden: true });
+        await user.click(scopeSelect);
+        await user.click(await screen.findByText("btrc.client.type.own"));
+
+        expect(screen.getByText("btrc.client.zone.label")).toBeInTheDocument();
+
+        const [clientButton] = screen.getAllByRole("button", { name: "btrc.download" });
+        await user.click(clientButton);
+
+        expect(fetchMock).toHaveBeenCalledWith("/api/reports/btrc/clients");
     });
 
     it("downloads both reports and keeps All filters off the request", async () => {
@@ -102,7 +139,7 @@ describe("BtrcReports", () => {
         await user.click(clientButton);
         await user.click(resellerButton);
 
-        expect(fetchMock).toHaveBeenNthCalledWith(1, "/api/reports/btrc/clients");
+        expect(fetchMock).toHaveBeenNthCalledWith(1, "/api/reports/btrc/clients?scope=with_resellers");
         expect(fetchMock).toHaveBeenNthCalledWith(2, "/api/reports/btrc/resellers");
         expect(toast.success).toHaveBeenCalledTimes(2);
         expect(toast.error).not.toHaveBeenCalled();

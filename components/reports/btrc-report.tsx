@@ -7,14 +7,16 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import Card from "@/components/card";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import FormBuilder from "@/components/form-wrapper/form-builder";
+import FormBuilder, { VisibleFormField } from "@/components/form-wrapper/form-builder";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import MyButton from "@/components/my-button";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { apiErrorText } from "@/lib/helper/helper";
 
 const ALL_VALUE = "all";
-const CLIENT_DEFAULTS = { zone_id: "all", status: "all" };
+const CLIENT_SCOPE_WITH_RESELLERS = "with_resellers";
+const CLIENT_SCOPE_OWN = "own";
+const CLIENT_DEFAULTS = { scope: CLIENT_SCOPE_WITH_RESELLERS, zone_id: "all", status: "all" };
 const RESELLER_DEFAULTS = { reseller_id: "all" };
 
 const selectionSchema = (message: string) =>
@@ -23,6 +25,10 @@ const selectionSchema = (message: string) =>
     });
 
 const BtrcClientReportSchema = z.object({
+    scope: z.enum([CLIENT_SCOPE_WITH_RESELLERS, CLIENT_SCOPE_OWN], {
+        required_error: "btrc.client.type.errors.required",
+        invalid_type_error: "btrc.client.type.errors.invalid",
+    }),
     zone_id: selectionSchema("btrc.client.zone.errors.required"),
     status: z.enum(["all", "active", "inactive"], {
         required_error: "btrc.client.status.errors.required",
@@ -37,8 +43,11 @@ const BtrcResellerReportSchema = z.object({
 type ReportValues = Record<string, string | number | undefined>;
 
 export function btrcReportSearch(values: ReportValues): string {
+    const withResellers = values.scope === CLIENT_SCOPE_WITH_RESELLERS;
     const params = new URLSearchParams();
     Object.entries(values).forEach(([key, value]) => {
+        if (key === "scope" && value !== CLIENT_SCOPE_WITH_RESELLERS) return;
+        if (key === "zone_id" && withResellers) return;
         if (value === undefined || value === "" || value === ALL_VALUE) return;
         params.set(key, String(value));
     });
@@ -53,6 +62,7 @@ function filenameFromDisposition(header: string | null, fallback: string): strin
 
 function reportValues(values: ReportValues): ReportValues {
     return {
+        scope: values.scope,
         zone_id: values.zone_id,
         status: values.status,
         reseller_id: values.reseller_id,
@@ -167,6 +177,18 @@ function clientFields(zoneOptions: { value: string | number; label: string }[], 
     return [
         {
             type: "dropdown",
+            name: "scope",
+            label: { labelText: "btrc.client.type.label" },
+            placeholder: "btrc.client.type.placeholder",
+            options: [
+                { value: CLIENT_SCOPE_WITH_RESELLERS, label: "btrc.client.type.with_resellers" },
+                { value: CLIENT_SCOPE_OWN, label: "btrc.client.type.own" },
+            ],
+            defaultValue: CLIENT_SCOPE_WITH_RESELLERS,
+            isClearable: false,
+        },
+        {
+            type: "dropdown",
             name: "status",
             label: { labelText: "btrc.client.status.label" },
             placeholder: "btrc.client.status.placeholder",
@@ -187,6 +209,7 @@ function clientFields(zoneOptions: { value: string | number; label: string }[], 
             defaultValue: "all",
             isClearable: false,
             isLoading: loading,
+            visibleWhen: { field: "scope", equals: CLIENT_SCOPE_OWN, resetValue: "all" },
         },
     ];
 }
@@ -246,7 +269,9 @@ function ClientReportSection() {
                 {(renderField) => (
                     <div className="grid grid-cols-1 gap-4">
                         {formSchema.map((field) => (
-                            <div key={field.name}>{renderField(field)}</div>
+                            <VisibleFormField key={field.name} field={field}>
+                                {renderField(field)}
+                            </VisibleFormField>
                         ))}
                         <ReportDownloadButton pending={pending} onDownload={download} />
                     </div>

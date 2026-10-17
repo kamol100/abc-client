@@ -39,7 +39,7 @@ export async function GET(
 
     const incoming = new URL(request.url);
     const params = new URLSearchParams();
-    ["zone_id", "status", "reseller_id"].forEach((key) => {
+    ["zone_id", "status", "reseller_id", "scope"].forEach((key) => {
         const value = incoming.searchParams.get(key);
         if (value && value !== "all") params.set(key, value);
     });

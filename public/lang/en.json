@@ -2249,6 +2249,16 @@
         "download_failed": "Could not generate the report",
         "client": {
             "title": "Client Report",
+            "type": {
+                "label": "Report Type",
+                "placeholder": "Select report type",
+                "with_resellers": "All Clients with Resellers",
+                "own": "Own Clients",
+                "errors": {
+                    "required": "Report type is required",
+                    "invalid": "Select a report type"
+                }
+            },
             "zone": {
                 "label": "Zone",
                 "placeholder": "Select zone",
