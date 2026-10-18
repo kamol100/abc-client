@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { toast } from "react-toastify";
 import ClientBasicView from "@/components/clients/basic-view";
 import ClientNamePhoneCell from "@/components/clients/client-name-phone-cell";
 import { ClientRow } from "@/components/clients/client-type";
@@ -47,7 +48,58 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         render(<ClientNamePhoneCell client={client(null)} />);
 
         expect(screen.queryByRole("link", { name: "client.whatsapp" })).not.toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "client.copy_phone" })).not.toBeInTheDocument();
         expect(screen.getByText("—")).toBeInTheDocument();
+    });
+
+    it("hides the copy icon when the phone is blank", () => {
+        render(<ClientNamePhoneCell client={client("   ")} />);
+
+        expect(screen.queryByRole("button", { name: "client.copy_phone" })).not.toBeInTheDocument();
+    });
+
+    it("copies the phone number", async () => {
+        const writeText = vi.fn().mockResolvedValue(undefined);
+        vi.stubGlobal("navigator", { clipboard: { writeText } });
+        Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => true });
+
+        render(<ClientNamePhoneCell client={client(" 01712345678 ")} />);
+        fireEvent.click(screen.getByRole("button", { name: "client.copy_phone" }));
+        await vi.waitFor(() => expect(writeText).toHaveBeenCalled());
+
+        expect(writeText).toHaveBeenCalledWith("01712345678");
+        expect(toast.success).toHaveBeenCalledWith("client.phone_copied");
+        vi.unstubAllGlobals();
+        vi.restoreAllMocks();
+    });
+
+    it("copies with the document command when the clipboard API is unavailable", () => {
+        vi.stubGlobal("navigator", {});
+        Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => false });
+        let copiedValue = "";
+        const execCommand = vi.fn((command: string) => {
+            if (command !== "copy") return false;
+            copiedValue = document.querySelector("textarea")?.value ?? "";
+            return true;
+        });
+        Object.defineProperty(document, "execCommand", {
+            configurable: true,
+            writable: true,
+            value: execCommand,
+        });
+        vi.mocked(toast.success).mockClear();
+        vi.mocked(toast.error).mockClear();
+
+        render(<ClientNamePhoneCell client={client("01712345678")} />);
+        fireEvent.click(screen.getByRole("button", { name: "client.copy_phone" }));
+
+        expect(document.querySelector("textarea")).toBeNull();
+        expect(copiedValue).toBe("01712345678");
+        expect(execCommand).toHaveBeenCalledWith("copy");
+        expect(toast.success).toHaveBeenCalledWith("client.phone_copied");
+        expect(toast.error).not.toHaveBeenCalled();
+        vi.unstubAllGlobals();
+        vi.restoreAllMocks();
     });
 });
 
