@@ -1415,6 +1415,10 @@
         },
         "title": "Clients",
         "title_plural": "Clients",
+        "new_this_month": {
+            "notice": "New clients this month",
+            "show_all": "Show all clients"
+        },
         "activity": {
             "total": "Total",
             "online": "Online",
@@ -4148,6 +4152,7 @@
             "client": "Clients",
             "new_client": "New client",
             "new_clients": "New clients",
+            "view_new_clients": "View new clients this month",
             "today": "Today",
             "this_month": "This month",
             "last_month": "Last month",
