@@ -9,6 +9,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import MyButton from "@/components/my-button";
 import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
+import ResellerClientFilterSchema from "@/components/clients/reseller-client-filter-schema";
 import { ClientRow } from "@/components/clients/client-type";
 import dynamic from "next/dynamic";
 
@@ -18,14 +19,17 @@ const NEW_CLIENTS_THIS_MONTH = "this_month";
 
 type ClientTableProps = {
     createdAt?: string;
+    variant?: "default" | "reseller-clients";
 };
 
-const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
+const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) => {
     const { t } = useTranslation();
     const router = useRouter();
     const { isMobile } = useSidebar();
     const columns = useClientColumns();
-    const showNewClientsThisMonth = createdAt === NEW_CLIENTS_THIS_MONTH;
+    const isResellerReport = variant === "reseller-clients";
+    const showNewClientsThisMonth = !isResellerReport && createdAt === NEW_CLIENTS_THIS_MONTH;
+    const titleKey = isResellerReport ? "menu.reports.reseller_clients.title" : "client.title_plural";
 
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(() => {
@@ -42,8 +46,8 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
 
     const { data, isLoading, isFetching, setCurrentPage } =
         useApiQuery<PaginatedApiResponse<ClientRow>>({
-            queryKey: ["clients"],
-            url: "clients",
+            queryKey: isResellerReport ? ["reseller-clients"] : ["clients"],
+            url: isResellerReport ? "resellers/clients" : "clients",
             params,
         });
 
@@ -51,7 +55,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
     const pagination = data?.data?.pagination;
 
     const toolbarOptions = {
-        filter: ClientFilterSchema(),
+        filter: isResellerReport ? ResellerClientFilterSchema() : ClientFilterSchema(),
     };
 
     const FormLink = () => (
@@ -65,8 +69,8 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
     );
 
     const toolbarTitle = pagination?.total
-        ? `${t("client.title_plural")} (${pagination.total})`
-        : t("client.title_plural");
+        ? `${t(titleKey)} (${pagination.total})`
+        : t(titleKey);
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-3">
@@ -83,7 +87,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
                 </div>
             )}
             <DataTable
-                toolbarInfoComponent={<ClientCount />}
+                toolbarInfoComponent={isResellerReport ? undefined : <ClientCount />}
                 data={clients}
                 setFilter={setFilter}
                 columns={columns}
@@ -93,8 +97,8 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt }) => {
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
                 isFetching={isFetching}
-                queryKey={"clients"}
-                form={FormLink}
+                queryKey={isResellerReport ? "reseller-clients" : "clients"}
+                form={isResellerReport ? undefined : FormLink}
                 toolbarTitle={toolbarTitle}
             />
         </div>

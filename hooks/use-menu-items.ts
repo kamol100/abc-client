@@ -107,7 +107,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.reports.title"),
       url: "#",
       icon: FileBarChart,
-      permissions: ["reports.access"],
+      permissions: ["reports.access", "resellers.clients.report"],
       items: [
         { title: t("menu.reports.income_expense.title"), url: "/reports/income-expense", permission: "reports.access" },
         { title: t("menu.reports.funds.title"), url: "/reports/funds", permission: "funds.access" },
@@ -116,6 +116,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.reports.expenses.title"), url: "/reports/expenses", permission: "expenses.access" },
         { title: t("menu.reports.product_in.title"), url: "/reports/product-in", permission: "products-in.report" },
         { title: t("menu.reports.product_out.title"), url: "/reports/product-out", permission: "products-in.report" },
+        { title: t("menu.reports.reseller_clients.title"), url: "/reports/reseller-clients", permission: "resellers.clients.report" },
         { title: t("menu.reports.btrc.title"), url: "/reports/btrc", permission: "reports.access" },
       ],
     },

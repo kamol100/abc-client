@@ -1409,6 +1409,10 @@
             "label": "স্ট্যাটাস",
             "placeholder": "স্ট্যাটাস"
         },
+        "reseller": {
+            "label": "রিসেলার",
+            "all": "অল রিসেলার"
+        },
         "email": {
             "label": "ইমেইল",
             "placeholder": "ইমেইল দিন"
@@ -4298,6 +4302,9 @@
             },
             "product_out": {
                 "title": "প্রোডাক্ট আউট"
+            },
+            "reseller_clients": {
+                "title": "রিসেলার ক্লায়েন্ট"
             },
             "btrc": {
                 "title": "বিটিআরসি"

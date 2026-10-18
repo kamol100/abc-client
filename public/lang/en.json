@@ -1409,6 +1409,10 @@
             "label": "Status",
             "placeholder": "Select status"
         },
+        "reseller": {
+            "label": "Reseller",
+            "all": "All resellers"
+        },
         "email": {
             "label": "Email",
             "placeholder": "Enter email"
@@ -4298,6 +4302,9 @@
             },
             "product_out": {
                 "title": "Product Out"
+            },
+            "reseller_clients": {
+                "title": "Reseller Clients"
             },
             "btrc": {
                 "title": "BTRC"
