@@ -33,7 +33,7 @@ import Link from "next/link";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
+import LazyBulkInvoicePayDialog from "@/components/invoices/lazy-bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import ClientSmsDialog from "@/components/clients/client-sms";
@@ -200,7 +200,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 onOpenChange={setChangePackageOpen}
             />
 
-            <BulkInvoicePayDialog
+            <LazyBulkInvoicePayDialog
                 invoiceDue={client.invoiceDue ?? []}
                 open={bulkPayOpen}
                 onOpenChange={setBulkPayOpen}
