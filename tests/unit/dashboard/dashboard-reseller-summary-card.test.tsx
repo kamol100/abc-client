@@ -4,10 +4,18 @@ import DashboardResellerSummaryCard from "@/components/dashboard/items/Dashboard
 import { DashboardResellerCountSchema } from "@/components/dashboard/dashboard-type";
 import type { DashboardResellerCount } from "@/components/dashboard/dashboard-type";
 
+const permissionState = vi.hoisted(() => ({ allowReport: true }));
+
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
     i18n: { language: "en" },
+  }),
+}));
+
+vi.mock("@/context/app-provider", () => ({
+  usePermissions: () => ({
+    hasPermission: (name: string) => name === "resellers.clients.report" && permissionState.allowReport,
   }),
 }));
 
@@ -38,7 +46,56 @@ describe("DashboardResellerSummaryCard", () => {
     expect(parsed).toMatchObject(stats);
   });
 
+  it("links a positive new-client count to this month's reseller clients", () => {
+    permissionState.allowReport = true;
+
+    render(
+      <DashboardResellerSummaryCard
+        data={stats}
+        isLoading={false}
+        isRefreshing={false}
+        isError={false}
+      />,
+    );
+
+    const link = screen.getByRole("link", { name: "dashboard.metrics.view_new_clients" });
+    expect(link).toHaveAttribute("href", "/reports/reseller-clients?created_at=this_month");
+    expect(screen.queryByRole("link", { name: "55" })).not.toBeInTheDocument();
+  });
+
+  it("leaves a zero new-client count as plain text", () => {
+    permissionState.allowReport = true;
+
+    render(
+      <DashboardResellerSummaryCard
+        data={{ ...stats, new_clients_this_month: 0 }}
+        isLoading={false}
+        isRefreshing={false}
+        isError={false}
+      />,
+    );
+
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  });
+
+  it("does not link the count when the user cannot open the reseller client report", () => {
+    permissionState.allowReport = false;
+
+    render(
+      <DashboardResellerSummaryCard
+        data={stats}
+        isLoading={false}
+        isRefreshing={false}
+        isError={false}
+      />,
+    );
+
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  });
+
   it("renders reseller, client, and monthly counts", () => {
+    permissionState.allowReport = true;
+
     render(
       <DashboardResellerSummaryCard
         data={stats}

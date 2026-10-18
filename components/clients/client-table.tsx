@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
@@ -22,13 +22,30 @@ type ClientTableProps = {
     variant?: "default" | "reseller-clients";
 };
 
+function createdAtFromLocation(): string {
+    if (typeof window === "undefined") return "";
+    return new URLSearchParams(window.location.search).get("created_at") || "";
+}
+
 const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) => {
     const { t } = useTranslation();
     const router = useRouter();
+    const [createdAtFromBrowser, setCreatedAtFromBrowser] = useState<string | null>(null);
+    const activeCreatedAt = createdAtFromBrowser === null ? createdAt : createdAtFromBrowser || undefined;
+    const filterReady = createdAt !== undefined || createdAtFromBrowser !== null;
     const { isMobile } = useSidebar();
     const columns = useClientColumns();
     const isResellerReport = variant === "reseller-clients";
-    const showNewClientsThisMonth = !isResellerReport && createdAt === NEW_CLIENTS_THIS_MONTH;
+    const showNewClientsThisMonth = activeCreatedAt === NEW_CLIENTS_THIS_MONTH;
+
+    useEffect(() => {
+        const readCreatedAt = () => setCreatedAtFromBrowser(createdAtFromLocation());
+        readCreatedAt();
+        window.addEventListener("popstate", readCreatedAt);
+        return () => window.removeEventListener("popstate", readCreatedAt);
+    }, []);
+
+    const allClientsHref = isResellerReport ? "/reports/reseller-clients" : "/clients";
     const titleKey = isResellerReport ? "menu.reports.reseller_clients.title" : "client.title_plural";
 
     const [filterValue, setFilter] = useState<string | null>(null);
@@ -49,6 +66,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
             queryKey: isResellerReport ? ["reseller-clients"] : ["clients"],
             url: isResellerReport ? "resellers/clients" : "clients",
             params,
+            enabled: filterReady,
         });
 
     const clients = data?.data?.data ?? [];
@@ -82,7 +100,10 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                         variant="outline"
                         size="sm"
                         title="client.new_this_month.show_all"
-                        onClick={() => router.replace("/clients")}
+                        onClick={() => {
+                            setCreatedAtFromBrowser("");
+                            router.replace(allClientsHref);
+                        }}
                     />
                 </div>
             )}
@@ -95,7 +116,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                 toggleColumns={true}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
-                isLoading={isLoading || isFetching}
+                isLoading={!filterReady || isLoading || isFetching}
                 isFetching={isFetching}
                 queryKey={isResellerReport ? "reseller-clients" : "clients"}
                 form={isResellerReport ? undefined : FormLink}
