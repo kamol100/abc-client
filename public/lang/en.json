@@ -3636,6 +3636,46 @@
             "placeholder": "Select join date"
         }
     },
+    "telegram_zone": {
+        "title": "Telegram Zone",
+        "title_plural": "Telegram Zones",
+        "create_title": "Add Telegram Zone",
+        "edit_title": "Edit Telegram Zone",
+        "delete_confirmation": "Are you sure you want to delete this Telegram Zone?",
+        "name": {
+            "label": "Name",
+            "placeholder": "Enter name",
+            "errors": {
+                "required": "Name is required",
+                "min": "Name must be at least 2 characters"
+            }
+        },
+        "zones": {
+            "label": "Zones",
+            "placeholder": "Select zones",
+            "errors": {
+                "required": "Select at least one zone"
+            }
+        },
+        "telegram_channel_id": {
+            "label": "Telegram channel ID",
+            "placeholder": "Enter Telegram channel ID",
+            "errors": {
+                "required": "Telegram channel ID is required"
+            }
+        },
+        "status": {
+            "label": "Status",
+            "placeholder": "Select status",
+            "errors": {
+                "required": "Status is required"
+            },
+            "options": {
+                "active": "Active",
+                "inactive": "Inactive"
+            }
+        }
+    },
     "subject": {
         "title_plural": "Subjects",
         "create_title": "Add Subject",
@@ -4388,6 +4428,9 @@
             },
             "logs": {
                 "title": "Logs"
+            },
+            "telegram_zone": {
+                "title": "Telegram Zone"
             }
         },
         "sms": {

@@ -241,10 +241,11 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.communication.title"),
       url: "#",
       icon: Radio,
-      permissions: ["communication-gateways.access", "communication-logs.access", "communication-queue.access"],
+      permissions: ["communication-gateways.access", "communication-logs.access", "communication-queue.access", "telegram-zones.access"],
       feature: "sms",
       items: [
         { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
+        { title: t("menu.communication.telegram_zone.title"), url: "/communication/telegram-zone", permission: "telegram-zones.access" },
         { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
         { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
       ],

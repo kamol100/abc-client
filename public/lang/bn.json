@@ -3636,6 +3636,46 @@
             "placeholder": "জয়েন ডেট নির্বাচন করুন"
         }
     },
+    "telegram_zone": {
+        "title": "টেলিগ্রাম জোন",
+        "title_plural": "টেলিগ্রাম জোন",
+        "create_title": "টেলিগ্রাম জোন যোগ করুন",
+        "edit_title": "টেলিগ্রাম জোন এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই টেলিগ্রাম জোনটি ডিলিট করতে চান?",
+        "name": {
+            "label": "নাম",
+            "placeholder": "নাম লিখুন",
+            "errors": {
+                "required": "নাম আবশ্যক",
+                "min": "নাম কমপক্ষে ২ অক্ষরের হতে হবে"
+            }
+        },
+        "zones": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন",
+            "errors": {
+                "required": "কমপক্ষে একটি জোন নির্বাচন করুন"
+            }
+        },
+        "telegram_channel_id": {
+            "label": "টেলিগ্রাম চ্যানেল আইডি",
+            "placeholder": "চ্যানেল আইডি লিখুন",
+            "errors": {
+                "required": "চ্যানেল আইডি আবশ্যক"
+            }
+        },
+        "status": {
+            "label": "স্ট্যাটাস",
+            "placeholder": "স্ট্যাটাস নির্বাচন করুন",
+            "errors": {
+                "required": "স্ট্যাটাস আবশ্যক"
+            },
+            "options": {
+                "active": "সক্রিয়",
+                "inactive": "নিষ্ক্রিয়"
+            }
+        }
+    },
     "subject": {
         "title_plural": "সাবজেক্ট",
         "create_title": "সাবজেক্ট যোগ করুন",
@@ -4388,6 +4428,9 @@
             },
             "logs": {
                 "title": "লগ"
+            },
+            "telegram_zone": {
+                "title": "টেলিগ্রাম জোন"
             }
         },
         "sms": {

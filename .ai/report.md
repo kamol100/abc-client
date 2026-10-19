@@ -1,16 +1,23 @@
 ## Summary
 
-The clients list due amount now has the same pay button as the client view. It opens the existing bulk invoice payment dialog for that row, and the dialog module stays unloaded until Pay is clicked.
+Communication now has a Telegram Zone page at `/communication/telegram-zone`. Staff can list, filter, create, edit, activate, deactivate, and delete zone notification destinations. Zones use the existing multi-select dropdown.
 
 ## Files
 
-- `components/clients/client-billing-payment-cell.tsx`
-- `components/clients/client-row-actions.tsx`
-- `components/invoices/lazy-bulk-invoice-pay-dialog.tsx`
-- `tests/unit/clients/client-billing-payment-cell.test.tsx`
+- `app/(dashboard)/communication/telegram-zone/page.tsx`
+- `components/telegram-zones/telegram-zone-type.ts`
+- `components/telegram-zones/telegram-zone-form-schema.ts`
+- `components/telegram-zones/telegram-zone-form.tsx`
+- `components/telegram-zones/telegram-zone-column.tsx`
+- `components/telegram-zones/telegram-zone-table.tsx`
+- `components/telegram-zones/telegram-zone-filter-schema.ts`
+- `hooks/use-menu-items.ts`
+- `public/lang/en.json`, `public/lang/bn.json`
+
+The menu item sits under Communication and uses `telegram-zones.access`. Create, edit, and delete follow `telegram-zones.create`, `telegram-zones.edit`, and `telegram-zones.delete`.
 
 ## Checks
 
-`scripts/ai/typecheck` passed. `scripts/ai/test` ran 267 tests: the new billing cell tests passed. One existing failure remains in `tests/unit/clients/reseller-client-filter-schema.test.ts` and is outside this change.
+`scripts/ai/typecheck` passed. `scripts/ai/test` ran 267 tests. Two existing failures remain and are outside this change: `tests/unit/clients/reseller-client-filter-schema.test.ts` and `tests/unit/clients/client-billing-payment-cell.test.tsx`.
 
-The clients page loaded in the browser. The bulk payment chunk was not requested while the table was still on its loading skeleton, so the pay click could not be exercised against live rows.
+The page was not exercised in a browser. No dev server is running, and the screen needs a signed-in session plus the new API migration.
