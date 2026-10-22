@@ -25,7 +25,7 @@ const TelegramZoneForm: FC<Props> = ({
 }) => {
   return (
     <MyDialog
-      size="xl"
+      size="2xl"
       title={mode === "create" ? "telegram_zone.create_title" : "telegram_zone.edit_title"}
       trigger={<FormTrigger mode={mode} />}
     >
