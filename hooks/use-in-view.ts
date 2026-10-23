@@ -31,6 +31,11 @@ export default function useInView({
                 return;
             }
 
+            if (typeof IntersectionObserver === "undefined") {
+                setInView(true);
+                return;
+            }
+
             observerRef.current = new IntersectionObserver(
                 ([entry]) => {
                     const isIntersecting = entry.isIntersecting;

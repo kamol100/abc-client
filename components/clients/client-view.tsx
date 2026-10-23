@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,6 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import ClientHistory from "@/components/clients/client-history";
 import ClientBasicView from "@/components/clients/basic-view";
 import ClientViewSkeleton from "@/components/clients/client-view-skeleton";
+import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
+import useInView from "@/hooks/use-in-view";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
@@ -34,6 +36,16 @@ const ClientTicketDialog = dynamic(() => import("@/components/clients/client-tic
 
 interface Props {
     clientId: string;
+}
+
+function DeferredSection({ children }: { children: ReactNode }) {
+    const { ref, inView } = useInView({ rootMargin: "640px", triggerOnce: true });
+
+    return (
+        <div ref={ref}>
+            {inView ? children : <DataTableSkeleton rows={4} columns={5} />}
+        </div>
+    );
 }
 
 const ClientView: FC<Props> = ({ clientId }) => {
@@ -52,16 +64,14 @@ const ClientView: FC<Props> = ({ clientId }) => {
 
     const client = data?.data;
 
-    if (isLoading) {
-        return <ClientViewSkeleton />;
-    }
+    if (!isLoading && !client) return null;
 
-    if (!client) return null;
-
-    const isActive = client.status === 1;
+    const isActive = client?.status === 1;
 
     return (
         <div className="space-y-6 overflow-auto pr-3">
+            {!client ? <ClientViewSkeleton showTables={false} /> : (
+            <>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-3">
                     <MyButton variant="default" size="icon" url="/clients">
@@ -169,23 +179,6 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     client={{ id: getClientId(client) ?? clientId, name: client.name }}
                 />
             )}
-            <div className="border-t pt-4">
-                <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
-                <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={false} />
-            </div>
-            <div className="border-t pt-4">
-                <div className="text-md font-semibold mb-2">{t('payment.title_plural')}:</div>
-                <PaymentTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
-            </div>
-            <div className="border-t pt-4">
-                <div className="text-md font-semibold mb-2">{t('ticket.title_plural')}:</div>
-                <TicketTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
-            </div>
-
-            <div className="border-t pt-4">
-                <div className="text-md font-semibold mb-2">{t('client.history.title')}:</div>
-                <ClientHistory clientId={clientId} />
-            </div>
 
             <ClientChangePackageDialog
                 client={client}
@@ -198,6 +191,32 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 open={bulkPayOpen}
                 onOpenChange={setBulkPayOpen}
             />
+            </>
+            )}
+            <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
+                <DeferredSection>
+                    <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={false} />
+                </DeferredSection>
+            </div>
+            <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('payment.title_plural')}:</div>
+                <DeferredSection>
+                    <PaymentTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
+                </DeferredSection>
+            </div>
+            <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('ticket.title_plural')}:</div>
+                <DeferredSection>
+                    <TicketTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
+                </DeferredSection>
+            </div>
+            <div className="border-t pt-4">
+                <div className="text-md font-semibold mb-2">{t('client.history.title')}:</div>
+                <DeferredSection>
+                    <ClientHistory clientId={clientId} />
+                </DeferredSection>
+            </div>
         </div>
     );
 };

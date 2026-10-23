@@ -10,7 +10,8 @@ import MyButton from "@/components/my-button";
 import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
 import ResellerClientFilterSchema from "@/components/clients/reseller-client-filter-schema";
-import { ClientRow } from "@/components/clients/client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
+import { ClientOnlineStatusProvider } from "@/components/clients/client-online-status-cell";
 import dynamic from "next/dynamic";
 
 const ClientCount = dynamic(() => import("@/components/clients/client-count"), { ssr: false });
@@ -71,6 +72,10 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
 
     const clients = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
+    const onlineStatusIds = useMemo(
+        () => clients.map((client) => getClientId(client) ?? "").filter((id) => id.length > 0),
+        [clients],
+    );
 
     const toolbarOptions = {
         filter: isResellerReport ? ResellerClientFilterSchema() : ClientFilterSchema(),
@@ -107,6 +112,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                     />
                 </div>
             )}
+            <ClientOnlineStatusProvider clientIds={onlineStatusIds}>
             <DataTable
                 toolbarInfoComponent={isResellerReport ? undefined : <ClientCount />}
                 data={clients}
@@ -116,12 +122,13 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                 toggleColumns={true}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
-                isLoading={!filterReady || isLoading || isFetching}
+                isLoading={!filterReady || isLoading}
                 isFetching={isFetching}
                 queryKey={isResellerReport ? "reseller-clients" : "clients"}
                 form={isResellerReport ? undefined : FormLink}
                 toolbarTitle={toolbarTitle}
             />
+            </ClientOnlineStatusProvider>
         </div>
     );
 };

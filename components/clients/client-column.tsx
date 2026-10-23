@@ -7,8 +7,7 @@ import ClientNamePhoneCell from "./client-name-phone-cell";
 import ClientZoneAddressCell from "./client-zone-address-cell";
 import ClientPackageCell from "./client-package-cell";
 import ClientBillingPaymentCell from "./client-billing-payment-cell";
-import dynamic from 'next/dynamic';
-const ClientOnlineStatusCell = dynamic(() => import('./client-online-status-cell'), { ssr: false });
+import ClientOnlineStatusCell from "@/components/clients/client-online-status-cell";
 import ClientStatusToggle from "./client-status-toggle";
 import ClientRowActions from "./client-row-actions";
 

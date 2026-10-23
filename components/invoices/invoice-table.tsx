@@ -35,19 +35,22 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
 
     const params = useMemo(
         () => {
-            if (!filter) return undefined;
-            const queryParams = Object.fromEntries(
-                new URLSearchParams(filter),
-            ) as Record<string, string>;
+            const queryParams: Record<string, string> = filter
+                ? (Object.fromEntries(new URLSearchParams(filter)) as Record<string, string>)
+                : {};
 
             // Keep backward compatibility for APIs expecting trackID.
             if (queryParams.track_id && !queryParams.trackID) {
                 queryParams.trackID = queryParams.track_id;
             }
 
-            return queryParams;
+            if (!reportsToolbar) {
+                queryParams.include_reports = "0";
+            }
+
+            return Object.keys(queryParams).length > 0 ? queryParams : undefined;
         },
-        [filter],
+        [filter, reportsToolbar],
     );
 
     const { data, isLoading, isFetching, setCurrentPage } = useApiQuery<InvoiceListApiResponse>({
@@ -95,7 +98,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 toolbar={tableToolBar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
-                isLoading={isLoading || isFetching}
+                isLoading={isLoading}
                 isFetching={isFetching}
                 queryKey="invoices"
                 toolbarTitle={toolbarTitle}

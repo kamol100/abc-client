@@ -90,10 +90,15 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [pagination] = React.useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: paginationData?.per_page ?? 20,
-  });
+  const serverPaginated = paginationData !== undefined;
+  const declaredPageSize = paginationData?.per_page ?? 20;
+  const pageSize = serverPaginated
+    ? Math.max(data.length, declaredPageSize)
+    : declaredPageSize;
+  const pagination = React.useMemo<PaginationState>(
+    () => ({ pageIndex: 0, pageSize }),
+    [pageSize],
+  );
 
   const table = useReactTable({
     data,
@@ -106,13 +111,14 @@ export function DataTable<TData, TValue>({
       pagination,
     },
     enableRowSelection: true,
+    manualPagination: serverPaginated,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(serverPaginated ? {} : { getPaginationRowModel: getPaginationRowModel() }),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),

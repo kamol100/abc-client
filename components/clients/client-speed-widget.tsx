@@ -16,7 +16,8 @@ const ClientSpeedWidget: FC<Props> = ({ clientId }) => {
         queryKey: ["client-speed", clientId],
         url: `clients-speed/${clientId}`,
         pagination: false,
-        refetchInterval: 5_000,
+        refetchInterval: () => (typeof document !== "undefined" && document.hidden ? false : 15_000),
+        refetchIntervalInBackground: false,
         retry: 0,
     });
 

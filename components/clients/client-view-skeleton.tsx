@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
  * - Ticket table section
  * - Client history table section
  */
-export default function ClientViewSkeleton() {
+export default function ClientViewSkeleton({ showTables = true }: { showTables?: boolean }) {
     const infoRow = (
         <div className="flex items-start gap-2 py-1.5 text-sm">
             <Skeleton className="h-4 w-24 shrink-0" />
@@ -74,20 +74,19 @@ export default function ClientViewSkeleton() {
                 </div>
             </div>
 
-            {/* Payment table section */}
-            <div className="border-t pt-4">
-                <DataTableSkeleton rows={4} columns={5} actionButtonCount={2} />
-            </div>
-
-            {/* Ticket table section */}
-            <div className="border-t pt-4">
-                <DataTableSkeleton rows={4} columns={5} actionButtonCount={2} />
-            </div>
-
-            {/* Client history section */}
-            <div className="border-t pt-4">
-                <DataTableSkeleton rows={4} columns={4} actionButtonCount={2} />
-            </div>
+            {showTables && (
+                <>
+                    <div className="border-t pt-4">
+                        <DataTableSkeleton rows={4} columns={5} actionButtonCount={2} />
+                    </div>
+                    <div className="border-t pt-4">
+                        <DataTableSkeleton rows={4} columns={5} actionButtonCount={2} />
+                    </div>
+                    <div className="border-t pt-4">
+                        <DataTableSkeleton rows={4} columns={4} actionButtonCount={2} />
+                    </div>
+                </>
+            )}
         </div>
     );
 }
