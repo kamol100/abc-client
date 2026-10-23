@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm, type SubmitErrorHandler } from "react-hook-form";
@@ -19,11 +20,13 @@ const DEFAULT_LOGO = "/static/logo.png";
 
 type LoginFormProps = React.ComponentPropsWithoutRef<"div"> & {
   companyLogoUrl?: string | null;
+  companyName?: string | null;
 };
 
 export function LoginForm({
   className,
   companyLogoUrl,
+  companyName,
   ...props
 }: LoginFormProps) {
   const { t } = useTranslation();
@@ -120,6 +123,8 @@ export function LoginForm({
     console.log(data);
   };
 
+  const dividerLabel = companyName?.trim() || t("login.continue_with_credentials");
+
   if (!mounted) {
     return (
       <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -178,7 +183,7 @@ export function LoginForm({
               <div className="grid gap-6 pb-6">
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                   <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                    {t("login.continue_with_credentials")}
+                    {dividerLabel}
                   </span>
                 </div>
                 <div className="grid gap-6">
@@ -192,12 +197,12 @@ export function LoginForm({
                   <div className="grid gap-2">
                     <div className="flex items-center">
                       <Label htmlFor="password">{t("login.password.label")}</Label>
-                      <a
-                        href="#"
+                      <Link
+                        href="/forgot-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
                       >
                         {t("login.forgot_password")}
-                      </a>
+                      </Link>
                     </div>
                     <InputField
                       type="password"

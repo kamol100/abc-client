@@ -34,12 +34,28 @@ describe("LoginForm", () => {
     toastMock.mockReset();
   });
 
+  it("shows the company name on the divider when it is set", async () => {
+    render(<LoginForm companyName="Acme ISP" />);
+
+    expect(await screen.findByText("Acme ISP")).toBeInTheDocument();
+  });
+
+  it("falls back to the credentials label when the company name is empty", async () => {
+    render(<LoginForm companyName="   " />);
+
+    expect(await screen.findByText("login.continue_with_credentials")).toBeInTheDocument();
+  });
+
   it("renders the credential fields", async () => {
     render(<LoginForm />);
 
     expect(await screen.findByText("login.title")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("login.username.placeholder")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("login.password.placeholder")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "login.forgot_password" })).toHaveAttribute(
+      "href",
+      "/forgot-password"
+    );
   });
 
   it("submits credentials through next-auth signIn", async () => {

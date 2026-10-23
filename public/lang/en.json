@@ -253,6 +253,45 @@
             "something_went_wrong": "Something went wrong."
         }
     },
+    "password_reset": {
+        "forgot_title": "Forgot your password?",
+        "forgot_description": "Enter the email address on your account. We will send a password reset link.",
+        "reset_title": "Choose a new password",
+        "reset_description": "Enter a new password for your account.",
+        "email": {
+            "label": "Email",
+            "placeholder": "Email",
+            "errors": {
+                "required": "Email is required",
+                "invalid": "Enter a valid email address"
+            }
+        },
+        "password": {
+            "label": "New password",
+            "placeholder": "New password",
+            "errors": {
+                "min": "Password must be at least 8 characters",
+                "confirm_required": "Confirm your password",
+                "mismatch": "Passwords do not match"
+            }
+        },
+        "password_confirmation": {
+            "label": "Confirm password",
+            "placeholder": "Confirm password"
+        },
+        "submit_forgot": "Send reset link",
+        "submit_reset": "Reset password",
+        "back_to_login": "Back to login",
+        "request_again": "Request a new reset email",
+        "forgot_success": "A link to reset your password has been sent to your email.",
+        "reset_success": "Your password has been reset successfully.",
+        "errors": {
+            "email_not_found": "Email not found to reset password. Please contact your administrator.",
+            "incomplete_link": "This reset link is incomplete. Request a new password reset email.",
+            "request_failed": "Something went wrong. Please try again.",
+            "invalid_token": "This password reset link is invalid or has expired. Please request a new one."
+        }
+    },
     "pay": {
         "title": "Pay Invoice",
         "subtitle": "Enter your phone number to find your invoice",

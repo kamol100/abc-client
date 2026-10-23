@@ -253,6 +253,45 @@
             "something_went_wrong": "কিছু ভুল হয়েছে।"
         }
     },
+    "password_reset": {
+        "forgot_title": "পাসওয়ার্ড ভুলে গেছেন?",
+        "forgot_description": "অ্যাকাউন্টের ইমেইল দিন। আমরা পাসওয়ার্ড রিসেট লিংক পাঠাব।",
+        "reset_title": "নতুন পাসওয়ার্ড",
+        "reset_description": "অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড দিন।",
+        "email": {
+            "label": "ইমেইল",
+            "placeholder": "ইমেইল",
+            "errors": {
+                "required": "ইমেইল আবশ্যক",
+                "invalid": "সঠিক ইমেইল দিন"
+            }
+        },
+        "password": {
+            "label": "নতুন পাসওয়ার্ড",
+            "placeholder": "নতুন পাসওয়ার্ড",
+            "errors": {
+                "min": "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে",
+                "confirm_required": "পাসওয়ার্ড নিশ্চিত করুন",
+                "mismatch": "পাসওয়ার্ড মিলছে না"
+            }
+        },
+        "password_confirmation": {
+            "label": "পাসওয়ার্ড নিশ্চিত করুন",
+            "placeholder": "পাসওয়ার্ড আবার দিন"
+        },
+        "submit_forgot": "রিসেট লিংক পাঠান",
+        "submit_reset": "পাসওয়ার্ড রিসেট করুন",
+        "back_to_login": "লগইনে ফিরে যান",
+        "request_again": "নতুন রিসেট ইমেইল চান",
+        "forgot_success": "পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে।",
+        "reset_success": "পাসওয়ার্ড সফলভাবে রিসেট হয়েছে।",
+        "errors": {
+            "email_not_found": "Email not found to reset password. Please contact your administrator.",
+            "incomplete_link": "এই রিসেট লিংকটি অসম্পূর্ণ। নতুন পাসওয়ার্ড রিসেট ইমেইল চান।",
+            "request_failed": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
+            "invalid_token": "এই পাসওয়ার্ড রিসেট লিংকটি ভুল বা মেয়াদোত্তীর্ণ। নতুন লিংক চান।"
+        }
+    },
     "pay": {
         "title": "ইনভয়েস পেমেন্ট",
         "subtitle": "আপনার ইনভয়েস খুঁজতে ফোন নম্বর দিন",

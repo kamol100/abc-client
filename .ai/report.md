@@ -1,26 +1,33 @@
 ## Summary
 
-The staff form Advance section uploads a photo, NID front, and NID back the same way as client images. The record is saved first. On edit, each file is posted as multipart form data to `/staffs/{id}/images/{field}`. Saving other staff details does not send the image fields, so existing files stay in place.
+The login page links to `/forgot-password`. That form asks for an email and posts it, with the browser hostname, to the company-scoped reset API. The email link opens `/reset-password` with the token and email. A successful reset returns the user to login. It does not sign them in.
+
+If the API says the email is missing for this company, the form shows: Email not found to reset password. Please contact your administrator.
 
 ## Files
 
-- `components/form/private-image-fields.tsx` — shared preview, upload, replace, and remove UI
-- `components/clients/client-image-fields.tsx` — client wrapper
-- `components/staffs/staff-image-fields.tsx` — staff wrapper
-- `components/staffs/staff-form-schema.ts` — Advance slot; the text NID field is removed
-- `components/staffs/staff-form.tsx` — omits image paths from the staff save payload
-- `components/staffs/staff-type.ts` — `photo`, `nid_front`, `nid_back`
-- `lib/images/private-image.ts` and `lib/images/proxy-private-image.ts`
-- `app/api/staffs/[id]/images/[field]/route.ts` — authenticated image proxy
-- `app/api/clients/[id]/images/[field]/route.ts` — uses the same proxy
-- `public/lang/en.json` and `public/lang/bn.json`
-- `tests/unit/images/private-image.test.ts`
-- `tests/unit/staffs/staff-form-schema.test.ts`
+- `components/login/login-form.tsx` — forgot-password link
+- `components/login/password-reset-forms.tsx`
+- `components/schema/password-reset.ts`
+- `lib/auth/password-reset.ts`
+- `lib/auth/public-routes.ts`
+- `app/forgot-password/page.tsx`
+- `app/reset-password/page.tsx`
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/auth/login-form.test.tsx`
+- `tests/unit/auth/password-reset.test.tsx`
 
 ## Checks
 
-`scripts/ai/typecheck` passed. The new unit tests passed (5 tests).
+`npx vitest run tests/unit/auth/login-form.test.tsx tests/unit/auth/password-reset.test.tsx` passed (15 tests).
 
-`scripts/ai/test` ran the full unit suite: 281 passed, 1 failed. The failure is `tests/unit/clients/reseller-client-filter-schema.test.ts`, which this change does not touch.
+`scripts/ai/typecheck` passed.
 
-`/staffs/create` redirects to the login page. The seeded admin password was rejected, so the Advance section was not opened in the browser.
+In the browser, `/admin` shows **Forgot your password?** and opens `/forgot-password`. Empty and invalid emails show field errors. `missing@example.com` on this machine returned "Unable to determine the company for this request." because `localhost` is not a company domain here. `/reset-password` without a token shows the incomplete-link message. A link with a token and email shows the password form, rejects a mismatched confirmation, and does not display the token.
+
+## Git
+
+Branch `master`. This work is uncommitted.
+
+Left untouched: `app/admin/page.tsx`, `app/api/staffs/`, `components/form/private-image-fields.tsx`, `components/staffs/staff-image-fields.tsx`, `lib/images/`, `tests/unit/images/`, `tests/unit/staffs/`.
