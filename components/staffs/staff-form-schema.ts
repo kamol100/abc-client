@@ -1,5 +1,26 @@
 import { useTranslation } from "react-i18next";
-import { AccordionSection } from "../form-wrapper/form-builder-type";
+import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
+
+export const staffImageFields = [
+  {
+    name: "photo",
+    label: "staff.images.photo.label",
+    hint: "staff.images.photo.hint",
+    aspect: "aspect-[85/54]",
+  },
+  {
+    name: "nid_front",
+    label: "staff.images.nid_front.label",
+    hint: "staff.images.nid_front.hint",
+    aspect: "aspect-[85/54]",
+  },
+  {
+    name: "nid_back",
+    label: "staff.images.nid_back.label",
+    hint: "staff.images.nid_back.hint",
+    aspect: "aspect-[85/54]",
+  },
+] as const;
 
 type Props = {
   mode?: "create" | "edit";
@@ -107,12 +128,6 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
           name: "mother_name",
           label: { labelText: "staff.mother_name.label" },
           placeholder: "staff.mother_name.placeholder",
-        },
-        {
-          type: "text",
-          name: "nid",
-          label: { labelText: "staff.nid.label" },
-          placeholder: "staff.nid.placeholder",
         },
         {
           type: "radio",
@@ -224,6 +239,17 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
               placeholder: "0",
             },
           ],
+        },
+      ],
+    },
+    {
+      name: "common.advance_information",
+      form: [
+        {
+          type: "slot",
+          name: "staff_images",
+          slot: "staff_images",
+          className: "col-span-full",
         },
       ],
     },

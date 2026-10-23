@@ -959,9 +959,33 @@
             "label": "মাতার নাম",
             "placeholder": "মাতার নাম দিন"
         },
-        "nid": {
-            "label": "এনআইডি",
-            "placeholder": "এনআইডি দিন"
+        "images": {
+            "photo": {
+                "label": "স্টাফের ছবি",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "nid_front": {
+                "label": "এনআইডি সামনের পৃষ্ঠা",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "nid_back": {
+                "label": "এনআইডি পেছনের পৃষ্ঠা",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "empty": "ক্লিক করুন বা ছবি ড্রপ করুন",
+            "save_first": "ছবি আপলোডের আগে স্টাফ সেভ করুন।",
+            "replace": "ছবি পরিবর্তন",
+            "remove": "ছবি সরান",
+            "remove_title": "ছবি সরান",
+            "remove_confirm": "এই ছবিটি সরিয়ে ফেলবেন?",
+            "uploading": "আপলোড হচ্ছে…",
+            "upload_success": "ছবি আপলোড হয়েছে",
+            "upload_failed": "ছবি আপলোড করা যায়নি",
+            "remove_success": "ছবি সরানো হয়েছে",
+            "remove_failed": "ছবি সরানো যায়নি",
+            "invalid_type": "JPG, PNG, বা WebP ছবি বেছে নিন",
+            "too_large": "ছবির সাইজ ২ এমবির বেশি হতে পারবে না",
+            "unavailable": "ছবিটি লোড করা যায়নি"
         },
         "marital_status": {
             "label": "বৈবাহিক অবস্থা"
