@@ -1,23 +1,23 @@
 ## Summary
 
-Communication now has a Telegram Zone page at `/communication/telegram-zone`. Staff can list, filter, create, edit, activate, deactivate, and delete zone notification destinations. Zones use the existing multi-select dropdown.
+The bulk invoice payment dialog now selects the signed-in user's assigned fund. Staff and other non-admin roles cannot change that fund, and they cannot submit a payment when no fund is assigned. Admin and Super Admin can still choose any fund.
 
 ## Files
 
-- `app/(dashboard)/communication/telegram-zone/page.tsx`
-- `components/telegram-zones/telegram-zone-type.ts`
-- `components/telegram-zones/telegram-zone-form-schema.ts`
-- `components/telegram-zones/telegram-zone-form.tsx`
-- `components/telegram-zones/telegram-zone-column.tsx`
-- `components/telegram-zones/telegram-zone-table.tsx`
-- `components/telegram-zones/telegram-zone-filter-schema.ts`
-- `hooks/use-menu-items.ts`
-- `public/lang/en.json`, `public/lang/bn.json`
+- `components/invoices/payment-fund-access.ts`
+- `components/invoices/bulk-invoice-pay-dialog.tsx`
+- `types/app.ts`
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/invoices/payment-fund-access.test.ts`
+- `tests/unit/invoices/bulk-invoice-pay-dialog.test.tsx`
 
-The menu item sits under Communication and uses `telegram-zones.access`. Create, edit, and delete follow `telegram-zones.create`, `telegram-zones.edit`, and `telegram-zones.delete`.
+The assigned fund comes from `profile.staff.fund` on the existing `/user-settings` payload. Admin and Super Admin are read from `settings.roles`.
 
 ## Checks
 
-`scripts/ai/typecheck` passed. `scripts/ai/test` ran 267 tests. Two existing failures remain and are outside this change: `tests/unit/clients/reseller-client-filter-schema.test.ts` and `tests/unit/clients/client-billing-payment-cell.test.tsx`.
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/invoices/payment-fund-access.test.ts tests/unit/invoices/bulk-invoice-pay-dialog.test.tsx` passed (11 tests).
 
-The page was not exercised in a browser. No dev server is running, and the screen needs a signed-in session plus the new API migration.
+The clients page at `http://localhost:3000/clients` redirects to login, so the dialog was not opened in the browser. The component test renders the dialog and checks the four role cases.
+
+These files were already modified and were left unchanged: `components/clients/client-billing-payment-cell.tsx`, `components/invoices/lazy-bulk-invoice-pay-dialog.tsx`, `tests/unit/clients/client-billing-payment-cell.test.tsx`.

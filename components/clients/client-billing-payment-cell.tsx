@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import DisplayCount from "@/components/display-count";
@@ -16,6 +16,7 @@ const ClientBillingPaymentCell: FC<Props> = ({ client }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const [payOpen, setPayOpen] = useState(false);
+    const [payLoading, setPayLoading] = useState(false);
     const inactive = client.status === 0;
     const totalDue = client.invoiceDue?.reduce((acc, curr) => acc + curr.total_amount, 0);
     const dueAmount = totalDue && totalDue > 0 ? totalDue : 0;
@@ -34,11 +35,17 @@ const ClientBillingPaymentCell: FC<Props> = ({ client }) => {
                         size="icon"
                         variant="ghost"
                         className="h-6 w-6 shrink-0"
+                        disabled={payLoading}
                         onClick={() => setPayOpen(true)}
                         tooltip="client.actions.pay"
                         aria-label={t("client.actions.pay")}
+                        aria-busy={payLoading}
                     >
-                        <CreditCard className="h-3.5 w-3.5" />
+                        {payLoading ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                            <CreditCard className="h-3.5 w-3.5" />
+                        )}
                     </MyButton>
                 )}
             </div>
@@ -53,6 +60,7 @@ const ClientBillingPaymentCell: FC<Props> = ({ client }) => {
                     invoiceDue={client.invoiceDue ?? []}
                     open={payOpen}
                     onOpenChange={setPayOpen}
+                    onLoadingChange={setPayLoading}
                 />
             )}
         </div>

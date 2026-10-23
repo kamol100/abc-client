@@ -25,9 +25,10 @@ import {
 } from "@/components/invoices/invoice-type";
 import { BadgePercent, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useProfile, useSetting } from "@/context/app-provider";
 import InvoiceDiscountDialog from "@/components/invoices/invoice-discount-dialog";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
+import { paymentFundAccess } from "@/components/invoices/payment-fund-access";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
@@ -44,6 +45,10 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const { profile } = useProfile();
+    const roles = useSetting("roles");
+    const { assignedFundId, lockFund, blockSubmit, showUnassignedWarning } =
+        paymentFundAccess({ roles, staff: profile.staff });
     const canDiscount = hasPermission("invoices.apply-discount");
     const canChangePaymentDate = hasPermission("invoices.change-payment-date");
     const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
@@ -55,7 +60,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         resolver: zodResolver(BulkInvoicePaySchema),
         defaultValues: {
             invoice_ids: allUuids,
-            fund_id: undefined,
+            fund_id: assignedFundId ?? undefined,
             payment_date: toApiDateString(new Date()) ?? "",
             status: "paid",
             partial_amount: 0,
@@ -72,6 +77,11 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
             setValue("payment_date", toApiDateString(new Date()) ?? "");
         }
     }, [open, setValue]);
+
+    useEffect(() => {
+        if (!open || assignedFundId == null) return;
+        setValue("fund_id", assignedFundId);
+    }, [open, assignedFundId, setValue]);
 
     const toggleInvoice = useCallback(
         (uuid: string, checked: boolean) => {
@@ -140,7 +150,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     };
 
     const onSubmit = (data: BulkInvoicePayInput) => {
-        console.log(data);
+        if (blockSubmit) return;
         if (data.invoice_ids.length === 0) {
             setError("invoice_ids", {
                 message: t("invoice.bulk_pay.errors.select_invoice"),
@@ -153,7 +163,14 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
             });
             return;
         }
-        submitBulkPay(data);
+        const fundId = lockFund ? assignedFundId : Number(data.fund_id);
+        if (fundId == null || fundId < 1) {
+            setError("fund_id", {
+                message: t("invoice.bulk_pay.fund.errors.required"),
+            });
+            return;
+        }
+        submitBulkPay({ ...data, fund_id: fundId });
     };
 
     const hasInvoices = invoiceDue.length > 0;
@@ -183,6 +200,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                 size="default"
                                 onClick={handleSubmit((data) => onSubmit(data as BulkInvoicePayInput))}
                                 loading={loading}
+                                disabled={blockSubmit}
                                 title={t("invoice.bulk_pay.submit")}
                             />
                         </>
@@ -356,19 +374,28 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 
                             {/* Form fields */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <SelectDropdown
-                                    name="fund_id"
-                                    label={{
-                                        labelText: t(
-                                            "invoice.bulk_pay.fund.label",
-                                        ),
-                                        mandatory: true,
-                                    }}
-                                    placeholder={t(
-                                        "invoice.bulk_pay.fund.placeholder",
+                                <div className="flex flex-col gap-2">
+                                    <SelectDropdown
+                                        name="fund_id"
+                                        label={{
+                                            labelText: t(
+                                                "invoice.bulk_pay.fund.label",
+                                            ),
+                                            mandatory: true,
+                                        }}
+                                        placeholder={t(
+                                            "invoice.bulk_pay.fund.placeholder",
+                                        )}
+                                        api="/dropdown-funds"
+                                        isDisabled={lockFund}
+                                        isClearable={!lockFund}
+                                    />
+                                    {showUnassignedWarning && (
+                                        <p role="alert" className="text-sm text-destructive">
+                                            {t("invoice.bulk_pay.fund.errors.unassigned")}
+                                        </p>
                                     )}
-                                    api="/dropdown-funds"
-                                />
+                                </div>
                                 <DatePicker
                                     name="payment_date"
                                     label={{

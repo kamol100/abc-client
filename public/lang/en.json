@@ -1914,7 +1914,8 @@
                 "label": "Payment Method",
                 "placeholder": "Fund",
                 "errors": {
-                    "required": "Payment method is required"
+                    "required": "Payment method is required",
+                    "unassigned": "You do not have a fund account assigned. Please contact your administrator."
                 }
             },
             "payment_date": {

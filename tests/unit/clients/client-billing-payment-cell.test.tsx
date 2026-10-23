@@ -5,6 +5,7 @@ import { ClientRow, InvoiceDueItem } from "@/components/clients/client-type";
 
 const dialogModule = vi.hoisted(() => ({
     imports: 0,
+    pending: null as Promise<void> | null,
 }));
 
 const permissions = vi.hoisted(() => ({
@@ -33,7 +34,8 @@ vi.mock("@/components/display-count", () => ({
     default: ({ amount }: { amount: number }) => <span>{amount}</span>,
 }));
 
-vi.mock("@/components/invoices/bulk-invoice-pay-dialog", () => {
+vi.mock("@/components/invoices/bulk-invoice-pay-dialog", async () => {
+    if (dialogModule.pending) await dialogModule.pending;
     dialogModule.imports += 1;
     return {
         default: ({
@@ -66,27 +68,41 @@ const client = {
 describe("ClientBillingPaymentCell payment action", () => {
     beforeEach(() => {
         dialogModule.imports = 0;
+        dialogModule.pending = null;
         permissions.canPay = true;
         useFetch.mockReset();
     });
 
     it("shows the due amount and loads payment only after the icon is clicked", async () => {
+        let releaseDialog!: () => void;
+        dialogModule.pending = new Promise<void>((resolve) => {
+            releaseDialog = resolve;
+        });
+
         render(<ClientBillingPaymentCell client={client} />);
 
         expect(screen.getByText("150")).toBeInTheDocument();
         expect(screen.getByText("prepaid")).toBeInTheDocument();
         expect(screen.getByText("client.table.deadline: 20")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "client.actions.pay" })).toBeInTheDocument();
+        const payButton = screen.getByRole("button", { name: "client.actions.pay" });
+        expect(payButton.querySelector(".animate-spin")).not.toBeInTheDocument();
         expect(screen.queryByTestId("pay-dialog")).not.toBeInTheDocument();
         expect(dialogModule.imports).toBe(0);
         expect(useFetch).not.toHaveBeenCalled();
 
-        fireEvent.click(screen.getByRole("button", { name: "client.actions.pay" }));
+        fireEvent.click(payButton);
+
+        expect(payButton.querySelector(".animate-spin")).toBeInTheDocument();
+        expect(screen.queryByTestId("pay-dialog")).not.toBeInTheDocument();
+        expect(dialogModule.imports).toBe(0);
+
+        releaseDialog();
 
         await waitFor(() => {
             expect(screen.getByTestId("pay-dialog")).toBeInTheDocument();
         });
 
+        expect(payButton.querySelector(".animate-spin")).not.toBeInTheDocument();
         expect(screen.getByTestId("pay-dialog")).toHaveAttribute("data-open", "true");
         expect(screen.getByTestId("pay-dialog")).toHaveTextContent("inv-1");
         expect(dialogModule.imports).toBe(1);
@@ -112,7 +128,7 @@ describe("ClientBillingPaymentCell payment action", () => {
         render(<ClientBillingPaymentCell client={{ ...client, invoiceDue: [] }} />);
 
         expect(screen.getByText("0")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: "client.actions.pay" })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "client.actions.pay" })).not.toBeInTheDocument();
         expect(dialogModule.imports).toBe(0);
     });
 });

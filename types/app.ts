@@ -17,6 +17,10 @@ export interface Staff {
   id?: string;
   item_per_page?: number;
   address?: string;
+  fund?: {
+    id: number | string;
+    name?: string | null;
+  } | null;
 }
 
 export interface Company {
