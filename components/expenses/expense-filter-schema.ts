@@ -4,8 +4,8 @@ export const ExpenseFilterSchema = (): FieldConfig[] => {
     return [
         {
             type: "text",
-            name: "voucher",
-            placeholder: "expense.voucher.label",
+            name: "any",
+            placeholder: "expense.any_search.placeholder",
             watchForFilter: true,
         },
         {

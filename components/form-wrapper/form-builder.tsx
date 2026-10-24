@@ -168,14 +168,15 @@ const FieldArrayRenderer = ({
 
   const canAppend = allowAppend && (maxItems === undefined || fields.length < maxItems);
   const canRemove = allowRemove && fields.length > minItems;
+  const hasItemLabels = itemFields.some((field) => Boolean(field.label?.labelText));
 
   return (
     <div className={config.className ?? "col-span-full space-y-4"}>
       {config.label && <Label label={config.label} />}
 
       {fields.map((item, index) => (
-        <div key={item.id} className="relative flex items-end justify-center gap-3 border rounded-md p-3">
-          <div className={`grid ${itemGridGap} ${GRID_STYLES[itemGrids]} w-full`}>
+        <div key={item.id} className="relative flex items-start gap-3 border rounded-md p-3">
+          <div className={`grid min-w-0 flex-1 ${itemGridGap} ${GRID_STYLES[itemGrids]}`}>
             {itemFields.map((itemField) => {
               if (itemField.permission === false) return null;
               return (
@@ -186,20 +187,23 @@ const FieldArrayRenderer = ({
             })}
           </div>
 
-          <div className="flex items-center gap-1 justify-end flex-1">
-            {allowReorder && index > 0 && (
-              <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
-                <ArrowUp className="h-4 w-4" />
-              </MyButton>
-            )}
-            {allowReorder && index < fields.length - 1 && (
-              <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
-                <ArrowDown className="h-4 w-4" />
-              </MyButton>
-            )}
-            {canRemove && (
-              <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)} />
-            )}
+          <div className="flex shrink-0 flex-col gap-1">
+            {hasItemLabels ? <div className="mb-1 h-5 shrink-0" aria-hidden /> : null}
+            <div className="flex items-center gap-1">
+              {allowReorder && index > 0 && (
+                <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
+                  <ArrowUp className="h-4 w-4" />
+                </MyButton>
+              )}
+              {allowReorder && index < fields.length - 1 && (
+                <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
+                  <ArrowDown className="h-4 w-4" />
+                </MyButton>
+              )}
+              {canRemove && (
+                <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)} />
+              )}
+            </div>
           </div>
         </div>
       ))}

@@ -2395,6 +2395,10 @@
         "title_plural": "এক্সপেন্স",
         "create_title": "এক্সপেন্স যোগ করুন",
         "edit_title": "এক্সপেন্স এডিট",
+        "any_search": {
+            "label": "যেকোনো",
+            "placeholder": "ভাউচার, এক্সপেন্স আইডি, অথবা পরিমাণ দিন"
+        },
         "amount": {
             "label": "পরিমাণ",
             "placeholder": "পরিমাণ দিন",

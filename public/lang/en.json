@@ -2395,6 +2395,10 @@
         "title_plural": "Expenses",
         "create_title": "Add Expense",
         "edit_title": "Edit Expense",
+        "any_search": {
+            "label": "Any",
+            "placeholder": "Search by voucher, expense ID, or amount"
+        },
         "amount": {
             "label": "Amount",
             "placeholder": "Enter amount",

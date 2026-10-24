@@ -50,7 +50,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
         : t(toolbarTitleKey);
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 pl-0.5">
             <ExpenseReports reports={reports} isLoading={isLoading} />
             <DataTable
                 data={expenses}
