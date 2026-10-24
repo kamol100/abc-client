@@ -250,6 +250,7 @@
         "sign_up": "সাইন আপ",
         "errors": {
             "invalid_credentials": "ক্রেডেনশিয়াল ভুল।",
+            "account_locked": "আপনার অ্যাকাউন্ট লক করা আছে। অনুগ্রহ করে প্রশাসকের সাথে যোগাযোগ করুন।",
             "something_went_wrong": "কিছু ভুল হয়েছে।"
         }
     },
@@ -1039,6 +1040,10 @@
             "label": "অবস্থা",
             "placeholder": "অবস্থা নির্বাচন করুন"
         },
+        "lock_account": "অ্যাকাউন্ট লক",
+        "unlock_account": "অ্যাকাউন্ট আনলক",
+        "account_locked": "স্টাফ অ্যাকাউন্ট লক হয়েছে",
+        "account_unlocked": "স্টাফ অ্যাকাউন্ট আনলক হয়েছে",
         "present_address": {
             "label": "বর্তমান ঠিকানা",
             "placeholder": "বর্তমান ঠিকানা দিন"

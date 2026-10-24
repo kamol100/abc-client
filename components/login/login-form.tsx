@@ -33,6 +33,8 @@ export function LoginForm({
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const authError = searchParams.get("error");
+  const authCode = searchParams.get("code");
+  const authNotice = authCode ? `${authError ?? ""}:${authCode}` : authError;
   const [host, setHost] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -63,17 +65,19 @@ export function LoginForm({
   }, [companyLogoUrl]);
 
   useEffect(() => {
-    if (!authError || handledAuthError === authError) return;
+    if (!authNotice || handledAuthError === authNotice) return;
     const message =
-      authError === "CredentialsSignin"
-        ? "login.errors.invalid_credentials"
-        : "login.errors.something_went_wrong";
+      authCode === "account_locked"
+        ? "login.errors.account_locked"
+        : authError === "CredentialsSignin"
+          ? "login.errors.invalid_credentials"
+          : "login.errors.something_went_wrong";
     toast({
       title: t(message),
       variant: "destructive",
     });
-    setHandledAuthError(authError);
-  }, [authError, handledAuthError, t]);
+    setHandledAuthError(authNotice);
+  }, [authCode, authError, authNotice, handledAuthError, t]);
 
   const onSubmit = async (data: Login) => {
     setIsPending(true);
@@ -94,6 +98,9 @@ export function LoginForm({
       if (result?.error) {
         const loginUrl = new URL("/admin", window.location.origin);
         loginUrl.searchParams.set("error", result.error);
+        if (result.code) {
+          loginUrl.searchParams.set("code", result.code);
+        }
         if (callbackUrl) {
           loginUrl.searchParams.set("callbackUrl", callbackUrl);
         }

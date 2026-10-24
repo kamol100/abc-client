@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { CredentialsSignin } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { authConfig } from './auth.config';
@@ -24,9 +24,14 @@ interface LoginApiUser {
     staff?: unknown;
 }
 
+class AccountLockedError extends CredentialsSignin {
+    code = "account_locked";
+}
+
 interface LoginApiResponse {
     success?: boolean;
     token?: string;
+    code?: string;
     user?: LoginApiUser;
 }
 
@@ -67,6 +72,9 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                 if (parsedCredentials.success) {
                     const userAgent = request.headers.get("user-agent") ?? "";
                     const data = await getLogin(parsedCredentials.data, userAgent);
+                    if (data?.code === "account_locked") {
+                        throw new AccountLockedError();
+                    }
                     const isAuthenticated = data?.success ?? Boolean(data?.token);
                     if (!isAuthenticated || !data?.token) {
                         return null;

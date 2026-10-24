@@ -1,13 +1,16 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import MyButton from "../my-button";
-import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import MyBadge, { type MyBadgeType } from "../my-badge";
-import { DeleteModal } from "../delete-modal";
-import { StaffRow } from "./staff-type";
 import { useTranslation } from "react-i18next";
+import MyButton from "@/components/my-button";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import MyBadge, { type MyBadgeType } from "@/components/my-badge";
+import { DeleteModal } from "@/components/delete-modal";
+import { cn } from "@/lib/utils";
+import { StaffRow } from "@/components/staffs/staff-type";
+import useApiMutation from "@/hooks/use-api-mutation";
+import { usePermissions } from "@/context/app-provider";
 
 const STATUS_STYLES: Record<string, string> = {
   active:
@@ -31,6 +34,52 @@ const StatusCell = ({ status }: { status: string }) => {
     </MyBadge>
   );
 };
+
+function StaffAccountLockButton({
+  staffId,
+  status,
+}: {
+  staffId: string;
+  status: string;
+}) {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const [override, setOverride] = useState<"active" | "inactive" | null>(null);
+  const locked = (override ?? status) === "inactive";
+  const nextStatus = locked ? "active" : "inactive";
+  const label = locked ? t("staff.unlock_account") : t("staff.lock_account");
+
+  useEffect(() => {
+    setOverride(null);
+  }, [status, staffId]);
+
+  const { mutate, isPending } = useApiMutation<unknown, { status: "active" | "inactive" }>({
+    url: `/staffs/${staffId}/status`,
+    method: "PUT",
+    invalidateKeys: "staffs",
+    successMessage: locked ? "staff.account_unlocked" : "staff.account_locked",
+    onSuccess: () => setOverride(nextStatus),
+  });
+
+  if (!hasPermission("staffs.status") && !hasPermission("staffs.edit")) {
+    return null;
+  }
+
+  return (
+    <MyButton
+      type="button"
+      action={locked ? "lock" : "unlock"}
+      loading={isPending}
+      tooltip={locked ? "staff.unlock_account" : "staff.lock_account"}
+      aria-label={label}
+      className="hover:bg-primary hover:text-primary-foreground px-2"
+      onClick={() => {
+        if (isPending) return;
+        mutate({ status: nextStatus });
+      }}
+    />
+  );
+}
 
 export const StaffColumns: ColumnDef<StaffRow>[] = [
   {
@@ -109,6 +158,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
       const staffId = String(staff.id);
       return (
         <div className="flex items-center justify-end mr-2 gap-1">
+          <StaffAccountLockButton staffId={staffId} status={String(staff.status ?? "active")} />
           <MyButton
             action="edit"
             url={`/staffs/edit/${staffId}`}

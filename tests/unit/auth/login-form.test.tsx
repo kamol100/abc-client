@@ -97,5 +97,19 @@ describe("LoginForm", () => {
       });
     });
   });
+
+  it("shows the locked account message when login returns the locked code", async () => {
+    searchParamState.set("error", "CredentialsSignin");
+    searchParamState.set("code", "account_locked");
+
+    render(<LoginForm />);
+
+    await waitFor(() => {
+      expect(toastMock).toHaveBeenCalledWith({
+        title: "login.errors.account_locked",
+        variant: "destructive",
+      });
+    });
+  });
 });
 

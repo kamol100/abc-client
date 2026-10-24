@@ -1,29 +1,30 @@
 ## Summary
 
-General settings now includes Expense ID Prefix next to Payment ID Prefix. An empty value displays and saves as `EXP`. The expenses table shows the generated id in the first column. Older rows without an id show an em dash.
+The staff table has a lock action before Edit. An active account shows an open lock labeled "Lock account". An inactive account shows a closed lock labeled "Unlock account". The button calls `PUT /staffs/{id}/status`, shows a spinner while the request runs, then updates the row and shows a success or error toast.
+
+The staff login form shows "Your account is locked. Please contact your administrator." when NextAuth returns the `account_locked` code.
+
+Users who cannot edit staff do not see the button. Status changes do not use a confirmation dialog; the existing client and payment-gateway status actions do not either.
 
 ## Files
 
-- `components/settings/settings-form-schema.ts`
-- `components/settings/settings-type.ts`
-- `components/expenses/expense-column.tsx`
-- `components/expenses/expense-type.ts`
+- `components/staffs/staff-column.tsx`
+- `components/my-button.tsx`
+- `components/login/login-form.tsx`
+- `auth/auth.ts`
 - `public/lang/en.json`
 - `public/lang/bn.json`
-- `tests/unit/settings/expense-id-prefix.test.ts`
+- `tests/unit/staffs/staff-account-lock.test.tsx`
+- `tests/unit/auth/login-form.test.tsx`
 
 ## Checks
 
 `scripts/ai/typecheck` passed.
 
-`npx vitest run tests/unit/settings/expense-id-prefix.test.ts`: 3 tests passed.
+`npx vitest run tests/unit/staffs/staff-account-lock.test.tsx tests/unit/auth/login-form.test.tsx`: 13 tests passed.
 
-`scripts/ai/test` still fails in two existing files that this change does not touch: `tests/unit/clients/reseller-client-filter-schema.test.ts` and `tests/unit/clients/reseller-client-table.test.tsx`.
-
-Signed in on `http://vp.isp.test/settings/general`, the general form lists Invoice Prefix, Payment ID Prefix, and Expense ID Prefix. The edit action on that field was not completed, and the prefix was not saved against the live company.
+Signed in on `http://vp.isp.test/staffs`, locking Vp-Staff changed the badge to Inactive and showed "Staff account locked". The action label became "Unlock account". Unlocking restored Active. The other staff rows stayed active.
 
 ## Git
 
-This work is uncommitted.
-
-Unrelated working-tree changes were left as they were: `components/payments/payment-column.tsx` and `components/payments/payment-type.ts`.
+Uncommitted. No unrelated frontend files were changed.

@@ -6,6 +6,7 @@ import {
   FilterIcon,
   Loader2,
   Lock,
+  LockOpen,
   Minus,
   Plus,
   RotateCcw,
@@ -35,6 +36,7 @@ const ACTION_ICONS = {
   add: Plus,
   minus: Minus,
   lock: Lock,
+  unlock: LockOpen,
 } as const;
 
 export type MyButtonActionType = keyof typeof ACTION_ICONS;

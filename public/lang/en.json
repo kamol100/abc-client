@@ -250,6 +250,7 @@
         "sign_up": "Sign up",
         "errors": {
             "invalid_credentials": "Invalid credentials.",
+            "account_locked": "Your account is locked. Please contact your administrator.",
             "something_went_wrong": "Something went wrong."
         }
     },
@@ -1039,6 +1040,10 @@
             "label": "Status",
             "placeholder": "Select status"
         },
+        "lock_account": "Lock account",
+        "unlock_account": "Unlock account",
+        "account_locked": "Staff account locked",
+        "account_unlocked": "Staff account unlocked",
         "present_address": {
             "label": "Present Address",
             "placeholder": "Enter present address"
