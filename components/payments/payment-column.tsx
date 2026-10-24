@@ -32,6 +32,19 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
         enableHiding: false,
     },
     {
+        accessorKey: "invoice.trackID",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="invoice.invoice_id" />
+        ),
+        cell: ({ row }) => (
+            <span className="font-medium text-sm">
+                {row.original.invoice?.trackID ?? "—"}
+            </span>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: "payment_date",
         header: ({ column }) => (
             <DataTableColumnHeader

@@ -86,6 +86,17 @@ const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
 
 export const ExpenseColumns: ColumnDef<ExpenseRow>[] = [
     {
+        accessorKey: "expense_id",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="expense.expense_id.label" />
+        ),
+        cell: ({ row }) => (
+            <span className="font-medium text-sm">{row.original.expense_id ?? "—"}</span>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: "expense_date",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="expense.expense_date.label" />

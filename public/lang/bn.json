@@ -2420,6 +2420,9 @@
             "label": "জোন",
             "placeholder": "জোন"
         },
+        "expense_id": {
+            "label": "এক্সপেন্স আইডি"
+        },
         "voucher": {
             "label": "ভাউচার",
             "placeholder": "ভাউচার"
@@ -4767,6 +4770,10 @@
             },
             "pid_prefix": {
                 "label": "পেমেন্ট আইডি প্রিফিক্স"
+            },
+            "expense_id_prefix": {
+                "label": "এক্সপেন্স আইডি প্রিফিক্স",
+                "placeholder": "EXP"
             },
             "client_view_open_on_new_tab": {
                 "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"

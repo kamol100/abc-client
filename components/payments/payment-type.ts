@@ -23,6 +23,12 @@ const FundRefSchema = z.object({
     name: z.string(),
 });
 
+const InvoiceRefSchema = z.object({
+    id: z.coerce.number(),
+    name: z.string().nullable().optional(),
+    trackID: z.string().nullable().optional(),
+});
+
 const PaymentTypeRefSchema = z.object({
     id: z.coerce.number(),
     name: z.string(),
@@ -51,6 +57,7 @@ export const PaymentRowSchema = z.object({
     staff: StaffRefSchema.nullable().optional(),
     zone: ZoneRefSchema.nullable().optional(),
     fund: FundRefSchema.nullable().optional(),
+    invoice: InvoiceRefSchema.nullable().optional(),
     fund_id: z.coerce.number().nullable().optional(),
     payment_type: PaymentTypeRefSchema.nullable().optional(),
     payment_type_id: z.coerce.number().nullable().optional(),

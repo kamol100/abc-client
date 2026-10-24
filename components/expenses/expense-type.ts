@@ -33,6 +33,7 @@ export type FundRef = z.infer<typeof FundRefSchema>;
 export const ExpenseRowSchema = z.object({
     id: z.coerce.number(),
     voucher: z.string().nullable().optional(),
+    expense_id: z.string().nullable().optional(),
     expense_date: z.string().nullable().optional(),
     amount: z.coerce.number(),
     note: z.string().nullable().optional(),

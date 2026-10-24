@@ -101,6 +101,7 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
         fields: [
             { kind: "text", key: "invoice_prefix" },
             { kind: "text", key: "pid_prefix" },
+            { kind: "text", key: "expense_id_prefix" },
             { kind: "switch", key: "auto_inactive_client_invoice_due" },
             { kind: "switch", key: "client_view_open_on_new_tab" },
             { kind: "switch", key: "client_edit_open_on_new_tab" },

@@ -2420,6 +2420,9 @@
             "label": "Zone",
             "placeholder": "Select zone"
         },
+        "expense_id": {
+            "label": "Expense ID"
+        },
         "voucher": {
             "label": "Voucher",
             "placeholder": "Enter voucher"
@@ -4767,6 +4770,10 @@
             },
             "pid_prefix": {
                 "label": "Payment ID Prefix"
+            },
+            "expense_id_prefix": {
+                "label": "Expense ID Prefix",
+                "placeholder": "EXP"
             },
             "client_view_open_on_new_tab": {
                 "label": "Client view open on new tab"

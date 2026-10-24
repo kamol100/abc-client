@@ -21,6 +21,7 @@ export const SETTINGS_TEXT_KEYS = [
     "lon",
     "invoice_prefix",
     "pid_prefix",
+    "expense_id_prefix",
     "telegram_bot_token",
     "telegram_channel_id",
 ] as const;
@@ -137,6 +138,7 @@ export const SettingsRowSchema = z
         lon: NullableStringOrNumberSchema,
         invoice_prefix: NullableStringSchema,
         pid_prefix: NullableStringSchema.default("PAY"),
+        expense_id_prefix: NullableStringSchema.default("EXP"),
         client_view_open_on_new_tab: NullableBooleanLikeSchema.default(0),
         client_edit_open_on_new_tab: NullableBooleanLikeSchema.default(0),
         telegram_bot_token: NullableStringSchema,
@@ -208,6 +210,7 @@ export const SettingsFormSchema = z
         lat: NullableNumberFormSchema,
         lon: NullableNumberFormSchema,
         invoice_prefix: NullableTextFormSchema,
+        expense_id_prefix: NullableTextFormSchema,
         telegram_bot_token: NullableTextFormSchema,
         telegram_channel_id: NullableTextFormSchema,
         sms_auto_invoice_schedule: NullableNumberFormSchema,
@@ -335,6 +338,11 @@ export function normalizeSettingValueForForm(
 
     if (NUMBER_INPUT_KEYS.has(key as SettingsTextKey)) {
         return toStringOrEmpty(value);
+    }
+
+    if (key === "expense_id_prefix") {
+        const prefix = toStringOrEmpty(value).trim();
+        return prefix || "EXP";
     }
 
     return toStringOrEmpty(value);

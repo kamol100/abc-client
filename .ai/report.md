@@ -1,23 +1,29 @@
 ## Summary
 
-Opening Edit Role no longer calls `GET /api/v1/roles/{id}`. That route only allows PUT and DELETE, so the dialog failed with MethodNotAllowed. The roles list already returns `name`, which is the only field the form edits, so the dialog fills from that row.
+General settings now includes Expense ID Prefix next to Payment ID Prefix. An empty value displays and saves as `EXP`. The expenses table shows the generated id in the first column. Older rows without an id show an em dash.
 
 ## Files
 
-- `components/roles/role-column.tsx` — pass the list row into the edit form
-- `components/roles/role-form.tsx` — do not hydrate the edit form from a show endpoint
+- `components/settings/settings-form-schema.ts`
+- `components/settings/settings-type.ts`
+- `components/expenses/expense-column.tsx`
+- `components/expenses/expense-type.ts`
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/settings/expense-id-prefix.test.ts`
 
 ## Checks
 
 `scripts/ai/typecheck` passed.
 
-In the browser, signed in on `http://vp.isp.test/roles`:
+`npx vitest run tests/unit/settings/expense-id-prefix.test.ts`: 3 tests passed.
 
-- Edit on the Client row opened the Edit Role dialog with Role Name set to Client.
-- The dialog did not show a failed-to-load state, and no `GET /roles/{id}` was issued.
+`scripts/ai/test` still fails in two existing files that this change does not touch: `tests/unit/clients/reseller-client-filter-schema.test.ts` and `tests/unit/clients/reseller-client-table.test.tsx`.
+
+Signed in on `http://vp.isp.test/settings/general`, the general form lists Invoice Prefix, Payment ID Prefix, and Expense ID Prefix. The edit action on that field was not completed, and the prefix was not saved against the live company.
 
 ## Git
 
 This work is uncommitted.
 
-Unrelated working-tree changes were left as they were: form-wrapper field-array files, staff form schema and tests, and `isp-backend` `app/Http/Resources/StaffResource.php`.
+Unrelated working-tree changes were left as they were: `components/payments/payment-column.tsx` and `components/payments/payment-type.ts`.
