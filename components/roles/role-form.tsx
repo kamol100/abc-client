@@ -33,6 +33,7 @@ const RoleForm: FC<Props> = ({
                 schema={RoleFormSchema}
                 method={method}
                 queryKey="roles"
+                hydrateOnEdit="never"
             />
         </MyDialog>
     );

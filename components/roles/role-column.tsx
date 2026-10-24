@@ -33,7 +33,7 @@ export const RoleColumns: ColumnDef<RoleRow>[] = [
                 <div className="flex items-end justify-end gap-2 mr-3">
                     <RoleForm
                         mode="edit"
-                        data={{ id: role.id }}
+                        data={role}
                         api="/roles"
                         method="PUT"
                     />
