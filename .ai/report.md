@@ -34,3 +34,7 @@ In the browser, signed in as Super Admin on `http://app.isp.test/clients`:
 ## Git
 
 Branch `improve`. This work is uncommitted. No unrelated frontend changes were in the tree.
+
+## Password reset confirmation
+
+The forgot-password success message is green text with a mail icon. `npx vitest run tests/unit/auth/password-reset.test.tsx` passed: 10 tests.

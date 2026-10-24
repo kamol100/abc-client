@@ -113,21 +113,21 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                 </div>
             )}
             <ClientOnlineStatusProvider clientIds={onlineStatusIds}>
-            <DataTable
-                toolbarInfoComponent={isResellerReport ? undefined : <ClientCount />}
-                data={clients}
-                setFilter={setFilter}
-                columns={columns}
-                toolbarOptions={toolbarOptions}
-                toggleColumns={true}
-                pagination={pagination}
-                setCurrentPage={setCurrentPage}
-                isLoading={!filterReady || isLoading}
-                isFetching={isFetching}
-                queryKey={isResellerReport ? "reseller-clients" : "clients"}
-                form={isResellerReport ? undefined : FormLink}
-                toolbarTitle={toolbarTitle}
-            />
+                <DataTable
+                    toolbarInfoComponent={isResellerReport ? undefined : <ClientCount />}
+                    data={clients}
+                    setFilter={setFilter}
+                    columns={columns}
+                    toolbarOptions={toolbarOptions}
+                    toggleColumns={true}
+                    pagination={pagination}
+                    setCurrentPage={setCurrentPage}
+                    isLoading={!filterReady || isLoading}
+                    isFetching={isFetching}
+                    queryKey={isResellerReport ? "reseller-clients" : "clients"}
+                    form={isResellerReport ? undefined : FormLink}
+                    toolbarTitle={toolbarTitle}
+                />
             </ClientOnlineStatusProvider>
         </div>
     );

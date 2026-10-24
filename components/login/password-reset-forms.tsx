@@ -20,6 +20,7 @@ import {
 } from "@/lib/auth/password-reset";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MailCheck } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRef, useState, type ReactNode } from "react";
@@ -125,7 +126,8 @@ export function ForgotPasswordForm({ companyLogoUrl, companyName, className }: P
     >
       {successMessage ? (
         <div className="grid gap-6 pb-6">
-          <p role="status" className="text-sm text-muted-foreground">
+          <p role="status" className="flex items-start gap-2 text-sm text-green-600 dark:text-green-400">
+            <MailCheck className="mt-0.5 size-4 shrink-0" aria-hidden />
             {successMessage}
           </p>
           <MyButton url="/admin" variant="default" size="default" className="w-full" icon={false} title="password_reset.back_to_login" />

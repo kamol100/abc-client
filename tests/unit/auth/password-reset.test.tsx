@@ -80,9 +80,10 @@ describe("ForgotPasswordForm", () => {
         host: "localhost",
       });
     });
-    expect(
-      await screen.findByRole("status")
-    ).toHaveTextContent("A link to reset your password has been sent to your email.");
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent("A link to reset your password has been sent to your email.");
+    expect(status).toHaveClass("text-green-600");
+    expect(status.querySelector("svg")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "password_reset.back_to_login" })).toHaveAttribute(
       "href",
       "/admin"
