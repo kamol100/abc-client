@@ -24,4 +24,17 @@ describe("StaffFormSchema", () => {
     expect(staffImageFields.map((field) => field.name)).toEqual(["photo", "nid_front", "nid_back"]);
     expect(names).not.toContain("nid");
   });
+
+  it("does not require an empty salary row", () => {
+    const sections = StaffFormSchema({});
+    const salary = sections.find((section) => section.name === "common.salary_information");
+    const arrays = salary?.form.filter((field) => field.type === "fieldArray") ?? [];
+
+    expect(arrays.map((field) => field.name)).toEqual(["salary_items", "salary_deductions"]);
+    for (const field of arrays) {
+      if (field.type !== "fieldArray") continue;
+      expect(field.minItems).toBe(0);
+      expect(field.omitBlankItems).toBe(true);
+    }
+  });
 });

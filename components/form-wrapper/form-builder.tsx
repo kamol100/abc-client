@@ -26,6 +26,7 @@ import {
 import {
   applyFormFieldDefaults,
   flattenFormSchema,
+  normalizeFieldArrayItems,
 } from "./form-field-defaults";
 import MyButton from "../my-button";
 
@@ -116,9 +117,9 @@ const transformDataToFormValues = (
   for (const arrField of arrayFields) {
     const rawArray = data[arrField.name];
     if (Array.isArray(rawArray)) {
-      formValues[arrField.name] = rawArray.map((item) =>
-        transformFieldValues(item as Record<string, unknown>, arrField.itemFields)
-      );
+      formValues[arrField.name] = normalizeFieldArrayItems(rawArray, arrField.itemFields, {
+        omitBlank: arrField.omitBlankItems,
+      }).map((item) => transformFieldValues(item, arrField.itemFields));
     } else {
       const minItems = arrField.minItems ?? 0;
       formValues[arrField.name] =

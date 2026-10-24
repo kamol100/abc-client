@@ -156,6 +156,8 @@ export type FieldArrayConfig = {
     allowReorder?: boolean;
     minItems?: number;
     maxItems?: number;
+    /** Drop rows whose item fields are all blank when the form is filled from saved data. */
+    omitBlankItems?: boolean;
     grids?: number;
     gridGap?: string;
     addButtonLabel?: string;

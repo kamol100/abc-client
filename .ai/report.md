@@ -1,40 +1,29 @@
 ## Summary
 
-The clients list loads online status once per page instead of once per row. Refetching the list no longer replaces the table with a skeleton. Client details mounts invoices, payments, tickets, and history from the route id, and each section waits until it is near the viewport. The speed widget polls every 15 seconds and pauses while the tab is hidden. Embedded invoices ask the API to skip report totals and line items. Server-paged tables render every row returned for the page.
+Editing a staff no longer opens the salary section with a blank allowance or deduction row. Saved rows that have an empty label and an empty or zero amount are left out of the form, so those fields do not fail validation. Add Item and Add Deduction still create a row when the user asks for one.
 
 ## Files
 
-- `components/clients/client-table.tsx`
-- `components/clients/client-online-status-cell.tsx`
-- `components/clients/client-column.tsx`
-- `components/clients/client-view.tsx`
-- `components/clients/client-view-skeleton.tsx`
-- `components/clients/client-speed-widget.tsx`
-- `components/invoices/invoice-table.tsx`
-- `components/payments/payment-table.tsx`
-- `components/tickets/ticket-table.tsx`
-- `components/data-table/data-table.tsx`
-- `hooks/use-in-view.ts` — render the section when `IntersectionObserver` is missing
+- `components/staffs/staff-form-schema.ts` — salary arrays start empty and skip blank saved rows
+- `components/form-wrapper/form-builder-type.ts` — `omitBlankItems` on field arrays
+- `components/form-wrapper/form-field-defaults.ts` — drop blank field-array rows
+- `components/form-wrapper/form-builder.tsx` — apply that filter while filling the edit form
+- `tests/unit/staffs/staff-form-schema.test.ts`
+- `tests/unit/form/field-array-items.test.ts`
 
 ## Checks
 
-`scripts/ai/typecheck` passed.
+`node_modules/.bin/vitest run tests/unit/staffs/staff-form-schema.test.ts tests/unit/form/field-array-items.test.ts` passed (5 tests).
 
-`node_modules/.bin/vitest run tests/unit/clients/client-view-ping-button.test.tsx tests/unit/clients/client-router-info.test.tsx tests/unit/clients/client-billing-payment-cell.test.tsx` passed (11 tests).
+`scripts/ai/typecheck` passed.
 
 A full `scripts/ai/test` run still fails `tests/unit/clients/reseller-client-filter-schema.test.ts` and cannot load `tests/unit/clients/reseller-client-table.test.tsx` (`next/server`). Those files were not part of this change.
 
-In the browser, signed in as Super Admin on `http://app.isp.test/clients`:
+In the browser, signed in on `http://vp.isp.test/staffs/edit/a30c61d0-f8c4-43bd-b20d-e801f8021fe3`:
 
-- The list showed 10 rows at 10 per page, page buttons, a Pay action, and online cells with router IPs.
-- Nginx recorded one `GET /api/v1/client-online-status?uuids=...` (10 ids, HTTP 200) and one `GET /api/v1/client-activity` (HTTP 200) for that page load.
-- Opening a client showed the header, invoices (`include_reports=0`, HTTP 200), payments, tickets with reply counts, and, after scrolling, history with the staff name.
-- `GET /api/v1/clients-speed/{uuid}` repeated every 15 seconds.
+- Salary Information showed Salary & Allowance and Salary Deductions with Add Item and Add Deduction only. No label or value inputs, and no validation errors.
+- Add Item created one label and value row. Removing it returned the section to the empty state. The form was not saved.
 
 ## Git
 
-Branch `improve`. This work is uncommitted. No unrelated frontend changes were in the tree.
-
-## Password reset confirmation
-
-The forgot-password success message is green text with a mail icon. `npx vitest run tests/unit/auth/password-reset.test.tsx` passed: 10 tests.
+This work is uncommitted.
