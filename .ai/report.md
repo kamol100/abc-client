@@ -1,18 +1,20 @@
 ## Summary
 
-Each client row shows the actions menu, then an eye icon, then a lock icon when that client is locked. The eye opens the same client details page as the View menu item, including the new-tab setting.
+The company profile menu uses the staff photo when one is stored. The image is loaded through the private staff photo URL. When there is no photo, the menu shows the initials fallback.
 
 ## Files
 
-- `components/clients/client-row-actions.tsx`
-- `components/clients/client-column.tsx`
+- `components/profiles/company-profile.tsx`
+- `components/profiles/profile-avatar.ts`
+- `types/app.ts`
+- `tests/unit/profiles/profile-avatar.test.ts`
 
 ## Checks
 
-`scripts/ai/typecheck` passed as the first step of `scripts/ai/frontend-check`. The unit run then failed on two existing tests that this change does not touch: `reseller-client-filter-schema.test.ts` (reseller filter label shape) and `reseller-client-table.test.tsx` (next-auth import). 305 other tests passed.
+`scripts/ai/typecheck` passed. `tests/unit/profiles/profile-avatar.test.ts` passed (2 tests).
 
-On `http://vp.isp.test/clients`, every row shows the menu, then the eye. The locked client shows the lock icon after the eye.
+On `http://vp.isp.test/clients`, the signed-in user has a staff photo. The navbar and the open profile menu both show that photo. The image request returned `200` `image/jpeg`.
 
 ## Git
 
-Uncommitted. No unrelated frontend files were changed.
+Uncommitted. Earlier client-row action edits are still uncommitted in this working tree.

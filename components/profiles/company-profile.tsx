@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChangePasswordDialog } from "@/components/profiles/change-password-dialog";
+import { staffProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import {
   getProfileInitials,
   runAdminProfileLogout,
@@ -31,7 +32,7 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const name = profile.name ?? "";
   const email = profile.email ?? "";
-  const avatar = profile.avatar ?? undefined;
+  const avatar = staffProfileAvatarSrc(profile.staff);
   const canAccessSettings = hasPermission("company-settings.access");
 
   return (
@@ -45,7 +46,7 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
           >
             <span className="sr-only">{t("user_profile.menu")}</span>
             <Avatar className="rounded-full border-2 border-background">
-              <AvatarImage src={avatar} alt={name} />
+              {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
               <AvatarFallback className="rounded-full bg-primary/10 text-primary text-xs font-medium">
                 {name ? getProfileInitials(name) : "?"}
               </AvatarFallback>
@@ -56,7 +57,7 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
           <DropdownMenuLabel className="p-0 font-normal">
             <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
               <Avatar className="h-9 w-9 rounded-full shrink-0">
-                <AvatarImage src={avatar} alt={name} />
+                {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
                 <AvatarFallback className="rounded-full bg-primary/10 text-primary text-sm font-medium">
                   {name ? getProfileInitials(name) : "?"}
                 </AvatarFallback>

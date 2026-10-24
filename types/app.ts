@@ -15,6 +15,7 @@ export interface Settings {
 export interface Staff {
   name?: string;
   id?: string;
+  photo?: string | null;
   item_per_page?: number;
   address?: string;
   fund?: {
