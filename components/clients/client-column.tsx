@@ -101,7 +101,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
                 />
             ),
             cell: ({ row }) => (
-                <div className="flex items-end justify-end mr-3">
+                <div className="flex items-center justify-end mr-3">
                     <ClientRowActions row={row} />
                 </div>
             ),

@@ -1,19 +1,17 @@
 ## Summary
 
-Admin and Super Admin users get a Lock Client or Unlock Client item in the client row menu. The label and icon follow `is_locked`. Confirming sends one request to `PUT /clients/{uuid}/lock` and refreshes the client lists. Other roles do not see the item.
+Each client row shows the actions menu, then an eye icon, then a lock icon when that client is locked. The eye opens the same client details page as the View menu item, including the new-tab setting.
 
 ## Files
 
 - `components/clients/client-row-actions.tsx`
-- `components/clients/client-type.ts`
-- `public/lang/en.json`
-- `public/lang/bn.json`
+- `components/clients/client-column.tsx`
 
 ## Checks
 
-`scripts/ai/typecheck` passed. `en.json` and `bn.json` both parse.
+`scripts/ai/typecheck` passed as the first step of `scripts/ai/frontend-check`. The unit run then failed on two existing tests that this change does not touch: `reseller-client-filter-schema.test.ts` (reseller filter label shape) and `reseller-client-table.test.tsx` (next-auth import). 305 other tests passed.
 
-The clients page at `http://vp.isp.test/clients` loaded while signed in. The row-menu click was not completed, so the new item was not exercised in the browser. The lock API is covered by the backend tests. The menu will fail until the backend migration has run.
+On `http://vp.isp.test/clients`, every row shows the menu, then the eye. The locked client shows the lock icon after the eye.
 
 ## Git
 

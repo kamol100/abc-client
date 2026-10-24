@@ -1,6 +1,7 @@
 "use client";
 
 import MyButton from "@/components/my-button";
+import MyTooltip from "@/components/my-tooltip";
 import { MyDialog } from "@/components/my-dialog";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import {
@@ -130,7 +131,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     };
 
     return (
-        <div className="w-full">
+        <div className="flex items-center justify-end gap-1">
             <DataTableRowActions row={row}>
                 {hasPermission("clients.show") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
@@ -228,6 +229,29 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     </DropdownMenuItem>
                 )}
             </DataTableRowActions>
+            {hasPermission("clients.show") && (
+                <MyTooltip content="client.actions.view" placement="top" delay={0}>
+                    <MyButton variant="ghost" size="icon" className="h-8 w-8 p-0" asChild>
+                        <Link
+                            target={client_view_open_on_new_tab ? "_blank" : "_self"}
+                            href={`/clients/view/${clientId}`}
+                            aria-label={t("client.actions.view")}
+                        >
+                            <Eye className="h-4 w-4" />
+                        </Link>
+                    </MyButton>
+                </MyTooltip>
+            )}
+            {isLocked && (
+                <MyTooltip content="client.lock.locked" placement="top" delay={0}>
+                    <span
+                        className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground"
+                        aria-label={t("client.lock.locked")}
+                    >
+                        <Lock className="h-4 w-4" aria-hidden />
+                    </span>
+                </MyTooltip>
+            )}
 
             <ClientSessionResetDialog
                 clientId={clientId}
