@@ -21,12 +21,14 @@ import {
     Edit,
     Eye,
     FileText,
+    Lock,
     MessageSquare,
     Package,
     RotateCcw,
     Ticket,
     Trash2,
     TriangleAlert,
+    Unlock,
     Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -50,7 +52,11 @@ interface ClientRowActionsProps {
 
 const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const { t } = useTranslation();
-    const { settings: { client_view_open_on_new_tab, client_edit_open_on_new_tab } } = useSettings();
+    const { settings } = useSettings();
+    const { client_view_open_on_new_tab, client_edit_open_on_new_tab } = settings;
+    const canLockClients = (settings.roles ?? []).some(
+        (role) => role === "Admin" || role === "Super Admin",
+    );
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
     const isResellerUser = !!profile?.reseller;
@@ -62,6 +68,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
     const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
+    const [lockOpen, setLockOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [mikrotikDelete, setMikrotikDelete] = useState(false);
 
@@ -92,6 +99,21 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
         },
     });
 
+    const isLocked = client.is_locked === true;
+
+    const { mutateAsync: setClientLock, isPending: isLocking } = useApiMutation<
+        { is_locked: boolean },
+        { is_locked: boolean }
+    >({
+        url: `/clients/${clientId}/lock`,
+        method: "PUT",
+        invalidateKeys: "clients,reseller-clients",
+        defaultErrorMessage: "client.lock.failed",
+        onSuccess: (data) => {
+            toast.success(t(data.is_locked ? "client.lock.locked" : "client.lock.unlocked"));
+        },
+    });
+
     const handleDelete = async (close: () => void) => {
         await deleteClient();
         close();
@@ -100,6 +122,11 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const handleDeleteOpenChange = (open: boolean) => {
         setDeleteOpen(open);
         if (!open) setMikrotikDelete(false);
+    };
+
+    const handleLock = async (close: () => void) => {
+        await setClientLock({ is_locked: !isLocked });
+        close();
     };
 
     return (
@@ -176,6 +203,20 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                         {t("client.actions.recharge_client")}
                     </DropdownMenuItem>
                 )}
+                {canLockClients && (
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        disabled={isLocking}
+                        onSelect={() => setLockOpen(true)}
+                    >
+                        {isLocked ? (
+                            <Unlock className="mr-2 h-4 w-4" />
+                        ) : (
+                            <Lock className="mr-2 h-4 w-4" />
+                        )}
+                        {t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 {hasPermission("clients.delete") && (
                     <DropdownMenuItem
@@ -231,6 +272,54 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     open={walletRechargeOpen}
                     onOpenChange={setWalletRechargeOpen}
                 />
+            )}
+
+            {canLockClients && (
+                <MyDialog
+                    open={lockOpen}
+                    onOpenChange={setLockOpen}
+                    size="sm"
+                    loading={isLocking}
+                    footer={({ close, loading }) => (
+                        <>
+                            <MyButton
+                                action="cancel"
+                                variant="outline"
+                                size="default"
+                                onClick={close}
+                                disabled={loading}
+                                title={t("common.cancel")}
+                            />
+                            <MyButton
+                                action={isLocked ? "unlock" : "lock"}
+                                variant="default"
+                                size="default"
+                                onClick={() => handleLock(close)}
+                                disabled={loading}
+                                loading={loading}
+                                title={t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                            />
+                        </>
+                    )}
+                >
+                    <div className="flex flex-col items-center text-center gap-4">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                            {isLocked ? (
+                                <Unlock className="h-8 w-8 text-foreground" />
+                            ) : (
+                                <Lock className="h-8 w-8 text-foreground" />
+                            )}
+                        </div>
+                        <div className="space-y-2">
+                            <DialogTitle className="text-center">
+                                {t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                            </DialogTitle>
+                            <DialogDescription className="text-center">
+                                {t(isLocked ? "client.lock.confirm_unlock" : "client.lock.confirm_lock")}
+                            </DialogDescription>
+                        </div>
+                    </div>
+                </MyDialog>
             )}
 
             <MyDialog

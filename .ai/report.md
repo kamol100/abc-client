@@ -1,15 +1,20 @@
 ## Summary
 
-Salary and deduction row delete buttons now line up with the label and value inputs. Validation messages under those fields no longer pull the button down.
+Admin and Super Admin users get a Lock Client or Unlock Client item in the client row menu. The label and icon follow `is_locked`. Confirming sends one request to `PUT /clients/{uuid}/lock` and refreshes the client lists. Other roles do not see the item.
 
 ## Files
 
-- `components/form-wrapper/form-builder.tsx`
+- `components/clients/client-row-actions.tsx`
+- `components/clients/client-type.ts`
+- `public/lang/en.json`
+- `public/lang/bn.json`
 
 ## Checks
 
-On `http://vp.isp.test/salaries/create`, added two salary items and one deduction, then left required fields empty. With "Item label is required" and "Item value is required" visible, each trash button’s top and bottom matched the inputs (0px offset) on desktop and on a 390px-wide viewport.
+`scripts/ai/typecheck` passed. `en.json` and `bn.json` both parse.
+
+The clients page at `http://vp.isp.test/clients` loaded while signed in. The row-menu click was not completed, so the new item was not exercised in the browser. The lock API is covered by the backend tests. The menu will fail until the backend migration has run.
 
 ## Git
 
-Uncommitted. Unrelated working-tree changes left untouched: `components/expenses/expense-filter-schema.ts`, `public/lang/en.json`, `public/lang/bn.json`.
+Uncommitted. No unrelated frontend files were changed.

@@ -1526,7 +1526,16 @@
             "client_sync": "Client Sync",
             "wallet_recharge": "Recharge Wallet",
             "recharge_client": "Recharge Client",
+            "lock": "Lock Client",
+            "unlock": "Unlock Client",
             "delete": "Delete"
+        },
+        "lock": {
+            "confirm_lock": "Lock this client? The client stays in your list. Other staff will no longer see them.",
+            "confirm_unlock": "Unlock this client? Other staff will see them again.",
+            "locked": "Client locked",
+            "unlocked": "Client unlocked",
+            "failed": "Could not update the client lock"
         },
         "session_reset": {
             "title": "Reset Session",

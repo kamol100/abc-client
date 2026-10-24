@@ -77,6 +77,7 @@ export const ClientRowSchema = z.object({
     ip_address: z.string().nullable().optional(),
     mac_address: z.string().nullable().optional(),
     status: z.coerce.number().optional(),
+    is_locked: z.boolean().optional(),
     connection_type: z.string().nullable().optional(),
     connection_mode: z.string().nullable().optional(),
     billing_term: z.enum(["prepaid", "postpaid"]).nullable().optional(),
