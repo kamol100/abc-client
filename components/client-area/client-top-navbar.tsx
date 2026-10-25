@@ -18,11 +18,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClientProfile } from "@/components/client-area/client-profile";
-
-const CLIENT_DASHBOARD_ROUTE = "/client/dashboard";
+import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
 
 const CLIENT_ROUTE_TO_MENU_KEY: Record<string, string> = {
-  "/client/dashboard": "menu.dashboard.title",
+  [CLIENT_DASHBOARD_PATH]: "menu.dashboard.title",
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",
@@ -37,7 +36,7 @@ function getPageTitleKey(pathname: string): string {
 
 function isClientDashboardRoute(pathname: string): boolean {
   const normalized = pathname.replace(/\/$/, "") || "/";
-  return normalized === CLIENT_DASHBOARD_ROUTE;
+  return normalized === CLIENT_DASHBOARD_PATH;
 }
 
 function ClientBreadcrumb() {
@@ -70,7 +69,7 @@ function ClientBreadcrumb() {
       <BreadcrumbList>
         <BreadcrumbItem className="hidden md:block">
           <BreadcrumbLink asChild>
-            <Link href={CLIENT_DASHBOARD_ROUTE}>{t("menu.dashboard.title")}</Link>
+            <Link href={CLIENT_DASHBOARD_PATH}>{t("menu.dashboard.title")}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="hidden md:block" />

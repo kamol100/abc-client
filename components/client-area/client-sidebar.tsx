@@ -3,7 +3,6 @@
 import * as React from "react";
 import Link from "next/link";
 import { ChevronsUpDown, LayoutDashboard, LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,8 +34,8 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import type { AppData } from "@/types/app";
 import { useClientMenuItems } from "@/hooks/use-client-menu-items";
 
-const CLIENT_DASHBOARD_ROUTE = "/client/dashboard";
-const CLIENT_LOGIN_ROUTE = "/client/login";
+import { signOutClient } from "@/lib/auth/client-sign-out";
+import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
 
 function getInitials(name: string): string {
   return name
@@ -60,7 +59,7 @@ function ClientNavUser() {
   const subtitle = phone || email;
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: CLIENT_LOGIN_ROUTE });
+    await signOutClient();
   };
 
   return (
@@ -110,7 +109,7 @@ function ClientNavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href={CLIENT_DASHBOARD_ROUTE}>
+                <Link href={CLIENT_DASHBOARD_PATH}>
                   <LayoutDashboard className="size-4" />
                   <span>{t("menu.dashboard.title")}</span>
                 </Link>
@@ -170,7 +169,7 @@ export function ClientSidebar({ ...props }: React.ComponentProps<typeof Sidebar>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" className="h-12 py-1" asChild>
-                <Link href={CLIENT_DASHBOARD_ROUTE}>
+                <Link href={CLIENT_DASHBOARD_PATH}>
                   <Logo
                     name={
                       settings?.company != null ? String(settings.company) : t("client_portal.title")

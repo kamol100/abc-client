@@ -204,8 +204,8 @@ Route groups:
 | `app/(dashboard)/` | `/dashboard`, `/clients`, `/zones`, … | Staff admin |
 | `app/(client-dashboard)/` | `/client/dashboard`, `/client/invoices`, … | Subscriber portal |
 | `app/(public)/` | `/`, `/pricing`, `/pay`, … | Unauthenticated |
-| `app/(client-auth)/` | `/client/login` | Client login |
-| `app/admin` | `/admin` | Staff login (`/login` redirects here) |
+| `app/(client-auth)/` | `/login` | Client login (`/client/login` redirects here) |
+| `app/admin` | `/admin` | Staff login |
 
 Auth gate is `proxy.ts` (Next 16 proxy — there is no `middleware.ts`). Public paths: `lib/auth/public-routes.ts`.
 

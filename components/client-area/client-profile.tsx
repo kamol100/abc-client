@@ -12,11 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutDashboard, LogOut } from "lucide-react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 
-const CLIENT_LOGIN_ROUTE = "/client/login";
-const CLIENT_DASHBOARD_ROUTE = "/client/dashboard";
+import { signOutClient } from "@/lib/auth/client-sign-out";
+import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
 
 function getInitials(name: string): string {
   return name
@@ -36,7 +35,7 @@ export function ClientProfile() {
   const avatar = profile?.avatar ?? undefined;
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: CLIENT_LOGIN_ROUTE });
+    await signOutClient();
   };
 
   return (
@@ -75,7 +74,7 @@ export function ClientProfile() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={CLIENT_DASHBOARD_ROUTE} className="flex items-center gap-2">
+          <Link href={CLIENT_DASHBOARD_PATH} className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             {t("client_profile.dashboard")}
           </Link>

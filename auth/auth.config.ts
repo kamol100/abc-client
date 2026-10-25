@@ -1,5 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 import { isPublicPathname } from "@/lib/auth/public-routes";
+import { CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
 const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
@@ -13,8 +14,9 @@ export const authConfig = {
             const isLoggedIn = !!auth?.user;
             const pathname = nextUrl.pathname;
 
-            // Client portal routes are handled by middleware — never intercept here
-            if (pathname.startsWith('/client/')) return true;
+            // Client portal routes are handled by proxy — never intercept here.
+            // `/login` is the subscriber sign-in page. Staff sign-in stays at `/admin`.
+            if (pathname === CLIENT_LOGIN_PATH || pathname.startsWith('/client/')) return true;
 
             const isOnAdminDashboard = pathname.startsWith('/dashboard');
             const isPublicRoute = isPublicPathname(pathname);

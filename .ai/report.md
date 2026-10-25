@@ -1,22 +1,24 @@
 ## Summary
 
-Each reseller row can switch into that reseller’s scope. The action uses the same impersonation request as the sidebar switcher: `POST /impersonate/{user}` with `reseller_id`. It shows for company and super-admin users who have `impersonate.start`, and only when the reseller has a login user. Switch-back from the reseller was not changed. Leaving that scope is blocked by permissions on the impersonated user.
+Client logout was leaving the company host. `signOut({ callbackUrl: "/login" })` lets Auth.js prefix that path with `AUTH_URL` (`http://isp.test`), so a session on `http://vp.isp.test` landed on `http://isp.test/login`.
+
+Logout now clears the session without following that Auth.js URL, then opens `/login` on the current host (`http://vp.isp.test/login`). The sidebar sign-out uses the same path.
 
 ## Files
 
-- `hooks/use-start-impersonation.ts`
-- `components/resellers/reseller-row-actions.tsx`
-- `components/tenant-switcher.tsx`
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/resellers/reseller-switch-scope.test.tsx`
+- `lib/auth/client-sign-out.ts`
+- `lib/auth/routes.ts`
+- `components/client-area/client-profile.tsx`
+- `components/client-area/client-sidebar.tsx`
+- `tests/unit/auth/auth-gate.test.ts`
+- `tests/unit/auth/client-sign-out.test.ts`
 
 ## Checks
 
-`npx vitest run tests/unit/resellers/reseller-switch-scope.test.tsx` passed (6 tests). `scripts/ai/typecheck` passed.
+`npx vitest run tests/unit/auth/auth-gate.test.ts tests/unit/auth/client-sign-out.test.ts` passed (12 tests). `scripts/ai/typecheck` passed.
 
-On `http://vp.isp.test/resellers`, the row menu shows Switch to reseller. Choosing it opened the dashboard as vp-reseller, with the sidebar marked Impersonating. Switch-back was not completed.
+Signed out from `http://vp.isp.test/client/dashboard`. The browser landed on `http://vp.isp.test/login`. A later visit to `/client/dashboard` stayed on `http://vp.isp.test/login?callbackUrl=%2Fclient%2Fdashboard`.
 
 ## Git
 
-Uncommitted. Unrelated working-tree changes remain in the client lock files: `components/clients/client-lock-dialog.tsx`, `components/clients/client-row-actions.tsx`, `components/clients/client-view.tsx`, and `tests/unit/clients/client-view-ping-button.test.tsx`.
+Uncommitted. Earlier auth-route edits in this working tree were already present and were left in place.

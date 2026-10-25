@@ -14,9 +14,8 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import InputField from "@/components/form/input-field";
+import { CLIENT_DASHBOARD_PATH, CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
-const CLIENT_LOGIN_ROUTE = "/client/login";
-const CLIENT_DASHBOARD_ROUTE = "/client/dashboard";
 const CLIENT_AUTH_API = "/auth/client";
 
 export function ClientLoginForm({
@@ -25,7 +24,7 @@ export function ClientLoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || CLIENT_DASHBOARD_ROUTE;
+  const callbackUrl = searchParams.get("callbackUrl") || CLIENT_DASHBOARD_PATH;
   const authError = searchParams.get("error");
 
   const [host, setHost] = useState("");
@@ -65,7 +64,7 @@ export function ClientLoginForm({
   const onSubmit = async (data: ClientLogin) => {
     setIsPending(true);
     try {
-      const safeRedirect = callbackUrl.startsWith("/client/") ? callbackUrl : CLIENT_DASHBOARD_ROUTE;
+      const safeRedirect = callbackUrl.startsWith("/client/") ? callbackUrl : CLIENT_DASHBOARD_PATH;
       console.log(data, host);
       const result = await signIn("credentials", {
         username: data.phone,
@@ -79,7 +78,7 @@ export function ClientLoginForm({
       console.log(result);
 
       if (result?.error) {
-        const loginUrl = new URL(CLIENT_LOGIN_ROUTE, window.location.origin);
+        const loginUrl = new URL(CLIENT_LOGIN_PATH, window.location.origin);
         loginUrl.searchParams.set("error", result.error);
         if (callbackUrl) loginUrl.searchParams.set("callbackUrl", callbackUrl);
         window.location.href = loginUrl.toString();

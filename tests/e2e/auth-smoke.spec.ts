@@ -9,10 +9,18 @@ test.describe("auth smoke", () => {
     await expect(page.locator("body")).toBeVisible();
   });
 
-  test("redirects legacy login route to admin", async ({ page }) => {
-    await page.goto("/login?callbackUrl=%2Fdashboard");
+  test("loads the client login page at /login", async ({ page }) => {
+    const response = await page.goto("/login?callbackUrl=%2Fclient%2Fdashboard");
 
-    await expect(page).toHaveURL(/\/admin\?callbackUrl=%2Fdashboard/);
+    expect(response?.ok()).toBeTruthy();
+    await expect(page).toHaveURL(/\/login\?callbackUrl=%2Fclient%2Fdashboard/);
+    await expect(page.locator("body")).toBeVisible();
+  });
+
+  test("redirects the old client login route to /login", async ({ page }) => {
+    await page.goto("/client/login?callbackUrl=%2Fclient%2Fdashboard");
+
+    await expect(page).toHaveURL(/\/login\?callbackUrl=%2Fclient%2Fdashboard/);
     await expect(page.locator("body")).toBeVisible();
   });
 

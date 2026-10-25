@@ -9,8 +9,8 @@ Next.js 16 App Router, React 19, TypeScript strict (`tsconfig.json`). Tailwind 3
 | `app/(dashboard)/` | Staff admin (`/clients`, `/zones`, `/invoices`, …) |
 | `app/(client-dashboard)/` | Subscriber portal (`/client/...`) |
 | `app/(public)/` | Marketing and public pay |
-| `app/(client-auth)/` | `/client/login` |
-| `app/admin` | Staff login (`app/login` redirects here) |
+| `app/(client-auth)/` | Subscriber login at `/login` (`/client/login` redirects here) |
+| `app/admin` | Staff login |
 
 Auth gate is `proxy.ts`. Public paths are `lib/auth/public-routes.ts`. There is no `middleware.ts`.
 
