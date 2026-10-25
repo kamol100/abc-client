@@ -3712,10 +3712,6 @@
             "label": "সোশ্যাল মিডিয়া অ্যাকাউন্ট",
             "placeholder": "সোশ্যাল মিডিয়া অ্যাকাউন্ট দিন"
         },
-        "nid": {
-            "label": "ন্যাশনাল আইডি",
-            "placeholder": "ন্যাশনাল আইডি দিন"
-        },
         "email": {
             "label": "ইমেইল",
             "placeholder": "ইমেইল ঠিকানা দিন"
@@ -3726,6 +3722,34 @@
         "join_date": {
             "label": "জয়েন ডেট",
             "placeholder": "জয়েন ডেট নির্বাচন করুন"
+        },
+        "images": {
+            "avatar": {
+                "label": "রিসেলারের ছবি",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "nid_front": {
+                "label": "এনআইডি সামনের পৃষ্ঠা",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "nid_back": {
+                "label": "এনআইডি পেছনের পৃষ্ঠা",
+                "hint": "JPG, PNG, বা WebP। সর্বোচ্চ ২ এমবি।"
+            },
+            "empty": "ক্লিক করুন বা ছবি ড্রপ করুন",
+            "save_first": "ছবি আপলোডের আগে রিসেলার সেভ করুন।",
+            "replace": "ছবি পরিবর্তন",
+            "remove": "ছবি সরান",
+            "remove_title": "ছবি সরান",
+            "remove_confirm": "এই ছবিটি সরিয়ে ফেলবেন?",
+            "uploading": "আপলোড হচ্ছে…",
+            "upload_success": "ছবি আপলোড হয়েছে",
+            "upload_failed": "ছবি আপলোড করা যায়নি",
+            "remove_success": "ছবি সরানো হয়েছে",
+            "remove_failed": "ছবি সরানো যায়নি",
+            "invalid_type": "JPG, PNG, বা WebP ছবি বেছে নিন",
+            "too_large": "ছবি ২ এমবি বা তার কম হতে হবে",
+            "unavailable": "ছবি লোড করা যায়নি"
         }
     },
     "telegram_zone": {

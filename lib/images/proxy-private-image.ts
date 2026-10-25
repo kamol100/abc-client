@@ -1,8 +1,7 @@
 import { auth } from "@/auth/auth";
-import { PRIVATE_IMAGE_FIELDS } from "@/lib/images/private-image";
+import { privateImageFieldAllowed, type PrivateImageResource } from "@/lib/images/private-image";
 import { NextResponse } from "next/server";
 
-const IMAGE_FIELDS = new Set<string>(PRIVATE_IMAGE_FIELDS);
 const RECORD_ID = /^[0-9a-fA-F-]{36}$/;
 
 function sessionToken(session: unknown): string | null {
@@ -12,11 +11,11 @@ function sessionToken(session: unknown): string | null {
 }
 
 export async function proxyPrivateImage(
-  resource: "clients" | "staffs",
+  resource: PrivateImageResource,
   id: string,
   field: string,
 ): Promise<NextResponse> {
-  if (!RECORD_ID.test(id) || !IMAGE_FIELDS.has(field)) {
+  if (!RECORD_ID.test(id) || !privateImageFieldAllowed(resource, field)) {
     return NextResponse.json({ success: false, message: "Image not found" }, { status: 404 });
   }
 

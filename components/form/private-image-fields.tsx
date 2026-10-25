@@ -15,6 +15,7 @@ import {
   privateImageSrc,
   storedPrivateImage,
   type PrivateImageFieldName,
+  type PrivateImageResource,
 } from "@/lib/images/private-image";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +33,7 @@ export type PrivateImageFieldConfig = {
 
 type PrivateImageFieldsProps = {
   fields: readonly PrivateImageFieldConfig[];
-  resource: "clients" | "staffs";
+  resource: PrivateImageResource;
   editPermission: string;
   uploadPermission: string;
   messagePrefix: string;
@@ -47,7 +48,7 @@ function PrivateImageField({
 }: {
   field: PrivateImageFieldConfig;
   recordId?: string;
-  resource: "clients" | "staffs";
+  resource: PrivateImageResource;
   canModify: boolean;
   messagePrefix: string;
 }) {

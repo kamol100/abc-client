@@ -3712,10 +3712,6 @@
             "label": "Social Media Account",
             "placeholder": "Enter social media account"
         },
-        "nid": {
-            "label": "National ID",
-            "placeholder": "Enter national ID"
-        },
         "email": {
             "label": "Email",
             "placeholder": "Enter email address"
@@ -3726,6 +3722,34 @@
         "join_date": {
             "label": "Join Date",
             "placeholder": "Select join date"
+        },
+        "images": {
+            "avatar": {
+                "label": "Reseller Photo",
+                "hint": "JPG, PNG, or WebP. Max 2MB."
+            },
+            "nid_front": {
+                "label": "NID Front Side",
+                "hint": "JPG, PNG, or WebP. Max 2MB."
+            },
+            "nid_back": {
+                "label": "NID Back Side",
+                "hint": "JPG, PNG, or WebP. Max 2MB."
+            },
+            "empty": "Click or drop an image",
+            "save_first": "Save the reseller before uploading images.",
+            "replace": "Replace image",
+            "remove": "Remove image",
+            "remove_title": "Remove image",
+            "remove_confirm": "Remove this image?",
+            "uploading": "Uploading…",
+            "upload_success": "Image uploaded",
+            "upload_failed": "Could not upload the image",
+            "remove_success": "Image removed",
+            "remove_failed": "Could not remove the image",
+            "invalid_type": "Choose a JPG, PNG, or WebP image",
+            "too_large": "Image must be 2MB or smaller",
+            "unavailable": "Image could not be loaded"
         }
     },
     "telegram_zone": {

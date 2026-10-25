@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   MAX_PRIVATE_IMAGE_BYTES,
+  privateImageFieldAllowed,
   privateImageFileError,
   privateImageSrc,
   storedPrivateImage,
@@ -25,6 +26,17 @@ describe("privateImageSrc", () => {
     expect(privateImageSrc("staffs", "abc", "nid_front", "staffs/1/photo.png")).toBe(
       "/api/staffs/abc/images/nid_front?v=staffs%2F1%2Fphoto.png",
     );
+  });
+});
+
+describe("privateImageFieldAllowed", () => {
+  it("keeps client and staff on photo and lets resellers use avatar", () => {
+    expect(privateImageFieldAllowed("clients", "photo")).toBe(true);
+    expect(privateImageFieldAllowed("clients", "avatar")).toBe(false);
+    expect(privateImageFieldAllowed("staffs", "nid_front")).toBe(true);
+    expect(privateImageFieldAllowed("resellers", "avatar")).toBe(true);
+    expect(privateImageFieldAllowed("resellers", "photo")).toBe(false);
+    expect(privateImageFieldAllowed("resellers", "nid_back")).toBe(true);
   });
 });
 

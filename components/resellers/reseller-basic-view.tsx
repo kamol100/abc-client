@@ -114,7 +114,6 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                     <InfoRow label={t("reseller.present_address.label")} value={reseller.present_address || placeholder} />
                     <InfoRow label={t("reseller.permanent_address.label")} value={reseller.permanent_address || placeholder} />
                     <InfoRow label={t("reseller.social_media_account.label")} value={reseller.social_media_account || placeholder} />
-                    <InfoRow label={t("reseller.nid.label")} value={reseller.nid || placeholder} />
                 </div>
             </Card>
         </div>

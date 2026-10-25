@@ -1,5 +1,26 @@
 import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
 
+export const resellerImageFields = [
+    {
+        name: "avatar",
+        label: "reseller.images.avatar.label",
+        hint: "reseller.images.avatar.hint",
+        aspect: "aspect-[85/54]",
+    },
+    {
+        name: "nid_front",
+        label: "reseller.images.nid_front.label",
+        hint: "reseller.images.nid_front.hint",
+        aspect: "aspect-[85/54]",
+    },
+    {
+        name: "nid_back",
+        label: "reseller.images.nid_back.label",
+        hint: "reseller.images.nid_back.hint",
+        aspect: "aspect-[85/54]",
+    },
+] as const;
+
 type Props = {
     mode?: "create" | "edit";
     resellerId?: string;
@@ -217,12 +238,6 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props =
                 },
                 {
                     type: "text",
-                    name: "nid",
-                    label: { labelText: "reseller.nid.label" },
-                    placeholder: "reseller.nid.placeholder",
-                },
-                {
-                    type: "text",
                     name: "email",
                     label: { labelText: "reseller.email.label" },
                     placeholder: "reseller.email.placeholder",
@@ -243,6 +258,12 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props =
                     name: "join_date",
                     label: { labelText: "reseller.join_date.label" },
                     placeholder: "reseller.join_date.placeholder",
+                },
+                {
+                    type: "slot",
+                    name: "reseller_images",
+                    slot: "reseller_images",
+                    className: "col-span-full",
                 },
             ],
         },

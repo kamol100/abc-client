@@ -1,6 +1,17 @@
-export const PRIVATE_IMAGE_FIELDS = ["photo", "nid_front", "nid_back"] as const;
+export const PRIVATE_IMAGE_FIELDS = ["photo", "avatar", "nid_front", "nid_back"] as const;
+
+export const PRIVATE_IMAGE_FIELDS_BY_RESOURCE = {
+  clients: ["photo", "nid_front", "nid_back"],
+  staffs: ["photo", "nid_front", "nid_back"],
+  resellers: ["avatar", "nid_front", "nid_back"],
+} as const;
 
 export type PrivateImageFieldName = (typeof PRIVATE_IMAGE_FIELDS)[number];
+export type PrivateImageResource = keyof typeof PRIVATE_IMAGE_FIELDS_BY_RESOURCE;
+
+export function privateImageFieldAllowed(resource: PrivateImageResource, field: string): boolean {
+  return (PRIVATE_IMAGE_FIELDS_BY_RESOURCE[resource] as readonly string[]).includes(field);
+}
 
 export const MAX_PRIVATE_IMAGE_BYTES = 2 * 1024 * 1024;
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ResellerFormFieldSchema } from "@/components/resellers/reseller-form-schema";
+import { ResellerFormFieldSchema, resellerImageFields } from "@/components/resellers/reseller-form-schema";
 import { getResellerFormSchema } from "@/components/resellers/reseller-type";
 
 const fieldNames = (mode: "create" | "edit" = "create") =>
@@ -38,6 +38,25 @@ describe("ResellerFormFieldSchema", () => {
             type: "switch",
             visibleWhen: { field: "agent_id", resetValue: false },
         });
+    });
+
+    it("puts avatar and nid uploads after join date and drops the nid number field", () => {
+        const advance = ResellerFormFieldSchema().find(
+            (section) => section.name === "reseller.sections.advance_information"
+        );
+        const names = advance?.form.map((field) => field.name) ?? [];
+        const joinDateIndex = names.indexOf("join_date");
+
+        expect(names[joinDateIndex + 1]).toBe("reseller_images");
+        expect(advance?.form[joinDateIndex + 1]).toMatchObject({
+            type: "slot",
+            name: "reseller_images",
+            slot: "reseller_images",
+            className: "col-span-full",
+        });
+        expect(resellerImageFields.map((field) => field.name)).toEqual(["avatar", "nid_front", "nid_back"]);
+        expect(fieldNames()).not.toContain("nid");
+        expect(fieldNames("edit")).not.toContain("nid");
     });
 
     it("drops marital status, blood group, and date of birth", () => {
