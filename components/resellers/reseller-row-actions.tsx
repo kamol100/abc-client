@@ -3,13 +3,15 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { Row } from "@tanstack/react-table";
-import { Edit, Eye, Settings, ShieldCheck, Trash2, TriangleAlert, Wallet } from "lucide-react";
+import { ArrowLeftRight, Edit, Eye, Settings, ShieldCheck, Trash2, TriangleAlert, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import { DataTableRowActions } from "@/components/data-table/data-table-row-actions";
 import { MyDialog } from "@/components/my-dialog";
 import MyButton from "@/components/my-button";
+import { resolveScope } from "@/components/tenant-switcher";
 import useApiMutation from "@/hooks/use-api-mutation";
+import { useStartImpersonation } from "@/hooks/use-start-impersonation";
 import {
     DropdownMenuItem,
     DropdownMenuSeparator,
@@ -29,7 +31,15 @@ type Props = {
 const ResellerRowActions: FC<Props> = ({ row }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const { settings } = useSettings();
+    const { impersonate, switching } = useStartImpersonation();
     const reseller = row.original;
+    const resellerId = reseller.id;
+    const userUuid = reseller.user?.uuid;
+    const canSwitchToReseller =
+        resolveScope(settings?.roles) !== "reseller" &&
+        hasPermission("impersonate.start") &&
+        Boolean(resellerId && userUuid);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -84,6 +94,21 @@ const ResellerRowActions: FC<Props> = ({ row }) => {
                     >
                         <Wallet className="mr-2 h-4 w-4" />
                         {t("reseller.actions.wallet_recharge")}
+                    </DropdownMenuItem>
+                )}
+
+                {canSwitchToReseller && (
+                    <DropdownMenuItem
+                        onSelect={(event) => {
+                            event.preventDefault();
+                            if (!resellerId || !userUuid) return;
+                            void impersonate({ id: resellerId, userUuid }, "reseller");
+                        }}
+                        className="cursor-pointer"
+                        disabled={switching}
+                    >
+                        <ArrowLeftRight className="mr-2 h-4 w-4" />
+                        {t("reseller.actions.switch_scope")}
                     </DropdownMenuItem>
                 )}
 

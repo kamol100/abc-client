@@ -17,6 +17,7 @@ import MyButton from "@/components/my-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import { Badge } from "@/components/ui/badge";
 import ClientHistory from "@/components/clients/client-history";
+import ClientLockDialog, { useCanLockClients } from "@/components/clients/client-lock-dialog";
 import ClientBasicView from "@/components/clients/basic-view";
 import ClientViewSkeleton from "@/components/clients/client-view-skeleton";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
@@ -51,11 +52,13 @@ function DeferredSection({ children }: { children: ReactNode }) {
 const ClientView: FC<Props> = ({ clientId }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const canLockClients = useCanLockClients();
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
+    const [lockOpen, setLockOpen] = useState(false);
     const { data, isLoading } = useApiQuery<ApiResponse<ClientRow>>({
         queryKey: ["clients", "detail", clientId],
         url: `clients/${clientId}`,
@@ -67,6 +70,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
     if (!isLoading && !client) return null;
 
     const isActive = client?.status === 1;
+    const isLocked = client?.is_locked === true;
 
     return (
         <div className="space-y-6 overflow-auto pr-3">
@@ -148,6 +152,15 @@ const ClientView: FC<Props> = ({ clientId }) => {
                             <MessageSquare className="h-4 w-4" />
                         </MyButton>
                     )}
+                    {canLockClients && (
+                        <MyButton
+                            action={isLocked ? "unlock" : "lock"}
+                            size="icon"
+                            onClick={() => setLockOpen(true)}
+                            tooltip={isLocked ? "client.actions.unlock" : "client.actions.lock"}
+                            aria-label={t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                        />
+                    )}
                     <ClientIpPingButton clientId={getClientId(client) ?? clientId} />
                 </div>
             </div>
@@ -161,6 +174,14 @@ const ClientView: FC<Props> = ({ clientId }) => {
                 open={smsOpen}
                 onOpenChange={setSmsOpen}
             />
+            {canLockClients && (
+                <ClientLockDialog
+                    clientId={getClientId(client) ?? clientId}
+                    isLocked={isLocked}
+                    open={lockOpen}
+                    onOpenChange={setLockOpen}
+                />
+            )}
             <ClientTicketDialog
                 client={client}
                 clientUuid={clientId}

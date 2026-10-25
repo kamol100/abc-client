@@ -4,11 +4,10 @@ import {
   ArrowLeftRight,
   Building2,
   LogOut,
-  Store,
+  UserCheck,
 } from "lucide-react";
 import * as React from "react";
 import { useSession } from "next-auth/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
@@ -23,17 +22,15 @@ import {
 import { useSidebar } from "@/components/ui/sidebar";
 import {
   useSettings,
-  useProfile,
-  usePermissions,
   useImpersonation,
 } from "@/context/app-provider";
 import { clearServiceWorkerCaches } from "@/lib/pwa-utils";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { useStartImpersonation } from "@/hooks/use-start-impersonation";
 import { useFetch } from "@/app/actions";
 import type {
   TenantListItem,
   ImpersonationResponse,
-  AppData,
 } from "@/types/app";
 export type ScopeLevel = "super_admin" | "company" | "reseller";
 
@@ -43,6 +40,16 @@ export const scopeLabelKeyMap: Record<ScopeLevel, string> = {
   reseller: "tenant_switcher.scope.reseller",
 };
 
+function messageFrom(error: unknown, fallback: string) {
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = error.message;
+    if (typeof message === "string" && message.length > 0) {
+      return message;
+    }
+  }
+  return fallback;
+}
+
 export function resolveScope(roles?: string[]): ScopeLevel {
   if (roles?.includes("Super Admin")) return "super_admin";
   if (roles?.includes("Admin")) return "company";
@@ -51,22 +58,23 @@ export function resolveScope(roles?: string[]): ScopeLevel {
 
 export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: boolean) => React.ReactNode }) {
   const { isMobile } = useSidebar();
-  const { data: session, update: updateSession } = useSession();
-  const queryClient = useQueryClient();
+  const { update: updateSession } = useSession();
   const { t } = useTranslation();
-  const sessionToken = (session as { token?: string } | null)?.token ?? null;
-  const { settings, setSettings } = useSettings();
-  const { setProfile } = useProfile();
-  const { setPermissions } = usePermissions();
+  const { settings } = useSettings();
   const {
     impersonation,
     setImpersonation,
-    saveOriginalToken,
     clearOriginalToken,
     getOriginalToken,
   } = useImpersonation();
 
-  const [switching, setSwitching] = React.useState(false);
+  const {
+    impersonate,
+    refreshAppData,
+    switching: startingImpersonation,
+  } = useStartImpersonation();
+  const [leaving, setLeaving] = React.useState(false);
+  const switching = startingImpersonation || leaving;
 
   const roles = settings?.roles;
   const scope = resolveScope(roles);
@@ -103,86 +111,18 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /**
-   * Refresh all app-level data after a scope switch.
-   */
-  async function refreshAppData(token?: string) {
-    const res = await useFetch({
-      url: "/user-settings",
-      ...(token && { token }),
-    });
-    if (res?.data) {
-      const appData = res.data as AppData;
-      setSettings(appData.settings);
-      setProfile(appData.profile);
-      setPermissions(appData.permissions);
-    }
-    queryClient.invalidateQueries();
-  }
-
-  /**
-   * Start impersonation: switch into a tenant's user context.
-   */
-  async function handleImpersonate(tenant: TenantListItem) {
-    setSwitching(true);
-    try {
-      // Save the original token before first impersonation
-      if (!isImpersonating && sessionToken) {
-        saveOriginalToken(sessionToken);
-      }
-
-      const payload = scope === "super_admin"
-        ? { company_id: tenant.id }
-        : { reseller_id: tenant.id };
-
-      const res = await useFetch({
-        url: `/impersonate/${tenant?.user?.uuid}`,
-        method: "POST",
-        data: payload,
-      });
-
-      if (!res?.success) {
-        throw new Error(res?.message || "Failed to impersonate");
-      }
-
-      const result = res.data as ImpersonationResponse;
-
-      // Update impersonation state before reload so it persists
-      if (result.impersonation) {
-        setImpersonation(result.impersonation);
-      }
-
-      // Update NextAuth session with the new impersonation token
-      if (result.token) {
-        await updateSession({
-          token: result.token,
-          user: {
-            name: result.user.name,
-            email: result.user.email,
-            reseller_id: result.user.reseller_id,
-            logo: result.user.company?.logo,
-            favicon: result.user.company?.favicon,
-          },
-        });
-
-        // Refresh all app data with the new token
-        await refreshAppData(result.token);
-      }
-
-      clearServiceWorkerCaches();
-      window.location.assign("/");
-    } catch (error: any) {
-      console.error("Impersonation failed:", error);
-      toast.error(error?.message || "Impersonation failed");
-      setSwitching(false);
-    }
+  function handleImpersonate(tenant: TenantListItem) {
+    void impersonate(
+      { id: tenant.id, userUuid: tenant.user?.uuid },
+      scope === "super_admin" ? "company" : "reseller",
+    );
   }
 
   /**
    * Step back one level in the impersonation chain.
    */
   async function handleLeave() {
-    setSwitching(true);
+    setLeaving(true);
     try {
       const res = await useFetch({
         url: "/impersonate/leave",
@@ -221,10 +161,10 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       await refreshAppData(newToken ?? undefined);
       clearServiceWorkerCaches();
       window.location.assign("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Leave impersonation failed:", error);
-      toast.error(error?.message || "Leave impersonation failed");
-      setSwitching(false);
+      toast.error(messageFrom(error, "Leave impersonation failed"));
+      setLeaving(false);
     }
   }
 
@@ -232,7 +172,7 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
    * Leave all impersonation levels and return to the original user.
    */
   async function handleLeaveAll() {
-    setSwitching(true);
+    setLeaving(true);
     try {
       const res = await useFetch({
         url: "/impersonate/leave-all",
@@ -266,10 +206,10 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       await refreshAppData(originalToken ?? undefined);
       clearServiceWorkerCaches();
       window.location.reload();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Leave all impersonation failed:", error);
-      toast.error(error?.message || "Leave all impersonation failed");
-      setSwitching(false);
+      toast.error(messageFrom(error, "Leave all impersonation failed"));
+      setLeaving(false);
     }
   }
 
@@ -347,7 +287,7 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
                 </span>
               ) : (
                 <span className="flex items-center gap-1">
-                  <Store className="h-3 w-3" />{" "}
+                  <UserCheck className="h-3 w-3" />{" "}
                   {t("tenant_switcher.labels.resellers")}
                 </span>
               )}
@@ -366,7 +306,7 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
                   {scope === "super_admin" ? (
                     <Building2 className="h-3.5 w-3.5" />
                   ) : (
-                    <Store className="h-3.5 w-3.5" />
+                    <UserCheck className="h-3.5 w-3.5" />
                   )}
                 </div>
                 <div className="flex flex-col min-w-0">

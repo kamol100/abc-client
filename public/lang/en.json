@@ -3518,6 +3518,7 @@
             "view": "View",
             "permissions": "Permissions",
             "wallet_recharge": "Recharge Wallet",
+            "switch_scope": "Switch to reseller",
             "settings": "Reseller settings"
         },
         "settings": {

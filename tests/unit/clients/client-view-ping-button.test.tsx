@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ClientView from "@/components/clients/client-view";
 
@@ -12,6 +13,9 @@ vi.mock("@/app/actions", () => ({
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: () => true,
+    }),
+    useSettings: () => ({
+        settings: { roles: ["Admin"] },
     }),
 }));
 
@@ -73,6 +77,10 @@ vi.mock("react-i18next", () => ({
     }),
 }));
 
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+}));
+
 describe("ClientView ping button placement", () => {
     beforeEach(() => {
         useFetch.mockReset();
@@ -100,16 +108,30 @@ describe("ClientView ping button placement", () => {
         );
 
         const smsButton = await screen.findByRole("button", { name: "client.actions.sms" });
+        const lockButton = screen.getByRole("button", { name: "client.actions.lock" });
         await waitFor(() => {
             expect(screen.getByRole("button", { name: "Ping on this ip" })).toBeEnabled();
         });
         const pingButton = screen.getByRole("button", { name: "Ping on this ip" });
-        expect(smsButton.compareDocumentPosition(pingButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(smsButton.compareDocumentPosition(lockButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(lockButton.compareDocumentPosition(pingButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
         expect(screen.getAllByRole("button", { name: "Ping on this ip" })).toHaveLength(1);
 
         await waitFor(() => {
             const routerCalls = useFetch.mock.calls.filter((call) => String(call[0]?.url).includes("client-router-info"));
             expect(routerCalls).toHaveLength(1);
         });
+    });
+
+    it("opens the lock confirmation from the lock button", async () => {
+        const user = userEvent.setup();
+        render(
+            <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+                <ClientView clientId="client-1" />
+            </QueryClientProvider>
+        );
+
+        await user.click(await screen.findByRole("button", { name: "client.actions.lock" }));
+        expect(await screen.findByText("client.lock.confirm_lock")).toBeInTheDocument();
     });
 });

@@ -1,22 +1,22 @@
 ## Summary
 
-Client invoice history was empty because the page sent the client UUID as `client_id`. That filter matches the integer client key, so the query returned no rows. The page now sends `client_uuid`, which is the filter the invoice API uses for a public client id. The status badge also uses the app translator, so labels such as Due render.
+Each reseller row can switch into that reseller’s scope. The action uses the same impersonation request as the sidebar switcher: `POST /impersonate/{user}` with `reseller_id`. It shows for company and super-admin users who have `impersonate.start`, and only when the reseller has a login user. Switch-back from the reseller was not changed. Leaving that scope is blocked by permissions on the impersonated user.
 
 ## Files
 
-- `components/invoices/client-invoice-params.ts`
-- `components/invoices/client-invoice-table.tsx`
-- `components/invoices/client-invoice-columns.tsx`
-- `tests/unit/invoices/client-invoice-params.test.ts`
+- `hooks/use-start-impersonation.ts`
+- `components/resellers/reseller-row-actions.tsx`
+- `components/tenant-switcher.tsx`
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/resellers/reseller-switch-scope.test.tsx`
 
 ## Checks
 
-`npx vitest run tests/unit/invoices/client-invoice-params.test.ts` passed (2 tests). `scripts/ai/typecheck` passed.
+`npx vitest run tests/unit/resellers/reseller-switch-scope.test.tsx` passed (6 tests). `scripts/ai/typecheck` passed.
 
-`scripts/ai/test` still fails on two existing client tests (`reseller-client-filter-schema.test.ts` and `reseller-client-table.test.tsx`). Those files were not part of this change.
-
-On `http://vp.isp.test/invoices/client/a2f269c6-56ec-4f92-a92c-1570d8372019`, the table shows INV5 for 10-Oct-26, amount ৳1,400, status Due, and the title count is 1. The same invoice is the only row on that client's detail page.
+On `http://vp.isp.test/resellers`, the row menu shows Switch to reseller. Choosing it opened the dashboard as vp-reseller, with the sidebar marked Impersonating. Switch-back was not completed.
 
 ## Git
 
-Uncommitted. No other working-tree changes.
+Uncommitted. Unrelated working-tree changes remain in the client lock files: `components/clients/client-lock-dialog.tsx`, `components/clients/client-row-actions.tsx`, `components/clients/client-view.tsx`, and `tests/unit/clients/client-view-ping-button.test.tsx`.
