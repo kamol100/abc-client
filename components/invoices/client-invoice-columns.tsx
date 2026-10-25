@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { Badge } from "../ui/badge";
-import { InvoiceRow } from "./invoice-type";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
+import { InvoiceRow } from "@/components/invoices/invoice-type";
 
 const STATUS_STYLES: Record<string, string> = {
     paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
@@ -15,6 +15,22 @@ const STATUS_STYLES: Record<string, string> = {
     partial_paid:
         "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
 };
+
+function ClientInvoiceStatus({ status }: { status: InvoiceRow["status"] }) {
+    const { t } = useTranslation();
+    const value = status ?? "due";
+    const normalizedStatus = value === "partial_paid" ? "partial" : value;
+
+    return (
+        <Badge className={cn(STATUS_STYLES[value])}>
+            <span className="capitalize">
+                {t(`invoice.filter.status_${normalizedStatus}`, {
+                    defaultValue: normalizedStatus.replaceAll("_", " "),
+                })}
+            </span>
+        </Badge>
+    );
+}
 
 export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
     {
@@ -64,16 +80,6 @@ export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="common.status" />
         ),
-        cell: ({ row }) => {
-            const status = row.original.status ?? "due";
-            const normalizedStatus = status === "partial_paid" ? "partial" : status;
-            return (
-                <Badge className={cn(STATUS_STYLES[status])}>
-                    <span className="capitalize">
-                        {i18next.t(`invoice.filter.status_${normalizedStatus}`)}
-                    </span>
-                </Badge>
-            );
-        },
+        cell: ({ row }) => <ClientInvoiceStatus status={row.original.status} />,
     },
 ];

@@ -1,15 +1,16 @@
 "use client";
 
-import { DataTable } from "@/components/data-table/data-table";
-import useApiQuery from "@/hooks/use-api-query";
-import MyButton from "@/components/my-button";
 import { ArrowLeft } from "lucide-react";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { clientInvoiceColumns } from "./client-invoice-columns";
-import { InvoiceListApiResponse } from "./invoice-type";
-import ClientInvoiceFilterSchema from "./client-invoice-filter-schema";
-import InvoiceReports from "./invoice-reports";
+import { DataTable } from "@/components/data-table/data-table";
+import ClientInvoiceFilterSchema from "@/components/invoices/client-invoice-filter-schema";
+import { clientInvoiceColumns } from "@/components/invoices/client-invoice-columns";
+import { clientInvoiceQueryParams } from "@/components/invoices/client-invoice-params";
+import InvoiceReports from "@/components/invoices/invoice-reports";
+import { InvoiceListApiResponse } from "@/components/invoices/invoice-type";
+import MyButton from "@/components/my-button";
+import useApiQuery from "@/hooks/use-api-query";
 
 interface Props {
     clientId: string;
@@ -18,20 +19,10 @@ interface Props {
 const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
     const { t } = useTranslation();
     const [filterValue, setFilter] = useState<string | null>(null);
-    const params = useMemo(() => {
-        const queryParams = filterValue
-            ? (Object.fromEntries(
-                new URLSearchParams(filterValue),
-            ) as Record<string, string>)
-            : {};
-        if (queryParams.track_id && !queryParams.trackID) {
-            queryParams.trackID = queryParams.track_id;
-        }
-        return {
-            client_id: clientId,
-            ...queryParams,
-        };
-    }, [clientId, filterValue]);
+    const params = useMemo(
+        () => clientInvoiceQueryParams(clientId, filterValue),
+        [clientId, filterValue],
+    );
 
     const toolbarOptions = useMemo(
         () => ({
