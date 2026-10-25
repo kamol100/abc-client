@@ -7,9 +7,11 @@ import {
   type DashboardTicketSummary,
 } from "@/components/dashboard/dashboard-type";
 import {
+  ClientDashboardInfoSchema,
   ClientDashboardInvoiceSummarySchema,
+  type ClientDashboardInfo,
   type ClientDashboardInvoiceSummary,
-} from "./client-dashboard-type";
+} from "@/components/client-area/dashboard/client-dashboard-type";
 
 const INVOICE_FALLBACK: ClientDashboardInvoiceSummary = {
   total_due_amount: 0,
@@ -55,6 +57,23 @@ export function useClientDashboardData() {
     return parsed.success ? parsed.data : TICKET_FALLBACK;
   }, [ticketResponse?.data]);
 
+  const {
+    data: infoResponse,
+    isLoading: isInfoQueryLoading,
+    isError: isInfoQueryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["client-dashboard-info"],
+    url: "client-dashboard-info",
+    pagination: false,
+    staleTime: 10_000,
+    retry: 0,
+  });
+
+  const info = useMemo<ClientDashboardInfo | null>(() => {
+    const parsed = ClientDashboardInfoSchema.safeParse(infoResponse?.data);
+    return parsed.success ? parsed.data : null;
+  }, [infoResponse?.data]);
+
   return {
     invoiceSummary,
     isInvoiceLoading,
@@ -65,5 +84,9 @@ export function useClientDashboardData() {
     isTicketLoading,
     isTicketFetching,
     isTicketError,
+
+    info,
+    isInfoLoading: isInfoQueryLoading && !info,
+    isInfoError: isInfoQueryError || (!isInfoQueryLoading && infoResponse !== undefined && info === null),
   };
 }

@@ -7,7 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { ClientLoginSchema, type ClientLogin } from "@/components/schema/client-login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,11 +17,20 @@ import InputField from "@/components/form/input-field";
 import { CLIENT_DASHBOARD_PATH, CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
 const CLIENT_AUTH_API = "/auth/client";
+const DEFAULT_LOGO = "/static/logo.png";
+const HOME_PATH = "/home";
+
+type ClientLoginFormProps = React.ComponentPropsWithoutRef<"div"> & {
+  companyLogoUrl?: string | null;
+  companyName?: string | null;
+};
 
 export function ClientLoginForm({
   className,
+  companyLogoUrl,
+  companyName,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: ClientLoginFormProps) {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || CLIENT_DASHBOARD_PATH;
@@ -31,6 +40,7 @@ export function ClientLoginForm({
   const [isPending, setIsPending] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [handledAuthError, setHandledAuthError] = useState<string | null>(null);
+  const [logoSource, setLogoSource] = useState<string>(companyLogoUrl ?? DEFAULT_LOGO);
 
   const form = useForm<ClientLogin>({
     resolver: zodResolver(ClientLoginSchema),
@@ -50,6 +60,10 @@ export function ClientLoginForm({
     if (!mounted) return;
     setHost(window?.location?.hostname ?? "");
   }, [mounted]);
+
+  useEffect(() => {
+    setLogoSource(companyLogoUrl ?? DEFAULT_LOGO);
+  }, [companyLogoUrl]);
 
   useEffect(() => {
     if (!authError || handledAuthError === authError) return;
@@ -98,9 +112,19 @@ export function ClientLoginForm({
     }
   };
 
+  const dividerLabel = companyName?.trim() || t("login.continue_with_credentials");
+
   if (!mounted) {
     return (
       <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className="flex justify-center">
+          <img
+            src={logoSource}
+            alt="Company logo"
+            className="h-8 w-auto max-w-[160px] object-contain"
+            onError={() => setLogoSource(DEFAULT_LOGO)}
+          />
+        </div>
         <Card className="min-w-[350px]">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">&nbsp;</CardTitle>
@@ -121,6 +145,14 @@ export function ClientLoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <div className="flex justify-center">
+        <img
+          src={logoSource}
+          alt="Company logo"
+          className="h-8 w-auto max-w-[160px] object-contain"
+          onError={() => setLogoSource(DEFAULT_LOGO)}
+        />
+      </div>
       <Card className="min-w-[400px]">
         <CardHeader className="text-center">
           <CardTitle className="text-xl">{t("client_login.title")}</CardTitle>
@@ -131,7 +163,7 @@ export function ClientLoginForm({
               <div className="grid gap-6 pb-6">
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                   <span className="relative z-10 bg-background px-2 text-muted-foreground">
-                    {t("login.continue_with_credentials")}
+                    {dividerLabel}
                   </span>
                 </div>
                 <div className="grid gap-6">
@@ -150,10 +182,22 @@ export function ClientLoginForm({
                       placeholder="client_login.password.placeholder"
                     />
                   </div>
-                  <MyButton type="submit" variant="default" size="default" className="w-full">
-                    {isPending && <Loader2 className="animate-spin" />}
-                    {t("client_login.submit")}
-                  </MyButton>
+                  <div className="flex flex-col gap-3">
+                    <MyButton type="submit" variant="default" size="default" className="w-full">
+                      {isPending ? <Loader2 className="animate-spin" /> : <LogIn />}
+                      {t("client_login.submit")}
+                    </MyButton>
+                    <MyButton
+                      url={HOME_PATH}
+                      variant="outline"
+                      size="default"
+                      className="w-full"
+                      icon={false}
+                    >
+                      <ArrowLeft />
+                      {t("client_login.back")}
+                    </MyButton>
+                  </div>
                 </div>
               </div>
             </form>

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import InputField from "@/components/form/input-field";
 import { MyButton } from "@/components/my-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +13,8 @@ import { PayFormSchema, type PayFormInput } from "@/components/pay/pay-form-sche
 import PayInvoice from "@/components/pay/pay-invoice";
 import type { ClientPaymentData, ClientPaymentResponse } from "@/types/pay-types";
 
-const CAPTCHA_CHARSET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const HOME_PATH = "/home";
+const CAPTCHA_CHARSET = "0123456789";
 const CAPTCHA_LENGTH = 4;
 const NOISE_LINE_COUNT = 5;
 const API_BASE = (process.env.NEXT_PUBLIC_API ?? "").replace(/\/$/, "");
@@ -26,9 +27,9 @@ type CaptchaVisual = {
 };
 
 const INITIAL_CAPTCHA: CaptchaVisual = {
-  code: "AAAAAA",
-  characterRotations: [0, 0, 0, 0, 0, 0],
-  characterOffsets: [0, 0, 0, 0, 0, 0],
+  code: "0".repeat(CAPTCHA_LENGTH),
+  characterRotations: Array.from({ length: CAPTCHA_LENGTH }, () => 0),
+  characterOffsets: Array.from({ length: CAPTCHA_LENGTH }, () => 0),
   noiseLines: [],
 };
 
@@ -196,16 +197,28 @@ export default function PayContent() {
                 </button>
               </div>
 
-              <MyButton
-                type="submit"
-                variant="default"
-                size="default"
-                className="w-full"
-                disabled={isPending}
-              >
-                {isPending && <Loader2 className="animate-spin" />}
-                {t("pay.submit")}
-              </MyButton>
+              <div className="flex flex-col gap-3">
+                <MyButton
+                  type="submit"
+                  variant="default"
+                  size="default"
+                  className="w-full"
+                  disabled={isPending}
+                >
+                  {isPending && <Loader2 className="animate-spin" />}
+                  {t("pay.submit")}
+                </MyButton>
+                <MyButton
+                  url={HOME_PATH}
+                  variant="outline"
+                  size="default"
+                  className="w-full"
+                  icon={false}
+                >
+                  <ArrowLeft />
+                  {t("pay.back")}
+                </MyButton>
+              </div>
             </form>
           </FormProvider>
         </CardContent>

@@ -295,6 +295,7 @@
     },
     "pay": {
         "title": "ইনভয়েস পেমেন্ট",
+        "quick_pay": "কুইক পে",
         "subtitle": "আপনার ইনভয়েস খুঁজতে ফোন নম্বর দিন",
         "phone": {
             "label": "ফোন নম্বর",
@@ -314,6 +315,7 @@
             }
         },
         "submit": "ইনভয়েস খুঁজুন",
+        "back": "ফিরে যান",
         "submit_success": "ইনভয়েস অনুসন্ধান জমা হয়েছে",
         "submit_error": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",
         "result": {
@@ -387,6 +389,7 @@
             }
         },
         "submit": "লগইন",
+        "back": "ফিরে যান",
         "errors": {
             "invalid_credentials": "ক্রেডেনশিয়াল ভুল।",
             "something_went_wrong": "কিছু ভুল হয়েছে।"
@@ -1742,7 +1745,10 @@
         "zone": "জোন",
         "note": {
             "label": "নোট",
-            "placeholder": "নোট লিখুন"
+            "placeholder": "নোট লিখুন",
+            "errors": {
+                "max_bytes": "নোট ৬৫,৫৩৫ বাইটের বেশি হতে পারবে না"
+            }
         },
         "status": {
             "label": "স্ট্যাটাস",
@@ -5164,6 +5170,22 @@
             "payments": "পেমেন্ট",
             "tickets": "সাপোর্ট টিকেট",
             "history": "হিস্টোরি"
+        },
+        "info": {
+            "title": "আমার তথ্য",
+            "account_status": "অ্যাকাউন্ট স্ট্যাটাস",
+            "connection_status": "কানেকশন স্ট্যাটাস",
+            "onu_status": "ওএনইউ স্ট্যাটাস",
+            "customer_id": "কাস্টমার আইডি",
+            "account_expiration": "অ্যাকাউন্ট মেয়াদ",
+            "username": "ইউজারনেম",
+            "name": "নাম",
+            "phone": "ফোন নম্বর",
+            "alternate_phone": "বিকল্প ফোন নম্বর",
+            "email": "ইমেইল অ্যাকাউন্ট",
+            "dynamic_ip": "ডায়নামিক আইপি",
+            "package": "বর্তমান প্যাকেজ",
+            "not_available": "প্রযোজ্য নয়"
         }
     },
     "marketing": {

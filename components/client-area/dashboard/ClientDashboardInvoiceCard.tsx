@@ -42,7 +42,7 @@ export default function ClientDashboardInvoiceCard({ data, isLoading, isRefreshi
         <DashboardMetricRow
           key={key}
           label={`${t(labelKey)}:`}
-          value={<DisplayCount amount={data[key]} abbreviate translation={false} />}
+          value={<DisplayCount amount={data[key]} translation={true} />}
         />
       ))}
     </DashboardMetricCard>

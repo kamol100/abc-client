@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { toNumber } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge, { MyBadgeType } from "@/components/my-badge";
@@ -16,8 +16,10 @@ const STATUS_BADGE_TYPE: Record<string, MyBadgeType> = {
   partial_paid: "partial",
 };
 
-export const useClientPaymentColumns = (): ColumnDef<ClientPaymentRow>[] =>
-  useMemo(
+export const useClientPaymentColumns = (): ColumnDef<ClientPaymentRow>[] => {
+  const { t } = useTranslation();
+
+  return useMemo(
     () => [
       {
         accessorKey: "pid",
@@ -88,12 +90,15 @@ export const useClientPaymentColumns = (): ColumnDef<ClientPaymentRow>[] =>
               variant="soft"
             >
               <span className="capitalize">
-                {i18next.t(`invoice.filter.status_${normalizedStatus}`)}
+                {t(`invoice.filter.status_${normalizedStatus}`, {
+                  defaultValue: normalizedStatus.replaceAll("_", " "),
+                })}
               </span>
             </MyBadge>
           );
         },
       },
     ],
-    [],
+    [t],
   );
+};

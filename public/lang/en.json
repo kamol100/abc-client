@@ -295,6 +295,7 @@
     },
     "pay": {
         "title": "Pay Invoice",
+        "quick_pay": "Quick Pay",
         "subtitle": "Enter your phone number to find your invoice",
         "phone": {
             "label": "Phone Number",
@@ -314,6 +315,7 @@
             }
         },
         "submit": "Find Invoice",
+        "back": "Back",
         "submit_success": "Invoice lookup submitted",
         "submit_error": "Something went wrong. Please try again.",
         "result": {
@@ -387,6 +389,7 @@
             }
         },
         "submit": "Login",
+        "back": "Back",
         "errors": {
             "invalid_credentials": "Invalid credentials.",
             "something_went_wrong": "Something went wrong."
@@ -1742,7 +1745,10 @@
         "zone": "Zone",
         "note": {
             "label": "Note",
-            "placeholder": "Write note"
+            "placeholder": "Write note",
+            "errors": {
+                "max_bytes": "Note cannot exceed 65,535 bytes"
+            }
         },
         "status": {
             "label": "Status",
@@ -5164,6 +5170,22 @@
             "payments": "Payments",
             "tickets": "Support Tickets",
             "history": "History"
+        },
+        "info": {
+            "title": "My Info",
+            "account_status": "Account Status",
+            "connection_status": "Connection Status",
+            "onu_status": "ONU Status",
+            "customer_id": "Customer ID",
+            "account_expiration": "Account Expiration",
+            "username": "Username",
+            "name": "Name",
+            "phone": "Phone Number",
+            "alternate_phone": "Alternative Phone Number",
+            "email": "Email Account",
+            "dynamic_ip": "Dynamic IP",
+            "package": "Current Package",
+            "not_available": "N/A"
         }
     },
     "marketing": {

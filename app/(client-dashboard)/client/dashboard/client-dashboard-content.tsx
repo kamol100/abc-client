@@ -3,6 +3,7 @@
 import DashboardSupportTicketCard from "@/components/dashboard/items/DashboardSupportTicketCard";
 import ClientDashboardInvoiceCard from "@/components/client-area/dashboard/ClientDashboardInvoiceCard";
 import { useClientDashboardData } from "@/components/client-area/dashboard/use-client-dashboard-data";
+import ClientDashboardInfo from "@/components/client-area/dashboard/ClientDashboardInfo";
 
 export default function ClientDashboardContent() {
   const {
@@ -15,6 +16,10 @@ export default function ClientDashboardContent() {
     isTicketLoading,
     isTicketFetching,
     isTicketError,
+
+    info,
+    isInfoLoading,
+    isInfoError,
   } = useClientDashboardData();
 
   return (
@@ -33,6 +38,11 @@ export default function ClientDashboardContent() {
           isError={isTicketError}
         />
       </div>
+      <ClientDashboardInfo
+        data={info}
+        isLoading={isInfoLoading}
+        isError={isInfoError}
+      />
     </div>
   );
 }

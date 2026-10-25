@@ -61,6 +61,15 @@ export const InvoiceStatusSchema = z.enum(["due", "paid", "partial_paid"]);
 export const InvoiceRowStatusSchema = z.enum(["due", "paid", "partial", "partial_paid"]);
 export const InvoicePayStatusSchema = z.enum(["paid", "partial_paid"]);
 
+/** MySQL TEXT stores 65,535 bytes. Multibyte UTF-8 (Bengali, emoji) uses more than one byte per character. */
+export const MYSQL_TEXT_MAX_BYTES = 65_535;
+
+export const invoiceNoteFitsMysqlText = (value: unknown): boolean => {
+    if (value == null || value === "") return true;
+    if (typeof value !== "string") return false;
+    return new TextEncoder().encode(value).length <= MYSQL_TEXT_MAX_BYTES;
+};
+
 export const InvoiceReportsSchema = z.object({
     total_amount: z.coerce.number().nullable().optional(),
     discount: z.coerce.number().nullable().optional(),
@@ -153,6 +162,14 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
                 code: z.ZodIssueCode.custom,
                 path: ["partial_amount"],
                 message: "invoice.partial_amount.errors.min",
+            });
+        }
+
+        if (!invoiceNoteFitsMysqlText(values.note)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["note"],
+                message: "invoice.note.errors.max_bytes",
             });
         }
     })

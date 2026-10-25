@@ -168,6 +168,11 @@ export interface MyBadgeProps
   children?: ReactNode;
 }
 
+function isIconType(icon: MyBadgeProps["icon"]): icon is LucideIcon {
+  if (typeof icon === "function") return true;
+  return typeof icon === "object" && icon !== null && "render" in icon;
+}
+
 const MyBadge = forwardRef<HTMLSpanElement, MyBadgeProps>(
   (
     {
@@ -186,17 +191,16 @@ const MyBadge = forwardRef<HTMLSpanElement, MyBadgeProps>(
     const sizeStyles = SIZE_STYLES[size];
     const DefaultIcon = TYPE_ICONS[type];
 
-    const iconContent = loading ? (
-      <Loader2 className={cn(sizeStyles.icon, "animate-spin")} />
-    ) : IconProp === false ? null : IconProp != null ? (
-      typeof IconProp === "function" ? (
-        createElement(IconProp as LucideIcon, { className: sizeStyles.icon })
-      ) : (
-        (IconProp as ReactNode)
-      )
-    ) : (
-      <DefaultIcon className={sizeStyles.icon} />
-    );
+    let iconContent: ReactNode = null;
+    if (loading) {
+      iconContent = <Loader2 className={cn(sizeStyles.icon, "animate-spin")} />;
+    } else if (isIconType(IconProp)) {
+      iconContent = createElement(IconProp, { className: sizeStyles.icon });
+    } else if (IconProp != null && IconProp !== false) {
+      iconContent = IconProp;
+    } else if (IconProp !== false) {
+      iconContent = <DefaultIcon className={sizeStyles.icon} />;
+    }
 
     const isGhost = variant === "ghost";
     const borderClass =

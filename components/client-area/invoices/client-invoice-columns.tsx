@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { formatMoney } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge, { MyBadgeType } from "@/components/my-badge";
@@ -16,8 +16,10 @@ const STATUS_BADGE_TYPE: Record<string, MyBadgeType> = {
   partial_paid: "partial",
 };
 
-export const useClientInvoiceColumns = (): ColumnDef<InvoiceRow>[] =>
-  useMemo(
+export const useClientInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
+  const { t } = useTranslation();
+
+  return useMemo(
     () => [
       {
         accessorKey: "trackID",
@@ -73,7 +75,9 @@ export const useClientInvoiceColumns = (): ColumnDef<InvoiceRow>[] =>
           return (
             <MyBadge type={STATUS_BADGE_TYPE[status] ?? "decline"} variant="soft">
               <span className="capitalize">
-                {i18next.t(`invoice.filter.status_${normalizedStatus}`)}
+                {t(`invoice.filter.status_${normalizedStatus}`, {
+                  defaultValue: normalizedStatus.replaceAll("_", " "),
+                })}
               </span>
             </MyBadge>
           );
@@ -87,5 +91,6 @@ export const useClientInvoiceColumns = (): ColumnDef<InvoiceRow>[] =>
         enableHiding: false,
       },
     ],
-    [],
+    [t],
   );
+};

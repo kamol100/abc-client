@@ -1,4 +1,5 @@
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { invoiceNoteFitsMysqlText } from "@/components/invoices/invoice-type";
 
 export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
     {
@@ -86,6 +87,10 @@ export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
         label: { labelText: "invoice.note.label" },
         placeholder: "invoice.note.placeholder",
         rows: 2,
+        rules: {
+            validate: (value) =>
+                invoiceNoteFitsMysqlText(value) || "invoice.note.errors.max_bytes",
+        },
     },
 ];
 
