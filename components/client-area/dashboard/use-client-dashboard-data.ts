@@ -9,8 +9,10 @@ import {
 import {
   ClientDashboardInfoSchema,
   ClientDashboardInvoiceSummarySchema,
+  ClientDashboardPaymentSchema,
   type ClientDashboardInfo,
   type ClientDashboardInvoiceSummary,
+  type ClientDashboardPayment,
 } from "@/components/client-area/dashboard/client-dashboard-type";
 
 const INVOICE_FALLBACK: ClientDashboardInvoiceSummary = {
@@ -58,6 +60,22 @@ export function useClientDashboardData() {
   }, [ticketResponse?.data]);
 
   const {
+    data: paymentResponse,
+    isLoading: isPaymentQueryLoading,
+    isFetching: isPaymentFetching,
+    isError: isPaymentQueryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["client-invoice-payment"],
+    url: "client-invoice-payment",
+    pagination: false,
+  });
+
+  const payment = useMemo<ClientDashboardPayment | null>(() => {
+    const parsed = ClientDashboardPaymentSchema.safeParse(paymentResponse?.data);
+    return parsed.success ? parsed.data : null;
+  }, [paymentResponse?.data]);
+
+  const {
     data: infoResponse,
     isLoading: isInfoQueryLoading,
     isError: isInfoQueryError,
@@ -84,6 +102,13 @@ export function useClientDashboardData() {
     isTicketLoading,
     isTicketFetching,
     isTicketError,
+
+    payment,
+    isPaymentLoading: isPaymentQueryLoading && !payment,
+    isPaymentFetching,
+    isPaymentError:
+      isPaymentQueryError ||
+      (!isPaymentQueryLoading && paymentResponse !== undefined && payment === null),
 
     info,
     isInfoLoading: isInfoQueryLoading && !info,

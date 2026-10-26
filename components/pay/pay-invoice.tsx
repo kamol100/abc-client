@@ -22,7 +22,7 @@ import DisplayCount from "@/components/display-count";
 
 type PayInvoiceProps = {
   data: ClientPaymentData;
-  onSearchAgain: () => void;
+  onSearchAgain?: () => void;
 };
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
@@ -153,17 +153,19 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
         </CardContent>
       </Card>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <MyButton
-          type="button"
-          variant="outline"
-          size="default"
-          className="w-full sm:flex-1"
-          onClick={onSearchAgain}
-          icon={false}
-        >
-          <ArrowLeft className="size-4" />
-          {t("pay.result.back")}
-        </MyButton>
+        {onSearchAgain ? (
+          <MyButton
+            type="button"
+            variant="outline"
+            size="default"
+            className="w-full sm:flex-1"
+            onClick={onSearchAgain}
+            icon={false}
+          >
+            <ArrowLeft className="size-4" />
+            {t("pay.result.back")}
+          </MyButton>
+        ) : null}
         <MyButton
           type="button"
           variant="default"

@@ -1,30 +1,23 @@
 ## Summary
 
-The reseller advance section now uploads a profile photo (`avatar`), NID front, and NID back with the same private image fields used by clients and staff. Images are sent only after the reseller exists. Create shows a save-first message. Edit previews the stored file, and replace or remove updates that one field.
-
-The text National ID field is gone from the form, the view, and both language files. Create and update omit image paths so a normal save does not clear stored files.
+The client dashboard now has an invoice payment card. When the logged-in client has a due invoice, the due amount is shown at the top of the card. The bKash button at the bottom opens the same invoice review used on the public pay page, and Pay with bKash starts the existing bKash checkout.
 
 ## Files
 
-- `components/resellers/reseller-form-schema.ts`
-- `components/resellers/reseller-form.tsx`
-- `components/resellers/reseller-image-fields.tsx`
-- `components/resellers/reseller-type.ts`
-- `components/resellers/reseller-basic-view.tsx`
-- `components/form/private-image-fields.tsx`
-- `lib/images/private-image.ts`
-- `lib/images/proxy-private-image.ts`
-- `app/api/resellers/[id]/images/[field]/route.ts`
+- `app/(client-dashboard)/client/dashboard/client-dashboard-content.tsx`
+- `components/client-area/dashboard/ClientDashboardPaymentCard.tsx`
+- `components/client-area/dashboard/use-client-dashboard-data.ts`
+- `components/client-area/dashboard/client-dashboard-type.ts`
+- `components/pay/pay-invoice.tsx`
 - `public/lang/en.json`
 - `public/lang/bn.json`
-- `tests/unit/resellers/reseller-form-schema.test.ts`
-- `tests/unit/images/private-image.test.ts`
+- `tests/unit/client-area/client-dashboard-payment-card.test.tsx`
 
 ## Checks
 
-`npx vitest run` on the reseller form schema, reseller form, private image, and staff form schema tests passed (18 tests). `scripts/ai/typecheck` passed.
+`npx vitest run tests/unit/client-area/client-dashboard-payment-card.test.tsx` passed (3 tests). `scripts/ai/typecheck` passed.
 
-`http://vp.isp.test/resellers/create` redirected to the admin login, so the upload controls were not clicked in the browser. The form schema test covers the slot, field names, and removal of the old NID text field.
+`http://localhost:3000/client/dashboard` redirected to the client login, so the card and bKash redirect were not clicked in the browser. The unit test covers the due amount, the disabled empty state, and opening the payment dialog.
 
 ## Git
 

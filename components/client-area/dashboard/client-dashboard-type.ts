@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { ClientPaymentData } from "@/types/pay-types";
 
 const NumberLikeSchema = z.preprocess(
   (value) => (value === null || value === undefined || value === "" ? 0 : value),
@@ -12,6 +13,8 @@ export const ClientDashboardInvoiceSummarySchema = z.object({
 
 export type ClientDashboardInvoiceSummary = z.infer<typeof ClientDashboardInvoiceSummarySchema>;
 
+const money = z.union([z.number(), z.string()]);
+
 const optionalText = z
   .union([z.string(), z.number(), z.null()])
   .optional()
@@ -20,6 +23,46 @@ const optionalText = z
     const text = String(value).trim();
     return text === "" ? null : text;
   });
+
+export const ClientDashboardPaymentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  phone: z.union([z.string(), z.number(), z.null()]).optional().transform((value) =>
+    value === null || value === undefined ? "" : String(value),
+  ),
+  status: z.enum(["Active", "Inactive"]),
+  billing_terms: optionalText,
+  payment_terms: optionalText,
+  package: z
+    .object({
+      name: z.string(),
+      bandwidth: optionalText,
+      mikrotik_profile: optionalText,
+      price: money.nullable().optional().transform((value) => value ?? null),
+    })
+    .nullable()
+    .optional()
+    .transform((value) => value ?? null),
+  invoice: z
+    .array(
+      z.object({
+        id: z.string(),
+        invoice_id: z.union([z.string(), z.number()]).transform(String),
+        invoice_type: optionalText,
+        month: z.string().optional().default(""),
+        due_date: optionalText,
+        after_discount_amount: money,
+        discount: money.optional().default(0),
+        line_total_discount: money.optional().default(0),
+      }),
+    )
+    .optional()
+    .default([]),
+  total_due: money,
+  total_discount: money.optional().default(0),
+});
+
+export type ClientDashboardPayment = ClientPaymentData;
 
 export const ClientDashboardInfoSchema = z.object({
   customer_id: optionalText,

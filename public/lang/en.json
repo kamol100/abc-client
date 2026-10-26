@@ -5210,6 +5210,12 @@
             "dynamic_ip": "Dynamic IP",
             "package": "Current Package",
             "not_available": "N/A"
+        },
+        "payment": {
+            "title": "Invoice Payment",
+            "no_due": "No invoice due",
+            "dialog_title": "Pay Invoice",
+            "dialog_description": "Review your due invoices and pay with bKash."
         }
     },
     "marketing": {

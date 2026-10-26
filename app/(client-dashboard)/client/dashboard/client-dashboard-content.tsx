@@ -2,6 +2,7 @@
 
 import DashboardSupportTicketCard from "@/components/dashboard/items/DashboardSupportTicketCard";
 import ClientDashboardInvoiceCard from "@/components/client-area/dashboard/ClientDashboardInvoiceCard";
+import ClientDashboardPaymentCard from "@/components/client-area/dashboard/ClientDashboardPaymentCard";
 import { useClientDashboardData } from "@/components/client-area/dashboard/use-client-dashboard-data";
 import ClientDashboardInfo from "@/components/client-area/dashboard/ClientDashboardInfo";
 
@@ -17,6 +18,11 @@ export default function ClientDashboardContent() {
     isTicketFetching,
     isTicketError,
 
+    payment,
+    isPaymentLoading,
+    isPaymentFetching,
+    isPaymentError,
+
     info,
     isInfoLoading,
     isInfoError,
@@ -30,6 +36,12 @@ export default function ClientDashboardContent() {
           isLoading={isInvoiceLoading}
           isRefreshing={isInvoiceFetching}
           isError={isInvoiceError}
+        />
+        <ClientDashboardPaymentCard
+          data={payment}
+          isLoading={isPaymentLoading}
+          isRefreshing={isPaymentFetching}
+          isError={isPaymentError}
         />
         <DashboardSupportTicketCard
           data={ticketSummary}
