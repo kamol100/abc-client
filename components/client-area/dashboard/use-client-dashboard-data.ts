@@ -9,11 +9,10 @@ import {
 import {
   ClientDashboardInfoSchema,
   ClientDashboardInvoiceSummarySchema,
-  ClientDashboardPaymentSchema,
   type ClientDashboardInfo,
   type ClientDashboardInvoiceSummary,
-  type ClientDashboardPayment,
 } from "@/components/client-area/dashboard/client-dashboard-type";
+import { useClientInvoicePayment } from "@/components/client-area/use-client-invoice-payment";
 
 const INVOICE_FALLBACK: ClientDashboardInvoiceSummary = {
   total_due_amount: 0,
@@ -60,20 +59,11 @@ export function useClientDashboardData() {
   }, [ticketResponse?.data]);
 
   const {
-    data: paymentResponse,
-    isLoading: isPaymentQueryLoading,
+    payment,
+    isLoading: isPaymentLoading,
     isFetching: isPaymentFetching,
-    isError: isPaymentQueryError,
-  } = useApiQuery<ApiResponse<unknown>>({
-    queryKey: ["client-invoice-payment"],
-    url: "client-invoice-payment",
-    pagination: false,
-  });
-
-  const payment = useMemo<ClientDashboardPayment | null>(() => {
-    const parsed = ClientDashboardPaymentSchema.safeParse(paymentResponse?.data);
-    return parsed.success ? parsed.data : null;
-  }, [paymentResponse?.data]);
+    isError: isPaymentError,
+  } = useClientInvoicePayment();
 
   const {
     data: infoResponse,
@@ -104,11 +94,9 @@ export function useClientDashboardData() {
     isTicketError,
 
     payment,
-    isPaymentLoading: isPaymentQueryLoading && !payment,
+    isPaymentLoading,
     isPaymentFetching,
-    isPaymentError:
-      isPaymentQueryError ||
-      (!isPaymentQueryLoading && paymentResponse !== undefined && payment === null),
+    isPaymentError,
 
     info,
     isInfoLoading: isInfoQueryLoading && !info,

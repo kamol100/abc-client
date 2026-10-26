@@ -16,13 +16,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
-import { useBkashPayment } from "@/components/bkash-payment/use-bkash-payment";
+import {
+  bkashReturnTargetFromPath,
+  useBkashPayment,
+  type BkashReturnTarget,
+} from "@/components/bkash-payment/use-bkash-payment";
 import type { ClientPaymentData } from "@/types/pay-types";
 import DisplayCount from "@/components/display-count";
 
 type PayInvoiceProps = {
   data: ClientPaymentData;
   onSearchAgain?: () => void;
+  returnTarget?: BkashReturnTarget;
 };
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
@@ -34,7 +39,7 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
+export default function PayInvoice({ data, onSearchAgain, returnTarget }: PayInvoiceProps) {
   const { t } = useTranslation();
   const hasInvoices = data.invoice.length > 0;
   const { startPayment, isCreating } = useBkashPayment();
@@ -69,6 +74,7 @@ export default function PayInvoice({ data, onSearchAgain }: PayInvoiceProps) {
       clientId: data.id,
       amount: data.total_due,
       invoiceTrack,
+      returnTarget: returnTarget ?? bkashReturnTargetFromPath(window.location.pathname),
     });
   };
   return (

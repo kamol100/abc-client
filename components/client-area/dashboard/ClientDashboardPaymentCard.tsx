@@ -9,8 +9,7 @@ import {
   DashboardMetricRowSkeleton,
 } from "@/components/dashboard/items/DashboardMetricCard";
 import { MyButton } from "@/components/my-button";
-import { MyDialog } from "@/components/my-dialog";
-import PayInvoice from "@/components/pay/pay-invoice";
+import ClientInvoicePaymentDialog from "@/components/client-area/client-invoice-payment-dialog";
 import { toNumber } from "@/lib/helper/helper";
 import type { ClientDashboardPayment } from "@/components/client-area/dashboard/client-dashboard-type";
 
@@ -63,18 +62,11 @@ export default function ClientDashboardPaymentCard({
           {t("pay.result.pay_bkash")}
         </MyButton>
       </DashboardMetricCard>
-      {data ? (
-        <MyDialog
-          open={open}
-          onOpenChange={setOpen}
-          size="4xl"
-          title="client_dashboard.payment.dialog_title"
-          description="client_dashboard.payment.dialog_description"
-          showFooter={false}
-        >
-          <PayInvoice data={data} />
-        </MyDialog>
-      ) : null}
+      <ClientInvoicePaymentDialog
+        open={open}
+        onOpenChange={setOpen}
+        data={data}
+      />
     </>
   );
 }

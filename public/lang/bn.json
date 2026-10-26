@@ -355,7 +355,9 @@
             "cancelled": "আপনি পেমেন্ট বাতিল করেছেন।",
             "cancelled_title": "পেমেন্ট বাতিল",
             "create_failed": "bKash পেমেন্ট শুরু করা যায়নি। আবার চেষ্টা করুন।",
-            "back_to_pay": "পেমেন্টে ফিরে যান"
+            "back_to_pay": "পেমেন্টে ফিরে যান",
+            "back_to_dashboard": "ড্যাশবোর্ডে ফিরে যান",
+            "back_to_invoices": "ইনভয়েসে ফিরে যান"
         },
         "short_link": {
             "title": "পে লিংক রিডাইরেক্ট",

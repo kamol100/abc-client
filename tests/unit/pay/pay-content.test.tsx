@@ -5,7 +5,12 @@ import PayContent from "@/components/pay/pay-content";
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (value: string) => value,
+    i18n: { language: "en" },
   }),
+}));
+
+vi.mock("next/navigation", () => ({
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 describe("PayContent", () => {

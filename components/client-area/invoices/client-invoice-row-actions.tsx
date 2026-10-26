@@ -4,12 +4,13 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CreditCard, Printer } from "lucide-react";
 import MyButton from "@/components/my-button";
-import { MyDialog } from "@/components/my-dialog";
+import ClientInvoicePaymentDialog from "@/components/client-area/client-invoice-payment-dialog";
+import { useClientInvoicePayment } from "@/components/client-area/use-client-invoice-payment";
+import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
 import type {
   InvoiceDetail,
   InvoiceRow,
 } from "@/components/invoices/invoice-type";
-import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
 
 interface Props {
   invoice: InvoiceRow;
@@ -19,6 +20,7 @@ const ClientInvoiceRowActions: FC<Props> = ({ invoice }) => {
   const { t } = useTranslation();
   const [payOpen, setPayOpen] = useState(false);
   const [printOpen, setPrintOpen] = useState(false);
+  const { payment, isLoading, isError } = useClientInvoicePayment(payOpen);
 
   const normalizedStatus =
     invoice.status === "partial_paid" ? "partial" : invoice.status;
@@ -55,25 +57,13 @@ const ClientInvoiceRowActions: FC<Props> = ({ invoice }) => {
         )}
       </div>
 
-      <MyDialog
+      <ClientInvoicePaymentDialog
         open={payOpen}
         onOpenChange={setPayOpen}
-        title="invoice.pay_info.title"
-        size="sm"
-        footer={({ close }) => (
-          <div className="flex justify-end w-full">
-            <MyButton
-              variant="default"
-              onClick={close}
-              title={t("invoice.pay_info.close")}
-            />
-          </div>
-        )}
-      >
-        <p className="text-sm text-muted-foreground py-2">
-          {t("invoice.pay_info.message")}
-        </p>
-      </MyDialog>
+        data={payment}
+        isLoading={isLoading}
+        isError={isError}
+      />
 
       {printOpen && (
         <InvoicePrintDialog

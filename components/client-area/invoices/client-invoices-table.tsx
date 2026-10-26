@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
@@ -8,6 +8,7 @@ import InvoiceReports from "@/components/invoices/invoice-reports";
 import { InvoiceListApiResponse } from "@/components/invoices/invoice-type";
 import { useClientInvoiceColumns } from "@/components/client-area/invoices/client-invoice-columns";
 import ClientInvoiceFilterSchema from "@/components/client-area/invoices/client-invoice-filter-schema";
+import BkashPaymentResultNotice from "@/components/bkash-payment/bkash-payment-result-notice";
 
 const ClientInvoicesTable: FC = () => {
   const { t } = useTranslation();
@@ -43,6 +44,9 @@ const ClientInvoicesTable: FC = () => {
 
   return (
     <div className="space-y-4">
+      <Suspense fallback={null}>
+        <BkashPaymentResultNotice />
+      </Suspense>
       <InvoiceReports reports={reports} isLoading={isLoading} />
       <DataTable
         data={invoices}

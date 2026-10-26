@@ -10,6 +10,7 @@ import { MyButton } from "@/components/my-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { PayFormSchema, type PayFormInput } from "@/components/pay/pay-form-schema";
+import BkashPaymentResultNotice from "@/components/bkash-payment/bkash-payment-result-notice";
 import PayInvoice from "@/components/pay/pay-invoice";
 import type { ClientPaymentData, ClientPaymentResponse } from "@/types/pay-types";
 
@@ -131,11 +132,17 @@ export default function PayContent() {
   };
 
   if (clientData) {
-    return <PayInvoice data={clientData} onSearchAgain={handleSearchAgain} />;
+    return (
+      <div className="mx-auto w-full max-w-3xl space-y-2">
+        <BkashPaymentResultNotice />
+        <PayInvoice data={clientData} onSearchAgain={handleSearchAgain} />
+      </div>
+    );
   }
 
   return (
-    <div className="mx-auto w-full max-w-md">
+    <div className="mx-auto w-full max-w-md space-y-4">
+      <BkashPaymentResultNotice />
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">{t("pay.title")}</CardTitle>
