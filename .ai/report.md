@@ -1,22 +1,19 @@
 ## Summary
 
-Staff rows now have a reset-password action after the lock button. It opens a dialog with the staff name and a new-password field, then sends `PUT /staffs/{staff}/password`. The button is shown for `staffs.reset-password` or `staffs.edit`.
+A signed-in session that is still valid now leaves only the home page for the dashboard. `http://vp.isp.test/` and `http://vp.isp.test/home` redirect to `/dashboard`. Features, pricing, demo request, pay, and other public pages stay where they are.
 
 ## Files
 
-- `components/staffs/staff-column.tsx`
-- `components/staffs/staff-form-schema.ts`
-- `components/staffs/staff-type.ts`
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/staffs/staff-account-lock.test.tsx`
+- `lib/auth/routes.ts`
+- `app/(public)/home/page.tsx`
+- `tests/unit/auth/auth-gate.test.ts`
 
 ## Checks
 
-`npx vitest run tests/unit/staffs/staff-account-lock.test.tsx` passed (9 tests). `scripts/ai/typecheck` passed.
+`npx vitest run tests/unit/auth/auth-gate.test.ts` passed (14 tests). `scripts/ai/typecheck` passed.
 
-Signed in on `http://vp.isp.test/staffs`. Each row shows Reset password after Lock account. Opening it shows the staff name, a new-password field, Cancel, and Reset password. The dialog was closed without saving, so no live password was changed.
+Signed in on `http://vp.isp.test`. Opening `/home` and `/` landed on `/dashboard`. Opening `/features` and `/pricing` stayed on those pages.
 
 ## Git
 
-Uncommitted. Left unrelated work untouched: `app/api/manifest/route.ts`, `components/agents/agent-column.tsx`, `components/bkash-payment/bkash-payment-result-notice.tsx`, and `tests/unit/bkash-payment/bkash-payment-result-notice.test.tsx`. Language files also contain that earlier bKash copy.
+Uncommitted. No unrelated working-tree changes.

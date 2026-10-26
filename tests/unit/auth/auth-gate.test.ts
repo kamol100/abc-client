@@ -82,6 +82,29 @@ describe("staff auth routes", () => {
   });
 });
 
+describe("home page", () => {
+  it("sends a signed-in visitor from / and /home to the dashboard", () => {
+    const dashboard = { action: "redirect", pathname: "/dashboard", search: "" };
+
+    expect(gate("/", { isAuthenticated: true, isPublicPath: true })).toEqual(dashboard);
+    expect(gate("/home", { isAuthenticated: true, isPublicPath: true })).toEqual(dashboard);
+    expect(gate("/home/", { isAuthenticated: true, isPublicPath: true })).toEqual(dashboard);
+  });
+
+  it("leaves an anonymous visitor on the home page", () => {
+    expect(gate("/", { isPublicPath: true })).toEqual({ action: "next" });
+    expect(gate("/home", { isPublicPath: true })).toEqual({ action: "next" });
+  });
+
+  it("does not redirect other public pages when the session is still active", () => {
+    expect(gate("/features", { isAuthenticated: true, isPublicPath: true })).toEqual({ action: "next" });
+    expect(gate("/pricing", { isAuthenticated: true, isPublicPath: true })).toEqual({ action: "next" });
+    expect(gate("/demo-request", { isAuthenticated: true, isPublicPath: true })).toEqual({ action: "next" });
+    expect(gate("/pay", { isAuthenticated: true, isPublicPath: true })).toEqual({ action: "next" });
+    expect(gate("/home/pricing", { isAuthenticated: true, isPublicPath: true })).toEqual({ action: "next" });
+  });
+});
+
 describe("clientLoginUrl", () => {
   it("keeps the company host instead of the AUTH_URL host", () => {
     expect(clientLoginUrl("http://vp.isp.test")).toBe("http://vp.isp.test/login");

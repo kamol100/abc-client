@@ -9,6 +9,12 @@ export function clientLoginUrl(origin: string): string {
 export const LEGACY_CLIENT_LOGIN_PATH = "/client/login";
 export const CLIENT_DASHBOARD_PATH = "/client/dashboard";
 
+/** Marketing and tenant landing URLs. Signed-in visitors leave only these for the dashboard. */
+export function isHomePathname(pathname: string): boolean {
+  if (pathname === "/" || pathname === "") return true;
+  return pathname.replace(/\/+$/, "") === "/home";
+}
+
 export type AuthGateResult =
   | { action: "next" }
   | { action: "redirect"; pathname: string; search: string };
@@ -52,7 +58,7 @@ export function resolveAuthGate(input: {
     return isAuthenticated ? redirectTo(ADMIN_DASHBOARD_PATH) : { action: "next" };
   }
 
-  if (pathname === "/" || pathname === "") {
+  if (isHomePathname(pathname)) {
     return isAuthenticated ? redirectTo(ADMIN_DASHBOARD_PATH) : { action: "next" };
   }
 
