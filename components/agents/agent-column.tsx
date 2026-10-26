@@ -137,7 +137,7 @@ export function useAgentColumns(): ColumnDef<AgentRow>[] {
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="agent.commission.label" />
             ),
-            cell: ({ row }) => <div>{row.original.commission}</div>,
+            cell: ({ row }) => <div>{row.original.commission}%</div>,
             enableSorting: false,
         },
         {

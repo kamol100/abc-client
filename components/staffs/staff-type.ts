@@ -95,3 +95,18 @@ export const StaffFormSchema = z.object({
 
 export type StaffFormInput = z.input<typeof StaffFormSchema>;
 export type StaffPayload = z.output<typeof StaffFormSchema>;
+
+export const StaffResetPasswordSchema = z.object({
+  password: z
+    .string({
+      required_error: "staff.reset_password.password.errors.required",
+      invalid_type_error: "staff.reset_password.password.errors.required",
+    })
+    .min(8, { message: "staff.reset_password.password.errors.min" }),
+});
+
+export type StaffResetPasswordInput = z.input<typeof StaffResetPasswordSchema>;
+
+export const STAFF_RESET_PASSWORD_DEFAULTS: StaffResetPasswordInput = {
+  password: "",
+};

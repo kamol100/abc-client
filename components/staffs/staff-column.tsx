@@ -7,8 +7,15 @@ import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import { DeleteModal } from "@/components/delete-modal";
+import FormBuilder from "@/components/form-wrapper/form-builder";
+import { MyDialog } from "@/components/my-dialog";
+import { StaffResetPasswordFormFieldSchema } from "@/components/staffs/staff-form-schema";
+import {
+  STAFF_RESET_PASSWORD_DEFAULTS,
+  StaffResetPasswordSchema,
+  StaffRow,
+} from "@/components/staffs/staff-type";
 import { cn } from "@/lib/utils";
-import { StaffRow } from "@/components/staffs/staff-type";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { usePermissions } from "@/context/app-provider";
 
@@ -78,6 +85,59 @@ function StaffAccountLockButton({
         mutate({ status: nextStatus });
       }}
     />
+  );
+}
+
+function StaffResetPasswordButton({
+  staffId,
+  staffName,
+}: {
+  staffId: string;
+  staffName: string;
+}) {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const [open, setOpen] = useState(false);
+
+  if (!hasPermission("staffs.reset-password") && !hasPermission("staffs.edit")) {
+    return null;
+  }
+
+  return (
+    <>
+      <MyButton
+        type="button"
+        action="reset"
+        tooltip="staff.reset_password.title"
+        aria-label={t("staff.reset_password.title")}
+        className="hover:bg-primary hover:text-primary-foreground px-2"
+        onClick={() => setOpen(true)}
+      />
+      <MyDialog
+        open={open}
+        onOpenChange={setOpen}
+        size="sm"
+        title="staff.reset_password.title"
+      >
+        {open ? (
+          <div className="flex flex-col gap-4">
+            <p className="text-sm font-medium capitalize text-foreground">{staffName}</p>
+            <FormBuilder
+              formSchema={StaffResetPasswordFormFieldSchema()}
+              grids={1}
+              data={STAFF_RESET_PASSWORD_DEFAULTS}
+              api={`/staffs/${staffId}/password`}
+              mode="create"
+              schema={StaffResetPasswordSchema}
+              method="PUT"
+              queryKey="staffs"
+              successMessage="staff.reset_password.success"
+              submitTitle="staff.reset_password.submit"
+            />
+          </div>
+        ) : null}
+      </MyDialog>
+    </>
   );
 }
 
@@ -159,6 +219,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
       return (
         <div className="flex items-center justify-end mr-2 gap-1">
           <StaffAccountLockButton staffId={staffId} status={String(staff.status ?? "active")} />
+          <StaffResetPasswordButton staffId={staffId} staffName={staff.name} />
           <MyButton
             action="edit"
             url={`/staffs/edit/${staffId}`}

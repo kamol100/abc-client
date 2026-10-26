@@ -357,7 +357,8 @@
             "create_failed": "Could not initiate bKash payment. Please try again.",
             "back_to_pay": "Back to Pay",
             "back_to_dashboard": "Back to dashboard",
-            "back_to_invoices": "Back to invoices"
+            "back_to_invoices": "Back to invoices",
+            "dismiss": "Dismiss"
         },
         "short_link": {
             "title": "Pay Link Redirect",
@@ -1049,6 +1050,19 @@
         "unlock_account": "Unlock account",
         "account_locked": "Staff account locked",
         "account_unlocked": "Staff account unlocked",
+        "reset_password": {
+            "title": "Reset password",
+            "submit": "Reset password",
+            "success": "Password reset",
+            "password": {
+                "label": "New password",
+                "placeholder": "Enter new password",
+                "errors": {
+                    "required": "Password is required",
+                    "min": "Password must be at least 8 characters"
+                }
+            }
+        },
         "present_address": {
             "label": "Present Address",
             "placeholder": "Enter present address"

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
+import { AccordionSection, FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
 export const staffImageFields = [
   {
@@ -257,5 +257,17 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
     },
   ];
 };
+
+export const StaffResetPasswordFormFieldSchema = (): FieldConfig[] => [
+  {
+    type: "password",
+    name: "password",
+    label: {
+      labelText: "staff.reset_password.password.label",
+      mandatory: true,
+    },
+    placeholder: "staff.reset_password.password.placeholder",
+  },
+];
 
 export default StaffFormSchema;

@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
   } = {};
 
   try {
-    const res = await fetch(`${BASE_URL}/api/company-data?host=${host}`, {
+    const res = await fetch(`${BASE_URL}/company-data?host=${host}`, {
       headers: {
         "Content-type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
