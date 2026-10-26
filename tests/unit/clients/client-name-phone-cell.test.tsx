@@ -113,4 +113,20 @@ describe("ClientBasicView WhatsApp link", () => {
             "https://wa.me/8801712345678"
         );
     });
+
+    it("copies the phone number from the icon after WhatsApp", async () => {
+        const writeText = vi.fn().mockResolvedValue(undefined);
+        vi.stubGlobal("navigator", { clipboard: { writeText } });
+        Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => true });
+        vi.mocked(toast.success).mockClear();
+
+        render(<ClientBasicView client={client(" 01712345678 ")} />);
+        fireEvent.click(screen.getByRole("button", { name: "client.copy_phone" }));
+        await vi.waitFor(() => expect(writeText).toHaveBeenCalled());
+
+        expect(writeText).toHaveBeenCalledWith("01712345678");
+        expect(toast.success).toHaveBeenCalledWith("client.phone_copied");
+        vi.unstubAllGlobals();
+        vi.restoreAllMocks();
+    });
 });

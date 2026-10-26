@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Copy, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 import Card from "@/components/card";
+import ClientCopyPhoneButton from "@/components/clients/client-copy-phone-button";
 import ClientWhatsAppLink from "@/components/clients/client-whatsapp-link";
 import { ClientRow } from "./client-type";
 import ClientRouterInfo from "./client-router-info";
@@ -93,7 +94,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                     <InfoRow label={t("common.name")}>{client?.name ?? "—"}</InfoRow>
                     <InfoRow label={t("common.phone")}>
                         {client?.phone ? (
-                            <span className="inline-flex items-center gap-1.5">
+                            <span className="inline-flex items-center gap-2">
                                 <a
                                     href={`tel:${client.phone}`}
                                     className="inline-flex items-center gap-1 text-primary hover:underline"
@@ -102,6 +103,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                                     {client.phone}
                                 </a>
                                 <ClientWhatsAppLink phone={client.phone} />
+                                <ClientCopyPhoneButton phone={client.phone} />
                             </span>
                         ) : (
                             "—"
