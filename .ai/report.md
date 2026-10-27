@@ -1,19 +1,24 @@
 ## Summary
 
-The client basic view now has a copy-phone button immediately after the WhatsApp icon. It uses the same button as the client list: it copies the trimmed phone number and shows the existing success toast.
+The client server card now shows Data Usage directly under Up/down: Today, This Month, and Last Month. Values come from `GET /client-usage/{id}` and are formatted with binary units (1024). The request is cached for 60 seconds and does not wait on the router-info call.
+
+Missing history and request failures show Unavailable. A measured zero shows `0 B`. Partial periods keep the number and note when recording started.
 
 ## Files
 
-- `components/clients/client-copy-phone-button.tsx`
-- `components/clients/basic-view.tsx`
-- `components/clients/client-name-phone-cell.tsx`
-- `tests/unit/clients/client-name-phone-cell.test.tsx`
+- `components/clients/client-router-info.tsx`
+- `components/clients/client-type.ts`
+- `lib/helper/helper.ts`
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/clients/client-data-usage.test.tsx`
+- `tests/unit/lib/format-data-usage.test.ts`
 
 ## Checks
 
-`npx vitest run tests/unit/clients/client-name-phone-cell.test.tsx` passed (8 tests). `scripts/ai/typecheck` passed.
+`npx vitest run` on the usage tests, router-info tests, and client-view ping test passed (15 tests). `scripts/ai/typecheck` passed.
 
-The client detail page was not opened in the browser because it requires a signed-in staff session. The basic-view test covers the button after WhatsApp and the copied phone value.
+The client detail page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The unit test covers placement, formatting, loading, a failed usage request, and the router section staying visible.
 
 ## Git
 

@@ -7,9 +7,10 @@ import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClientRow, getClientId, RouterInfo } from "@/components/clients/client-type";
+import { ClientRow, ClientUsage, getClientId, RouterInfo } from "@/components/clients/client-type";
 import ClientSpeedWidget from "@/components/clients/client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { formatDataUsage } from "@/lib/helper/helper";
 import MyButton, { type ButtonProps } from "@/components/my-button";
 
 type ClientWithRouter = Pick<ClientRow, "id" | "router_info" | "network">;
@@ -29,6 +30,7 @@ const InfoRow: FC<{ label: string; children: React.ReactNode }> = ({ label, chil
 const ROUTER_INFO_ROW_COUNT = 7;
 const PING_RESULT_DISPLAY_MS = 2000;
 const ROUTER_INFO_STALE_MS = 30_000;
+const CLIENT_USAGE_STALE_MS = 60_000;
 const CLIENT_DEVICE_PORT = 80;
 
 type PingState = "idle" | "loading" | "success" | "error";
@@ -239,6 +241,75 @@ export function ClientIpPingButton({
     );
 }
 
+function useClientUsage(clientId: string) {
+    return useApiQuery<ApiResponse<ClientUsage>>({
+        queryKey: ["client-usage", clientId],
+        url: `client-usage/${clientId}`,
+        pagination: false,
+        enabled: clientId.length > 0,
+        staleTime: CLIENT_USAGE_STALE_MS,
+        retry: false,
+    });
+}
+
+function ClientUsageFigures({ usage }: { usage: ClientUsage }) {
+    const { t } = useTranslation();
+    const since = usage.collected_from;
+    const figures = [
+        { label: t("client.basic_view.usage_today"), period: usage.today },
+        { label: t("client.basic_view.usage_this_month"), period: usage.this_month },
+        { label: t("client.basic_view.usage_last_month"), period: usage.last_month },
+    ];
+
+    return (
+        <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+            {figures.map((figure, index) => {
+                const recordedSince = figure.period.available && !figure.period.complete && since
+                    ? t("client.basic_view.usage_since", { date: since })
+                    : undefined;
+
+                return (
+                    <span key={figure.label} className="inline-flex items-center gap-x-2">
+                        {index > 0 ? <span aria-hidden className="text-muted-foreground">·</span> : null}
+                        <span className="inline-flex items-baseline gap-1" title={recordedSince}>
+                            <span className="text-muted-foreground">{figure.label}</span>
+                            <span className="font-medium text-foreground">
+                                {figure.period.available
+                                    ? formatDataUsage(figure.period.total_bytes)
+                                    : t("client.basic_view.usage_unavailable")}
+                            </span>
+                        </span>
+                    </span>
+                );
+            })}
+        </span>
+    );
+}
+
+function ClientDataUsage({ clientId }: { clientId: string }) {
+    const { t } = useTranslation();
+    const { data, isLoading, isError } = useClientUsage(clientId);
+    const usage = data?.data;
+    const showLoading = clientId.length > 0 && isLoading && !isError;
+    const showValues = Boolean(usage?.collected && usage.today && usage.this_month && usage.last_month);
+
+    return (
+        <InfoRow label={t("client.basic_view.data_usage")}>
+            {showLoading ? (
+                <span className="inline-flex flex-wrap gap-2" aria-busy="true">
+                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-24" />
+                </span>
+            ) : showValues && usage ? (
+                <ClientUsageFigures usage={usage} />
+            ) : (
+                <span className="text-muted-foreground">{t("client.basic_view.usage_unavailable")}</span>
+            )}
+        </InfoRow>
+    );
+}
+
 function ClientRouterInfoSkeleton() {
     return (
         <div className="space-y-0 px-3 py-3">
@@ -270,6 +341,7 @@ const ClientRouterInfo: FC<Props> = ({ client }) => {
             <InfoRow label={t("client.basic_view.up_down")}>
                 <ClientSpeedWidget clientId={clientId} />
             </InfoRow>
+            <ClientDataUsage clientId={clientId} />
             {showRouterInfoLoading ? <ClientRouterInfoSkeleton /> : (
                 <>
                     <InfoRow label={t("client.ip_address.label")}>

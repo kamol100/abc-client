@@ -43,6 +43,30 @@ export function formatMoney(
     return new Intl.NumberFormat("en", { minimumFractionDigits }).format(toNumber(value));
 }
 
+const DATA_USAGE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"] as const;
+
+/** Binary units (1024), matching MikroTik and Laravel file-size formatting. */
+export function formatDataUsage(bytes: number): string {
+    if (!Number.isFinite(bytes) || bytes < 0) {
+        return "—";
+    }
+
+    let value = bytes;
+    let unitIndex = 0;
+    while (value >= 1024 && unitIndex < DATA_USAGE_UNITS.length - 1) {
+        value /= 1024;
+        unitIndex += 1;
+    }
+
+    if (unitIndex === 0) {
+        return `${Math.round(value)} B`;
+    }
+
+    const digits = value >= 100 ? 0 : value >= 10 ? 1 : 2;
+    const rounded = Number(value.toFixed(digits));
+    return `${rounded} ${DATA_USAGE_UNITS[unitIndex]}`;
+}
+
 export function toApiDateString(value: Date | string | null | undefined, format: "iso" | "dmy" = "iso"): string | null {
     if (!value) return null;
 

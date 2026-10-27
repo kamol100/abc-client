@@ -250,3 +250,22 @@ export interface RouterInfo {
     last_logout?: string | null;
     is_online?: boolean;
 }
+
+export interface ClientUsagePeriod {
+    upload_bytes: number;
+    download_bytes: number;
+    total_bytes: number;
+    from: string;
+    to: string;
+    available: boolean;
+    complete: boolean;
+}
+
+export interface ClientUsage {
+    timezone: string;
+    collected: boolean;
+    collected_from: string | null;
+    today: ClientUsagePeriod;
+    this_month: ClientUsagePeriod;
+    last_month: ClientUsagePeriod;
+}
