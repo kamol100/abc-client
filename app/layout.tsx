@@ -1,5 +1,4 @@
 import { Toaster } from "@/components/ui/toaster";
-import InstallPrompt from "@/components/pwa/install-prompt";
 import PWAAuthGuard from "@/components/pwa/pwa-auth-guard";
 import ServiceWorkerRegistration from "@/components/pwa/service-worker-registration";
 import AuthProvider from "@/context/AuthProvider";
@@ -123,7 +122,6 @@ export default async function RootLayout({
               >
                 <TanstackProvider>{children}</TanstackProvider>
               </ThemeSettingsProvider>
-              <InstallPrompt />
             </I18nProvider>
             <ToastContainer
               position="bottom-right"

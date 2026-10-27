@@ -15,6 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { usePathname } from "next/navigation";
 import * as React from "react";
 
 import {
@@ -32,6 +33,7 @@ import { DataTablePagination } from "@/components/data-table/data-table-paginati
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
+import { usePersistedColumnVisibility } from "@/components/data-table/use-persisted-column-visibility";
 import { useTranslation } from "react-i18next";
 import { ReactNode } from "react";
 
@@ -84,8 +86,15 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { t } = useTranslation();
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(initialColumnVisibility ?? {});
+  const pathname = usePathname();
+  const { columnVisibility, onColumnVisibilityChange, hasResolvedVisibility } =
+    usePersistedColumnVisibility({
+      enabled: toggleColumns,
+      pathname: pathname ?? "",
+      queryKey,
+      columns,
+      initialColumnVisibility,
+    });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -115,7 +124,7 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     ...(serverPaginated ? {} : { getPaginationRowModel: getPaginationRowModel() }),
@@ -126,7 +135,8 @@ export function DataTable<TData, TValue>({
 
   const { isFixed } = useTableLayoutMode();
 
-  const showSkeleton = isLoading || (isFetching && data.length === 0);
+  const showSkeleton =
+    !hasResolvedVisibility || isLoading || (isFetching && data.length === 0);
   const visibleColumnCount = table.getVisibleFlatColumns().length || columns.length;
 
   return (

@@ -1,25 +1,23 @@
 ## Summary
 
-The client server card shows Data Usage directly under Up/down. Each available period is a badge: D for today, M for this month, and LM for last month. The badge shows the short label and the total. The tooltip reads the full period, for example Today 10 GB. A period that has not been recorded is omitted. If none are available, the row is hidden. A measured zero still shows, such as D 0 B.
+Column hide/show choices are stored in `localStorage` and restored for the same page and table. The storage key is `data-table:column-visibility:{pathname}:{queryKey}`. A table without `queryKey` uses its hideable column ids, so two tables on one page do not share settings. Hiding a column on Clients does not change Invoices.
 
-Values come from `GET /client-usage/{id}` and use binary units (1024). The request is cached for 60 seconds and does not wait on the router-info call.
+The toggle UI is unchanged. Preferences are applied before the column headers paint: the table stays on its skeleton until the saved visibility is read, then renders the final columns. Missing, corrupt, or outdated stored values fall back to the default visibility, including `initialColumnVisibility`. Columns that cannot be hidden are left alone. Tables with `toggleColumns` off do not read or write storage.
 
 ## Files
 
-- `components/clients/client-router-info.tsx`
-- `components/clients/client-type.ts`
-- `lib/helper/helper.ts`
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/clients/client-data-usage.test.tsx`
-- `tests/unit/lib/format-data-usage.test.ts`
+- `components/data-table/data-table.tsx`
+- `components/data-table/column-visibility.ts`
+- `components/data-table/use-persisted-column-visibility.ts`
+- `tests/unit/data-table/column-visibility.test.ts`
+- `tests/unit/data-table/column-visibility-persistence.test.tsx`
 
 ## Checks
 
-`npx vitest run` on the usage, router-info, and client-view ping tests passed (13 tests).
+`npx vitest run` on the two column-visibility test files passed (12 tests). `scripts/ai/typecheck` passed.
 
-The client detail page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The unit test covers the short badges, the tooltip label, a hidden missing period, loading, and the router section staying visible when usage is absent.
+The clients page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The table test renders `DataTable`, restores a hidden Email column, shows it again from the toggle, and confirms that choice is what a remount reads back.
 
 ## Git
 
-Uncommitted.
+Uncommitted. `app/layout.tsx` still has the earlier PWA install-prompt unmount and was not part of this change.
