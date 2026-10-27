@@ -20,13 +20,17 @@ vi.mock("react-toastify", () => ({
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
-        t: (key: string, options?: { date?: string }) => {
+        t: (key: string, options?: { date?: string; period?: string; amount?: string }) => {
             const labels: Record<string, string> = {
                 "client.basic_view.up_down": "Up/down",
                 "client.basic_view.data_usage": "Data Usage",
                 "client.basic_view.usage_today": "Today",
+                "client.basic_view.usage_today_short": "D",
                 "client.basic_view.usage_this_month": "This Month",
+                "client.basic_view.usage_this_month_short": "M",
                 "client.basic_view.usage_last_month": "Last Month",
+                "client.basic_view.usage_last_month_short": "LM",
+                "client.basic_view.usage_amount": `${options?.period ?? ""} ${options?.amount ?? ""}`.trim(),
                 "client.basic_view.usage_unavailable": "Unavailable",
                 "client.basic_view.usage_since": `Recorded since ${options?.date ?? ""}`,
                 "client.ip_address.label": "IP",
@@ -115,17 +119,18 @@ describe("Client data usage", () => {
 
         expect(await screen.findByText("10 GB")).toBeInTheDocument();
         expect(screen.getByText("300 GB")).toBeInTheDocument();
-        expect(screen.getByText("Today")).toBeInTheDocument();
-        expect(screen.getByText("This Month")).toBeInTheDocument();
-        expect(screen.getByText("Last Month")).toBeInTheDocument();
-        expect(screen.getAllByText("Unavailable").length).toBeGreaterThan(0);
+        expect(screen.getByText("D")).toBeInTheDocument();
+        expect(screen.getByText("M")).toBeInTheDocument();
+        expect(screen.queryByText("LM")).not.toBeInTheDocument();
+        expect(screen.getByLabelText("Today 10 GB")).toBeInTheDocument();
+        expect(screen.getByLabelText("This Month 300 GB")).toBeInTheDocument();
+        expect(screen.queryByText("Unavailable")).not.toBeInTheDocument();
 
         const speed = screen.getByText("Up/down");
         const usage = screen.getByText("Data Usage");
         expect(speed.compareDocumentPosition(usage) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
         expect(screen.getByText("10.0.0.8")).toBeInTheDocument();
         expect(screen.getByText("speed")).toBeInTheDocument();
-        expect(screen.getAllByTitle("Recorded since 2026-03-02")).toHaveLength(2);
     });
 
     it("shows a loading state without blocking router information", async () => {
@@ -162,9 +167,9 @@ describe("Client data usage", () => {
         });
 
         const view = renderInfo();
-        expect(await screen.findByText("Unavailable")).toBeInTheDocument();
+        expect(await screen.findByText("10.0.0.8")).toBeInTheDocument();
+        expect(screen.queryByText("Data Usage")).not.toBeInTheDocument();
         expect(screen.queryByText("10 GB")).not.toBeInTheDocument();
-        expect(screen.getByText("10.0.0.8")).toBeInTheDocument();
 
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (String(url).includes("client-usage")) {
@@ -181,7 +186,7 @@ describe("Client data usage", () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByText("Unavailable")).toBeInTheDocument();
+            expect(screen.queryByText("Data Usage")).not.toBeInTheDocument();
         });
         expect(screen.getByText("speed")).toBeInTheDocument();
         expect(screen.getByText("10.0.0.8")).toBeInTheDocument();

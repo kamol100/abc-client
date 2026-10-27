@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Check, Loader2, LogIn, Network, Radio, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
+import MyTooltip from "@/components/my-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ClientRow, ClientUsage, getClientId, RouterInfo } from "@/components/clients/client-type";
@@ -254,32 +255,32 @@ function useClientUsage(clientId: string) {
 
 function ClientUsageFigures({ usage }: { usage: ClientUsage }) {
     const { t } = useTranslation();
-    const since = usage.collected_from;
     const figures = [
-        { label: t("client.basic_view.usage_today"), period: usage.today },
-        { label: t("client.basic_view.usage_this_month"), period: usage.this_month },
-        { label: t("client.basic_view.usage_last_month"), period: usage.last_month },
-    ];
+        { shortKey: "client.basic_view.usage_today_short", labelKey: "client.basic_view.usage_today", period: usage.today },
+        { shortKey: "client.basic_view.usage_this_month_short", labelKey: "client.basic_view.usage_this_month", period: usage.this_month },
+        { shortKey: "client.basic_view.usage_last_month_short", labelKey: "client.basic_view.usage_last_month", period: usage.last_month },
+    ].filter((figure) => figure.period.available);
+
+    if (figures.length === 0) {
+        return null;
+    }
 
     return (
-        <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-            {figures.map((figure, index) => {
-                const recordedSince = figure.period.available && !figure.period.complete && since
-                    ? t("client.basic_view.usage_since", { date: since })
-                    : undefined;
+        <span className="inline-flex flex-wrap items-center gap-1">
+            {figures.map((figure) => {
+                const amount = formatDataUsage(figure.period.total_bytes);
+                const tooltip = t("client.basic_view.usage_amount", {
+                    period: t(figure.labelKey),
+                    amount,
+                });
 
                 return (
-                    <span key={figure.label} className="inline-flex items-center gap-x-2">
-                        {index > 0 ? <span aria-hidden className="text-muted-foreground">·</span> : null}
-                        <span className="inline-flex items-baseline gap-1" title={recordedSince}>
-                            <span className="text-muted-foreground">{figure.label}</span>
-                            <span className="font-medium text-foreground">
-                                {figure.period.available
-                                    ? formatDataUsage(figure.period.total_bytes)
-                                    : t("client.basic_view.usage_unavailable")}
-                            </span>
-                        </span>
-                    </span>
+                    <MyTooltip key={figure.shortKey} content={<span>{tooltip}</span>}>
+                        <Badge variant="secondary" className="gap-1 text-xs" aria-label={tooltip}>
+                            <span>{t(figure.shortKey)}</span>
+                            <span>{amount}</span>
+                        </Badge>
+                    </MyTooltip>
                 );
             })}
         </span>
@@ -291,21 +292,26 @@ function ClientDataUsage({ clientId }: { clientId: string }) {
     const { data, isLoading, isError } = useClientUsage(clientId);
     const usage = data?.data;
     const showLoading = clientId.length > 0 && isLoading && !isError;
-    const showValues = Boolean(usage?.collected && usage.today && usage.this_month && usage.last_month);
+    const hasVisibleUsage = Boolean(
+        usage?.collected
+        && [usage.today, usage.this_month, usage.last_month].some((period) => period?.available)
+    );
+
+    if (!showLoading && !hasVisibleUsage) {
+        return null;
+    }
 
     return (
         <InfoRow label={t("client.basic_view.data_usage")}>
             {showLoading ? (
-                <span className="inline-flex flex-wrap gap-2" aria-busy="true">
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-24" />
+                <span className="inline-flex flex-wrap gap-1" aria-busy="true">
+                    <Skeleton className="h-5 w-14" />
+                    <Skeleton className="h-5 w-16" />
+                    <Skeleton className="h-5 w-16" />
                 </span>
-            ) : showValues && usage ? (
+            ) : usage ? (
                 <ClientUsageFigures usage={usage} />
-            ) : (
-                <span className="text-muted-foreground">{t("client.basic_view.usage_unavailable")}</span>
-            )}
+            ) : null}
         </InfoRow>
     );
 }

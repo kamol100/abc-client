@@ -1,8 +1,8 @@
 ## Summary
 
-The client server card now shows Data Usage directly under Up/down: Today, This Month, and Last Month. Values come from `GET /client-usage/{id}` and are formatted with binary units (1024). The request is cached for 60 seconds and does not wait on the router-info call.
+The client server card shows Data Usage directly under Up/down. Each available period is a badge: D for today, M for this month, and LM for last month. The badge shows the short label and the total. The tooltip reads the full period, for example Today 10 GB. A period that has not been recorded is omitted. If none are available, the row is hidden. A measured zero still shows, such as D 0 B.
 
-Missing history and request failures show Unavailable. A measured zero shows `0 B`. Partial periods keep the number and note when recording started.
+Values come from `GET /client-usage/{id}` and use binary units (1024). The request is cached for 60 seconds and does not wait on the router-info call.
 
 ## Files
 
@@ -16,9 +16,9 @@ Missing history and request failures show Unavailable. A measured zero shows `0 
 
 ## Checks
 
-`npx vitest run` on the usage tests, router-info tests, and client-view ping test passed (15 tests). `scripts/ai/typecheck` passed.
+`npx vitest run` on the usage, router-info, and client-view ping tests passed (13 tests).
 
-The client detail page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The unit test covers placement, formatting, loading, a failed usage request, and the router section staying visible.
+The client detail page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The unit test covers the short badges, the tooltip label, a hidden missing period, loading, and the router section staying visible when usage is absent.
 
 ## Git
 
