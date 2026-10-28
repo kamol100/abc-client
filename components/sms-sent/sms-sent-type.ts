@@ -105,9 +105,28 @@ export const SmsSentPayloadSchema = z.object({
   client_filter: z.record(z.union([z.string(), z.number()])).optional(),
   sms_count: z.coerce.number().optional(),
   mode: SmsSendModeSchema.default("live"),
+  send_now: z.boolean().optional(),
 });
 
 export type SmsSentPayload = z.output<typeof SmsSentPayloadSchema>;
+
+export const SmsSendQuoteSchema = z.object({
+  recipients: z.number(),
+  total_units: z.number(),
+  total_cost: z.number(),
+  balance: z.number().nullable(),
+  remaining_balance: z.number().nullable(),
+  sufficient: z.boolean(),
+  scheduled_at: z.string().nullable(),
+  timezone: z.string(),
+});
+
+export type SmsSendQuote = z.infer<typeof SmsSendQuoteSchema>;
+
+/** Test sends are never charged, so only live sends need enough wallet balance. */
+export function canConfirmSmsSend(quote: SmsSendQuote, mode: SmsSendMode): boolean {
+  return quote.recipients > 0 && (mode === "test" || quote.sufficient);
+}
 
 export function buildSmsSentClientParams(
   filters: SmsSentClientFilterValues

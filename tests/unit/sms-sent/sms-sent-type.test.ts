@@ -5,6 +5,8 @@ import {
   SmsSentFormSchema,
   SmsSentPayloadSchema,
   buildSmsSentPayload,
+  canConfirmSmsSend,
+  type SmsSendQuote,
 } from "@/components/sms-sent/sms-sent-type";
 
 const formValues = SmsSentFormSchema.parse({
@@ -47,5 +49,29 @@ describe("sms send mode payload", () => {
       custom_message: "Hello",
       mode: "sandbox",
     }).success).toBe(false);
+  });
+});
+
+describe("canConfirmSmsSend", () => {
+  const quote: SmsSendQuote = {
+    recipients: 1,
+    total_units: 2,
+    total_cost: 2,
+    balance: 1,
+    remaining_balance: -1,
+    sufficient: false,
+    scheduled_at: null,
+    timezone: "Asia/Dhaka",
+  };
+
+  it("requires enough wallet balance for live sends only", () => {
+    expect(canConfirmSmsSend(quote, "live")).toBe(false);
+    expect(canConfirmSmsSend({ ...quote, sufficient: true }, "live")).toBe(true);
+    expect(canConfirmSmsSend(quote, "test")).toBe(true);
+  });
+
+  it("refuses when nothing would be sent", () => {
+    expect(canConfirmSmsSend({ ...quote, recipients: 0, sufficient: true }, "live")).toBe(false);
+    expect(canConfirmSmsSend({ ...quote, recipients: 0 }, "test")).toBe(false);
   });
 });

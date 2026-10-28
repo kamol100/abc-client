@@ -2229,6 +2229,31 @@
                 "success": "Test completed. No SMS was sent and no charge was applied.",
                 "not_charged": "Not charged"
             }
+        },
+        "confirm": {
+            "title": "Confirm SMS sending",
+            "test_title": "Confirm test send",
+            "test_badge": "Test mode",
+            "live_notice": "SMS will be sent through your SMS gateway and the cost will be deducted from your wallet.",
+            "test_notice": "The sending flow will be simulated. The SMS gateway will not be called and no SMS charge will be deducted.",
+            "recipients": "Recipients",
+            "wallet_balance": "Wallet balance",
+            "remaining_balance": "Remaining balance",
+            "submit": "Confirm & Send SMS",
+            "test_submit": "Confirm & Simulate",
+            "quote_error": "Could not calculate the SMS cost. Please try again.",
+            "no_recipients": "No SMS will be sent for the current selection.",
+            "insufficient": {
+                "title": "Insufficient wallet balance. Recharge your wallet to send these SMS.",
+                "required": "Required",
+                "available": "Available"
+            },
+            "schedule": {
+                "time": "Scheduled sending time",
+                "send_now": "Send immediately",
+                "scheduled_hint": "SMS will be sent automatically at {{time}}.",
+                "immediate_hint": "SMS will be sent right after you confirm."
+            }
         }
     },
     "sms_template": {

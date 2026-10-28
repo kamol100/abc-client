@@ -1,24 +1,21 @@
 ## Summary
 
-Send SMS has a Live / Test choice above the form. Live is selected by default and is what gets submitted unless the user picks Test. Test mode tells the API `mode: "test"`, shows that no SMS will be sent and no charge applies, and uses a different success message. Simulated rows in Communication Logs show a Test badge instead of Sent.
+**Send SMS** now opens a confirmation dialog instead of sending. The dialog loads a quote from the new `POST /sms-store/preview` endpoint. It shows recipients, total SMS (segments), total cost, wallet balance, and remaining balance. Insufficient live balance shows a warning and disables **Confirm & Send SMS**. Test mode uses the `warning` theme tokens with a TEST MODE label, shows the cost as not charged, and is never blocked by balance. For invoice due and reminder templates sent before the configured schedule, the dialog shows the scheduled time (formatted in the API's timezone, not the browser's) and an unchecked **Send immediately** checkbox. The choice is sent as `send_now`.
 
 ## Files
 
-- `components/sms-sent/sms-sent-form.tsx` — mode cards, notice, button, and toast
-- `components/sms-sent/sms-sent-type.ts` — `mode` on the payload, default `live`
-- `components/communication-logs/communication-log-column.tsx` — Test badge
-- `components/communication-logs/communication-log-filter-schema.ts` — simulated status filter
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/sms-sent/sms-sent-type.test.ts`
-- `tests/unit/sms-sent/sms-send-mode-selector.test.tsx`
+- `components/sms-sent/sms-send-confirm-dialog.tsx` (new): `MyDialog` with quote summary, insufficient alert, schedule notice
+- `components/sms-sent/sms-sent-form.tsx`: submit opens the dialog. Confirm calls the existing `sms-store` mutation once, closes after the result, and resets the form only on success
+- `components/sms-sent/sms-sent-type.ts`: `SmsSendQuoteSchema`, `canConfirmSmsSend()`, `send_now` on the payload
+- `public/lang/en.json`, `public/lang/bn.json`: `sms_sent.confirm.*`
+- `tests/unit/sms-sent/sms-send-confirm-dialog.test.tsx`, `sms-sent-form-confirm.test.tsx` (new), `sms-sent-type.test.ts`
 
 ## Checks
 
-`scripts/ai/typecheck` passed.
-
-`npx vitest run tests/unit/sms-sent` passed (4 tests). The full `scripts/ai/test` run finished with 398 passed and 4 failed in unrelated files: `reseller-client-table`, `reseller-client-filter-schema`, `client-map-rows`, and `pay-content`.
+- `scripts/ai/typecheck`: passed.
+- `scripts/ai/test`: 408 passed, 3 failed in 4 files unrelated to SMS: `clients/reseller-client-table` (cannot resolve `next/server`), `maps/client-map-rows` (no suite), `clients/reseller-client-filter-schema`, `pay/pay-content` (`usePathname` missing from mock). All 14 sms-sent tests pass. They cover sufficient and insufficient balance, live and test mode, schedule shown and hidden, send-now override, no recipients, disabled confirm while submitting, and send-once at the form level.
+- Not checked in a browser. The local app requires a login.
 
 ## Git
 
-Uncommitted. Earlier Send SMS filter and table edits in `components/sms-sent/` were already in the tree and were left in place.
+Uncommitted. No unrelated changes in the tree. Backend counterpart is in `isp-backend` (see its `.ai/report.md`).

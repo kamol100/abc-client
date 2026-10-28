@@ -18,6 +18,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-schema";
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
+import SmsSendConfirmDialog from "@/components/sms-sent/sms-send-confirm-dialog";
 import {
   SmsSendMode,
   SmsTemplateSummary,
@@ -206,6 +207,8 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const [bulkSmsCount, setBulkSmsCount] = useState(0);
   const [hydratedTemplateId, setHydratedTemplateId] = useState<number | null>(null);
   const [selectedClientIds, setSelectedClientIds] = useState<number[]>([]);
+  const [pendingPayload, setPendingPayload] = useState<SmsSentPayload | null>(null);
+  const sendLabel = isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send");
   const selectedTemplateId = useWatch({
     control: sendForm.control,
     name: "sms_template_id",
@@ -343,18 +346,30 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
     });
   };
 
-  const onSubmit = async (values: SmsSentFormInput) => {
+  const onSubmit = (values: SmsSentFormInput) => {
     const normalizedForm = SmsSentFormSchema.parse(values);
-    const payload = buildSmsSentPayload({
-      formValues: normalizedForm,
-      filterValues: appliedFilters,
-      smsCount,
-      selectedClientIds: hasTemplateSelected ? templateSelectedClientIds : selectedClientIds,
-      preferClientIdsForTemplate: isSingleClientMode,
-      mode: sendMode,
-    });
+    setPendingPayload(
+      buildSmsSentPayload({
+        formValues: normalizedForm,
+        filterValues: appliedFilters,
+        smsCount,
+        selectedClientIds: hasTemplateSelected ? templateSelectedClientIds : selectedClientIds,
+        preferClientIdsForTemplate: isSingleClientMode,
+        mode: sendMode,
+      })
+    );
+  };
 
-    await sendSms(payload);
+  const handleConfirmSend = async ({ sendNow }: { sendNow: boolean }) => {
+    if (!pendingPayload || isPending) return;
+
+    try {
+      await sendSms({ ...pendingPayload, send_now: sendNow });
+    } catch {
+      return;
+    } finally {
+      setPendingPayload(null);
+    }
 
     sendForm.reset(createDefaultSendFormValues(phone));
     filterForm.reset(DEFAULT_FILTER_VALUES);
@@ -475,10 +490,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                 variant="default"
                 size="default"
                 loading={isPending}
-                title={isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+                title={sendLabel}
               >
                 <Send className="size-4" />
-                {isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+                {sendLabel}
               </MyButton>
             ) : (
               <MyTooltip content="sms_sent.sms_count.zero_tooltip">
@@ -488,17 +503,26 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                   variant="default"
                   size="default"
                   disabled
-                  title={isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+                  title={sendLabel}
                 >
                   <Send className="size-4" />
-                  {t("sms_sent.send")}
+                  {sendLabel}
                 </MyButton>
-
               </MyTooltip>
             )}
           </div>
         </form>
       </Form>
+
+      <SmsSendConfirmDialog
+        payload={pendingPayload}
+        mode={sendMode}
+        isSubmitting={isPending}
+        onOpenChange={(open) => {
+          if (!open && !isPending) setPendingPayload(null);
+        }}
+        onConfirm={handleConfirmSend}
+      />
 
       {hasTemplateSelected && !isSingleClientMode && (
         <div className="space-y-4 rounded-lg border p-4 md:p-5">
