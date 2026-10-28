@@ -21,6 +21,7 @@ export function CommunicationLogFilterSchema(): FieldConfig[] {
   const statusOptions = [
     { value: "sent", label: "communication_log.status.options.sent" },
     { value: "failed", label: "communication_log.status.options.failed" },
+    { value: "simulated", label: "communication_log.status.options.simulated" },
   ];
 
   return [

@@ -42,6 +42,7 @@
         "address": "Address",
         "active": "Active",
         "inactive": "Inactive",
+        "all": "All",
         "male": "Male",
         "female": "Female",
         "married": "Married",
@@ -846,6 +847,7 @@
             "options": {
                 "sent": "Sent",
                 "failed": "Failed",
+                "simulated": "Test",
                 "unknown": "Unknown"
             }
         },
@@ -2186,6 +2188,12 @@
             "label": "Total SMS",
             "zero_tooltip": "SMS count is 0. Add a phone number or select a template with matching clients."
         },
+        "per_sms_cost": {
+            "label": "Per SMS"
+        },
+        "total_cost": {
+            "label": "Total cost"
+        },
         "client_list": {
             "title": "Client List",
             "description": "SMS will be sent to all clients that match the current filters."
@@ -2206,7 +2214,22 @@
             "package_due": "Package / Due"
         },
         "send": "Send SMS",
-        "success": "SMS queued successfully"
+        "success": "SMS queued successfully",
+        "mode": {
+            "label": "Sending mode",
+            "live": {
+                "title": "Live Mode",
+                "description": "Send real SMS through your configured gateway. SMS charges apply."
+            },
+            "test": {
+                "title": "Test Mode",
+                "description": "Simulate SMS sending without gateway calls or SMS charges.",
+                "notice": "No real SMS will be sent and no charges apply.",
+                "submit": "Simulate send",
+                "success": "Test completed. No SMS was sent and no charge was applied.",
+                "not_charged": "Not charged"
+            }
+        }
     },
     "sms_template": {
         "title_plural": "SMS Templates",

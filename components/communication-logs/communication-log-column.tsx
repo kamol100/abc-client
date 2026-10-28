@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
+import { Badge } from "@/components/ui/badge";
 import { cellIndex } from "@/lib/helper/helper";
 import { usePermissions } from "@/context/app-provider";
 import type { CommunicationLogRow } from "./communication-log-type";
@@ -228,6 +229,13 @@ function CommunicationLogBodyCell({ body }: { body?: string | null }) {
 function CommunicationLogStatusCell({ status }: { status?: string | null }) {
   const { t } = useTranslation();
   const key = status ?? "unknown";
+
+  if (key === "simulated") {
+    return (
+      <Badge variant="outline">{t("communication_log.status.options.simulated")}</Badge>
+    );
+  }
+
   const colorClass =
     key === "sent"
       ? "text-green-600 dark:text-green-400"

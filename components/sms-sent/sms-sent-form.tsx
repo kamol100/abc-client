@@ -1,15 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FlaskConical, Send } from "lucide-react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Info } from "lucide-react";
 import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import SelectDropdown from "@/components/select-dropdown";
 import TextareaField from "@/components/form/textarea-field";
 import { Form } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import MyTooltip from "@/components/my-tooltip";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
@@ -17,10 +19,10 @@ import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-sche
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
 import {
+  SmsSendMode,
   SmsTemplateSummary,
   SmsSentClientFilterSchema as SmsSentClientFilterFormSchema,
   SmsSentClientFilterValues,
-  SmsSentClientStatus,
   SmsSentFormInput,
   SmsSentFormSchema,
   SmsSentPayload,
@@ -28,15 +30,15 @@ import {
   buildSmsSentPayload,
 } from "@/components/sms-sent/sms-sent-type";
 import DisplayCount from "@/components/display-count";
-import MyWallet from "@/components/wallets/my-wallet";
+import DisplayMoney from "@/components/display-money";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
-  pppoe_username: "",
-  name: "",
-  phone: "",
+  any: "",
   network_id: null,
   zone_id: null,
-  client_status: "all",
+  status: "all",
 };
 
 type SmsSentFormPageProps = {
@@ -55,6 +57,120 @@ type SmsSentFormSingleClientProps = {
 
 type SmsSentFormProps = SmsSentFormPageProps | SmsSentFormSingleClientProps;
 
+function useSmsRate() {
+  const { data, isLoading, isError } = useApiQuery<ApiResponse<{ rate: number }>>({
+    queryKey: ["sms-rate"],
+    url: "sms-rate",
+    pagination: false,
+  });
+  const parsedRate = Number(data?.data?.rate);
+  const rate = Number.isFinite(parsedRate) ? parsedRate : 0;
+
+  return { rate, isLoading, isError };
+}
+
+function SmsMoneyValue({
+  amount,
+  isLoading,
+  isError,
+}: {
+  amount: number;
+  isLoading: boolean;
+  isError: boolean;
+}) {
+  if (isLoading) {
+    return <Skeleton className="h-6 w-24" />;
+  }
+
+  if (isError) {
+    return <span className="text-sm text-muted-foreground">—</span>;
+  }
+
+  return (
+    <DisplayMoney
+      amount={amount}
+      animate
+      formatCurrency
+      className="font-semibold text-primary tabular-nums"
+    />
+  );
+}
+
+function SmsPerUnitCost() {
+  const { t } = useTranslation();
+  const { rate, isLoading, isError } = useSmsRate();
+
+  return (
+    <div className="inline-flex items-center gap-2">
+      <span className="text-sm text-muted-foreground">
+        {t("sms_sent.per_sms_cost.label")}:
+      </span>
+      <SmsMoneyValue amount={rate} isLoading={isLoading} isError={isError} />
+    </div>
+  );
+}
+
+const SMS_SEND_MODES = [
+  {
+    value: "live",
+    icon: Send,
+    title: "sms_sent.mode.live.title",
+  },
+  {
+    value: "test",
+    icon: FlaskConical,
+    title: "sms_sent.mode.test.title",
+  },
+] as const;
+
+export function SmsSendModeSelector({
+  value,
+  onChange,
+}: {
+  value: SmsSendMode;
+  onChange: (mode: SmsSendMode) => void;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <RadioGroup
+      value={value}
+      onValueChange={(next) => {
+        if (next === "live" || next === "test") onChange(next);
+      }}
+      aria-label={t("sms_sent.mode.label")}
+      className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+    >
+      {SMS_SEND_MODES.map((mode) => {
+        const Icon = mode.icon;
+
+        return (
+          <Label
+            key={mode.value}
+            htmlFor={`sms-send-mode-${mode.value}`}
+            className={cn(
+              "flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-normal transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
+              value === mode.value
+                ? "border-primary bg-primary/5"
+                : "border-border hover:bg-muted/40"
+            )}
+          >
+            <RadioGroupItem
+              id={`sms-send-mode-${mode.value}`}
+              value={mode.value}
+              className="mt-0.5"
+            />
+            <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <span className="space-y-1">
+              <span className="block text-sm font-medium leading-none">{t(mode.title)}</span>
+            </span>
+          </Label>
+        );
+      })}
+    </RadioGroup>
+  );
+}
+
 const createDefaultSendFormValues = (phone?: string): SmsSentFormInput => ({
   phone: phone ?? "",
   sms_template_id: null,
@@ -69,6 +185,9 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const isSingleClientMode = mode === "singleClient";
+  const [sendMode, setSendMode] = useState<SmsSendMode>("live");
+  const isTestMode = sendMode === "test";
+  const { rate, isLoading: isRateLoading, isError: isRateError } = useSmsRate();
 
   const sendForm = useForm<SmsSentFormInput>({
     resolver: zodResolver(SmsSentFormSchema),
@@ -168,29 +287,43 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const { mutateAsync: sendSms, isPending } = useApiMutation<unknown, SmsSentPayload>({
     url: "sms-store",
     method: "POST",
-    successMessage: "sms_sent.success",
+    successMessage: isTestMode ? "sms_sent.mode.test.success" : "sms_sent.success",
   });
 
-  const handleFilterSubmit = (values: SmsSentClientFilterValues) => {
-    const normalized = SmsSentClientFilterFormSchema.parse(values);
-    setAppliedFilters(normalized);
+  const appliedFilterKey = useRef(JSON.stringify(DEFAULT_FILTER_VALUES));
+
+  const applyFilters = (values: unknown) => {
+    const parsed = SmsSentClientFilterFormSchema.safeParse(values);
+    if (!parsed.success) return;
+
+    const nextKey = JSON.stringify(parsed.data);
+    if (appliedFilterKey.current === nextKey) return;
+
+    appliedFilterKey.current = nextKey;
+    setAppliedFilters(parsed.data);
     setSelectedClientIds([]);
+  };
+
+  const watchedFilters = useWatch({ control: filterForm.control });
+  const watchedFilterKey = JSON.stringify(watchedFilters ?? {});
+
+  useEffect(() => {
+    if (!hasTemplateSelected || isSingleClientMode) return;
+
+    const timeout = setTimeout(() => {
+      applyFilters(watchedFilters);
+    }, 400);
+
+    return () => clearTimeout(timeout);
+  }, [watchedFilterKey, hasTemplateSelected, isSingleClientMode]);
+
+  const handleFilterSubmit = (values: SmsSentClientFilterValues) => {
+    applyFilters(values);
   };
 
   const handleFilterReset = () => {
     filterForm.reset(DEFAULT_FILTER_VALUES);
-    setAppliedFilters(DEFAULT_FILTER_VALUES);
-    setSelectedClientIds([]);
-  };
-
-  const handleStatusChange = (status: SmsSentClientStatus) => {
-    filterForm.setValue("client_status", status, { shouldDirty: true });
-    const nextValues = SmsSentClientFilterFormSchema.parse({
-      ...filterForm.getValues(),
-      client_status: status,
-    });
-    setAppliedFilters(nextValues);
-    setSelectedClientIds([]);
+    applyFilters(DEFAULT_FILTER_VALUES);
   };
 
   const handleSelectRow = (clientId: number, selected: boolean) => {
@@ -218,9 +351,8 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
       smsCount,
       selectedClientIds: hasTemplateSelected ? templateSelectedClientIds : selectedClientIds,
       preferClientIdsForTemplate: isSingleClientMode,
+      mode: sendMode,
     });
-
-    console.log(payload);
 
     await sendSms(payload);
 
@@ -239,15 +371,22 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 
   return (
     <div className="space-y-5 pr-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {!isSingleClientMode && (
-          <div>
-            <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
-            <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+      <div className="space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {!isSingleClientMode && (
+            <div>
+              <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
+              <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
+            <div className="flex min-w-0 flex-col gap-2">
+              <SmsSendModeSelector value={sendMode} onChange={setSendMode} />
+            </div>
           </div>
-        )}
-        <div className={isSingleClientMode ? "ml-auto" : undefined}>
-          <MyWallet />
+          <div className={isSingleClientMode ? "ml-auto" : undefined}>
+            <SmsPerUnitCost />
+          </div>
         </div>
       </div>
       <Form {...sendForm}>
@@ -291,16 +430,42 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
           )}
 
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                {t("sms_sent.sms_count.label")}:
-              </span>
-              <span className="text-base font-semibold tabular-nums">
-                <DisplayCount
-                  amount={smsCount}
-                  animate
-                />
-              </span>
+            <div className="flex min-w-0 flex-col gap-2">
+              {isTestMode && (
+                <p className="text-sm text-muted-foreground">{t("sms_sent.mode.test.notice")}</p>
+              )}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    {t("sms_sent.sms_count.label")}:
+                  </span>
+                  <span className="text-base font-semibold tabular-nums">
+                    <DisplayCount
+                      amount={smsCount}
+                      animate
+                    />
+                  </span>
+                </div>
+                {(smsCount > 1 || (isTestMode && smsCount > 0)) && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      {t("sms_sent.total_cost.label")}:
+                    </span>
+                    <span className={isTestMode ? "line-through opacity-70" : undefined}>
+                      <SmsMoneyValue
+                        amount={rate * smsCount}
+                        isLoading={isRateLoading}
+                        isError={isRateError}
+                      />
+                    </span>
+                    {isTestMode && (
+                      <span className="text-xs text-muted-foreground">
+                        {t("sms_sent.mode.test.not_charged")}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {smsCount > 0 ? (
@@ -310,8 +475,11 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                 variant="default"
                 size="default"
                 loading={isPending}
-                title={t("sms_sent.send")}
-              />
+                title={isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+              >
+                <Send className="size-4" />
+                {isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+              </MyButton>
             ) : (
               <MyTooltip content="sms_sent.sms_count.zero_tooltip">
                 <MyButton
@@ -320,8 +488,12 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                   variant="default"
                   size="default"
                   disabled
-                  title={t("sms_sent.send")}
-                />
+                  title={isTestMode ? t("sms_sent.mode.test.submit") : t("sms_sent.send")}
+                >
+                  <Send className="size-4" />
+                  {t("sms_sent.send")}
+                </MyButton>
+
               </MyTooltip>
             )}
           </div>
@@ -330,100 +502,59 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 
       {hasTemplateSelected && !isSingleClientMode && (
         <div className="space-y-4 rounded-lg border p-4 md:p-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
-              <p className="text-sm text-muted-foreground">
-                {t("sms_sent.client_list.description")}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                {t("sms_sent.sort_option.label")}:
-              </span>
-
-              <MyButton
-                type="button"
-                icon={false}
-                size="sm"
-                variant={appliedFilters.client_status === "active" ? "default" : "outline"}
-                title={t("sms_sent.sort_option.active_clients")}
-                onClick={() => handleStatusChange("active")}
-              />
-
-              <MyButton
-                type="button"
-                icon={false}
-                size="sm"
-                variant={appliedFilters.client_status === "inactive" ? "default" : "outline"}
-                title={t("sms_sent.sort_option.inactive_clients")}
-                onClick={() => handleStatusChange("inactive")}
-              />
-
-              <MyTooltip content="sms_sent.sort_option.all_clients_tooltip" className="max-w-xs text-sm">
-                <span className="inline-flex items-center gap-1">
-                  <MyButton
-                    type="button"
-                    icon={false}
-                    size="sm"
-                    variant={appliedFilters.client_status === "all" ? "default" : "outline"}
-                    title={t("sms_sent.sort_option.all_clients")}
-                    onClick={() => handleStatusChange("all")}
-                  />
-                  <Info className="h-4 w-4 text-muted-foreground" />
-                </span>
-              </MyTooltip>
-            </div>
+          <div>
+            <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
+            <p className="text-sm text-muted-foreground">
+              {t("sms_sent.client_list.description")}
+            </p>
           </div>
-
           <Form {...filterForm}>
             <form
               onSubmit={filterForm.handleSubmit(handleFilterSubmit)}
-              className="space-y-3"
+              className="flex flex-col gap-3 lg:flex-row lg:items-end"
             >
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                {filterFields.map((field) => {
-                  if (field.type === "dropdown") {
-                    return (
+              <div className="grid min-w-0 flex-1 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {filterFields.map((field) => (
+                  <div key={field.name} className="min-w-0">
+                    {field.type === "dropdown" ? (
                       <SelectDropdown
-                        key={field.name}
                         name={field.name}
                         label={field.label}
                         placeholder={field.placeholder}
                         api={field.api}
                         options={field.options}
                         isClearable={field.isClearable}
+                        onValueChange={(value) => {
+                          applyFilters({
+                            ...filterForm.getValues(),
+                            [field.name]: value,
+                          });
+                        }}
                       />
-                    );
-                  }
-
-                  return (
-                    <InputField
-                      key={field.name}
-                      name={field.name}
-                      label={field.label}
-                      placeholder={field.placeholder}
-                      type={field.type}
-                    />
-                  );
-                })}
+                    ) : field.type === "text" ? (
+                      <InputField
+                        name={field.name}
+                        label={field.label}
+                        placeholder={field.placeholder}
+                        type="text"
+                      />
+                    ) : null}
+                  </div>
+                ))}
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2">
                 <MyButton
                   action="search"
                   type="submit"
                   variant="default"
                   size="default"
-                  title={t("sms_sent.filters.apply")}
                 />
                 <MyButton
                   action="cancel"
                   type="button"
                   variant="outline"
                   size="default"
-                  title={t("sms_sent.filters.reset")}
                   onClick={handleFilterReset}
                 />
               </div>

@@ -28,7 +28,7 @@ const SmsSentTable: FC<SmsSentTableProps> = ({
   const { t } = useTranslation();
   const { data, isLoading, isFetching, isError, error, setCurrentPage } =
     useApiQuery<PaginatedApiResponse<SmsSentClientRow>>({
-      queryKey: ["sms-sent-clients"],
+      queryKey: ["sms-sent-clients", params ?? {}],
       url: "sms-clients",
       params,
       enabled,

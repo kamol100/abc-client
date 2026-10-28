@@ -24,6 +24,10 @@ export const SmsTemplateSummarySchema = z
 
 export type SmsTemplateSummary = z.infer<typeof SmsTemplateSummarySchema>;
 
+export const SmsSendModeSchema = z.enum(["live", "test"]);
+
+export type SmsSendMode = z.infer<typeof SmsSendModeSchema>;
+
 export const SmsSentClientRowSchema = z
   .object({
     id: z.coerce.number().optional(),
@@ -73,16 +77,17 @@ export const SmsSentFormSchema = z
 export type SmsSentFormInput = z.input<typeof SmsSentFormSchema>;
 export type SmsSentFormValues = z.output<typeof SmsSentFormSchema>;
 
-export const SmsSentClientStatusSchema = z.enum(["all", "active", "inactive"]);
-export type SmsSentClientStatus = z.infer<typeof SmsSentClientStatusSchema>;
+const SmsSentStatusFilterSchema = z.preprocess((value) => {
+  if (value === null || value === undefined || value === "" || value === "all") return "all";
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : value;
+}, z.union([z.literal("all"), z.literal(0), z.literal(1)]));
 
 export const SmsSentClientFilterSchema = z.object({
-  pppoe_username: z.string().trim().optional().default(""),
-  name: z.string().trim().optional().default(""),
-  phone: z.string().trim().optional().default(""),
+  any: z.string().trim().optional().default(""),
   network_id: NullableNumberSchema,
   zone_id: NullableNumberSchema,
-  client_status: SmsSentClientStatusSchema.default("all"),
+  status: SmsSentStatusFilterSchema.default("all"),
 });
 
 export type SmsSentClientFilterInput = z.input<typeof SmsSentClientFilterSchema>;
@@ -99,6 +104,7 @@ export const SmsSentPayloadSchema = z.object({
   clientIds: z.array(z.union([z.string(), z.number()])).nullable().optional(),
   client_filter: z.record(z.union([z.string(), z.number()])).optional(),
   sms_count: z.coerce.number().optional(),
+  mode: SmsSendModeSchema.default("live"),
 });
 
 export type SmsSentPayload = z.output<typeof SmsSentPayloadSchema>;
@@ -107,18 +113,12 @@ export function buildSmsSentClientParams(
   filters: SmsSentClientFilterValues
 ): Record<string, string | number> {
   const params: Record<string, string | number> = {};
+  const any = filters.any?.trim();
 
-  const pppoeUsername = filters.pppoe_username?.trim();
-  const name = filters.name?.trim();
-  const phone = filters.phone?.trim();
-
-  if (pppoeUsername) params.pppoe_username = pppoeUsername;
-  if (name) params.name = name;
-  if (phone) params.phone = phone;
+  if (any) params.any = any;
   if (filters.network_id) params.network_id = filters.network_id;
   if (filters.zone_id) params.zone_id = filters.zone_id;
-  if (filters.client_status === "active") params.status = 1;
-  if (filters.client_status === "inactive") params.status = 0;
+  if (filters.status === 0 || filters.status === 1) params.status = filters.status;
 
   return params;
 }
@@ -129,6 +129,7 @@ type BuildPayloadOptions = {
   smsCount: number;
   selectedClientIds?: (string | number)[];
   preferClientIdsForTemplate?: boolean;
+  mode?: SmsSendMode;
 };
 
 export function buildSmsSentPayload({
@@ -137,6 +138,7 @@ export function buildSmsSentPayload({
   smsCount,
   selectedClientIds,
   preferClientIdsForTemplate = false,
+  mode = "live",
 }: BuildPayloadOptions): SmsSentPayload {
   const hasTemplate =
     formValues.sms_template_id !== null && formValues.sms_template_id !== undefined;
@@ -153,14 +155,10 @@ export function buildSmsSentPayload({
     message: smsBody,
     custom_message: smsBody,
     all_client: hasTemplate && (!selectedClientIds || selectedClientIds.length === 0) ? 1 : 0,
-    status:
-      filterValues.client_status === "all"
-        ? null
-        : filterValues.client_status === "active"
-          ? 1
-          : 0,
+    status: filterValues.status === 0 || filterValues.status === 1 ? filterValues.status : null,
     clientIds: selectedClientIds && selectedClientIds.length > 0 ? selectedClientIds : null,
     client_filter: hasTemplate ? clientFilter : undefined,
     sms_count: smsCount,
+    mode,
   };
 }

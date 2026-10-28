@@ -1,23 +1,24 @@
 ## Summary
 
-Column hide/show choices are stored in `localStorage` and restored for the same page and table. The storage key is `data-table:column-visibility:{pathname}:{queryKey}`. A table without `queryKey` uses its hideable column ids, so two tables on one page do not share settings. Hiding a column on Clients does not change Invoices.
-
-The toggle UI is unchanged. Preferences are applied before the column headers paint: the table stays on its skeleton until the saved visibility is read, then renders the final columns. Missing, corrupt, or outdated stored values fall back to the default visibility, including `initialColumnVisibility`. Columns that cannot be hidden are left alone. Tables with `toggleColumns` off do not read or write storage.
+Send SMS has a Live / Test choice above the form. Live is selected by default and is what gets submitted unless the user picks Test. Test mode tells the API `mode: "test"`, shows that no SMS will be sent and no charge applies, and uses a different success message. Simulated rows in Communication Logs show a Test badge instead of Sent.
 
 ## Files
 
-- `components/data-table/data-table.tsx`
-- `components/data-table/column-visibility.ts`
-- `components/data-table/use-persisted-column-visibility.ts`
-- `tests/unit/data-table/column-visibility.test.ts`
-- `tests/unit/data-table/column-visibility-persistence.test.tsx`
+- `components/sms-sent/sms-sent-form.tsx` — mode cards, notice, button, and toast
+- `components/sms-sent/sms-sent-type.ts` — `mode` on the payload, default `live`
+- `components/communication-logs/communication-log-column.tsx` — Test badge
+- `components/communication-logs/communication-log-filter-schema.ts` — simulated status filter
+- `public/lang/en.json`
+- `public/lang/bn.json`
+- `tests/unit/sms-sent/sms-sent-type.test.ts`
+- `tests/unit/sms-sent/sms-send-mode-selector.test.tsx`
 
 ## Checks
 
-`npx vitest run` on the two column-visibility test files passed (12 tests). `scripts/ai/typecheck` passed.
+`scripts/ai/typecheck` passed.
 
-The clients page was not opened in a browser. No dev server was running, and the page needs a signed-in staff session. The table test renders `DataTable`, restores a hidden Email column, shows it again from the toggle, and confirms that choice is what a remount reads back.
+`npx vitest run tests/unit/sms-sent` passed (4 tests). The full `scripts/ai/test` run finished with 398 passed and 4 failed in unrelated files: `reseller-client-table`, `reseller-client-filter-schema`, `client-map-rows`, and `pay-content`.
 
 ## Git
 
-Uncommitted. `app/layout.tsx` still has the earlier PWA install-prompt unmount and was not part of this change.
+Uncommitted. Earlier Send SMS filter and table edits in `components/sms-sent/` were already in the tree and were left in place.
