@@ -4,8 +4,10 @@ import {
   SmsSentClientFilterSchema,
   SmsSentFormSchema,
   SmsSentPayloadSchema,
+  buildSmsSentClientParams,
   buildSmsSentPayload,
   canConfirmSmsSend,
+  isInvoiceDueSmsTemplate,
   type SmsSendQuote,
 } from "@/components/sms-sent/sms-sent-type";
 
@@ -49,6 +51,20 @@ describe("sms send mode payload", () => {
       custom_message: "Hello",
       mode: "sandbox",
     }).success).toBe(false);
+  });
+});
+
+describe("invoice due client list", () => {
+  it("asks for due invoices only for invoice due and reminder templates", () => {
+    expect(isInvoiceDueSmsTemplate("invoice_due")).toBe(true);
+    expect(isInvoiceDueSmsTemplate("invoice_due_reminder")).toBe(true);
+    expect(isInvoiceDueSmsTemplate("custom")).toBe(false);
+    expect(isInvoiceDueSmsTemplate(null)).toBe(false);
+
+    expect(buildSmsSentClientParams(filterValues, { invoiceDueOnly: true })).toEqual({
+      invoice: "due",
+    });
+    expect(buildSmsSentClientParams(filterValues)).toEqual({});
   });
 });
 

@@ -29,6 +29,7 @@ import {
   SmsSentPayload,
   buildSmsSentClientParams,
   buildSmsSentPayload,
+  isInvoiceDueSmsTemplate,
 } from "@/components/sms-sent/sms-sent-type";
 import DisplayCount from "@/components/display-count";
 import DisplayMoney from "@/components/display-money";
@@ -231,6 +232,15 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
     enabled: hasTemplateSelected,
   });
 
+  const resolvedTemplate =
+    hasTemplateSelected &&
+    templateDetails?.data &&
+    templateDetails.data.id === Number(selectedTemplateId)
+      ? templateDetails.data
+      : null;
+  const invoiceDueOnly = isInvoiceDueSmsTemplate(resolvedTemplate?.template_type);
+  const clientListReady = resolvedTemplate !== null;
+
   useEffect(() => {
     sendForm.reset(createDefaultSendFormValues(phone));
     setHydratedTemplateId(null);
@@ -262,12 +272,16 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
     }
   }, [hasTemplateSelected]);
 
+  useEffect(() => {
+    setSelectedClientIds([]);
+  }, [selectedTemplateId]);
+
   const clientParams = useMemo(
     () =>
-      hasTemplateSelected && !isSingleClientMode
-        ? buildSmsSentClientParams(appliedFilters)
+      clientListReady && !isSingleClientMode
+        ? buildSmsSentClientParams(appliedFilters, { invoiceDueOnly })
         : undefined,
-    [appliedFilters, hasTemplateSelected, isSingleClientMode]
+    [appliedFilters, clientListReady, invoiceDueOnly, isSingleClientMode]
   );
 
   const templateSelectedClientIds =
@@ -524,12 +538,16 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
         onConfirm={handleConfirmSend}
       />
 
-      {hasTemplateSelected && !isSingleClientMode && (
+      {clientListReady && !isSingleClientMode && (
         <div className="space-y-4 rounded-lg border p-4 md:p-5">
           <div>
             <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
             <p className="text-sm text-muted-foreground">
-              {t("sms_sent.client_list.description")}
+              {t(
+                invoiceDueOnly
+                  ? "sms_sent.client_list.invoice_due_description"
+                  : "sms_sent.client_list.description"
+              )}
             </p>
           </div>
           <Form {...filterForm}>
@@ -586,7 +604,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
           </Form>
 
           <SmsSentTable
-            enabled={hasTemplateSelected}
+            enabled={clientListReady}
             params={clientParams}
             onTotalCountChange={setBulkSmsCount}
             selectedClientIds={selectedClientIds}

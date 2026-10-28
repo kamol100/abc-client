@@ -3,9 +3,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { cellIndex } from "@/lib/helper/helper";
+import DisplayCount from "@/components/display-count";
 import { SmsSentClientRow } from "@/components/sms-sent/sms-sent-type";
 import { Checkbox } from "@/components/ui/checkbox";
+import { cellIndex } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 
 type GetPagination = () => Pagination | undefined;
 
@@ -149,16 +151,21 @@ function SmsSentClientAddressCell({ client }: { client: SmsSentClientRow }) {
 function SmsSentClientPackageCell({ client }: { client: SmsSentClientRow }) {
   const { t } = useTranslation();
   const inactive = client.status === 0;
+  const totalDue = client.invoiceDue?.reduce((sum, invoice) => sum + invoice.total_amount, 0);
+  const dueAmount = totalDue && totalDue > 0 ? totalDue : 0;
 
   return (
     <div className="flex flex-col gap-0.5 min-w-[150px]">
-      <span className={inactive ? "font-semibold text-sm text-destructive" : "font-semibold text-sm"}>
+      <span className={cn("font-semibold text-sm", inactive && "text-destructive")}>
         {client.package?.name || "—"}
       </span>
-      <span className={inactive ? "text-sm text-destructive/80" : "text-sm"}>
+      <span className={cn("text-sm", inactive ? "text-destructive/80" : "text-foreground")}>
+        {t("client.table.total_due")}: <DisplayCount amount={dueAmount} formatCurrency />
+      </span>
+      <span className={cn("text-sm capitalize", inactive && "text-destructive/80")}>
         {client.billing_term || "—"}
       </span>
-      <span className={inactive ? "text-xs text-destructive/60" : "text-xs text-muted-foreground"}>
+      <span className={cn("text-xs", inactive ? "text-destructive/60" : "text-muted-foreground")}>
         {t("client.table.deadline")}: {client.payment_deadline || "—"}
       </span>
     </div>

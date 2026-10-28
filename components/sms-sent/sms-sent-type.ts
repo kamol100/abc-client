@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { InvoiceDueItemSchema } from "@/components/clients/client-type";
 
 const NullableNumberSchema = z.preprocess((value) => {
   if (value === null || value === undefined || value === "") return null;
@@ -43,6 +44,7 @@ export const SmsSentClientRowSchema = z
     package: RefSchema.nullable().optional(),
     billing_term: z.enum(["prepaid", "postpaid"]).nullable().optional(),
     payment_deadline: z.string().nullable().optional(),
+    invoiceDue: z.array(InvoiceDueItemSchema).nullable().optional(),
     discount: z.string().nullable().optional(),
   })
   .passthrough();
@@ -93,6 +95,15 @@ export const SmsSentClientFilterSchema = z.object({
 export type SmsSentClientFilterInput = z.input<typeof SmsSentClientFilterSchema>;
 export type SmsSentClientFilterValues = z.output<typeof SmsSentClientFilterSchema>;
 
+const INVOICE_DUE_TEMPLATE_TYPES = ["invoice_due", "invoice_due_reminder"] as const;
+
+export function isInvoiceDueSmsTemplate(templateType: string | null | undefined): boolean {
+  return (
+    templateType === INVOICE_DUE_TEMPLATE_TYPES[0] ||
+    templateType === INVOICE_DUE_TEMPLATE_TYPES[1]
+  );
+}
+
 export const SmsSentPayloadSchema = z.object({
   phone: z.string().nullable().optional(),
   sms_body: z.string(),
@@ -129,7 +140,8 @@ export function canConfirmSmsSend(quote: SmsSendQuote, mode: SmsSendMode): boole
 }
 
 export function buildSmsSentClientParams(
-  filters: SmsSentClientFilterValues
+  filters: SmsSentClientFilterValues,
+  options?: { invoiceDueOnly?: boolean }
 ): Record<string, string | number> {
   const params: Record<string, string | number> = {};
   const any = filters.any?.trim();
@@ -138,6 +150,7 @@ export function buildSmsSentClientParams(
   if (filters.network_id) params.network_id = filters.network_id;
   if (filters.zone_id) params.zone_id = filters.zone_id;
   if (filters.status === 0 || filters.status === 1) params.status = filters.status;
+  if (options?.invoiceDueOnly) params.invoice = "due";
 
   return params;
 }

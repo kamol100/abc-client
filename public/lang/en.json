@@ -2196,7 +2196,8 @@
         },
         "client_list": {
             "title": "Client List",
-            "description": "SMS will be sent to all clients that match the current filters."
+            "description": "SMS will be sent to all clients that match the current filters.",
+            "invoice_due_description": "Only clients with an invoice due are listed for this template."
         },
         "sort_option": {
             "label": "Sort Option",
