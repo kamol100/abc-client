@@ -6,8 +6,9 @@ import MyButton from "@/components/my-button";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
 import type { InvoiceDetail, InvoiceRow } from "@/components/invoices/invoice-type";
-import { CreditCard, Loader2, Printer } from "lucide-react";
+import { CreditCard, Eye, Loader2, Printer } from "lucide-react";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
+import InvoiceViewDialog from "@/components/invoices/invoice-view-dialog";
 import dynamic from "next/dynamic";
 const BulkInvoicePayDialog = dynamic(() => import("./bulk-invoice-pay-dialog"), { ssr: false });
 import { InvoiceDueItem } from "../clients/client-type";
@@ -23,6 +24,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "in
     const { hasPermission } = usePermissions();
     const [payOpen, setPayOpen] = useState(false);
     const [printOpen, setPrintOpen] = useState(false);
+    const [viewOpen, setViewOpen] = useState(false);
     const [invoiceDue, setInvoiceDue] = useState<InvoiceDueItem[]>([]);
     const [loading, setLoading] = useState(false);
     const normalizedStatus = invoice.status === "partial_paid" ? "partial" : invoice.status;
@@ -36,8 +38,9 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "in
     const canPrint =
         hasPermission("invoices.show") &&
         (normalizedStatus === "paid" || normalizedStatus === "partial");
+    const canView = hasPermission("invoices.show");
     const canDelete = hasPermission("invoices.delete");
-    const hasActions = canEdit || canPay || canPrint || canDelete;
+    const hasActions = canEdit || canPay || canPrint || canView || canDelete;
 
     if (!hasActions) {
         return <div className="text-right text-muted-foreground mr-2">-</div>;
@@ -71,10 +74,31 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "in
                     </MyButton>
                 )}
 
+                {canView && (
+                    <MyButton
+                        variant="outline"
+                        type="button"
+                        tooltip="invoice.actions.view"
+                        tooltipPlacement="top"
+                        tooltipDelay={0}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            setViewOpen(true);
+                        }}
+                        aria-label={t("invoice.actions.view")}
+                    >
+                        <Eye className="h-4 w-4" />
+                    </MyButton>
+                )}
+
                 {canPrint && (
                     <MyButton
                         variant="outline"
-                        onClick={() => setPrintOpen(true)}
+                        type="button"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            setPrintOpen(true);
+                        }}
                         aria-label={t("invoice.actions.print")}
                     >
                         <Printer className="h-4 w-4" />
@@ -101,6 +125,12 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "in
                 invoices={[invoice as InvoiceDetail]}
                 open={printOpen}
                 onOpenChange={setPrintOpen}
+            />
+            <InvoiceViewDialog
+                invoiceKey={invoice.uuid ?? ""}
+                fallback={invoice}
+                open={viewOpen}
+                onOpenChange={setViewOpen}
             />
         </>
     );

@@ -61,6 +61,7 @@ interface MyDialogProps {
   footer?:
     | ReactNode
     | ((props: { close: () => void; loading: boolean }) => ReactNode);
+  headerAction?: ReactNode;
   preventCloseOnLoading?: boolean;
   autoCloseOnSuccess?: boolean;
   contentClassName?: string;
@@ -84,6 +85,7 @@ export function MyDialog({
   showFooter,
   loading: externalLoading,
   footer,
+  headerAction,
   preventCloseOnLoading = true,
   autoCloseOnSuccess = true,
   contentClassName,
@@ -158,12 +160,17 @@ export function MyDialog({
         onInteractOutside={isLoading ? (e) => e.preventDefault() : undefined}
         onEscapeKeyDown={isLoading ? (e) => e.preventDefault() : undefined}
       >
-        {(title || description) && (
+        {(title || description || headerAction) && (
           <DialogHeader className="shrink-0 pb-4">
-            {title && <DialogTitle>{t(title, titleValues)}</DialogTitle>}
-            {description && (
-              <DialogDescription>{t(description)}</DialogDescription>
-            )}
+            <div className="flex items-start justify-between gap-3 pr-8">
+              <div className="min-w-0 space-y-1.5">
+                {title && <DialogTitle>{t(title, titleValues)}</DialogTitle>}
+                {description && (
+                  <DialogDescription>{t(description)}</DialogDescription>
+                )}
+              </div>
+              {headerAction && <div className="shrink-0 print:hidden">{headerAction}</div>}
+            </div>
           </DialogHeader>
         )}
 

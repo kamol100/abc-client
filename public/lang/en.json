@@ -1880,7 +1880,19 @@
             "edit": "Edit",
             "pay": "Pay",
             "print": "Print",
-            "delete": "Delete"
+            "delete": "Delete",
+            "view": "View"
+        },
+        "view": {
+            "title": "View Invoice",
+            "heading": "INVOICE",
+            "invoice_date": "Invoice Date",
+            "total_bill": "Total Bill",
+            "merchant": "Merchant",
+            "customer": "Customer",
+            "product": "Product",
+            "unit_price": "Unit Price",
+            "total_quantity": "Total Quantity"
         },
         "pay": {
             "title": "Pay Invoice",

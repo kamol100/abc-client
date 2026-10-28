@@ -1880,7 +1880,19 @@
             "edit": "এডিট",
             "pay": "পে",
             "print": "প্রিন্ট",
-            "delete": "ডিলিট"
+            "delete": "ডিলিট",
+            "view": "দেখুন"
+        },
+        "view": {
+            "title": "ইনভয়েস দেখুন",
+            "heading": "ইনভয়েস",
+            "invoice_date": "ইনভয়েস তারিখ",
+            "total_bill": "মোট বিল",
+            "merchant": "মার্চেন্ট",
+            "customer": "কাস্টমার",
+            "product": "প্রোডাক্ট",
+            "unit_price": "ইউনিট প্রাইস",
+            "total_quantity": "মোট পরিমাণ"
         },
         "pay": {
             "title": "ইনভয়েস পে",

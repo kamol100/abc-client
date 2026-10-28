@@ -673,3 +673,86 @@ body {
     background: hsl(var(--foreground) / 0.4);
   }
 }
+
+@media print {
+  @page {
+    margin: 12mm;
+    size: A4;
+  }
+
+  body.invoice-view-printing > *:not(#invoice-view-print-root) {
+    display: none !important;
+  }
+
+  #invoice-view-print-root {
+    display: block !important;
+    width: 100%;
+    background: #fff;
+    color: #111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #invoice-view-print-root .invoice-view-sheet,
+  #invoice-view-print-root .invoice-view-sheet * {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  #invoice-view-print-root .invoice-view-sheet {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    background: #fff;
+    color: #111;
+    box-shadow: none;
+  }
+
+  #invoice-view-print-root .invoice-view-header,
+  #invoice-view-print-root .invoice-view-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  #invoice-view-print-root .invoice-view-parties {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  #invoice-view-print-root .invoice-view-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 70mm;
+    align-items: start;
+    gap: 1.5rem;
+    overflow: visible;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  #invoice-view-print-root .invoice-view-note {
+    overflow: visible;
+    max-height: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  #invoice-view-print-root .invoice-view-totals {
+    width: 70mm;
+  }
+
+  #invoice-view-print-root table {
+    width: 100%;
+    min-width: 0 !important;
+    border-collapse: collapse;
+  }
+
+  #invoice-view-print-root tr,
+  #invoice-view-print-root .invoice-view-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
