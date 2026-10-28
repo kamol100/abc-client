@@ -2262,6 +2262,8 @@
         "create_title": "Add SMS Template",
         "edit_title": "Edit SMS Template",
         "delete_confirmation": "Are you sure you want to delete this SMS template?",
+        "import": "Import",
+        "import_success": "SMS templates imported",
         "name": {
             "label": "Template Name",
             "placeholder": "Enter template name",
