@@ -4518,6 +4518,22 @@
             "deleted": "Archived client permanently deleted"
         }
     },
+    "traffic_report": {
+        "title": "Traffic Report",
+        "this_week": "This Week Data",
+        "this_month": "This Month Data",
+        "last_month": "Last Month Data",
+        "download": "Download Data Used",
+        "upload": "Upload Data Used",
+        "total": "Total Data Used",
+        "chart_title": "Usage",
+        "date_range": "Date range",
+        "unavailable": "Unavailable",
+        "empty": "No usage recorded for this period",
+        "incomplete": "Usage collection started during this period",
+        "omitted_days": "Days without recorded traffic are not shown",
+        "retry": "Retry"
+    },
     "menu": {
         "dashboard": {
             "title": "Dashboard"
@@ -4575,6 +4591,9 @@
             "gateways": {
                 "title": "Payment Gateways"
             }
+        },
+        "traffic_report": {
+            "title": "Traffic Report"
         },
         "maps": {
             "title": "Maps",

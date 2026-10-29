@@ -4,6 +4,7 @@ import {
   Archive,
   Banknote,
   Building2,
+  ChartColumn,
   ClipboardList,
   CircleDollarSign,
   CreditCard,
@@ -146,6 +147,13 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.payments.title"),
       url: "/client/payments",
       icon: Banknote,
+      permissions: [],
+    },
+    {
+      id: 37,
+      title: t("menu.traffic_report.title"),
+      url: "/client/traffic-report",
+      icon: ChartColumn,
       permissions: [],
     },
     {

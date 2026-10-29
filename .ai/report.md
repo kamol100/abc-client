@@ -1,23 +1,31 @@
 ## Summary
 
-The create-client PPPoE ID label now shows the next ownership-scoped SID after the required mark, for example `PPPoE ID * SID:8` when the last company SID is 7. Edit and import forms stay unchanged.
+`/client/traffic-report` is in the client sidebar and shows this week, this month, and last month totals, a daily usage chart, and a paginated history table. The default range is the current month in the usage timezone. A date filter changes the chart and table together. The three cards stay on their fixed periods.
+
+Signed in as client `01677217100` on `http://vp.isp.test/client/traffic-report` after local usage rows were added for that client. Cards showed 16 GB, 43.6 GB, and 11.9 GB. Page 2 showed 7 Oct, 4 Oct, and 2 Oct. Filtering 1–30 Sep showed the four September rows and left the cards unchanged.
 
 ## Files
 
-- `components/clients/client-form.tsx`
-- `components/clients/client-form-schema.ts`
-- `components/label.tsx`
-- `components/form-wrapper/form-builder-type.ts`
+- `app/(client-dashboard)/client/traffic-report/page.tsx`
+- `components/client-area/traffic-report/client-traffic-report.tsx`
+- `components/client-area/traffic-report/traffic-report-format.ts`
+- `components/client-area/traffic-report/traffic-report-type.ts`
+- `hooks/use-client-menu-items.ts`
+- `hooks/use-menu-items.ts`
+- `components/client-area/client-top-navbar.tsx`
+- `app/(dashboard)/dashboard-breadcrumb.tsx`
 - `public/lang/en.json`
 - `public/lang/bn.json`
-- `tests/unit/clients/client-form-schema.test.ts`
+- `tests/unit/client-area/traffic-report-format.test.ts`
 
 ## Checks
 
-- `npx vitest run tests/unit/clients/client-form-schema.test.ts`: 5 passed.
-- `npx tsc --noEmit`: passed.
-- Browser: signed in on `http://vp.isp.test/clients/create`. The PPPoE ID label rendered `PPPoE ID * SID:8`.
+`npx vitest run tests/unit/client-area/traffic-report-format.test.ts`: 3 passed.
+
+`npx tsc --noEmit`: passed.
+
+Browser: client login, default month, page 2, and a September date range on `vp.isp.test`.
 
 ## Git
 
-Uncommitted. The SID preview depends on `GET /api/v1/client-next-sid` in `isp-backend`.
+Uncommitted. Depends on `GET /api/v1/client-traffic-report` in `isp-backend`.

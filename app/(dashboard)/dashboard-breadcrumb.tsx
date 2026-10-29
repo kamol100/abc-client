@@ -33,6 +33,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",
+  "/client/traffic-report": "menu.traffic_report.title",
   "/client-maps": "menu.maps.client_maps.title",
   "/tj-box-maps": "menu.maps.tj_box_maps.title",
   "/tj-boxes": "menu.maps.tj_boxes.title",

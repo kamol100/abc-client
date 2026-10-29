@@ -25,6 +25,7 @@ const CLIENT_ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",
+  "/client/traffic-report": "menu.traffic_report.title",
   "/client/tickets": "menu.tickets.title",
   "/client/history": "menu.history.title",
 };

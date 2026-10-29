@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import {
   Banknote,
+  ChartColumn,
   FileText,
   Headset,
   History,
@@ -42,6 +43,13 @@ function buildClientMenuConfig(t: (key: string) => string): ClientMenuItemConfig
       url: "/client/payments",
       icon: Banknote,
       permissions: ["client.invoices"],
+    },
+    {
+      id: 6,
+      title: t("menu.traffic_report.title"),
+      url: "/client/traffic-report",
+      icon: ChartColumn,
+      permissions: ["client.traffic-report"],
     },
     {
       id: 5,
