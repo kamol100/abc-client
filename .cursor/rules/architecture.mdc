@@ -1,0 +1,25 @@
+---
+description: Tenant isolation and authorization rules for the ISP admin and subscriber frontend. Applies to every task.
+alwaysApply: true
+---
+
+# Tenant isolation in the frontend (non-negotiable)
+
+Canonical reference (sibling repository, same workspace): `../isp-backend/docs/architecture/multi-tenancy.md`. Known gaps: `../isp-backend/docs/architecture/tenant-isolation-audit.md`. Read §3 (tenant resolution) and §10 (frontend) before touching auth, sessions, API calls, caching, impersonation, or tenant/company screens. If the sibling checkout is missing, the rules below are the required minimum; say in your report that the canonical file was not available.
+
+**The Laravel API is the only security boundary. The frontend must not leak or mix tenants, and must never be the only check.**
+
+## Rules
+
+- Tenant context is the authenticated session (Sanctum token inside the NextAuth JWT). Never send `company_id` or `reseller_id` as authorization input, and never let UI choose another tenant except on platform-administrator screens backed by a platform endpoint.
+- `host` sent to login, password reset, public pay, and branding (`window.location.hostname`, `fetchHostName()` in `app/layout.tsx`) is a tenant hint for the API. Do not derive permissions or tenant identity from it in the client.
+- `hasPermission("route.name")` only hides UI. Do not add a feature whose backend route lacks its own authorization; report it instead.
+- The token stays server-side (`app/actions.ts` `useFetch`, `lib/api/api.ts`). No `localStorage`, no non-HttpOnly or parent-domain cookies.
+- Server fetches that carry a bearer token must not be shared-cached (`cache: "no-store"` or no `next.revalidate`). Public caches must include the host in the key, as `getCompanyPublicData()` does. No module-level server state holding tenant data.
+- Identity switches (logout, impersonation start/leave, tenant switcher) keep doing a full navigation. If you add an in-place switch, clear the TanStack Query cache. `public/sw.js` must keep never caching `/api/`, `/auth/`, `/dashboard`.
+- `company_id = 1` is the platform tenant. Platform screens (companies, subscriptions, plans, impersonation, tenant wallet recharge) are gated by platform-only permissions from the API, never by checking the company id in the browser.
+
+## Reporting
+
+- List any backend authorization gap you notice (route without a permission, ownership not checked) in the report instead of working around it in the UI.
+- Do not claim tenant isolation is verified from frontend code alone.
