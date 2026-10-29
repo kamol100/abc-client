@@ -1,31 +1,23 @@
 ## Summary
 
-Invoice rows now have a view action that opens the selected invoice in a dialog. The dialog follows the reference invoice layout and prints only that invoice through the browser print dialog. The invoice header uses the same company logo as the sidebar (`profile.company.logo` or the reseller logo). The company name stays in the Merchant block. If the logo file fails to load, the name is shown instead of a broken image.
-
-## Cause
-
-The row actions could pay or print a thermal receipt, but there was no on-page view of the full invoice, its note, or a page-sized print.
+The create-client PPPoE ID label now shows the next ownership-scoped SID after the required mark, for example `PPPoE ID * SID:8` when the last company SID is 7. Edit and import forms stay unchanged.
 
 ## Files
 
-- `components/invoices/invoice-row-actions.tsx`
-- `components/invoices/invoice-view-dialog.tsx`
-- `components/invoices/invoice-view-document.tsx`
-- `components/invoices/invoice-view-model.ts`
-- `components/my-dialog.tsx`
-- `app/globals.css`
+- `components/clients/client-form.tsx`
+- `components/clients/client-form-schema.ts`
+- `components/label.tsx`
+- `components/form-wrapper/form-builder-type.ts`
 - `public/lang/en.json`
 - `public/lang/bn.json`
-- `tests/unit/invoices/invoice-view-model.test.ts`
-- `tests/unit/invoices/invoice-view-document.test.tsx`
-- `tests/unit/invoices/invoice-row-actions-view.test.tsx`
+- `tests/unit/clients/client-form-schema.test.ts`
 
 ## Checks
 
+- `npx vitest run tests/unit/clients/client-form-schema.test.ts`: 5 passed.
 - `npx tsc --noEmit`: passed.
-- `npx vitest run` on the three new invoice view tests: 7 passed.
-- Browser: opened `http://127.0.0.1:3000/invoices` while signed in. The invoice table stayed on its loading skeleton, so the view button was not clicked in the browser.
+- Browser: signed in on `http://vp.isp.test/clients/create`. The PPPoE ID label rendered `PPPoE ID * SID:8`.
 
 ## Git
 
-Uncommitted. Only the files listed above.
+Uncommitted. The SID preview depends on `GET /api/v1/client-next-sid` in `isp-backend`.

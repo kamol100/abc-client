@@ -3,6 +3,34 @@ import { ClientFormFieldSchema } from "@/components/clients/client-form-schema";
 import { applyFormFieldDefaults } from "@/components/form-wrapper/form-field-defaults";
 
 describe("ClientFormFieldSchema", () => {
+  it("shows the next sid on the create pppoe label", () => {
+    const sections = ClientFormFieldSchema({ mode: "create", nextSid: 8 });
+    const username = sections
+      .flatMap((section) => section.form)
+      .find((field) => field.name === "pppoe_username");
+
+    expect(username?.label).toMatchObject({
+      labelText: "client.pppoe_username.label",
+      mandatory: true,
+      labelTrailing: "client.pppoe_username.next_sid",
+      labelTrailingValues: { sid: 8 },
+    });
+  });
+
+  it("omits the next sid while creating until the number is known and while editing", () => {
+    const pending = ClientFormFieldSchema({ mode: "create" });
+    const editing = ClientFormFieldSchema({ mode: "edit", nextSid: 8 });
+    const pendingUsername = pending
+      .flatMap((section) => section.form)
+      .find((field) => field.name === "pppoe_username");
+    const editingUsername = editing
+      .flatMap((section) => section.form)
+      .find((field) => field.name === "pppoe_username");
+
+    expect(pendingUsername?.label).not.toHaveProperty("labelTrailing");
+    expect(editingUsername?.label).not.toHaveProperty("labelTrailing");
+  });
+
   it("selects the first payment term option by default", () => {
     const sections = ClientFormFieldSchema({ mode: "create" });
     const paymentTerm = sections

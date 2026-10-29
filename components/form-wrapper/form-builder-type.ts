@@ -13,6 +13,8 @@ export type LabelProps = {
     tooltip?: string | null;
     tooltipClass?: string;
     labelSuffix?: string;
+    labelTrailing?: string;
+    labelTrailingValues?: Record<string, string | number>;
 };
 
 export type SelectOption = {

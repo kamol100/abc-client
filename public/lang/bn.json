@@ -1404,6 +1404,7 @@
         },
         "pppoe_username": {
             "label": "পিপিপিওই আইডি",
+            "next_sid": "এসআইডি:{{sid}}",
             "placeholder": "পিপিপিওই আইডি দিন",
             "errors": {
                 "required": "পিপিপিওই আইডি আবশ্যক"

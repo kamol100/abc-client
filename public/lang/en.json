@@ -1404,6 +1404,7 @@
         },
         "pppoe_username": {
             "label": "PPPoE ID",
+            "next_sid": "SID:{{sid}}",
             "placeholder": "Enter PPPoE ID",
             "errors": {
                 "required": "PPPoE ID is required"
