@@ -4,6 +4,7 @@ import { type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { User, Wifi, WifiOff } from "lucide-react";
 import Card from "@/components/card";
+import ClientSpeedWidget from "@/components/clients/client-speed-widget";
 import MyBadge from "@/components/my-badge";
 import OnuStatusBadge from "@/components/onu/onu-status-badge";
 import { getClientTerminationDateDisplay } from "@/components/clients/client-termination-date";
@@ -25,7 +26,13 @@ export default function ClientDashboardInfo({ data, isLoading, isError }: Props)
   return (
     <Card>
       <section className="p-4" aria-busy={isLoading || undefined}>
-        <h2 className="text-xl font-bold text-foreground">{t("client_dashboard.info.title")}</h2>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-xl font-bold text-foreground">{t("client_dashboard.info.title")}</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">{t("client_dashboard.info.live_speed")}</span>
+            <ClientSpeedWidget url="client-dashboard-speed" />
+          </div>
+        </div>
         {isLoading ? (
           <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: SKELETON_FIELDS }, (_, index) => (

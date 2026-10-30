@@ -10,13 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 import { clientProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import { signOutClient } from "@/lib/auth/client-sign-out";
-import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
+import { CLIENT_DASHBOARD_PATH, CLIENT_PROFILE_PATH } from "@/lib/auth/routes";
 
 function getInitials(name: string): string {
   return name
@@ -33,6 +33,11 @@ export function ClientProfile() {
   const { profile } = useProfile();
   const name = profile?.name ?? "";
   const email = profile?.email ?? "";
+  const phone =
+    profile?.phone != null && String(profile.phone).trim() !== ""
+      ? String(profile.phone)
+      : "";
+  const subtitle = phone || email;
   const avatar = clientProfileAvatarSrc(profile?.photo);
 
   const handleLogout = async () => {
@@ -68,7 +73,7 @@ export function ClientProfile() {
             <div className="grid min-w-0 flex-1 leading-tight">
               <span className="truncate font-medium">{name || "—"}</span>
               <span className="truncate text-xs text-muted-foreground">
-                {email || "—"}
+                {subtitle || "—"}
               </span>
             </div>
           </div>
@@ -78,6 +83,12 @@ export function ClientProfile() {
           <Link href={CLIENT_DASHBOARD_PATH} className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             {t("client_profile.dashboard")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={CLIENT_PROFILE_PATH} className="flex items-center gap-2">
+            <UserRound className="h-4 w-4" />
+            {t("client_profile.profile")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

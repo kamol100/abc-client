@@ -1,21 +1,26 @@
 "use client";
 
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Upload, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { ClientSpeed } from "./client-type";
+import { ClientSpeed } from "@/components/clients/client-type";
 
 interface Props {
-    clientId: string;
+    clientId?: string;
+    url?: string;
 }
 
-const ClientSpeedWidget: FC<Props> = ({ clientId }) => {
+const ClientSpeedWidget: FC<Props> = ({ clientId, url }) => {
+    const { t } = useTranslation();
+    const speedUrl = url ?? `clients-speed/${clientId ?? ""}`;
     const { data, isLoading } = useApiQuery<ApiResponse<ClientSpeed>>({
-        queryKey: ["client-speed", clientId],
-        url: `clients-speed/${clientId}`,
+        queryKey: ["client-speed", speedUrl],
+        url: speedUrl,
         pagination: false,
+        enabled: Boolean(url) || Boolean(clientId),
         refetchInterval: () => (typeof document !== "undefined" && document.hidden ? false : 15_000),
         refetchIntervalInBackground: false,
         retry: 0,
@@ -34,12 +39,12 @@ const ClientSpeedWidget: FC<Props> = ({ clientId }) => {
 
     return (
         <div className="flex gap-2">
-            <Badge variant="secondary" className="gap-1 text-xs">
-                <Upload className="h-3 w-3" />
+            <Badge variant="secondary" className="gap-1 text-xs" aria-label={t("client.speed.upload")}>
+                <Upload className="h-3 w-3" aria-hidden />
                 {speed?.upload_speed ?? "—"}
             </Badge>
-            <Badge variant="secondary" className="gap-1 text-xs">
-                <Download className="h-3 w-3" />
+            <Badge variant="secondary" className="gap-1 text-xs" aria-label={t("client.speed.download")}>
+                <Download className="h-3 w-3" aria-hidden />
                 {speed?.download_speed ?? "—"}
             </Badge>
         </div>

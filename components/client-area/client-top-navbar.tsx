@@ -18,10 +18,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClientProfile } from "@/components/client-area/client-profile";
-import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
+import { CLIENT_DASHBOARD_PATH, CLIENT_PROFILE_PATH } from "@/lib/auth/routes";
 
 const CLIENT_ROUTE_TO_MENU_KEY: Record<string, string> = {
   [CLIENT_DASHBOARD_PATH]: "menu.dashboard.title",
+  [CLIENT_PROFILE_PATH]: "client_profile.profile",
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",

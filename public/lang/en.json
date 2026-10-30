@@ -5288,8 +5288,29 @@
         "aria_label": "Client menu",
         "menu": "Client menu",
         "dashboard": "Dashboard",
+        "profile": "My profile",
         "sign_out": "Sign out",
         "fallback_name": "Client"
+    },
+    "client_account": {
+        "title": "My profile",
+        "subtitle": "Details you shared with your internet provider. Only your photo can be changed here.",
+        "change_photo": "Change photo",
+        "remove_photo": "Remove photo",
+        "remove_title": "Remove profile photo",
+        "remove_confirm": "Remove your profile photo?",
+        "photo_input": "Profile photo file",
+        "nid": "National ID",
+        "upload_success": "Profile photo updated",
+        "upload_failed": "Could not update the profile photo",
+        "remove_success": "Profile photo removed",
+        "remove_failed": "Could not remove the profile photo",
+        "sections": {
+            "personal": "Personal",
+            "contact": "Contact",
+            "address": "Address",
+            "service": "Service"
+        }
     },
     "client_portal": {
         "title": "Client Portal"
@@ -5318,6 +5339,7 @@
             "email": "Email Account",
             "dynamic_ip": "Dynamic IP",
             "package": "Current Package",
+            "live_speed": "Live speed",
             "not_available": "N/A"
         },
         "payment": {

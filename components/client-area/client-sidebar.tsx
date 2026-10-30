@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ChevronsUpDown, LayoutDashboard, LogOut } from "lucide-react";
+import { ChevronsUpDown, LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,7 +36,7 @@ import { useClientMenuItems } from "@/hooks/use-client-menu-items";
 
 import { clientProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import { signOutClient } from "@/lib/auth/client-sign-out";
-import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
+import { CLIENT_DASHBOARD_PATH, CLIENT_PROFILE_PATH } from "@/lib/auth/routes";
 
 function getInitials(name: string): string {
   return name
@@ -113,6 +113,12 @@ function ClientNavUser() {
                 <Link href={CLIENT_DASHBOARD_PATH}>
                   <LayoutDashboard className="size-4" />
                   <span>{t("menu.dashboard.title")}</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={CLIENT_PROFILE_PATH}>
+                  <UserRound className="size-4" />
+                  <span>{t("client_profile.profile")}</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
