@@ -4801,10 +4801,16 @@
             },
             "monitoring": {
                 "title": "মনিটরিং"
+            },
+            "notifications": {
+                "title": "নোটিফিকেশন"
             }
         },
         "noc": {
             "title": "এনওসি"
+        },
+        "notifications": {
+            "title": "নোটিফিকেশন"
         }
     },
     "settings": {
@@ -6613,6 +6619,130 @@
             "stale": "{{time}} থেকে পোল হয়নি",
             "never_polled": "এখনও পোল হয়নি",
             "generic": "ওএলটি থেকে বর্তমান স্ট্যাটাস নেই"
+        }
+    },
+    "notifications": {
+        "title": "নোটিফিকেশন",
+        "view_all": "সব দেখুন",
+        "mark_read": "পঠিত",
+        "mark_unread": "অপঠিত",
+        "mark_all_read": "সব পঠিত করুন",
+        "empty": "কোনো নোটিফিকেশন নেই",
+        "loading": "নোটিফিকেশন লোড হচ্ছে",
+        "error": "নোটিফিকেশন লোড করা যায়নি",
+        "sl": "ক্রম",
+        "message": "বার্তা",
+        "when": "সময়",
+        "filters": {
+            "status": "অবস্থা",
+            "all": "সব",
+            "read": "পঠিত",
+            "unread": "অপঠিত",
+            "category": "ধরন"
+        },
+        "categories": {
+            "network": "নেটওয়ার্ক",
+            "client": "ক্লায়েন্ট",
+            "support": "সাপোর্ট",
+            "invoice": "ইনভয়েস"
+        },
+        "settings": {
+            "title": "নোটিফিকেশন সেটিংস",
+            "description": "এই কোম্পানি বা রিসেলারের জন্য কোন ইভেন্টে ইন-অ্যাপ নোটিফিকেশন যাবে তা বেছে নিন। বন্ধ করলে নতুন নোটিফিকেশন তৈরি হয় না, আগের ইতিহাস থাকে।",
+            "category_on": "এই ধরনের নতুন নোটিফিকেশন চালু",
+            "category_off": "এই ধরনের নতুন নোটিফিকেশন বন্ধ"
+        },
+        "events": {
+            "olt_offline": {
+                "title": "OLT অফলাইন",
+                "message": "{{olt_name}} অফলাইন"
+            },
+            "olt_online": {
+                "title": "OLT অনলাইন",
+                "message": "{{olt_name}} আবার অনলাইন"
+            },
+            "olt_status_changed": {
+                "title": "OLT স্ট্যাটাস বদলেছে",
+                "message": "{{olt_name}} এখন {{status}}"
+            },
+            "onu_offline": {
+                "title": "ONU অফলাইন",
+                "message": "{{onu_name}} এখন {{status}}"
+            },
+            "onu_online": {
+                "title": "ONU অনলাইন",
+                "message": "{{onu_name}} অনলাইন"
+            },
+            "onu_status_changed": {
+                "title": "ONU স্ট্যাটাস বদলেছে",
+                "message": "{{onu_name}} {{from}} থেকে {{to}} হয়েছে"
+            },
+            "onu_status_summary": {
+                "title": "ONU স্ট্যাটাস সারাংশ",
+                "message": "{{olt_name}}-এ {{count}}টি ONU-র স্ট্যাটাস বদলেছে"
+            },
+            "client_created": {
+                "title": "ক্লায়েন্ট তৈরি",
+                "message": "{{client_name}} তৈরি হয়েছে"
+            },
+            "client_updated": {
+                "title": "ক্লায়েন্ট আপডেট",
+                "message": "{{client_name}} আপডেট হয়েছে ({{change}})"
+            },
+            "client_deleted": {
+                "title": "ক্লায়েন্ট মুছেছে",
+                "message": "{{client_name}} মুছে ফেলা হয়েছে"
+            },
+            "ticket_created": {
+                "title": "টিকিট খোলা হয়েছে",
+                "message": "{{client_name}}-এর টিকিট {{ticket_no}} খোলা হয়েছে"
+            },
+            "ticket_updated": {
+                "title": "টিকিট আপডেট",
+                "message": "টিকিট {{ticket_no}} আপডেট হয়েছে"
+            },
+            "ticket_status_changed": {
+                "title": "টিকিটের স্ট্যাটাস বদলেছে",
+                "message": "টিকিট {{ticket_no}} এখন {{status}}"
+            },
+            "ticket_resolved": {
+                "title": "টিকিট সমাধান",
+                "message": "টিকিট {{ticket_no}} সমাধান হয়েছে"
+            },
+            "ticket_closed": {
+                "title": "টিকিট বন্ধ",
+                "message": "টিকিট {{ticket_no}} বন্ধ হয়েছে"
+            },
+            "invoice_created": {
+                "title": "ইনভয়েস তৈরি",
+                "message": "{{client_name}}-এর ইনভয়েস {{invoice_no}}"
+            },
+            "invoice_updated": {
+                "title": "ইনভয়েস আপডেট",
+                "message": "ইনভয়েস {{invoice_no}} আপডেট হয়েছে"
+            },
+            "invoices_generated": {
+                "title": "ইনভয়েস তৈরি হয়েছে",
+                "message": "{{count}}টি ইনভয়েস তৈরি হয়েছে"
+            },
+            "invoice_overdue": {
+                "title": "বকেয়া ইনভয়েস",
+                "message": "{{count}}টি ইনভয়েস বকেয়া ({{amount}})"
+            },
+            "invoice_paid": {
+                "title": "ইনভয়েস পরিশোধ",
+                "message": "ইনভয়েস {{invoice_no}} পরিশোধ হয়েছে",
+                "collector": "{{collector_name}} {{invoice_no}}-এর {{payment_amount}} সংগ্রহ করেছেন",
+                "online": "{{client_name}} {{invoice_no}}-এর {{payment_amount}} পরিশোধ করেছেন",
+                "wallet": "ওয়ালেট থেকে {{invoice_no}}-এর {{payment_amount}} পরিশোধ হয়েছে"
+            },
+            "invoice_partially_paid": {
+                "title": "আংশিক পরিশোধ",
+                "message": "ইনভয়েস {{invoice_no}} আংশিক পরিশোধ হয়েছে",
+                "collector": "{{collector_name}} {{invoice_no}}-এর জন্য {{payment_amount}} সংগ্রহ করেছেন",
+                "online": "{{client_name}} {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ করেছেন",
+                "wallet": "ওয়ালেট থেকে {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ হয়েছে"
+            }
         }
     }
 }

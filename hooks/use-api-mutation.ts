@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 interface UseApiMutationOptions<TData = unknown, TVariables = void> {
   url: string;
-  method?: "POST" | "PUT" | "DELETE";
+  method?: "POST" | "PUT" | "PATCH" | "DELETE";
   invalidateKeys?: string;
   successMessage?: string;
   defaultErrorMessage?: string;

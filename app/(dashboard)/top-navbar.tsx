@@ -4,12 +4,14 @@ import { DashboardBreadcrumb } from "@/app/(dashboard)/dashboard-breadcrumb";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import ThemeCustomize from "@/components/theme-customizer";
 import { Profile } from "@/components/profiles/profile";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { WalletBalanceButton } from "@/components/wallets/my-wallet";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
 import { FC } from "react";
-
+import { usePermissions } from "@/context/app-provider";
 export const TopNavbar: FC = () => {
+  const { hasPermission } = usePermissions();
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex min-w-0 items-center gap-2">
@@ -18,6 +20,9 @@ export const TopNavbar: FC = () => {
         <DashboardBreadcrumb />
       </div>
       <div className="flex shrink-0 items-center gap-2">
+        {hasPermission("notifications.access") && (
+          <NotificationBell />
+        )}
         <WalletBalanceButton />
         <LanguageSwitcher />
         <ThemeCustomize />

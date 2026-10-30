@@ -436,6 +436,7 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
         // OLT polling (phase 3): its own page, separate from the device monitoring settings.
         { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
+        { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
       ],
     },
     {

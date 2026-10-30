@@ -1,30 +1,41 @@
 ## Summary
 
-Invoice view amounts, quantities, and the client ID now follow the active language. Bangla uses Bengali digits (`২,২৬০৳`, client ID `১৩৪`). Identifiers keep their characters and do not gain grouping commas. English stays `2,260৳` and `134`.
-
-## Cause
-
-`formatInvoiceAmount` always formatted with the English locale, so a Bangla invoice still showed Latin digits.
+The admin navbar has a notification bell. It polls the unread count every 60 seconds, pauses while the tab is hidden, and opens the latest 10. `/notifications` is a filterable history table. Settings → Notifications toggles each category and event through the existing company settings save. Copy is translated from the stored event id in English and Bangla. The client portal navbar does not show the bell.
 
 ## Files
 
-- `components/invoices/invoice-view-model.ts`
-- `components/invoices/invoice-view-document.tsx`
-- `tests/unit/invoices/invoice-view-model.test.ts`
-- `tests/unit/invoices/invoice-view-document.test.tsx`
+- `components/notifications/notification-catalog.ts`, `notification-bell.tsx`, `notification-list.tsx`, `notification-table.tsx`, `notification-column.tsx`, `notification-filter-schema.ts`
+- `hooks/use-notifications.ts`
+- `components/settings/notification-settings.tsx`
+- `app/(dashboard)/notifications/page.tsx`, `app/(dashboard)/settings/notifications/page.tsx`
+- `app/(dashboard)/top-navbar.tsx`, `dashboard-breadcrumb.tsx`, `hooks/use-menu-items.ts`
+- `lib/helper/helper.ts` (`formatRelativeTime`)
+- `app/actions.ts` and `hooks/use-api-mutation.ts` accept `PATCH`
+- `public/lang/en.json`, `public/lang/bn.json`
+- `tests/unit/notifications/`
 
 ## Checks
 
-`npx vitest run tests/unit/invoices/invoice-view-model.test.ts tests/unit/invoices/invoice-view-document.test.tsx`: 7 passed.
-
 `scripts/ai/typecheck`: passed.
 
-Browser on `http://isp.test/invoices`: switched to Bangla, opened invoice INVW8, and confirmed the bill, unit price, line total, quantity, and summary all use Bengali digits (`৫০০৳`, quantity `১`). Switched the language back to English.
+`npx vitest run tests/unit/notifications`: 11 passed. Covers the bell badge `99+`, dropdown empty, loading, and error states, mark read and mark all, history list params, settings payload, subject links, relative time in English and Bangla, and a translation key for every event.
 
-## Git
+`scripts/ai/test` (full unit suite): 443 passed, 4 failed, plus 2 suites that did not run. The failures are in files this change does not modify:
 
-Uncommitted. Left untouched: `components/client-area/client-account-page.tsx`. `invoice-view-document.tsx` already had unrelated layout edits (customer fields, removed invoice type and total quantity).
+- `tests/unit/client-area/client-account-page.test.tsx` (NID text not rendered)
+- `tests/unit/clients/reseller-client-filter-schema.test.ts` (reseller dropdown label)
+- `tests/unit/pay/pay-content.test.tsx` (`usePathname` missing from a local `next/navigation` mock)
+- `tests/unit/clients/reseller-client-table.test.tsx` (next-auth cannot resolve `next/server`)
+- `tests/unit/maps/client-map-rows.test.ts` (no test suite in the file)
+
+ESLint was not run. `npm run lint` does not succeed on this repo.
 
 ## Security
 
-Formatting only. No tenant or auth change.
+The UI only hides the settings item behind `company-settings.access`. The API decides who receives a row and who can read it. This frontend does not send `company_id` or `reseller_id`. Tenant isolation is not verified from this repo.
+
+`invalidateNotifications()` is the hook a future Echo listener should call. The browser still must not read the Sanctum token. That token remains exposed through the NextAuth session and `localStorage` (pre-existing).
+
+## Git
+
+Uncommitted on `master`. The working tree changes are the notification UI. No unrelated dirty files.

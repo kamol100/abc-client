@@ -1,3 +1,6 @@
+import { formatDistanceToNow } from "date-fns";
+import { bn, enUS } from "date-fns/locale";
+
 export function groupBy<T>(items: T[], keyGetter: (item: T) => string): Record<string, T[]> {
     const result: Record<string, T[]> = {};
     for (const item of items) {
@@ -411,6 +414,16 @@ export function resolveApiAssetUrl(value?: string | null): string | null {
     if (!apiOrigin) return trimmedValue;
 
     return `${apiOrigin}${trimmedValue.startsWith("/") ? "" : "/"}${trimmedValue}`;
+}
+
+export function formatRelativeTime(date: string | Date, language: string): string {
+    const value = date instanceof Date ? date : new Date(date);
+    if (Number.isNaN(value.getTime())) return "";
+
+    return formatDistanceToNow(value, {
+        addSuffix: true,
+        locale: language.startsWith("bn") ? bn : enUS,
+    });
 }
 
 export function resolveApiAssetUrlWithFallback(

@@ -4801,10 +4801,16 @@
             },
             "monitoring": {
                 "title": "Monitoring"
+            },
+            "notifications": {
+                "title": "Notifications"
             }
         },
         "noc": {
             "title": "NOC"
+        },
+        "notifications": {
+            "title": "Notifications"
         }
     },
     "settings": {
@@ -6613,6 +6619,130 @@
             "stale": "Not polled since {{time}}",
             "never_polled": "Never polled",
             "generic": "No current status from the OLT"
+        }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "view_all": "View all",
+        "mark_read": "Mark read",
+        "mark_unread": "Mark unread",
+        "mark_all_read": "Mark all read",
+        "empty": "No notifications",
+        "loading": "Loading notifications",
+        "error": "Could not load notifications",
+        "sl": "SL",
+        "message": "Message",
+        "when": "When",
+        "filters": {
+            "status": "Status",
+            "all": "All",
+            "read": "Read",
+            "unread": "Unread",
+            "category": "Category"
+        },
+        "categories": {
+            "network": "Network",
+            "client": "Client",
+            "support": "Support",
+            "invoice": "Invoice"
+        },
+        "settings": {
+            "title": "Notification settings",
+            "description": "Choose which events create in-app notifications for this company or reseller. Turning one off stops new notifications and keeps existing history.",
+            "category_on": "New notifications for this category are on",
+            "category_off": "New notifications for this category are off"
+        },
+        "events": {
+            "olt_offline": {
+                "title": "OLT offline",
+                "message": "{{olt_name}} is offline"
+            },
+            "olt_online": {
+                "title": "OLT online",
+                "message": "{{olt_name}} is back online"
+            },
+            "olt_status_changed": {
+                "title": "OLT status changed",
+                "message": "{{olt_name}} is now {{status}}"
+            },
+            "onu_offline": {
+                "title": "ONU offline",
+                "message": "{{onu_name}} is {{status}}"
+            },
+            "onu_online": {
+                "title": "ONU online",
+                "message": "{{onu_name}} is online"
+            },
+            "onu_status_changed": {
+                "title": "ONU status changed",
+                "message": "{{onu_name}} changed from {{from}} to {{to}}"
+            },
+            "onu_status_summary": {
+                "title": "ONU status summary",
+                "message": "{{count}} ONUs on {{olt_name}} changed status"
+            },
+            "client_created": {
+                "title": "Client created",
+                "message": "{{client_name}} was created"
+            },
+            "client_updated": {
+                "title": "Client updated",
+                "message": "{{client_name}} was updated ({{change}})"
+            },
+            "client_deleted": {
+                "title": "Client deleted",
+                "message": "{{client_name}} was deleted"
+            },
+            "ticket_created": {
+                "title": "Ticket opened",
+                "message": "Ticket {{ticket_no}} opened for {{client_name}}"
+            },
+            "ticket_updated": {
+                "title": "Ticket updated",
+                "message": "Ticket {{ticket_no}} was updated"
+            },
+            "ticket_status_changed": {
+                "title": "Ticket status changed",
+                "message": "Ticket {{ticket_no}} is now {{status}}"
+            },
+            "ticket_resolved": {
+                "title": "Ticket resolved",
+                "message": "Ticket {{ticket_no}} was resolved"
+            },
+            "ticket_closed": {
+                "title": "Ticket closed",
+                "message": "Ticket {{ticket_no}} was closed"
+            },
+            "invoice_created": {
+                "title": "Invoice created",
+                "message": "Invoice {{invoice_no}} for {{client_name}}"
+            },
+            "invoice_updated": {
+                "title": "Invoice updated",
+                "message": "Invoice {{invoice_no}} was updated"
+            },
+            "invoices_generated": {
+                "title": "Invoices generated",
+                "message": "{{count}} invoices were generated"
+            },
+            "invoice_overdue": {
+                "title": "Invoices overdue",
+                "message": "{{count}} invoices are overdue ({{amount}})"
+            },
+            "invoice_paid": {
+                "title": "Invoice paid",
+                "message": "Invoice {{invoice_no}} was paid",
+                "collector": "{{collector_name}} collected {{payment_amount}} for {{invoice_no}}",
+                "online": "{{client_name}} paid {{payment_amount}} for {{invoice_no}}",
+                "wallet": "Wallet paid {{payment_amount}} for {{invoice_no}}"
+            },
+            "invoice_partially_paid": {
+                "title": "Invoice partially paid",
+                "message": "Invoice {{invoice_no}} was partially paid",
+                "collector": "{{collector_name}} collected {{payment_amount}} toward {{invoice_no}}",
+                "online": "{{client_name}} paid {{payment_amount}} toward {{invoice_no}}",
+                "wallet": "Wallet paid {{payment_amount}} toward {{invoice_no}}"
+            }
         }
     }
 }
