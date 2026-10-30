@@ -150,7 +150,7 @@ function NotificationItem({
         <li
             className={cn(
                 "flex items-start gap-2 border-b px-3 py-2 last:border-b-0",
-                unread && "bg-accent/40"
+                unread && "bg-foreground/10"
             )}
             data-testid="notification-item"
             data-unread={unread ? "true" : "false"}

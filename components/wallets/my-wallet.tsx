@@ -73,18 +73,20 @@ export function WalletBalanceButton() {
       <span className="hidden text-xs text-muted-foreground sm:inline">
         {t("wallet.balance.label")}
       </span>
-      {isLoading ? (
-        <Skeleton className="h-4 w-16 bg-primary/20" />
-      ) : (
-        <DisplayMoney
-          amount={balance}
-          formatCurrency
-          className={cn(
-            "text-sm font-semibold",
-            balance >= 0 && "text-primary",
-          )}
-        />
-      )}
+      <span className="inline-flex min-w-16 shrink-0 items-center justify-end">
+        {isLoading ? (
+          <Skeleton className="h-4 w-16 bg-primary/20" />
+        ) : (
+          <DisplayMoney
+            amount={balance}
+            formatCurrency
+            className={cn(
+              "text-sm font-semibold",
+              balance >= 0 && "text-primary",
+            )}
+          />
+        )}
+      </span>
     </MyButton>
   );
 }
