@@ -306,17 +306,10 @@ export function ClientAccountView({
           <InfoItem label={t("client.longitude.label")} value={account.longitude} />
         </AccountSection>
         <AccountSection title={t("client_account.sections.service")} icon={Wifi}>
-          <InfoItem label={t("client_dashboard.info.customer_id")} value={account.customer_id} />
-          <InfoItem label={t("client_dashboard.info.username")} value={account.username} className="font-mono" />
           <InfoItem label={t("client_dashboard.info.package")} value={account.package?.name ?? null} />
           <InfoItem label={t("common.bandwidth")} value={account.package?.bandwidth ?? null} />
           <InfoItem label={t("client.zone.label")} value={account.zone} />
           <InfoItem label={t("client.sub_zone.label")} value={account.sub_zone} />
-          <InfoItem label={t("client.type.label")} value={mapped(account.type, CLIENT_TYPE_LABELS)} />
-          <InfoItem
-            label={t("client.connection_type.label")}
-            value={mapped(account.connection_type, CONNECTION_TYPE_LABELS)}
-          />
           <InfoItem
             label={t("client.cable_type.label")}
             value={mapped(account.cable_type, CABLE_TYPE_LABELS)}
