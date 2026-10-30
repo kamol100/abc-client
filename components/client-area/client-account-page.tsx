@@ -293,7 +293,6 @@ export function ClientAccountView({
           <InfoItem label={t("client_dashboard.info.name")} value={account.name} />
           <InfoItem label={t("client.father_name.label")} value={account.father_name} />
           <InfoItem label={t("client.occupation.label")} value={account.occupation} />
-          <InfoItem label={t("client_account.nid")} value={account.nid} />
         </AccountSection>
         <AccountSection title={t("client_account.sections.contact")} icon={Phone}>
           <InfoItem label={t("client_dashboard.info.phone")} value={account.phone} />
@@ -303,7 +302,6 @@ export function ClientAccountView({
         <AccountSection title={t("client_account.sections.address")} icon={MapPin}>
           <InfoItem label={t("client.current_address.label")} value={account.current_address} />
           <InfoItem label={t("client.permanent_address.label")} value={account.permanent_address} />
-          <InfoItem label={t("client.upazila.label")} value={account.upazila} />
           <InfoItem label={t("client.latitude.label")} value={account.latitude} />
           <InfoItem label={t("client.longitude.label")} value={account.longitude} />
         </AccountSection>
@@ -338,7 +336,6 @@ export function ClientAccountView({
             label={t("client.billing_type.label")}
             value={mapped(account.billing_type, BILLING_TYPE_LABELS)}
           />
-          <InfoItem label={t("client.payment_term.label")} value={account.payment_term} />
         </AccountSection>
       </div>
     </div>

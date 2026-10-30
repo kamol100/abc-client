@@ -1,32 +1,30 @@
 ## Summary
 
-The client menu now opens My profile at `/client/profile`. The page shows the subscriber record as read-only and lets them change only their profile photo. Upload and remove use `POST` and `DELETE /api/v1/client-photo`, which store the file through the existing client image service.
+Invoice view amounts, quantities, and the client ID now follow the active language. Bangla uses Bengali digits (`২,২৬০৳`, client ID `১৩৪`). Identifiers keep their characters and do not gain grouping commas. English stays `2,260৳` and `134`.
+
+## Cause
+
+`formatInvoiceAmount` always formatted with the English locale, so a Bangla invoice still showed Latin digits.
 
 ## Files
 
-- `app/(client-dashboard)/client/profile/page.tsx`
-- `components/client-area/client-account-page.tsx`
-- `components/client-area/client-account-type.ts`
-- `components/client-area/client-profile.tsx`
-- `components/client-area/client-sidebar.tsx`
-- `components/client-area/client-top-navbar.tsx`
-- `lib/auth/routes.ts`
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/client-area/client-account-page.test.tsx`
+- `components/invoices/invoice-view-model.ts`
+- `components/invoices/invoice-view-document.tsx`
+- `tests/unit/invoices/invoice-view-model.test.ts`
+- `tests/unit/invoices/invoice-view-document.test.tsx`
 
 ## Checks
 
-`npx vitest run tests/unit/client-area/client-account-page.test.tsx`: 3 passed.
+`npx vitest run tests/unit/invoices/invoice-view-model.test.ts tests/unit/invoices/invoice-view-document.test.tsx`: 7 passed.
 
 `scripts/ai/typecheck`: passed.
 
-Browser on `http://vp.isp.test`: signed in as the subscriber, opened My profile from the avatar menu, and confirmed name, phone `01677217100`, package Home 10 Mbps, and the photo controls. Other fields are text, not inputs. Light, dark, and a phone-width layout were checked. The live photo was not replaced.
+Browser on `http://isp.test/invoices`: switched to Bangla, opened invoice INVW8, and confirmed the bill, unit price, line total, quantity, and summary all use Bengali digits (`৫০০৳`, quantity `১`). Switched the language back to English.
 
 ## Git
 
-Uncommitted. Left untouched: dashboard live-speed work in `ClientDashboardInfo.tsx`, `client-speed-widget.tsx`, and `tests/unit/clients/client-speed-widget.test.tsx`. `client-profile.tsx` and the language files already had those earlier edits.
+Uncommitted. Left untouched: `components/client-area/client-account-page.tsx`. `invoice-view-document.tsx` already had unrelated layout edits (customer fields, removed invoice type and total quantity).
 
 ## Security
 
-The page does not send `company_id`. Photo upload goes to the authenticated client endpoint only. Passwords are not rendered.
+Formatting only. No tenant or auth change.

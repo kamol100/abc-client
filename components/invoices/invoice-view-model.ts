@@ -1,4 +1,5 @@
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import { toNumber } from "@/lib/helper/helper";
+import type { Language } from "@/lib/i18n/languages";
 
 export type InvoiceViewLine = {
     key: string;
@@ -105,7 +106,25 @@ const firstString = (...values: Array<string | null>): string | null => {
     return null;
 };
 
-export const formatInvoiceAmount = (value: number): string => `${formatMoney(value)}৳`;
+const invoiceNumberFormat = (language: Language): Intl.NumberFormat =>
+    new Intl.NumberFormat(language === "bn" ? "bn-BD" : "en", {
+        numberingSystem: language === "bn" ? "beng" : "latn",
+        minimumFractionDigits: 0,
+    });
+
+export const formatInvoiceAmount = (value: number, language: Language = "en"): string =>
+    `${invoiceNumberFormat(language).format(value)}৳`;
+
+export const formatInvoiceCount = (value: number, language: Language = "en"): string =>
+    invoiceNumberFormat(language).format(value);
+
+const BENGALI_DIGITS = "০১২৩৪৫৬৭৮৯";
+
+/** Translate digits in an identifier. Grouping would change the code. */
+export const formatInvoiceDigits = (value: string, language: Language = "en"): string => {
+    if (language !== "bn") return value;
+    return value.replace(/\d/g, (digit) => BENGALI_DIGITS[Number(digit)] ?? digit);
+};
 
 export const buildInvoiceViewModel = (
     source: unknown,

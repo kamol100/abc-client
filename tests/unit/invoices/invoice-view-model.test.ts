@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildInvoiceViewModel } from "@/components/invoices/invoice-view-model";
+import {
+    buildInvoiceViewModel,
+    formatInvoiceAmount,
+    formatInvoiceCount,
+    formatInvoiceDigits,
+} from "@/components/invoices/invoice-view-model";
 
 const settings = {
     company: "Muniba & Mom",
@@ -90,6 +95,17 @@ describe("buildInvoiceViewModel", () => {
         expect(model?.discount).toBe(50);
         expect(model?.amountDue).toBe(0);
         expect(model?.total).toBe(450);
+    });
+
+    it("formats amounts and quantities in Bangla digits", () => {
+        expect(formatInvoiceAmount(2260)).toBe("2,260৳");
+        expect(formatInvoiceAmount(2260, "bn")).toBe("২,২৬০৳");
+        expect(formatInvoiceAmount(100000, "bn")).toBe("১,০০,০০০৳");
+        expect(formatInvoiceCount(2)).toBe("2");
+        expect(formatInvoiceCount(2, "bn")).toBe("২");
+        expect(formatInvoiceDigits("134")).toBe("134");
+        expect(formatInvoiceDigits("134", "bn")).toBe("১৩৪");
+        expect(formatInvoiceDigits("501-12", "bn")).toBe("৫০১-১২");
     });
 
     it("returns null when the payload is not an invoice", () => {

@@ -3,8 +3,11 @@
 import { forwardRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
+import { parseLanguage } from "@/lib/i18n/languages";
 import {
     formatInvoiceAmount,
+    formatInvoiceCount,
+    formatInvoiceDigits,
     type InvoiceViewModel,
 } from "@/components/invoices/invoice-view-model";
 
@@ -24,7 +27,11 @@ const statusLabelKey = (status: string | null): string | null => {
 
 export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceViewModel }>(
     function InvoiceViewDocument({ model }, ref) {
-        const { t } = useTranslation();
+        const { t, i18n } = useTranslation();
+        const language = parseLanguage(i18n.language);
+        const amountText = (value: number) => formatInvoiceAmount(value, language);
+        const countText = (value: number) => formatInvoiceCount(value, language);
+        const numberText = (value: string | null) => (value ? formatInvoiceDigits(value, language) : "—");
         const [logoFailed, setLogoFailed] = useState(false);
         const showLogo = Boolean(model.merchantLogoUrl) && !logoFailed;
 
@@ -43,28 +50,25 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
             model.dueDate
                 ? { key: "due", label: t("invoice.due_date.label"), value: model.dueDate }
                 : null,
-            model.invoiceType
-                ? { key: "type", label: t("invoice.type.label"), value: model.invoiceType }
-                : null,
-            { key: "bill", label: t("invoice.view.total_bill"), value: formatInvoiceAmount(model.total) },
+            { key: "bill", label: t("invoice.view.total_bill"), value: amountText(model.total) },
         ].filter((item): item is { key: string; label: string; value: string } => Boolean(item));
 
         const summary: SummaryRow[] = [
-            { key: "subtotal", label: t("invoice.reports.sub_total"), value: formatInvoiceAmount(model.subTotal) },
+            { key: "subtotal", label: t("invoice.reports.sub_total"), value: amountText(model.subTotal) },
             ...(model.lineDiscount > 0
-                ? [{ key: "line-discount", label: t("invoice.line.discount.label"), value: formatInvoiceAmount(model.lineDiscount) }]
+                ? [{ key: "line-discount", label: t("invoice.line.discount.label"), value: amountText(model.lineDiscount) }]
                 : []),
             ...(model.discount > 0
-                ? [{ key: "discount", label: t("invoice.discount.label"), value: formatInvoiceAmount(model.discount) }]
+                ? [{ key: "discount", label: t("invoice.discount.label"), value: amountText(model.discount) }]
                 : []),
             ...(model.partialAmount > 0
-                ? [{ key: "partial", label: t("invoice.partial_amount.label"), value: formatInvoiceAmount(model.partialAmount) }]
+                ? [{ key: "partial", label: t("invoice.partial_amount.label"), value: amountText(model.partialAmount) }]
                 : []),
             ...(model.amountPaid > 0
-                ? [{ key: "paid", label: t("invoice.reports.paid"), value: formatInvoiceAmount(model.amountPaid) }]
+                ? [{ key: "paid", label: t("invoice.reports.paid"), value: amountText(model.amountPaid) }]
                 : []),
             ...(model.amountDue > 0
-                ? [{ key: "due", label: t("invoice.receipt.due"), value: formatInvoiceAmount(model.amountDue) }]
+                ? [{ key: "due", label: t("invoice.receipt.due"), value: amountText(model.amountDue) }]
                 : []),
             ...(model.paymentMethod
                 ? [{ key: "method", label: t("invoice.fund.label"), value: model.paymentMethod }]
@@ -81,7 +85,7 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
             {
                 key: "total",
                 label: t("invoice.reports.total"),
-                value: formatInvoiceAmount(model.total),
+                value: amountText(model.total),
                 emphasize: true,
             },
         ];
@@ -139,17 +143,27 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
                     <div className="min-w-0">
                         <p className="font-semibold">{t("invoice.view.customer")}:</p>
                         <div className="mt-1 space-y-0.5 break-words leading-5">
-                            <p>{model.customerName ?? "—"}</p>
-                            {model.customerCode && (
-                                <p>
-                                    {t("invoice.receipt.client_id")}: {model.customerCode}
-                                </p>
-                            )}
-                            {model.customerAddress && (
-                                <p className="whitespace-pre-wrap">{model.customerAddress}</p>
-                            )}
-                            {model.customerZone && <p>{model.customerZone}</p>}
-                            {model.customerPhone && <p>{model.customerPhone}</p>}
+                            <div className="flex items-center gap-2">
+                                <div className="w-16">{t("common.name")}:</div>
+                                <p>{model.customerName ?? "—"}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-16">{t("invoice.receipt.client_id")}:</div>
+                                <p>{numberText(model.customerCode)}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-16">{t("client.address.label")}:</div>
+                                <div className="flex items-center gap-2">
+                                    <p className="whitespace-pre-wrap">{model.customerAddress ?? "—"}</p>
+                                    {model.customerZone ? (
+                                        <p>{model.customerZone ?? "—"}</p>
+                                    ) : '—'}
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-16">{t("client.phone.label")}:</div>
+                                <p>{numberText(model.customerPhone)}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -172,13 +186,13 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
                                             <p className="whitespace-pre-wrap break-words font-medium">{line.description}</p>
                                             {line.discount > 0 && (
                                                 <p className="mt-1 text-xs text-neutral-600">
-                                                    {t("invoice.line.discount.label")}: {formatInvoiceAmount(line.discount)}
+                                                    {t("invoice.line.discount.label")}: {amountText(line.discount)}
                                                 </p>
                                             )}
                                         </td>
-                                        <td className="px-3 py-3 text-center">{line.quantity}</td>
-                                        <td className="px-3 py-3 text-right">{formatInvoiceAmount(line.unitPrice)}</td>
-                                        <td className="px-3 py-3 text-right">{formatInvoiceAmount(line.amount)}</td>
+                                        <td className="px-3 py-3 text-center">{countText(line.quantity)}</td>
+                                        <td className="px-3 py-3 text-right">{amountText(line.unitPrice)}</td>
+                                        <td className="px-3 py-3 text-right">{amountText(line.amount)}</td>
                                     </tr>
                                 ))
                             ) : (
@@ -190,9 +204,6 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
                     </table>
                 </div>
 
-                <p className="border-b border-neutral-200 px-3 py-3 font-semibold">
-                    {t("invoice.view.total_quantity")}: {model.totalQuantity}
-                </p>
 
                 <div className="invoice-view-bottom mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0 flex-1">

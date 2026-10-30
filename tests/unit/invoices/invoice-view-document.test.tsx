@@ -1,12 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { InvoiceViewDocument } from "@/components/invoices/invoice-view-document";
-import { buildInvoiceViewModel, formatInvoiceAmount } from "@/components/invoices/invoice-view-model";
+import { buildInvoiceViewModel, formatInvoiceAmount, formatInvoiceCount, formatInvoiceDigits } from "@/components/invoices/invoice-view-model";
+
+const i18nState = vi.hoisted(() => ({ language: "en" }));
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
         t: (key: string) => key,
-        i18n: { language: "en" },
+        i18n: { language: i18nState.language },
     }),
 }));
 
@@ -24,6 +26,7 @@ const model = buildInvoiceViewModel({
     amount_paid: 0,
     amount_due: 2260,
     client: {
+        sid: "501",
         name: "Mijanur Rahman Chowdhury",
         current_address: "Sunargoan PO-Munshi Bazar",
         phone: "01738110896",
@@ -78,5 +81,19 @@ describe("InvoiceViewDocument", () => {
         expect(document.querySelector("[data-invoice-note]")).toBeNull();
         expect(screen.getByText("invoice.discount.label")).toBeInTheDocument();
         expect(screen.getByText(formatInvoiceAmount(20))).toBeInTheDocument();
+    });
+
+    it("shows Bangla digits for amounts and quantities", () => {
+        expect(model).not.toBeNull();
+        if (!model) return;
+
+        i18nState.language = "bn";
+        render(<InvoiceViewDocument model={model} />);
+
+        expect(screen.getAllByText(formatInvoiceAmount(2260, "bn")).length).toBeGreaterThan(0);
+        expect(screen.getByText(formatInvoiceAmount(1610, "bn"))).toBeInTheDocument();
+        expect(screen.getByText(formatInvoiceCount(2, "bn"))).toBeInTheDocument();
+        expect(screen.getByText(formatInvoiceDigits("501", "bn"))).toBeInTheDocument();
+        i18nState.language = "en";
     });
 });
