@@ -201,7 +201,7 @@
         "designation": "Designation",
         "join_date": "Join Date",
         "salary_type": "Salary Type",
-        "ticketId": "Ticket ID",
+        "ticket_code": "Ticket ID",
         "client": "Client",
         "tag": "Tag",
         "messages_count": "Messages",
@@ -4946,6 +4946,10 @@
                 "label": "Product ID Prefix",
                 "placeholder": "PRO"
             },
+            "ticket_code_prefix": {
+                "label": "Ticket ID Prefix",
+                "placeholder": "TKT"
+            },
             "client_view_open_on_new_tab": {
                 "label": "Client view open on new tab"
             },
@@ -6404,7 +6408,7 @@
         "open_outages": "Open outages",
         "no_open_outages": "No open outages.",
         "outage_started": "Started {{ago}} ago · {{count}} clients",
-        "ticket": "Ticket #{{number}}",
+        "ticket": "Ticket {{number}}",
         "badges": {
             "maintenance": "Maintenance",
             "downstream": "Downstream",

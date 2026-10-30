@@ -201,7 +201,7 @@
         "designation": "পদবী",
         "join_date": "যোগদানের তারিখ",
         "salary_type": "বেতনের ধরন",
-        "ticketId": "টিকেট আইডি",
+        "ticket_code": "টিকেট আইডি",
         "client": "ক্লায়েন্ট",
         "tag": "ট্যাগ",
         "messages_count": "মেসেজ",
@@ -4946,6 +4946,10 @@
                 "label": "প্রোডাক্ট আইডি প্রিফিক্স",
                 "placeholder": "PRO"
             },
+            "ticket_code_prefix": {
+                "label": "টিকিট আইডি প্রিফিক্স",
+                "placeholder": "TKT"
+            },
             "client_view_open_on_new_tab": {
                 "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"
             },
@@ -6404,7 +6408,7 @@
         "open_outages": "চলমান আউটেজ",
         "no_open_outages": "কোনো চলমান আউটেজ নেই।",
         "outage_started": "{{ago}} আগে শুরু · {{count}} ক্লায়েন্ট",
-        "ticket": "টিকেট #{{number}}",
+        "ticket": "টিকেট {{number}}",
         "badges": {
             "maintenance": "রক্ষণাবেক্ষণ",
             "downstream": "ডাউনস্ট্রিম",

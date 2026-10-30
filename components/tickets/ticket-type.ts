@@ -17,7 +17,7 @@ const RefSchema = z.object({
 
 export const TicketRowSchema = z.object({
     id: z.coerce.number(),
-    ticketId: z.coerce.number(),
+    ticket_code: z.string(),
     message: z.string(),
     priority: z.enum(["low", "medium", "high"]),
     status: z.enum(["open", "in_progress", "resolved", "closed"]),

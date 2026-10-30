@@ -1,11 +1,14 @@
 ## Summary
 
-The product list shows the new sequence id, and General settings includes a Product ID Prefix that defaults to `PRO`.
+Ticket lists and detail views show the prefixed sequence id (`TKT1`) from `ticket_code`. General settings includes a Ticket ID Prefix that defaults to `TKT`.
+
+The route props still named `ticketId` carry the ticket UUID (`id` in the API). They are not the removed database column.
 
 ## Files
 
-- `components/products/product-column.tsx` — Product ID column
-- `components/products/product-type.ts` — `product_code`
+- `components/tickets/ticket-type.ts` — `ticket_code`
+- `components/tickets/ticket-column.tsx`, `ticket-view.tsx`
+- `components/client-area/tickets/client-ticket-columns.tsx`, `client-ticket-view.tsx`
 - `components/settings/settings-form-schema.ts`
 - `components/settings/settings-type.ts`
 - `public/lang/en.json`, `public/lang/bn.json`
@@ -13,16 +16,6 @@ The product list shows the new sequence id, and General settings includes a Prod
 
 ## Checks
 
-`npx vitest run tests/unit/settings/expense-id-prefix.test.ts` passed (5 tests).
+`npx vitest run tests/unit/settings/expense-id-prefix.test.ts` passed (7 tests). `scripts/ai/typecheck` passed.
 
-Signed in at `http://vp.isp.test:3000/admin` as vp. General settings shows Product ID Prefix `PRO` beside Invoice `INV`, Payment `PAY`, and Expense `EXP`. Edit opened with `PRO`; saving left `PRO` in place.
-
-`/products` shows a Product ID column between SL and Product Name. The table body is “No results” for this account, so no `PRO1` row was on screen. The live database migration has not been applied, so stored product codes will appear after that migration runs.
-
-## Security
-
-The prefix is company settings meta. No tenant or permission change.
-
-## Git
-
-Uncommitted on `master`.
+The admin app was not open in this session, and the ticket-code migration has not been applied to the local API database, so the live ticket list was not exercised. After that migration and a deploy of this client, the Ticket ID column and ticket heading show `TKT1`, and General settings shows Ticket ID Prefix beside the other prefixes.

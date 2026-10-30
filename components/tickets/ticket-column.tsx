@@ -33,11 +33,11 @@ const statusBadgeType = (s: string) => {
 
 export const TicketColumns: ColumnDef<TicketRow>[] = [
     {
-        accessorKey: "ticketId",
+        accessorKey: "ticket_code",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="ticket.ticket_id.label" />
         ),
-        cell: ({ row }) => <span>#{row.original.ticketId}</span>,
+        cell: ({ row }) => <span>{row.original.ticket_code}</span>,
         enableSorting: false,
         enableHiding: false,
     },

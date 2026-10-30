@@ -69,7 +69,7 @@ const TicketView: FC<TicketViewProps> = ({ ticketId }) => {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <div className="flex flex-wrap items-center gap-2">
                     <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                        {t("ticket.title_single")} #{ticket.ticketId}
+                        {t("ticket.title_single")} {ticket.ticket_code}
                     </h1>
                     <Badge variant={priorityVariant(ticket.priority)} className="capitalize shrink-0">
                         {ticket.priority}
