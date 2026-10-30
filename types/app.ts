@@ -52,6 +52,7 @@ export interface Profile {
   status: number;
   current_address?: string | null;
   avatar?: string | null;
+  photo?: string | null;
   staff?: Staff | null;
   company?: Company | null;
   reseller?: ProfileReseller | null;

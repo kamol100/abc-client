@@ -5325,6 +5325,13 @@
             "no_due": "কোনো ইনভয়েস ডিউ নেই",
             "dialog_title": "ইনভয়েস পেমেন্ট",
             "dialog_description": "ডিউ ইনভয়েস দেখে বিকাশে পেমেন্ট সম্পন্ন করুন।"
+        },
+        "usage": {
+            "title": "ডেটা ব্যবহার",
+            "today": "আজ",
+            "this_month": "এই মাস",
+            "last_month": "গত মাস",
+            "unavailable": "পাওয়া যায়নি"
         }
     },
     "marketing": {

@@ -1,31 +1,27 @@
 ## Summary
 
-`/client/traffic-report` is in the client sidebar and shows this week, this month, and last month totals, a daily usage chart, and a paginated history table. The default range is the current month in the usage timezone. A date filter changes the chart and table together. The three cards stay on their fixed periods.
-
-Signed in as client `01677217100` on `http://vp.isp.test/client/traffic-report` after local usage rows were added for that client. Cards showed 16 GB, 43.6 GB, and 11.9 GB. Page 2 showed 7 Oct, 4 Oct, and 2 Oct. Filtering 1–30 Sep showed the four September rows and left the cards unchanged.
+The client navbar and sidebar avatars show the stored client photo when `profile.photo` is set. The image is loaded from `/api/client-photo`, which proxies the signed-in client's own photo. Initials stay when there is no photo.
 
 ## Files
 
-- `app/(client-dashboard)/client/traffic-report/page.tsx`
-- `components/client-area/traffic-report/client-traffic-report.tsx`
-- `components/client-area/traffic-report/traffic-report-format.ts`
-- `components/client-area/traffic-report/traffic-report-type.ts`
-- `hooks/use-client-menu-items.ts`
-- `hooks/use-menu-items.ts`
-- `components/client-area/client-top-navbar.tsx`
-- `app/(dashboard)/dashboard-breadcrumb.tsx`
-- `public/lang/en.json`
-- `public/lang/bn.json`
-- `tests/unit/client-area/traffic-report-format.test.ts`
+- `components/client-area/client-profile.tsx`
+- `components/client-area/client-sidebar.tsx`
+- `components/profiles/profile-avatar.ts`
+- `app/api/client-photo/route.ts`
+- `lib/images/proxy-private-image.ts`
+- `types/app.ts`
+- `tests/unit/profiles/profile-avatar.test.ts`
 
 ## Checks
 
-`npx vitest run tests/unit/client-area/traffic-report-format.test.ts`: 3 passed.
+`npx vitest run tests/unit/profiles/profile-avatar.test.ts`: 4 passed.
 
-`npx tsc --noEmit`: passed.
+`scripts/ai/typecheck`: passed.
 
-Browser: client login, default month, page 2, and a September date range on `vp.isp.test`.
+Browser: opened `http://vp.isp.test/login`. Password entry was blocked, so the signed-in avatar was not checked in the browser. Local client `01677217100` has a stored photo, so the navbar should show it after the API route is deployed and the client signs in again.
 
 ## Git
 
-Uncommitted. Depends on `GET /api/v1/client-traffic-report` in `isp-backend`.
+Uncommitted. Depends on `GET /api/v1/client-photo` and `photo` on `GET /api/v1/client-profile` in `isp-backend`.
+
+Left untouched: dashboard usage card changes in `client-dashboard-content.tsx`, `client-dashboard-type.ts`, `use-client-dashboard-data.ts`, `ClientDashboardUsageCard.tsx`, and the `usage` keys in `public/lang/en.json` and `public/lang/bn.json`.

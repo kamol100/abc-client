@@ -19,6 +19,14 @@ export async function proxyPrivateImage(
     return NextResponse.json({ success: false, message: "Image not found" }, { status: 404 });
   }
 
+  return proxySessionImage(`/api/v1/${resource}/${encodeURIComponent(id)}/images/${encodeURIComponent(field)}`);
+}
+
+export async function proxySessionImage(upstreamPath: string): Promise<NextResponse> {
+  if (!upstreamPath.startsWith("/api/v1/")) {
+    return NextResponse.json({ success: false, message: "Image not found" }, { status: 404 });
+  }
+
   const token = sessionToken(await auth());
   if (!token) {
     return NextResponse.json({ success: false, message: "Unauthenticated." }, { status: 401 });
@@ -29,7 +37,7 @@ export async function proxyPrivateImage(
     return NextResponse.json({ success: false, message: "API is not configured" }, { status: 500 });
   }
 
-  const upstream = await fetch(`${apiBase}/api/v1/${resource}/${id}/images/${field}`, {
+  const upstream = await fetch(`${apiBase}${upstreamPath}`, {
     headers: {
       Accept: "image/*, application/json",
       Authorization: `Bearer ${token}`,

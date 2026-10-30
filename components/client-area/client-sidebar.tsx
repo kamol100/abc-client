@@ -34,6 +34,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import type { AppData } from "@/types/app";
 import { useClientMenuItems } from "@/hooks/use-client-menu-items";
 
+import { clientProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import { signOutClient } from "@/lib/auth/client-sign-out";
 import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
 
@@ -55,7 +56,7 @@ function ClientNavUser() {
   const name = profile?.name ?? "";
   const email = profile?.email ?? "";
   const phone = profile?.phone ? String(profile.phone) : "";
-  const avatar = profile?.avatar ?? undefined;
+  const avatar = clientProfileAvatarSrc(profile?.photo);
   const subtitle = phone || email;
 
   const handleLogout = async () => {
@@ -72,7 +73,7 @@ function ClientNavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={avatar} alt={name} />
+                {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
                 <AvatarFallback className="rounded-lg font-semibold">
                   {name ? getInitials(name) : "?"}
                 </AvatarFallback>
@@ -93,7 +94,7 @@ function ClientNavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={avatar} alt={name} />
+                  {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
                   <AvatarFallback className="rounded-lg font-semibold">
                     {name ? getInitials(name) : "?"}
                   </AvatarFallback>

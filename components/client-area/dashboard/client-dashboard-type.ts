@@ -92,3 +92,16 @@ export const ClientDashboardInfoSchema = z.object({
 });
 
 export type ClientDashboardInfo = z.infer<typeof ClientDashboardInfoSchema>;
+
+const UsageAmountSchema = z.object({
+  total_bytes: z.coerce.number().optional().default(0),
+  available: z.boolean().optional().default(false),
+});
+
+export const ClientDashboardUsageSchema = z.object({
+  today: UsageAmountSchema,
+  this_month: UsageAmountSchema,
+  last_month: UsageAmountSchema,
+});
+
+export type ClientDashboardUsage = z.infer<typeof ClientDashboardUsageSchema>;
