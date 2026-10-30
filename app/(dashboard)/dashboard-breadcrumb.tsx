@@ -139,7 +139,7 @@ export function DashboardBreadcrumb() {
 
   if (isDashboard) {
     return (
-      <Breadcrumb>
+      <Breadcrumb className="hidden md:block">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
@@ -150,14 +150,14 @@ export function DashboardBreadcrumb() {
   }
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="hidden md:block">
       <BreadcrumbList>
-        <BreadcrumbItem className="hidden md:block">
+        <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/dashboard">{t("menu.dashboard.title")}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator className="hidden md:block" />
+        <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
         </BreadcrumbItem>
