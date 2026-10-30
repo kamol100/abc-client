@@ -104,6 +104,7 @@ describe("NotificationBell", () => {
         const { rerender } = render(<NotificationBell />);
         await user.click(screen.getByTestId("notification-bell"));
         expect(screen.getByTestId("notification-loading")).toBeInTheDocument();
+        expect(screen.getAllByTestId("notification-skeleton-item")).toHaveLength(4);
 
         recent.isLoading = false;
         recent.isError = true;

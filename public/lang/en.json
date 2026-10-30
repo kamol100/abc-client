@@ -6646,6 +6646,11 @@
             "support": "Support",
             "invoice": "Invoice"
         },
+        "changes": {
+            "details": "details",
+            "package": "package",
+            "status": "status"
+        },
         "settings": {
             "title": "Notification settings",
             "description": "Choose which events create in-app notifications for this company or reseller. Turning one off stops new notifications and keeps existing history.",

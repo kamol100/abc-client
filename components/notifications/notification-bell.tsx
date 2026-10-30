@@ -32,7 +32,7 @@ function NotificationBellMenu() {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const { count } = useUnreadCount();
-    const recent = useRecentNotifications(open, count);
+    const recent = useRecentNotifications(count);
     const { markRead, markAllRead } = useNotificationActions();
     const items = recent.data?.data ?? [];
     const badge = count > 99 ? "99+" : count > 0 ? String(count) : null;
@@ -46,6 +46,7 @@ function NotificationBellMenu() {
                     aria-label={t("notifications.title")}
                     data-testid="notification-bell"
                     className="relative"
+                    size="default"
                 >
                     <Bell className="size-4" />
                     {badge ? (

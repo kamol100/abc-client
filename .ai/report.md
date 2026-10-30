@@ -1,41 +1,37 @@
 ## Summary
 
-The admin navbar has a notification bell. It polls the unread count every 60 seconds, pauses while the tab is hidden, and opens the latest 10. `/notifications` is a filterable history table. Settings → Notifications toggles each category and event through the existing company settings save. Copy is translated from the stored event id in English and Bangla. The client portal navbar does not show the bell.
+The notification bell badge and the dropdown list now stay fresh through React Query. Both the unread count and the recent list refetch when the browser window is focused again, and they poll every 5 minutes while the tab is visible. Polling stops while the tab is hidden.
+
+The list component still only renders rows. The bell loads that data with `useRecentNotifications`, which is active for the whole session so the menu is already current when it opens.
+
+The history page at `/notifications` is unchanged. It still loads when you open that page.
 
 ## Files
 
-- `components/notifications/notification-catalog.ts`, `notification-bell.tsx`, `notification-list.tsx`, `notification-table.tsx`, `notification-column.tsx`, `notification-filter-schema.ts`
 - `hooks/use-notifications.ts`
-- `components/settings/notification-settings.tsx`
-- `app/(dashboard)/notifications/page.tsx`, `app/(dashboard)/settings/notifications/page.tsx`
-- `app/(dashboard)/top-navbar.tsx`, `dashboard-breadcrumb.tsx`, `hooks/use-menu-items.ts`
-- `lib/helper/helper.ts` (`formatRelativeTime`)
-- `app/actions.ts` and `hooks/use-api-mutation.ts` accept `PATCH`
-- `public/lang/en.json`, `public/lang/bn.json`
-- `tests/unit/notifications/`
+- `components/notifications/notification-bell.tsx`
+- `tests/unit/notifications/use-notifications.test.tsx`
 
 ## Checks
 
-`scripts/ai/typecheck`: passed.
+`npx vitest run tests/unit/notifications/use-notifications.test.tsx tests/unit/notifications/notification-bell.test.tsx tests/unit/notifications/notification-table.test.tsx`: 9 passed.
 
-`npx vitest run tests/unit/notifications`: 11 passed. Covers the bell badge `99+`, dropdown empty, loading, and error states, mark read and mark all, history list params, settings payload, subject links, relative time in English and Bangla, and a translation key for every event.
+The unread-count and recent queries both pass `refetchOnWindowFocus: true`, `refetchIntervalInBackground: false`, and a 5-minute interval that returns `false` while `document.visibilityState` is `hidden`.
 
-`scripts/ai/test` (full unit suite): 443 passed, 4 failed, plus 2 suites that did not run. The failures are in files this change does not modify:
-
-- `tests/unit/client-area/client-account-page.test.tsx` (NID text not rendered)
-- `tests/unit/clients/reseller-client-filter-schema.test.ts` (reseller dropdown label)
-- `tests/unit/pay/pay-content.test.tsx` (`usePathname` missing from a local `next/navigation` mock)
-- `tests/unit/clients/reseller-client-table.test.tsx` (next-auth cannot resolve `next/server`)
-- `tests/unit/maps/client-map-rows.test.ts` (no test suite in the file)
-
-ESLint was not run. `npm run lint` does not succeed on this repo.
+Opened `http://127.0.0.1:3000/dashboard` while already signed in. The bell is in the header. The dev bundle for that page includes `NOTIFICATION_REFRESH_MS = 5 * 60 * 1000` and the recent query is no longer limited to the open menu. Automated clicks landed on the bell button, but the dropdown stayed closed, so the open menu was not rechecked in the browser. The 5-minute poll was not waited out.
 
 ## Security
 
-The UI only hides the settings item behind `company-settings.access`. The API decides who receives a row and who can read it. This frontend does not send `company_id` or `reseller_id`. Tenant isolation is not verified from this repo.
-
-`invalidateNotifications()` is the hook a future Echo listener should call. The browser still must not read the Sanctum token. That token remains exposed through the NextAuth session and `localStorage` (pre-existing).
+No permission or tenant change. The same two notification endpoints are called. The client still does not send `company_id` or `reseller_id`.
 
 ## Git
 
-Uncommitted on `master`. The working tree changes are the notification UI. No unrelated dirty files.
+Uncommitted on `master`. This session changed `hooks/use-notifications.ts`, `components/notifications/notification-bell.tsx`, and added `tests/unit/notifications/use-notifications.test.tsx`.
+
+Left untouched from earlier work:
+
+- `components/notifications/notification-list.tsx` (loading skeletons)
+- `components/notifications/notification-bell.tsx` `size="default"` (already in the file; this session only changed the recent-query call)
+- `components/notifications/notification-catalog.ts`, `notification-column.tsx`
+- `public/lang/en.json`, `public/lang/bn.json`
+- `tests/unit/notifications/notification-bell.test.tsx`, `notification-catalog.test.ts`

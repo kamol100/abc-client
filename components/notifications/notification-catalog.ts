@@ -98,14 +98,70 @@ export function notificationMessageKeys(event: string): string[] {
     return [`notifications.events.${event}.message`];
 }
 
+type NotificationTranslator = (key: string) => string;
+
+const STATUS_LABEL_KEYS: Record<string, string> = {
+    open: "ticket.status.open",
+    in_progress: "ticket.status.in_progress",
+    resolved: "ticket.status.resolved",
+    closed: "ticket.status.closed",
+    online: "onu.status.online",
+    offline: "onu.status.offline",
+    los: "onu.status.los",
+    dying_gasp: "onu.status.dying_gasp",
+    unknown: "onu.status.unknown",
+    up: "monitoring.state.up",
+    down: "monitoring.state.down",
+};
+
+const CHANGE_LABEL_KEYS: Record<string, string> = {
+    details: "notifications.changes.details",
+    package: "notifications.changes.package",
+    status: "notifications.changes.status",
+};
+
+function translatedToken(
+    value: string,
+    labels: Record<string, string>,
+    translate: NotificationTranslator | undefined
+): string {
+    const key = labels[value];
+    if (!key || !translate) return value;
+    const text = translate(key);
+    return text && text !== key ? text : value;
+}
+
 export function notificationInterpolation(
-    data: NotificationRow["data"] | undefined
+    data: NotificationRow["data"] | undefined,
+    translate?: NotificationTranslator
 ): Record<string, string | number> {
     const values: Record<string, string | number> = {};
     for (const [key, value] of Object.entries(data ?? {})) {
         if (typeof value === "string" || typeof value === "number") values[key] = value;
         else if (typeof value === "boolean") values[key] = value ? "1" : "0";
     }
+
+    const ticketNumber = values.ticket_number;
+    if (
+        (typeof ticketNumber === "string" || typeof ticketNumber === "number") &&
+        values.ticket_no === undefined
+    ) {
+        values.ticket_no = ticketNumber;
+    }
+
+    if (typeof values.status === "string") {
+        values.status = translatedToken(values.status, STATUS_LABEL_KEYS, translate);
+        if (values.to === undefined) values.to = values.status;
+    }
+
+    if (typeof values.from_status === "string" && values.from === undefined) {
+        values.from = translatedToken(values.from_status, STATUS_LABEL_KEYS, translate);
+    }
+
+    if (typeof values.change === "string") {
+        values.change = translatedToken(values.change, CHANGE_LABEL_KEYS, translate);
+    }
+
     return values;
 }
 

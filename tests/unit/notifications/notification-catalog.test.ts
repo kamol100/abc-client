@@ -1,6 +1,7 @@
 import {
     NOTIFICATION_EVENTS,
     isNotificationSettingEnabled,
+    notificationInterpolation,
     notificationMessageKeys,
     notificationTitleKey,
     resolveNotificationHref,
@@ -15,6 +16,18 @@ function readPath(source: Record<string, unknown>, path: string): unknown {
         if (!current || typeof current !== "object") return undefined;
         return (current as Record<string, unknown>)[key];
     }, source);
+}
+
+function translateFrom(source: Record<string, unknown>, key: string): string {
+    const value = readPath(source, key);
+    return typeof value === "string" ? value : key;
+}
+
+function fill(template: string, values: Record<string, string | number>): string {
+    return template.replace(/\{\{([a-z0-9_]+)\}\}/g, (match, name: string) => {
+        const value = values[name];
+        return value === undefined ? match : String(value);
+    });
 }
 
 describe("notification catalog", () => {
@@ -37,6 +50,29 @@ describe("notification catalog", () => {
         expect(isNotificationSettingEnabled(0)).toBe(false);
         expect(isNotificationSettingEnabled("0")).toBe(false);
         expect(isNotificationSettingEnabled(false)).toBe(false);
+    });
+
+    it("fills ticket status copy from the stored payload", () => {
+        const values = notificationInterpolation(
+            { ticket_number: 18, client_name: "Rahim", status: "open" },
+            (key) => translateFrom(bn, key)
+        );
+        const message = readPath(bn, "notifications.events.ticket_status_changed.message");
+
+        expect(values.ticket_no).toBe(18);
+        expect(values.status).toBe("ওপেন");
+        expect(fill(String(message), values)).toBe("টিকিট 18 এখন ওপেন");
+    });
+
+    it("translates onu status names used as from and to", () => {
+        const values = notificationInterpolation(
+            { onu_name: "ONU-1", from_status: "offline", status: "online" },
+            (key) => translateFrom(bn, key)
+        );
+
+        expect(fill("{{onu_name}} {{from}} থেকে {{to}} হয়েছে", values)).toBe(
+            "ONU-1 অফলাইন থেকে অনলাইন হয়েছে"
+        );
     });
 
     it("has an English and Bangla title and message for every event", () => {

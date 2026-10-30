@@ -64,7 +64,7 @@ export function getNotificationColumns(
 
 function NotificationMessageCell({ item }: { item: NotificationRow }) {
     const { t } = useTranslation();
-    const values = notificationInterpolation(item.data);
+    const values = notificationInterpolation(item.data, (key) => t(key));
     const href = resolveNotificationHref(item.subject);
     const unread = item.read_at === null;
     const content = (

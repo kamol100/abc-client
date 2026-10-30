@@ -10,12 +10,18 @@ import { toast } from "react-toastify";
 
 export const NOTIFICATIONS_QUERY_KEY = "notifications";
 
-const UNREAD_POLL_MS = 60_000;
+const NOTIFICATION_REFRESH_MS = 5 * 60 * 1000;
 
-function unreadPollInterval(): number | false {
+function notificationRefreshInterval(): number | false {
     if (typeof document !== "undefined" && document.visibilityState === "hidden") return false;
-    return UNREAD_POLL_MS;
+    return NOTIFICATION_REFRESH_MS;
 }
+
+const notificationLiveQuery = {
+    refetchInterval: notificationRefreshInterval,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+} as const;
 
 async function patchNotification(url: string): Promise<unknown> {
     const result = await useFetch({ url, method: "PATCH" });
@@ -35,9 +41,7 @@ export function useUnreadCount() {
         queryKey: [NOTIFICATIONS_QUERY_KEY, "unread-count"],
         url: "notifications/unread-count",
         pagination: false,
-        refetchInterval: unreadPollInterval,
-        refetchIntervalInBackground: false,
-        refetchOnWindowFocus: true,
+        ...notificationLiveQuery,
     });
 
     return {
@@ -46,12 +50,12 @@ export function useUnreadCount() {
     };
 }
 
-export function useRecentNotifications(open: boolean, unreadCount: number) {
+export function useRecentNotifications(unreadCount: number) {
     return useApiQuery<ApiResponse<NotificationRow[]>>({
         queryKey: [NOTIFICATIONS_QUERY_KEY, "recent", unreadCount],
         url: "notifications/recent",
         pagination: false,
-        enabled: open,
+        ...notificationLiveQuery,
     });
 }
 
