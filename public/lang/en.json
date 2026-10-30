@@ -2583,6 +2583,9 @@
         "edit_title": "Edit Product",
         "delete_confirmation": "Are you sure you want to delete this product?",
         "sl": "SL",
+        "product_code": {
+            "label": "Product ID"
+        },
         "stock_in": {
             "label": "Stock In"
         },
@@ -4938,6 +4941,10 @@
             "expense_id_prefix": {
                 "label": "Expense ID Prefix",
                 "placeholder": "EXP"
+            },
+            "product_code_prefix": {
+                "label": "Product ID Prefix",
+                "placeholder": "PRO"
             },
             "client_view_open_on_new_tab": {
                 "label": "Client view open on new tab"

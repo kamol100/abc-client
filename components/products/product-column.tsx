@@ -17,12 +17,12 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
 
     return [
         {
-            id: "sl",
+            accessorKey: "product_code",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="product.sl" />
+                <DataTableColumnHeader column={column} title="product.product_code.label" />
             ),
             cell: ({ row }) => (
-                <div className="font-medium">{cellIndex(row.index, pagination)}</div>
+                <span className="font-medium text-sm">{row.original.product_code ?? "—"}</span>
             ),
             enableSorting: false,
             enableHiding: false,
