@@ -1,26 +1,26 @@
 ## Summary
 
-The Telegram Zone screen is now Telegram at `/telegram`. The communication menu item, breadcrumb, English copy, and Bengali copy use that name. Create, edit, zone linking, channel id, status, and delete still call the same kind of API, now at `/telegram` with permissions `telegram.*`.
-
-`/settings/telegram` is the company bot settings page and was not changed.
+The Telegram create and edit dialog now shows a Notifications section under the existing fields. Events are grouped (client, fund transaction, invoice, expense, ticket, network, package, vendor) with checkboxes. Choices stay in the dialog only and are not saved or sent to the API.
 
 ## Frontend
 
-- Page: `app/(dashboard)/telegram/page.tsx`
-- Components: `components/telegram/`
-- Menu: Communication → Telegram, permission `telegram.access`
-- Removed: `/communication/telegram-zone`
+- `components/telegram/telegram-form.tsx` renders the section after name, channel, zones, and status. Dialog width is `3xl`.
+- `components/telegram/telegram-form-schema.ts` lists the same keys as `SETTINGS_SWITCH_KEYS` lines 56–80.
+- Copy added in `public/lang/en.json` and `public/lang/bn.json` under `telegram.notifications`.
 
 ## Checks
 
-- `scripts/ai/typecheck` passed
-- `npx vitest run tests/unit/menu/menu-items.test.ts tests/unit/menu/menu-path-active.test.ts` passed (12 tests)
-- `npm run build` passed. The route list includes `/telegram` and does not include `/communication/telegram-zone`. `/settings/telegram` is still present.
-- English and Bengali translation keys still match.
+- `scripts/ai/typecheck` passed.
+- English and Bengali `telegram` keys match.
 
 ## Browser
 
-An unauthenticated visit to `http://127.0.0.1:3456/telegram` redirects to `/admin?callbackUrl=%2Ftelegram`. Logged-in create, edit, and delete were not exercised; there is no staff session in this browser.
+Signed in at `http://vp.isp.test/admin` as `vp`. Opened Communication → Telegram → Add.
+
+- Existing fields stay on top. Notifications sit below them.
+- All 25 event checkboxes are present. Client → Create toggles on.
+- Narrow viewport stacks each group in one column. Cancel and Save stay usable.
+- Dialog was closed without saving.
 
 ## Unrelated working tree
 

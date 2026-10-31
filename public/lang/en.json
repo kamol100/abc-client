@@ -3887,6 +3887,27 @@
                 "active": "Active",
                 "inactive": "Inactive"
             }
+        },
+        "notifications": {
+            "title": "Notifications",
+            "description": "Choose which events send a message to this channel.",
+            "groups": {
+                "client": "Client",
+                "fund_transaction": "Fund transaction",
+                "invoice": "Invoice",
+                "expense": "Expense",
+                "ticket": "Ticket",
+                "network": "Network",
+                "package": "Package",
+                "vendor": "Vendor"
+            },
+            "actions": {
+                "create": "Create",
+                "update": "Update",
+                "delete": "Delete",
+                "auto_generate": "Auto generate",
+                "paid": "Paid"
+            }
         }
     },
     "subject": {

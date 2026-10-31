@@ -3887,6 +3887,27 @@
                 "active": "সক্রিয়",
                 "inactive": "নিষ্ক্রিয়"
             }
+        },
+        "notifications": {
+            "title": "নোটিফিকেশন",
+            "description": "এই চ্যানেলে কোন ইভেন্টে মেসেজ যাবে তা নির্বাচন করুন।",
+            "groups": {
+                "client": "ক্লায়েন্ট",
+                "fund_transaction": "ফান্ড ট্রানজেকশন",
+                "invoice": "ইনভয়েস",
+                "expense": "এক্সপেন্স",
+                "ticket": "টিকেট",
+                "network": "নেটওয়ার্ক",
+                "package": "প্যাকেজ",
+                "vendor": "ভেন্ডর"
+            },
+            "actions": {
+                "create": "ক্রিয়েট",
+                "update": "আপডেট",
+                "delete": "ডিলিট",
+                "auto_generate": "অটো জেনারেট",
+                "paid": "পেইড"
+            }
         }
     },
     "subject": {
