@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import {
-  Activity,
   Archive,
   Banknote,
   Building2,
@@ -17,18 +16,14 @@ import {
   LifeBuoy,
   Map,
   MapPin,
-  MessageSquare,
   Network,
-  Package,
   PackageOpen,
   Radio,
   Receipt,
-  RefreshCw,
   ScrollText,
   Settings,
   ShieldCheck,
   Store,
-  SquareTerminal,
   UserCheck,
   UserCog,
   Users,
@@ -45,6 +40,10 @@ interface MenuSubItemConfig {
   title: string;
   url: string;
   permission: string;
+  /** Child stays hidden unless the user also has one of these. Keeps a link from opening just because it now shares a parent with another group. */
+  requiresAny?: string[];
+  /** Subscription lock for this child when the parent group covers more than one feature. */
+  feature?: string;
 }
 
 interface MenuItemConfig {
@@ -68,9 +67,27 @@ export interface NavMenuItem {
   items?: { title: string; url: string; disabled?: boolean }[];
 }
 
+export interface MenuAccess {
+  hasPermission: (permission: string) => boolean;
+  isReseller: boolean;
+  subscriptionState?: string | null;
+  disabledFeatures?: string[];
+}
+
 // ─── Menu Configuration ──────────────────────────────────────────────
 
-function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
+const networkFeature = "network";
+const networkGate = [
+  "networks.access",
+  "devices.access",
+  "device-types.access",
+  "olts.access",
+  "onus.access",
+];
+const packageGate = ["packages.access", "resellers.access"];
+const syncGate = ["sync-clients.access", "client-sync.access"];
+
+export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
   return [
     {
       id: 1,
@@ -78,14 +95,6 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       url: "/dashboard",
       icon: LayoutDashboard,
       permissions: ["dashboard.access", "client.dashboard"],
-    },
-    {
-      id: 33,
-      title: t("menu.noc.title"),
-      url: "/noc",
-      icon: Activity,
-      permissions: ["monitoring.summary"],
-      feature: "olts",
     },
     {
       id: 2,
@@ -96,12 +105,164 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       feature: "clients",
     },
     {
-      id: 35,
-      title: t("menu.archived_clients.title"),
-      url: "/archived-clients",
-      icon: Archive,
-      permissions: ["archived-clients.access"],
+      id: 13,
+      title: t("menu.support_tickets.title"),
+      url: "#",
+      icon: LifeBuoy,
+      permissions: ["tickets.access", "subjects.access", "tags.access"],
+      feature: "support",
+      items: [
+        { title: t("menu.support_tickets.title"), url: "/tickets", permission: "tickets.access" },
+        { title: t("menu.support_tickets.subjects.title"), url: "/subjects", permission: "subjects.access" },
+        { title: t("menu.support_tickets.tags.title"), url: "/tags", permission: "tags.access" },
+      ],
+    },
+    {
+      id: 9,
+      title: t("menu.invoice.title"),
+      url: "#",
+      icon: FileText,
+      permissions: ["invoices.access", "invoice-types.access"],
+      feature: "billing",
+      items: [
+        { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
+        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
+      ],
+    },
+    {
+      id: 10,
+      title: t("menu.payments.title"),
+      url: "#",
+      icon: Banknote,
+      permissions: ["payments.access", "payment-gateways.access"],
+      feature: "billing",
+      items: [
+        { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
+        { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
+      ],
+    },
+    {
+      id: 12,
+      title: t("menu.expense.title"),
+      url: "#",
+      icon: CircleDollarSign,
+      permissions: ["expenses.access", "expense-types.access"],
+      feature: "finance",
+      items: [
+        { title: t("menu.expense.title"), url: "/expenses", permission: "expenses.access" },
+        { title: t("menu.expense.types.title"), url: "/expense-types", permission: "expense-types.access" },
+      ],
+    },
+    {
+      id: 14,
+      title: t("menu.resellers.title"),
+      url: "/resellers",
+      icon: UserCheck,
+      permissions: ["resellers.access", "agents.access", "agent-transactions.access"],
+      feature: "resellers",
+      items: [
+        { title: t("menu.resellers.title"), url: "/resellers", permission: "resellers.access" },
+        { title: t("menu.agents.title"), url: "/agents", permission: "agents.access" },
+        { title: t("menu.agent_transactions.title"), url: "/agent-transactions", permission: "agent-transactions.access" },
+      ],
+    },
+    {
+      id: 17,
+      title: t("menu.networks.title"),
+      url: "#",
+      icon: Network,
+      permissions: [
+        ...networkGate,
+        "monitoring.summary",
+        "mikrotik-command.access",
+        ...packageGate,
+        ...syncGate,
+      ],
+      items: [
+        { title: t("menu.networks.title"), url: "/networks", permission: "networks.access", requiresAny: networkGate, feature: networkFeature },
+        { title: t("menu.noc.title"), url: "/noc", permission: "monitoring.summary", requiresAny: ["monitoring.summary"], feature: "olts" },
+        { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access", requiresAny: syncGate, feature: networkFeature },
+        { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access", requiresAny: syncGate, feature: networkFeature },
+        { title: t("menu.mikrotik_commands.title"), url: "/mikrotik-commands", permission: "mikrotik-command.access", requiresAny: ["mikrotik-command.access"], feature: networkFeature },
+        { title: t("menu.packages.mikrotik_package.title"), url: "/mikrotik-packages", permission: "mikrotik-packages.access", requiresAny: packageGate },
+        { title: t("menu.packages.client_package.title"), url: "/client-packages", permission: "packages.access", requiresAny: packageGate },
+        { title: t("menu.packages.reseller_package.title"), url: "/reseller-packages", permission: "resellers.access", requiresAny: packageGate },
+        { title: t("menu.networks.devices.title"), url: "/devices", permission: "devices.access", requiresAny: networkGate, feature: networkFeature },
+        { title: t("menu.networks.device_type.title"), url: "/device-types", permission: "device-types.access", requiresAny: networkGate, feature: networkFeature },
+        { title: t("menu.networks.olts.title"), url: "/olts", permission: "olts.access", requiresAny: networkGate, feature: networkFeature },
+        { title: t("menu.networks.onus.title"), url: "/onus", permission: "onus.access", requiresAny: networkGate, feature: networkFeature },
+      ],
+    },
+    {
+      id: 21,
+      title: t("menu.zones.title"),
+      url: "#",
+      icon: MapPin,
+      permissions: ["zones.access", "sub-zones.access"],
       feature: "clients",
+      items: [
+        { title: t("menu.zones.title"), url: "/zones", permission: "zones.access" },
+        { title: t("menu.zones.sub_zone.title"), url: "/sub-zones", permission: "sub-zones.access" },
+      ],
+    },
+    {
+      id: 8,
+      title: t("menu.maps.title"),
+      url: "#",
+      icon: Map,
+      permissions: ["clients.map"],
+      items: [
+        { title: t("menu.maps.client_maps.title"), url: "/client-maps", permission: "clients.map" },
+        { title: t("menu.maps.tj_box_maps.title"), url: "/tj-box-maps", permission: "tj-boxes.map" },
+        { title: t("menu.maps.tj_boxes.title"), url: "/tj-boxes", permission: "tj-boxes.access" },
+      ],
+    },
+    {
+      id: 15,
+      title: t("menu.communication.title"),
+      url: "#",
+      icon: Radio,
+      permissions: [
+        "sms-send.access",
+        "sms-templates.access",
+        "telegram-zones.access",
+        "communication-queue.access",
+        "communication-logs.access",
+        "communication-gateways.access",
+      ],
+      feature: "sms",
+      items: [
+        { title: t("menu.sms.send.title"), url: "/sms-send", permission: "sms-send.access" },
+        { title: t("menu.sms.templates.title"), url: "/sms-templates", permission: "sms-templates.access" },
+        { title: t("menu.communication.telegram_zone.title"), url: "/communication/telegram-zone", permission: "telegram-zones.access" },
+        { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
+        { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
+        { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
+      ],
+    },
+    {
+      id: 24,
+      title: t("menu.funds.title"),
+      url: "#",
+      icon: Landmark,
+      permissions: ["funds.access", "fund-transactions.access"],
+      feature: "finance",
+      items: [
+        { title: t("menu.funds.title"), url: "/funds", permission: "funds.access" },
+        { title: t("menu.funds.transaction.title"), url: "/fund-transactions", permission: "fund-transactions.access" },
+      ],
+    },
+    {
+      id: 26,
+      title: t("menu.wallets.title"),
+      url: "#",
+      icon: Wallet,
+      permissions: ["wallets.access", "wallets.client"],
+      feature: "finance",
+      items: [
+        { title: t("menu.wallets.my_wallets.title"), url: "/my-wallets", permission: "wallets.access" },
+        { title: t("menu.wallets.client_wallets.title"), url: "/client-wallets", permission: "wallets.client" },
+      ],
     },
     {
       id: 3,
@@ -119,6 +280,134 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.reports.product_out.title"), url: "/reports/product-out", permission: "products-in.report" },
         { title: t("menu.reports.reseller_clients.title"), url: "/reports/reseller-clients", permission: "resellers.clients.report" },
         { title: t("menu.reports.btrc.title"), url: "/reports/btrc", permission: "reports.access" },
+      ],
+    },
+    {
+      id: 11,
+      title: t("menu.products.title"),
+      url: "#",
+      icon: PackageOpen,
+      permissions: ["products.access", "product-categories.access", "products-in.report", "unit-types.access"],
+      feature: "inventory",
+      items: [
+        { title: t("menu.products.title"), url: "/products", permission: "products.access" },
+        { title: t("menu.products.reports.title"), url: "/products/reports", permission: "products-in.report" },
+        { title: t("menu.products.category.title"), url: "/product-categories", permission: "product-categories.access" },
+        { title: t("menu.products.unit_types.title"), url: "/unit-types", permission: "unit-types.access" },
+      ],
+    },
+    {
+      id: 23,
+      title: t("menu.vendors.title"),
+      url: "/vendors",
+      icon: Store,
+      permissions: ["vendors.access"],
+      feature: "inventory",
+    },
+    {
+      id: 25,
+      title: t("menu.staffs.title"),
+      url: "#",
+      icon: UserCog,
+      permissions: ["staffs.access", "salaries.access"],
+      feature: "hr",
+      items: [
+        { title: t("menu.staffs.title"), url: "/staffs", permission: "staffs.access" },
+        { title: t("menu.staffs.salaries.title"), url: "/salaries", permission: "salaries.access" },
+      ],
+    },
+    {
+      id: 19,
+      title: t("menu.activity_logs.title"),
+      url: "/activity-logs",
+      icon: ScrollText,
+      permissions: ["activity-logs.access"],
+    },
+    {
+      id: 20,
+      title: t("menu.history.title"),
+      url: "/histories",
+      icon: History,
+      permissions: ["histories.access"],
+    },
+    {
+      id: 27,
+      title: t("menu.users.title"),
+      url: "/users",
+      icon: Users,
+      permissions: ["users.access"],
+    },
+    {
+      id: 30,
+      title: t("menu.role_permission.title"),
+      url: "#",
+      icon: ShieldCheck,
+      permissions: ["roles.access", "permissions.access"],
+      feature: "core",
+      items: [
+        { title: t("menu.role_permission.roles.title"), url: "/roles", permission: "roles.access" },
+        { title: t("menu.role_permission.permissions.title"), url: "/permissions", permission: "permissions.access" },
+      ],
+    },
+    {
+      id: 36,
+      title: t("menu.subscription.title"),
+      url: "/subscription",
+      icon: CreditCard,
+      permissions: [],
+      always: true,
+      hideForReseller: true,
+    },
+    {
+      id: 28,
+      title: t("menu.companies.title"),
+      url: "/companies",
+      icon: Building2,
+      permissions: ["companies.access"],
+    },
+    {
+      id: 32,
+      title: t("menu.demo_requests.title"),
+      url: "/demo-requests",
+      icon: ClipboardList,
+      permissions: ["demo-requests.access"],
+    },
+    {
+      id: 35,
+      title: t("menu.archived_clients.title"),
+      url: "/archived-clients",
+      icon: Archive,
+      permissions: ["archived-clients.access"],
+      feature: "clients",
+    },
+    {
+      id: 34,
+      title: t("menu.subscription.title"),
+      url: "#",
+      icon: CreditCard,
+      permissions: ["subscription-plans.access", "features.access", "company-subscriptions.access"],
+      items: [
+        { title: t("menu.subscription.companies"), url: "/company-subscriptions", permission: "company-subscriptions.access" },
+        { title: t("menu.subscription.plans"), url: "/subscription-plans", permission: "subscription-plans.access" },
+        { title: t("menu.subscription.features"), url: "/subscription-features", permission: "features.access" },
+      ],
+    },
+    {
+      id: 31,
+      title: t("menu.settings.title"),
+      url: "#",
+      icon: Settings,
+      permissions: ["company-settings.access"],
+      feature: "core",
+      items: [
+        { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
+        { title: t("menu.settings.dashboard.title"), url: "/settings/dashboard", permission: "company-settings.access" },
+        { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
+        { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
+        { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
+        { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
+        { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
+        { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
       ],
     },
     {
@@ -156,311 +445,60 @@ function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       icon: ChartColumn,
       permissions: [],
     },
-    {
-      id: 8,
-      title: t("menu.maps.title"),
-      url: "#",
-      icon: Map,
-      permissions: ["clients.map"],
-      items: [
-        { title: t("menu.maps.client_maps.title"), url: "/client-maps", permission: "clients.map" },
-        { title: t("menu.maps.tj_box_maps.title"), url: "/tj-box-maps", permission: "tj-boxes.map" },
-        { title: t("menu.maps.tj_boxes.title"), url: "/tj-boxes", permission: "tj-boxes.access" },
-      ],
-    },
-    {
-      id: 9,
-      title: t("menu.invoice.title"),
-      url: "#",
-      icon: FileText,
-      permissions: ["invoices.access", "invoice-types.access"],
-      feature: "billing",
-      items: [
-        { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
-        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
-      ],
-    },
-    {
-      id: 10,
-      title: t("menu.payments.title"),
-      url: "#",
-      icon: Banknote,
-      permissions: ["payments.access", "payment-gateways.access"],
-      feature: "billing",
-      items: [
-        { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
-        { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
-      ],
-    },
-    {
-      id: 11,
-      title: t("menu.products.title"),
-      url: "#",
-      icon: PackageOpen,
-      permissions: ["products.access", "product-categories.access", "products-in.report", "unit-types.access"],
-      feature: "inventory",
-      items: [
-        { title: t("menu.products.title"), url: "/products", permission: "products.access" },
-        { title: t("menu.products.reports.title"), url: "/products/reports", permission: "products-in.report" },
-        { title: t("menu.products.category.title"), url: "/product-categories", permission: "product-categories.access" },
-        { title: t("menu.products.unit_types.title"), url: "/unit-types", permission: "unit-types.access" },
-      ],
-    },
-    {
-      id: 12,
-      title: t("menu.expense.title"),
-      url: "#",
-      icon: CircleDollarSign,
-      permissions: ["expenses.access", "expense-types.access"],
-      feature: "finance",
-      items: [
-        { title: t("menu.expense.title"), url: "/expenses", permission: "expenses.access" },
-        { title: t("menu.expense.types.title"), url: "/expense-types", permission: "expense-types.access" },
-      ],
-    },
-    {
-      id: 13,
-      title: t("menu.support_tickets.title"),
-      url: "#",
-      icon: LifeBuoy,
-      permissions: ["tickets.access", "subjects.access", "tags.access"],
-      feature: "support",
-      items: [
-        { title: t("menu.support_tickets.title"), url: "/tickets", permission: "tickets.access" },
-        { title: t("menu.support_tickets.subjects.title"), url: "/subjects", permission: "subjects.access" },
-        { title: t("menu.support_tickets.tags.title"), url: "/tags", permission: "tags.access" },
-      ],
-    },
-    {
-      id: 14,
-      title: t("menu.resellers.title"),
-      url: "/resellers",
-      icon: UserCheck,
-      permissions: ["resellers.access", "agents.access", "agent-transactions.access"],
-      feature: "resellers",
-      items: [
-        { title: t("menu.resellers.title"), url: "/resellers", permission: "resellers.access" },
-        { title: t("menu.agents.title"), url: "/agents", permission: "agents.access" },
-        { title: t("menu.agent_transactions.title"), url: "/agent-transactions", permission: "agent-transactions.access" },
-      ],
-    },
-    {
-      id: 15,
-      title: t("menu.communication.title"),
-      url: "#",
-      icon: Radio,
-      permissions: ["communication-gateways.access", "communication-logs.access", "communication-queue.access", "telegram-zones.access"],
-      feature: "sms",
-      items: [
-        { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
-        { title: t("menu.communication.telegram_zone.title"), url: "/communication/telegram-zone", permission: "telegram-zones.access" },
-        { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
-        { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
-      ],
-    },
-    {
-      id: 16,
-      title: t("menu.sms.title"),
-      url: "#",
-      icon: MessageSquare,
-      permissions: ["sms-send.access", "sms-templates.access"],
-      feature: "sms",
-      items: [
-        { title: t("menu.sms.send.title"), url: "/sms-send", permission: "sms-send.access" },
-        { title: t("menu.sms.templates.title"), url: "/sms-templates", permission: "sms-templates.access" },
-      ],
-    },
-    {
-      id: 17,
-      title: t("menu.networks.title"),
-      url: "#",
-      icon: Network,
-      permissions: ["networks.access", "devices.access", "device-types.access", "olts.access", "onus.access"],
-      feature: "network",
-      items: [
-        { title: t("menu.networks.title"), url: "/networks", permission: "networks.access" },
-        { title: t("menu.networks.devices.title"), url: "/devices", permission: "devices.access" },
-        { title: t("menu.networks.device_type.title"), url: "/device-types", permission: "device-types.access" },
-        { title: t("menu.networks.olts.title"), url: "/olts", permission: "olts.access" },
-        { title: t("menu.networks.onus.title"), url: "/onus", permission: "onus.access" },
-      ],
-    },
-    {
-      id: 18,
-      title: t("menu.mikrotik_commands.title"),
-      url: "/mikrotik-commands",
-      icon: SquareTerminal,
-      permissions: ["mikrotik-command.access"],
-      feature: "network",
-    },
-    {
-      id: 19,
-      title: t("menu.activity_logs.title"),
-      url: "/activity-logs",
-      icon: ScrollText,
-      permissions: ["activity-logs.access"],
-    },
-    {
-      id: 32,
-      title: t("menu.demo_requests.title"),
-      url: "/demo-requests",
-      icon: ClipboardList,
-      permissions: ["demo-requests.access"],
-    },
-    {
-      id: 20,
-      title: t("menu.history.title"),
-      url: "/histories",
-      icon: History,
-      permissions: ["histories.access"],
-    },
-    {
-      id: 21,
-      title: t("menu.zones.title"),
-      url: "#",
-      icon: MapPin,
-      permissions: ["zones.access", "sub-zones.access"],
-      feature: "clients",
-      items: [
-        { title: t("menu.zones.title"), url: "/zones", permission: "zones.access" },
-        { title: t("menu.zones.sub_zone.title"), url: "/sub-zones", permission: "sub-zones.access" },
-      ],
-    },
-    {
-      id: 22,
-      title: t("menu.packages.title"),
-      url: "#",
-      icon: Package,
-      permissions: ["packages.access", "resellers.access"],
-      items: [
-        { title: t("menu.packages.mikrotik_package.title"), url: "/mikrotik-packages", permission: "mikrotik-packages.access" },
-        { title: t("menu.packages.client_package.title"), url: "/client-packages", permission: "packages.access" },
-        { title: t("menu.packages.reseller_package.title"), url: "/reseller-packages", permission: "resellers.access" },
-      ],
-    },
-    {
-      id: 23,
-      title: t("menu.vendors.title"),
-      url: "/vendors",
-      icon: Store,
-      permissions: ["vendors.access"],
-      feature: "inventory",
-    },
-    {
-      id: 24,
-      title: t("menu.funds.title"),
-      url: "#",
-      icon: Landmark,
-      permissions: ["funds.access", "fund-transactions.access"],
-      feature: "finance",
-      items: [
-        { title: t("menu.funds.title"), url: "/funds", permission: "funds.access" },
-        { title: t("menu.funds.transaction.title"), url: "/fund-transactions", permission: "fund-transactions.access" },
-      ],
-    },
-    {
-      id: 25,
-      title: t("menu.staffs.title"),
-      url: "#",
-      icon: UserCog,
-      permissions: ["staffs.access", "salaries.access"],
-      feature: "hr",
-      items: [
-        { title: t("menu.staffs.title"), url: "/staffs", permission: "staffs.access" },
-        { title: t("menu.staffs.salaries.title"), url: "/salaries", permission: "salaries.access" },
-      ],
-    },
-    {
-      id: 26,
-      title: t("menu.wallets.title"),
-      url: "#",
-      icon: Wallet,
-      permissions: ["wallets.access", "wallets.client"],
-      feature: "finance",
-      items: [
-        { title: t("menu.wallets.my_wallets.title"), url: "/my-wallets", permission: "wallets.access" },
-        { title: t("menu.wallets.client_wallets.title"), url: "/client-wallets", permission: "wallets.client" },
-      ],
-    },
-    {
-      id: 27,
-      title: t("menu.users.title"),
-      url: "/users",
-      icon: Users,
-      permissions: ["users.access"],
-    },
-    {
-      id: 28,
-      title: t("menu.companies.title"),
-      url: "/companies",
-      icon: Building2,
-      permissions: ["companies.access"],
-    },
-    {
-      id: 29,
-      title: t("menu.mikrotik_sync.title"),
-      url: "#",
-      icon: RefreshCw,
-      permissions: ["sync-clients.access", "client-sync.access"],
-      feature: "network",
-      items: [
-        { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access" },
-        { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access" },
-      ],
-    },
-    {
-      id: 30,
-      title: t("menu.role_permission.title"),
-      url: "#",
-      icon: ShieldCheck,
-      permissions: ["roles.access", "permissions.access"],
-      feature: "core",
-      items: [
-        { title: t("menu.role_permission.roles.title"), url: "/roles", permission: "roles.access" },
-        { title: t("menu.role_permission.permissions.title"), url: "/permissions", permission: "permissions.access" },
-      ],
-    },
-    {
-      id: 31,
-      title: t("menu.settings.title"),
-      url: "#",
-      icon: Settings,
-      permissions: ["company-settings.access"],
-      feature: "core",
-      items: [
-        { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
-        { title: t("menu.settings.dashboard.title"), url: "/settings/dashboard", permission: "company-settings.access" },
-        { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
-        { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
-        { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
-        { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
-        // OLT polling (phase 3): its own page, separate from the device monitoring settings.
-        { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
-        { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
-      ],
-    },
-    {
-      id: 36,
-      title: t("menu.subscription.title"),
-      url: "/subscription",
-      icon: CreditCard,
-      permissions: [],
-      always: true,
-      hideForReseller: true,
-    },
-    {
-      id: 34,
-      title: t("menu.subscription.title"),
-      url: "#",
-      icon: CreditCard,
-      permissions: ["subscription-plans.access", "features.access", "company-subscriptions.access"],
-      items: [
-        { title: t("menu.subscription.companies"), url: "/company-subscriptions", permission: "company-subscriptions.access" },
-        { title: t("menu.subscription.plans"), url: "/subscription-plans", permission: "subscription-plans.access" },
-        { title: t("menu.subscription.features"), url: "/subscription-features", permission: "features.access" },
-      ],
-    },
   ];
+}
+
+function childIsLocked(access: MenuAccess, feature?: string): boolean {
+  return isMenuFeatureLocked(access.subscriptionState, access.disabledFeatures, feature);
+}
+
+function childIsPermitted(access: MenuAccess, sub: MenuSubItemConfig): boolean {
+  if (!access.hasPermission(sub.permission)) return false;
+  if (!sub.requiresAny) return true;
+  return sub.requiresAny.some((permission) => access.hasPermission(permission));
+}
+
+export function selectMenuItems(menuConfig: MenuItemConfig[], access: MenuAccess): NavMenuItem[] {
+  return menuConfig.reduce<NavMenuItem[]>((acc, config) => {
+    if (config.hideForReseller && access.isReseller) return acc;
+
+    const parentLocked = childIsLocked(access, config.feature);
+    const anyChildLocked = config.items?.some((sub) => childIsLocked(access, sub.feature)) ?? false;
+    const hasAccess =
+      config.always ||
+      parentLocked ||
+      anyChildLocked ||
+      config.permissions.some((permission) => access.hasPermission(permission));
+    if (!hasAccess) return acc;
+
+    if (!config.items) {
+      acc.push({
+        id: config.id,
+        title: config.title,
+        url: config.url,
+        icon: config.icon,
+        disabled: parentLocked,
+      });
+      return acc;
+    }
+
+    const visibleSubItems = config.items.flatMap((sub) => {
+      const locked = parentLocked || childIsLocked(access, sub.feature);
+      if (!locked && !childIsPermitted(access, sub)) return [];
+      return [{ title: sub.title, url: sub.url, disabled: locked }];
+    });
+    if (visibleSubItems.length === 0) return acc;
+
+    acc.push({
+      id: config.id,
+      title: config.title,
+      url: config.url,
+      icon: config.icon,
+      disabled: parentLocked || visibleSubItems.every((sub) => sub.disabled),
+      items: visibleSubItems,
+    });
+    return acc;
+  }, []);
 }
 
 // ─── Hook ─────────────────────────────────────────────────────────────
@@ -472,44 +510,14 @@ export function useMenuItems(): NavMenuItem[] {
   const { profile } = useProfile();
   const isReseller = !!profile?.reseller;
 
-  return useMemo(() => {
-    const menuConfig = buildMenuConfig(t);
-    return menuConfig.reduce<NavMenuItem[]>((acc, config) => {
-      if (config.hideForReseller && isReseller) return acc;
-
-      const locked = isMenuFeatureLocked(
-        subscription?.state,
-        subscription?.disabled_features,
-        config.feature,
-      );
-      const hasAccess = config.always || locked || config.permissions.some((p) => hasPermission(p));
-      if (!hasAccess) return acc;
-
-      if (!config.items) {
-        acc.push({
-          id: config.id,
-          title: config.title,
-          url: config.url,
-          icon: config.icon,
-          disabled: locked,
-        });
-        return acc;
-      }
-
-      const visibleSubItems = config.items.filter(
-        (sub) => locked || hasPermission(sub.permission),
-      );
-      if (visibleSubItems.length === 0) return acc;
-
-      acc.push({
-        id: config.id,
-        title: config.title,
-        url: config.url,
-        icon: config.icon,
-        disabled: locked,
-        items: visibleSubItems.map(({ title, url }) => ({ title, url, disabled: locked })),
-      });
-      return acc;
-    }, []);
-  }, [t, hasPermission, subscription, isReseller]);
+  return useMemo(
+    () =>
+      selectMenuItems(buildMenuConfig(t), {
+        hasPermission,
+        isReseller,
+        subscriptionState: subscription?.state,
+        disabledFeatures: subscription?.disabled_features,
+      }),
+    [t, hasPermission, subscription, isReseller],
+  );
 }

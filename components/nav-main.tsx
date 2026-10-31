@@ -24,9 +24,15 @@ import { cn } from "@/lib/utils";
 import type { NavMenuItem } from "@/hooks/use-menu-items";
 import { useTranslation } from "react-i18next";
 
-function isPathActive(pathname: string, url: string): boolean {
-  if (url === "/") return pathname === "/";
-  return pathname === url || pathname.startsWith(url + "/");
+export function isMenuPathActive(pathname: string, url: string, siblingUrls: string[] = []): boolean {
+  if (url === "/" || url === "#") return pathname === url;
+  const matches = pathname === url || pathname.startsWith(`${url}/`);
+  if (!matches) return false;
+  return !siblingUrls.some((sibling) => {
+    if (sibling === url || sibling === "#") return false;
+    const siblingMatches = pathname === sibling || pathname.startsWith(`${sibling}/`);
+    return siblingMatches && sibling.length > url.length;
+  });
 }
 
 export function NavMain({ items }: { items: NavMenuItem[] }) {
@@ -43,7 +49,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
               key={item.id}
               asChild
               defaultOpen={item.items.some((sub) =>
-                isPathActive(pathname, sub.url)
+                isMenuPathActive(pathname, sub.url, item.items?.map((entry) => entry.url) ?? [])
               )}
               className="group/collapsible"
             >
@@ -62,12 +68,15 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items.map((subItem) => (
+                    {item.items.map((subItem) => {
+                      const siblingUrls = item.items?.map((entry) => entry.url) ?? [];
+                      const active = isMenuPathActive(pathname, subItem.url, siblingUrls);
+                      return (
                       <SidebarMenuSubItem
                         key={subItem.url}
                         onClick={() => setOpenMobile(false)}
                         className={cn(
-                          isPathActive(pathname, subItem.url) &&
+                          active &&
                           "bg-primary text-primary-foreground rounded-md"
                         )}
                       >
@@ -80,7 +89,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                         <SidebarMenuSubButton
                           asChild
                           className={cn(
-                            isPathActive(pathname, subItem.url) &&
+                            active &&
                             "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
                           )}
                         >
@@ -90,7 +99,8 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                         </SidebarMenuSubButton>
                         )}
                       </SidebarMenuSubItem>
-                    ))}
+                      );
+                    })}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>
@@ -108,7 +118,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                 asChild
                 onClick={() => setOpenMobile(false)}
                 className={cn(
-                  isPathActive(pathname, item.url) &&
+                  isMenuPathActive(pathname, item.url) &&
                   "bg-primary text-primary-foreground font-medium"
                 )}
               >
