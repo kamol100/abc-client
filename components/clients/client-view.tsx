@@ -75,149 +75,149 @@ const ClientView: FC<Props> = ({ clientId }) => {
     return (
         <div className="space-y-6 overflow-auto pr-3">
             {!client ? <ClientViewSkeleton showTables={false} /> : (
-            <>
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                <div className="flex items-center gap-3">
-                    <MyButton variant="default" size="icon" url="/clients">
-                        <ArrowLeft className="h-4 w-4" />
-                    </MyButton>
-                    <h1 className="text-lg font-semibold">{t("client.view_title")}</h1>
-                    <Badge variant={isActive ? "default" : "destructive"}>
-                        {isActive ? t("common.active") : t("common.inactive")}
-                    </Badge>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
-                    {hasPermission("clients.edit") && (
-                        <MyButton
-                            action="edit"
-                            size="icon"
-                            url={`/clients/edit/${getClientId(client) ?? clientId}`}
-                            tooltip="client.actions.edit"
-                            aria-label={t("client.actions.edit")}
-                        />
-                    )}
-                    <MyButton
-                        action="edit"
-                        icon={false}
-                        size="icon"
-                        onClick={() => setResetOpen(true)}
-                        tooltip="client.actions.reset_session"
-                        aria-label={t("client.actions.reset_session")}
-                    >
-                        <RotateCcw className="h-4 w-4" />
-                    </MyButton>
-                    <MyButton
-                        action="edit"
-                        icon={false}
-                        size="icon"
-                        onClick={() => setChangePackageOpen(true)}
-                        tooltip="client.actions.change_package"
-                        aria-label={t("client.actions.change_package")}
-                    >
-                        <Package className="h-4 w-4" />
-                    </MyButton>
-                    {hasPermission("invoices.pay") && (
-                        <MyButton
-                            action="edit"
-                            icon={false}
-                            size="icon"
-                            onClick={() => setBulkPayOpen(true)}
-                            tooltip="client.actions.pay"
-                            aria-label={t("client.actions.pay")}
-                        >
-                            <CreditCard className="h-4 w-4" />
-                        </MyButton>
-                    )}
-                    {hasPermission("tickets.create") && (
-                        <MyButton
-                            action="edit"
-                            icon={false}
-                            size="icon"
-                            onClick={() => setTicketOpen(true)}
-                            tooltip="client.actions.tickets"
-                            aria-label={t("client.actions.tickets")}
-                        >
-                            <Ticket className="h-4 w-4" />
-                        </MyButton>
-                    )}
-                    {hasPermission("sms-send.access") && client.phone && (
-                        <MyButton
-                            action="edit"
-                            icon={false}
-                            size="icon"
-                            onClick={() => setSmsOpen(true)}
-                            tooltip="client.actions.sms"
-                            aria-label={t("client.actions.sms")}
-                        >
-                            <MessageSquare className="h-4 w-4" />
-                        </MyButton>
-                    )}
+                <>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                        <div className="flex items-center gap-3">
+                            <MyButton variant="default" size="icon" url="/clients">
+                                <ArrowLeft className="h-4 w-4" />
+                            </MyButton>
+                            <h1 className="text-lg font-semibold">{t("client.view_title")}</h1>
+                            <Badge variant={isActive ? "default" : "destructive"}>
+                                {isActive ? t("common.active") : t("common.inactive")}
+                            </Badge>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+                            {hasPermission("clients.edit") && (
+                                <MyButton
+                                    action="edit"
+                                    size="icon"
+                                    url={`/clients/edit/${getClientId(client) ?? clientId}`}
+                                    tooltip="client.actions.edit"
+                                    aria-label={t("client.actions.edit")}
+                                />
+                            )}
+                            <MyButton
+                                action="edit"
+                                icon={false}
+                                size="icon"
+                                onClick={() => setResetOpen(true)}
+                                tooltip="client.actions.reset_session"
+                                aria-label={t("client.actions.reset_session")}
+                            >
+                                <RotateCcw className="h-4 w-4" />
+                            </MyButton>
+                            <MyButton
+                                action="edit"
+                                icon={false}
+                                size="icon"
+                                onClick={() => setChangePackageOpen(true)}
+                                tooltip="client.actions.change_package"
+                                aria-label={t("client.actions.change_package")}
+                            >
+                                <Package className="h-4 w-4" />
+                            </MyButton>
+                            {hasPermission("invoices.pay") && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setBulkPayOpen(true)}
+                                    tooltip="client.actions.pay"
+                                    aria-label={t("client.actions.pay")}
+                                >
+                                    <CreditCard className="h-4 w-4" />
+                                </MyButton>
+                            )}
+                            {hasPermission("tickets.create") && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setTicketOpen(true)}
+                                    tooltip="client.actions.tickets"
+                                    aria-label={t("client.actions.tickets")}
+                                >
+                                    <Ticket className="h-4 w-4" />
+                                </MyButton>
+                            )}
+                            {hasPermission("sms-send.access") && client.phone && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setSmsOpen(true)}
+                                    tooltip="client.actions.sms"
+                                    aria-label={t("client.actions.sms")}
+                                >
+                                    <MessageSquare className="h-4 w-4" />
+                                </MyButton>
+                            )}
+                            {canLockClients && (
+                                <MyButton
+                                    action={isLocked ? "unlock" : "lock"}
+                                    size="icon"
+                                    onClick={() => setLockOpen(true)}
+                                    tooltip={isLocked ? "client.actions.unlock" : "client.actions.lock"}
+                                    aria-label={t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                                />
+                            )}
+                            <ClientIpPingButton clientId={getClientId(client) ?? clientId} />
+                        </div>
+                    </div>
+                    <ClientSessionResetDialog
+                        clientId={getClientId(client) ?? clientId}
+                        open={resetOpen}
+                        onOpenChange={setResetOpen}
+                    />
+                    <ClientSmsDialog
+                        client={client}
+                        open={smsOpen}
+                        onOpenChange={setSmsOpen}
+                    />
                     {canLockClients && (
-                        <MyButton
-                            action={isLocked ? "unlock" : "lock"}
-                            size="icon"
-                            onClick={() => setLockOpen(true)}
-                            tooltip={isLocked ? "client.actions.unlock" : "client.actions.lock"}
-                            aria-label={t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
+                        <ClientLockDialog
+                            clientId={getClientId(client) ?? clientId}
+                            isLocked={isLocked}
+                            open={lockOpen}
+                            onOpenChange={setLockOpen}
                         />
                     )}
-                    <ClientIpPingButton clientId={getClientId(client) ?? clientId} />
-                </div>
-            </div>
-            <ClientSessionResetDialog
-                clientId={getClientId(client) ?? clientId}
-                open={resetOpen}
-                onOpenChange={setResetOpen}
-            />
-            <ClientSmsDialog
-                client={client}
-                open={smsOpen}
-                onOpenChange={setSmsOpen}
-            />
-            {canLockClients && (
-                <ClientLockDialog
-                    clientId={getClientId(client) ?? clientId}
-                    isLocked={isLocked}
-                    open={lockOpen}
-                    onOpenChange={setLockOpen}
-                />
-            )}
-            <ClientTicketDialog
-                client={client}
-                clientUuid={clientId}
-                open={ticketOpen}
-                onOpenChange={setTicketOpen}
-            />
+                    <ClientTicketDialog
+                        client={client}
+                        clientUuid={clientId}
+                        open={ticketOpen}
+                        onOpenChange={setTicketOpen}
+                    />
 
-            <div className="w-full">
-                <ClientBasicView
-                    client={client as ClientRow}
-                />
-            </div>
-            {hasPermission("onus.access") && (client.onus?.length ?? 0) > 0 && (
-                <ClientOnuSection
-                    onus={(client.onus ?? []) as unknown as OnuSummary[]}
-                    client={{ id: getClientId(client) ?? clientId, name: client.name }}
-                />
-            )}
+                    <div className="w-full">
+                        <ClientBasicView
+                            client={client as ClientRow}
+                        />
+                    </div>
+                    {hasPermission("onus.access") && (client.onus?.length ?? 0) > 0 && (
+                        <ClientOnuSection
+                            onus={(client.onus ?? []) as unknown as OnuSummary[]}
+                            client={{ id: getClientId(client) ?? clientId, name: client.name }}
+                        />
+                    )}
 
-            <ClientChangePackageDialog
-                client={client}
-                open={changePackageOpen}
-                onOpenChange={setChangePackageOpen}
-            />
+                    <ClientChangePackageDialog
+                        client={client}
+                        open={changePackageOpen}
+                        onOpenChange={setChangePackageOpen}
+                    />
 
-            <BulkInvoicePayDialog
-                invoiceDue={client.invoiceDue ?? []}
-                open={bulkPayOpen}
-                onOpenChange={setBulkPayOpen}
-            />
-            </>
+                    <BulkInvoicePayDialog
+                        invoiceDue={client.invoiceDue ?? []}
+                        open={bulkPayOpen}
+                        onOpenChange={setBulkPayOpen}
+                    />
+                </>
             )}
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
                 <DeferredSection>
-                    <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={false} />
+                    <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={true} />
                 </DeferredSection>
             </div>
             <div className="border-t pt-4">
