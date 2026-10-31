@@ -822,7 +822,8 @@
         "sms_type": {
             "label": "টাইপ",
             "options": {
-                "custom": "কাস্টম",
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য",
                 "invoice_due": "ইনভয়েস ডিউ",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
                 "client_activation": "ক্লায়েন্ট অ্যাক্টিভেশন",
@@ -873,7 +874,8 @@
             "label": "টাইপ",
             "options": {
                 "all": "সব",
-                "custom": "কাস্টম",
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য",
                 "invoice_due": "ইনভয়েস ডিউ",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার"
             }
@@ -2182,6 +2184,7 @@
         "phone_number": {
             "label": "ফোন নম্বর",
             "placeholder": "ফোন নম্বর দিন",
+            "hint": "ক্লায়েন্টদের এসএমএস পাঠাতে একটি এসএমএস টেমপ্লেট নির্বাচন করুন, অথবা যেকোনো ফোন নম্বরে এসএমএস পাঠাতে কাস্টম অন্যান্য বেছে নিন।",
             "errors": {
                 "required": "ফোন নম্বর আবশ্যক"
             }
@@ -2302,7 +2305,8 @@
                 "client_activated": "ক্লায়েন্ট অ্যাক্টিভেটেড",
                 "client_deactivated": "ক্লায়েন্ট ডিএ্যাক্টিভেটেড",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
-                "custom": "কাস্টম"
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য"
             }
         },
         "message": {

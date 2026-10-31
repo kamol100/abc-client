@@ -19,7 +19,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-const SMS_TYPE_OPTIONS = ["custom", "invoice_due", "invoice_due_reminder"] as const;
+const SMS_TYPE_OPTIONS = ["custom_client", "custom_other", "invoice_due", "invoice_due_reminder"] as const;
 
 export function CommunicationQueueResendAllDialog() {
   const { t } = useTranslation();

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FlaskConical, Send } from "lucide-react";
+import { FlaskConical, Info, Send } from "lucide-react";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -29,11 +29,14 @@ import {
   SmsSentPayload,
   buildSmsSentClientParams,
   buildSmsSentPayload,
+  isCustomOtherSmsTemplate,
   isInvoiceDueSmsTemplate,
+  usesClientListSmsTemplate,
 } from "@/components/sms-sent/sms-sent-type";
 import DisplayCount from "@/components/display-count";
 import DisplayMoney from "@/components/display-money";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_FILTER_VALUES: SmsSentClientFilterValues = {
@@ -151,7 +154,7 @@ export function SmsSendModeSelector({
             key={mode.value}
             htmlFor={`sms-send-mode-${mode.value}`}
             className={cn(
-              "flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-normal transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
+              "flex cursor-pointer items-start gap-3 rounded-lg border p-2.5 font-normal transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
               value === mode.value
                 ? "border-primary bg-primary/5"
                 : "border-border hover:bg-muted/40"
@@ -160,16 +163,67 @@ export function SmsSendModeSelector({
             <RadioGroupItem
               id={`sms-send-mode-${mode.value}`}
               value={mode.value}
-              className="mt-0.5"
+              className=""
             />
-            <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
-            <span className="space-y-1">
+            <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <span className="space-y-1 mt-0.5">
               <span className="block text-sm font-medium leading-none">{t(mode.title)}</span>
             </span>
           </Label>
         );
       })}
     </RadioGroup>
+  );
+}
+
+const phoneSlotLayerClass =
+  "col-start-1 row-start-1 transition-opacity duration-200 motion-reduce:transition-none";
+
+function SmsPhoneFieldSlot({
+  showPhoneField,
+  name,
+  label,
+  placeholder,
+}: {
+  showPhoneField: boolean;
+  name: string;
+  label?: LabelProps;
+  placeholder?: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="mt-2 grid">
+      <div
+        className={cn(
+          phoneSlotLayerClass,
+          showPhoneField ? "opacity-100" : "pointer-events-none opacity-0"
+        )}
+        aria-hidden={!showPhoneField}
+        {...(showPhoneField ? {} : { inert: true })}
+      >
+        <div className="flex h-full flex-col justify-center">
+          <InputField name={name} label={label} placeholder={placeholder} type="text" />
+        </div>
+      </div>
+      <div
+        className={cn(
+          phoneSlotLayerClass,
+          showPhoneField ? "pointer-events-none opacity-0" : "opacity-100"
+        )}
+        aria-hidden={showPhoneField}
+        {...(showPhoneField ? { inert: true } : {})}
+      >
+        <div
+          role="note"
+          className="relative flex h-full items-center gap-2.5 overflow-hidden rounded-md border border-dashed border-border bg-background px-3 py-2 text-sm leading-snug text-muted-foreground"
+        >
+          <span className="absolute inset-0 bg-muted/40" aria-hidden />
+          <Info className="relative size-4 shrink-0" aria-hidden />
+          <p className="relative">{t("sms_sent.phone_number.hint")}</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -234,12 +288,14 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 
   const resolvedTemplate =
     hasTemplateSelected &&
-    templateDetails?.data &&
-    templateDetails.data.id === Number(selectedTemplateId)
+      templateDetails?.data &&
+      templateDetails.data.id === Number(selectedTemplateId)
       ? templateDetails.data
       : null;
-  const invoiceDueOnly = isInvoiceDueSmsTemplate(resolvedTemplate?.template_type);
-  const clientListReady = resolvedTemplate !== null;
+  const templateType = resolvedTemplate?.template_type ?? null;
+  const invoiceDueOnly = isInvoiceDueSmsTemplate(templateType);
+  const phoneOnlySend = !hasTemplateSelected || templateType == null || isCustomOtherSmsTemplate(templateType);
+  const showClientList = usesClientListSmsTemplate(templateType) && !isSingleClientMode;
 
   useEffect(() => {
     sendForm.reset(createDefaultSendFormValues(phone));
@@ -278,28 +334,24 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 
   const clientParams = useMemo(
     () =>
-      clientListReady && !isSingleClientMode
+      showClientList
         ? buildSmsSentClientParams(appliedFilters, { invoiceDueOnly })
         : undefined,
-    [appliedFilters, clientListReady, invoiceDueOnly, isSingleClientMode]
+    [appliedFilters, showClientList, invoiceDueOnly]
   );
 
   const templateSelectedClientIds =
     isSingleClientMode && clientId !== undefined ? [clientId] : selectedClientIds;
 
-  const smsCount = isSingleClientMode
-    ? hasTemplateSelected
+  const smsCount = phoneOnlySend
+    ? phoneNumber?.trim()
+      ? 1
+      : 0
+    : isSingleClientMode
       ? templateSelectedClientIds.length
-      : phoneNumber?.trim()
-        ? 1
-        : 0
-    : hasTemplateSelected
-      ? selectedClientIds.length > 0
+      : selectedClientIds.length > 0
         ? selectedClientIds.length
-        : bulkSmsCount
-      : phoneNumber?.trim()
-        ? 1
-        : 0;
+        : bulkSmsCount;
 
   const { mutateAsync: sendSms, isPending } = useApiMutation<unknown, SmsSentPayload>({
     url: "sms-store",
@@ -362,13 +414,19 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
 
   const onSubmit = (values: SmsSentFormInput) => {
     const normalizedForm = SmsSentFormSchema.parse(values);
+
+    if (isCustomOtherSmsTemplate(templateType) && !normalizedForm.phone?.trim()) {
+      sendForm.setError("phone", { message: "sms_sent.phone_number.errors.required" });
+      return;
+    }
+
     setPendingPayload(
       buildSmsSentPayload({
         formValues: normalizedForm,
         filterValues: appliedFilters,
         smsCount,
-        selectedClientIds: hasTemplateSelected ? templateSelectedClientIds : selectedClientIds,
-        preferClientIdsForTemplate: isSingleClientMode,
+        selectedClientIds: phoneOnlySend ? undefined : templateSelectedClientIds,
+        templateType,
         mode: sendMode,
       })
     );
@@ -423,108 +481,114 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
           onSubmit={sendForm.handleSubmit(onSubmit)}
           className="space-y-4 rounded-lg border p-4 md:p-5"
         >
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {phoneField?.type === "text" && (
-              <InputField
-                name={phoneField.name}
-                label={phoneField.label}
-                placeholder={phoneField.placeholder}
-                type="text"
-              />
-            )}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-2">
+            <div>
 
-            {templateField?.type === "dropdown" && (
-              <SelectDropdown
-                name={templateField.name}
-                label={templateField.label}
-                placeholder={templateField.placeholder}
-                api={templateField.api}
-                isClearable={templateField.isClearable}
-                onValueChange={(value) => {
-                  if (value === null) {
-                    setHydratedTemplateId(null);
-                  }
-                }}
-              />
-            )}
-          </div>
-
-          {bodyField?.type === "textarea" && (
-            <TextareaField
-              name={bodyField.name}
-              label={bodyField.label}
-              placeholder={bodyField.placeholder}
-              rows={bodyField.rows}
-            />
-          )}
-
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
-            <div className="flex min-w-0 flex-col gap-2">
-              {isTestMode && (
-                <p className="text-sm text-muted-foreground">{t("sms_sent.mode.test.notice")}</p>
+              {templateField?.type === "dropdown" && (
+                <SelectDropdown
+                  name={templateField.name}
+                  label={templateField.label}
+                  placeholder={templateField.placeholder}
+                  api={templateField.api}
+                  isClearable={templateField.isClearable}
+                  onValueChange={(value) => {
+                    if (value === null) {
+                      setHydratedTemplateId(null);
+                    }
+                  }}
+                />
               )}
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    {t("sms_sent.sms_count.label")}:
-                  </span>
-                  <span className="text-base font-semibold tabular-nums">
-                    <DisplayCount
-                      amount={smsCount}
-                      animate
-                    />
-                  </span>
-                </div>
-                {(smsCount > 1 || (isTestMode && smsCount > 0)) && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      {t("sms_sent.total_cost.label")}:
-                    </span>
-                    <span className={isTestMode ? "line-through opacity-70" : undefined}>
-                      <SmsMoneyValue
-                        amount={rate * smsCount}
-                        isLoading={isRateLoading}
-                        isError={isRateError}
-                      />
-                    </span>
-                    {isTestMode && (
-                      <span className="text-xs text-muted-foreground">
-                        {t("sms_sent.mode.test.not_charged")}
-                      </span>
-                    )}
+
+              {phoneField?.type === "text" && (
+                <SmsPhoneFieldSlot
+                  showPhoneField={isCustomOtherSmsTemplate(templateType)}
+                  name={phoneField.name}
+                  label={phoneField.label}
+                  placeholder={phoneField.placeholder}
+                />
+              )}
+              <div className="mt-2">
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
+                  <div className="flex min-w-0 flex-col gap-2">
+                    {/* {isTestMode && (
+                      <p className="text-sm text-muted-foreground">{t("sms_sent.mode.test.notice")}</p>
+                    )} */}
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          {t("sms_sent.sms_count.label")}:
+                        </span>
+                        <span className="text-base font-semibold tabular-nums">
+                          <DisplayCount
+                            amount={smsCount}
+                            animate
+                          />
+                        </span>
+                      </div>
+                      {(smsCount > 1 || (isTestMode && smsCount > 0)) && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-muted-foreground">
+                            {t("sms_sent.total_cost.label")}:
+                          </span>
+                          <span className={isTestMode ? "line-through opacity-70" : undefined}>
+                            <SmsMoneyValue
+                              amount={rate * smsCount}
+                              isLoading={isRateLoading}
+                              isError={isRateError}
+                            />
+                          </span>
+                          {isTestMode && (
+                            <span className="text-xs text-muted-foreground">
+                              {t("sms_sent.mode.test.not_charged")}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
+
+                  {smsCount > 0 ? (
+                    <MyButton
+                      action="save"
+                      type="submit"
+                      variant="default"
+                      size="default"
+                      loading={isPending}
+                      title={sendLabel}
+                    >
+                      <Send className="size-4" />
+                      {sendLabel}
+                    </MyButton>
+                  ) : (
+                    <MyTooltip content="sms_sent.sms_count.zero_tooltip">
+                      <MyButton
+                        action="save"
+                        type="button"
+                        variant="default"
+                        size="default"
+                        disabled
+                        title={sendLabel}
+                      >
+                        <Send className="size-4" />
+                        {sendLabel}
+                      </MyButton>
+                    </MyTooltip>
+                  )}
+                </div>
               </div>
             </div>
-
-            {smsCount > 0 ? (
-              <MyButton
-                action="save"
-                type="submit"
-                variant="default"
-                size="default"
-                loading={isPending}
-                title={sendLabel}
-              >
-                <Send className="size-4" />
-                {sendLabel}
-              </MyButton>
-            ) : (
-              <MyTooltip content="sms_sent.sms_count.zero_tooltip">
-                <MyButton
-                  action="save"
-                  type="button"
-                  variant="default"
-                  size="default"
-                  disabled
-                  title={sendLabel}
-                >
-                  <Send className="size-4" />
-                  {sendLabel}
-                </MyButton>
-              </MyTooltip>
+            {bodyField?.type === "textarea" && (
+              <TextareaField
+                name={bodyField.name}
+                label={bodyField.label}
+                placeholder={bodyField.placeholder}
+                rows={bodyField.rows}
+              />
             )}
           </div>
+
+
+
         </form>
       </Form>
 
@@ -538,7 +602,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
         onConfirm={handleConfirmSend}
       />
 
-      {clientListReady && !isSingleClientMode && (
+      {showClientList && (
         <div className="space-y-4 rounded-lg border p-4 md:p-5">
           <div>
             <h2 className="text-base font-semibold">{t("sms_sent.client_list.title")}</h2>
@@ -604,7 +668,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
           </Form>
 
           <SmsSentTable
-            enabled={clientListReady}
+            enabled={showClientList}
             params={clientParams}
             onTotalCountChange={setBulkSmsCount}
             selectedClientIds={selectedClientIds}

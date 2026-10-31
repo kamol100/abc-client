@@ -822,7 +822,8 @@
         "sms_type": {
             "label": "Type",
             "options": {
-                "custom": "Custom",
+                "custom_client": "Custom client",
+                "custom_other": "Custom other",
                 "invoice_due": "Invoice due",
                 "invoice_due_reminder": "Invoice due reminder",
                 "client_activation": "Client Activation",
@@ -873,7 +874,8 @@
             "label": "SMS Type",
             "options": {
                 "all": "All",
-                "custom": "Custom",
+                "custom_client": "Custom client",
+                "custom_other": "Custom other",
                 "invoice_due": "Invoice due",
                 "invoice_due_reminder": "Invoice due reminder"
             }
@@ -2182,6 +2184,7 @@
         "phone_number": {
             "label": "Phone Number",
             "placeholder": "Enter phone number",
+            "hint": "Select an SMS template to send SMS to your clients, or choose Custom Other to send SMS to any phone number.",
             "errors": {
                 "required": "Phone number is required"
             }
@@ -2302,7 +2305,8 @@
                 "client_activated": "Client Activated",
                 "client_deactivated": "Client Deactivated",
                 "invoice_due_reminder": "Invoice Due Reminder",
-                "custom": "Custom"
+                "custom_client": "Custom client",
+                "custom_other": "Custom other"
             }
         },
         "message": {

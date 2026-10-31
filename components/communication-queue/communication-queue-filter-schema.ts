@@ -4,7 +4,8 @@ import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
 export function communicationQueueFilterSchema(): FieldConfig[] {
   const smsTypeOptions = [
-    { value: "custom", label: "communication_queue.sms_type.options.custom" },
+    { value: "custom_client", label: "communication_queue.sms_type.options.custom_client" },
+    { value: "custom_other", label: "communication_queue.sms_type.options.custom_other" },
     { value: "invoice_due", label: "communication_queue.sms_type.options.invoice_due" },
     {
       value: "invoice_due_reminder",

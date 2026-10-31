@@ -12,6 +12,7 @@ vi.mock("@/app/actions", () => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
+  usePathname: () => "/sms-send",
 }));
 
 vi.mock("react-toastify", () => ({
@@ -51,13 +52,70 @@ vi.mocked(useFetch).mockImplementation(async ({ url }: FetchArgs) => {
     });
   }
   if (url.startsWith("/sms-rate")) return { success: true, data: { rate: 1 } };
+  if (url === "/dropdown-sms-templates") {
+    return {
+      success: true,
+      data: [
+        { id: 1, name: "Invoice due", message: "Due", template_type: "invoice_due" },
+        { id: 2, name: "Custom Other", message: "Hello", template_type: "custom_other" },
+      ],
+    };
+  }
+  if (url === "/sms-template/1") {
+    return {
+      success: true,
+      data: { id: 1, name: "Invoice due", message: "Due", template_type: "invoice_due" },
+    };
+  }
+  if (url === "/sms-template/2") {
+    return {
+      success: true,
+      data: { id: 2, name: "Custom Other", message: "Hello", template_type: "custom_other" },
+    };
+  }
   return { success: true, data: [] };
 });
 
 const storeCalls = () =>
   vi.mocked(useFetch).mock.calls.filter(([args]) => (args as FetchArgs).url === "/sms-store");
 
+const phoneField = () => screen.queryByPlaceholderText("sms_sent.phone_number.placeholder");
+
+const phoneFieldIsHidden = () => phoneField()?.closest("[aria-hidden='true']") != null;
+
 describe("SmsSentForm confirmation", () => {
+  it("shows the template hint instead of the phone field until Custom Other is selected", () => {
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <SmsSentForm />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole("note")).toHaveTextContent("sms_sent.phone_number.hint");
+    expect(phoneFieldIsHidden()).toBe(true);
+  });
+
+  it("shows the phone field only for Custom Other and the hint for a regular template", async () => {
+    const user = userEvent.setup();
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <SmsSentForm mode="singleClient" clientId="client-1" phone="01700000000" />
+      </QueryClientProvider>
+    );
+
+    await user.click(screen.getByRole("combobox", { hidden: true }));
+    await user.click(await screen.findByText("Custom Other"));
+
+    await waitFor(() => expect(phoneFieldIsHidden()).toBe(false));
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("combobox", { hidden: true }));
+    await user.click(await screen.findByText("Invoice due"));
+
+    await waitFor(() => expect(phoneFieldIsHidden()).toBe(true));
+    expect(screen.getByRole("note")).toHaveTextContent("sms_sent.phone_number.hint");
+  });
+
   it("opens the confirmation dialog first and sends once after confirming", async () => {
     const user = userEvent.setup();
     render(

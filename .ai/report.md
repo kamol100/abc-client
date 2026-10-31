@@ -1,21 +1,19 @@
 ## Summary
 
-Ticket lists and detail views show the prefixed sequence id (`TKT1`) from `ticket_code`. General settings includes a Ticket ID Prefix that defaults to `TKT`.
+The Send SMS phone field stays in one slot. With no template, or any template other than Custom Other, that slot shows a hint. Custom Other fades in the phone input in the same space, so the rest of the form does not jump.
 
-The route props still named `ticketId` carry the ticket UUID (`id` in the API). They are not the removed database column.
+## Frontend
 
-## Files
-
-- `components/tickets/ticket-type.ts` — `ticket_code`
-- `components/tickets/ticket-column.tsx`, `ticket-view.tsx`
-- `components/client-area/tickets/client-ticket-columns.tsx`, `client-ticket-view.tsx`
-- `components/settings/settings-form-schema.ts`
-- `components/settings/settings-type.ts`
-- `public/lang/en.json`, `public/lang/bn.json`
-- `tests/unit/settings/expense-id-prefix.test.ts`
+- `components/sms-sent/sms-sent-form.tsx` — hint and phone field share one grid cell and crossfade with opacity. Visibility uses the existing `isCustomOtherSmsTemplate(templateType)` result. Send, validation, and client-list behavior are unchanged.
+- `public/lang/en.json`, `public/lang/bn.json` — `sms_sent.phone_number.hint`
+- `tests/unit/sms-sent/sms-sent-form-confirm.test.tsx`
 
 ## Checks
 
-`npx vitest run tests/unit/settings/expense-id-prefix.test.ts` passed (7 tests). `scripts/ai/typecheck` passed.
+`npx vitest run tests/unit/sms-sent/sms-sent-form-confirm.test.tsx` passed (3 tests). `scripts/ai/typecheck` passed.
 
-The admin app was not open in this session, and the ticket-code migration has not been applied to the local API database, so the live ticket list was not exercised. After that migration and a deploy of this client, the Ticket ID column and ticket heading show `TKT1`, and General settings shows Ticket ID Prefix beside the other prefixes.
+On `http://vp.isp.test:3000/sms-send`, no template shows the hint, Custom Other shows the phone field (entered `01700000000`, send enabled), and Invoice Due shows the hint again with the client list. The slot stayed at the same position and height (76px) across the switch. Light and dark both use theme tokens. Theme was returned to light.
+
+## Unrelated working tree
+
+Already uncommitted and left as they were: SMS type split (`custom_client` / `custom_other`) in template options, queue and log filters, `sms-sent-type.ts`, and the message box at 8 rows in `sms-sent-form-schema.ts`.
