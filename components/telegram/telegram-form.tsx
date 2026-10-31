@@ -5,42 +5,42 @@ import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import FormTrigger from "@/components/form-trigger";
 import {
-  TelegramZoneFormSchema,
-  TelegramZoneRow,
-} from "@/components/telegram-zones/telegram-zone-type";
-import { TelegramZoneFormFieldSchema } from "@/components/telegram-zones/telegram-zone-form-schema";
+  TelegramFormSchema,
+  TelegramRow,
+} from "@/components/telegram/telegram-type";
+import { TelegramFormFieldSchema } from "@/components/telegram/telegram-form-schema";
 
 type Props = {
   mode?: "create" | "edit";
   api?: string;
   method?: "GET" | "POST" | "PUT";
-  data?: Partial<TelegramZoneRow> & { id: string };
+  data?: Partial<TelegramRow> & { id: string };
 };
 
-const TelegramZoneForm: FC<Props> = ({
+const TelegramForm: FC<Props> = ({
   mode = "create",
-  api = "/telegram-zones",
+  api = "/telegram",
   method = "POST",
   data = undefined,
 }) => {
   return (
     <MyDialog
       size="2xl"
-      title={mode === "create" ? "telegram_zone.create_title" : "telegram_zone.edit_title"}
+      title={mode === "create" ? "telegram.create_title" : "telegram.edit_title"}
       trigger={<FormTrigger mode={mode} />}
     >
       <FormBuilder
-        formSchema={TelegramZoneFormFieldSchema()}
+        formSchema={TelegramFormFieldSchema()}
         grids={2}
         data={data}
         api={api}
         mode={mode}
-        schema={TelegramZoneFormSchema}
+        schema={TelegramFormSchema}
         method={method}
-        queryKey="telegram-zones"
+        queryKey="telegram"
       />
     </MyDialog>
   );
 };
 
-export default TelegramZoneForm;
+export default TelegramForm;

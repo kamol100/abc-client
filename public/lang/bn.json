@@ -3849,12 +3849,12 @@
             "unavailable": "ছবি লোড করা যায়নি"
         }
     },
-    "telegram_zone": {
-        "title": "টেলিগ্রাম জোন",
-        "title_plural": "টেলিগ্রাম জোন",
-        "create_title": "টেলিগ্রাম জোন যোগ করুন",
-        "edit_title": "টেলিগ্রাম জোন এডিট করুন",
-        "delete_confirmation": "আপনি কি নিশ্চিত এই টেলিগ্রাম জোনটি ডিলিট করতে চান?",
+    "telegram": {
+        "title": "টেলিগ্রাম",
+        "title_plural": "টেলিগ্রাম",
+        "create_title": "টেলিগ্রাম যোগ করুন",
+        "edit_title": "টেলিগ্রাম এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই টেলিগ্রামটি ডিলিট করতে চান?",
         "name": {
             "label": "নাম",
             "placeholder": "নাম লিখুন",
@@ -4661,8 +4661,8 @@
             "logs": {
                 "title": "লগ"
             },
-            "telegram_zone": {
-                "title": "টেলিগ্রাম জোন"
+            "telegram": {
+                "title": "টেলিগ্রাম"
             }
         },
         "sms": {

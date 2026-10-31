@@ -3849,12 +3849,12 @@
             "unavailable": "Image could not be loaded"
         }
     },
-    "telegram_zone": {
-        "title": "Telegram Zone",
-        "title_plural": "Telegram Zones",
-        "create_title": "Add Telegram Zone",
-        "edit_title": "Edit Telegram Zone",
-        "delete_confirmation": "Are you sure you want to delete this Telegram Zone?",
+    "telegram": {
+        "title": "Telegram",
+        "title_plural": "Telegram",
+        "create_title": "Add Telegram",
+        "edit_title": "Edit Telegram",
+        "delete_confirmation": "Are you sure you want to delete this Telegram?",
         "name": {
             "label": "Name",
             "placeholder": "Enter name",
@@ -4661,8 +4661,8 @@
             "logs": {
                 "title": "Logs"
             },
-            "telegram_zone": {
-                "title": "Telegram Zone"
+            "telegram": {
+                "title": "Telegram"
             }
         },
         "sms": {

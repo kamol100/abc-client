@@ -225,7 +225,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       permissions: [
         "sms-send.access",
         "sms-templates.access",
-        "telegram-zones.access",
+        "telegram.access",
         "communication-queue.access",
         "communication-logs.access",
         "communication-gateways.access",
@@ -234,7 +234,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       items: [
         { title: t("menu.sms.send.title"), url: "/sms-send", permission: "sms-send.access" },
         { title: t("menu.sms.templates.title"), url: "/sms-templates", permission: "sms-templates.access" },
-        { title: t("menu.communication.telegram_zone.title"), url: "/communication/telegram-zone", permission: "telegram-zones.access" },
+        { title: t("menu.communication.telegram.title"), url: "/telegram", permission: "telegram.access" },
         { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
         { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
         { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },

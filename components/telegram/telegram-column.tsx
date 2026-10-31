@@ -5,19 +5,19 @@ import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { usePermissions } from "@/context/app-provider";
-import TelegramZoneForm from "@/components/telegram-zones/telegram-zone-form";
-import { TelegramZoneRow } from "@/components/telegram-zones/telegram-zone-type";
+import TelegramForm from "@/components/telegram/telegram-form";
+import { TelegramRow } from "@/components/telegram/telegram-type";
 
-function TelegramZoneStatusCell({ status }: { status: TelegramZoneRow["status"] }) {
+function TelegramStatusCell({ status }: { status: TelegramRow["status"] }) {
   const { t } = useTranslation();
 
-  return <span>{t(`telegram_zone.status.options.${status}`)}</span>;
+  return <span>{t(`telegram.status.options.${status}`)}</span>;
 }
 
-function TelegramZoneActionsCell({ row }: { row: TelegramZoneRow }) {
+function TelegramActionsCell({ row }: { row: TelegramRow }) {
   const { hasPermission } = usePermissions();
-  const canEdit = hasPermission("telegram-zones.edit");
-  const canDelete = hasPermission("telegram-zones.delete");
+  const canEdit = hasPermission("telegram.edit");
+  const canDelete = hasPermission("telegram.delete");
 
   if (!canEdit && !canDelete) {
     return null;
@@ -26,13 +26,13 @@ function TelegramZoneActionsCell({ row }: { row: TelegramZoneRow }) {
   return (
     <div className="flex items-center justify-end gap-2 mr-3">
       {canEdit && (
-        <TelegramZoneForm mode="edit" data={{ id: row.id }} api="/telegram-zones" method="PUT" />
+        <TelegramForm mode="edit" data={{ id: row.id }} api="/telegram" method="PUT" />
       )}
       {canDelete && (
         <DeleteModal
-          api_url={`/telegram-zones/${row.id}`}
-          keys="telegram-zones"
-          confirmMessage="telegram_zone.delete_confirmation"
+          api_url={`/telegram/${row.id}`}
+          keys="telegram"
+          confirmMessage="telegram.delete_confirmation"
           buttonText="common.confirm_delete"
         />
       )}
@@ -40,12 +40,12 @@ function TelegramZoneActionsCell({ row }: { row: TelegramZoneRow }) {
   );
 }
 
-export function getTelegramZoneColumns(): ColumnDef<TelegramZoneRow>[] {
+export function getTelegramColumns(): ColumnDef<TelegramRow>[] {
   return [
     {
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="telegram_zone.name.label" />
+        <DataTableColumnHeader column={column} title="telegram.name.label" />
       ),
       cell: ({ row }) => <div className="font-medium">{row.original.name}</div>,
       enableSorting: false,
@@ -54,7 +54,7 @@ export function getTelegramZoneColumns(): ColumnDef<TelegramZoneRow>[] {
     {
       id: "zones",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="telegram_zone.zones.label" />
+        <DataTableColumnHeader column={column} title="telegram.zones.label" />
       ),
       cell: ({ row }) => (
         <div className="max-w-[280px] truncate">
@@ -66,7 +66,7 @@ export function getTelegramZoneColumns(): ColumnDef<TelegramZoneRow>[] {
     {
       accessorKey: "telegram_channel_id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="telegram_zone.telegram_channel_id.label" />
+        <DataTableColumnHeader column={column} title="telegram.telegram_channel_id.label" />
       ),
       cell: ({ row }) => <div>{row.original.telegram_channel_id}</div>,
       enableSorting: false,
@@ -74,9 +74,9 @@ export function getTelegramZoneColumns(): ColumnDef<TelegramZoneRow>[] {
     {
       accessorKey: "status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="telegram_zone.status.label" />
+        <DataTableColumnHeader column={column} title="telegram.status.label" />
       ),
-      cell: ({ row }) => <TelegramZoneStatusCell status={row.original.status} />,
+      cell: ({ row }) => <TelegramStatusCell status={row.original.status} />,
       enableSorting: false,
     },
     {
@@ -88,7 +88,7 @@ export function getTelegramZoneColumns(): ColumnDef<TelegramZoneRow>[] {
           title="common.actions"
         />
       ),
-      cell: ({ row }) => <TelegramZoneActionsCell row={row.original} />,
+      cell: ({ row }) => <TelegramActionsCell row={row.original} />,
     },
   ];
 }

@@ -89,7 +89,7 @@ describe("admin menu order", () => {
       "/tj-boxes",
       "/sms-send",
       "/sms-templates",
-      "/communication/telegram-zone",
+      "/telegram",
       "/communication-queue",
       "/communication-logs",
       "/communication-gateways",
@@ -219,7 +219,7 @@ describe("admin menu feature locks", () => {
     expect(communication.items?.map((sub) => sub.url)).toEqual([
       "/sms-send",
       "/sms-templates",
-      "/communication/telegram-zone",
+      "/telegram",
       "/communication-queue",
       "/communication-logs",
       "/communication-gateways",

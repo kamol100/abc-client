@@ -89,6 +89,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/settings/sms": "menu.settings.sms.title",
   "/settings/map": "menu.settings.map.title",
   "/settings/monitoring": "menu.settings.monitoring.title",
+  "/telegram": "menu.communication.telegram.title",
   "/settings/telegram": "menu.settings.telegram.title",
   "/settings/olt": "menu.settings.olt.title",
   "/settings/notifications": "menu.settings.notifications.title",

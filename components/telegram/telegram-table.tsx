@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { usePermissions } from "@/context/app-provider";
-import { getTelegramZoneColumns } from "@/components/telegram-zones/telegram-zone-column";
-import { TelegramZoneFilterSchema } from "@/components/telegram-zones/telegram-zone-filter-schema";
-import TelegramZoneForm from "@/components/telegram-zones/telegram-zone-form";
-import { TelegramZoneRow } from "@/components/telegram-zones/telegram-zone-type";
+import { getTelegramColumns } from "@/components/telegram/telegram-column";
+import { TelegramFilterSchema } from "@/components/telegram/telegram-filter-schema";
+import TelegramForm from "@/components/telegram/telegram-form";
+import { TelegramRow } from "@/components/telegram/telegram-type";
 
-const TelegramZoneTable: FC = () => {
+const TelegramTable: FC = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [filterValue, setFilter] = useState<string | null>(null);
@@ -23,15 +23,15 @@ const TelegramZoneTable: FC = () => {
   );
 
   const { data, isLoading, isFetching, setCurrentPage } =
-    useApiQuery<PaginatedApiResponse<TelegramZoneRow>>({
-      queryKey: ["telegram-zones"],
-      url: "telegram-zones",
+    useApiQuery<PaginatedApiResponse<TelegramRow>>({
+      queryKey: ["telegram"],
+      url: "telegram",
       params,
     });
 
   const rows = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
-  const columns = useMemo(() => getTelegramZoneColumns(), []);
+  const columns = useMemo(() => getTelegramColumns(), []);
 
   return (
     <DataTable
@@ -43,15 +43,15 @@ const TelegramZoneTable: FC = () => {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={hasPermission("telegram-zones.create") ? TelegramZoneForm : undefined}
-      toolbarOptions={{ filter: TelegramZoneFilterSchema() }}
+      form={hasPermission("telegram.create") ? TelegramForm : undefined}
+      toolbarOptions={{ filter: TelegramFilterSchema() }}
       toolbarTitle={
         pagination?.total
-          ? `${t("telegram_zone.title_plural")} (${pagination.total})`
-          : t("telegram_zone.title_plural")
+          ? `${t("telegram.title_plural")} (${pagination.total})`
+          : t("telegram.title_plural")
       }
     />
   );
 };
 
-export default TelegramZoneTable;
+export default TelegramTable;
