@@ -155,9 +155,6 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
                                 <div className="w-16">{t("client.address.label")}:</div>
                                 <div className="flex items-center gap-2">
                                     <p className="whitespace-pre-wrap">{model.customerAddress ?? "—"}</p>
-                                    {model.customerZone ? (
-                                        <p>{model.customerZone ?? "—"}</p>
-                                    ) : '—'}
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
