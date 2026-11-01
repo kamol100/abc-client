@@ -57,7 +57,7 @@ const DENSITY_OPTIONS: { value: ThemeDensity; icon: typeof Minimize }[] = [
   { value: "large", icon: Maximize },
 ];
 
-const PRESET_OPTIONS: ThemePreset[] = ["default", "namuna"];
+const PRESET_OPTIONS: ThemePreset[] = ["default", "jomuna"];
 const GRADIENT_STYLES: ThemeGradientStyle[] = ["brand", "ocean", "sunset"];
 const GRADIENT_ANGLES: ThemeGradientAngle[] = ["90", "135", "180"];
 const FONT_OPTIONS: ThemeFont[] = ["geist", "plex"];

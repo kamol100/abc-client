@@ -940,7 +940,7 @@ body {
     --gradient-button: linear-gradient(var(--gradient-angle), hsl(24.6 95% 53.1%), hsl(346.8 77.2% 49.8%));
   }
 
-  :root[data-theme-preset="namuna"] {
+  :root[data-theme-preset="jomuna"] {
     --background: 217.5 50% 96.9%;
     --foreground: 215 27.9% 16.9%;
     --card: 0 0% 100%;
@@ -992,7 +992,7 @@ body {
     --tracking-heading: -0.02em;
   }
 
-  .dark[data-theme-preset="namuna"] {
+  .dark[data-theme-preset="jomuna"] {
     --background: 210 30% 7.8%;
     --foreground: 200 22% 92%;
     --card: 208 26.3% 11.2%;
@@ -1044,112 +1044,112 @@ body {
   }
 }
 
-:root[data-theme-preset="namuna"][data-theme-color="green"] {
+:root[data-theme-preset="jomuna"][data-theme-color="green"] {
   --primary: 142.1 76.2% 36.3%;
   --primary-foreground: 355.7 100% 97.3%;
   --ring: 142.1 76.2% 36.3%;
   --sidebar-primary: 142.1 76.2% 36.3%;
   --sidebar-primary-foreground: 355.7 100% 97.3%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="green"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="green"] {
   --primary: 142.1 70.6% 45.3%;
   --primary-foreground: 144.9 80.4% 10%;
   --ring: 142.4 71.8% 29.2%;
   --sidebar-primary: 142.1 70.6% 45.3%;
   --sidebar-primary-foreground: 144.9 80.4% 10%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="rose"] {
+:root[data-theme-preset="jomuna"][data-theme-color="rose"] {
   --primary: 346.8 77.2% 49.8%;
   --primary-foreground: 355.7 100% 97.3%;
   --ring: 346.8 77.2% 49.8%;
   --sidebar-primary: 346.8 77.2% 49.8%;
   --sidebar-primary-foreground: 355.7 100% 97.3%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="rose"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="rose"] {
   --primary: 346.8 77.2% 49.8%;
   --primary-foreground: 355.7 100% 97.3%;
   --ring: 346.8 77.2% 49.8%;
   --sidebar-primary: 346.8 77.2% 49.8%;
   --sidebar-primary-foreground: 355.7 100% 97.3%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="red"] {
+:root[data-theme-preset="jomuna"][data-theme-color="red"] {
   --primary: 0 84.2% 60.2%;
   --primary-foreground: 0 0% 98%;
   --ring: 0 84.2% 60.2%;
   --sidebar-primary: 0 84.2% 60.2%;
   --sidebar-primary-foreground: 0 0% 98%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="red"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="red"] {
   --primary: 0 72.2% 50.6%;
   --primary-foreground: 0 0% 98%;
   --ring: 0 72.2% 50.6%;
   --sidebar-primary: 0 72.2% 50.6%;
   --sidebar-primary-foreground: 0 0% 98%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="orange"] {
+:root[data-theme-preset="jomuna"][data-theme-color="orange"] {
   --primary: 24.6 95% 53.1%;
   --primary-foreground: 60 9.1% 97.8%;
   --ring: 24.6 95% 53.1%;
   --sidebar-primary: 24.6 95% 53.1%;
   --sidebar-primary-foreground: 60 9.1% 97.8%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="orange"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="orange"] {
   --primary: 20.5 90.2% 48.2%;
   --primary-foreground: 60 9.1% 97.8%;
   --ring: 20.5 90.2% 48.2%;
   --sidebar-primary: 20.5 90.2% 48.2%;
   --sidebar-primary-foreground: 60 9.1% 97.8%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="blue"] {
+:root[data-theme-preset="jomuna"][data-theme-color="blue"] {
   --primary: 221.2 83.2% 53.3%;
   --primary-foreground: 210 40% 98%;
   --ring: 221.2 83.2% 53.3%;
   --sidebar-primary: 221.2 83.2% 53.3%;
   --sidebar-primary-foreground: 210 40% 98%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="blue"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="blue"] {
   --primary: 217.2 91.2% 59.8%;
   --primary-foreground: 222.2 47.4% 11.2%;
   --ring: 224.3 76.3% 48%;
   --sidebar-primary: 217.2 91.2% 59.8%;
   --sidebar-primary-foreground: 222.2 47.4% 11.2%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="pink"] {
+:root[data-theme-preset="jomuna"][data-theme-color="pink"] {
   --primary: 330 81% 60%;
   --primary-foreground: 355.7 100% 97.3%;
   --ring: 330 81% 60%;
   --sidebar-primary: 330 81% 60%;
   --sidebar-primary-foreground: 355.7 100% 97.3%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="pink"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="pink"] {
   --primary: 330 81% 60%;
   --primary-foreground: 355.7 100% 97.3%;
   --ring: 330 81% 60%;
   --sidebar-primary: 330 81% 60%;
   --sidebar-primary-foreground: 355.7 100% 97.3%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="indigo"] {
+:root[data-theme-preset="jomuna"][data-theme-color="indigo"] {
   --primary: 238.7 83.5% 58.6%;
   --primary-foreground: 210 40% 98%;
   --ring: 238.7 83.5% 58.6%;
   --sidebar-primary: 238.7 83.5% 58.6%;
   --sidebar-primary-foreground: 210 40% 98%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="indigo"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="indigo"] {
   --primary: 238.7 83.5% 58.6%;
   --primary-foreground: 210 40% 98%;
   --ring: 238.7 83.5% 58.6%;
   --sidebar-primary: 238.7 83.5% 58.6%;
   --sidebar-primary-foreground: 210 40% 98%;
 }
-:root[data-theme-preset="namuna"][data-theme-color="purple"] {
+:root[data-theme-preset="jomuna"][data-theme-color="purple"] {
   --primary: 262.1 83.3% 57.8%;
   --primary-foreground: 210 40% 98%;
   --ring: 262.1 83.3% 57.8%;
   --sidebar-primary: 262.1 83.3% 57.8%;
   --sidebar-primary-foreground: 210 40% 98%;
 }
-.dark[data-theme-preset="namuna"][data-theme-color="purple"] {
+.dark[data-theme-preset="jomuna"][data-theme-color="purple"] {
   --primary: 263.4 70% 50.4%;
   --primary-foreground: 210 40% 98%;
   --ring: 263.4 70% 50.4%;
@@ -1237,17 +1237,17 @@ html[data-gradients="on"] [data-theme-nav="active"] {
   color: hsl(var(--sidebar-active-foreground));
 }
 
-html[data-theme-preset="namuna"] .theme-header {
+html[data-theme-preset="jomuna"] .theme-header {
   background-color: hsl(var(--card));
   border-color: hsl(var(--border));
 }
 
-html[data-theme-preset="namuna"] [data-table-scroll-container] thead {
+html[data-theme-preset="jomuna"] [data-table-scroll-container] thead {
   background-color: hsl(var(--table-header));
   color: hsl(var(--table-header-foreground));
 }
 
-html[data-theme-preset="namuna"] [data-table-scroll-container] tbody tr:hover {
+html[data-theme-preset="jomuna"] [data-table-scroll-container] tbody tr:hover {
   background-color: hsl(var(--table-row-hover));
 }
 

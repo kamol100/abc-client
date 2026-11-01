@@ -119,8 +119,8 @@ export const PRESET_BUNDLES: Record<ThemePreset, Partial<ThemeSettings>> = {
     dialogRadius: "match",
     overrides: {},
   },
-  namuna: {
-    preset: "namuna",
+  jomuna: {
+    preset: "jomuna",
     gradients: "on",
     gradientStyle: "brand",
     gradientAngle: "135",
@@ -334,7 +334,11 @@ export function readThemeSettings(input: ThemeCookieInput): { settings: ThemeSet
   let prefs: Partial<ThemeSettings> = {};
   if (input.themePrefs) {
     try {
-      const parsed = themePrefsSchema.safeParse(JSON.parse(input.themePrefs));
+      const raw: unknown = JSON.parse(input.themePrefs);
+      if (raw && typeof raw === "object" && "preset" in raw && raw.preset === "namuna") {
+        raw.preset = "jomuna";
+      }
+      const parsed = themePrefsSchema.safeParse(raw);
       if (parsed.success) {
         prefs = parsed.data;
       }

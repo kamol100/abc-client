@@ -39,14 +39,23 @@ describe("theme settings", () => {
   it("lets theme prefs override legacy cookies without filling missing fields", () => {
     const { settings } = readThemeSettings({
       themeColor: "blue",
-      themePrefs: JSON.stringify({ preset: "namuna", gradients: "on", font: "plex" }),
+      themePrefs: JSON.stringify({ preset: "jomuna", gradients: "on", font: "plex" }),
     });
 
     expect(settings.color).toBe("blue");
-    expect(settings.preset).toBe("namuna");
+    expect(settings.preset).toBe("jomuna");
     expect(settings.gradients).toBe("on");
     expect(settings.font).toBe("plex");
     expect(settings.radius).toBe(DEFAULT_THEME_SETTINGS.radius);
+  });
+
+  it("reads a saved Namuna preset as Jomuna", () => {
+    const { settings } = readThemeSettings({
+      themePrefs: JSON.stringify({ preset: "namuna", gradients: "on" }),
+    });
+
+    expect(settings.preset).toBe("jomuna");
+    expect(settings.gradients).toBe("on");
   });
 
   it("ignores invalid preference payloads", () => {
@@ -62,10 +71,10 @@ describe("theme settings", () => {
   it("applies a preset bundle without changing navigation choices", () => {
     const next = settingsWithPreset(
       { ...DEFAULT_THEME_SETTINGS, color: "blue", density: "large", navDrawerSide: "left" },
-      "namuna",
+      "jomuna",
     );
 
-    expect(next.preset).toBe("namuna");
+    expect(next.preset).toBe("jomuna");
     expect(next.gradients).toBe("on");
     expect(next.font).toBe("plex");
     expect(next.overrides).toEqual({});

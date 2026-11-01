@@ -5168,8 +5168,8 @@
         "preset": {
             "label": "Preset",
             "default": "Default",
-            "namuna": "Namuna",
-            "hint": "Namuna follows the reference palette. Your color, density, and drawer side stay as they are."
+            "jomuna": "Jomuna",
+            "hint": "Jomuna follows the reference palette. Your color, density, and drawer side stay as they are."
         },
         "color": {
             "label": "Color",
