@@ -14,6 +14,7 @@ import {
   formatBdt,
 } from "@/components/marketing/pricing/pricing-data";
 import "@/components/marketing/pricing/pricing.css";
+import Hl from "@/components/marketing/hl";
 
 const TIER_INDEXES = Array.from({ length: TIER_COUNT }, (_, i) => i);
 
@@ -81,7 +82,7 @@ export default function PricingPage() {
         <div className="mkt-container mkt-price-head">
           <div className="mkt-price-intro">
             <span className="mkt-label">{t("pricing_page.hero.label")}</span>
-            <h1 id="mkt-price-title">{t("pricing_page.hero.title")}</h1>
+            <h1 id="mkt-price-title"><Hl k="pricing_page.hero.title" /></h1>
             <p className="mkt-price-copy">{t("pricing_page.hero.subtitle")}</p>
           </div>
 
@@ -135,7 +136,7 @@ export default function PricingPage() {
         <div className="mkt-container">
           <span className="mkt-label">{t("pricing_page.compare_label")}</span>
           <h2 id="mkt-price-compare-title" className="mkt-price-h2">
-            {t("pricing_page.compare_title")}
+            <Hl k="pricing_page.compare_title" />
             <span className="mkt-title-sub">{t("pricing_page.compare_sub")}</span>
           </h2>
           <p className="mkt-price-copy">{t("pricing_page.compare_subtitle")}</p>
@@ -174,7 +175,7 @@ export default function PricingPage() {
           <div className="mkt-price-custom__head">
             <span className="mkt-label">{t("pricing_page.custom.label")}</span>
             <h2 id="mkt-price-custom-title" className="mkt-price-h2">
-              {t("pricing_page.custom.title")}
+              <Hl k="pricing_page.custom.title" />
               <span className="mkt-title-sub">{t("pricing_page.custom.sub")}</span>
             </h2>
             <p className="mkt-price-copy">{t("pricing_page.custom.subtitle")}</p>

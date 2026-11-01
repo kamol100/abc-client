@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ChevronDown } from "lucide-react";
 import { MONTHLY_BDT, TIER_COUNT, formatBdt } from "@/components/marketing/pricing/pricing-data";
 import "@/components/marketing/faq/faq.css";
+import Hl from "@/components/marketing/hl";
 
 const GROUPS = [
   { key: "start", items: ["what", "who", "bangla", "phone", "btrc"] },
@@ -52,7 +53,7 @@ export default function FaqPage() {
       <header className="mkt-section mkt-section--alt mkt-faq-head">
         <div className="mkt-container">
           <span className="mkt-label">{t("faq_page.label")}</span>
-          <h1>{t("faq_page.title")}</h1>
+          <h1><Hl k="faq_page.title" /></h1>
           <p className="mkt-faq-copy">{t("faq_page.lead")}</p>
         </div>
       </header>
@@ -62,7 +63,7 @@ export default function FaqPage() {
           <ol>
             {GROUPS.map((g) => (
               <li key={g.key}>
-                <a href={`#faq-${g.key}`}>{t(`faq_page.groups.${g.key}.title`)}</a>
+                <a href={`#faq-${g.key}`}><Hl k={`faq_page.groups.${g.key}.title`} plain /></a>
               </li>
             ))}
           </ol>
@@ -71,7 +72,7 @@ export default function FaqPage() {
         <div className="mkt-faq-groups">
           {GROUPS.map((g) => (
             <section key={g.key} id={`faq-${g.key}`} className="mkt-faq-group" aria-labelledby={`faq-${g.key}-title`}>
-              <h2 id={`faq-${g.key}-title`}>{t(`faq_page.groups.${g.key}.title`)}</h2>
+              <h2 id={`faq-${g.key}-title`}><Hl k={`faq_page.groups.${g.key}.title`} /></h2>
               {g.items.map((item) => (
                 <details key={item} className="mkt-faq-item">
                   <summary>
@@ -90,7 +91,7 @@ export default function FaqPage() {
         <div className="mkt-container">
           <span className="mkt-label">{t("faq_page.band.label")}</span>
           <h2 className="mkt-faq-h2">
-            {t("faq_page.band.title")}
+            <Hl k="faq_page.band.title" />
             <span className="mkt-title-sub">{t("faq_page.band.sub")}</span>
           </h2>
           <p className="mkt-faq-copy">{t("faq_page.band.lead")}</p>

@@ -3,10 +3,10 @@
 import "@/components/marketing/home/home-hero.css";
 import Link from "next/link";
 import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import {
   Activity, Cable, Gauge, GitCompareArrows, Import, MapPin, MessageSquare, Network,
-  Printer, Radio, Receipt, RefreshCw, Router, UserX, Wallet, type LucideIcon,
+  Pause, Play, Printer, Radio, Receipt, RefreshCw, Router, UserX, Wallet, type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -258,9 +258,13 @@ const PANELS: Record<SlideId, () => ReactNode> = {
   noc: NocPanel,
 };
 
+/* Key words in each slide's name and line are wrapped in <hl> in the translations. */
+const HIGHLIGHT = { hl: <mark className="mkt-hero-hl" /> };
+
 export default function HomeHero() {
   const { t } = useTranslation();
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const total = SLIDES.length;
 
@@ -275,9 +279,9 @@ export default function HomeHero() {
   };
 
   return (
-    <section className="mkt-night mkt-hero" aria-roledescription="carousel" aria-label={t("marketing.hero.carousel_label")}>
+    <section className="mkt-night mkt-hero" data-paused={paused || undefined} aria-roledescription="carousel" aria-label={t("marketing.hero.carousel_label")}>
       <h1 className="visually-hidden">{t("marketing.hero.title")}</h1>
-      <div className="mkt-hero-viewport">
+      <div className="mkt-hero-viewport" aria-live={paused ? "polite" : "off"}>
         <div className="mkt-hero-track" data-index={active}>
           {SLIDES.map((slide, i) => {
             const k = `marketing.hero.slides.${slide.id}`;
@@ -301,8 +305,12 @@ export default function HomeHero() {
                     <Panel />
                   </figure>
                   <div className="mkt-hero-copy">
-                    <h2 className="mkt-hero-name mkt-hero-in mkt-hero-d1">{t(`${k}.name`)}</h2>
-                    <p className="mkt-hero-body mkt-hero-in mkt-hero-d2">{t(`${k}.body`)}</p>
+                    <h2 className="mkt-hero-name mkt-hero-in mkt-hero-d1">
+                      <Trans i18nKey={`${k}.name`} components={HIGHLIGHT} />
+                    </h2>
+                    <p className="mkt-hero-body mkt-hero-in mkt-hero-d2">
+                      <Trans i18nKey={`${k}.body`} components={HIGHLIGHT} />
+                    </p>
                     <ul className="mkt-hero-specs">
                       {slide.icons.map((Icon, s) => (
                         <li key={s} className="mkt-hero-in mkt-hero-d3">
@@ -346,9 +354,20 @@ export default function HomeHero() {
             >
               <span className="mkt-hero-tab-mark" aria-hidden="true" />
               <span className="mkt-hero-tab-label">{t(`marketing.hero.slides.${slide.id}.tab`)}</span>
+              {/* Autoplay: the active tab's line fills over --hero-interval, and its end moves to the next slide.
+                  Pausing pauses the animation, so the timer and the line can never disagree. */}
+              {i === active && <span className="mkt-hero-progress" aria-hidden="true" onAnimationEnd={() => setActive((active + 1) % total)} />}
             </button>
           ))}
         </div>
+        <button
+          type="button"
+          className="mkt-hero-pause"
+          aria-label={t(paused ? "marketing.hero.play" : "marketing.hero.pause")}
+          onClick={() => setPaused((p) => !p)}
+        >
+          {paused ? <Play aria-hidden /> : <Pause aria-hidden />}
+        </button>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useCompany } from "@/context/company-provider";
 import "@/components/marketing/about/about.css";
+import Hl from "@/components/marketing/hl";
 
 // Same ids as the nav's module menu (marketing.nav.modules) and the /features/<id> pages.
 const MODULES = [
@@ -37,7 +38,7 @@ export default function AboutPage() {
       <section className="mkt-section mkt-section--alt mkt-about-hero" aria-labelledby="about-title">
         <div className="mkt-container">
           <span className="mkt-label">{t("about_page.hero.label")}</span>
-          <h1 id="about-title">{t("about_page.hero.title", { name })}</h1>
+          <h1 id="about-title"><Hl k="about_page.hero.title" values={{ name }} /></h1>
           <p className="mkt-about-copy">{t("about_page.hero.lead", { name })}</p>
           <Link href="/demo-request" className="mkt-btn mkt-about-btn">
             {t("about_page.hero.cta")}
@@ -49,7 +50,7 @@ export default function AboutPage() {
         <div className="mkt-container">
           <span className="mkt-label">{t("about_page.modules.label")}</span>
           <h2 id="about-modules" className="mkt-about-h2">
-            {t("about_page.modules.title")}
+            <Hl k="about_page.modules.title" />
             <span className="mkt-title-sub">{t("about_page.modules.sub")}</span>
           </h2>
           <p className="mkt-about-copy">{t("about_page.modules.lead")}</p>
@@ -71,7 +72,7 @@ export default function AboutPage() {
           <div>
             <span className="mkt-label">{t("about_page.local.label")}</span>
             <h2 id="about-local" className="mkt-about-h2">
-              {t("about_page.local.title")}
+              <Hl k="about_page.local.title" />
               <span className="mkt-title-sub">{t("about_page.local.sub")}</span>
             </h2>
             <p className="mkt-about-copy">{t("about_page.local.lead")}</p>
@@ -92,7 +93,7 @@ export default function AboutPage() {
           <div>
             <span className="mkt-label">{t("about_page.story.label")}</span>
             <h2 id="about-story" className="mkt-about-h2">
-              {t("about_page.story.title", { name })}
+              <Hl k="about_page.story.title" values={{ name }} />
               <span className="mkt-title-sub">{t("about_page.story.sub")}</span>
             </h2>
             {/* Owner slot: replace this span with the company's own story. */}
@@ -142,7 +143,7 @@ export default function AboutPage() {
         <div className="mkt-container">
           <span className="mkt-label">{t("about_page.close.label")}</span>
           <h2 id="about-close" className="mkt-about-h2">
-            {t("about_page.close.title")}
+            <Hl k="about_page.close.title" />
             <span className="mkt-title-sub">{t("about_page.close.sub")}</span>
           </h2>
           <p className="mkt-about-copy">{t("about_page.close.lead")}</p>

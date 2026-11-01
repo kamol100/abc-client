@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useCompany } from "@/context/company-provider";
 import DemoRequestForm from "@/components/marketing/demo-request/demo-request-form";
 import "@/components/marketing/demo-request/demo-request.css";
+import Hl from "@/components/marketing/hl";
 
 // Modules the demo walks through; facts from the feature inventory.
 const COVERS = ["subscribers", "mikrotik", "olt", "noc", "sms"] as const;
@@ -20,7 +21,7 @@ export default function DemoRequestPage() {
       <section className="mkt-section mkt-section--alt mkt-demo-head" aria-labelledby="demo-title">
         <div className="mkt-container">
           <span className="mkt-label">{t("demo_request.hero.label")}</span>
-          <h1 id="demo-title">{t("demo_request.hero.title", { name })}</h1>
+          <h1 id="demo-title"><Hl k="demo_request.hero.title" values={{ name }} /></h1>
           <p className="mkt-demo-copy">{t("demo_request.hero.subtitle")}</p>
         </div>
       </section>
@@ -31,7 +32,7 @@ export default function DemoRequestPage() {
 
           <aside className="mkt-demo-aside">
             <div className="mkt-demo-block">
-              <h2 id="demo-covers">{t("demo_request.covers.title")}</h2>
+              <h2 id="demo-covers"><Hl k="demo_request.covers.title" /></h2>
               <dl className="mkt-demo-spec" aria-labelledby="demo-covers">
                 {COVERS.map((key) => (
                   <div key={key}>
@@ -42,7 +43,7 @@ export default function DemoRequestPage() {
               </dl>
             </div>
             <div className="mkt-demo-block">
-              <h2 id="demo-after">{t("demo_request.after.title")}</h2>
+              <h2 id="demo-after"><Hl k="demo_request.after.title" /></h2>
               <ol className="mkt-demo-steps" aria-labelledby="demo-after">
                 {STEPS.map((key) => (
                   <li key={key}>{t(`demo_request.after.steps.${key}`)}</li>

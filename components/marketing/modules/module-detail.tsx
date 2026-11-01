@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { MODULES } from "@/components/marketing/modules/registry";
 import type { ModuleContent, ModuleId } from "@/components/marketing/modules/module-types";
 import "@/components/marketing/modules/module-detail.css";
+import Hl from "@/components/marketing/hl";
 
 // A spec value with a figure in it (Latin or Bangla digits) is a measurement: set it in mono.
 const MEASURE = /[0-9০-৯]/;
@@ -46,7 +47,7 @@ function CapabilitySection({ section, layout, alt, label }: { section: Section; 
       <div className="mkt-container">
         <span className="mkt-label">{label}</span>
         <h2 className="mkt-mod-h2">
-          {t(section.titleKey)}
+          <Hl k={section.titleKey} />
           {section.summaryKey && <span className="mkt-title-sub">{phrase(t(section.summaryKey))}</span>}
         </h2>
         <ul className="mkt-mod-cap__items">
@@ -109,7 +110,7 @@ export default function ModuleDetail({ id }: { id: ModuleId }) {
         <div className="mkt-container">
           <span className="mkt-label">{label}</span>
           <h2 id="mkt-mod-specs" className="mkt-mod-h2">
-            {t("module_pages.common.specs")}
+            <Hl k="module_pages.common.specs" />
             <span className="mkt-title-sub">{t("module_pages.common.specs_sub")}</span>
           </h2>
           <table className="mkt-mod-specs">
@@ -133,7 +134,7 @@ export default function ModuleDetail({ id }: { id: ModuleId }) {
           <div className="mkt-container">
             <span className="mkt-label">{label}</span>
             <h2 id="mkt-mod-related" className="mkt-mod-h2">
-              {t("module_pages.common.related")}
+              <Hl k="module_pages.common.related" />
               <span className="mkt-title-sub">{t("module_pages.common.related_sub")}</span>
             </h2>
             <ul className="mkt-mod-cards">
@@ -150,7 +151,7 @@ export default function ModuleDetail({ id }: { id: ModuleId }) {
       <section className="mkt-night mkt-mod-close" aria-labelledby="mkt-mod-close">
         <div className="mkt-container">
           <span className="mkt-label">{t("module_pages.common.cta_label")}</span>
-          <h2 id="mkt-mod-close" className="mkt-mod-h2">{t("module_pages.common.cta_title", { module: title })}</h2>
+          <h2 id="mkt-mod-close" className="mkt-mod-h2"><Hl k="module_pages.common.cta_title" values={{ module: title }} /></h2>
           <p className="mkt-mod-copy">{t("module_pages.common.cta_text")}</p>
           <Link className="mkt-btn" href="/demo-request">{t("module_pages.common.demo")}</Link>
         </div>

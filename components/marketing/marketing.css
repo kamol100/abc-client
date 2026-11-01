@@ -8,6 +8,8 @@
 /* Hallmark · waive 84 · product built in slots, not captured · the admin needs a login and every screen shows real subscribers' names and phones */
 @import "./tokens.css";
 @import "./base.css";
+@import "./motion.css";
+@import "./skins.css";
 
 /* Shared primitives. Pages build on these; each page keeps its own file for its sections. */
 .mkt-container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }

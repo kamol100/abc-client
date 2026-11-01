@@ -7,6 +7,7 @@ import { MODULE_IDS, type ModuleId } from "@/components/marketing/modules/module
 import { MODULES } from "@/components/marketing/modules/registry";
 import { ModuleCard } from "@/components/marketing/modules/module-detail";
 import "@/components/marketing/features/features.css";
+import Hl from "@/components/marketing/hl";
 
 const P = "features_page";
 
@@ -43,7 +44,7 @@ function FeatureBlock({ block, index }: { block: Block; index: number }) {
     <>
       <span className="mkt-label">{name}</span>
       <h2 id={`${block.id}-title`} className="mkt-feat-h2">
-        {t(`${base}.title`)}
+        <Hl k={`${base}.title`} />
         <span className="mkt-title-sub">{t(`${base}.sub`)}</span>
       </h2>
       <p className="mkt-feat-copy">{t(`${base}.summary`)}</p>
@@ -103,7 +104,7 @@ export default function FeaturesPage() {
       <section className="mkt-section mkt-feat-top" aria-labelledby="mkt-feat-title">
         <div className="mkt-container">
           <span className="mkt-label">{t(`${P}.head.label`)}</span>
-          <h1 id="mkt-feat-title">{t(`${P}.head.title`)}</h1>
+          <h1 id="mkt-feat-title"><Hl k={`${P}.head.title`} /></h1>
           <p className="mkt-feat-copy">{t(`${P}.head.lead`)}</p>
           <Link href="/demo-request" className="mkt-btn mkt-feat-top-btn">
             {t(`${P}.head.cta`)}

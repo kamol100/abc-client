@@ -1,0 +1,47 @@
+/* Hallmark · motion partial of marketing.css (stamp, critique and waivers live there) · every element reveals once as it enters, five variants, one easing */
+/* motion-root.tsx tags elements with data-rv (variant) and data-rv-i (cascade step) and sets data-rv-in when one scrolls into view.
+ * Variants animate translate, scale, clip-path and opacity only, so they compose with each element's own transform (hover lifts, :active nudges).
+ * Content is visible without motion: nothing hides unless motion is allowed, and nothing hides before the script has tagged it. */
+
+@keyframes mkt-rv-up { from { opacity: 0; translate: 0 32px; } to { opacity: 1; translate: none; } }
+@keyframes mkt-rv-item { from { opacity: 0; translate: 0 48px; scale: 0.98; } to { opacity: 1; translate: none; scale: none; } }
+@keyframes mkt-rv-left { from { opacity: 0; translate: -32px 0; } to { opacity: 1; translate: none; } }
+@keyframes mkt-rv-zoom { from { opacity: 0; scale: 0.9; translate: 0 40px; } to { opacity: 1; scale: none; translate: none; } }
+/* Headings come up from behind their own baseline, a line of type set into place. */
+@keyframes mkt-rv-wipe { from { opacity: 0; clip-path: inset(0 0 100% 0); translate: 0 0.6em; } to { opacity: 1; clip-path: inset(0 0 -0.2em 0); translate: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Until the script has tagged the page, hold it back for one frame instead of flashing content that then hides.
+   * The inline script in app/(public)/layout.tsx sets .mkt-js and clears the hold after 3s if the script never runs. */
+  .mkt-js:not(.mkt-motion) .mkt-page { opacity: 0; }
+
+  [data-rv]:not([data-rv-in]) { opacity: 0; }
+  [data-rv][data-rv-in] { animation: 760ms var(--ease-out) both; }
+  [data-rv="up"][data-rv-in] { animation-name: mkt-rv-up; }
+  [data-rv="item"][data-rv-in] { animation-name: mkt-rv-item; }
+  [data-rv="left"][data-rv-in] { animation-name: mkt-rv-left; }
+  [data-rv="zoom"][data-rv-in] { animation-name: mkt-rv-zoom; animation-duration: 1000ms; }
+  [data-rv="wipe"][data-rv-in] { animation-name: mkt-rv-wipe; animation-duration: 900ms; }
+  [data-rv-i="1"][data-rv-in] { animation-delay: 90ms; }
+  [data-rv-i="2"][data-rv-in] { animation-delay: 180ms; }
+  [data-rv-i="3"][data-rv-in] { animation-delay: 270ms; }
+  [data-rv-i="4"][data-rv-in] { animation-delay: 360ms; }
+  [data-rv-i="5"][data-rv-in] { animation-delay: 450ms; }
+
+  /* Highlighted key words: the marker stroke draws left to right once its heading has risen in. */
+  @keyframes mkt-hl-draw { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+  [data-rv][data-rv-in] .mkt-hl { animation: mkt-hl-draw 700ms var(--ease-out) 500ms both; }
+
+  /* The features menu: intro, then the four groups, each a beat behind. Replays on every open. */
+  .mkt-nav-panel[data-open] :is(.mkt-nav-intro, .mkt-nav-group) { animation: mkt-rv-up 420ms var(--ease-out) both; }
+  .mkt-nav-panel[data-open] .mkt-nav-group:nth-child(2) { animation-delay: 50ms; }
+  .mkt-nav-panel[data-open] .mkt-nav-group:nth-child(3) { animation-delay: 100ms; }
+  .mkt-nav-panel[data-open] .mkt-nav-group:nth-child(4) { animation-delay: 150ms; }
+  .mkt-nav-panel[data-open] .mkt-nav-group:nth-child(5) { animation-delay: 200ms; }
+
+  /* Cards that open a page lift under the pointer. */
+  :is(.mkt-home-card, .mkt-home-tile, .mkt-mod-card) { transition: transform var(--dur-short) var(--ease-out); }
+  @media (hover: hover) {
+    :is(.mkt-home-card, .mkt-home-tile, .mkt-mod-card):hover { transform: translateY(calc(var(--space-2xs) * -1)); }
+  }
+}

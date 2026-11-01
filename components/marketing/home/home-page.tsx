@@ -11,6 +11,7 @@ import { BillingSample, MessagingSample, MikrotikSample, NocSample, OltSample, S
 import { FinanceSample, InventorySample, PortalSample, ReportsSample, ResellersSample, SupportSample } from "@/components/marketing/modules/samples-b";
 import type { ModuleId } from "@/components/marketing/modules/module-types";
 import { HIGHLIGHT_PLAN, MONTHLY_BDT, PLAN_ORDER, formatBdt } from "@/components/marketing/pricing/pricing-data";
+import Hl from "@/components/marketing/hl";
 
 const K = "marketing.home";
 
@@ -53,7 +54,7 @@ function Head({ id }: { id: string }) {
     <>
       <span className="mkt-label">{t(`${K}.${id}.label`)}</span>
       <h2>
-        {t(`${K}.${id}.title`)}
+        <Hl k={`${K}.${id}.title`} />
         <span className="mkt-title-sub">{t(`${K}.${id}.sub`)}</span>
       </h2>
     </>

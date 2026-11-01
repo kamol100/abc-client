@@ -4,14 +4,7 @@
 /* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V3 · weakest: V, the look is MikroTik's by request; specificity carried by the ISP's own modules (OLT, PPPoE, bKash) */
 /* Hallmark · override 67 · menu, buttons and slide indicators set uppercase like mikrotik.com · the user asked for the menu and hero to look 100% like mikrotik.com */
 
-/* Backdrops: MikroTik's product renders sit on a deep hue with light falling through in diagonal planes.
- * No photos here, so each slide builds that ground from tokens: a base gradient plus three translucent planes. */
-:root {
-  --hero-olt-1: #845309; --hero-olt-2: #6b3214; --hero-olt-3: #561f1a;
-  --hero-mikrotik-1: #255a66; --hero-mikrotik-2: #173d4b; --hero-mikrotik-3: #0f2a38;
-  --hero-billing-1: #2a6634; --hero-billing-2: #1a4a2a; --hero-billing-3: #11331f;
-  --hero-noc-1: #7f2a1c; --hero-noc-2: #5e1b1d; --hero-noc-3: #421417;
-}
+/* The slide grounds (Mint, with a network pattern per slide) live in skins.css with the rest of the colour skin. */
 .mkt-hero {
   --hero-plane: color-mix(in oklab, var(--color-night-ink) 7%, transparent);
   --hero-plane-soft: color-mix(in oklab, var(--color-night-ink) 4%, transparent);
@@ -22,18 +15,6 @@
   --hero-shadow: 32px 40px 80px color-mix(in oklab, var(--color-night) 55%, transparent), 8px 12px 24px color-mix(in oklab, var(--color-night) 30%, transparent);
   --hero-min: 600px; --hero-max: 900px; --hero-indicators: 96px;
 }
-.mkt-hero-slide { --hero-1: var(--hero-olt-1); --hero-2: var(--hero-olt-2); --hero-3: var(--hero-olt-3); }
-.mkt-hero-slide[data-tone="mikrotik"] { --hero-1: var(--hero-mikrotik-1); --hero-2: var(--hero-mikrotik-2); --hero-3: var(--hero-mikrotik-3); }
-.mkt-hero-slide[data-tone="billing"] { --hero-1: var(--hero-billing-1); --hero-2: var(--hero-billing-2); --hero-3: var(--hero-billing-3); }
-.mkt-hero-slide[data-tone="noc"] { --hero-1: var(--hero-noc-1); --hero-2: var(--hero-noc-2); --hero-3: var(--hero-noc-3); }
-.mkt-hero-slide {
-  background:
-    linear-gradient(156deg, transparent 58%, var(--hero-plane) 58% 71%, transparent 71%),
-    linear-gradient(162deg, transparent 74%, var(--hero-plane-soft) 74% 88%, transparent 88%),
-    linear-gradient(150deg, transparent 36%, var(--hero-plane-soft) 36% 47%, transparent 47%),
-    linear-gradient(160deg, var(--hero-1) 0%, var(--hero-2) 48%, var(--hero-3) 100%);
-}
-
 /* The MikroTik products carousel: 600px floor, 100dvh capped at 900px, under the transparent 80px nav. */
 .mkt-hero { position: relative; display: flex; flex-direction: column; overflow: hidden; }
 @media (min-width: 64rem) { .mkt-hero { min-height: clamp(var(--hero-min), 100dvh, var(--hero-max)); } }
@@ -66,9 +47,46 @@
 .mkt-hero-d2 { animation-delay: 200ms; }
 .mkt-hero-d3 { animation-delay: 300ms; }
 .mkt-hero-d4 { animation-delay: 400ms; }
+/* Spec lines arrive one after another. */
+.mkt-hero-specs li.mkt-hero-d3:nth-child(2) { animation-delay: 380ms; }
+.mkt-hero-specs li.mkt-hero-d3:nth-child(3) { animation-delay: 460ms; }
+.mkt-hero-specs li.mkt-hero-d3:nth-child(4) { animation-delay: 540ms; }
+.mkt-hero-d4 { animation-delay: 620ms; }
+
+/* The product slides in and settles; its rows and blocks follow in a cascade.
+ * translate and scale compose with the figure's own perspective tilt (transform). */
+@keyframes mkt-hero-panel-in { from { opacity: 0; translate: calc(var(--space-2xl) * -1) 0; scale: 0.94; } to { opacity: 1; translate: none; scale: none; } }
+@keyframes mkt-hero-row-in { from { opacity: 0; translate: 0 var(--space-sm); } to { opacity: 1; translate: none; } }
+.mkt-hero-slide[data-active] .mkt-hero-figure > * { animation: mkt-hero-panel-in 900ms var(--ease-out) 80ms both; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr) { animation: mkt-hero-row-in 520ms var(--ease-out) 360ms both; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(2) { animation-delay: 440ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(3) { animation-delay: 520ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(4) { animation-delay: 600ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(n + 5) { animation-delay: 680ms; }
+
+/* Highlighted key words: a marker stroke behind them, drawn left to right as the slide comes in.
+ * --hero-accent and --hero-mark are set by the ground (preview variants); the defaults suit the dark grounds. */
+@keyframes mkt-hero-mark { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+.mkt-hero-hl { padding-inline: 0.06em; background: linear-gradient(transparent 58%, var(--hero-mark, color-mix(in oklab, var(--hero-ink) 22%, transparent)) 58% 94%, transparent 94%) no-repeat 0 0 / 100% 100%; color: var(--hero-accent, inherit); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.mkt-hero-slide[data-active] .mkt-hero-hl { animation: mkt-hero-mark 700ms var(--ease-out) 650ms both; }
+
+/* Autoplay progress: fills the active tab's line; animationend advances the slide. Paused by the button or keyboard focus in the hero. */
+.mkt-hero { --hero-interval: 7s; }
+@keyframes mkt-hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.mkt-hero-progress { position: absolute; top: 3px; inset-inline-start: 0; width: 100%; height: 2px; background: var(--hero-ink); transform-origin: left; animation: mkt-hero-progress var(--hero-interval) linear both; }
+.mkt-hero:is([data-paused], :has(:focus-visible)) .mkt-hero-progress { animation-play-state: paused; }
+.mkt-hero-controls { align-items: center; gap: var(--space-md); }
+.mkt-hero-pause { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: none; color: var(--hero-ink-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-out); }
+.mkt-hero-pause:hover { color: var(--hero-ink); }
+.mkt-hero-pause:focus-visible { outline: 2px solid var(--hero-ink); outline-offset: 2px; }
+.mkt-hero-pause svg { width: 16px; height: 16px; }
+
 @media (prefers-reduced-motion: reduce) {
-  .mkt-hero-slide[data-active] .mkt-hero-in { animation: none; }
+  .mkt-hero-slide[data-active] :is(.mkt-hero-in, .mkt-hero-hl, .mkt-hero-figure > *, .mkt-hero-figure .mkt-panel > *, .mkt-hero-figure tbody > tr) { animation: none; }
   .mkt-hero-track { transition: none; }
+  /* No autoplay: the line shows full and never ends. */
+  .mkt-hero-progress { animation: none; transform: none; }
+  .mkt-hero-pause { display: none; }
 }
 
 /* Visual column: the product built in a slot a screenshot replaces. */
@@ -77,8 +95,10 @@
 .mkt-hero .mkt-panel { border: 0; box-shadow: var(--hero-shadow); }
 .mkt-hero-billing .mkt-panel + .mkt-panel { box-shadow: var(--hero-shadow); }
 .mkt-hero-panel { width: 100%; }
+.mkt-hero-figure > * { min-width: 0; max-width: 100%; }
+/* The tilt widens the panel past the column gap below 80rem, so it only starts there. */
+@media (min-width: 80rem) { .mkt-hero-figure > * { transform: perspective(1600px) rotateY(12deg) rotateX(4deg); transform-origin: 40% 50%; } }
 @media (min-width: 64rem) {
-  .mkt-hero-figure > * { transform: perspective(1600px) rotateY(12deg) rotateX(4deg); transform-origin: 40% 50%; }
   .mkt-hero .mkt-panel { font-size: var(--text-md); }
   .mkt-hero-table { font-size: var(--text-sm); }
   .mkt-hero-table :is(th, td) { padding-block: var(--space-sm); }
@@ -128,6 +148,7 @@
 @media (min-width: 64rem) { .mkt-hero-controls { padding-bottom: var(--space-xl); } }
 .mkt-hero-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-xs); }
 .mkt-hero-tab { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: var(--space-lg); min-height: 44px; padding: 0; border: 0; background: none; color: var(--hero-ink-3); font-size: 0.75rem; font-weight: 400; line-height: 1.2; text-transform: uppercase; word-spacing: -0.3em; cursor: pointer; transition: color var(--dur-short) var(--ease-out); }
+.mkt-hero-tab:lang(bn) { font-size: var(--text-xs); }
 .mkt-hero-tab:hover { color: var(--hero-ink); }
 .mkt-hero-tab[aria-selected="true"] { color: var(--hero-ink); font-weight: 700; }
 .mkt-hero-tab:active { transform: translateY(1px); }
@@ -138,5 +159,10 @@
   .mkt-hero-tabs { gap: var(--space-xl); }
   .mkt-hero-tab-mark { display: none; }
   .mkt-hero-tab::before { content: ""; position: absolute; top: 4px; inset-inline-start: 0; width: 100%; height: 1px; background: var(--hero-rule); transform: scaleX(0.35); transform-origin: left; transition: transform var(--dur-long) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
-  .mkt-hero-tab[aria-selected="true"]::before { background: var(--hero-ink); transform: none; }
+  .mkt-hero-tab[aria-selected="true"]::before { background: var(--hero-rule); transform: none; }
+}
+/* Between 64rem and 80rem the half-width column is as narrow as a phone's: same trims as the narrow rule above. */
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  .mkt-hero-table :is(th, td) { padding-inline: var(--space-xs); }
+  .mkt-hero-wide, .mkt-hero-receipt { display: none; }
 }

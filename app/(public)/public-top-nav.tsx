@@ -5,9 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { ChevronDown, CircleUser, Menu, X } from "lucide-react";
+import {
+  Activity, Cable, LayoutGrid, ChartColumn, ChevronDown, CircleUser, Handshake, LifeBuoy, Menu, MessageSquare,
+  MonitorSmartphone, Moon, Package, ReceiptText, Router, Sun, Users, Wallet, X, type LucideIcon,
+} from "lucide-react";
 import { useCompany } from "@/context/company-provider";
 import { useLanguage } from "@/hooks/use-language";
+import { useTheme } from "@/context/theme-provider";
 import { LANGUAGES, LANGUAGE_LABELS } from "@/lib/i18n/languages";
 import { CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
@@ -15,6 +19,21 @@ export const MODULE_IDS = [
   "subscribers", "billing", "mikrotik", "olt", "noc", "messaging",
   "support", "resellers", "finance", "inventory", "reports", "portal",
 ] as const;
+
+/* The panel groups the twelve modules so it scans by column, not as one block of text. */
+const MODULE_GROUPS = [
+  { id: "customers", modules: ["subscribers", "billing", "portal"] },
+  { id: "network", modules: ["mikrotik", "olt", "noc"] },
+  { id: "operations", modules: ["support", "messaging", "inventory"] },
+  { id: "business", modules: ["resellers", "finance", "reports"] },
+] as const satisfies readonly { id: string; modules: readonly (typeof MODULE_IDS)[number][] }[];
+
+const MODULE_ICONS: Record<(typeof MODULE_IDS)[number], LucideIcon> = {
+  subscribers: Users, billing: ReceiptText, portal: MonitorSmartphone,
+  mikrotik: Router, olt: Cable, noc: Activity,
+  support: LifeBuoy, messaging: MessageSquare, inventory: Package,
+  resellers: Handshake, finance: Wallet, reports: ChartColumn,
+};
 
 export const PAGE_LINKS = [
   { key: "marketing.nav.pricing", href: "/pricing" },
@@ -47,6 +66,18 @@ function LanguageToggle() {
         </span>
       ))}
     </div>
+  );
+}
+
+/* Light is the Mint skin, dark is Glow (components/marketing/skins.css). Uses the app's own theme store. */
+function ThemeSwitch() {
+  const { t } = useTranslation();
+  const { resolvedTheme, setTheme } = useTheme();
+  const dark = resolvedTheme === "dark";
+  return (
+    <button type="button" className="mkt-nav-icon" aria-label={t("marketing.nav.theme")} aria-pressed={dark} onClick={() => setTheme(dark ? "light" : "dark")}>
+      {dark ? <Sun aria-hidden /> : <Moon aria-hidden />}
+    </button>
   );
 }
 
@@ -158,19 +189,36 @@ export default function PublicTopNav() {
                 </button>
                 <div id="mkt-nav-features" className="mkt-nav-panel" data-open={featuresOpen || undefined}>
                   <div className="mkt-container mkt-nav-panel-grid">
-                    <Link href="/features" className="mkt-nav-all" aria-current={pathname === "/features" ? "page" : undefined} onClick={closeAll}>
-                      {t("marketing.nav.all_features")}
-                    </Link>
-                    <ul className="mkt-nav-modules">
-                      {MODULE_IDS.map((id) => (
-                        <li key={id}>
-                          <Link href={moduleHref(id)} className="mkt-nav-module" aria-current={current(moduleHref(id))} onClick={closeAll}>
-                            <strong>{t(`marketing.nav.modules.${id}`)}</strong>
-                            <span>{t(`marketing.nav.module_notes.${id}`)}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="mkt-nav-intro">
+                      <Link href="/features" className="mkt-nav-all" aria-current={pathname === "/features" ? "page" : undefined} onClick={closeAll}>
+                        {t("marketing.nav.all_features")}
+                      </Link>
+                      <p>{t("marketing.nav.panel_note")}</p>
+                      <Link href="/demo-request" className="mkt-btn" onClick={closeAll}>
+                        {t("marketing.nav.demo_request")}
+                      </Link>
+                    </div>
+                    {MODULE_GROUPS.map((group) => (
+                      <div key={group.id} className="mkt-nav-group">
+                        <p id={`mkt-nav-group-${group.id}`} className="mkt-nav-group-head">{t(`marketing.nav.groups.${group.id}`)}</p>
+                        <ul aria-labelledby={`mkt-nav-group-${group.id}`}>
+                          {group.modules.map((id) => {
+                            const Icon = MODULE_ICONS[id];
+                            return (
+                              <li key={id}>
+                                <Link href={moduleHref(id)} className="mkt-nav-module" aria-current={current(moduleHref(id))} onClick={closeAll}>
+                                  <span className="mkt-nav-module-icon"><Icon aria-hidden strokeWidth={1.5} /></span>
+                                  <span className="mkt-nav-module-text">
+                                    <strong>{t(`marketing.nav.modules.${id}`)}</strong>
+                                    <span>{t(`marketing.nav.module_notes.${id}`)}</span>
+                                  </span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </li>
@@ -186,6 +234,7 @@ export default function PublicTopNav() {
 
           <div className="mkt-nav-tools">
             <LanguageToggle />
+            <ThemeSwitch />
             <Link href={CLIENT_LOGIN_PATH} className="mkt-nav-icon" aria-label={t("marketing.nav.login")}>
               <CircleUser aria-hidden />
             </Link>
@@ -219,16 +268,25 @@ export default function PublicTopNav() {
             <ul id="mkt-nav-mobile-features" hidden={!mobileFeaturesOpen}>
               <li>
                 <Link href="/features" className="mkt-nav-row mkt-nav-row--sub" aria-current={pathname === "/features" ? "page" : undefined} onClick={closeAll}>
-                  {t("marketing.nav.all_features")}
+                  <span className="mkt-nav-row-label">
+                    <span className="mkt-nav-row-icon"><LayoutGrid aria-hidden strokeWidth={1.5} /></span>
+                    {t("marketing.nav.all_features")}
+                  </span>
                 </Link>
               </li>
-              {MODULE_IDS.map((id) => (
-                <li key={id}>
-                  <Link href={moduleHref(id)} className="mkt-nav-row mkt-nav-row--sub" aria-current={current(moduleHref(id))} onClick={closeAll}>
-                    {t(`marketing.nav.modules.${id}`)}
-                  </Link>
-                </li>
-              ))}
+              {MODULE_IDS.map((id) => {
+                const Icon = MODULE_ICONS[id];
+                return (
+                  <li key={id}>
+                    <Link href={moduleHref(id)} className="mkt-nav-row mkt-nav-row--sub" aria-current={current(moduleHref(id))} onClick={closeAll}>
+                      <span className="mkt-nav-row-label">
+                        <span className="mkt-nav-row-icon"><Icon aria-hidden strokeWidth={1.5} /></span>
+                        {t(`marketing.nav.modules.${id}`)}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </li>
           {[...PAGE_LINKS, { key: "marketing.nav.login", href: CLIENT_LOGIN_PATH }].map((item) => (
