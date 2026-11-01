@@ -35,6 +35,7 @@ const ClientRefSchema = z.object({
     sid: z.union([z.number(), z.string()]).nullable().optional(),
     name: z.string().nullable().optional(),
     phone: z.string().nullable().optional(),
+    pppoe_username: z.string().nullable().optional(),
     current_address: z.string().nullable().optional(),
 });
 

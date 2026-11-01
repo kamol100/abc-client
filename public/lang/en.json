@@ -1984,13 +1984,15 @@
         },
         "print": {
             "title": "Print Invoice",
-            "print_button": "Print"
+            "print_button": "Print",
+            "paper_hint": "58mm thermal paper. Print this PDF at actual size (100%)."
         },
         "receipt": {
             "default_company": "ISP Client",
             "phone": "Phone",
             "client_id": "ID",
             "client": "Client",
+            "pppoe_id": "pppoe ID",
             "client_phone": "Client Phone",
             "invoice_id": "Invoice ID",
             "date": "Date",
@@ -2003,7 +2005,8 @@
             "total": "Total",
             "paid": "Paid",
             "due": "Due",
-            "thank_you": "Thank You"
+            "thank_you": "Thank You",
+            "for_support": "For support"
         },
         "no_invoices": "No invoices found",
         "delete_confirmation": "Are you sure you want to delete this invoice?",

@@ -15,26 +15,127 @@ import { Loader2, Printer } from "lucide-react";
 import InvoiceReceipt from "@/components/invoices/invoice-receipt";
 import { InvoiceDetail } from "./invoice-type";
 
-const RECEIPT_PAGE_WIDTH_MM = 82;
-const RECEIPT_PAGE_HEIGHT_MM = 180;
-const RECEIPT_MARGIN_MM = 1;
-const RECEIPT_PDF_SCALE = 2;
-const PAGE_CAPACITY_BUFFER_MM = 1.5;
+/** GOOJPRT PT-210: 58mm roll, 48mm print head, 203 dpi, 384 dots. */
+const PT210_PRINT_WIDTH_MM = 48;
+const PT210_PAGE_DOTS = 384;
+const RECEIPT_MAX_PAGE_HEIGHT_MM = 280;
+const PAGE_CAPACITY_BUFFER_MM = 2;
+const INK_THRESHOLD = 168;
+
+const canvasHeightToMm = (canvas: HTMLCanvasElement, widthMm: number) =>
+    (canvas.height * widthMm) / Math.max(canvas.width, 1);
+
+const thermalFontFamily = () => {
+    const hindFamily = getComputedStyle(document.documentElement)
+        .getPropertyValue("--font-hind")
+        .trim();
+    return hindFamily.length > 0 ? `${hindFamily}, sans-serif` : "sans-serif";
+};
+
+const paintThermalSurface = (element: HTMLElement) => {
+    element.style.boxSizing = "border-box";
+    element.style.width = `${PT210_PAGE_DOTS}px`;
+    element.style.margin = "0";
+    element.style.padding = "16px 16px 24px";
+    element.style.border = "0";
+    element.style.background = "#ffffff";
+    element.style.color = "#000000";
+    element.style.fontFamily = thermalFontFamily();
+    element.style.fontWeight = "700";
+    element.style.fontSize = "28px";
+    element.style.lineHeight = "36px";
+    element.style.letterSpacing = "0px";
+    element.style.setProperty("-webkit-font-smoothing", "auto");
+    element.style.setProperty("-moz-osx-font-smoothing", "auto");
+};
+
+const forceThermalInk = (root: HTMLElement) => {
+    const paint = (node: HTMLElement, keepWhiteBackground: boolean) => {
+        node.style.color = "#000000";
+        node.style.borderColor = "#000000";
+        node.style.textShadow = "none";
+        node.style.boxShadow = "none";
+        node.style.opacity = "1";
+        node.style.filter = "none";
+        node.style.backgroundColor = keepWhiteBackground ? "#ffffff" : "transparent";
+        node.style.fontFamily = thermalFontFamily();
+        node.style.fontWeight = "700";
+        node.style.setProperty("-webkit-font-smoothing", "auto");
+    };
+
+    paint(root, true);
+    root.querySelectorAll<HTMLElement>("*").forEach((node) => paint(node, false));
+};
 
 const toCanvas = async (element: HTMLElement) =>
     html2canvas(element, {
-        scale: RECEIPT_PDF_SCALE,
+        scale: 1,
         useCORS: true,
         backgroundColor: "#ffffff",
+        logging: false,
     });
 
-const canvasHeightToMm = (canvas: HTMLCanvasElement, widthMm: number) =>
-    (canvas.height * widthMm) / canvas.width;
+const flattenToInk = (source: HTMLCanvasElement) => {
+    const targetWidth = PT210_PAGE_DOTS;
+    const targetHeight = Math.max(
+        1,
+        Math.round((source.height * targetWidth) / Math.max(source.width, 1)),
+    );
+    const target = document.createElement("canvas");
+    target.width = targetWidth;
+    target.height = targetHeight;
+    const context = target.getContext("2d", { willReadFrequently: true });
+    if (!context) return source;
+
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, targetWidth, targetHeight);
+    context.drawImage(source, 0, 0, targetWidth, targetHeight);
+
+    const image = context.getImageData(0, 0, targetWidth, targetHeight);
+    const pixels = image.data;
+    for (let index = 0; index < pixels.length; index += 4) {
+        const luminance = pixels[index] * 0.299 + pixels[index + 1] * 0.587 + pixels[index + 2] * 0.114;
+        const ink = luminance < INK_THRESHOLD ? 0 : 255;
+        pixels[index] = ink;
+        pixels[index + 1] = ink;
+        pixels[index + 2] = ink;
+        pixels[index + 3] = 255;
+    }
+    context.putImageData(image, 0, 0);
+    return target;
+};
+
+const toThermalCanvas = async (element: HTMLElement) => {
+    const source = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        onclone: (_clonedDocument, clonedElement) => {
+            forceThermalInk(clonedElement);
+        },
+    });
+    return flattenToInk(source);
+};
+
+/** jsPDF swaps a portrait page when the strip is shorter than it is wide. */
+const thermalPageSize = (heightMm: number): { orientation: "p" | "l"; format: [number, number] } => {
+    const orientation = heightMm >= PT210_PRINT_WIDTH_MM ? "p" : "l";
+    return { orientation, format: [PT210_PRINT_WIDTH_MM, heightMm] };
+};
 
 const cloneForPdf = (element: HTMLElement) => {
     const clonedElement = element.cloneNode(true) as HTMLElement;
     clonedElement.style.width = "100%";
     clonedElement.style.maxWidth = "none";
+    clonedElement.style.color = "#000000";
+    clonedElement.style.background = "transparent";
     return clonedElement;
 };
 
@@ -132,8 +233,9 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
         setIsGeneratingPdf(true);
         let stagingContainer: HTMLDivElement | null = null;
         try {
-            const pageContentWidthMm = RECEIPT_PAGE_WIDTH_MM - RECEIPT_MARGIN_MM * 2;
-            const pageContentHeightMm = RECEIPT_PAGE_HEIGHT_MM - RECEIPT_MARGIN_MM * 2;
+            await document.fonts.ready;
+            const pageContentWidthMm = PT210_PRINT_WIDTH_MM;
+            const pageContentHeightMm = RECEIPT_MAX_PAGE_HEIGHT_MM;
 
             const firstInvoice = invoices[0];
             const clientName =
@@ -148,7 +250,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             stagingContainer.style.position = "fixed";
             stagingContainer.style.left = "-99999px";
             stagingContainer.style.top = "0";
-            stagingContainer.style.width = `${pageContentWidthMm}mm`;
+            stagingContainer.style.width = `${PT210_PAGE_DOTS}px`;
             stagingContainer.style.pointerEvents = "none";
             stagingContainer.style.background = "#ffffff";
             document.body.appendChild(stagingContainer);
@@ -223,28 +325,15 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 paginatedRowIndexes.push([]);
             }
 
-            const pdf = new jsPDF({
-                orientation: "p",
-                unit: "mm",
-                format: [RECEIPT_PAGE_WIDTH_MM, RECEIPT_PAGE_HEIGHT_MM],
-                compress: true,
-            });
-
-            pdf.setProperties({ title: pdfName });
+            let pdf: jsPDF | null = null;
 
             for (let pageIndex = 0; pageIndex < paginatedRowIndexes.length; pageIndex++) {
-                if (pageIndex > 0) {
-                    pdf.addPage([RECEIPT_PAGE_WIDTH_MM, RECEIPT_PAGE_HEIGHT_MM], "p");
-                }
 
                 const pageRows = paginatedRowIndexes[pageIndex] ?? [];
                 const includeSummary = pageIndex === paginatedRowIndexes.length - 1;
 
                 const pageContainer = document.createElement("div");
-                pageContainer.style.width = "100%";
-                pageContainer.style.background = "#ffffff";
-                pageContainer.style.color = "#111827";
-                pageContainer.style.boxSizing = "border-box";
+                paintThermalSurface(pageContainer);
                 pageContainer.appendChild(cloneForPdf(receiptHeader));
                 pageContainer.appendChild(cloneForPdf(receiptItemsHead));
 
@@ -263,22 +352,39 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 }
 
                 stagingContainer.appendChild(pageContainer);
-                const pageCanvas = await toCanvas(pageContainer);
+                const pageCanvas = await toThermalCanvas(pageContainer);
                 stagingContainer.removeChild(pageContainer);
 
-                const pageImageHeightMm = canvasHeightToMm(pageCanvas, pageContentWidthMm);
-                const drawableHeightMm = Math.max(pageContentHeightMm, 10);
-                const drawHeightMm = Math.min(pageImageHeightMm, drawableHeightMm);
+                const pageImageHeightMm = Math.max(
+                    canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM),
+                    20,
+                );
+                const pageSize = thermalPageSize(pageImageHeightMm);
+                if (!pdf) {
+                    pdf = new jsPDF({
+                        orientation: pageSize.orientation,
+                        unit: "mm",
+                        format: pageSize.format,
+                        compress: true,
+                    });
+                    pdf.setProperties({ title: pdfName });
+                } else {
+                    pdf.addPage(pageSize.format, pageSize.orientation);
+                }
 
                 pdf.addImage(
                     pageCanvas.toDataURL("image/png"),
                     "PNG",
-                    RECEIPT_MARGIN_MM,
-                    RECEIPT_MARGIN_MM,
-                    pageContentWidthMm,
-                    drawHeightMm,
+                    0,
+                    0,
+                    PT210_PRINT_WIDTH_MM,
+                    pageImageHeightMm,
+                    undefined,
+                    "NONE",
                 );
             }
+
+            if (!pdf) return;
 
             pdf.save(`${pdfName}.pdf`);
             onOpenChange(false);
@@ -295,7 +401,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             open={open}
             onOpenChange={onOpenChange}
             title="invoice.print.title"
-            size="sm"
+            size="md"
             footer={({ close }) => (
                 <div className="flex justify-center w-full">
                     <div className="flex items-center gap-2">
@@ -347,6 +453,9 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                     <div ref={receiptRef} className="bg-white">
                         <InvoiceReceipt invoices={invoices} />
                     </div>
+                    <p className="mt-3 text-center text-xs text-muted-foreground">
+                        {t("invoice.print.paper_hint")}
+                    </p>
                 </div>
             )}
         </MyDialog>

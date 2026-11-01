@@ -25,6 +25,26 @@ const getSettingString = (
     return null;
 };
 
+const ReceiptPair = ({
+    label,
+    value,
+    emphasized = false,
+}: {
+    label: string;
+    value: string;
+    emphasized?: boolean;
+}) => (
+    <div
+        className={cn(
+            "flex items-start justify-between gap-[12px] font-bold text-black",
+            emphasized ? "text-[36px] leading-[44px]" : "text-[28px] leading-[36px]",
+        )}
+    >
+        <span className="shrink-0">{label}:</span>
+        <span className="min-w-0 break-words text-right tabular-nums">{value}</span>
+    </div>
+);
+
 const getInvoiceTotals = (invoice: InvoiceDetail) => {
     const subTotal = toNumber(invoice.total_amount);
     const totalDiscount =
@@ -76,6 +96,13 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
             .map((invoice) => invoice.client?.name?.trim())
             .filter((name): name is string => Boolean(name));
         return Array.from(new Set(names));
+    }, [safeInvoices]);
+
+    const clientPppoeUsernames = useMemo(() => {
+        const usernames = safeInvoices
+            .map((invoice) => invoice.client?.pppoe_username?.trim())
+            .filter((username): username is string => Boolean(username));
+        return Array.from(new Set(usernames));
     }, [safeInvoices]);
 
     const clientPhones = useMemo(() => {
@@ -142,148 +169,106 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
     return (
         <div
             className={cn(
-                "invoice-receipt-root mx-auto w-full max-w-[80mm] overflow-visible bg-background text-xs leading-tight",
+                "invoice-receipt-root mx-auto box-border w-[384px] max-w-full overflow-visible bg-white px-[16px] pb-[24px] pt-[16px] text-black",
                 className,
             )}
             data-receipt-root
         >
-            <div data-receipt-header className="p-2">
-                <div className="text-center space-y-0.5 border-b pb-2">
-                    <h3 className="text-sm font-bold">{companyName}</h3>
+            <div data-receipt-header>
+                <div className="border-b-[3px] border-solid border-black pb-[12px] text-center text-black">
+                    <h3 className="break-words text-[36px] font-bold leading-[44px]">{companyName}</h3>
                     {companyAddress && (
-                        <p className="text-muted-foreground text-xs">{companyAddress}</p>
+                        <p className="mt-[6px] break-words text-[28px] font-bold leading-[36px]">{companyAddress}</p>
                     )}
                     {companyPhone && (
-                        <p className="text-muted-foreground">
+                        <p className="mt-[4px] break-words text-[28px] font-bold leading-[36px]">
                             {t("invoice.receipt.phone")}: {companyPhone}
                         </p>
                     )}
                 </div>
 
-                <div className="border-b pt-2 pb-3">
+                <div className="space-y-[4px] border-b-[3px] border-solid border-black py-[12px]">
                     {clientIds.length > 0 && (
-                        <div className="flex justify-between gap-2">
-                            <span className="font-medium text-xs">{t("invoice.receipt.client_id")}:</span>
-                            <span className="text-right font-medium text-xs">{clientIds.join(", ")}</span>
-                        </div>
+                        <ReceiptPair label={t("invoice.receipt.client_id")} value={clientIds.join(", ")} />
                     )}
-                    <div className="flex justify-between gap-2">
-                        <span className="font-medium text-xs ">{t("invoice.receipt.client")}:</span>
-                        <span className="text-right font-medium text-xs">
-                            {clientNames.length > 0 ? clientNames.join(", ") : "—"}
-                        </span>
-                    </div>
+                    <ReceiptPair
+                        label={t("invoice.receipt.client")}
+                        value={clientNames.length > 0 ? clientNames.join(", ") : "—"}
+                    />
+                    {clientPppoeUsernames.length > 0 && (
+                        <ReceiptPair
+                            label={t("invoice.receipt.pppoe_id")}
+                            value={clientPppoeUsernames.join(", ")}
+                        />
+                    )}
                     {clientPhones.length > 0 && (
-                        <div className="flex justify-between gap-2">
-                            <span className="font-medium text-xs">{t("common.phone")}:</span>
-                            <span className="text-right font-medium text-xs">{clientPhones.join(", ")}</span>
-                        </div>
+                        <ReceiptPair label={t("common.phone")} value={clientPhones.join(", ")} />
                     )}
-                    <div className="flex justify-between gap-2">
-                        <span className="font-medium text-xs">{t("invoice.receipt.date")}:</span>
-                        <span className="text-right font-medium text-xs">{printedDateTimeText}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div
-                    className="grid grid-cols-12 gap-1 border-b p-2 pt-0 font-semibold text-[11px]"
-                    data-receipt-items-head
-                >
-                    <div className="col-span-2">{t("invoice.receipt.invoice_id")}</div>
-                    <div className="col-span-4">{t("invoice.receipt.item")}</div>
-                    <div className="col-span-1 text-center">
-                        {t("invoice.receipt.qty")}
-                    </div>
-                    <div className="col-span-2 text-right">
-                        {t("invoice.receipt.price")}
-                    </div>
-                    <div className="col-span-3 text-right">
-                        {t("invoice.receipt.amount")}
-                    </div>
-                </div>
-                <div
-                    className="px-2"
-                    data-receipt-items-body
-                >
-                    {invoiceGroups.map((group, groupIndex) => (
-                        <div key={group.key} className="invoice-group">
-                            {groupIndex > 0 && (
-                                <div
-                                    className="invoice-group-separator my-1 border-t border-dashed"
-                                    data-receipt-item-row
-                                />
-                            )}
-                            {group.lines.length > 0 ? (
-                                group.lines.map((line, lineIndex) => (
-                                    <div
-                                        key={line.key}
-                                        className="grid grid-cols-12 gap-1 text-[11px] items-start break-inside-avoid"
-                                        data-receipt-item-row
-                                    >
-                                        <div className="col-span-2 break-words">
-                                            {lineIndex === 0 ? group.invoiceLabel : ""}
-                                        </div>
-                                        <div className="col-span-4 whitespace-pre-wrap break-words">
-                                            {line.description}
-                                        </div>
-                                        <div className="col-span-1 text-center">
-                                            {line.quantity}
-                                        </div>
-                                        <div className="col-span-2 text-right">
-                                            {formatMoney(line.unitPrice)}
-                                        </div>
-                                        <div className="col-span-3 text-right font-medium">
-                                            {formatMoney(line.amount)}
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div
-                                    className="grid grid-cols-12 gap-1 text-[11px] text-muted-foreground items-start break-inside-avoid"
-                                    data-receipt-item-row
-                                >
-                                    <div className="col-span-2 break-words">{group.invoiceLabel}</div>
-                                    <div className="col-span-4">—</div>
-                                    <div className="col-span-1 text-center">0</div>
-                                    <div className="col-span-2 text-right">{formatMoney(0)}</div>
-                                    <div className="col-span-3 text-right font-medium">{formatMoney(0)}</div>
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                    <ReceiptPair label={t("invoice.receipt.date")} value={printedDateTimeText} />
                 </div>
             </div>
 
             <div
-                className="border-t px-2 font-medium text-xs  mt-2 space-y-1 break-inside-avoid"
+                className="flex items-start justify-between gap-[12px] border-b-[3px] border-solid border-black py-[8px] text-[28px] font-bold leading-[36px] text-black"
+                data-receipt-items-head
+            >
+                <span>{t("invoice.receipt.item")}</span>
+                <span>{t("invoice.receipt.amount")}</span>
+            </div>
+            <div data-receipt-items-body className="py-[8px]">
+                {invoiceGroups.map((group, groupIndex) => (
+                    <div key={group.key} className="invoice-group">
+                        {groupIndex > 0 && (
+                            <div
+                                className="invoice-group-separator my-[8px] border-t-[3px] border-solid border-black"
+                                data-receipt-item-row
+                            />
+                        )}
+                        {group.lines.length > 0 ? (
+                            group.lines.map((line, lineIndex) => (
+                                <div
+                                    key={line.key}
+                                    className="flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-[24px] font-bold leading-[30px] text-black"
+                                    data-receipt-item-row
+                                >
+                                    <span className="min-w-0 truncate">
+                                        {lineIndex === 0 ? `${group.invoiceLabel}: ` : ""}
+                                        {line.description} {line.quantity}x{formatMoney(line.unitPrice)}
+                                    </span>
+                                    <span className="shrink-0 tabular-nums">{formatMoney(line.amount)}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <div
+                                className="flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-[24px] font-bold leading-[30px] text-black"
+                                data-receipt-item-row
+                            >
+                                <span className="min-w-0 truncate">{group.invoiceLabel}: —</span>
+                                <span className="shrink-0 tabular-nums">{formatMoney(0)}</span>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            <div
+                className="space-y-[4px] break-inside-avoid border-t-[3px] border-solid border-black pt-[12px]"
                 data-receipt-summary
             >
-                <div className="flex justify-between">
-                    <span>{t("invoice.receipt.sub_total")}:</span>
-                    <span>{formatMoney(totals.subTotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span>{t("invoice.receipt.discount")}:</span>
-                    <span>{formatMoney(totals.totalDiscount)}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                    <span>{t("invoice.receipt.total")}:</span>
-                    <span>{formatMoney(totals.totalAmount)}</span>
-                </div>
-                <div className="flex justify-between text-green-600">
-                    <span>{t("invoice.receipt.paid")}:</span>
-                    <span>{formatMoney(totals.amountPaid)}</span>
-                </div>
+                <ReceiptPair label={t("invoice.receipt.sub_total")} value={formatMoney(totals.subTotal)} />
+                <ReceiptPair label={t("invoice.receipt.discount")} value={formatMoney(totals.totalDiscount)} />
+                <ReceiptPair label={t("invoice.receipt.total")} value={formatMoney(totals.totalAmount)} emphasized />
+                <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.amountPaid)} />
                 {totals.amountDue > 0 && (
-                    <div className="flex justify-between font-semibold text-destructive">
-                        <span>{t("invoice.receipt.due")}:</span>
-                        <span>{formatMoney(totals.amountDue)}</span>
-                    </div>
+                    <ReceiptPair label={t("invoice.receipt.due")} value={formatMoney(totals.amountDue)} emphasized />
                 )}
-                <div className="pt-2 pb-1 text-center font-semibold">
+                <div className="mt-[12px] border-t-[3px] border-solid border-black pt-[12px] text-center text-[28px] font-bold leading-[36px] text-black">
                     {t("invoice.receipt.thank_you")}
+                    {companyPhone && (
+                        <p className="mt-[6px] break-words">
+                            {t("invoice.receipt.for_support")}: {companyPhone}
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

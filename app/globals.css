@@ -10,6 +10,12 @@ body {
   line-height: var(--leading-base);
 }
 
+.invoice-receipt-root {
+  font-family: var(--font-hind), ui-sans-serif, sans-serif;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
 @layer base {
 
   /* ============================================
