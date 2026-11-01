@@ -1,0 +1,85 @@
+/* Hallmark · page: demo-request · shape: Spec Sheet (custom, MikroTik-modelled) · genre: modern-minimal · theme: brand (mikrotik.com, by request; tokens.css) · hero: Banner, type only · sections: banner, form beside a spec list of what the demo covers and what happens after · job: request a demo · redesign: full · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S4 R5 V3 · weakest: P, a form page with no argument of its own; the aside answers the two questions a visitor has before sending (what they will see, what happens next) from the product's own modules and the request's real status flow */
+/* Hallmark · reworded "Demo request" to "Request a demo of {name}" · the heading named nothing; it now names the action and the product */
+/* Hallmark · reworded "Include country code if applicable" to "01712 345678" · a placeholder shows a format, and the validator accepts Bangladesh mobile numbers only */
+/* Hallmark · dropped onCheckedChange · the Radix checkbox became a native checkbox whose onChange posts the same boolean to terms_accepted */
+
+/* Head on the grey band: label, name, line. */
+.mkt-demo-head { padding-top: var(--space-3xl); }
+.mkt-demo-head h1 { max-width: 22ch; text-wrap: balance; }
+.mkt-page .mkt-demo-copy { max-width: 55rem; margin-top: var(--space-xl); line-height: 1.5; }
+
+/* Body: the form, and beside it the facts. */
+.mkt-demo-body { padding-block: var(--space-3xl) var(--section-gap-s); }
+.mkt-demo-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2xl); align-items: start; }
+@media (min-width: 64rem) {
+  .mkt-demo-layout { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(var(--gap-columns) * 2); }
+  .mkt-demo-aside { position: sticky; top: calc(var(--nav-height) + var(--space-lg)); }
+}
+
+/* The form. */
+.mkt-demo-form { max-width: 46rem; }
+.mkt-demo-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; gap: var(--space-sm); }
+.mkt-demo-pair { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--space-lg); row-gap: var(--space-xs); }
+@media (min-width: 40rem) { .mkt-demo-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.mkt-demo-field { min-width: 0; }
+.mkt-demo-label { display: block; margin-bottom: var(--space-xs); font-size: var(--text-xs); font-weight: 700; line-height: 1.4; text-transform: uppercase; color: var(--color-ink); }
+.mkt-demo-label__opt { margin-inline-start: var(--space-2xs); font-weight: 300; color: var(--color-muted); }
+
+/* The field: the border never changes width; state moves to colour and the outline. */
+.mkt-demo-input { display: block; width: 100%; min-height: 48px; margin: 0; padding: 0 var(--space-md); border: 1px solid var(--color-ink); border-radius: 0; background: var(--color-paper); color: var(--color-ink); font-size: var(--text-sm); line-height: 1.5; outline: 2px solid transparent; outline-offset: -3px; transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out); }
+.mkt-demo-input::placeholder { color: var(--color-muted); opacity: 1; }
+textarea.mkt-demo-input { min-height: 6rem; padding-block: var(--space-xs); resize: vertical; }
+@media (hover: hover) { .mkt-demo-input:hover:not(:disabled) { background: var(--color-paper-2); } }
+.mkt-demo .mkt-demo-input:focus-visible { outline-color: var(--color-focus); outline-offset: -3px; }
+.mkt-demo-input[aria-invalid="true"] { border-color: var(--color-error); }
+.mkt-demo-input:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* The helper line holds the error; it keeps its height so nothing jumps when one appears. */
+.mkt-demo-msg { display: flex; align-items: flex-start; gap: var(--space-2xs); min-height: 1.4em; margin: 0; font-size: var(--text-sm); line-height: 1.4; color: var(--color-error); }
+.mkt-demo-msg svg { flex: none; width: 1em; height: 1em; margin-top: 0.2em; }
+
+/* Terms: a native checkbox with a 44px hit area. */
+.mkt-demo-terms { padding-block: var(--space-md) var(--space-2xs); border-top: var(--rule-hair) solid var(--color-rule); }
+.mkt-demo-terms__row { display: flex; align-items: flex-start; gap: var(--space-xs); }
+.mkt-demo-terms__text { font-size: var(--text-sm); font-weight: 300; line-height: 1.5; padding-top: var(--space-sm); }
+.mkt-demo-terms__text a { text-decoration-color: var(--color-muted); transition: text-decoration-color var(--dur-short) var(--ease-out); }
+.mkt-demo-terms__text a:hover { text-decoration-color: currentColor; }
+.mkt-demo-terms__text a:active { color: var(--color-ink-2); }
+.mkt-demo-terms__text a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.mkt-demo-hit { flex: none; display: grid; place-items: center; width: 44px; height: 44px; margin-inline-start: -12px; cursor: pointer; }
+.mkt-demo-check { width: 20px; height: 20px; margin: 0; accent-color: var(--color-ink); cursor: pointer; }
+.mkt-demo .mkt-demo-check:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.mkt-demo-check[aria-invalid="true"] { outline: 2px solid var(--color-error); outline-offset: 2px; }
+.mkt-demo-check:disabled { opacity: 0.55; cursor: not-allowed; }
+.mkt-demo-hit:has(.mkt-demo-check:disabled) { cursor: not-allowed; }
+
+/* Submit: .mkt-btn carries rest, hover, active, focus and disabled; busy adds a spinner in a slot reserved on both sides so the width never moves. */
+.mkt-demo-actions { padding-top: var(--space-md); }
+.mkt-demo-submit { padding-inline: calc(var(--space-md) + 20px); }
+.mkt-demo-spin { position: absolute; inset-inline-end: var(--space-sm); top: 50%; width: 16px; height: 16px; margin-top: -8px; opacity: 0; }
+.mkt-demo-submit[aria-busy="true"] .mkt-demo-spin { opacity: 1; animation: mkt-demo-spin 0.9s linear infinite; }
+@keyframes mkt-demo-spin { to { transform: rotate(360deg); } }
+
+/* Success: the server's answer in place of the form. */
+.mkt-demo-done { display: grid; justify-items: start; gap: var(--space-lg); padding-block: var(--space-xl); border-top: var(--rule-hair) solid var(--color-ink); }
+.mkt-demo-done__icon { width: 40px; height: 40px; color: var(--color-success); }
+.mkt-demo-done .lead { font-weight: 300; }
+
+/* Aside: spec lists, MikroTik style. */
+.mkt-demo-aside { display: grid; gap: var(--space-xl); }
+.mkt-page .mkt-demo-aside h2 { font-size: var(--text-title); }
+.mkt-demo-block { display: grid; gap: var(--space-md); }
+.mkt-demo-spec { margin: 0; border-top: var(--rule-hair) solid var(--color-ink); }
+.mkt-demo-spec > div { display: grid; gap: var(--space-2xs); padding-block: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.mkt-demo-spec dt { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; }
+.mkt-demo-spec dd { margin: 0; font-size: var(--text-sm); font-weight: 300; }
+.mkt-demo-steps { margin: 0; padding: 0; list-style: none; border-top: var(--rule-hair) solid var(--color-ink); counter-reset: mkt-demo-step; }
+.mkt-demo-steps li { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); padding-block: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); font-weight: 300; counter-increment: mkt-demo-step; }
+.mkt-demo-steps li::before { content: counter(mkt-demo-step, decimal-leading-zero); font-family: var(--font-outlier); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--color-ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-demo-input, .mkt-demo-terms__text a { transition: none; }
+  .mkt-demo-submit[aria-busy="true"] .mkt-demo-spin { animation: none; }
+}

@@ -5398,13 +5398,172 @@
             "pricing": "Pricing",
             "about": "About",
             "demo_request": "Request Demo",
-            "toggle_menu": "Toggle menu"
+            "toggle_menu": "Toggle menu",
+            "pay_bill": "Pay bill",
+            "login": "Log in",
+            "all_features": "All features",
+            "main": "Main menu",
+            "modules": {
+                "subscribers": "Subscribers",
+                "billing": "Billing and bKash",
+                "mikrotik": "MikroTik re-sync",
+                "olt": "OLT and ONU",
+                "noc": "NOC and maps",
+                "messaging": "SMS and Telegram",
+                "support": "Support tickets",
+                "resellers": "Resellers and agents",
+                "finance": "Finance and payroll",
+                "inventory": "Inventory",
+                "reports": "Reports and BTRC",
+                "portal": "Customer portal"
+            },
+            "module_notes": {
+                "subscribers": "PPPoE login, package, zone and device for every client",
+                "billing": "Invoices, thermal receipts and bKash payments",
+                "mikrotik": "Find PPPoE mismatches and fix them in one click",
+                "olt": "PON ports, ONU status and optical signal",
+                "noc": "A live NOC screen and OpenStreetMap maps",
+                "messaging": "Bulk SMS by zone or status, Telegram alerts",
+                "support": "Tickets with staff, priority and replies",
+                "resellers": "Prepaid or postpaid, with commission and wallet",
+                "finance": "Funds, expenses and monthly payroll",
+                "inventory": "Stock in and out with serial numbers",
+                "reports": "Income against expense, BTRC XLS in one click",
+                "portal": "Customers pay with bKash and open tickets"
+            },
+            "faq": "FAQ",
+            "language": "Language",
+            "groups": {
+                "customers": "Customers and billing",
+                "network": "Network",
+                "operations": "Operations",
+                "business": "Business"
+            },
+            "panel_note": "Twelve modules for running an ISP, from PPPoE logins to payroll.",
+            "theme": "Switch light or dark mode"
         },
         "hero": {
             "headline": "The Complete Platform for ISP Operations",
             "subheadline": "Manage subscribers, automate billing, control your network, and grow your business — all from one place.",
             "cta_primary": "Request a Demo",
-            "cta_secondary": "Explore Features"
+            "cta_secondary": "Explore Features",
+            "title": "ISP software for billing, MikroTik, OLT and NOC",
+            "carousel_label": "Product modules",
+            "tablist_label": "Choose a module",
+            "prev": "Previous module",
+            "next": "Next module",
+            "details": "Details",
+            "demo": "Request a demo",
+            "slide_count": "{{current}} of {{total}}",
+            "slides": {
+                "olt": {
+                    "tab": "OLT and ONU",
+                    "name": "<hl>OLT and ONU</hl> monitoring",
+                    "body": "Connect a BDCOM or VSOL OLT and watch every ONU's <hl>status and optical signal</hl>.",
+                    "specs": {
+                        "0": "SNMP v2c/v3 and Telnet/SSH access",
+                        "1": "Reads the SNMP community from BDCOM and VSOL",
+                        "2": "RX power flagged low below -27 dBm",
+                        "3": "Remote ONU reboot with safety checks"
+                    },
+                    "alt": "The ONU table: each ONU's status, RX power in dBm coloured by level, distance and client."
+                },
+                "mikrotik": {
+                    "tab": "PPPoE re-sync",
+                    "name": "MikroTik <hl>PPPoE re-sync</hl>",
+                    "body": "Compare the PPPoE secrets on your router with the app and fix every mismatch <hl>in one click</hl>.",
+                    "specs": {
+                        "0": "Router list with live connection status",
+                        "1": "Finds profile and status mismatches",
+                        "2": "Shows clients missing on either side",
+                        "3": "Imports existing PPPoE secrets as clients"
+                    },
+                    "alt": "Re-Sync: PPPoE clients on the router beside the clients in the app, with profile match and an All Sync button."
+                },
+                "billing": {
+                    "tab": "Billing and bKash",
+                    "name": "Billing with <hl>bKash</hl>",
+                    "body": "Itemised invoices your customers <hl>pay with bKash</hl>, and 82 mm receipts for your counter.",
+                    "specs": {
+                        "0": "Full or partial payment on any invoice",
+                        "1": "bKash for invoices and wallet top-up",
+                        "2": "82 mm thermal receipts, single or bulk",
+                        "3": "Due reminders by SMS, 1 to 15 days ahead"
+                    },
+                    "alt": "An itemised invoice with a total in taka, status Due and a Pay with bKash button, beside an 82 mm receipt."
+                },
+                "noc": {
+                    "tab": "Live NOC",
+                    "name": "<hl>Live</hl> NOC",
+                    "body": "See <hl>which devices are down</hl>, how many clients they cut off, and how to reach them.",
+                    "specs": {
+                        "0": "Refreshes every 30 s",
+                        "1": "Down, unknown and up counts",
+                        "2": "Built-in ping to the device",
+                        "3": "Google Maps directions to the site"
+                    },
+                    "alt": "The NOC screen: down, unknown and up counts and one down device with clients affected, ping result and directions."
+                }
+            },
+            "panel": {
+                "olt": {
+                    "title": "ONUs",
+                    "threshold": "Low below -27 dBm",
+                    "onu": "ONU",
+                    "status": "Status",
+                    "rx": "Rx power",
+                    "distance": "Distance",
+                    "client": "Client",
+                    "online": "Online",
+                    "offline": "Offline",
+                    "los": "LOS (fiber)",
+                    "power_off": "Power off",
+                    "not_reported": "Not reported"
+                },
+                "resync": {
+                    "title": "Re-Sync",
+                    "network": "Network",
+                    "total": "Client",
+                    "match": "Match",
+                    "not_match": "Not match",
+                    "in_mikrotik": "Client in MikroTik",
+                    "in_app": "Client in app",
+                    "profile": "Profile",
+                    "missing": "Missing",
+                    "all_sync": "All Sync"
+                },
+                "billing": {
+                    "invoice": "Invoice",
+                    "item": "Item",
+                    "amount": "Amount",
+                    "monthly": "Internet 20 Mbps, November",
+                    "setup": "ONU replacement",
+                    "total": "Total",
+                    "status": "Status",
+                    "due": "Due",
+                    "pay": "Pay with bKash",
+                    "receipt": "Money receipt",
+                    "paid": "Paid",
+                    "method": "Method",
+                    "date": "Date",
+                    "thanks": "Thank you"
+                },
+                "noc": {
+                    "title": "NOC",
+                    "refreshes": "Refreshes every 30 s",
+                    "down": "Down",
+                    "unknown": "Unknown",
+                    "up": "Up",
+                    "down_devices": "Down devices",
+                    "down_for": "Down for {{duration}}",
+                    "clients": "{{count}} clients affected",
+                    "ping": "Ping",
+                    "ping_result": "{{sent}} sent, {{received}} received",
+                    "directions": "Directions"
+                }
+            },
+            "pause": "Pause slideshow",
+            "play": "Play slideshow"
         },
         "features": {
             "title": "Everything You Need to Run Your ISP",
@@ -5515,28 +5674,137 @@
             "button": "Request a Demo"
         },
         "footer": {
-            "copyright": "© {{year}} {{name}}. All rights reserved."
+            "copyright": "© {{year}} {{name}}. All rights reserved.",
+            "pages": "Pages",
+            "modules": "Modules",
+            "contact": "Contact"
+        },
+        "home": {
+            "modules": {
+                "label": "Software",
+                "title": "Run your <hl>whole ISP</hl>",
+                "sub": "From PPPoE login to ONU signal",
+                "text": "Twelve modules in one admin panel: subscribers, bKash billing, MikroTik Re-Sync, OLT signal, NOC, SMS, tickets, resellers, finance, stock and BTRC reports. Your customers get a portal of their own.",
+                "all": "View all",
+                "names": {
+                    "subscribers": "Subscribers",
+                    "billing": "Billing",
+                    "mikrotik": "MikroTik Re-Sync",
+                    "olt": "OLT and ONU",
+                    "noc": "NOC and maps",
+                    "messaging": "SMS and Telegram",
+                    "support": "Support tickets",
+                    "resellers": "Resellers",
+                    "finance": "Finance and HR",
+                    "inventory": "Inventory",
+                    "reports": "Reports",
+                    "portal": "Customer portal"
+                }
+            },
+            "ops": {
+                "label": "Network operations",
+                "title": "<hl>Live</hl> NOC",
+                "sub": "And MikroTik Re-Sync",
+                "cards": {
+                    "noc": {
+                        "title": "NOC screen, refreshed every 30 seconds",
+                        "text": "Down, unknown and up counts, the clients affected and open outages linked to tickets."
+                    },
+                    "mikrotik": {
+                        "title": "Re-Sync with your MikroTik routers",
+                        "text": "PPPoE clients on the router compared with the app. Profile and status mismatches fixed in one click."
+                    },
+                    "olt": {
+                        "title": "OLT and ONU monitoring",
+                        "text": "PON ports, LOS and dying-gasp counts, and every ONU's RX power against a -27 dBm line."
+                    }
+                }
+            },
+            "billing": {
+                "label": "Billing",
+                "title": "Billing with <hl>bKash</hl>",
+                "sub": "Invoice, payment, receipt, SMS",
+                "text": "Itemised invoices, full or partial payments, several dues paid at once. Customers pay with bKash and an SMS confirms every payment.",
+                "button": "Billing details",
+                "cards": {
+                    "receipts": {
+                        "label": "Thermal receipts",
+                        "fig": "82 mm",
+                        "text": "PDF receipts for an 82 mm thermal printer, one invoice or a whole batch."
+                    },
+                    "quickpay": {
+                        "label": "Quick Pay links",
+                        "fig": "No login",
+                        "text": "Customers pay with a phone number and a captcha. Each one gets a pay link and a short link for SMS."
+                    }
+                }
+            },
+            "bangladesh": {
+                "label": "Built for Bangladesh",
+                "title": "bKash, BTRC and <hl>Bangla</hl>",
+                "sub": "For ISPs in Bangladesh",
+                "rows": {
+                    "bkash": {
+                        "title": "bKash",
+                        "line": "Customers pay invoices and top up wallets from their phone."
+                    },
+                    "btrc": {
+                        "title": "BTRC reports",
+                        "line": "Client and reseller lists download as XLS in one click."
+                    },
+                    "lang": {
+                        "title": "English and Bangla",
+                        "line": "Every screen is translated, for your staff and your customers."
+                    },
+                    "app": {
+                        "title": "Your own app",
+                        "line": "Customers install the portal with your ISP's name and logo."
+                    }
+                }
+            },
+            "pricing": {
+                "label": "Pricing",
+                "title": "<hl>Three</hl> plans",
+                "sub": "Priced by subscriber count",
+                "from": "From",
+                "per_month": "/ month",
+                "demo": "Request a demo",
+                "compare": "Compare plans",
+                "plans": {
+                    "basic": "Basic",
+                    "standard": "Standard",
+                    "premium": "Premium"
+                }
+            },
+            "cta": {
+                "label": "Demo",
+                "title": "See it on <hl>your network</hl>",
+                "sub": "Bring your OLT and MikroTik questions",
+                "button": "Request a demo"
+            }
         }
     },
     "pricing_page": {
         "meta": {
-            "title": "Package & Pricing — ISP Management Platform",
-            "description": "Compare Basic, Standard, and Premium plans. Monthly rates scale with your subscriber tier — transparent ISP billing software pricing."
+            "title": "Pricing: Basic, Standard and Premium plans for ISPs",
+            "description": "Compare Basic, Standard and Premium plans. Monthly rates follow your subscriber range, from ৳1,000 to ৳20,000 a month."
         },
         "hero": {
-            "title": "Package & Pricing",
-            "subtitle": "Pick a plan that fits your operation. Rates adjust by subscriber range so you only pay for the scale you need.",
-            "image_alt": "Abstract illustration of software pricing tiers"
+            "title": "Three plans, priced by <hl>subscriber range</hl>",
+            "subtitle": "Rates follow your subscriber range, so you pay only for the scale you run.",
+            "image_alt": "Abstract illustration of software pricing tiers",
+            "label": "Pricing"
         },
-        "tier_label": "Subscriber range",
+        "tier_label": "Subscriber range (users)",
         "monthly_for_tier": "Monthly for this range",
         "per_month_suffix": "/ month",
         "popular": "Most popular",
-        "cta": "Get started",
-        "compare_title": "Compare software features",
-        "compare_subtitle": "What is included in each package. Add-ons can be enabled for an additional fee.",
+        "cta": "Request a demo",
+        "compare_title": "What <hl>each package</hl> includes",
+        "compare_subtitle": "Add-ons can be enabled on any package for an additional fee.",
         "table": {
-            "feature_column": "Feature"
+            "feature_column": "Feature",
+            "addons": "Add-ons (charge applicable)"
         },
         "footnote_1": "Each branch is billed as a separate subscription.",
         "footnote_2": "5% VAT applies to all fees and charges where applicable.",
@@ -5565,10 +5833,10 @@
             "bw_reseller": "Bandwidth reseller portal",
             "reports": "Reports",
             "sms_mailing": "Bulk SMS and mailing",
-            "client_portal": "Client portal (Android & web)",
-            "addon_admin": "Add-on: Admin & employee app (charge applicable)",
-            "addon_gateway": "Add-on: Payment gateway (charge applicable)",
-            "addon_olt": "Add-on: OLT integration for ONU (charge applicable)"
+            "client_portal": "Client portal (web, installable app)",
+            "addon_admin": "Admin and employee app",
+            "addon_gateway": "Payment gateway (bKash)",
+            "addon_olt": "OLT integration for ONU"
         },
         "plans": {
             "basic": {
@@ -5585,21 +5853,22 @@
                 "name": "Premium",
                 "from_price": "From ৳5,000",
                 "description": "Full feature set with premium positioning for large ISPs."
-            }
+            },
+            "from": "From {{price}} a month"
         },
         "tiers": {
-            "0": "1–300 users",
-            "1": "301–500 users",
-            "2": "501–1,000 users",
-            "3": "1,001–2,000 users",
-            "4": "2,001–3,000 users",
-            "5": "3,001–5,000 users",
-            "6": "5,001–8,000 users",
-            "7": "8,001–12,000 users"
+            "0": "1 to 300",
+            "1": "301 to 500",
+            "2": "501 to 1,000",
+            "3": "1,001 to 2,000",
+            "4": "2,001 to 3,000",
+            "5": "3,001 to 5,000",
+            "6": "5,001 to 8,000",
+            "7": "8,001 to 12,000"
         },
         "custom": {
-            "title": "Need a custom ISP solution?",
-            "subtitle": "From multi-branch billing to reseller workflows — we can shape the platform around how you operate.",
+            "title": "Need a <hl>custom</hl> ISP solution?",
+            "subtitle": "From reseller workflows to OLT checks, we can shape the platform around how you operate.",
             "c1": "Advanced module customization",
             "c1_desc": "Tailor billing, OLT, CRM, or HR modules to your exact process.",
             "c2": "Unlimited users & access",
@@ -5609,12 +5878,16 @@
             "c4": "Priority support",
             "c4_desc": "Dedicated follow-up for larger deployments and custom agreements.",
             "primary_cta": "Request a demo",
-            "secondary_cta": "Contact sales"
-        }
+            "secondary_cta": "Contact sales",
+            "label": "Custom",
+            "sub": "Tell us how you operate"
+        },
+        "compare_label": "Compare",
+        "compare_sub": "Basic, Standard and Premium"
     },
     "demo_request": {
         "meta": {
-            "title": "Request a demo — ISP Management Platform",
+            "title": "Request a demo of the ISP management platform",
             "description": "Book a product demo. Tell us about your ISP, team size, and how we can reach you."
         },
         "breadcrumb": {
@@ -5623,8 +5896,9 @@
             "current": "Demo request"
         },
         "hero": {
-            "title": "Demo request",
-            "subtitle": "Share your details and we will get back to you to schedule a walkthrough of the platform."
+            "title": "Request a <hl>demo</hl> of {{name}}",
+            "subtitle": "Share your details and we will get back to you to schedule a walkthrough of the platform.",
+            "label": "Demo"
         },
         "optional": "optional",
         "success_toast": "Thanks — your request was sent successfully.",
@@ -5679,15 +5953,15 @@
             },
             "phone": {
                 "label": "Phone number",
-                "placeholder": "Include country code if applicable",
+                "placeholder": "01712 345678",
                 "errors": {
                     "required": "Phone number is required",
-                    "invalid": "Enter a valid phone number"
+                    "invalid": "Enter a Bangladesh mobile number, like 01712 345678"
                 }
             },
             "user_count": {
                 "label": "Number of users",
-                "placeholder": "e.g. 500",
+                "placeholder": "500",
                 "errors": {
                     "invalid": "Enter digits only",
                     "max": "Value is too long"
@@ -5695,10 +5969,10 @@
             },
             "whatsapp": {
                 "label": "WhatsApp number",
-                "placeholder": "Number used for WhatsApp",
+                "placeholder": "01712 345678",
                 "errors": {
                     "required": "WhatsApp number is required",
-                    "invalid": "Enter a valid number"
+                    "invalid": "Enter a Bangladesh mobile number, like 01712 345678"
                 }
             },
             "office_address": {
@@ -5718,12 +5992,44 @@
                     "required": "You must accept the terms to continue"
                 }
             }
+        },
+        "covers": {
+            "title": "What the <hl>demo covers</hl>",
+            "items": {
+                "subscribers": {
+                    "name": "Subscribers and billing",
+                    "note": "PPPoE profiles, invoices, bKash payments and 82mm thermal receipts."
+                },
+                "mikrotik": {
+                    "name": "MikroTik re-sync",
+                    "note": "Compare PPPoE clients on the router with the app and fix mismatches in one click."
+                },
+                "olt": {
+                    "name": "OLT and ONU monitoring",
+                    "note": "PON port status, ONU RX power against a dBm threshold, remote ONU reboot."
+                },
+                "noc": {
+                    "name": "NOC screen",
+                    "note": "Down devices on a map, refreshed every 30 seconds, outages linked to tickets."
+                },
+                "sms": {
+                    "name": "SMS and alerts",
+                    "note": "Your own gateways and bulk SMS by zone, with the cost shown before sending."
+                }
+            }
+        },
+        "after": {
+            "title": "After you <hl>submit</hl>",
+            "steps": {
+                "saved": "Your request is saved with the details you entered.",
+                "review": "It stays pending until our team reviews it and marks it approved or rejected."
+            }
         }
     },
     "features_page": {
         "meta": {
-            "title": "Features — ISP Management Platform",
-            "description": "Explore all the features of our ISP management platform — client management, billing, Mikrotik integration, and more."
+            "title": "Features: ISP management software",
+            "description": "Subscribers, billing with bKash, MikroTik re-sync, OLT and ONU signal, a live NOC screen, SMS, resellers and BTRC reports in one app."
         },
         "hero": {
             "title": "Powerful Features for Every ISP",
@@ -5934,7 +6240,418 @@
                     "5": "Export reports as PDF or Excel"
                 }
             }
-        }
+        },
+        "head": {
+            "title": "From <hl>PPPoE login</hl> to <hl>ONU signal</hl>",
+            "lead": "Subscribers, billing, MikroTik, OLT and the NOC run from one app, in English and Bangla.",
+            "cta": "Request a demo",
+            "label": "Features"
+        },
+        "index_label": "Modules on this page",
+        "modules": {
+            "subscribers": {
+                "name": "Subscribers",
+                "summary": "One profile per client, from PPPoE login to cable length.",
+                "specs": {
+                    "profile": {
+                        "term": "Profile",
+                        "desc": "PPPoE login, IP, MAC, zone, package, GPS, NID"
+                    },
+                    "terms": {
+                        "term": "Billing terms",
+                        "desc": "Prepaid or postpaid, 1 to 12 month term"
+                    },
+                    "actions": {
+                        "term": "Actions",
+                        "desc": "Reset session, change package, lock, archive"
+                    },
+                    "page": {
+                        "term": "Client page",
+                        "desc": "Live speed, ping, usage, ONU"
+                    },
+                    "import": {
+                        "term": "Import",
+                        "desc": "From MikroTik PPPoE secrets, singly or in bulk"
+                    }
+                },
+                "title": "<hl>One profile</hl> per client",
+                "sub": "from PPPoE login to cable length"
+            },
+            "billing": {
+                "name": "Billing",
+                "summary": "Itemised invoices, paid in full, in part or with bKash.",
+                "specs": {
+                    "invoices": {
+                        "term": "Invoices",
+                        "desc": "Full, partial, or several at once"
+                    },
+                    "online": {
+                        "term": "Online payment",
+                        "desc": "bKash, for invoices and wallet top-up"
+                    },
+                    "receipts": {
+                        "term": "Receipts",
+                        "desc": "82mm thermal printer PDF"
+                    },
+                    "wallets": {
+                        "term": "Wallets",
+                        "desc": "Client and reseller wallets; resellers recharge a client by days"
+                    },
+                    "automation": {
+                        "term": "Automation",
+                        "desc": "Reminders 1 to 15 days ahead"
+                    }
+                },
+                "title": "Invoices and <hl>bKash</hl>",
+                "sub": "with 82mm thermal receipts"
+            },
+            "mikrotik": {
+                "name": "MikroTik",
+                "summary": "Re-Sync compares the router's PPPoE clients with the app and fixes every mismatch in one click.",
+                "specs": {
+                    "routers": {
+                        "term": "Routers",
+                        "desc": "Live connected and disconnected status"
+                    },
+                    "resync": {
+                        "term": "Re-Sync",
+                        "desc": "Profile, status, missing on either side"
+                    },
+                    "queries": {
+                        "term": "Queries",
+                        "desc": "Four read-only router queries"
+                    }
+                },
+                "title": "<hl>Router</hl> and app",
+                "sub": "compared row by row"
+            },
+            "olt": {
+                "name": "OLT and ONU",
+                "summary": "Every ONU's signal against a dBm threshold, weak ones listed for a ticket.",
+                "specs": {
+                    "access": {
+                        "term": "Access",
+                        "desc": "SNMP v2c or v3, Telnet or SSH"
+                    },
+                    "detection": {
+                        "term": "Detection",
+                        "desc": "Reads the SNMP community from BDCOM and VSOL"
+                    },
+                    "signal": {
+                        "term": "Signal",
+                        "desc": "Low under -27 dBm, near limit within 2 dB, too strong over -8 dBm"
+                    },
+                    "onu": {
+                        "term": "ONUs",
+                        "desc": "Bound by GPON serial or EPON MAC; remote reboot"
+                    },
+                    "uptime": {
+                        "term": "Uptime reports",
+                        "desc": "24h, 7d, 30d: latency, loss, outages, MTTR"
+                    }
+                },
+                "title": "<hl>PON ports</hl> and ONUs",
+                "sub": "read over SNMP, Telnet or SSH"
+            },
+            "noc": {
+                "name": "NOC and maps",
+                "summary": "What is down, who it affects and its ticket.",
+                "specs": {
+                    "screen": {
+                        "term": "NOC screen",
+                        "desc": "Every 30s: down, unknown, up, clients affected"
+                    },
+                    "outage": {
+                        "term": "Each outage",
+                        "desc": "Ping, Google Maps directions, a linked ticket"
+                    },
+                    "devices": {
+                        "term": "Devices",
+                        "desc": "Parent and child links, monitored automatically"
+                    },
+                    "maps": {
+                        "term": "Maps",
+                        "desc": "Clients by OLT; TJ boxes by status"
+                    }
+                },
+                "title": "A <hl>NOC screen</hl>",
+                "sub": "refreshed every 30 seconds"
+            },
+            "messaging": {
+                "name": "SMS and alerts",
+                "summary": "Bulk SMS through your own gateway shows the cost before it sends.",
+                "specs": {
+                    "gateways": {
+                        "term": "Gateways",
+                        "desc": "Your own, each with a cost per message"
+                    },
+                    "bulk": {
+                        "term": "Bulk SMS",
+                        "desc": "By network, zone or status; free test mode"
+                    },
+                    "templates": {
+                        "term": "Templates",
+                        "desc": "8 types, 20 placeholders"
+                    },
+                    "telegram": {
+                        "term": "Telegram",
+                        "desc": "30+ event alerts, a channel per zone"
+                    }
+                },
+                "title": "<hl>SMS</hl> on your gateway",
+                "sub": "priced before it sends"
+            },
+            "support": {
+                "name": "Support tickets",
+                "summary": "Each ticket has an owner, a priority and a thread.",
+                "specs": {
+                    "fields": {
+                        "term": "Fields",
+                        "desc": "Assigned staff, priority, tags"
+                    },
+                    "status": {
+                        "term": "Status",
+                        "desc": "Open, in progress, resolved, closed"
+                    },
+                    "portal": {
+                        "term": "Portal",
+                        "desc": "Customers open and reply to tickets"
+                    },
+                    "olt": {
+                        "term": "OLT page",
+                        "desc": "One click from the Attention list"
+                    }
+                },
+                "title": "Tickets with a <hl>thread</hl>",
+                "sub": "opened by staff or the customer"
+            },
+            "resellers": {
+                "name": "Resellers and agents",
+                "summary": "Resellers run their own clients, packages and wallet.",
+                "specs": {
+                    "billing": {
+                        "term": "Billing",
+                        "desc": "Prepaid or postpaid, overdue limit, auto-recharge"
+                    },
+                    "commission": {
+                        "term": "Commission",
+                        "desc": "A percentage per reseller; agents deposit and withdraw"
+                    },
+                    "packages": {
+                        "term": "Packages",
+                        "desc": "Each reseller sets its own"
+                    },
+                    "switch": {
+                        "term": "Switch in",
+                        "desc": "Admins open a reseller's account"
+                    }
+                },
+                "title": "<hl>Resellers</hl> and agents",
+                "sub": "prepaid or postpaid, with commission"
+            },
+            "finance": {
+                "name": "Finance and payroll",
+                "summary": "Funds, expenses and salaries in the same books as billing.",
+                "specs": {
+                    "funds": {
+                        "term": "Funds",
+                        "desc": "Cash or bank: deposit, transfer, withdraw"
+                    },
+                    "expenses": {
+                        "term": "Expenses",
+                        "desc": "Recorded, then approved"
+                    },
+                    "payroll": {
+                        "term": "Payroll",
+                        "desc": "Monthly or advance, paid from a fund"
+                    },
+                    "staff": {
+                        "term": "Staff",
+                        "desc": "Role, designation and salary setup"
+                    }
+                },
+                "title": "Funds, expenses, <hl>payroll</hl>",
+                "sub": "in the same books as billing"
+            },
+            "inventory": {
+                "name": "Inventory",
+                "summary": "Stock in on a purchase voucher, stock out to a client.",
+                "specs": {
+                    "products": {
+                        "term": "Products",
+                        "desc": "Category, unit, VAT, serial numbers"
+                    },
+                    "stock_in": {
+                        "term": "Stock in",
+                        "desc": "A purchase voucher, linked to vendor and expense"
+                    },
+                    "stock_out": {
+                        "term": "Stock out",
+                        "desc": "To a client, with an optional invoice"
+                    }
+                },
+                "title": "<hl>Stock in</hl>, stock out",
+                "sub": "with serial numbers and VAT"
+            },
+            "reports": {
+                "name": "Reports",
+                "summary": "BTRC client and reseller XLS in one click.",
+                "specs": {
+                    "money": {
+                        "term": "Money",
+                        "desc": "Income against expense; fund, invoice, payment and expense reports"
+                    },
+                    "stock": {
+                        "term": "Stock and resellers",
+                        "desc": "Stock in and out; reseller client reports"
+                    },
+                    "btrc": {
+                        "term": "BTRC",
+                        "desc": "Client and reseller XLS, one click each"
+                    },
+                    "dashboard": {
+                        "term": "Dashboard",
+                        "desc": "KPI cards, dues by zone; hide any widget"
+                    }
+                },
+                "title": "<hl>BTRC</hl> lists in XLS",
+                "sub": "and the dashboard behind them"
+            },
+            "portal": {
+                "name": "Customer portal",
+                "summary": "Customers check their line and pay with bKash, logged in or not.",
+                "specs": {
+                    "login": {
+                        "term": "Login",
+                        "desc": "Phone and password"
+                    },
+                    "dashboard": {
+                        "term": "Dashboard",
+                        "desc": "Connection and ONU status, expiry, package"
+                    },
+                    "invoices": {
+                        "term": "Invoices",
+                        "desc": "Print or PDF, pay with bKash, history, tickets"
+                    },
+                    "quick_pay": {
+                        "term": "Quick Pay",
+                        "desc": "No login: phone and captcha"
+                    },
+                    "links": {
+                        "term": "Pay links",
+                        "desc": "One per customer, with short links for SMS"
+                    }
+                },
+                "title": "<hl>Customer</hl> portal",
+                "sub": "and Quick Pay without a login"
+            },
+            "platform": {
+                "name": "Platform",
+                "summary": "One install serves many ISPs, each with its own name, logo and permissions.",
+                "specs": {
+                    "saas": {
+                        "term": "Multi-company",
+                        "desc": "Company, reseller and customer levels; trial and grace periods"
+                    },
+                    "permissions": {
+                        "term": "Permissions",
+                        "desc": "Per role, with per-user and per-reseller overrides"
+                    },
+                    "audit": {
+                        "term": "Audit log",
+                        "desc": "Before and after values of a change"
+                    },
+                    "language": {
+                        "term": "English and Bangla",
+                        "desc": "Fully translated, in light and dark"
+                    },
+                    "app": {
+                        "term": "Installable app",
+                        "desc": "Each ISP's name and logo, with an offline page"
+                    }
+                },
+                "title": "One install, <hl>many ISPs</hl>",
+                "sub": "each with its own name and logo"
+            }
+        },
+        "samples": {
+            "billing": {
+                "alt": "An invoice in the app: a 20 Mbps package with a discount, part paid, the rest due, with Pay with bKash and an 82mm receipt",
+                "status": "Partly paid",
+                "client": "Client",
+                "item_package": "Package 20 Mbps",
+                "item_discount": "Discount",
+                "total": "Total",
+                "paid": "Paid",
+                "due": "Due",
+                "pay": "Pay with bKash",
+                "print": "Print 82mm receipt"
+            },
+            "mikrotik": {
+                "alt": "MikroTik Re-Sync: three PPPoE users where the router and the app disagree on profile, status or presence, with Fix all",
+                "title": "Re-Sync",
+                "router": "Router",
+                "col_user": "PPPoE user",
+                "col_app": "In the app",
+                "col_router": "On the router",
+                "col_diff": "Mismatch",
+                "diff_profile": "Profile",
+                "diff_status": "Status",
+                "diff_missing_router": "Missing on router",
+                "diff_missing_app": "Missing in app",
+                "active": "Active",
+                "disabled": "Disabled",
+                "none": "Not found",
+                "count": "Mismatches",
+                "fix": "Fix all"
+            },
+            "olt": {
+                "alt": "An OLT's ONU list: RX power in dBm against the -27 dBm threshold, one online, one near the limit, one low",
+                "title": "OLT",
+                "threshold": "Low signal under {{dbm}} dBm",
+                "col_onu": "ONU",
+                "col_client": "Client",
+                "col_rx": "RX power",
+                "col_distance": "Distance",
+                "col_status": "Status",
+                "online": "Online",
+                "near": "Near limit",
+                "low": "Low signal",
+                "los": "LOS",
+                "ticket": "Open ticket"
+            },
+            "noc": {
+                "alt": "The NOC screen: down, unknown and up counts, and two down devices with minutes down, clients affected, ping, directions and ticket",
+                "title": "NOC",
+                "refresh": "Refreshes every 30s",
+                "down": "Down",
+                "unknown": "Unknown",
+                "up": "Up",
+                "col_device": "Device",
+                "col_down_for": "Down for",
+                "col_affected": "Clients affected",
+                "col_actions": "Actions",
+                "ping": "Ping",
+                "directions": "Directions",
+                "ticket": "Ticket"
+            },
+            "messaging": {
+                "alt": "Bulk SMS before sending: a due reminder with placeholders, 120 recipients, the total cost and the wallet balance after sending",
+                "title": "Bulk SMS",
+                "filter": "Zone",
+                "message": "Dear {{a}}, {{b}} is due by {{c}}. Pay here: {{d}}",
+                "recipients": "Recipients",
+                "rate": "Cost per SMS",
+                "total": "Total cost",
+                "balance": "Wallet balance",
+                "after": "After sending",
+                "test": "Send test, free",
+                "send": "Send"
+            }
+        },
+        "detail_link": "Open the {{name}} page",
+        "details": "Details",
+        "grid_label": "All twelve modules"
     },
     "olt": {
         "title_plural": "OLTs",
@@ -6773,6 +7490,1250 @@
                 "online": "{{client_name}} paid {{payment_amount}} toward {{invoice_no}}",
                 "wallet": "Wallet paid {{payment_amount}} toward {{invoice_no}}"
             }
+        }
+    },
+    "about_page": {
+        "meta": {
+            "title": "About",
+            "description": "Who makes this ISP management software, the twelve modules it covers, what it does for ISPs in Bangladesh and how to get in touch."
+        },
+        "hero": {
+            "title": "About <hl>{{name}}</hl>",
+            "lead": "{{name}} makes management software for internet service providers in Bangladesh.",
+            "cta": "Request a demo",
+            "label": "About"
+        },
+        "modules": {
+            "title": "<hl>Twelve</hl> modules",
+            "lead": "Open any module to see its screens and settings.",
+            "label": "Modules",
+            "sub": "One admin panel"
+        },
+        "local": {
+            "title": "Built for ISPs in <hl>Bangladesh</hl>",
+            "lead": "Local payments, regulator reports and both languages.",
+            "rows": {
+                "payment": {
+                    "label": "Online payment",
+                    "value": "bKash for invoices and wallet top-ups"
+                },
+                "btrc": {
+                    "label": "BTRC reports",
+                    "value": "Client and reseller lists as XLS, one click each"
+                },
+                "language": {
+                    "label": "Languages",
+                    "value": "English and Bangla on every screen"
+                },
+                "brand": {
+                    "label": "Your brand",
+                    "value": "An installable app with your ISP's own name and logo"
+                },
+                "routers": {
+                    "label": "Routers",
+                    "value": "MikroTik live status and PPPoE re-sync"
+                },
+                "olt": {
+                    "label": "OLT",
+                    "value": "BDCOM and VSOL, with vendor and model detection"
+                }
+            },
+            "label": "Bangladesh",
+            "sub": "bKash, BTRC and Bangla"
+        },
+        "story": {
+            "title": "Who makes <hl>{{name}}</hl>",
+            "slot": "The owner's story goes here: when {{name}} started, who builds it and why.",
+            "label": "Company",
+            "sub": "Software for ISPs in Bangladesh"
+        },
+        "contact": {
+            "title": "Reach {{name}}",
+            "address": "Address",
+            "phone": "Phone",
+            "email": "Email"
+        },
+        "close": {
+            "title": "See all <hl>twelve modules</hl> in a demo",
+            "lead": "Ask for a walk through billing, MikroTik re-sync and the OLT page.",
+            "cta": "Request a demo",
+            "label": "Demo",
+            "sub": "We call you to set a time"
+        }
+    },
+    "faq_page": {
+        "meta": {
+            "title": "FAQ for MikroTik ISPs: billing, OLTs, bKash and pricing",
+            "description": "Short answers on MikroTik PPPoE sync, OLT and ONU monitoring, bKash billing, resellers, SMS and the three monthly plans."
+        },
+        "title": "Questions <hl>ISP owners</hl> ask before a demo",
+        "lead": "Short answers on MikroTik, OLTs, bKash billing, resellers and the plans.",
+        "index_label": "Question groups",
+        "groups": {
+            "start": {
+                "title": "Getting started in <hl>Bangla or English</hl>",
+                "items": {
+                    "what": {
+                        "q": "What does the software do?",
+                        "a": "It runs an ISP's subscribers, billing, payments, MikroTik routers, OLTs, support tickets, resellers, stock and reports in one web app."
+                    },
+                    "who": {
+                        "q": "Who is it for?",
+                        "a": "ISPs that sell PPPoE connections on MikroTik, with or without resellers. Each ISP gets its own company account, and staff get roles with their own permissions."
+                    },
+                    "bangla": {
+                        "q": "Is it in Bangla?",
+                        "a": "Yes. Every screen is fully translated into English and Bangla, in light and dark themes."
+                    },
+                    "phone": {
+                        "q": "Does it work on a phone?",
+                        "a": "Yes. It installs from the browser as an app with your ISP's name and logo. There is no native Android app yet."
+                    },
+                    "btrc": {
+                        "q": "Can it make BTRC reports?",
+                        "a": "Yes. The BTRC client and reseller reports download as XLS in one click."
+                    }
+                }
+            },
+            "network": {
+                "title": "<hl>MikroTik</hl> routers and <hl>OLTs</hl>",
+                "items": {
+                    "routers": {
+                        "q": "Which routers does it work with?",
+                        "a": "MikroTik. PPPoE clients sync to the router, and Re-Sync lists every mismatch in profile, status or missing users and fixes them in one click."
+                    },
+                    "import": {
+                        "q": "Can I import my PPPoE users?",
+                        "a": "Yes, from your MikroTik PPPoE secrets, one by one or in bulk. Import from CSV or Excel is not available."
+                    },
+                    "olts": {
+                        "q": "Which OLTs can it connect to?",
+                        "a": "OLTs reachable over SNMP v2c or v3 and Telnet or SSH. A guided test detects the vendor and model, and reads the SNMP community from BDCOM and VSOL OLTs."
+                    },
+                    "signal": {
+                        "q": "How is ONU signal checked?",
+                        "a": "RX power is coloured against a dBm threshold. By default below -27 dBm is low, within 2 dB of it is near the limit, and above -8 dBm is too strong."
+                    },
+                    "reboot": {
+                        "q": "Can I reboot an ONU remotely?",
+                        "a": "Yes, from the ONU list, with safety checks before the reboot goes out."
+                    },
+                    "noc": {
+                        "q": "Is there a NOC screen?",
+                        "a": "Yes. It refreshes every 30 seconds with down, unknown and up devices, clients affected, maintenance windows and a map of down devices."
+                    }
+                }
+            },
+            "billing": {
+                "title": "Billing and <hl>bKash</hl> payments",
+                "items": {
+                    "plans": {
+                        "q": "Prepaid or postpaid?",
+                        "a": "Both, set per client, with automatic, manual or no billing, an invoice day, a deadline and a term of 1 to 12 months."
+                    },
+                    "auto": {
+                        "q": "Are invoices made automatically?",
+                        "a": "Yes, for clients on automatic billing. Invoice SMS, due reminders 1 to 15 days ahead and deactivation on unpaid dues are switched on in settings."
+                    },
+                    "partial": {
+                        "q": "Can a customer pay part of a bill?",
+                        "a": "Yes. You record full or partial payments, or several invoices at once, and the customer gets an SMS confirmation."
+                    },
+                    "gateway": {
+                        "q": "Which online payment works?",
+                        "a": "bKash only, for invoices and wallet top-ups. Nagad, Rocket and card payments are not available."
+                    },
+                    "receipts": {
+                        "q": "Can I print receipts?",
+                        "a": "Yes, as 82mm thermal-printer PDFs, one at a time or in bulk."
+                    }
+                }
+            },
+            "people": {
+                "title": "<hl>Customer portal</hl> and reseller wallets",
+                "items": {
+                    "login": {
+                        "q": "How do customers log in?",
+                        "a": "With their phone number and a password. The portal shows package, expiry, connection and ONU status, invoices, payment history and tickets."
+                    },
+                    "quickpay": {
+                        "q": "Can customers pay without logging in?",
+                        "a": "Yes. Quick Pay asks for a phone number and a captcha, and each customer has a pay link and a short link for SMS."
+                    },
+                    "tickets": {
+                        "q": "Can customers open tickets?",
+                        "a": "Yes, and reply from their portal. Staff assign each ticket, with a priority and a status."
+                    },
+                    "resellers": {
+                        "q": "How do reseller wallets work?",
+                        "a": "A reseller is prepaid or postpaid, with a wallet, an overdue limit and a commission percentage. Resellers recharge a client by days."
+                    }
+                }
+            },
+            "messaging": {
+                "title": "<hl>SMS</hl> and <hl>Telegram</hl> alerts",
+                "items": {
+                    "gateway": {
+                        "q": "Can I use my own SMS gateway?",
+                        "a": "Yes. You add your own gateways with a cost per message. Messages go through a queue with resend and delivery logs."
+                    },
+                    "cost": {
+                        "q": "Do I see the cost before bulk SMS?",
+                        "a": "Yes. Before sending you see the cost and your remaining wallet balance. A free test mode is there too."
+                    },
+                    "telegram": {
+                        "q": "Can alerts go to Telegram?",
+                        "a": "Yes. More than 30 events can post to Telegram, with a separate channel per zone, ONU low-signal alerts included."
+                    }
+                }
+            },
+            "pricing": {
+                "title": "<hl>Three plans</hl>, priced by subscribers",
+                "items": {
+                    "plans": {
+                        "q": "What are the plans?",
+                        "a": "Basic, Standard and Premium. Each is priced by your subscriber range, in 8 ranges: the smallest is 1 to 300 users, the largest 8,001 to 12,000."
+                    },
+                    "cost": {
+                        "q": "What does it cost a month?",
+                        "a": "For 1 to 300 users: Basic {{b0}}, Standard {{s0}}, Premium {{p0}} a month. For 8,001 to 12,000 users: {{b7}}, {{s7}} and {{p7}}."
+                    },
+                    "vat": {
+                        "q": "Is VAT included?",
+                        "a": "5% VAT applies to all fees and charges where applicable. Add-on modules are billed separately when enabled."
+                    }
+                }
+            }
+        },
+        "band": {
+            "title": "Ask the rest <hl>in a demo</hl>",
+            "lead": "A demo walks through billing, MikroTik Re-Sync and the OLT page.",
+            "cta": "Request a demo",
+            "label": "Demo",
+            "sub": "We call you to set a time"
+        },
+        "label": "FAQ"
+    },
+    "module_pages": {
+        "common": {
+            "demo": "Request a demo",
+            "all_features": "All features",
+            "specs": "<hl>Specifications</hl>",
+            "related": "<hl>Related</hl> modules",
+            "cta_title": "Book a walkthrough of <hl>{{module}}</hl>",
+            "cta_text": "Send your ISP name and phone number. We call you to set a time.",
+            "details": "Details",
+            "specs_sub": "Protocols, limits and defaults",
+            "related_sub": "Modules it works with",
+            "cta_label": "Demo"
+        },
+        "subscribers": {
+            "meta_title": "Subscribers: PPPoE client profiles and billing settings",
+            "meta_description": "One profile per client with PPPoE login, IP, MAC, zone, package, ONU and dues, plus every client action and import from MikroTik PPPoE secrets.",
+            "title": "Subscribers",
+            "lead": "Every client's PPPoE login, package, ONU and dues on one page.",
+            "sample_alt": "Client details: PPPoE ID, IP address, zone, package, deadline, live speed and the client actions",
+            "highlights": [
+                "Profile with PPPoE login, IP, MAC, zone and GPS",
+                "Prepaid or postpaid, with 1 to 12 month terms",
+                "Live speed, router ping and ONU on the client page",
+                "Import existing clients from MikroTik PPPoE secrets"
+            ],
+            "sections": [
+                {
+                    "title": "The profile holds the <hl>whole connection</hl>",
+                    "summary": "Fields you fill in at the customer's door.",
+                    "items": [
+                        "PPPoE login, IP and MAC",
+                        "Zone and sub-zone",
+                        "Cable type and length",
+                        "NID, photo and GPS point"
+                    ]
+                },
+                {
+                    "title": "<hl>Nine actions</hl> on every client",
+                    "summary": "From the client's own row and page.",
+                    "items": [
+                        "Reset session",
+                        "Change package",
+                        "Pay several dues",
+                        "Send SMS",
+                        "Open a ticket",
+                        "Sync to MikroTik",
+                        "Recharge wallet",
+                        "Lock client",
+                        "Archive"
+                    ]
+                },
+                {
+                    "title": "Archived clients <hl>keep their history</hl>",
+                    "summary": "Bring them back, or hand them to a reseller.",
+                    "items": [
+                        "Restore an archived client",
+                        "Reassign to a reseller",
+                        "Change history on the client page",
+                        "Import from MikroTik one by one or in bulk"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Connection",
+                    "value": "PPPoE"
+                },
+                {
+                    "label": "Client type",
+                    "value": "Home or corporate"
+                },
+                {
+                    "label": "Connection mode",
+                    "value": "Shared or dedicated"
+                },
+                {
+                    "label": "Billing",
+                    "value": "Prepaid or postpaid"
+                },
+                {
+                    "label": "Bill mode",
+                    "value": "Auto, manual or no bill"
+                },
+                {
+                    "label": "Billing term",
+                    "value": "1 to 12 months"
+                },
+                {
+                    "label": "Import source",
+                    "value": "MikroTik PPPoE secrets"
+                },
+                {
+                    "label": "Welcome SMS",
+                    "value": "Optional, on create"
+                }
+            ],
+            "sample": {
+                "term": "1 month",
+                "ping": "Router ping"
+            }
+        },
+        "billing": {
+            "meta_title": "Billing: invoices, partial payments, bKash and thermal receipts",
+            "meta_description": "Itemised invoices paid in full or in part, several at once, with SMS confirmation, bKash payments, 82mm thermal receipts and due reminders.",
+            "title": "Billing",
+            "lead": "Invoices, partial payments, bKash and 82mm receipts, collected by zone.",
+            "sample_alt": "Invoice list with invoice ID, client, zone, amount and paid, partial or due status, and the bulk pay totals",
+            "highlights": [
+                "Itemised invoices, paid in full or in part",
+                "Pay several invoices at once, with SMS confirmation",
+                "bKash payments for wallet top-ups and invoices",
+                "82mm thermal receipts, one or a whole batch"
+            ],
+            "sections": [
+                {
+                    "title": "Invoices paid <hl>in full or in part</hl>",
+                    "summary": "Each payment can send the client an SMS.",
+                    "items": [
+                        "Itemised invoice lines",
+                        "Full or partial payment",
+                        "Pay several invoices at once",
+                        "Confirmation SMS per payment"
+                    ]
+                },
+                {
+                    "title": "Reminders from <hl>1 to 15 days</hl> ahead",
+                    "summary": "Set once in the automation settings.",
+                    "items": [
+                        "Invoice SMS when an invoice is made",
+                        "Due reminder 1 to 15 days ahead",
+                        "Pay dues from the client wallet",
+                        "Deactivate on unpaid dues",
+                        "Deactivate past the termination date",
+                        "Pay with bKash from the portal"
+                    ]
+                },
+                {
+                    "title": "A ledger by <hl>collector, fund and zone</hl>",
+                    "summary": "See who took each payment, and into which fund.",
+                    "items": [
+                        "Payments by collector",
+                        "Payments by fund",
+                        "Payments by zone",
+                        "Resellers recharge a client by days"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Online payment",
+                    "value": "bKash"
+                },
+                {
+                    "label": "Receipt width",
+                    "value": "82mm thermal"
+                },
+                {
+                    "label": "Receipt print",
+                    "value": "Single or bulk PDF"
+                },
+                {
+                    "label": "Payment",
+                    "value": "Full or partial"
+                },
+                {
+                    "label": "Due reminder",
+                    "value": "1 to 15 days before"
+                },
+                {
+                    "label": "Wallets",
+                    "value": "Client and reseller"
+                },
+                {
+                    "label": "Auto deactivation",
+                    "value": "On dues or past the termination date"
+                }
+            ],
+            "sample": {
+                "receipt": "82mm receipt",
+                "on": "On"
+            }
+        },
+        "mikrotik": {
+            "meta_title": "MikroTik: router status and PPPoE Re-Sync",
+            "meta_description": "Router list with live connected status, and Re-Sync that compares PPPoE clients on the router with the app and fixes every mismatch in one click.",
+            "title": "MikroTik",
+            "lead": "Re-Sync finds every PPPoE mismatch between your routers and the app.",
+            "sample_alt": "Re-Sync table comparing clients, profiles and status in MikroTik and in the app, with mismatches marked",
+            "highlights": [
+                "Router list with live connected status",
+                "Re-Sync compares PPPoE clients on router and app",
+                "Profile, status or missing client shown per row",
+                "Fix every mismatch in one click"
+            ],
+            "sections": [
+                {
+                    "title": "<hl>Re-Sync</hl>, row by row",
+                    "summary": "Load a network and the table lists what differs.",
+                    "items": [
+                        "Client in MikroTik against client in app",
+                        "MikroTik profile against app profile",
+                        "MikroTik status against app status",
+                        "All Sync fixes every row"
+                    ]
+                },
+                {
+                    "title": "Routers, <hl>connected or not</hl>",
+                    "summary": "Each network shows its live state.",
+                    "items": [
+                        "Live connected status",
+                        "4 read-only router queries",
+                        "Import PPPoE secrets as clients"
+                    ]
+                },
+                {
+                    "title": "<hl>Sessions reset</hl> from the client page",
+                    "summary": "From the client page, not the router.",
+                    "items": [
+                        "Reset a PPPoE session",
+                        "Sync one client to MikroTik",
+                        "Router ping per client",
+                        "Live speed per client"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Client type",
+                    "value": "PPPoE secrets"
+                },
+                {
+                    "label": "Router status",
+                    "value": "Connected or disconnected, live"
+                },
+                {
+                    "label": "Re-Sync compares",
+                    "value": "Profile, status, presence"
+                },
+                {
+                    "label": "Fix",
+                    "value": "One click for all rows"
+                },
+                {
+                    "label": "Router queries",
+                    "value": "4, read-only"
+                },
+                {
+                    "label": "Import",
+                    "value": "One by one or in bulk"
+                }
+            ],
+            "sample": {
+                "missing": "Missing",
+                "mismatches": "Mismatches found"
+            }
+        },
+        "olt": {
+            "meta_title": "OLT and ONU: PON ports, optical signal and uptime",
+            "meta_description": "Read OLTs over SNMP v2c/v3, Telnet or SSH. PON port status, ONU RX power against a dBm threshold, LOS counts, remote ONU reboot and uptime reports.",
+            "title": "OLT and ONU",
+            "lead": "Every PON port and ONU signal, read over SNMP from your OLT.",
+            "sample_alt": "OLT page: 24 hours of monitoring bars, ONUs online and offline, LOS and power off counts, PON ports and ONU RX power",
+            "highlights": [
+                "SNMP v2c/v3, Telnet or SSH access",
+                "Vendor and model detected in the connection test",
+                "ONU RX power against a -27 dBm threshold",
+                "Remote ONU reboot with safety checks"
+            ],
+            "sections": [
+                {
+                    "title": "<hl>One page</hl> per OLT",
+                    "summary": "24 hours of uptime above the PON ports.",
+                    "items": [
+                        "24h uptime",
+                        "PON port status",
+                        "ONUs online and offline",
+                        "LOS and dying-gasp counts",
+                        "Billing dues per OLT",
+                        "Attention list with one-click ticket"
+                    ]
+                },
+                {
+                    "title": "Signal read against <hl>-27 dBm</hl>",
+                    "summary": "The threshold is yours to change.",
+                    "items": [
+                        "RX power coloured per ONU",
+                        "Near limit within 2 dB",
+                        "Too strong above -8 dBm",
+                        "Distance per ONU",
+                        "Bind by GPON serial or EPON MAC",
+                        "Remote reboot with safety checks"
+                    ]
+                },
+                {
+                    "title": "<hl>Uptime reports</hl> for 30 days",
+                    "summary": "Per OLT, over 24 hours, 7 days or 30 days.",
+                    "items": [
+                        "Uptime percentage",
+                        "Latency average and p95",
+                        "Packet loss",
+                        "Outages and MTTR"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Access",
+                    "value": "SNMP v2c, SNMP v3, Telnet, SSH"
+                },
+                {
+                    "label": "Community read",
+                    "value": "BDCOM, VSOL"
+                },
+                {
+                    "label": "Low signal",
+                    "value": "-27 dBm, default"
+                },
+                {
+                    "label": "Near limit",
+                    "value": "Within 2 dB"
+                },
+                {
+                    "label": "Too strong",
+                    "value": "Above -8 dBm"
+                },
+                {
+                    "label": "ONU binding",
+                    "value": "GPON serial, EPON MAC"
+                },
+                {
+                    "label": "Report windows",
+                    "value": "24h, 7d, 30d"
+                }
+            ]
+        },
+        "noc": {
+            "meta_title": "NOC: down devices, outages and network maps",
+            "meta_description": "A NOC screen that refreshes every 30 seconds with down devices, clients affected, ping, directions and outages linked to tickets, plus OpenStreetMap maps.",
+            "title": "NOC",
+            "lead": "Down devices, affected clients and open outages, refreshed every 30 seconds.",
+            "sample_alt": "NOC screen: down, unknown and up counts, down devices with clients affected, an open outage with its ticket, a maintenance window",
+            "highlights": [
+                "Down, unknown and up counts every 30s",
+                "Clients affected and outages linked to tickets",
+                "Built-in ping and Google Maps directions",
+                "Maintenance windows on any device"
+            ],
+            "sections": [
+                {
+                    "title": "The NOC screen refreshes <hl>every 30s</hl>",
+                    "summary": "Down devices first, with how long and how many clients.",
+                    "items": [
+                        "Down, unknown and up counts",
+                        "Clients affected per device",
+                        "Maintenance windows",
+                        "Outages linked to tickets"
+                    ]
+                },
+                {
+                    "title": "<hl>Ping and directions</hl> from the list",
+                    "summary": "Each down device carries its location.",
+                    "items": [
+                        "Built-in ping",
+                        "Google Maps directions",
+                        "Map of down devices"
+                    ]
+                },
+                {
+                    "title": "Clients on <hl>OpenStreetMap</hl>, by OLT",
+                    "summary": "TJ boxes show the device that feeds them.",
+                    "items": [
+                        "Clients grouped by OLT",
+                        "TJ boxes and feeding devices",
+                        "Green or red lines by status",
+                        "Zones and sub-zones",
+                        "Parent and child device links",
+                        "Monitoring starts on its own"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Refresh",
+                    "value": "Every 30 s"
+                },
+                {
+                    "label": "Device states",
+                    "value": "Down, unknown, up"
+                },
+                {
+                    "label": "Maps",
+                    "value": "OpenStreetMap"
+                },
+                {
+                    "label": "Directions",
+                    "value": "Google Maps"
+                },
+                {
+                    "label": "Device links",
+                    "value": "Parent and child"
+                },
+                {
+                    "label": "Outages",
+                    "value": "Linked to tickets"
+                }
+            ]
+        },
+        "messaging": {
+            "meta_title": "Messaging: bulk SMS, templates and Telegram alerts",
+            "meta_description": "Bulk SMS by network, zone and status with the cost shown before sending, 8 template types with 20 placeholders, and 30+ Telegram event alerts per zone.",
+            "title": "Messaging",
+            "lead": "Bulk SMS by zone or status, with the cost shown before sending.",
+            "sample_alt": "Send SMS: filters, an invoice due template with placeholders, recipients, cost per SMS and remaining wallet balance",
+            "highlights": [
+                "Your own gateways, with a cost per message",
+                "Bulk SMS by network, zone and status",
+                "Cost and wallet balance shown before sending",
+                "30+ Telegram event alerts, a channel per zone"
+            ],
+            "sections": [
+                {
+                    "title": "<hl>Bulk SMS</hl>, priced before it sends",
+                    "summary": "Test mode is free and sends nothing.",
+                    "items": [
+                        "Filter by network, zone or status",
+                        "Cost and remaining balance first",
+                        "Free test mode",
+                        "Queue with resend and delivery logs"
+                    ]
+                },
+                {
+                    "title": "Templates that carry the <hl>payment link</hl>",
+                    "summary": "8 template types and 20 placeholders.",
+                    "items": [
+                        "Client name, total due and deadline",
+                        "Payment link and amount",
+                        "Company name and phone"
+                    ]
+                },
+                {
+                    "title": "<hl>Telegram alerts</hl> and your gateways",
+                    "summary": "Over 30 events, each zone in its own channel.",
+                    "items": [
+                        "30+ event alerts",
+                        "A separate channel per zone",
+                        "ONU low-signal alerts",
+                        "Gateways with a cost per message"
+                    ]
+                }
+            ],
+            "specs": [
+                {
+                    "label": "Gateways",
+                    "value": "Your own, cost per message"
+                },
+                {
+                    "label": "Bulk SMS filters",
+                    "value": "Network, zone, status"
+                },
+                {
+                    "label": "Template types",
+                    "value": "8"
+                },
+                {
+                    "label": "Placeholders",
+                    "value": "20"
+                },
+                {
+                    "label": "Telegram alerts",
+                    "value": "30+ events"
+                },
+                {
+                    "label": "Telegram channels",
+                    "value": "One per zone"
+                },
+                {
+                    "label": "Test mode",
+                    "value": "Free"
+                }
+            ],
+            "sample": {
+                "greeting": "Dear",
+                "due_by": "is due by"
+            }
+        },
+        "support": {
+            "meta_title": "Support tickets for ISP customers",
+            "meta_description": "Tickets with priority, status, tags, staff assignment and a reply thread. Customers open and reply to tickets from their portal.",
+            "title": "Support tickets with one reply thread",
+            "lead": "Every complaint gets a ticket, an owner and a status until it closes.",
+            "highlights": {
+                "assign": "Assign each ticket to a staff member",
+                "priority": "High, medium or low priority",
+                "status": "Open, in progress, resolved, closed",
+                "portal": "Customers open and reply from the portal"
+            },
+            "sections": {
+                "open": {
+                    "title": "Open a ticket <hl>from the client</hl>",
+                    "summary": "Start from the client's actions, or from the customer's own portal.",
+                    "items": {
+                        "client": "Pick the client and a subject",
+                        "tags": "Tag tickets to group the same fault",
+                        "priority": "Set the priority when you open it",
+                        "olt": "One click from the OLT Attention list"
+                    }
+                },
+                "work": {
+                    "title": "Work it through to <hl>closed</hl>",
+                    "summary": "Staff and customer replies sit in the same thread.",
+                    "items": {
+                        "assign": "Assign or reassign to staff",
+                        "status": "Move from open to closed",
+                        "thread": "Each reply shows who replied",
+                        "noc": "NOC outages link to their tickets"
+                    }
+                },
+                "customer": {
+                    "title": "The <hl>customer's side</hl>",
+                    "summary": "Customers log in to the portal with phone and password.",
+                    "items": {
+                        "open": "Open a ticket from the portal",
+                        "reply": "Reply in the same thread",
+                        "status": "See the ticket's current status"
+                    }
+                }
+            },
+            "specs": {
+                "statuses": {
+                    "label": "Status",
+                    "value": "Open, in progress, resolved, closed"
+                },
+                "priority": {
+                    "label": "Priority",
+                    "value": "High, medium, low"
+                },
+                "fields": {
+                    "label": "Ticket fields",
+                    "value": "Client, subject, tags, assigned to, message"
+                },
+                "assignment": {
+                    "label": "Assignment",
+                    "value": "One staff member, or not assigned"
+                },
+                "opened_by": {
+                    "label": "Opened by",
+                    "value": "Staff, or the customer in the portal"
+                },
+                "shortcuts": {
+                    "label": "Open from",
+                    "value": "Client actions, OLT Attention list"
+                },
+                "linked": {
+                    "label": "Linked records",
+                    "value": "NOC outages"
+                },
+                "access": {
+                    "label": "Access",
+                    "value": "Permissions per role, with per-user overrides"
+                },
+                "languages": {
+                    "label": "Languages",
+                    "value": "English, Bangla"
+                }
+            },
+            "sample": {
+                "subject": "Slow internet in the evening",
+                "client": "Rahim Uddin",
+                "staff": "Sohel Rana",
+                "tag_fiber": "fiber",
+                "tag_zone": "Mirpur 10",
+                "address": "Road 5, Mirpur 10, Dhaka",
+                "msg_client": "Speed drops every evening after 8 pm.",
+                "msg_staff": "Your ONU reads -28.4 dBm. A technician will visit today."
+            },
+            "sample_alt": "A support ticket with priority, status, assignee and its reply thread"
+        },
+        "resellers": {
+            "meta_title": "Reseller and agent management for ISPs",
+            "meta_description": "Prepaid or postpaid resellers with a wallet, their own packages, commission and an overdue limit. Resellers recharge a client by days from the wallet.",
+            "title": "Resellers recharge clients from their wallet",
+            "lead": "Recharge cost is the package buying price for the days bought.",
+            "highlights": {
+                "billing": "Prepaid or postpaid billing",
+                "recharge": "Recharge a client by days",
+                "limits": "Commission and overdue limit per reseller",
+                "switch": "Switch into a reseller's account"
+            },
+            "sections": {
+                "setup": {
+                    "title": "Billing set on <hl>each reseller</hl>",
+                    "summary": "Billing type, packages and limits sit on the reseller's profile.",
+                    "items": {
+                        "billing": "Prepaid or postpaid billing type",
+                        "overdue": "Over due amount limit",
+                        "auto": "Auto recharge on or off",
+                        "packages": "Own packages with a buying price"
+                    }
+                },
+                "recharge": {
+                    "title": "Recharge a client <hl>by days</hl>",
+                    "summary": "Cost is the package buying price divided by 30, times the days.",
+                    "items": {
+                        "balance": "Wallet balance shown before saving",
+                        "short": "Refused when the balance is short",
+                        "wallet": "Top up the reseller wallet by cash or bank"
+                    }
+                },
+                "agents": {
+                    "title": "Agents earn <hl>commission</hl>, admins switch in",
+                    "summary": "Agents keep their own balance; the admin can act as any reseller.",
+                    "items": {
+                        "commission": "Commission set per agent",
+                        "balance": "Deposit and withdraw on the balance",
+                        "link": "Link an agent to a reseller",
+                        "switch": "Switch to reseller from the list",
+                        "permissions": "Permission overrides per reseller",
+                        "report": "BTRC reseller report in XLS"
+                    }
+                }
+            },
+            "specs": {
+                "billing": {
+                    "label": "Billing type",
+                    "value": "Prepaid, postpaid"
+                },
+                "cost": {
+                    "label": "Recharge cost",
+                    "value": "Package buying price ÷ 30 × days"
+                },
+                "methods": {
+                    "label": "Wallet top-up",
+                    "value": "Cash, bank"
+                },
+                "limits": {
+                    "label": "Limits",
+                    "value": "Over due amount, auto recharge"
+                },
+                "commission": {
+                    "label": "Commission",
+                    "value": "Percentage per reseller"
+                },
+                "packages": {
+                    "label": "Packages",
+                    "value": "The reseller's own, each with a buying price"
+                },
+                "agents": {
+                    "label": "Agents",
+                    "value": "Commission, deposit, withdraw"
+                },
+                "reports": {
+                    "label": "Reports",
+                    "value": "Reseller client report, BTRC reseller XLS"
+                },
+                "access": {
+                    "label": "Admin access",
+                    "value": "Switch into the reseller's account"
+                }
+            },
+            "sample": {
+                "client": "Nasrin Akter",
+                "address": "Sector 7, Uttara, Dhaka",
+                "package": "Home 20 Mbps",
+                "formula": "Buying price ÷ 30 × days"
+            },
+            "sample_alt": "Recharge Client Wallet: package buying price 600 for 15 days costs 300"
+        },
+        "finance": {
+            "meta_title": "Funds, expenses and payroll for ISPs",
+            "meta_description": "Cash and bank funds with deposit, transfer and withdraw, expenses that wait for approval, and monthly or advance payroll with itemised earnings and deductions.",
+            "title": "Expenses approved before a fund pays",
+            "lead": "Cash and bank funds, expense approval and itemised payroll for your staff.",
+            "highlights": {
+                "funds": "Cash and bank funds",
+                "moves": "Deposit, transfer and withdraw",
+                "approval": "Expenses wait for approval",
+                "salary": "Monthly or advance salary"
+            },
+            "sections": {
+                "funds": {
+                    "title": "Named <hl>cash and bank</hl> funds",
+                    "summary": "Payments and expenses each land in a named cash or bank fund.",
+                    "items": {
+                        "deposit": "Deposit into a fund",
+                        "transfer": "Transfer between funds",
+                        "withdraw": "Withdraw from a fund",
+                        "report": "Fund report with the current balance"
+                    }
+                },
+                "expenses": {
+                    "title": "Expenses <hl>with approval</hl>",
+                    "summary": "An expense stays pending until someone approves or declines it.",
+                    "items": {
+                        "fields": "Expense type, voucher and zone",
+                        "approve": "Approve or decline from the list",
+                        "stock": "Stock purchases post their expense"
+                    }
+                },
+                "payroll": {
+                    "title": "<hl>Payroll</hl> from the salary setup",
+                    "summary": "Each staff profile carries a salary setup with earnings and deductions.",
+                    "items": {
+                        "type": "Monthly or advance salary",
+                        "lines": "Itemised earnings and deductions",
+                        "fund": "Paid from a fund",
+                        "staff": "Staff role and designation"
+                    }
+                }
+            },
+            "specs": {
+                "funds": {
+                    "label": "Fund types",
+                    "value": "Cash, bank"
+                },
+                "moves": {
+                    "label": "Fund transactions",
+                    "value": "Deposit, transfer, withdraw"
+                },
+                "expense_fields": {
+                    "label": "Expense fields",
+                    "value": "Expense type, amount, expense by, payment method, zone, voucher, expense date"
+                },
+                "expense_status": {
+                    "label": "Expense status",
+                    "value": "Pending, approved, declined"
+                },
+                "salary_type": {
+                    "label": "Salary type",
+                    "value": "Monthly, advance"
+                },
+                "salary_lines": {
+                    "label": "Salary lines",
+                    "value": "Earnings and deductions, itemised"
+                },
+                "paid_from": {
+                    "label": "Salary paid from",
+                    "value": "A cash or bank fund"
+                },
+                "staff": {
+                    "label": "Staff profile",
+                    "value": "Role, designation, salary setup"
+                },
+                "reports": {
+                    "label": "Reports",
+                    "value": "Income vs expense, fund, expense"
+                }
+            },
+            "sample": {
+                "type_cable": "Fiber cable",
+                "type_rent": "Office rent",
+                "type_fuel": "Bike fuel",
+                "type_tea": "Office tea",
+                "staff_a": "Sohel Rana",
+                "staff_b": "Mitu Begum",
+                "fund_cash": "Cash"
+            },
+            "sample_alt": "The expense list with pending expenses waiting for approval"
+        },
+        "inventory": {
+            "meta_title": "Inventory and stock for ISPs",
+            "meta_description": "Products with serial numbers, stock in on a purchase voucher linked to a vendor and an expense, stock out to a client with an optional invoice.",
+            "title": "Every ONU serial traced to a client",
+            "lead": "Stock in on a purchase voucher, out to a client by serial.",
+            "highlights": {
+                "serials": "Serial numbers per product",
+                "voucher": "Purchase voucher with vendor and expense",
+                "invoice": "Stock out with an optional invoice",
+                "onu": "ONUs bind to clients by serial from stock"
+            },
+            "sections": {
+                "products": {
+                    "title": "Products with a <hl>unit and VAT</hl>",
+                    "summary": "Each product has a category, a unit type and a VAT rate.",
+                    "items": {
+                        "category": "Product category",
+                        "unit": "Unit type",
+                        "vat": "VAT (%)",
+                        "serial": "Has serial, yes or no"
+                    }
+                },
+                "stock_in": {
+                    "title": "<hl>Stock in</hl> on a voucher",
+                    "summary": "One purchase posts the stock and its expense together.",
+                    "items": {
+                        "purchase": "Purchased by and purchase date",
+                        "vendor": "Vendor, expense type and fund",
+                        "lines": "Serial numbers entered per line"
+                    }
+                },
+                "stock_out": {
+                    "title": "<hl>Stock out</hl> to a client",
+                    "summary": "Pick the client, the source stock and the serials handed over.",
+                    "items": {
+                        "receiver": "Client and received by",
+                        "serials": "Serial count must match quantity",
+                        "line": "Unit price, VAT and discount per line",
+                        "invoice": "Create an invoice in the same step"
+                    }
+                }
+            },
+            "specs": {
+                "product": {
+                    "label": "Product fields",
+                    "value": "Name, category, unit type, VAT (%), has serial"
+                },
+                "stock_in": {
+                    "label": "Stock in",
+                    "value": "Purchase voucher, vendor, expense type, fund"
+                },
+                "stock_out": {
+                    "label": "Stock out",
+                    "value": "Client, received by, out date, note"
+                },
+                "lines": {
+                    "label": "Line fields",
+                    "value": "Product, source stock, quantity, unit price, VAT, discount"
+                },
+                "serials": {
+                    "label": "Serials",
+                    "value": "Selected count must match quantity"
+                },
+                "invoice": {
+                    "label": "Invoice",
+                    "value": "Optional, created on stock out"
+                },
+                "onu": {
+                    "label": "ONU binding",
+                    "value": "By GPON serial or EPON MAC"
+                },
+                "reports": {
+                    "label": "Reports",
+                    "value": "Stock in, stock out, remaining"
+                }
+            },
+            "sample": {
+                "client": "Jahid Hasan, Savar",
+                "staff": "Sohel Rana",
+                "product": "EPON ONU 1GE"
+            },
+            "sample_alt": "Product Out: one ONU picked by serial for a client, with Create Invoice ticked"
+        },
+        "reports": {
+            "meta_title": "ISP reports and the BTRC XLS",
+            "meta_description": "One-click BTRC client and reseller reports in XLS, income vs expense, fund, invoice, payment, expense, stock and reseller client reports, and a dashboard.",
+            "title": "The BTRC client list in one XLS",
+            "lead": "Filter by report type, zone and status, then download the file.",
+            "highlights": {
+                "btrc": "BTRC client and reseller XLS",
+                "income": "Income vs expense with net balance",
+                "dues": "Top dues and dues by zone",
+                "widgets": "Hide any dashboard widget"
+            },
+            "sections": {
+                "btrc": {
+                    "title": "Two <hl>BTRC</hl> downloads",
+                    "summary": "Built from your client and reseller records.",
+                    "items": {
+                        "scope": "All clients with resellers, or own clients",
+                        "filters": "Filter by zone and client status",
+                        "reseller": "One reseller or all resellers",
+                        "columns": "SID, package, bandwidth and connection date"
+                    }
+                },
+                "money": {
+                    "title": "<hl>Money, stock and reseller</hl> reports",
+                    "summary": "Income and expense by type, equipment movement and each reseller's clients.",
+                    "items": {
+                        "income": "Income vs expense",
+                        "fund": "Fund report",
+                        "invoice": "Invoice and payment reports",
+                        "expense": "Expense report",
+                        "stock": "Stock in and stock out",
+                        "reseller": "Reseller client report"
+                    }
+                },
+                "dashboard": {
+                    "title": "The <hl>dashboard</hl> after login",
+                    "summary": "KPI cards and charts on the first screen.",
+                    "items": {
+                        "chart": "Monthly invoice vs expense chart",
+                        "top": "Top dues",
+                        "zone": "Dues by zone",
+                        "hide": "Hide any widget you do not use"
+                    }
+                }
+            },
+            "specs": {
+                "format": {
+                    "label": "BTRC format",
+                    "value": "XLS"
+                },
+                "btrc": {
+                    "label": "BTRC reports",
+                    "value": "Client, reseller"
+                },
+                "filters": {
+                    "label": "Client report filters",
+                    "value": "Report type, zone, client status"
+                },
+                "status": {
+                    "label": "Client status",
+                    "value": "All, active, inactive"
+                },
+                "client_columns": {
+                    "label": "Client columns",
+                    "value": "SL, SID, name, phone, email, username, zone, address, network, package, bandwidth, connection date, status"
+                },
+                "reseller_columns": {
+                    "label": "Reseller columns",
+                    "value": "Prefix, active clients, inactive clients, commission, balance"
+                },
+                "finance": {
+                    "label": "Finance reports",
+                    "value": "Income vs expense, fund, invoice, payment, expense"
+                },
+                "other": {
+                    "label": "Other reports",
+                    "value": "Stock in, stock out, reseller client"
+                },
+                "dashboard": {
+                    "label": "Dashboard",
+                    "value": "KPI cards, monthly invoice vs expense chart, top dues, dues by zone"
+                }
+            },
+            "sample": {
+                "zone": "Mohammadpur"
+            },
+            "sample_alt": "BTRC Reports: client and reseller filters with Download XLS Report"
+        },
+        "portal": {
+            "meta_title": "Customer portal and Quick Pay",
+            "meta_description": "Customers log in with phone and password to see account, connection and ONU status, expiry and invoices, and pay with bKash. Quick Pay needs no login.",
+            "title": "Customers check expiry and pay with bKash",
+            "lead": "Log in with phone and password, or Quick Pay with a phone number.",
+            "highlights": {
+                "status": "Connection and ONU status",
+                "expiry": "Account expiration and current package",
+                "bkash": "Pay invoices with bKash",
+                "quick": "Quick Pay with phone and captcha"
+            },
+            "sections": {
+                "dashboard": {
+                    "title": "The <hl>customer's dashboard</hl>",
+                    "summary": "What the customer sees right after logging in.",
+                    "items": {
+                        "account": "Account and connection status",
+                        "onu": "ONU status",
+                        "expiry": "Account expiration",
+                        "package": "Current package",
+                        "tickets": "Open and reply to support tickets"
+                    }
+                },
+                "invoices": {
+                    "title": "Invoices paid through <hl>bKash</hl>",
+                    "summary": "Due invoices open in one dialog and go to bKash.",
+                    "items": {
+                        "print": "Print or save an invoice as PDF",
+                        "bkash": "Pay with bKash",
+                        "history": "Payment history"
+                    }
+                },
+                "quick": {
+                    "title": "<hl>Quick Pay</hl> without a login",
+                    "summary": "The customer types a phone number and the captcha.",
+                    "items": {
+                        "lookup": "Total due and the invoice list",
+                        "pay": "Pay with bKash from the result",
+                        "links": "A pay link for each customer",
+                        "short": "Short links that fit in an SMS"
+                    }
+                }
+            },
+            "specs": {
+                "login": {
+                    "label": "Customer login",
+                    "value": "Phone number and password"
+                },
+                "dashboard": {
+                    "label": "Dashboard",
+                    "value": "Account, connection and ONU status, expiry, package"
+                },
+                "invoices": {
+                    "label": "Invoices",
+                    "value": "Print, PDF, pay with bKash"
+                },
+                "payment": {
+                    "label": "Online payment",
+                    "value": "bKash"
+                },
+                "quick": {
+                    "label": "Quick Pay",
+                    "value": "Phone number and captcha, no login"
+                },
+                "links": {
+                    "label": "Pay links",
+                    "value": "Per customer, with short links for SMS"
+                },
+                "tickets": {
+                    "label": "Tickets",
+                    "value": "Open and reply"
+                },
+                "install": {
+                    "label": "Install",
+                    "value": "Installable app with the ISP's name and logo"
+                },
+                "languages": {
+                    "label": "Languages",
+                    "value": "English, Bangla"
+                },
+                "theme": {
+                    "label": "Theme",
+                    "value": "Light, dark"
+                }
+            },
+            "sample": {
+                "client": "Farhana Islam",
+                "package": "Home 30 Mbps",
+                "invoice": "November invoice"
+            },
+            "sample_alt": "The customer's My Info card: account, connection and ONU status, expiry and package"
         }
     }
 }

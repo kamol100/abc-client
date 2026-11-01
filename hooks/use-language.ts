@@ -8,6 +8,7 @@ export function useLanguage() {
 
   const setLanguage = useCallback((lang: Language) => {
     i18n.changeLanguage(lang);
+    document.documentElement.lang = lang;
     document.cookie = `${LANGUAGE_COOKIE}=${lang}; path=/; max-age=31536000; SameSite=Lax`;
   },
     [i18n]

@@ -1,0 +1,31 @@
+/* Hallmark · shape: Spec Sheet (module detail samples, modules-b) · genre: modern-minimal · theme: brand (mikrotik.com spec 2026-10-28, by request) · redesign: full
+ * paper: #ffffff · accent: #1961bc · display: system UI stack · body: same · outlier: JetBrains Mono (figures only) · samples: support, resellers, finance, inventory, reports, portal built as the app's own screens
+ * axes: light/grotesk-sans/neutral · posture: Stage · contrast: pass · job: request a demo · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3 · weakest: V, the samples follow the admin's forms; specificity carried by real field names (PPPoE Username, Package Buying Price, BTRC) */
+
+/* Parts the modules-b samples add on top of module-detail.css (mkt-mod-s): form fields, ticks, a staff reply, two-column splits. */
+.mkt-modb-fig { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mkt-modb-total { font-weight: 700; font-size: var(--text-md); }
+.mkt-modb-end { justify-content: flex-end; }
+
+.mkt-modb-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: var(--space-sm); }
+.mkt-modb-field { display: grid; gap: var(--space-2xs); min-width: 0; }
+.mkt-modb-input { display: flex; align-items: center; justify-content: space-between; gap: var(--space-xs); min-height: var(--space-xl); padding: var(--space-2xs) var(--space-sm); border: var(--rule-hair) solid var(--color-rule); background: var(--color-paper); overflow-wrap: anywhere; }
+.mkt-modb-input--muted { color: var(--color-muted); }
+.mkt-modb-input svg { flex: none; width: var(--space-md); height: var(--space-md); color: var(--color-muted); }
+
+.mkt-modb-pick { display: flex; align-items: center; gap: var(--space-xs); padding-block: var(--space-2xs); }
+.mkt-modb-check { display: inline-grid; place-items: center; flex: none; width: var(--space-md); height: var(--space-md); border: var(--rule-hair) solid var(--color-ink); }
+.mkt-modb-check--on { background: var(--color-ink); color: var(--color-paper); }
+.mkt-modb-check svg { width: var(--space-sm); height: var(--space-sm); }
+
+.mkt-modb-staff { border-left: calc(var(--rule-hair) * 2) solid var(--color-accent); }
+
+.mkt-modb-item { flex-wrap: nowrap; align-items: start; }
+.mkt-modb-item > span:first-child { min-width: 0; }
+.mkt-modb-cell { display: grid; justify-items: end; gap: var(--space-2xs); text-align: right; }
+
+.mkt-modb-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--space-lg); }
+.mkt-modb-split > div { display: grid; align-content: start; gap: var(--space-sm); min-width: 0; }
+.mkt-modb-download { justify-self: start; gap: var(--space-2xs); }
+.mkt-modb-download svg { width: var(--space-md); height: var(--space-md); }

@@ -1,0 +1,160 @@
+/* Hallmark · skins partial of marketing.css (stamp, critique and waivers live there) · light: Mint (Aurora and Peach kept), dark: Glow · chosen on the /features/style preview
+ * The public layout sets data-skin on .mkt from components/marketing/skins.ts; .dark on <html> (the app's theme provider) swaps in Glow.
+ * References (Mobbin): Tana's gradient tile behind the product, Dialpad and Lovable's soft glows, Variant's pastel cards, Gorgias's sheen. */
+
+/* Light skins. --color-paper is the page tint; product panels stay white through --skin-panel. */
+.mkt[data-skin="mint"] {
+  --skin-hl-night: #a7f0cf;
+  --color-paper: #f5fbf8; --color-paper-2: #e9f7f0; --color-paper-3: #dcf1e6; --color-rule: #d3e8dd;
+  --color-accent: #047857; --color-focus: #047857; --color-foot: #053f33;
+  --skin-panel: #ffffff;
+  --skin-hero: radial-gradient(55% 75% at 0% 0%, #d4f7e6 0%, transparent 70%), radial-gradient(45% 70% at 100% 30%, #d6efff 0%, transparent 70%), #f5fbf8;
+  --skin-slot: linear-gradient(135deg, #a7f0cf 0%, #9eeee2 45%, #b8e3ff 100%);
+  --skin-alt: linear-gradient(180deg, #e9fbf2 0%, #eef8ff 100%);
+  --skin-card-1: #d3f7e5; --skin-card-2: #cdf5ef; --skin-card-3: #dcefff;
+  --skin-accent: #047857; --skin-rule: #cdeadc;
+  --skin-btn: #047857; --skin-btn-ink: #ffffff; --skin-btn-hover: #065f46;
+  --skin-night: linear-gradient(135deg, #053f33 0%, #0f6f68 55%, #0e6a86 100%);
+  --skin-shadow: 0 30px 60px -22px rgb(4 63 51 / 0.3), 0 8px 20px -10px rgb(4 63 51 / 0.15);
+}
+
+.mkt[data-skin="aurora"] {
+  --skin-hl-night: #c9f5e2;
+  --color-paper: #fbfbf7; --color-paper-2: #f1f8f5; --color-paper-3: #e6f2ee; --color-rule: #dfe9e5;
+  --color-accent: #0f766e; --color-focus: #0f766e; --color-foot: #10201e;
+  --skin-panel: #ffffff;
+  --skin-hero: radial-gradient(40% 60% at 8% 15%, #c9f5e2 0%, transparent 70%), radial-gradient(35% 55% at 92% 10%, #ffd9e8 0%, transparent 70%), radial-gradient(45% 60% at 75% 95%, #ffeab8 0%, transparent 70%), radial-gradient(40% 55% at 30% 100%, #d4ebff 0%, transparent 70%), #fbfbf7;
+  --skin-slot: radial-gradient(70% 80% at 0% 0%, #c9f5e2 0%, transparent 60%), radial-gradient(70% 80% at 100% 0%, #ffd9e8 0%, transparent 60%), radial-gradient(80% 80% at 50% 100%, #ffeab8 0%, transparent 65%), #f4fbff;
+  --skin-alt: radial-gradient(50% 80% at 0% 0%, #e3f8ef 0%, transparent 70%), radial-gradient(50% 80% at 100% 100%, #fff0f5 0%, transparent 70%), #fbfbf7;
+  --skin-card-1: #dcf6ea; --skin-card-2: #ffe4ef; --skin-card-3: #fff1cc;
+  --skin-accent: #0f766e; --skin-rule: #d9ece6;
+  --skin-btn: #10201e; --skin-btn-ink: #ffffff; --skin-btn-hover: #0f766e;
+  --skin-night: radial-gradient(60% 90% at 0% 0%, #1d6b62 0%, transparent 70%), radial-gradient(60% 90% at 100% 100%, #7a3150 0%, transparent 70%), #10201e;
+  --skin-shadow: 0 30px 60px -24px rgb(16 32 30 / 0.28), 0 8px 20px -10px rgb(16 32 30 / 0.14);
+}
+
+.mkt[data-skin="peach"] {
+  --skin-hl-night: #ffd8a8;
+  --color-paper: #fffaf5; --color-paper-2: #fff1e8; --color-paper-3: #ffe7da; --color-rule: #f0d9cf;
+  --color-accent: #b4400f; --color-focus: #b4400f; --color-foot: #3a1a26;
+  --skin-panel: #ffffff;
+  --skin-hero: radial-gradient(60% 80% at 10% 0%, #ffe6d5 0%, transparent 70%), radial-gradient(50% 70% at 100% 20%, #ffe1ea 0%, transparent 70%), #fffaf5;
+  --skin-slot: linear-gradient(135deg, #ffd8a8 0%, #ffb4a2 45%, #f6a6c1 100%);
+  --skin-alt: linear-gradient(180deg, #fff1e6 0%, #ffeaf0 100%);
+  --skin-card-1: #ffe2cf; --skin-card-2: #ffdbe5; --skin-card-3: #fff0c8;
+  --skin-accent: #b4400f; --skin-rule: #f3d6c8;
+  --skin-btn: #24151a; --skin-btn-ink: #ffffff; --skin-btn-hover: #b4400f;
+  --skin-night: linear-gradient(135deg, #3a1a26 0%, #7a2b3a 55%, #b4400f 100%);
+  --skin-shadow: 0 30px 60px -20px rgb(122 43 58 / 0.35), 0 8px 20px -8px rgb(122 43 58 / 0.18);
+}
+
+/* Dark: Glow, whichever light skin is set. A navy page lit by coral and teal. */
+.dark .mkt[data-skin] {
+  --skin-hl-night: #ffb38f;
+  --color-paper: #0d1324; --color-paper-2: #141c33; --color-paper-3: #1b2440;
+  --color-ink: #f1f4fb; --color-ink-2: #d5dbea; --color-muted: #a3adc4; --color-rule: #27314d;
+  --color-accent: #ff9a76; --color-accent-ink: #1a0f0a; --color-focus: #ff9a76;
+  --color-ok: #4ade9a; --color-warn: #ffc069; --color-bad: #ff7b7b; --color-error: #ff7b7b; --color-success: #4ade9a;
+  --color-night: #0a0f1d; --color-foot: #0a0f1d;
+  --skin-panel: #121a2e;
+  --skin-hero: radial-gradient(45% 60% at 15% 25%, rgb(255 122 89 / 0.28) 0%, transparent 70%), radial-gradient(40% 55% at 90% 15%, rgb(45 212 191 / 0.22) 0%, transparent 70%), #0d1324;
+  --skin-slot: radial-gradient(80% 90% at 0% 0%, rgb(255 138 101 / 0.45) 0%, transparent 60%), radial-gradient(80% 90% at 100% 100%, rgb(45 212 191 / 0.35) 0%, transparent 60%), #141c33;
+  --skin-alt: radial-gradient(50% 80% at 100% 0%, rgb(45 212 191 / 0.12) 0%, transparent 70%), #10172b;
+  --skin-card-1: #18213b; --skin-card-2: #1b2240; --skin-card-3: #1a2338;
+  --skin-accent: #ff9a76; --skin-rule: #27314d;
+  --skin-btn: linear-gradient(90deg, #ff8a65 0%, #ffb86b 100%); --skin-btn-ink: #1a0f0a; --skin-btn-hover: linear-gradient(90deg, #ffb86b 0%, #ff8a65 100%);
+  --skin-night: radial-gradient(60% 90% at 0% 100%, rgb(255 122 89 / 0.35) 0%, transparent 70%), radial-gradient(60% 90% at 100% 0%, rgb(45 212 191 / 0.3) 0%, transparent 70%), #0a0f1d;
+  --skin-shadow: 0 30px 70px -20px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+
+/* Shared rules. Prefixed with .mkt[data-skin] so they outrank each page's own grey grounds. */
+.mkt[data-skin] .mkt-nav:not([data-over]) { background: color-mix(in oklab, var(--color-paper) 85%, transparent); backdrop-filter: blur(12px); }
+.mkt[data-skin] .mkt-page .mkt-section--alt { background: var(--skin-alt); }
+.mkt[data-skin] .mkt-page :is(.mkt-mod-hero, .mkt-feat-top, .mkt-price-top, .mkt-about-hero, .mkt-faq-head, .mkt-demo-head) { background: var(--skin-hero); }
+.mkt[data-skin] .mkt-page [data-slot]:not(.mkt-hero-figure) { background: var(--skin-slot); border-radius: 28px; }
+.mkt[data-skin] .mkt-page .mkt-panel { background: var(--skin-panel); border-radius: 16px; border-color: var(--skin-rule); box-shadow: var(--skin-shadow); overflow: hidden; }
+.mkt[data-skin] .mkt-label, .mkt[data-skin] .mkt-mod-icon { color: var(--skin-accent); }
+.mkt[data-skin] .mkt-night .mkt-label { color: inherit; }
+.mkt[data-skin] .mkt-mod-cap--rows .mkt-mod-cap__items { border-top-color: var(--skin-accent); }
+.mkt[data-skin] .mkt-mod-cap--cells li { border-radius: 20px; background: var(--skin-card-1); }
+.mkt[data-skin] .mkt-mod-cap--cells li:nth-child(3n + 2) { background: var(--skin-card-2); }
+.mkt[data-skin] .mkt-mod-cap--cells li:nth-child(3n + 3) { background: var(--skin-card-3); }
+.mkt[data-skin] .mkt-mod-card .mkt-mod-card__pic { border-radius: 20px; background: var(--skin-slot); }
+.mkt[data-skin] :is(.mkt-night:not(.mkt-hero), .mkt-page .mkt-price-plan__name, .mkt-home-grey) { background: var(--skin-night); }
+.mkt[data-skin] .mkt-price-plan, .mkt[data-skin] .mkt-home-grey { border-radius: 20px; overflow: hidden; }
+
+/* Buttons: soft pills instead of brackets. A second button beside the first is an outline pill. */
+.mkt[data-skin] .mkt-btn { border: 0; border-radius: 999px; padding: var(--space-sm) var(--space-lg); background: var(--skin-btn); color: var(--skin-btn-ink); box-shadow: var(--skin-shadow); transition: transform var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
+.mkt[data-skin] .mkt-btn::before, .mkt[data-skin] .mkt-btn::after { display: none; }
+.mkt[data-skin] .mkt-btn:hover { background: var(--skin-btn-hover); color: var(--skin-btn-ink); transform: translateY(-2px); }
+.mkt[data-skin] .mkt-btn + .mkt-btn { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-ink); }
+.mkt[data-skin] .mkt-btn + .mkt-btn:hover { background: var(--color-ink); color: var(--color-paper); }
+.mkt[data-skin] :is(.mkt-night, .mkt-foot) .mkt-btn { background: var(--color-night-ink); color: var(--color-night); box-shadow: none; }
+.mkt[data-skin] :is(.mkt-night, .mkt-foot) .mkt-btn + .mkt-btn { background: transparent; color: var(--color-night-ink); box-shadow: inset 0 0 0 1px var(--color-night-ink); }
+.mkt[data-skin] :is(.mkt-night, .mkt-foot) .mkt-btn:hover { background: var(--color-night-ink); color: var(--color-night); }
+@media (prefers-reduced-motion: reduce) { .mkt[data-skin] .mkt-btn:hover { transform: none; } }
+/* The home module grid draws its samples in .mkt-home-shot, not a slot: same tile, fading out at the foot with the shot's own mask. */
+.mkt[data-skin] .mkt-home-card .mkt-home-shot { background: var(--skin-slot); border-radius: 20px 20px 0 0; }
+
+.mkt[data-skin] .mkt-home-card .mkt-home-shot__inner { top: var(--space-lg); width: calc(88% / var(--shot-scale)); }
+
+/* Home hero, chosen on the /home/hero preview: Mint in light mode, a mint-on-navy glow in dark.
+ * Each slide carries its own network pattern (OLT: fibre runs, re-sync: a mesh, billing: signal dots, NOC: a topology),
+ * painted at low opacity with --pat-ink and cut out by --pat-mask, so one set of shapes serves both modes. */
+/* Patterns, per slide. */
+.mkt[data-skin] .mkt-hero-slide { position: relative; isolation: isolate; }
+.mkt[data-skin] .mkt-hero-slide::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--pat-ink); opacity: calc(var(--pat-alpha) * var(--pat-mode, 1));
+  -webkit-mask: var(--pat-mask); mask: var(--pat-mask); -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.dark .mkt[data-skin] .mkt-hero-slide { --pat-mode: 1.25; }
+.mkt[data-skin] .mkt-hero-slide[data-tone="olt"] {
+  --pat-alpha: 0.26;
+  --pat-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900' preserveAspectRatio='none'%3E%3Cg stroke='black' stroke-width='1.6' fill='none'%3E%3Cpath d='M-50 700C300 600 500 820 800 640S1300 420 1500 520'/%3E%3Cpath d='M-50 730C290 630 530 850 830 670S1290 460 1500 560'/%3E%3Cpath d='M-50 760C280 660 560 880 860 700S1280 500 1500 600'/%3E%3Cpath d='M-50 620C320 520 520 760 780 580S1320 340 1500 440'/%3E%3Cpath d='M-50 820C360 720 520 900 900 760S1300 560 1500 680'/%3E%3Cpath d='M-50 540C260 470 600 700 820 520S1300 260 1500 360'/%3E%3Cpath d='M-50 300C240 380 520 180 760 300S1200 420 1500 220' stroke-width='1'/%3E%3Cpath d='M-50 260C260 340 540 140 780 260S1220 380 1500 180' stroke-width='1'/%3E%3C/g%3E%3Cg fill='black'%3E%3Ccircle cx='800' cy='640' r='4'/%3E%3Ccircle cx='520' cy='690' r='3'/%3E%3Ccircle cx='1100' cy='470' r='4'/%3E%3Ccircle cx='760' cy='300' r='3'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat,
+    linear-gradient(black, black);
+}
+.mkt[data-skin] .mkt-hero-slide[data-tone="mikrotik"] {
+  --pat-alpha: 0.14;
+  --pat-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg stroke='black' stroke-width='1' fill='none'%3E%3Cpath d='M20 30L95 18L150 70L65 100L20 30M95 18L65 100L130 145L150 70M65 100L30 160L130 145M150 70L200 48M130 145L160 200M30 160L-20 135M20 30L-20 5M95 18L110 -20'/%3E%3C/g%3E%3Cg fill='black'%3E%3Ccircle cx='20' cy='30' r='3'/%3E%3Ccircle cx='95' cy='18' r='3'/%3E%3Ccircle cx='150' cy='70' r='3.5'/%3E%3Ccircle cx='65' cy='100' r='4'/%3E%3Ccircle cx='130' cy='145' r='3'/%3E%3Ccircle cx='30' cy='160' r='3'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 180px 180px,
+    radial-gradient(75% 85% at 60% 45%, black 0%, transparent 78%);
+}
+.mkt[data-skin] .mkt-hero-slide[data-tone="billing"] {
+  --pat-alpha: 0.3;
+  --pat-mask: radial-gradient(circle, black 1.3px, transparent 1.9px) 0 0 / 22px 22px,
+    repeating-radial-gradient(circle at 86% 14%, transparent 0 44px, black 44px 58px, transparent 58px 88px),
+    radial-gradient(85% 95% at 86% 14%, black 0%, transparent 80%);
+}
+.mkt[data-skin] .mkt-hero-slide[data-tone="noc"] {
+  --pat-alpha: 0.14;
+  --pat-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'%3E%3Cg stroke='black' stroke-width='1.4' fill='none'%3E%3Cpath d='M600 400L330 230L870 220L940 520L280 560L600 400M330 230L150 120M330 230L170 340M870 220L1050 110M870 220L1080 330M940 520L1100 640M940 520L820 690M280 560L120 680M280 560L420 710M600 400L600 120M600 400L640 700M600 120L470 40M600 120L740 40'/%3E%3Ccircle cx='600' cy='400' r='34'/%3E%3Ccircle cx='600' cy='400' r='56' stroke-dasharray='4 8'/%3E%3Ccircle cx='330' cy='230' r='18'/%3E%3Ccircle cx='870' cy='220' r='18'/%3E%3Ccircle cx='940' cy='520' r='18'/%3E%3Ccircle cx='280' cy='560' r='18'/%3E%3Ccircle cx='600' cy='120' r='14'/%3E%3C/g%3E%3Cg fill='black'%3E%3Ccircle cx='600' cy='400' r='10'/%3E%3Ccircle cx='150' cy='120' r='7'/%3E%3Ccircle cx='170' cy='340' r='7'/%3E%3Ccircle cx='1050' cy='110' r='7'/%3E%3Ccircle cx='1080' cy='330' r='7'/%3E%3Ccircle cx='1100' cy='640' r='7'/%3E%3Ccircle cx='820' cy='690' r='7'/%3E%3Ccircle cx='120' cy='680' r='7'/%3E%3Ccircle cx='420' cy='710' r='7'/%3E%3Ccircle cx='640' cy='700' r='7'/%3E%3Ccircle cx='470' cy='40' r='6'/%3E%3Ccircle cx='740' cy='40' r='6'/%3E%3C/g%3E%3C/svg%3E") center / cover no-repeat,
+    radial-gradient(70% 80% at 50% 50%, black 0%, transparent 80%);
+}
+
+/* Mint hue (light) and its Glow counterpart (dark). --hv-glow-1/2 and --hv-ground tint the slide, --pat-ink the pattern, --hv-accent the highlight and the main button. */
+.mkt[data-skin] { --hv-glow-1: #c9f5df; --hv-glow-2: #d2ecff; --hv-ground: linear-gradient(180deg, #f5fbf8 0%, #eaf7f1 100%); --pat-ink: linear-gradient(120deg, #047857 0%, #0e7490 100%); --hv-accent: #047857; --hv-mark: rgb(16 185 129 / 0.22); }
+.dark .mkt[data-skin] { --hv-glow-1: rgb(45 212 191 / 0.22); --hv-glow-2: rgb(16 185 129 / 0.16); --pat-ink: linear-gradient(120deg, #2dd4bf 0%, #6ee7b7 100%); --hv-accent: #5eead4; --hv-mark: rgb(45 212 191 / 0.24); }
+.dark .mkt[data-skin] { --hv-ground: linear-gradient(180deg, #0d1324 0%, #0b1120 100%); }
+
+.mkt[data-skin] .mkt-hero-slide { background: radial-gradient(45% 65% at 12% 30%, var(--hv-glow-1) 0%, transparent 70%), radial-gradient(40% 60% at 88% 18%, var(--hv-glow-2) 0%, transparent 70%), var(--hv-ground); }
+.mkt[data-skin] .mkt-hero { --hero-accent: var(--hv-accent); --hero-mark: var(--hv-mark); }
+
+/* Light grounds: dark ink in the hero and the nav over it. Buttons in the hue, both modes. */
+html:not(.dark) .mkt[data-skin] .mkt-hero {
+  color: var(--color-ink);
+  --hero-ink: var(--color-ink); --hero-ink-2: color-mix(in oklab, var(--color-ink) 74%, transparent); --hero-ink-3: color-mix(in oklab, var(--color-ink) 58%, transparent);
+  --hero-rule: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  --hero-shadow: var(--skin-shadow); --color-focus: var(--hv-accent);
+}
+html:not(.dark) .mkt[data-skin] .mkt-nav[data-over] {
+  color: var(--color-ink); border-bottom-color: var(--color-rule);
+  --nav-on: var(--color-ink); --nav-quiet: color-mix(in oklab, var(--color-ink) 60%, transparent); --nav-hover: color-mix(in oklab, var(--color-ink) 6%, transparent); --color-focus: var(--hv-accent);
+}
+.mkt[data-skin] .mkt-hero .mkt-btn { background: var(--hv-accent); color: var(--color-paper); box-shadow: 0 16px 32px -16px var(--hv-accent); }
+.mkt[data-skin] .mkt-hero .mkt-btn:hover { background: color-mix(in oklab, var(--hv-accent), var(--color-ink) 18%); color: var(--color-paper); }
+.mkt[data-skin] .mkt-hero .mkt-btn + .mkt-btn { background: transparent; color: var(--hero-ink); box-shadow: inset 0 0 0 1px var(--hero-ink); }
+.mkt[data-skin] .mkt-hero .mkt-btn + .mkt-btn:hover { background: var(--hero-ink); color: var(--color-paper); }
+
+/* Section key words (marked <hl> in the translations, rendered by components/marketing/hl.tsx): the skin's accent with a soft marker stroke behind. */
+.mkt[data-skin] .mkt-hl { padding-inline: 0.06em; color: var(--skin-accent); background: linear-gradient(transparent 60%, color-mix(in oklab, var(--skin-accent) 18%, transparent) 60% 94%, transparent 94%) no-repeat 0 0 / 100% 100%; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.mkt[data-skin] :is(.mkt-night, .mkt-foot) .mkt-hl { color: var(--skin-hl-night); background-image: linear-gradient(transparent 60%, color-mix(in oklab, var(--skin-hl-night) 22%, transparent) 60% 94%, transparent 94%); }

@@ -1,0 +1,51 @@
+/* Hallmark · shape: Spec Sheet (custom, MikroTik-modelled) · genre: modern-minimal · theme: brand (mikrotik.com spec 2026-10-28, by request) · redesign: full
+ * paper: #ffffff · accent: #1961bc · display: system UI stack (MikroTik --font-sans) · body: same · outlier: JetBrains Mono (controls, specs, measurements) · hero: product carousel on night, visual left, spec right · nav: MikroTik bar, wordmark left, menu right, transparent over the home hero · footer: night mast, company facts over the page links · signature: the product shown working (OLT signal, PPPoE re-sync, bKash invoice, NOC) as each hero slide
+ * axes: light/grotesk-sans/neutral · posture: Stage · contrast: pass · fold: pass · job: request a demo · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V3 · weakest: V, the look is MikroTik's by request; specificity carried by the ISP's own modules (OLT, PPPoE, bKash) */
+/* Hallmark · override 67, 54, 64 · uppercase menu, buttons and heads, a section label over each head, JetBrains Mono for all text · mikrotik.com renders exactly this and the user asked twice for the site to match it */
+/* Hallmark · waive 1 · system UI stack as the display · mikrotik.com sets its heads in the system stack and the user asked for the same font */
+/* Hallmark · waive 64 · JetBrains Mono on buttons and spec figures · mikrotik.com sets its buttons and specs in JetBrains Mono, matched by request */
+/* Hallmark · waive 84 · product built in slots, not captured · the admin needs a login and every screen shows real subscribers' names and phones */
+@import "./tokens.css";
+@import "./base.css";
+@import "./motion.css";
+@import "./skins.css";
+
+/* Shared primitives. Pages build on these; each page keeps its own file for its sections. */
+.mkt-container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+
+/* mikrotik.com's .mtk-button: a bracket (side rules plus 12px corner ticks) that fills from the right on hover. */
+.mkt-btn { --btn-line: var(--color-ink); --btn-fill: var(--color-ink); --btn-ink: var(--color-ink); --btn-ink-hover: var(--color-paper);
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); min-height: 36px; padding: var(--space-xs) var(--space-md);
+  border: 1px solid transparent; border-inline-color: var(--btn-line);
+  background: linear-gradient(90deg, var(--btn-fill) 50%, transparent 50%) calc(100% + 1px) 0 / 206% 100% no-repeat;
+  color: var(--btn-ink); font: 700 var(--text-xs)/1.2 var(--font-outlier); text-transform: uppercase; word-spacing: -0.3em; white-space: nowrap; text-decoration: none; cursor: pointer; user-select: none;
+  transition: background-position var(--dur-long) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.mkt-btn::before, .mkt-btn::after { content: ""; position: absolute; left: -1px; right: -1px; height: 1px; border-inline: 12px solid var(--btn-line); pointer-events: none; }
+.mkt-btn::before { top: -1px; } .mkt-btn::after { bottom: -1px; }
+.mkt-btn:hover { background-position: 0 0; color: var(--btn-ink-hover); }
+.mkt-btn:active { transform: translateY(1px); }
+.mkt-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.mkt-btn:disabled, .mkt-btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+.mkt-btn[aria-busy="true"] { cursor: progress; }
+.mkt-btn--line { --btn-fill: var(--color-ink); }
+.mkt-night .mkt-btn, .mkt-foot .mkt-btn { --btn-line: var(--color-night-rule); --btn-fill: var(--color-night-fill); --btn-ink: var(--color-night-ink); --btn-ink-hover: var(--color-night-ink); }
+.mkt-night :focus-visible { outline-color: var(--color-night-ink); }
+
+/* Section opening, mikrotik.com style: a small uppercase label, a bold head, a light second line. */
+.mkt-label { display: block; margin-bottom: var(--space-xl); font: 700 var(--text-sm)/1.2 var(--font-display); text-transform: uppercase; }
+.mkt-title-sub { display: block; font-size: var(--text-section-sub); font-weight: 300; line-height: 1.125; }
+@media (prefers-reduced-motion: reduce) { .mkt-btn { transition: none; } }
+
+.mkt-night { background: var(--color-night); color: var(--color-night-ink); }
+.mkt-night .mkt-muted { color: var(--color-night-muted); }
+.mkt-muted { color: var(--color-muted); }
+.mkt-mono { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; }
+
+.mkt-section { padding-block: var(--section-gap-s); }
+.mkt-section + .mkt-section { border-top: var(--rule-hair) solid var(--color-rule); }
+.mkt-section--alt { background: var(--color-paper-2); }
+
+/* Product sample: the interface built, in a slot a screenshot can replace. */
+.mkt-panel { background: var(--color-paper); color: var(--color-ink); border: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); line-height: 1.45; }
+.mkt-ok { color: var(--color-ok); } .mkt-warn { color: var(--color-warn); } .mkt-bad { color: var(--color-bad); }

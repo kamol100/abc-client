@@ -1,0 +1,168 @@
+/* Hallmark · shape: Spec Sheet (custom, MikroTik-modelled) · genre: modern-minimal · theme: brand (mikrotik.com spec 2026-10-28, by request) · redesign: full · part: home hero
+ * paper: #ffffff · accent: #1961bc · display: system UI stack (MikroTik --font-sans) · body: same · outlier: JetBrains Mono (controls, specs, measurements) · hero: stage, product carousel on night, visual left, spec right · nav: MikroTik bar, transparent over the home hero · footer: night mast · signature: the product shown working (OLT signal, PPPoE re-sync, bKash invoice, NOC) as each hero slide
+ * axes: light/grotesk-sans/neutral · posture: Stage · contrast: pass · fold: pass · job: request a demo · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V3 · weakest: V, the look is MikroTik's by request; specificity carried by the ISP's own modules (OLT, PPPoE, bKash) */
+/* Hallmark · override 67 · menu, buttons and slide indicators set uppercase like mikrotik.com · the user asked for the menu and hero to look 100% like mikrotik.com */
+
+/* The slide grounds (Mint, with a network pattern per slide) live in skins.css with the rest of the colour skin. */
+.mkt-hero {
+  --hero-plane: color-mix(in oklab, var(--color-night-ink) 7%, transparent);
+  --hero-plane-soft: color-mix(in oklab, var(--color-night-ink) 4%, transparent);
+  --hero-ink: var(--color-night-ink);
+  --hero-ink-2: color-mix(in oklab, var(--color-night-ink) 72%, transparent);
+  --hero-ink-3: color-mix(in oklab, var(--color-night-ink) 60%, transparent);
+  --hero-rule: color-mix(in oklab, var(--color-night-ink) 30%, transparent);
+  --hero-shadow: 32px 40px 80px color-mix(in oklab, var(--color-night) 55%, transparent), 8px 12px 24px color-mix(in oklab, var(--color-night) 30%, transparent);
+  --hero-min: 600px; --hero-max: 900px; --hero-indicators: 96px;
+}
+/* The MikroTik products carousel: 600px floor, 100dvh capped at 900px, under the transparent 80px nav. */
+.mkt-hero { position: relative; display: flex; flex-direction: column; overflow: hidden; }
+@media (min-width: 64rem) { .mkt-hero { min-height: clamp(var(--hero-min), 100dvh, var(--hero-max)); } }
+
+.mkt-hero-viewport { flex: 1; display: flex; overflow: hidden; }
+.mkt-hero-track { display: flex; width: 100%; transition: transform var(--dur-long) var(--ease-out); }
+.mkt-hero-track[data-index="1"] { transform: translateX(-100%); }
+.mkt-hero-track[data-index="2"] { transform: translateX(-200%); }
+.mkt-hero-track[data-index="3"] { transform: translateX(-300%); }
+.mkt-hero-slide { flex: 0 0 100%; min-width: 0; display: flex; align-items: flex-start; padding-bottom: var(--space-2xl); }
+@media (min-width: 64rem) { .mkt-hero-slide { align-items: center; padding-block: var(--nav-height) var(--hero-indicators); } }
+
+.mkt-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: var(--space-xl); padding-block: var(--space-xl); }
+@media (min-width: 64rem) { .mkt-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--space-2xl); align-items: center; } }
+
+/* Text column: name, light paragraph, spec lines with outline icons, two bracket buttons. */
+.mkt-hero-copy { display: flex; flex-direction: column; gap: var(--space-xl); min-width: 0; color: var(--hero-ink); }
+.mkt-hero .mkt-hero-name { font-size: clamp(var(--text-2xl), 2.5vw + 1rem, 3rem); font-weight: 700; line-height: 1.1; max-width: 18ch; text-transform: none; color: var(--hero-ink); }
+.mkt-hero .mkt-hero-body { margin-top: calc(var(--space-md) - var(--space-xl)); font-size: var(--text-md); font-weight: 300; line-height: 1.5; max-width: 52ch; color: var(--hero-ink-2); }
+.mkt-hero-specs { display: flex; flex-direction: column; gap: var(--space-xs); margin: 0; padding: 0; list-style: none; font-size: var(--text-xs); font-weight: 300; line-height: 1.4; }
+.mkt-hero-specs li { display: flex; align-items: center; gap: var(--space-xs); }
+.mkt-hero-icon { flex: none; width: var(--space-lg); height: var(--space-lg); }
+@media (min-width: 64rem) { .mkt-hero-icon { width: 32px; height: 32px; } }
+.mkt-hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+
+/* The incoming slide's text staggers in, MikroTik's 50/200/300/400ms. */
+@keyframes mkt-hero-rise { from { opacity: 0; transform: translateY(var(--space-lg)); } to { opacity: 1; transform: none; } }
+.mkt-hero-slide[data-active] .mkt-hero-in { animation: mkt-hero-rise var(--dur-long) var(--ease-out) both; }
+.mkt-hero-d1 { animation-delay: 50ms; }
+.mkt-hero-d2 { animation-delay: 200ms; }
+.mkt-hero-d3 { animation-delay: 300ms; }
+.mkt-hero-d4 { animation-delay: 400ms; }
+/* Spec lines arrive one after another. */
+.mkt-hero-specs li.mkt-hero-d3:nth-child(2) { animation-delay: 380ms; }
+.mkt-hero-specs li.mkt-hero-d3:nth-child(3) { animation-delay: 460ms; }
+.mkt-hero-specs li.mkt-hero-d3:nth-child(4) { animation-delay: 540ms; }
+.mkt-hero-d4 { animation-delay: 620ms; }
+
+/* The product slides in and settles; its rows and blocks follow in a cascade.
+ * translate and scale compose with the figure's own perspective tilt (transform). */
+@keyframes mkt-hero-panel-in { from { opacity: 0; translate: calc(var(--space-2xl) * -1) 0; scale: 0.94; } to { opacity: 1; translate: none; scale: none; } }
+@keyframes mkt-hero-row-in { from { opacity: 0; translate: 0 var(--space-sm); } to { opacity: 1; translate: none; } }
+.mkt-hero-slide[data-active] .mkt-hero-figure > * { animation: mkt-hero-panel-in 900ms var(--ease-out) 80ms both; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr) { animation: mkt-hero-row-in 520ms var(--ease-out) 360ms both; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(2) { animation-delay: 440ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(3) { animation-delay: 520ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(4) { animation-delay: 600ms; }
+.mkt-hero-slide[data-active] .mkt-hero-figure :is(.mkt-panel > *, tbody > tr):nth-child(n + 5) { animation-delay: 680ms; }
+
+/* Highlighted key words: a marker stroke behind them, drawn left to right as the slide comes in.
+ * --hero-accent and --hero-mark are set by the ground (preview variants); the defaults suit the dark grounds. */
+@keyframes mkt-hero-mark { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+.mkt-hero-hl { padding-inline: 0.06em; background: linear-gradient(transparent 58%, var(--hero-mark, color-mix(in oklab, var(--hero-ink) 22%, transparent)) 58% 94%, transparent 94%) no-repeat 0 0 / 100% 100%; color: var(--hero-accent, inherit); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.mkt-hero-slide[data-active] .mkt-hero-hl { animation: mkt-hero-mark 700ms var(--ease-out) 650ms both; }
+
+/* Autoplay progress: fills the active tab's line; animationend advances the slide. Paused by the button or keyboard focus in the hero. */
+.mkt-hero { --hero-interval: 7s; }
+@keyframes mkt-hero-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.mkt-hero-progress { position: absolute; top: 3px; inset-inline-start: 0; width: 100%; height: 2px; background: var(--hero-ink); transform-origin: left; animation: mkt-hero-progress var(--hero-interval) linear both; }
+.mkt-hero:is([data-paused], :has(:focus-visible)) .mkt-hero-progress { animation-play-state: paused; }
+.mkt-hero-controls { align-items: center; gap: var(--space-md); }
+.mkt-hero-pause { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: none; color: var(--hero-ink-3); cursor: pointer; transition: color var(--dur-micro) var(--ease-out); }
+.mkt-hero-pause:hover { color: var(--hero-ink); }
+.mkt-hero-pause:focus-visible { outline: 2px solid var(--hero-ink); outline-offset: 2px; }
+.mkt-hero-pause svg { width: 16px; height: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-hero-slide[data-active] :is(.mkt-hero-in, .mkt-hero-hl, .mkt-hero-figure > *, .mkt-hero-figure .mkt-panel > *, .mkt-hero-figure tbody > tr) { animation: none; }
+  .mkt-hero-track { transition: none; }
+  /* No autoplay: the line shows full and never ends. */
+  .mkt-hero-progress { animation: none; transform: none; }
+  .mkt-hero-pause { display: none; }
+}
+
+/* Visual column: the product built in a slot a screenshot replaces. */
+/* Visual column: the product, presented as an object on the ground (turned toward the text, cast shadow), in a slot a render replaces. */
+.mkt-hero .mkt-hero-figure[data-slot] { display: grid; place-items: center; min-width: 0; margin: 0; overflow: visible; background: transparent; }
+.mkt-hero .mkt-panel { border: 0; box-shadow: var(--hero-shadow); }
+.mkt-hero-billing .mkt-panel + .mkt-panel { box-shadow: var(--hero-shadow); }
+.mkt-hero-panel { width: 100%; }
+.mkt-hero-figure > * { min-width: 0; max-width: 100%; }
+/* The tilt widens the panel past the column gap below 80rem, so it only starts there. */
+@media (min-width: 80rem) { .mkt-hero-figure > * { transform: perspective(1600px) rotateY(12deg) rotateX(4deg); transform-origin: 40% 50%; } }
+@media (min-width: 64rem) {
+  .mkt-hero .mkt-panel { font-size: var(--text-md); }
+  .mkt-hero-table { font-size: var(--text-sm); }
+  .mkt-hero-table :is(th, td) { padding-block: var(--space-sm); }
+}
+.dark .mkt-hero .mkt-panel { background: var(--color-paper-2); }
+.mkt-hero .mkt-panel .mkt-warn { color: color-mix(in oklab, var(--color-warn), var(--color-ink) 35%); }
+.mkt-hero-dim { color: var(--color-muted); }
+.mkt-hero-panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-2xs) var(--space-sm); padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.mkt-hero-panel-title { font-weight: 700; }
+.mkt-hero-panel-foot { display: flex; justify-content: flex-end; padding: var(--space-sm) var(--space-md); font-size: var(--text-xs); }
+
+.mkt-hero-table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
+.mkt-hero-table :is(th, td) { padding: var(--space-xs) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); text-align: start; white-space: nowrap; }
+.mkt-hero-table th { font-weight: 400; color: var(--color-muted); }
+.mkt-hero-table .mkt-hero-num { text-align: end; }
+.mkt-hero-clip { width: 100%; max-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.mkt-hero-total td { font-weight: 700; }
+
+.mkt-hero-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-bottom: var(--rule-hair) solid var(--color-rule); }
+.mkt-hero-summary > div { padding: var(--space-xs) var(--space-md); border-inline-end: var(--rule-hair) solid var(--color-rule); }
+.mkt-hero-summary > div:last-child { border-inline-end: 0; }
+.mkt-hero-summary dt { font-size: var(--text-xs); color: var(--color-muted); }
+.mkt-hero-summary dd { margin: 0; font-size: var(--text-xl); font-weight: 700; line-height: 1.2; }
+.mkt-hero-counts dd { font-size: var(--text-2xl); }
+
+/* Sample controls read as the app's, not as the page's actions. */
+.mkt-hero-ctl { display: inline-flex; align-items: center; min-height: var(--space-xl); padding-inline: var(--space-md); background: var(--color-accent); color: var(--color-accent-ink); font-size: var(--text-xs); font-weight: 700; }
+.mkt-hero-ctl--line { background: transparent; color: var(--color-accent); border: var(--rule-hair) solid var(--color-rule); }
+
+.mkt-hero-device { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2xs); margin: var(--space-md); padding: var(--space-sm) var(--space-md); border: var(--rule-hair) solid var(--color-rule); font-size: var(--text-xs); }
+.mkt-hero-device .mkt-hero-panel-title { font-size: var(--text-md); }
+.mkt-hero-device .mkt-hero-ctl { margin-top: var(--space-xs); }
+.mkt-hero-pair { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2xs) var(--space-md); width: 100%; }
+
+.mkt-hero-billing { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-md); width: 100%; }
+.mkt-hero-receipt { display: flex; flex-direction: column; gap: var(--space-2xs); width: 11rem; padding: var(--space-md); font-size: var(--text-xs); }
+.mkt-hero-rule { margin-block: var(--space-2xs); border-top: var(--rule-hair) dashed var(--color-rule); }
+
+@media (max-width: 40rem) {
+  .mkt-hero-table :is(th, td) { padding-inline: var(--space-xs); }
+  .mkt-hero-wide, .mkt-hero-receipt { display: none; }
+  .mkt-hero-billing { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Slide indicators, MikroTik's: centred slide names at the foot, a hairline over each, the current one white, bold and fully ruled. */
+.mkt-hero-controls { position: absolute; inset-inline: 0; bottom: 0; display: flex; justify-content: center; padding-bottom: var(--space-xs); }
+@media (min-width: 64rem) { .mkt-hero-controls { padding-bottom: var(--space-xl); } }
+.mkt-hero-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-xs); }
+.mkt-hero-tab { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: var(--space-lg); min-height: 44px; padding: 0; border: 0; background: none; color: var(--hero-ink-3); font-size: 0.75rem; font-weight: 400; line-height: 1.2; text-transform: uppercase; word-spacing: -0.3em; cursor: pointer; transition: color var(--dur-short) var(--ease-out); }
+.mkt-hero-tab:lang(bn) { font-size: var(--text-xs); }
+.mkt-hero-tab:hover { color: var(--hero-ink); }
+.mkt-hero-tab[aria-selected="true"] { color: var(--hero-ink); font-weight: 700; }
+.mkt-hero-tab:active { transform: translateY(1px); }
+.mkt-hero-tab:focus-visible { outline: 2px solid var(--hero-ink); outline-offset: 2px; }
+.mkt-hero-tab-mark { width: 6px; height: 6px; background: currentColor; }
+@media (max-width: 63.99rem) { .mkt-hero-tab-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }
+@media (min-width: 64rem) {
+  .mkt-hero-tabs { gap: var(--space-xl); }
+  .mkt-hero-tab-mark { display: none; }
+  .mkt-hero-tab::before { content: ""; position: absolute; top: 4px; inset-inline-start: 0; width: 100%; height: 1px; background: var(--hero-rule); transform: scaleX(0.35); transform-origin: left; transition: transform var(--dur-long) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
+  .mkt-hero-tab[aria-selected="true"]::before { background: var(--hero-rule); transform: none; }
+}
+/* Between 64rem and 80rem the half-width column is as narrow as a phone's: same trims as the narrow rule above. */
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  .mkt-hero-table :is(th, td) { padding-inline: var(--space-xs); }
+  .mkt-hero-wide, .mkt-hero-receipt { display: none; }
+}
