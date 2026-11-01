@@ -78,8 +78,8 @@ export function useTjBoxColumns(): ColumnDef<TjBoxRow>[] {
                         className={cn(
                             "font-medium",
                             isActive
-                                ? "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400"
-                                : "bg-red-600/10 text-red-600 dark:bg-red-400/10 dark:text-red-400"
+                                ? "theme-badge-success"
+                                : "theme-badge-danger"
                         )}
                     >
                         {isActive ? t("tj_box.status.active") : t("tj_box.status.inactive")}

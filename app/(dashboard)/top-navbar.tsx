@@ -13,7 +13,7 @@ import { usePermissions } from "@/context/app-provider";
 export const TopNavbar: FC = () => {
   const { hasPermission } = usePermissions();
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <header className="theme-header sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex min-w-0 items-center gap-2">
         <SidebarTrigger className="-ml-1 hidden md:flex" />
         <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />

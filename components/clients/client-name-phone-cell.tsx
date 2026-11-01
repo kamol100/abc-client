@@ -25,7 +25,7 @@ const ClientNamePhoneCell: FC<Props> = ({ client }) => {
                 {phone ? (<>
                     <a
                         href={`tel:${client.phone}`}
-                        className="inline-flex items-center gap-1 text-primary hover:underline"
+                        className="inline-flex items-center gap-1 hover:underline"
                     >
                         <Phone className="h-3.5 w-3.5" />
                         {client.phone}

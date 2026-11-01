@@ -15,16 +15,8 @@ import {
   StaffResetPasswordSchema,
   StaffRow,
 } from "@/components/staffs/staff-type";
-import { cn } from "@/lib/utils";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { usePermissions } from "@/context/app-provider";
-
-const STATUS_STYLES: Record<string, string> = {
-  active:
-    "bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40",
-  inactive:
-    "bg-destructive/10 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive",
-};
 
 const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
   active: "success",
@@ -33,10 +25,9 @@ const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
 
 const StatusCell = ({ status }: { status: string }) => {
   const { t } = useTranslation();
-  const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
   const badgeType = STATUS_BADGE_TYPES[status] ?? "decline";
   return (
-    <MyBadge type={badgeType} className={cn(style)}>
+    <MyBadge type={badgeType} variant="soft">
       <span className="capitalize">{t(`common.${status}`)}</span>
     </MyBadge>
   );

@@ -136,7 +136,7 @@ const ClientOnlineStatusCell: FC<Props> = ({ clientId, inactive }) => {
                     <OnlineIcon
                         className={cn(
                             "h-3.5 w-3.5 shrink-0",
-                            isOnline ? "text-green-600 dark:text-green-400" : "text-destructive"
+                            isOnline ? "theme-tone-success" : "text-destructive"
                         )}
                         aria-hidden={false}
                         aria-label={onlineLabel}

@@ -2,13 +2,11 @@
 
 import { useTranslation } from "react-i18next";
 import MyBadge from "@/components/my-badge";
-import { cn } from "@/lib/utils";
 
-// Up mirrors the soft red Down badge in green; MyBadge "success" would follow the theme primary.
 const STYLES = {
-    up: { type: "success", className: "bg-green-600/15 text-green-700 dark:text-green-400" },
-    down: { type: "decline", className: "" },
-    unknown: { type: "pending", className: "" },
+    up: { type: "success" },
+    down: { type: "decline" },
+    unknown: { type: "pending" },
 } as const;
 
 interface Props {
@@ -24,7 +22,7 @@ export default function MonitorStateBadge({ state, label, className }: Props) {
     const style = STYLES[key];
 
     return (
-        <MyBadge type={style.type} variant="soft" size="sm" className={cn(style.className, className)}>
+        <MyBadge type={style.type} variant="soft" size="sm" className={className}>
             {label ?? t(`monitoring.state.${key}`)}
         </MyBadge>
     );

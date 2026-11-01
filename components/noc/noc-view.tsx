@@ -57,8 +57,6 @@ interface NocSummary {
     }[];
 }
 
-const AMBER_BADGE = "text-amber-800 dark:text-amber-300";
-
 // Not map-utils' toLatLngTuple: that module imports Leaflet, which cannot load during SSR.
 function position(device: NocSummary["down_devices"][number]): [number, number] | null {
     const lat = Number(device.latitude);
@@ -173,7 +171,7 @@ export default function NocView() {
                                             <div className="text-xs text-muted-foreground">{meta.join(" · ")}</div>
                                         </div>
                                         {device.in_maintenance && (
-                                            <MyBadge type="warning" variant="soft" size="sm" icon={false} className={AMBER_BADGE}>
+                                            <MyBadge type="warning" variant="soft" size="sm" icon={false}>
                                                 {t("noc.badges.maintenance")}
                                             </MyBadge>
                                         )}
@@ -236,7 +234,7 @@ export default function NocView() {
                                 </div>
                                 <div className="flex flex-wrap items-center gap-2">
                                     {outage.during_maintenance && (
-                                        <MyBadge type="warning" variant="soft" size="sm" icon={false} className={AMBER_BADGE}>
+                                        <MyBadge type="warning" variant="soft" size="sm" icon={false}>
                                             {t("noc.badges.maintenance")}
                                         </MyBadge>
                                     )}

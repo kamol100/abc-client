@@ -105,8 +105,8 @@ function PaymentGatewayModeCell({ gateway }: { gateway: PaymentGatewayRow }) {
   const mode = gateway.mode ?? "sandbox";
   const tone =
     mode === "live"
-      ? "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/30"
-      : "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/30";
+      ? "theme-badge-success"
+      : "theme-badge-warning";
   return (
     <Badge variant="outline" className={`${tone} gap-1`}>
       <CircleDashed className="h-3 w-3" />

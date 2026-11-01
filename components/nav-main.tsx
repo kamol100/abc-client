@@ -79,6 +79,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                           active &&
                           "bg-primary text-primary-foreground rounded-md"
                         )}
+                        data-theme-nav={active ? "active" : undefined}
                       >
                         {subItem.disabled ? (
                           <SidebarMenuSubButton aria-disabled className="pointer-events-none opacity-50">
@@ -92,6 +93,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                             active &&
                             "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
                           )}
+                          data-theme-nav={active ? "active" : undefined}
                         >
                           <Link href={subItem.url}>
                             <span className="truncate">{subItem.title}</span>
@@ -121,6 +123,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                   isMenuPathActive(pathname, item.url) &&
                   "bg-primary text-primary-foreground font-medium"
                 )}
+                data-theme-nav={isMenuPathActive(pathname, item.url) ? "active" : undefined}
               >
                 <Link href={item.url}>
                   {item.icon && (

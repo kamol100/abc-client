@@ -57,7 +57,6 @@ export default function OnuStatusBadge({ status, cause, statusKnown, unknownReas
                 type={onuStatusBadgeType(key)}
                 variant="soft"
                 size="sm"
-                className={key === "online" ? "bg-green-600/15 text-green-700 dark:text-green-400" : undefined}
             >
                 {t(`onu.status.${key}`)}
             </MyBadge>

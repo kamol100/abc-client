@@ -156,7 +156,7 @@ export const getFundColumns = (
         <DataTableColumnHeader column={column} title="fund.balance.label" />
       ),
       cell: ({ row }) => (
-        <MyBadge icon={false} variant="outline" color="green">
+        <MyBadge icon={false} variant="outline" type="success">
           <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
         </MyBadge>
       ),

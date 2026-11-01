@@ -5165,6 +5165,12 @@
         "title": "থিম কাস্টমাইজার",
         "description": "আপনার থিম কাস্টমাইজ করুন।",
         "aria_label": "থিম কাস্টমাইজ করুন",
+        "preset": {
+            "label": "প্রিসেট",
+            "default": "ডিফল্ট",
+            "namuna": "নমুনা",
+            "hint": "নমুনা রেফারেন্স প্যালেট ব্যবহার করে। রঙ, ডেনসিটি এবং ড্রয়ারের দিক আগের মতোই থাকে।"
+        },
         "color": {
             "label": "রঙ",
             "green": "গ্রিন",
@@ -5176,6 +5182,58 @@
             "pink": "পিঙ্ক",
             "indigo": "ইন্ডিগো",
             "purple": "পার্পল"
+        },
+        "colors": {
+            "primary": "প্রাইমারি",
+            "secondary": "সেকেন্ডারি",
+            "accent": "অ্যাকসেন্ট",
+            "background": "ব্যাকগ্রাউন্ড",
+            "sidebar": "সাইডবার",
+            "reset": "কাস্টম রঙ রিসেট"
+        },
+        "gradients": {
+            "on": "গ্রেডিয়েন্ট চালু",
+            "off": "গ্রেডিয়েন্ট বন্ধ",
+            "brand": "ব্র্যান্ড",
+            "ocean": "ওশান",
+            "sunset": "সানসেট"
+        },
+        "typography": {
+            "geist": "Geist",
+            "plex": "Plex + বাংলা",
+            "sm": "ছোট",
+            "md": "মাঝারি",
+            "lg": "বড়"
+        },
+        "appearance": {
+            "button_radius": "বাটন রেডিয়াস",
+            "card_radius": "কার্ড রেডিয়াস",
+            "dialog_radius": "ডায়ালগ রেডিয়াস",
+            "match": "ম্যাচ",
+            "shadow": "ছায়া",
+            "shadow_none": "নেই",
+            "shadow_soft": "নরম",
+            "shadow_medium": "মাঝারি",
+            "shadow_strong": "শক্ত",
+            "border": "বর্ডার",
+            "border_hairline": "চিকন",
+            "border_subtle": "হালকা",
+            "border_strong": "স্পষ্ট"
+        },
+        "sections": {
+            "appearance": "অ্যাপিয়ারেন্স",
+            "colors": "রঙ",
+            "gradients": "গ্রেডিয়েন্ট",
+            "typography": "টাইপোগ্রাফি",
+            "layout": "আকৃতি"
+        },
+        "preview": {
+            "nav": "সক্রিয়",
+            "idle": "মেনু",
+            "kicker": "লাইভ প্রিভিউ",
+            "sample": "কার্ড, টাইপ ও অ্যাকশন",
+            "primary": "প্রাইমারি",
+            "secondary": "সেকেন্ডারি"
         },
         "radius": {
             "label": "রেডিয়াস"
@@ -5189,7 +5247,8 @@
         "mode": {
             "label": "মোড",
             "light": "লাইট",
-            "dark": "ডার্ক"
+            "dark": "ডার্ক",
+            "system": "সিস্টেম"
         },
         "mobile_drawer": {
             "label": "মোবাইল ড্রয়ার",

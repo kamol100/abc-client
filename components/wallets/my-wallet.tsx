@@ -67,23 +67,20 @@ export function WalletBalanceButton() {
       size="sm"
       tooltip={t("wallet.my_balance")}
       aria-label={t("wallet.my_balance")}
-      className="h-9 shrink-0 rounded-[var(--radius)] border-primary/25 bg-primary/10 px-2.5 font-normal text-foreground shadow-none hover:border-primary/40 hover:bg-primary/15 hover:text-foreground"
+      className="h-9 shrink-0 rounded-[var(--radius)] border-border bg-background px-2.5 font-normal text-foreground shadow-none hover:bg-accent hover:text-foreground"
     >
-      <Wallet className="text-primary" aria-hidden />
+      <Wallet className="text-muted-foreground" aria-hidden />
       <span className="hidden text-xs text-muted-foreground sm:inline">
         {t("wallet.balance.label")}
       </span>
       <span className="inline-flex min-w-16 shrink-0 items-center justify-end">
         {isLoading ? (
-          <Skeleton className="h-4 w-16 bg-primary/20" />
+          <Skeleton className="h-4 w-16" />
         ) : (
           <DisplayMoney
             amount={balance}
             formatCurrency
-            className={cn(
-              "text-sm font-semibold",
-              balance >= 0 && "text-primary",
-            )}
+            className="text-sm font-semibold"
           />
         )}
       </span>

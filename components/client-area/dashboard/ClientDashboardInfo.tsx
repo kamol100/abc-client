@@ -139,7 +139,6 @@ function ConnectionStatus({ online }: { online: boolean }) {
       variant="soft"
       size="sm"
       icon={Icon}
-      className={online ? "bg-green-600/15 text-green-700 dark:text-green-400" : undefined}
     >
       {t(online ? "client.basic_view.online" : "client.basic_view.offline")}
     </MyBadge>

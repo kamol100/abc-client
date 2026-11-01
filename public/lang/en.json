@@ -5165,6 +5165,12 @@
         "title": "Theme Customizer",
         "description": "Customize your theme.",
         "aria_label": "Customize theme",
+        "preset": {
+            "label": "Preset",
+            "default": "Default",
+            "namuna": "Namuna",
+            "hint": "Namuna follows the reference palette. Your color, density, and drawer side stay as they are."
+        },
         "color": {
             "label": "Color",
             "green": "Green",
@@ -5176,6 +5182,58 @@
             "pink": "Pink",
             "indigo": "Indigo",
             "purple": "Purple"
+        },
+        "colors": {
+            "primary": "Primary",
+            "secondary": "Secondary",
+            "accent": "Accent",
+            "background": "Background",
+            "sidebar": "Sidebar",
+            "reset": "Reset custom colors"
+        },
+        "gradients": {
+            "on": "Gradients on",
+            "off": "Gradients off",
+            "brand": "Brand",
+            "ocean": "Ocean",
+            "sunset": "Sunset"
+        },
+        "typography": {
+            "geist": "Geist",
+            "plex": "Plex + Bengali",
+            "sm": "Small",
+            "md": "Medium",
+            "lg": "Large"
+        },
+        "appearance": {
+            "button_radius": "Button radius",
+            "card_radius": "Card radius",
+            "dialog_radius": "Dialog radius",
+            "match": "Match",
+            "shadow": "Shadow",
+            "shadow_none": "None",
+            "shadow_soft": "Soft",
+            "shadow_medium": "Medium",
+            "shadow_strong": "Strong",
+            "border": "Border",
+            "border_hairline": "Hairline",
+            "border_subtle": "Subtle",
+            "border_strong": "Strong"
+        },
+        "sections": {
+            "appearance": "Appearance",
+            "colors": "Colors",
+            "gradients": "Gradients",
+            "typography": "Typography",
+            "layout": "Shape"
+        },
+        "preview": {
+            "nav": "Active",
+            "idle": "Menu",
+            "kicker": "Live preview",
+            "sample": "Cards, type, and actions",
+            "primary": "Primary",
+            "secondary": "Secondary"
         },
         "radius": {
             "label": "Radius"
@@ -5189,7 +5247,8 @@
         "mode": {
             "label": "Mode",
             "light": "Light",
-            "dark": "Dark"
+            "dark": "Dark",
+            "system": "System"
         },
         "mobile_drawer": {
             "label": "Mobile Drawer",

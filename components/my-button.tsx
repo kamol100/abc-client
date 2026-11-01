@@ -96,6 +96,7 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
           size={size}
           className={className}
           disabled={disabled}
+          data-theme-button={unstyled ? undefined : variant ?? "outline"}
           {...props}
         >
           {children}
@@ -125,6 +126,7 @@ const MyButton = forwardRef<HTMLButtonElement, MyButtonProps>(
     const sharedProps = {
       variant: unstyled ? ("ghost" as const) : variant ?? "outline",
       size: size ?? "sm",
+      "data-theme-button": unstyled ? undefined : variant ?? "outline",
       className: cn(
         unstyled &&
         "p-0 shadow-none border-0 hover:bg-transparent hover:shadow-none",
