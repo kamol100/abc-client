@@ -1,0 +1,47 @@
+/* Marketing tokens. Scoped to .mkt so the admin's shadcn tokens stay untouched.
+ * Palette and faces taken from mikrotik.com's own CSS (.hallmark/brand-spec.md), by request. */
+.mkt {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(1.625rem, 1vw + 1.25rem, 2rem); --text-display: clamp(2rem, 1.6vw + 1.4rem, 3rem);
+  --text-section: clamp(1.75rem, 1.4vw + 1.2rem, 2.5rem); --text-section-sub: clamp(1.375rem, 1vw + 1rem, 2rem); --text-title: clamp(1.25rem, 0.5vw + 1rem, 1.5rem); --text-lead: clamp(1rem, 0.25vw + 0.9rem, 1.125rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --nav-height: 80px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+
+  --color-paper: #ffffff; --color-paper-2: #f1f1f2; --color-paper-3: #ececec;
+  --color-ink: #0e0e10; --color-ink-2: #2c2c2e; --color-muted: #67676b;
+  --color-rule: #dadada;
+  --color-accent: #1961bc; --color-accent-ink: #ffffff; --color-focus: #1961bc;
+  --color-ok: #007a3a; --color-warn: #a65500; --color-bad: #c40000; /* MikroTik's green, orange and red, darkened to 4.5:1 on paper-2 for small text */
+  --color-error: #c40000; --color-success: #007a3a;
+
+  /* The night band: the hero and any section set on black, in both modes. */
+  --color-night: #0e0e10; --color-night-2: #2c2c2e; --color-night-ink: #ffffff; --color-night-muted: #b3b3b6;
+  --color-night-rule: color-mix(in oklab, #ffffff 25%, transparent);
+  --color-night-fill: color-mix(in oklab, #ffffff 25%, transparent);
+  --color-foot: #808085; --color-foot-ink: #ffffff; --color-foot-rule: color-mix(in oklab, #ffffff 35%, transparent);
+
+  /* mikrotik.com renders everything in JetBrains Mono (its body computes to "JetBrains Mono"); Bangla falls back to a Bengali face. */
+  --font-display: var(--font-jetbrains, "JetBrains Mono"), ui-monospace, "Noto Sans Bengali", "Hind Siliguri", monospace;
+  --font-body: var(--font-display);
+  --font-outlier: var(--font-display);
+
+  --radius-card: 0px; --radius-pill: 0px; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: 0;
+}
+
+.dark .mkt {
+  --color-paper: #0e0e10; --color-paper-2: #18181b; --color-paper-3: #2c2c2e;
+  --color-ink: #f1f1f2; --color-ink-2: #dadada; --color-muted: #b3b3b6;
+  --color-rule: #3a3a3e;
+  --color-accent: #6aa3eb; --color-accent-ink: #0e0e10; --color-focus: #6aa3eb;
+  --color-ok: #2fbf71; --color-warn: #ffad33; --color-bad: #ff5a5a;
+  --color-error: #ff5a5a; --color-success: #2fbf71;
+  --color-night: #050506; --color-night-2: #18181b;
+}
+
+@media (max-width: 60rem) { .mkt { --gutter: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; --nav-height: 64px; } }
+@media (max-width: 40rem) { .mkt { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }

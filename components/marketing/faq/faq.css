@@ -1,0 +1,46 @@
+/* Hallmark · shape: Spec Sheet (custom, MikroTik-modelled) · genre: modern-minimal · theme: brand (mikrotik.com, by request) · page: faq · head on the grey band: label, name, line · then uppercase group heads over hairline question rows beside a sticky group index on white · black closing band · job: request a demo · v3.0.0 */
+/* Hallmark · override 67, 54, 64 · section label over each uppercase head, light second line · mikrotik.com renders exactly this (marketing.css) */
+/* Answers sit in native <details>, so the page works with scripting off. */
+
+.mkt-page .mkt-faq-h2 { max-width: 55rem; }
+.mkt-page .mkt-faq-copy { max-width: 55rem; margin-top: var(--space-xl); line-height: 1.5; }
+.mkt-faq-head { padding-top: var(--space-3xl); }
+
+.mkt-faq-body { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); column-gap: var(--gap-columns); padding-block: var(--space-3xl) var(--section-gap-s); }
+
+/* Group index: uppercase rows on hairlines, sticky beside the questions on wide screens. */
+.mkt-faq-index ol { position: sticky; top: calc(var(--nav-height) + var(--space-lg)); margin: 0; padding: 0; list-style: none; border-top: var(--rule-hair) solid var(--color-rule); }
+.mkt-faq-index li { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.mkt-faq-index a { display: block; padding-block: var(--space-sm); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.3em; transition: text-decoration-color var(--dur-short) var(--ease-out); }
+.mkt-faq-index a:hover { text-decoration-color: currentColor; }
+.mkt-faq-index a:active { color: var(--color-ink-2); }
+.mkt-faq-index a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* Groups: an uppercase head, then the question rows. */
+.mkt-faq-group + .mkt-faq-group { padding-top: var(--space-3xl); }
+.mkt-page .mkt-faq-group h2 { max-width: none; padding-bottom: var(--space-md); border-bottom: var(--rule-hair) solid var(--color-ink); font-size: var(--text-title); text-wrap: balance; }
+
+.mkt-faq-item { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.mkt-faq-item summary { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: 64px; padding-block: var(--space-md); font-weight: 700; cursor: pointer; list-style: none; }
+.mkt-faq-item summary::-webkit-details-marker { display: none; }
+.mkt-faq-item summary:hover > span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+.mkt-faq-item summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.mkt-faq-item summary:active > span { opacity: 0.7; }
+.mkt-faq-chevron { flex: none; width: 24px; height: 24px; transition: transform var(--dur-short) var(--ease-out); }
+.mkt-faq-item[open] .mkt-faq-chevron { transform: rotate(180deg); }
+.mkt-page .mkt-faq-item p { max-width: 65ch; padding-bottom: var(--space-lg); font-weight: 300; line-height: 1.6; }
+
+/* Closing band on black. */
+.mkt-faq-band { padding-block: var(--section-gap-s); }
+.mkt-faq-band .mkt-faq-copy { color: var(--color-night-muted); }
+.mkt-faq-band-btn { margin-top: var(--space-xl); }
+
+@media (max-width: 60rem) {
+  .mkt-faq-body { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-2xl); padding-top: var(--space-2xl); }
+  .mkt-faq-index ol { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+}
+@media (max-width: 40rem) {
+  .mkt-faq-head { padding-top: var(--space-2xl); }
+  .mkt-faq-index ol { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .mkt-faq-chevron, .mkt-faq-index a { transition: none; } }

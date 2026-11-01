@@ -1,29 +1,64 @@
 "use client";
 
+import "@/components/marketing/chrome.css";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useCompany } from "@/context/company-provider";
+import { CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
+import { MODULE_IDS, PAGE_LINKS, moduleHref } from "@/app/(public)/public-top-nav";
 
 export default function PublicFooter() {
-  const { company } = useCompany();
+  const { company, logoUrl } = useCompany();
   const { t } = useTranslation();
+  const name = company.name ?? "ISPTik";
+  const hasContact = Boolean(company.address || company.phone || company.email);
 
   return (
-    <footer className="bg-background">
-      <div className="mx-auto flex flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 max-w-7xl">
-        <div className="space-y-0.5 text-xs text-muted-foreground">
-          <div className="truncate font-medium">{company.name ?? ""}</div>
-          {company.address && <div>{company.address}</div>}
+    <footer className="mkt-foot">
+      <div className="mkt-container">
+        <div className="mkt-foot-top">
+          <Link href="/home" className="mkt-foot-logo">
+            <img src={logoUrl} alt={company.name ? "" : name} />
+            {company.name && <span>{company.name}</span>}
+          </Link>
+          <Link href="/demo-request" className="mkt-btn">{t("marketing.nav.demo_request")}</Link>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-          {company.phone && <span>{company.phone}</span>}
-          {company.email && <span>{company.email}</span>}
-        </div>
-      </div>
+        <div className="mkt-foot-cols">
+          <nav aria-labelledby="mkt-foot-pages">
+            <h2 id="mkt-foot-pages" className="mkt-foot-head">{t("marketing.footer.pages")}</h2>
+            <ul>
+              <li><Link href="/features">{t("marketing.nav.features")}</Link></li>
+              {PAGE_LINKS.map((item) => (
+                <li key={item.href}><Link href={item.href}>{t(item.key)}</Link></li>
+              ))}
+              <li><Link href={CLIENT_LOGIN_PATH}>{t("marketing.nav.login")}</Link></li>
+            </ul>
+          </nav>
 
-      <div className="border-t">
-        <div className="mx-auto max-w-7xl px-4 py-3 text-center text-xs text-muted-foreground sm:px-6">
-          {t("marketing.footer.copyright", { name: company.name ?? "ISPTik", year: new Date().getFullYear() })}
+          <nav aria-labelledby="mkt-foot-modules" className="mkt-foot-modules-col">
+            <h2 id="mkt-foot-modules" className="mkt-foot-head">{t("marketing.footer.modules")}</h2>
+            <ul className="mkt-foot-modules">
+              {MODULE_IDS.map((id) => (
+                <li key={id}><Link href={moduleHref(id)}>{t(`marketing.nav.modules.${id}`)}</Link></li>
+              ))}
+            </ul>
+          </nav>
+
+          {hasContact && (
+            <div>
+              <h2 className="mkt-foot-head">{t("marketing.footer.contact")}</h2>
+              <address className="mkt-foot-contact">
+                {company.address && <p>{company.address}</p>}
+                {company.phone && <a href={`tel:${company.phone.replace(/\s+/g, "")}`}>{company.phone}</a>}
+                {company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+              </address>
+            </div>
+          )}
+        </div>
+
+        <div className="mkt-foot-bottom">
+          <p>{t("marketing.footer.copyright", { name, year: new Date().getFullYear() })}</p>
         </div>
       </div>
     </footer>

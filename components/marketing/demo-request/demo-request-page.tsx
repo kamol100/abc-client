@@ -1,49 +1,57 @@
 "use client";
 
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { ChevronRight, Home } from "lucide-react";
+import { useCompany } from "@/context/company-provider";
 import DemoRequestForm from "@/components/marketing/demo-request/demo-request-form";
-import { cn } from "@/lib/utils";
+import "@/components/marketing/demo-request/demo-request.css";
+
+// Modules the demo walks through; facts from the feature inventory.
+const COVERS = ["subscribers", "mikrotik", "olt", "noc", "sms"] as const;
+// What the code does with a request: saved, then an admin sets its status.
+const STEPS = ["saved", "review"] as const;
 
 export default function DemoRequestPage() {
   const { t } = useTranslation();
+  const { company } = useCompany();
+  const name = company.name || "ISPTik";
 
   return (
-    <>
-      <section className="relative overflow-hidden border-b">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_70%)]" />
-        <div className="mx-auto max-w-2xl space-y-4 px-4 py-10 sm:px-6 sm:py-14">
-          <nav
-            className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground"
-            aria-label={t("demo_request.breadcrumb.aria")}
-          >
-            <Link
-              href="/home"
-              className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
-            >
-              <Home className="size-3.5" aria-hidden />
-              {t("demo_request.breadcrumb.home")}
-            </Link>
-            <ChevronRight className="size-3.5 shrink-0 opacity-50" aria-hidden />
-            <span className="font-medium text-foreground">
-              {t("demo_request.breadcrumb.current")}
-            </span>
-          </nav>
-          <div className="space-y-2 text-center sm:text-left">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("demo_request.hero.title")}
-            </h1>
-            <p className="text-muted-foreground sm:max-w-xl">
-              {t("demo_request.hero.subtitle")}
-            </p>
-          </div>
+    <div className="mkt-page mkt-demo">
+      <section className="mkt-section mkt-section--alt mkt-demo-head" aria-labelledby="demo-title">
+        <div className="mkt-container">
+          <span className="mkt-label">{t("demo_request.hero.label")}</span>
+          <h1 id="demo-title">{t("demo_request.hero.title", { name })}</h1>
+          <p className="mkt-demo-copy">{t("demo_request.hero.subtitle")}</p>
         </div>
       </section>
 
-      <section className={cn("mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 sm:py-12")}>
-        <DemoRequestForm />
+      <section className="mkt-demo-body">
+        <div className="mkt-container mkt-demo-layout">
+          <DemoRequestForm />
+
+          <aside className="mkt-demo-aside">
+            <div className="mkt-demo-block">
+              <h2 id="demo-covers">{t("demo_request.covers.title")}</h2>
+              <dl className="mkt-demo-spec" aria-labelledby="demo-covers">
+                {COVERS.map((key) => (
+                  <div key={key}>
+                    <dt>{t(`demo_request.covers.items.${key}.name`)}</dt>
+                    <dd>{t(`demo_request.covers.items.${key}.note`)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="mkt-demo-block">
+              <h2 id="demo-after">{t("demo_request.after.title")}</h2>
+              <ol className="mkt-demo-steps" aria-labelledby="demo-after">
+                {STEPS.map((key) => (
+                  <li key={key}>{t(`demo_request.after.steps.${key}`)}</li>
+                ))}
+              </ol>
+            </div>
+          </aside>
+        </div>
       </section>
-    </>
+    </div>
   );
 }

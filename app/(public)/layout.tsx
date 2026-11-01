@@ -7,6 +7,14 @@ import type { CompanyPublicData } from "@/types/company-public-type";
 import type { PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 import { hostnameHasTenantSubdomain } from "@/lib/helper/helper";
+import { JetBrains_Mono } from "next/font/google";
+import "@/components/marketing/marketing.css";
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "800"],
+  variable: "--font-jetbrains",
+});
 
 async function loadCompanyPublicData(): Promise<CompanyPublicData> {
   const host = await fetchHostName();
@@ -21,7 +29,7 @@ export default async function PublicLayout({ children }: PropsWithChildren) {
 
   return (
     <CompanyProvider initialCompany={company}>
-      <div className="flex min-h-svh flex-col bg-background">
+      <div className={`mkt ${jetbrainsMono.variable} flex min-h-svh flex-col`}>
         {hasTenantSubdomain ? <ClientTopNav /> : <PublicTopNav />}
         <main className="flex flex-1 flex-col">{children}</main>
         <PublicFooter />

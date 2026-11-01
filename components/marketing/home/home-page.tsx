@@ -1,128 +1,152 @@
 "use client";
 
+import "@/components/marketing/modules/module-detail.css";
+import "@/components/marketing/home/home.css";
+import type { ComponentType } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import {
-  Users,
-  CreditCard,
-  Wifi,
-  MessageSquare,
-  LifeBuoy,
-  BarChart3,
-  MapPin,
-  Router,
-  UserCog,
-  Wallet,
-  LayoutDashboard,
-  ClipboardList,
-  Check,
-  ArrowRight,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCompany } from "@/context/company-provider";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import HomeHero from "@/components/marketing/home/home-hero";
+import { BillingSample, MessagingSample, MikrotikSample, NocSample, OltSample, SubscribersSample } from "@/components/marketing/modules/samples-a";
+import { FinanceSample, InventorySample, PortalSample, ReportsSample, ResellersSample, SupportSample } from "@/components/marketing/modules/samples-b";
+import type { ModuleId } from "@/components/marketing/modules/module-types";
+import { HIGHLIGHT_PLAN, MONTHLY_BDT, PLAN_ORDER, formatBdt } from "@/components/marketing/pricing/pricing-data";
 
-const FEATURES = [
-  { icon: Users, key: "clients" },
-  { icon: CreditCard, key: "billing" },
-  { icon: Wifi, key: "network" },
-  { icon: MapPin, key: "client_map" },
-  { icon: Router, key: "device_map" },
-  { icon: UserCog, key: "staff" },
-  { icon: Wallet, key: "finance" },
-  { icon: MessageSquare, key: "communication" },
-  { icon: LifeBuoy, key: "support" },
-  { icon: BarChart3, key: "reporting" },
-  { icon: LayoutDashboard, key: "dashboard" },
-  { icon: ClipboardList, key: "activity_log" },
-] as const;
+const K = "marketing.home";
 
-const PLANS = ["starter", "business", "enterprise"] as const;
-const PLAN_HIGHLIGHTS: Record<string, number> = { business: 1 };
+const MODULES: [ModuleId, ComponentType][] = [
+  ["subscribers", SubscribersSample],
+  ["billing", BillingSample],
+  ["mikrotik", MikrotikSample],
+  ["olt", OltSample],
+  ["noc", NocSample],
+  ["messaging", MessagingSample],
+  ["support", SupportSample],
+  ["resellers", ResellersSample],
+  ["finance", FinanceSample],
+  ["inventory", InventorySample],
+  ["reports", ReportsSample],
+  ["portal", PortalSample],
+];
 
-function HeroSection() {
-  const { t } = useTranslation();
-  const { company, logoUrl } = useCompany();
+const OPS: [ModuleId, ComponentType][] = [
+  ["noc", NocSample],
+  ["mikrotik", MikrotikSample],
+  ["olt", OltSample],
+];
 
+/** A built screen shrunk into a fixed box, shown like a product photo. */
+function Shot({ Sample, className }: { Sample: ComponentType; className?: string }) {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_70%)]" />
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-4 py-20 text-center sm:px-6 sm:py-28 lg:py-36">
-        <img
-          src={logoUrl}
-          alt={company.name ?? ""}
-          className="h-12 w-auto object-contain"
-        />
+    <div className={cn("mkt-home-shot", className)} aria-hidden="true">
+      <div className="mkt-home-shot__inner">
+        <Sample />
+      </div>
+    </div>
+  );
+}
 
-        <div className="max-w-3xl space-y-4">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            {t("marketing.hero.headline")}
-          </h1>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-            {t("marketing.hero.subheadline")}
-          </p>
-        </div>
+/** MikroTik's section opening: label, bold head, light second line. */
+function Head({ id }: { id: string }) {
+  const { t } = useTranslation();
+  return (
+    <>
+      <span className="mkt-label">{t(`${K}.${id}.label`)}</span>
+      <h2>
+        {t(`${K}.${id}.title`)}
+        <span className="mkt-title-sub">{t(`${K}.${id}.sub`)}</span>
+      </h2>
+    </>
+  );
+}
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Button asChild size="lg">
-            <Link href="/demo-request">
-              {t("marketing.hero.cta_primary")}
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <a href="#features">{t("marketing.hero.cta_secondary")}</a>
-          </Button>
+function ModulesSection() {
+  const { t } = useTranslation();
+  return (
+    <section id="features" className="mkt-section mkt-home-sec">
+      <div className="mkt-container">
+        <Head id="modules" />
+        <p className="mkt-home-text">{t(`${K}.modules.text`)}</p>
+        <ul className="mkt-home-grid">
+          {MODULES.map(([id, Sample]) => (
+            <li key={id}>
+              <Link href={`/features/${id}`} className="mkt-home-card">
+                <span className="mkt-home-card__name">{t(`${K}.modules.names.${id}`)}</span>
+                <Shot Sample={Sample} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="mkt-home-center">
+          <Link href="/features" className="mkt-btn">
+            {t(`${K}.modules.all`)}
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-function FeaturesSection() {
+function OpsSection() {
   const { t } = useTranslation();
-
   return (
-    <section id="features" className="border-t bg-muted/30">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {t("marketing.features.title")}
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            {t("marketing.features.subtitle")}
-          </p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map(({ icon: Icon, key }) => (
-            <Card key={key} className="border bg-background">
-              <CardHeader className="flex flex-row items-center gap-3 space-y-0 pb-2">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="size-5" />
-                </div>
-                <CardTitle className="text-base">
-                  {t(`marketing.features.${key}.title`)}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {t(`marketing.features.${key}.description`)}
-                </p>
-              </CardContent>
-            </Card>
+    <section className="mkt-night mkt-home-sec mkt-home-ops">
+      <div className="mkt-container">
+        <Head id="ops" />
+        <ul className="mkt-home-ops__grid">
+          {OPS.map(([id, Sample]) => (
+            <li key={id}>
+              <Link href={`/features/${id}`} className="mkt-home-tile">
+                <Shot Sample={Sample} className="mkt-home-shot--night" />
+                <span className="mkt-home-tile__title">{t(`${K}.ops.cards.${id}.title`)}</span>
+                <span className="mkt-home-tile__text mkt-muted">{t(`${K}.ops.cards.${id}.text`)}</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
+      </div>
+    </section>
+  );
+}
 
-        <div className="mt-10 text-center">
-          <Button asChild variant="outline" size="lg">
-            <Link href="/features">
-              {t("features_page.view_all")}
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-        </div>
+function BillingSection() {
+  const { t } = useTranslation();
+  return (
+    <section className="mkt-section mkt-section--alt mkt-home-sec">
+      <div className="mkt-container">
+        <Head id="billing" />
+        <p className="mkt-home-text">{t(`${K}.billing.text`)}</p>
+        <Link href="/features/billing" className="mkt-btn mkt-home-btn">
+          {t(`${K}.billing.button`)}
+        </Link>
+        <ul className="mkt-home-pair">
+          {(["receipts", "quickpay"] as const).map((c) => (
+            <li key={c} className="mkt-home-grey">
+              <span className="mkt-home-grey__label">{t(`${K}.billing.cards.${c}.label`)}</span>
+              <span className="mkt-home-grey__fig">{t(`${K}.billing.cards.${c}.fig`)}</span>
+              <p className="mkt-home-grey__text">{t(`${K}.billing.cards.${c}.text`)}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function BangladeshSection() {
+  const { t } = useTranslation();
+  return (
+    <section id="about" className="mkt-section mkt-home-sec">
+      <div className="mkt-container">
+        <Head id="bangladesh" />
+        <dl className="mkt-home-specs">
+          {(["bkash", "btrc", "lang", "app"] as const).map((r) => (
+            <div key={r}>
+              <dt>{t(`${K}.bangladesh.rows.${r}.title`)}</dt>
+              <dd>{t(`${K}.bangladesh.rows.${r}.line`)}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
@@ -130,99 +154,29 @@ function FeaturesSection() {
 
 function PricingSection() {
   const { t } = useTranslation();
-
   return (
-    <section id="pricing" className="border-t">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {t("marketing.pricing.title")}
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            {t("marketing.pricing.subtitle")}
-          </p>
-        </div>
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {PLANS.map((plan) => {
-            const highlighted = PLAN_HIGHLIGHTS[plan] !== undefined;
-            const bulletCount = Number(t(`marketing.pricing.${plan}.bullet_count`)) || 0;
-            const bullets = Array.from({ length: bulletCount }, (_, i) =>
-              t(`marketing.pricing.${plan}.bullets.${i}`)
-            );
-
-            return (
-              <Card
-                key={plan}
-                className={cn(
-                  "flex flex-col",
-                  highlighted && "border-primary shadow-md"
-                )}
-              >
-                <CardHeader>
-                  {highlighted && (
-                    <span className="mb-1 w-fit rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
-                      {t("marketing.pricing.popular")}
-                    </span>
-                  )}
-                  <CardTitle className="text-lg">
-                    {t(`marketing.pricing.${plan}.name`)}
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {t(`marketing.pricing.${plan}.description`)}
-                  </p>
-                </CardHeader>
-                <CardContent className="flex flex-1 flex-col gap-4">
-                  <div className="text-3xl font-bold">
-                    {t(`marketing.pricing.${plan}.price`)}
-                  </div>
-                  <ul className="flex-1 space-y-2">
-                    {bullets.map((bullet) => (
-                      <li key={bullet} className="flex items-start gap-2 text-sm">
-                        <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    asChild
-                    variant={highlighted ? "default" : "outline"}
-                    className="mt-auto w-full"
-                  >
-                    <Link href="/demo-request">{t("marketing.pricing.cta")}</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 text-center">
-          <Button asChild variant="outline" size="lg">
-            <Link href="/pricing">
-              {t("marketing.pricing.view_full")}
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AboutSection() {
-  const { t } = useTranslation();
-
-  return (
-    <section id="about" className="border-t bg-muted/30">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {t("marketing.about.title")}
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            {t("marketing.about.body")}
-          </p>
+    <section id="pricing" className="mkt-section mkt-section--alt mkt-home-sec">
+      <div className="mkt-container">
+        <Head id="pricing" />
+        <ul className="mkt-home-plans">
+          {PLAN_ORDER.map((plan) => (
+            <li key={plan} className={cn("mkt-home-plan", plan === HIGHLIGHT_PLAN && "mkt-home-plan--lead")}>
+              <h3 className="mkt-home-plan__name">{t(`${K}.pricing.plans.${plan}`)}</h3>
+              <p className="mkt-home-plan__price">
+                <span>{t(`${K}.pricing.from`)}</span>
+                <span className="mkt-home-plan__fig">{formatBdt(MONTHLY_BDT[plan][0])}</span>
+                <span>{t(`${K}.pricing.per_month`)}</span>
+              </p>
+              <Link href="/demo-request" className="mkt-btn">
+                {t(`${K}.pricing.demo`)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="mkt-home-center">
+          <Link href="/pricing" className="mkt-btn">
+            {t(`${K}.pricing.compare`)}
+          </Link>
         </div>
       </div>
     </section>
@@ -231,24 +185,13 @@ function AboutSection() {
 
 function CtaSection() {
   const { t } = useTranslation();
-
   return (
-    <section id="cta" className="border-t">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 rounded-2xl bg-primary/5 px-6 py-12 text-center sm:px-12">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            {t("marketing.cta.title")}
-          </h2>
-          <p className="text-muted-foreground">
-            {t("marketing.cta.subtitle")}
-          </p>
-          <Button asChild size="lg">
-            <Link href="/demo-request">
-              {t("marketing.cta.button")}
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
-        </div>
+    <section id="cta" className="mkt-night mkt-home-sec mkt-home-cta">
+      <div className="mkt-container">
+        <Head id="cta" />
+        <Link href="/demo-request" className="mkt-btn mkt-home-btn">
+          {t(`${K}.cta.button`)}
+        </Link>
       </div>
     </section>
   );
@@ -256,12 +199,14 @@ function CtaSection() {
 
 export default function HomePage() {
   return (
-    <>
-      <HeroSection />
-      <FeaturesSection />
+    <div className="mkt-page mkt-home">
+      <HomeHero />
+      <ModulesSection />
+      <OpsSection />
+      <BillingSection />
+      <BangladeshSection />
       <PricingSection />
-      <AboutSection />
       <CtaSection />
-    </>
+    </div>
   );
 }

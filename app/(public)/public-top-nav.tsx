@@ -1,122 +1,245 @@
 "use client";
 
-import { useState } from "react";
+import "@/components/marketing/chrome.css";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronDown, CircleUser, Menu, X } from "lucide-react";
 import { useCompany } from "@/context/company-provider";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import MyButton from "@/components/my-button";
+import { useLanguage } from "@/hooks/use-language";
+import { LANGUAGES, LANGUAGE_LABELS } from "@/lib/i18n/languages";
+import { CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
-type NavItem = { key: string; href: string };
+export const MODULE_IDS = [
+  "subscribers", "billing", "mikrotik", "olt", "noc", "messaging",
+  "support", "resellers", "finance", "inventory", "reports", "portal",
+] as const;
 
-const SHARED_LINKS: NavItem[] = [
-  { key: "marketing.nav.home", href: "/home" },
-  { key: "marketing.nav.features", href: "/features" },
+export const PAGE_LINKS = [
   { key: "marketing.nav.pricing", href: "/pricing" },
-  // { key: "marketing.nav.about", href: "/home#about" },
-];
+  { key: "marketing.nav.faq", href: "/faq" },
+  { key: "marketing.nav.about", href: "/about" },
+  { key: "marketing.nav.pay_bill", href: "/pay" },
+  { key: "marketing.nav.demo_request", href: "/demo-request" },
+] as const;
 
-const HOME_ANCHORS: NavItem[] = [
-  { key: "marketing.nav.home", href: "/home" },
-  { key: "marketing.nav.features", href: "/features" },
-  { key: "marketing.nav.pricing", href: "/pricing" },
-  // { key: "marketing.nav.about", href: "#about" },
-];
+/* Same switch as components/language-switcher.tsx, drawn as MikroTik's quiet text toggle. */
+const LANGUAGE_SHORT = { en: "EN", bn: "বাং" } as const;
+
+function LanguageToggle() {
+  const { t } = useTranslation();
+  const { language, setLanguage } = useLanguage();
+  return (
+    <div className="mkt-nav-lang" role="group" aria-label={t("marketing.nav.language")}>
+      {LANGUAGES.map((lang, i) => (
+        <span key={lang} className="mkt-nav-lang-item">
+          {i > 0 && <span aria-hidden="true">/</span>}
+          <button
+            type="button"
+            lang={lang}
+            aria-label={LANGUAGE_LABELS[lang]}
+            aria-pressed={language === lang}
+            onClick={() => setLanguage(lang)}
+          >
+            {LANGUAGE_SHORT[lang]}
+          </button>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export const moduleHref = (id: string) => `/features/${id}`;
+
+const isActive = (pathname: string, href: string) =>
+  pathname === href || pathname.startsWith(`${href}/`);
 
 export default function PublicTopNav() {
   const { company, logoUrl } = useCompany();
   const { t } = useTranslation();
   const pathname = usePathname();
-  const isHomePage = pathname === "/home";
+  const over = pathname === "/home" || pathname === "/";
+
+  const [featuresOpen, setFeaturesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [prevPath, setPrevPath] = useState(pathname);
+  const headerRef = useRef<HTMLElement>(null);
+  const featuresButtonRef = useRef<HTMLButtonElement>(null);
+  const hoverRef = useRef(false);
 
-  const navItems = isHomePage ? HOME_ANCHORS : SHARED_LINKS;
+  // Close every menu on route change (adjusting state during render, no effect).
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
+    setFeaturesOpen(false);
+    setMobileOpen(false);
+  }
 
-  const renderNavItem = (item: NavItem, mobile: boolean) => {
-    const isAnchor = item.href.startsWith("#");
-    const isActive = !isAnchor && pathname === item.href;
-
-    const classes = mobile
-      ? cn(
-        "block rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-foreground",
-        isActive ? "text-foreground font-medium" : "text-muted-foreground"
-      )
-      : cn(
-        "text-sm transition-colors hover:text-foreground",
-        isActive ? "text-foreground font-medium" : "text-muted-foreground"
-      );
-
-    if (isAnchor) {
-      return (
-        <a
-          key={item.href}
-          href={item.href}
-          className={classes}
-          onClick={mobile ? () => setMobileOpen(false) : undefined}
-        >
-          {t(item.key)}
-        </a>
-      );
-    }
-
-    return (
-      <Link
-        key={item.href}
-        href={item.href}
-        className={classes}
-        onClick={mobile ? () => setMobileOpen(false) : undefined}
-      >
-        {t(item.key)}
-      </Link>
-    );
+  const closeAll = () => {
+    setFeaturesOpen(false);
+    setMobileOpen(false);
   };
 
+  useEffect(() => {
+    if (!featuresOpen && !mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (featuresOpen) featuresButtonRef.current?.focus();
+      closeAll();
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (!headerRef.current?.contains(e.target as Node)) closeAll();
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [featuresOpen, mobileOpen]);
+
+  // Mobile only (the CSS applies the transform below 64rem): hide on scroll down, show on scroll up.
+  useEffect(() => {
+    let prev = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setHidden(y > 100 && y > prev);
+      prev = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const current = (href: string) => (isActive(pathname, href) ? "page" : undefined);
+  const featuresActive = isActive(pathname, "/features");
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/home" className="flex shrink-0 items-center gap-2.5">
-          <img
-            src={logoUrl}
-            alt={company.name ?? ""}
-            className="h-7 w-auto object-contain"
-          />
-          {company.name && (
-            <span className="hidden text-sm font-semibold tracking-tight sm:inline">
-              {company.name}
-            </span>
-          )}
+    <header
+      ref={headerRef}
+      className="mkt-nav"
+      data-over={over || undefined}
+      data-hidden={hidden || undefined}
+      data-open={mobileOpen || undefined}
+    >
+      <div className="mkt-container mkt-nav-bar">
+        <Link href="/home" className="mkt-nav-logo" aria-current={current("/home")}>
+          <img src={logoUrl} alt={company.name ? "" : t("marketing.nav.home")} />
+          {company.name && <span>{company.name}</span>}
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => renderNavItem(item, false))}
-        </nav>
+        <div className="mkt-nav-right">
+          <nav className="mkt-nav-menu" aria-label={t("marketing.nav.main")}>
+            <ul>
+              <li
+                onPointerEnter={(e) => {
+                  if (e.pointerType !== "mouse") return;
+                  hoverRef.current = true;
+                  setFeaturesOpen(true);
+                }}
+                onPointerLeave={(e) => {
+                  if (e.pointerType !== "mouse") return;
+                  hoverRef.current = false;
+                  setFeaturesOpen(false);
+                }}
+              >
+                <button
+                  ref={featuresButtonRef}
+                  type="button"
+                  className="mkt-nav-link"
+                  aria-expanded={featuresOpen}
+                  aria-controls="mkt-nav-features"
+                  data-active={featuresActive || undefined}
+                  onClick={() => setFeaturesOpen((open) => hoverRef.current || !open)}
+                >
+                  {t("marketing.nav.features")}
+                  <ChevronDown className="mkt-nav-chev" aria-hidden />
+                </button>
+                <div id="mkt-nav-features" className="mkt-nav-panel" data-open={featuresOpen || undefined}>
+                  <div className="mkt-container mkt-nav-panel-grid">
+                    <Link href="/features" className="mkt-nav-all" aria-current={pathname === "/features" ? "page" : undefined} onClick={closeAll}>
+                      {t("marketing.nav.all_features")}
+                    </Link>
+                    <ul className="mkt-nav-modules">
+                      {MODULE_IDS.map((id) => (
+                        <li key={id}>
+                          <Link href={moduleHref(id)} className="mkt-nav-module" aria-current={current(moduleHref(id))} onClick={closeAll}>
+                            <strong>{t(`marketing.nav.modules.${id}`)}</strong>
+                            <span>{t(`marketing.nav.module_notes.${id}`)}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              {PAGE_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="mkt-nav-link" aria-current={current(item.href)}>
+                    {t(item.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-
-          <MyButton url="/demo-request" size="sm" icon={false} variant="default">
-            {t("marketing.nav.demo_request")}
-          </MyButton>
-
-          <button
-            type="button"
-            className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground md:hidden"
-            onClick={() => setMobileOpen((prev) => !prev)}
-            aria-label={t("marketing.nav.toggle_menu")}
-          >
-            {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
+          <div className="mkt-nav-tools">
+            <LanguageToggle />
+            <Link href={CLIENT_LOGIN_PATH} className="mkt-nav-icon" aria-label={t("marketing.nav.login")}>
+              <CircleUser aria-hidden />
+            </Link>
+            <button
+              type="button"
+              className="mkt-nav-icon mkt-nav-toggle"
+              aria-label={t("marketing.nav.toggle_menu")}
+              aria-expanded={mobileOpen}
+              aria-controls="mkt-nav-mobile"
+              onClick={() => setMobileOpen((open) => !open)}
+            >
+              {mobileOpen ? <X aria-hidden /> : <Menu aria-hidden />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {mobileOpen && (
-        <nav className="border-t px-4 pb-3 pt-2 md:hidden">
-          {navItems.map((item) => renderNavItem(item, true))}
-        </nav>
-      )}
+      <nav id="mkt-nav-mobile" className="mkt-nav-mobile" data-open={mobileOpen || undefined} aria-label={t("marketing.nav.main")}>
+        <ul>
+          <li className={mobileFeaturesOpen ? "mkt-nav-open" : undefined}>
+            <button
+              type="button"
+              className="mkt-nav-row"
+              aria-expanded={mobileFeaturesOpen}
+              aria-controls="mkt-nav-mobile-features"
+              onClick={() => setMobileFeaturesOpen((open) => !open)}
+            >
+              {t("marketing.nav.features")}
+              <ChevronDown className="mkt-nav-chev" aria-hidden />
+            </button>
+            <ul id="mkt-nav-mobile-features" hidden={!mobileFeaturesOpen}>
+              <li>
+                <Link href="/features" className="mkt-nav-row mkt-nav-row--sub" aria-current={pathname === "/features" ? "page" : undefined} onClick={closeAll}>
+                  {t("marketing.nav.all_features")}
+                </Link>
+              </li>
+              {MODULE_IDS.map((id) => (
+                <li key={id}>
+                  <Link href={moduleHref(id)} className="mkt-nav-row mkt-nav-row--sub" aria-current={current(moduleHref(id))} onClick={closeAll}>
+                    {t(`marketing.nav.modules.${id}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+          {[...PAGE_LINKS, { key: "marketing.nav.login", href: CLIENT_LOGIN_PATH }].map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className="mkt-nav-row" aria-current={current(item.href)} onClick={closeAll}>
+                {t(item.key)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }
