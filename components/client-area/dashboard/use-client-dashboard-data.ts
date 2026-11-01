@@ -9,8 +9,10 @@ import {
 import {
   ClientDashboardInfoSchema,
   ClientDashboardInvoiceSummarySchema,
+  ClientDashboardUsageSchema,
   type ClientDashboardInfo,
   type ClientDashboardInvoiceSummary,
+  type ClientDashboardUsage,
 } from "@/components/client-area/dashboard/client-dashboard-type";
 import { useClientInvoicePayment } from "@/components/client-area/use-client-invoice-payment";
 
@@ -66,6 +68,22 @@ export function useClientDashboardData() {
   } = useClientInvoicePayment();
 
   const {
+    data: usageResponse,
+    isLoading: isUsageQueryLoading,
+    isFetching: isUsageFetching,
+    isError: isUsageQueryError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["client-dashboard-usage"],
+    url: "client-dashboard-usage",
+    pagination: false,
+  });
+
+  const usage = useMemo<ClientDashboardUsage | null>(() => {
+    const parsed = ClientDashboardUsageSchema.safeParse(usageResponse?.data);
+    return parsed.success ? parsed.data : null;
+  }, [usageResponse?.data]);
+
+  const {
     data: infoResponse,
     isLoading: isInfoQueryLoading,
     isError: isInfoQueryError,
@@ -97,6 +115,11 @@ export function useClientDashboardData() {
     isPaymentLoading,
     isPaymentFetching,
     isPaymentError,
+
+    usage,
+    isUsageLoading: isUsageQueryLoading,
+    isUsageFetching,
+    isUsageError: isUsageQueryError || (!isUsageQueryLoading && usageResponse !== undefined && usage === null),
 
     info,
     isInfoLoading: isInfoQueryLoading && !info,

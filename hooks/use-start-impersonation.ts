@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ import {
 import { clearServiceWorkerCaches } from "@/lib/pwa-utils";
 import type { AppData, ImpersonationResponse } from "@/types/app";
 
-export type ImpersonationKind = "company" | "reseller";
+export type ImpersonationKind = "company" | "reseller" | "staff";
 
 export type ImpersonationTarget = {
   id: string;
@@ -46,6 +46,7 @@ export function useStartImpersonation() {
   const { setPermissions } = usePermissions();
   const { impersonation, setImpersonation, saveOriginalToken } = useImpersonation();
   const [switching, setSwitching] = useState(false);
+  const requestInFlight = useRef(false);
 
   const sessionToken = (session as { token?: string } | null)?.token ?? null;
   const isImpersonating = impersonation.is_impersonating;
@@ -66,20 +67,32 @@ export function useStartImpersonation() {
   }
 
   async function impersonate(target: ImpersonationTarget, kind: ImpersonationKind) {
+    if (requestInFlight.current) {
+      return false;
+    }
+
+    requestInFlight.current = true;
     setSwitching(true);
     try {
       if (!isImpersonating && sessionToken) {
         saveOriginalToken(sessionToken);
       }
 
-      const payload =
-        kind === "company" ? { company_id: target.id } : { reseller_id: target.id };
-
-      const res = (await useFetch({
-        url: `/impersonate/${target.userUuid}`,
-        method: "POST",
-        data: payload,
-      })) as FetchResult;
+      const res = (await useFetch(
+        kind === "staff"
+          ? {
+              url: `/impersonate/staff/${target.id}`,
+              method: "POST",
+            }
+          : {
+              url: `/impersonate/${target.userUuid}`,
+              method: "POST",
+              data:
+                kind === "company"
+                  ? { company_id: target.id }
+                  : { reseller_id: target.id },
+            },
+      )) as FetchResult;
 
       if (!res?.success) {
         throw new Error(res?.message || "Failed to impersonate");
@@ -108,10 +121,13 @@ export function useStartImpersonation() {
 
       clearServiceWorkerCaches();
       window.location.assign("/");
+      return true;
     } catch (error: unknown) {
       console.error("Impersonation failed:", error);
       toast.error(messageFrom(error, "Impersonation failed"));
+      requestInFlight.current = false;
       setSwitching(false);
+      return false;
     }
   }
 

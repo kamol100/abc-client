@@ -201,7 +201,7 @@
         "designation": "Designation",
         "join_date": "Join Date",
         "salary_type": "Salary Type",
-        "ticketId": "Ticket ID",
+        "ticket_code": "Ticket ID",
         "client": "Client",
         "tag": "Tag",
         "messages_count": "Messages",
@@ -822,7 +822,8 @@
         "sms_type": {
             "label": "Type",
             "options": {
-                "custom": "Custom",
+                "custom_client": "Custom client",
+                "custom_other": "Custom other",
                 "invoice_due": "Invoice due",
                 "invoice_due_reminder": "Invoice due reminder",
                 "client_activation": "Client Activation",
@@ -873,7 +874,8 @@
             "label": "SMS Type",
             "options": {
                 "all": "All",
-                "custom": "Custom",
+                "custom_client": "Custom client",
+                "custom_other": "Custom other",
                 "invoice_due": "Invoice due",
                 "invoice_due_reminder": "Invoice due reminder"
             }
@@ -1052,6 +1054,12 @@
         "unlock_account": "Unlock account",
         "account_locked": "Staff account locked",
         "account_unlocked": "Staff account unlocked",
+        "impersonate": {
+            "tooltip": "Login as this staff member",
+            "confirm_title": "Login as this staff member",
+            "confirm": "Log in as {{name}}? You can switch back to your account afterward.",
+            "confirm_action": "Login"
+        },
         "reset_password": {
             "title": "Reset password",
             "submit": "Reset password",
@@ -1404,6 +1412,7 @@
         },
         "pppoe_username": {
             "label": "PPPoE ID",
+            "next_sid": "SID:{{sid}}",
             "placeholder": "Enter PPPoE ID",
             "errors": {
                 "required": "PPPoE ID is required"
@@ -1880,7 +1889,19 @@
             "edit": "Edit",
             "pay": "Pay",
             "print": "Print",
-            "delete": "Delete"
+            "delete": "Delete",
+            "view": "View"
+        },
+        "view": {
+            "title": "View Invoice",
+            "heading": "INVOICE",
+            "invoice_date": "Invoice Date",
+            "total_bill": "Total Bill",
+            "merchant": "Merchant",
+            "customer": "Customer",
+            "product": "Product",
+            "unit_price": "Unit Price",
+            "total_quantity": "Total Quantity"
         },
         "pay": {
             "title": "Pay Invoice",
@@ -2169,6 +2190,7 @@
         "phone_number": {
             "label": "Phone Number",
             "placeholder": "Enter phone number",
+            "hint": "Select an SMS template to send SMS to your clients, or choose Custom Other to send SMS to any phone number.",
             "errors": {
                 "required": "Phone number is required"
             }
@@ -2262,6 +2284,8 @@
         "create_title": "Add SMS Template",
         "edit_title": "Edit SMS Template",
         "delete_confirmation": "Are you sure you want to delete this SMS template?",
+        "import": "Import",
+        "import_success": "SMS templates imported",
         "name": {
             "label": "Template Name",
             "placeholder": "Enter template name",
@@ -2287,7 +2311,8 @@
                 "client_activated": "Client Activated",
                 "client_deactivated": "Client Deactivated",
                 "invoice_due_reminder": "Invoice Due Reminder",
-                "custom": "Custom"
+                "custom_client": "Custom client",
+                "custom_other": "Custom other"
             }
         },
         "message": {
@@ -2568,6 +2593,9 @@
         "edit_title": "Edit Product",
         "delete_confirmation": "Are you sure you want to delete this product?",
         "sl": "SL",
+        "product_code": {
+            "label": "Product ID"
+        },
         "stock_in": {
             "label": "Stock In"
         },
@@ -3543,7 +3571,11 @@
         },
         "fund": {
             "label": "Fund",
-            "placeholder": "Select fund"
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Fund is required",
+                "unassigned": "You do not have a fund account. Please contact your administrator."
+            }
         },
         "transaction_type": {
             "label": "Transaction Type",
@@ -3827,12 +3859,12 @@
             "unavailable": "Image could not be loaded"
         }
     },
-    "telegram_zone": {
-        "title": "Telegram Zone",
-        "title_plural": "Telegram Zones",
-        "create_title": "Add Telegram Zone",
-        "edit_title": "Edit Telegram Zone",
-        "delete_confirmation": "Are you sure you want to delete this Telegram Zone?",
+    "telegram": {
+        "title": "Telegram",
+        "title_plural": "Telegram",
+        "create_title": "Add Telegram",
+        "edit_title": "Edit Telegram",
+        "delete_confirmation": "Are you sure you want to delete this Telegram?",
         "name": {
             "label": "Name",
             "placeholder": "Enter name",
@@ -3864,6 +3896,29 @@
             "options": {
                 "active": "Active",
                 "inactive": "Inactive"
+            }
+        },
+        "notifications": {
+            "title": "Notifications",
+            "description": "Choose which events send a message to this channel.",
+            "groups": {
+                "client": "Client",
+                "fund_transaction": "Fund transaction",
+                "invoice": "Invoice",
+                "expense": "Expense",
+                "ticket": "Ticket",
+                "network": "Network",
+                "package": "Package",
+                "vendor": "Vendor",
+                "onu": "ONU"
+            },
+            "actions": {
+                "create": "Create",
+                "update": "Update",
+                "delete": "Delete",
+                "auto_generate": "Auto generate",
+                "paid": "Paid",
+                "low_power": "Low optical power"
             }
         }
     },
@@ -4503,6 +4558,22 @@
             "deleted": "Archived client permanently deleted"
         }
     },
+    "traffic_report": {
+        "title": "Traffic Report",
+        "this_week": "This Week Data",
+        "this_month": "This Month Data",
+        "last_month": "Last Month Data",
+        "download": "Download Data Used",
+        "upload": "Upload Data Used",
+        "total": "Total Data Used",
+        "chart_title": "Usage",
+        "date_range": "Date range",
+        "unavailable": "Unavailable",
+        "empty": "No usage recorded for this period",
+        "incomplete": "Usage collection started during this period",
+        "omitted_days": "Days without recorded traffic are not shown",
+        "retry": "Retry"
+    },
     "menu": {
         "dashboard": {
             "title": "Dashboard"
@@ -4560,6 +4631,9 @@
             "gateways": {
                 "title": "Payment Gateways"
             }
+        },
+        "traffic_report": {
+            "title": "Traffic Report"
         },
         "maps": {
             "title": "Maps",
@@ -4620,8 +4694,8 @@
             "logs": {
                 "title": "Logs"
             },
-            "telegram_zone": {
-                "title": "Telegram Zone"
+            "telegram": {
+                "title": "Telegram"
             }
         },
         "sms": {
@@ -4762,15 +4836,18 @@
             "payments": {
                 "title": "Payments"
             },
-            "telegram": {
-                "title": "Telegram"
-            },
             "monitoring": {
                 "title": "Monitoring"
+            },
+            "notifications": {
+                "title": "Notifications"
             }
         },
         "noc": {
             "title": "NOC"
+        },
+        "notifications": {
+            "title": "Notifications"
         }
     },
     "settings": {
@@ -4810,7 +4887,7 @@
             },
             "telegram": {
                 "title": "Telegram Settings",
-                "description": "Configure Telegram token and event notifications."
+                "description": "Configure the Telegram bot token."
             },
             "dashboard": {
                 "title": "Dashboard Settings",
@@ -4889,15 +4966,20 @@
                     "range": "Enter a value from -40 to -10"
                 }
             },
-            "telegram_onu_low_power": {
-                "label": "Telegram alert for low ONU power"
-            },
             "pid_prefix": {
                 "label": "Payment ID Prefix"
             },
             "expense_id_prefix": {
                 "label": "Expense ID Prefix",
                 "placeholder": "EXP"
+            },
+            "product_code_prefix": {
+                "label": "Product ID Prefix",
+                "placeholder": "PRO"
+            },
+            "ticket_code_prefix": {
+                "label": "Ticket ID Prefix",
+                "placeholder": "TKT"
             },
             "client_view_open_on_new_tab": {
                 "label": "Client view open on new tab"
@@ -4977,10 +5059,6 @@
                 "label": "Telegram Bot Token",
                 "placeholder": "Enter Telegram bot token"
             },
-            "telegram_channel_id": {
-                "label": "Telegram Channel ID",
-                "placeholder": "Enter Telegram channel ID"
-            },
             "sms_auto_invoice_schedule": {
                 "label": "Auto Invoice SMS Schedule",
                 "placeholder": "Select SMS schedule time"
@@ -5028,81 +5106,6 @@
             },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "Auto Inactive Reseller Client Termination Date"
-            },
-            "telegram_client_create": {
-                "label": "Telegram Client Create"
-            },
-            "telegram_client_update": {
-                "label": "Telegram Client Update"
-            },
-            "telegram_client_delete": {
-                "label": "Telegram Client Delete"
-            },
-            "telegram_fund_transaction_create": {
-                "label": "Telegram Fund Transaction Create"
-            },
-            "telegram_fund_transaction_delete": {
-                "label": "Telegram Fund Transaction Delete"
-            },
-            "telegram_invoice_create": {
-                "label": "Telegram Invoice Create"
-            },
-            "telegram_invoice_auto_generate": {
-                "label": "Telegram Invoice Auto Generate"
-            },
-            "telegram_invoice_update": {
-                "label": "Telegram Invoice Update"
-            },
-            "telegram_invoice_paid": {
-                "label": "Telegram Invoice Paid"
-            },
-            "telegram_invoice_delete": {
-                "label": "Telegram Invoice Delete"
-            },
-            "telegram_expense_create": {
-                "label": "Telegram Expense Create"
-            },
-            "telegram_expense_update": {
-                "label": "Telegram Expense Update"
-            },
-            "telegram_expense_delete": {
-                "label": "Telegram Expense Delete"
-            },
-            "telegram_ticket_create": {
-                "label": "Telegram Ticket Create"
-            },
-            "telegram_ticket_update": {
-                "label": "Telegram Ticket Update"
-            },
-            "telegram_ticket_delete": {
-                "label": "Telegram Ticket Delete"
-            },
-            "telegram_network_create": {
-                "label": "Telegram Network Create"
-            },
-            "telegram_network_update": {
-                "label": "Telegram Network Update"
-            },
-            "telegram_network_delete": {
-                "label": "Telegram Network Delete"
-            },
-            "telegram_package_create": {
-                "label": "Telegram Package Create"
-            },
-            "telegram_package_update": {
-                "label": "Telegram Package Update"
-            },
-            "telegram_package_delete": {
-                "label": "Telegram Package Delete"
-            },
-            "telegram_vendor_create": {
-                "label": "Telegram Vendor Create"
-            },
-            "telegram_vendor_update": {
-                "label": "Telegram Vendor Update"
-            },
-            "telegram_vendor_delete": {
-                "label": "Telegram Vendor Delete"
             },
             "dashboard_show_client": {
                 "label": "Client Card"
@@ -5172,6 +5175,12 @@
         "title": "Theme Customizer",
         "description": "Customize your theme.",
         "aria_label": "Customize theme",
+        "preset": {
+            "label": "Preset",
+            "default": "Default",
+            "jomuna": "Jomuna",
+            "hint": "Jomuna follows the reference palette. Your color, density, and drawer side stay as they are."
+        },
         "color": {
             "label": "Color",
             "green": "Green",
@@ -5183,6 +5192,58 @@
             "pink": "Pink",
             "indigo": "Indigo",
             "purple": "Purple"
+        },
+        "colors": {
+            "primary": "Primary",
+            "secondary": "Secondary",
+            "accent": "Accent",
+            "background": "Background",
+            "sidebar": "Sidebar",
+            "reset": "Reset custom colors"
+        },
+        "gradients": {
+            "on": "Gradients on",
+            "off": "Gradients off",
+            "brand": "Brand",
+            "ocean": "Ocean",
+            "sunset": "Sunset"
+        },
+        "typography": {
+            "geist": "Geist",
+            "plex": "Plex + Bengali",
+            "sm": "Small",
+            "md": "Medium",
+            "lg": "Large"
+        },
+        "appearance": {
+            "button_radius": "Button radius",
+            "card_radius": "Card radius",
+            "dialog_radius": "Dialog radius",
+            "match": "Match",
+            "shadow": "Shadow",
+            "shadow_none": "None",
+            "shadow_soft": "Soft",
+            "shadow_medium": "Medium",
+            "shadow_strong": "Strong",
+            "border": "Border",
+            "border_hairline": "Hairline",
+            "border_subtle": "Subtle",
+            "border_strong": "Strong"
+        },
+        "sections": {
+            "appearance": "Appearance",
+            "colors": "Colors",
+            "gradients": "Gradients",
+            "typography": "Typography",
+            "layout": "Shape"
+        },
+        "preview": {
+            "nav": "Active",
+            "idle": "Menu",
+            "kicker": "Live preview",
+            "sample": "Cards, type, and actions",
+            "primary": "Primary",
+            "secondary": "Secondary"
         },
         "radius": {
             "label": "Radius"
@@ -5196,7 +5257,8 @@
         "mode": {
             "label": "Mode",
             "light": "Light",
-            "dark": "Dark"
+            "dark": "Dark",
+            "system": "System"
         },
         "mobile_drawer": {
             "label": "Mobile Drawer",
@@ -5254,8 +5316,29 @@
         "aria_label": "Client menu",
         "menu": "Client menu",
         "dashboard": "Dashboard",
+        "profile": "My profile",
         "sign_out": "Sign out",
         "fallback_name": "Client"
+    },
+    "client_account": {
+        "title": "My profile",
+        "subtitle": "Details you shared with your internet provider. Only your photo can be changed here.",
+        "change_photo": "Change photo",
+        "remove_photo": "Remove photo",
+        "remove_title": "Remove profile photo",
+        "remove_confirm": "Remove your profile photo?",
+        "photo_input": "Profile photo file",
+        "nid": "National ID",
+        "upload_success": "Profile photo updated",
+        "upload_failed": "Could not update the profile photo",
+        "remove_success": "Profile photo removed",
+        "remove_failed": "Could not remove the profile photo",
+        "sections": {
+            "personal": "Personal",
+            "contact": "Contact",
+            "address": "Address",
+            "service": "Service"
+        }
     },
     "client_portal": {
         "title": "Client Portal"
@@ -5284,6 +5367,7 @@
             "email": "Email Account",
             "dynamic_ip": "Dynamic IP",
             "package": "Current Package",
+            "live_speed": "Live speed",
             "not_available": "N/A"
         },
         "payment": {
@@ -5291,6 +5375,13 @@
             "no_due": "No invoice due",
             "dialog_title": "Pay Invoice",
             "dialog_description": "Review your due invoices and pay with bKash."
+        },
+        "usage": {
+            "title": "Data Usage",
+            "today": "Today",
+            "this_month": "This Month",
+            "last_month": "Last Month",
+            "unavailable": "Unavailable"
         }
     },
     "marketing": {
@@ -7045,7 +7136,7 @@
         "open_outages": "Open outages",
         "no_open_outages": "No open outages.",
         "outage_started": "Started {{ago}} ago · {{count}} clients",
-        "ticket": "Ticket #{{number}}",
+        "ticket": "Ticket {{number}}",
         "badges": {
             "maintenance": "Maintenance",
             "downstream": "Downstream",
@@ -7267,6 +7358,135 @@
             "stale": "Not polled since {{time}}",
             "never_polled": "Never polled",
             "generic": "No current status from the OLT"
+        }
+    },
+    "notifications": {
+        "title": "Notifications",
+        "view_all": "View all",
+        "mark_read": "Mark read",
+        "mark_unread": "Mark unread",
+        "mark_all_read": "Mark all read",
+        "empty": "No notifications",
+        "loading": "Loading notifications",
+        "error": "Could not load notifications",
+        "sl": "SL",
+        "message": "Message",
+        "when": "When",
+        "filters": {
+            "status": "Status",
+            "all": "All",
+            "read": "Read",
+            "unread": "Unread",
+            "category": "Category"
+        },
+        "categories": {
+            "network": "Network",
+            "client": "Client",
+            "support": "Support",
+            "invoice": "Invoice"
+        },
+        "changes": {
+            "details": "details",
+            "package": "package",
+            "status": "status"
+        },
+        "settings": {
+            "title": "Notification settings",
+            "description": "Choose which events create in-app notifications for this company or reseller. Turning one off stops new notifications and keeps existing history.",
+            "category_on": "New notifications for this category are on",
+            "category_off": "New notifications for this category are off"
+        },
+        "events": {
+            "olt_offline": {
+                "title": "OLT offline",
+                "message": "{{olt_name}} is offline"
+            },
+            "olt_online": {
+                "title": "OLT online",
+                "message": "{{olt_name}} is back online"
+            },
+            "olt_status_changed": {
+                "title": "OLT status changed",
+                "message": "{{olt_name}} is now {{status}}"
+            },
+            "onu_offline": {
+                "title": "ONU offline",
+                "message": "{{onu_name}} is {{status}}"
+            },
+            "onu_online": {
+                "title": "ONU online",
+                "message": "{{onu_name}} is online"
+            },
+            "onu_status_changed": {
+                "title": "ONU status changed",
+                "message": "{{onu_name}} changed from {{from}} to {{to}}"
+            },
+            "onu_status_summary": {
+                "title": "ONU status summary",
+                "message": "{{count}} ONUs on {{olt_name}} changed status"
+            },
+            "client_created": {
+                "title": "Client created",
+                "message": "{{client_name}} was created"
+            },
+            "client_updated": {
+                "title": "Client updated",
+                "message": "{{client_name}} was updated ({{change}})"
+            },
+            "client_deleted": {
+                "title": "Client deleted",
+                "message": "{{client_name}} was deleted"
+            },
+            "ticket_created": {
+                "title": "Ticket opened",
+                "message": "Ticket {{ticket_no}} opened for {{client_name}}"
+            },
+            "ticket_updated": {
+                "title": "Ticket updated",
+                "message": "Ticket {{ticket_no}} was updated"
+            },
+            "ticket_status_changed": {
+                "title": "Ticket status changed",
+                "message": "Ticket {{ticket_no}} is now {{status}}"
+            },
+            "ticket_resolved": {
+                "title": "Ticket resolved",
+                "message": "Ticket {{ticket_no}} was resolved"
+            },
+            "ticket_closed": {
+                "title": "Ticket closed",
+                "message": "Ticket {{ticket_no}} was closed"
+            },
+            "invoice_created": {
+                "title": "Invoice created",
+                "message": "Invoice {{invoice_no}} for {{client_name}}"
+            },
+            "invoice_updated": {
+                "title": "Invoice updated",
+                "message": "Invoice {{invoice_no}} was updated"
+            },
+            "invoices_generated": {
+                "title": "Invoices generated",
+                "message": "{{count}} invoices were generated"
+            },
+            "invoice_overdue": {
+                "title": "Invoices overdue",
+                "message": "{{count}} invoices are overdue ({{amount}})"
+            },
+            "invoice_paid": {
+                "title": "Invoice paid",
+                "message": "Invoice {{invoice_no}} was paid",
+                "collector": "{{collector_name}} collected {{payment_amount}} for {{invoice_no}}",
+                "online": "{{client_name}} paid {{payment_amount}} for {{invoice_no}}",
+                "wallet": "Wallet paid {{payment_amount}} for {{invoice_no}}"
+            },
+            "invoice_partially_paid": {
+                "title": "Invoice partially paid",
+                "message": "Invoice {{invoice_no}} was partially paid",
+                "collector": "{{collector_name}} collected {{payment_amount}} toward {{invoice_no}}",
+                "online": "{{client_name}} paid {{payment_amount}} toward {{invoice_no}}",
+                "wallet": "Wallet paid {{payment_amount}} toward {{invoice_no}}"
+            }
         }
     },
     "about_page": {

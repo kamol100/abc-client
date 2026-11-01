@@ -1,8 +1,8 @@
 "use client";
 
+import { writeThemeModeCookie } from "@/lib/theme/theme-settings";
+import type { ThemeMode } from "@/types/theme-types";
 import * as React from "react";
-
-type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -77,6 +77,8 @@ export function ThemeProvider({
     setThemeState(initialTheme);
     setResolvedTheme(initialResolvedTheme);
     applyThemeClass(initialResolvedTheme);
+    // The page default is never saved, so it cannot follow the visitor into the admin.
+    writeThemeModeCookie(storedTheme ?? defaultTheme);
   }, [defaultTheme, enableSystem, storageKey]);
 
   React.useEffect(() => {
@@ -112,6 +114,7 @@ export function ThemeProvider({
 
       if (typeof window !== "undefined") {
         window.localStorage.setItem(storageKey, nextTheme);
+        writeThemeModeCookie(nextTheme);
       }
     },
     [enableSystem, storageKey],

@@ -9,7 +9,8 @@ export const SMS_TEMPLATE_TYPES = [
   "client_activated",
   "client_deactivated",
   "invoice_due_reminder",
-  "custom",
+  "custom_client",
+  "custom_other",
 ] as const;
 
 export const SMS_TEMPLATE_TYPE_LABEL_KEYS: Record<
@@ -24,7 +25,8 @@ export const SMS_TEMPLATE_TYPE_LABEL_KEYS: Record<
   client_activated: "sms_template.template_type.options.client_activated",
   client_deactivated: "sms_template.template_type.options.client_deactivated",
   invoice_due_reminder: "sms_template.template_type.options.invoice_due_reminder",
-  custom: "sms_template.template_type.options.custom",
+  custom_client: "sms_template.template_type.options.custom_client",
+  custom_other: "sms_template.template_type.options.custom_other",
 };
 
 export type SmsTemplateType = (typeof SMS_TEMPLATE_TYPES)[number];

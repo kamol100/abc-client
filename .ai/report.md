@@ -1,24 +1,21 @@
 ## Summary
 
-Choosing an **Invoice due** or **Invoice due reminder** template limits the Send SMS client table to clients who have an invoice with status `due`. Other templates still list every client with a phone. The list note explains the narrower set, and changing the template clears the previous selection.
+The staff impersonate button is hidden on the signed-in user's own staff row.
 
-## Cause
+## Frontend
 
-The table loaded `GET /sms-clients` with only the search, network, zone, and status filters. The send for those two template types already queues only due invoices, so the table included clients who would not receive the SMS.
-
-## Files
-
-- `components/sms-sent/sms-sent-form.tsx`
-- `components/sms-sent/sms-sent-type.ts`
-- `public/lang/en.json`, `public/lang/bn.json`
-- `tests/unit/sms-sent/sms-sent-type.test.ts`
+- `components/staffs/staff-column.tsx` compares the row with the current profile. A match on the linked user uuid or the staff uuid removes the button.
+- The API still rejects impersonating yourself if that request is sent.
 
 ## Checks
 
-- `scripts/ai/typecheck`: passed.
-- `vitest run tests/unit/sms-sent/sms-sent-type.test.ts`: 5 passed.
-- Browser: not rechecked. The client table appears only after the template details load, and the last signed-in check left the template dropdown on its loading indicator.
+- `scripts/ai/typecheck` passed.
+- `npx vitest run tests/unit/staffs/staff-impersonate.test.tsx tests/unit/staffs/staff-account-lock.test.tsx` passed (15 tests).
 
-## Git
+## Browser
 
-Uncommitted. Earlier uncommitted Send SMS due-amount work is still in `sms-sent-column.tsx`, `sms-sent-type.ts`, and `tests/unit/sms-sent/sms-sent-column.test.tsx`. Backend filter coverage is in `isp-backend`.
+Not rechecked. On `vp.isp.test` the button is still absent for every row because `impersonate.staff` is not in the permission catalog yet, so the own-row case cannot be exercised in the browser.
+
+## Security
+
+Hiding the button is only the UI. `ImpersonationService` still returns 403 for self-impersonation.

@@ -234,6 +234,46 @@ describe("useStartImpersonation", () => {
         expect(state.assign).toHaveBeenCalledWith("/");
     });
 
+    it("posts the staff record id without a tenant id", async () => {
+        state.fetch.mockResolvedValueOnce({ success: false, message: "Failed to impersonate" });
+
+        const { result } = renderImpersonation();
+        await act(async () => {
+            await result.current.impersonate({ id: "staff-uuid" }, "staff");
+        });
+
+        expect(state.fetch).toHaveBeenCalledWith({
+            url: "/impersonate/staff/staff-uuid",
+            method: "POST",
+        });
+        expect(state.assign).not.toHaveBeenCalled();
+    });
+
+    it("ignores a second impersonation request while the first is in flight", async () => {
+        let finish: (value: unknown) => void = () => undefined;
+        state.fetch.mockImplementation(
+            () => new Promise((resolve) => {
+                finish = resolve;
+            }),
+        );
+
+        const { result } = renderImpersonation();
+        let first: Promise<boolean> | undefined;
+        let second: Promise<boolean> | undefined;
+
+        await act(async () => {
+            first = result.current.impersonate({ id: "staff-uuid" }, "staff");
+            second = result.current.impersonate({ id: "staff-uuid" }, "staff");
+        });
+
+        expect(state.fetch).toHaveBeenCalledTimes(1);
+        await act(async () => {
+            finish({ success: false, message: "Failed to impersonate" });
+            await first;
+            await second;
+        });
+    });
+
     it("sends a company id when switching a company", async () => {
         state.fetch.mockResolvedValueOnce({ success: false, message: "Failed to impersonate" });
 

@@ -10,12 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
+import { clientProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import { signOutClient } from "@/lib/auth/client-sign-out";
-import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
+import { CLIENT_DASHBOARD_PATH, CLIENT_PROFILE_PATH } from "@/lib/auth/routes";
 
 function getInitials(name: string): string {
   return name
@@ -32,7 +33,12 @@ export function ClientProfile() {
   const { profile } = useProfile();
   const name = profile?.name ?? "";
   const email = profile?.email ?? "";
-  const avatar = profile?.avatar ?? undefined;
+  const phone =
+    profile?.phone != null && String(profile.phone).trim() !== ""
+      ? String(profile.phone)
+      : "";
+  const subtitle = phone || email;
+  const avatar = clientProfileAvatarSrc(profile?.photo);
 
   const handleLogout = async () => {
     await signOutClient();
@@ -48,7 +54,7 @@ export function ClientProfile() {
         >
           <span className="sr-only">{t("client_profile.menu")}</span>
           <Avatar className="rounded-full border-2 border-background">
-            <AvatarImage src={avatar} alt={name} />
+            {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
             <AvatarFallback className="rounded-full bg-primary/10 text-primary text-xs font-medium">
               {name ? getInitials(name) : "?"}
             </AvatarFallback>
@@ -59,7 +65,7 @@ export function ClientProfile() {
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
             <Avatar className="h-9 w-9 rounded-full shrink-0">
-              <AvatarImage src={avatar} alt={name} />
+              {avatar ? <AvatarImage src={avatar} alt={name} /> : null}
               <AvatarFallback className="rounded-full bg-primary/10 text-primary text-sm font-medium">
                 {name ? getInitials(name) : "?"}
               </AvatarFallback>
@@ -67,7 +73,7 @@ export function ClientProfile() {
             <div className="grid min-w-0 flex-1 leading-tight">
               <span className="truncate font-medium">{name || "—"}</span>
               <span className="truncate text-xs text-muted-foreground">
-                {email || "—"}
+                {subtitle || "—"}
               </span>
             </div>
           </div>
@@ -77,6 +83,12 @@ export function ClientProfile() {
           <Link href={CLIENT_DASHBOARD_PATH} className="flex items-center gap-2">
             <LayoutDashboard className="h-4 w-4" />
             {t("client_profile.dashboard")}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={CLIENT_PROFILE_PATH} className="flex items-center gap-2">
+            <UserRound className="h-4 w-4" />
+            {t("client_profile.profile")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

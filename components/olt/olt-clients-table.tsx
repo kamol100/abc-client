@@ -63,6 +63,7 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
             cell: ({ row }) => (
                 <ClientNamePhoneCell
                     client={{
+                        id: row.original.id,
                         name: row.original.name,
                         pppoe_username: row.original.pppoe_username,
                         phone: row.original.phone,

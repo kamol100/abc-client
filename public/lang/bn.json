@@ -201,7 +201,7 @@
         "designation": "পদবী",
         "join_date": "যোগদানের তারিখ",
         "salary_type": "বেতনের ধরন",
-        "ticketId": "টিকেট আইডি",
+        "ticket_code": "টিকেট আইডি",
         "client": "ক্লায়েন্ট",
         "tag": "ট্যাগ",
         "messages_count": "মেসেজ",
@@ -822,7 +822,8 @@
         "sms_type": {
             "label": "টাইপ",
             "options": {
-                "custom": "কাস্টম",
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য",
                 "invoice_due": "ইনভয়েস ডিউ",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
                 "client_activation": "ক্লায়েন্ট অ্যাক্টিভেশন",
@@ -873,7 +874,8 @@
             "label": "টাইপ",
             "options": {
                 "all": "সব",
-                "custom": "কাস্টম",
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য",
                 "invoice_due": "ইনভয়েস ডিউ",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার"
             }
@@ -1052,6 +1054,12 @@
         "unlock_account": "অ্যাকাউন্ট আনলক",
         "account_locked": "স্টাফ অ্যাকাউন্ট লক হয়েছে",
         "account_unlocked": "স্টাফ অ্যাকাউন্ট আনলক হয়েছে",
+        "impersonate": {
+            "tooltip": "এই স্টাফ হিসেবে লগইন করুন",
+            "confirm_title": "এই স্টাফ হিসেবে লগইন করুন",
+            "confirm": "{{name}} হিসেবে লগইন করবেন? পরে নিজের অ্যাকাউন্টে ফিরে আসতে পারবেন।",
+            "confirm_action": "লগইন"
+        },
         "reset_password": {
             "title": "পাসওয়ার্ড রিসেট",
             "submit": "পাসওয়ার্ড রিসেট",
@@ -1404,6 +1412,7 @@
         },
         "pppoe_username": {
             "label": "পিপিপিওই আইডি",
+            "next_sid": "এসআইডি:{{sid}}",
             "placeholder": "পিপিপিওই আইডি দিন",
             "errors": {
                 "required": "পিপিপিওই আইডি আবশ্যক"
@@ -1880,7 +1889,19 @@
             "edit": "এডিট",
             "pay": "পে",
             "print": "প্রিন্ট",
-            "delete": "ডিলিট"
+            "delete": "ডিলিট",
+            "view": "দেখুন"
+        },
+        "view": {
+            "title": "ইনভয়েস দেখুন",
+            "heading": "ইনভয়েস",
+            "invoice_date": "ইনভয়েস তারিখ",
+            "total_bill": "মোট বিল",
+            "merchant": "মার্চেন্ট",
+            "customer": "কাস্টমার",
+            "product": "প্রোডাক্ট",
+            "unit_price": "ইউনিট প্রাইস",
+            "total_quantity": "মোট পরিমাণ"
         },
         "pay": {
             "title": "ইনভয়েস পে",
@@ -2169,6 +2190,7 @@
         "phone_number": {
             "label": "ফোন নম্বর",
             "placeholder": "ফোন নম্বর দিন",
+            "hint": "ক্লায়েন্টদের এসএমএস পাঠাতে একটি এসএমএস টেমপ্লেট নির্বাচন করুন, অথবা যেকোনো ফোন নম্বরে এসএমএস পাঠাতে কাস্টম অন্যান্য বেছে নিন।",
             "errors": {
                 "required": "ফোন নম্বর আবশ্যক"
             }
@@ -2262,6 +2284,8 @@
         "create_title": "এসএমএস টেমপ্লেট যোগ করুন",
         "edit_title": "এসএমএস টেমপ্লেট এডিট",
         "delete_confirmation": "আপনি কি নিশ্চিত এই এসএমএস টেমপ্লেটটি মুছে ফেলতে চান?",
+        "import": "ইমপোর্ট",
+        "import_success": "এসএমএস টেমপ্লেট ইমপোর্ট হয়েছে",
         "name": {
             "label": "টেমপ্লেট নাম",
             "placeholder": "টেমপ্লেট নাম দিন",
@@ -2287,7 +2311,8 @@
                 "client_activated": "ক্লায়েন্ট অ্যাক্টিভেটেড",
                 "client_deactivated": "ক্লায়েন্ট ডিএ্যাক্টিভেটেড",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
-                "custom": "কাস্টম"
+                "custom_client": "কাস্টম ক্লায়েন্ট",
+                "custom_other": "কাস্টম অন্যান্য"
             }
         },
         "message": {
@@ -2568,6 +2593,9 @@
         "edit_title": "প্রোডাক্ট এডিট করুন",
         "delete_confirmation": "আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?",
         "sl": "SL",
+        "product_code": {
+            "label": "প্রোডাক্ট আইডি"
+        },
         "stock_in": {
             "label": "স্টক ইন"
         },
@@ -3543,7 +3571,11 @@
         },
         "fund": {
             "label": "ফান্ড",
-            "placeholder": "ফান্ড"
+            "placeholder": "ফান্ড",
+            "errors": {
+                "required": "ফান্ড আবশ্যক",
+                "unassigned": "আপনার কোনো ফান্ড অ্যাকাউন্ট নেই। অনুগ্রহ করে আপনার অ্যাডমিনের সাথে যোগাযোগ করুন।"
+            }
         },
         "transaction_type": {
             "label": "ট্রানজেকশন টাইপ",
@@ -3827,12 +3859,12 @@
             "unavailable": "ছবি লোড করা যায়নি"
         }
     },
-    "telegram_zone": {
-        "title": "টেলিগ্রাম জোন",
-        "title_plural": "টেলিগ্রাম জোন",
-        "create_title": "টেলিগ্রাম জোন যোগ করুন",
-        "edit_title": "টেলিগ্রাম জোন এডিট করুন",
-        "delete_confirmation": "আপনি কি নিশ্চিত এই টেলিগ্রাম জোনটি ডিলিট করতে চান?",
+    "telegram": {
+        "title": "টেলিগ্রাম",
+        "title_plural": "টেলিগ্রাম",
+        "create_title": "টেলিগ্রাম যোগ করুন",
+        "edit_title": "টেলিগ্রাম এডিট করুন",
+        "delete_confirmation": "আপনি কি নিশ্চিত এই টেলিগ্রামটি ডিলিট করতে চান?",
         "name": {
             "label": "নাম",
             "placeholder": "নাম লিখুন",
@@ -3864,6 +3896,29 @@
             "options": {
                 "active": "সক্রিয়",
                 "inactive": "নিষ্ক্রিয়"
+            }
+        },
+        "notifications": {
+            "title": "নোটিফিকেশন",
+            "description": "এই চ্যানেলে কোন ইভেন্টে মেসেজ যাবে তা নির্বাচন করুন।",
+            "groups": {
+                "client": "ক্লায়েন্ট",
+                "fund_transaction": "ফান্ড ট্রানজেকশন",
+                "invoice": "ইনভয়েস",
+                "expense": "এক্সপেন্স",
+                "ticket": "টিকেট",
+                "network": "নেটওয়ার্ক",
+                "package": "প্যাকেজ",
+                "vendor": "ভেন্ডর",
+                "onu": "ওএনইউ"
+            },
+            "actions": {
+                "create": "ক্রিয়েট",
+                "update": "আপডেট",
+                "delete": "ডিলিট",
+                "auto_generate": "অটো জেনারেট",
+                "paid": "পেইড",
+                "low_power": "লো অপটিক্যাল পাওয়ার"
             }
         }
     },
@@ -4503,6 +4558,22 @@
             "deleted": "আর্কাইভ ক্লায়েন্ট স্থায়ীভাবে ডিলিট হয়েছে"
         }
     },
+    "traffic_report": {
+        "title": "ট্রাফিক রিপোর্ট",
+        "this_week": "এই সপ্তাহের ডাটা",
+        "this_month": "এই মাসের ডাটা",
+        "last_month": "গত মাসের ডাটা",
+        "download": "ডাউনলোড ডাটা",
+        "upload": "আপলোড ডাটা",
+        "total": "মোট ডাটা",
+        "chart_title": "ব্যবহার",
+        "date_range": "তারিখের পরিসর",
+        "unavailable": "পাওয়া যায়নি",
+        "empty": "এই সময়ে কোনো ব্যবহার রেকর্ড নেই",
+        "incomplete": "এই সময়ে ব্যবহার সংগ্রহ শুরু হয়েছে",
+        "omitted_days": "যেসব দিনে ট্রাফিক রেকর্ড হয়নি সেগুলো দেখানো হয় না",
+        "retry": "আবার চেষ্টা করুন"
+    },
     "menu": {
         "dashboard": {
             "title": "ড্যাশবোর্ড"
@@ -4560,6 +4631,9 @@
             "gateways": {
                 "title": "পেমেন্ট গেটওয়ে"
             }
+        },
+        "traffic_report": {
+            "title": "ট্রাফিক রিপোর্ট"
         },
         "maps": {
             "title": "ম্যাপ",
@@ -4620,8 +4694,8 @@
             "logs": {
                 "title": "লগ"
             },
-            "telegram_zone": {
-                "title": "টেলিগ্রাম জোন"
+            "telegram": {
+                "title": "টেলিগ্রাম"
             }
         },
         "sms": {
@@ -4762,15 +4836,18 @@
             "payments": {
                 "title": "পেমেন্ট"
             },
-            "telegram": {
-                "title": "টেলিগ্রাম"
-            },
             "monitoring": {
                 "title": "মনিটরিং"
+            },
+            "notifications": {
+                "title": "নোটিফিকেশন"
             }
         },
         "noc": {
             "title": "এনওসি"
+        },
+        "notifications": {
+            "title": "নোটিফিকেশন"
         }
     },
     "settings": {
@@ -4810,7 +4887,7 @@
             },
             "telegram": {
                 "title": "টেলিগ্রাম সেটিংস",
-                "description": "টেলিগ্রাম টোকেন এবং ইভেন্ট নোটিফিকেশন কনফিগার করুন।"
+                "description": "টেলিগ্রাম বট টোকেন কনফিগার করুন।"
             },
             "dashboard": {
                 "title": "ড্যাশবোর্ড সেটিংস",
@@ -4889,15 +4966,20 @@
                     "range": "-40 থেকে -10 এর মধ্যে একটি মান দিন"
                 }
             },
-            "telegram_onu_low_power": {
-                "label": "দুর্বল ওএনইউ পাওয়ারের টেলিগ্রাম অ্যালার্ট"
-            },
             "pid_prefix": {
                 "label": "পেমেন্ট আইডি প্রিফিক্স"
             },
             "expense_id_prefix": {
                 "label": "এক্সপেন্স আইডি প্রিফিক্স",
                 "placeholder": "EXP"
+            },
+            "product_code_prefix": {
+                "label": "প্রোডাক্ট আইডি প্রিফিক্স",
+                "placeholder": "PRO"
+            },
+            "ticket_code_prefix": {
+                "label": "টিকিট আইডি প্রিফিক্স",
+                "placeholder": "TKT"
             },
             "client_view_open_on_new_tab": {
                 "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"
@@ -4977,10 +5059,6 @@
                 "label": "টেলিগ্রাম বট টোকেন",
                 "placeholder": "টেলিগ্রাম বট টোকেন দিন"
             },
-            "telegram_channel_id": {
-                "label": "টেলিগ্রাম চ্যানেল আইডি",
-                "placeholder": "টেলিগ্রাম চ্যানেল আইডি দিন"
-            },
             "sms_auto_invoice_schedule": {
                 "label": "অটো ইনভয়েস SMS শিডিউল",
                 "placeholder": "SMS শিডিউল টাইম সিলেক্ট করুন"
@@ -5028,81 +5106,6 @@
             },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "অটো ইনঅ্যাক্টিভ রিসেলার ক্লায়েন্ট টার্মিনেশন তারিখ"
-            },
-            "telegram_client_create": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট ক্রিয়েট"
-            },
-            "telegram_client_update": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট আপডেট"
-            },
-            "telegram_client_delete": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট ডিলিট"
-            },
-            "telegram_fund_transaction_create": {
-                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ক্রিয়েট"
-            },
-            "telegram_fund_transaction_delete": {
-                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ডিলিট"
-            },
-            "telegram_invoice_create": {
-                "label": "টেলিগ্রাম ইনভয়েস ক্রিয়েট"
-            },
-            "telegram_invoice_auto_generate": {
-                "label": "টেলিগ্রাম ইনভয়েস অটো জেনারেট"
-            },
-            "telegram_invoice_update": {
-                "label": "টেলিগ্রাম ইনভয়েস আপডেট"
-            },
-            "telegram_invoice_paid": {
-                "label": "টেলিগ্রাম ইনভয়েস পেইড"
-            },
-            "telegram_invoice_delete": {
-                "label": "টেলিগ্রাম ইনভয়েস ডিলিট"
-            },
-            "telegram_expense_create": {
-                "label": "টেলিগ্রাম এক্সপেন্স ক্রিয়েট"
-            },
-            "telegram_expense_update": {
-                "label": "টেলিগ্রাম এক্সপেন্স আপডেট"
-            },
-            "telegram_expense_delete": {
-                "label": "টেলিগ্রাম এক্সপেন্স ডিলিট"
-            },
-            "telegram_ticket_create": {
-                "label": "টেলিগ্রাম টিকেট ক্রিয়েট"
-            },
-            "telegram_ticket_update": {
-                "label": "টেলিগ্রাম টিকেট আপডেট"
-            },
-            "telegram_ticket_delete": {
-                "label": "টেলিগ্রাম টিকেট ডিলিট"
-            },
-            "telegram_network_create": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক ক্রিয়েট"
-            },
-            "telegram_network_update": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক আপডেট"
-            },
-            "telegram_network_delete": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক ডিলিট"
-            },
-            "telegram_package_create": {
-                "label": "টেলিগ্রাম প্যাকেজ ক্রিয়েট"
-            },
-            "telegram_package_update": {
-                "label": "টেলিগ্রাম প্যাকেজ আপডেট"
-            },
-            "telegram_package_delete": {
-                "label": "টেলিগ্রাম প্যাকেজ ডিলিট"
-            },
-            "telegram_vendor_create": {
-                "label": "টেলিগ্রাম ভেন্ডর ক্রিয়েট"
-            },
-            "telegram_vendor_update": {
-                "label": "টেলিগ্রাম ভেন্ডর আপডেট"
-            },
-            "telegram_vendor_delete": {
-                "label": "টেলিগ্রাম ভেন্ডর ডিলিট"
             },
             "dashboard_show_client": {
                 "label": "ক্লায়েন্ট কার্ড"
@@ -5172,6 +5175,12 @@
         "title": "থিম কাস্টমাইজার",
         "description": "আপনার থিম কাস্টমাইজ করুন।",
         "aria_label": "থিম কাস্টমাইজ করুন",
+        "preset": {
+            "label": "প্রিসেট",
+            "default": "ডিফল্ট",
+            "jomuna": "যমুনা",
+            "hint": "যমুনা রেফারেন্স প্যালেট ব্যবহার করে। রঙ, ডেনসিটি এবং ড্রয়ারের দিক আগের মতোই থাকে।"
+        },
         "color": {
             "label": "রঙ",
             "green": "গ্রিন",
@@ -5183,6 +5192,58 @@
             "pink": "পিঙ্ক",
             "indigo": "ইন্ডিগো",
             "purple": "পার্পল"
+        },
+        "colors": {
+            "primary": "প্রাইমারি",
+            "secondary": "সেকেন্ডারি",
+            "accent": "অ্যাকসেন্ট",
+            "background": "ব্যাকগ্রাউন্ড",
+            "sidebar": "সাইডবার",
+            "reset": "কাস্টম রঙ রিসেট"
+        },
+        "gradients": {
+            "on": "গ্রেডিয়েন্ট চালু",
+            "off": "গ্রেডিয়েন্ট বন্ধ",
+            "brand": "ব্র্যান্ড",
+            "ocean": "ওশান",
+            "sunset": "সানসেট"
+        },
+        "typography": {
+            "geist": "Geist",
+            "plex": "Plex + বাংলা",
+            "sm": "ছোট",
+            "md": "মাঝারি",
+            "lg": "বড়"
+        },
+        "appearance": {
+            "button_radius": "বাটন রেডিয়াস",
+            "card_radius": "কার্ড রেডিয়াস",
+            "dialog_radius": "ডায়ালগ রেডিয়াস",
+            "match": "ম্যাচ",
+            "shadow": "ছায়া",
+            "shadow_none": "নেই",
+            "shadow_soft": "নরম",
+            "shadow_medium": "মাঝারি",
+            "shadow_strong": "শক্ত",
+            "border": "বর্ডার",
+            "border_hairline": "চিকন",
+            "border_subtle": "হালকা",
+            "border_strong": "স্পষ্ট"
+        },
+        "sections": {
+            "appearance": "অ্যাপিয়ারেন্স",
+            "colors": "রঙ",
+            "gradients": "গ্রেডিয়েন্ট",
+            "typography": "টাইপোগ্রাফি",
+            "layout": "আকৃতি"
+        },
+        "preview": {
+            "nav": "সক্রিয়",
+            "idle": "মেনু",
+            "kicker": "লাইভ প্রিভিউ",
+            "sample": "কার্ড, টাইপ ও অ্যাকশন",
+            "primary": "প্রাইমারি",
+            "secondary": "সেকেন্ডারি"
         },
         "radius": {
             "label": "রেডিয়াস"
@@ -5196,7 +5257,8 @@
         "mode": {
             "label": "মোড",
             "light": "লাইট",
-            "dark": "ডার্ক"
+            "dark": "ডার্ক",
+            "system": "সিস্টেম"
         },
         "mobile_drawer": {
             "label": "মোবাইল ড্রয়ার",
@@ -5254,8 +5316,29 @@
         "aria_label": "ক্লায়েন্ট মেনু",
         "menu": "ক্লায়েন্ট মেনু",
         "dashboard": "ড্যাশবোর্ড",
+        "profile": "আমার প্রোফাইল",
         "sign_out": "সাইন আউট",
         "fallback_name": "ক্লায়েন্ট"
+    },
+    "client_account": {
+        "title": "আমার প্রোফাইল",
+        "subtitle": "ইন্টারনেট প্রোভাইডারকে দেওয়া আপনার তথ্য। এখানে শুধু প্রোফাইল ছবি বদলানো যাবে।",
+        "change_photo": "ছবি বদলান",
+        "remove_photo": "ছবি সরান",
+        "remove_title": "প্রোফাইল ছবি সরান",
+        "remove_confirm": "প্রোফাইল ছবি সরিয়ে ফেলবেন?",
+        "photo_input": "প্রোফাইল ছবির ফাইল",
+        "nid": "জাতীয় পরিচয়পত্র",
+        "upload_success": "প্রোফাইল ছবি আপডেট হয়েছে",
+        "upload_failed": "প্রোফাইল ছবি আপডেট করা যায়নি",
+        "remove_success": "প্রোফাইল ছবি সরানো হয়েছে",
+        "remove_failed": "প্রোফাইল ছবি সরানো যায়নি",
+        "sections": {
+            "personal": "ব্যক্তিগত",
+            "contact": "যোগাযোগ",
+            "address": "ঠিকানা",
+            "service": "সংযোগ"
+        }
     },
     "client_portal": {
         "title": "ক্লায়েন্ট পোর্টাল"
@@ -5284,6 +5367,7 @@
             "email": "ইমেইল অ্যাকাউন্ট",
             "dynamic_ip": "ডায়নামিক আইপি",
             "package": "বর্তমান প্যাকেজ",
+            "live_speed": "লাইভ স্পিড",
             "not_available": "প্রযোজ্য নয়"
         },
         "payment": {
@@ -5291,6 +5375,13 @@
             "no_due": "কোনো ইনভয়েস ডিউ নেই",
             "dialog_title": "ইনভয়েস পেমেন্ট",
             "dialog_description": "ডিউ ইনভয়েস দেখে বিকাশে পেমেন্ট সম্পন্ন করুন।"
+        },
+        "usage": {
+            "title": "ডেটা ব্যবহার",
+            "today": "আজ",
+            "this_month": "এই মাস",
+            "last_month": "গত মাস",
+            "unavailable": "পাওয়া যায়নি"
         }
     },
     "marketing": {
@@ -7045,7 +7136,7 @@
         "open_outages": "চলমান আউটেজ",
         "no_open_outages": "কোনো চলমান আউটেজ নেই।",
         "outage_started": "{{ago}} আগে শুরু · {{count}} ক্লায়েন্ট",
-        "ticket": "টিকেট #{{number}}",
+        "ticket": "টিকেট {{number}}",
         "badges": {
             "maintenance": "রক্ষণাবেক্ষণ",
             "downstream": "ডাউনস্ট্রিম",
@@ -7267,6 +7358,135 @@
             "stale": "{{time}} থেকে পোল হয়নি",
             "never_polled": "এখনও পোল হয়নি",
             "generic": "ওএলটি থেকে বর্তমান স্ট্যাটাস নেই"
+        }
+    },
+    "notifications": {
+        "title": "নোটিফিকেশন",
+        "view_all": "সব দেখুন",
+        "mark_read": "পঠিত",
+        "mark_unread": "অপঠিত",
+        "mark_all_read": "সব পঠিত করুন",
+        "empty": "কোনো নোটিফিকেশন নেই",
+        "loading": "নোটিফিকেশন লোড হচ্ছে",
+        "error": "নোটিফিকেশন লোড করা যায়নি",
+        "sl": "ক্রম",
+        "message": "বার্তা",
+        "when": "সময়",
+        "filters": {
+            "status": "অবস্থা",
+            "all": "সব",
+            "read": "পঠিত",
+            "unread": "অপঠিত",
+            "category": "ধরন"
+        },
+        "categories": {
+            "network": "নেটওয়ার্ক",
+            "client": "ক্লায়েন্ট",
+            "support": "সাপোর্ট",
+            "invoice": "ইনভয়েস"
+        },
+        "changes": {
+            "details": "বিবরণ",
+            "package": "প্যাকেজ",
+            "status": "স্ট্যাটাস"
+        },
+        "settings": {
+            "title": "নোটিফিকেশন সেটিংস",
+            "description": "এই কোম্পানি বা রিসেলারের জন্য কোন ইভেন্টে ইন-অ্যাপ নোটিফিকেশন যাবে তা বেছে নিন। বন্ধ করলে নতুন নোটিফিকেশন তৈরি হয় না, আগের ইতিহাস থাকে।",
+            "category_on": "এই ধরনের নতুন নোটিফিকেশন চালু",
+            "category_off": "এই ধরনের নতুন নোটিফিকেশন বন্ধ"
+        },
+        "events": {
+            "olt_offline": {
+                "title": "OLT অফলাইন",
+                "message": "{{olt_name}} অফলাইন"
+            },
+            "olt_online": {
+                "title": "OLT অনলাইন",
+                "message": "{{olt_name}} আবার অনলাইন"
+            },
+            "olt_status_changed": {
+                "title": "OLT স্ট্যাটাস বদলেছে",
+                "message": "{{olt_name}} এখন {{status}}"
+            },
+            "onu_offline": {
+                "title": "ONU অফলাইন",
+                "message": "{{onu_name}} এখন {{status}}"
+            },
+            "onu_online": {
+                "title": "ONU অনলাইন",
+                "message": "{{onu_name}} অনলাইন"
+            },
+            "onu_status_changed": {
+                "title": "ONU স্ট্যাটাস বদলেছে",
+                "message": "{{onu_name}} {{from}} থেকে {{to}} হয়েছে"
+            },
+            "onu_status_summary": {
+                "title": "ONU স্ট্যাটাস সারাংশ",
+                "message": "{{olt_name}}-এ {{count}}টি ONU-র স্ট্যাটাস বদলেছে"
+            },
+            "client_created": {
+                "title": "ক্লায়েন্ট তৈরি",
+                "message": "{{client_name}} তৈরি হয়েছে"
+            },
+            "client_updated": {
+                "title": "ক্লায়েন্ট আপডেট",
+                "message": "{{client_name}} আপডেট হয়েছে ({{change}})"
+            },
+            "client_deleted": {
+                "title": "ক্লায়েন্ট মুছেছে",
+                "message": "{{client_name}} মুছে ফেলা হয়েছে"
+            },
+            "ticket_created": {
+                "title": "টিকিট খোলা হয়েছে",
+                "message": "{{client_name}}-এর টিকিট {{ticket_no}} খোলা হয়েছে"
+            },
+            "ticket_updated": {
+                "title": "টিকিট আপডেট",
+                "message": "টিকিট {{ticket_no}} আপডেট হয়েছে"
+            },
+            "ticket_status_changed": {
+                "title": "টিকিটের স্ট্যাটাস বদলেছে",
+                "message": "টিকিট {{ticket_no}} এখন {{status}}"
+            },
+            "ticket_resolved": {
+                "title": "টিকিট সমাধান",
+                "message": "টিকিট {{ticket_no}} সমাধান হয়েছে"
+            },
+            "ticket_closed": {
+                "title": "টিকিট বন্ধ",
+                "message": "টিকিট {{ticket_no}} বন্ধ হয়েছে"
+            },
+            "invoice_created": {
+                "title": "ইনভয়েস তৈরি",
+                "message": "{{client_name}}-এর ইনভয়েস {{invoice_no}}"
+            },
+            "invoice_updated": {
+                "title": "ইনভয়েস আপডেট",
+                "message": "ইনভয়েস {{invoice_no}} আপডেট হয়েছে"
+            },
+            "invoices_generated": {
+                "title": "ইনভয়েস তৈরি হয়েছে",
+                "message": "{{count}}টি ইনভয়েস তৈরি হয়েছে"
+            },
+            "invoice_overdue": {
+                "title": "বকেয়া ইনভয়েস",
+                "message": "{{count}}টি ইনভয়েস বকেয়া ({{amount}})"
+            },
+            "invoice_paid": {
+                "title": "ইনভয়েস পরিশোধ",
+                "message": "ইনভয়েস {{invoice_no}} পরিশোধ হয়েছে",
+                "collector": "{{collector_name}} {{invoice_no}}-এর {{payment_amount}} সংগ্রহ করেছেন",
+                "online": "{{client_name}} {{invoice_no}}-এর {{payment_amount}} পরিশোধ করেছেন",
+                "wallet": "ওয়ালেট থেকে {{invoice_no}}-এর {{payment_amount}} পরিশোধ হয়েছে"
+            },
+            "invoice_partially_paid": {
+                "title": "আংশিক পরিশোধ",
+                "message": "ইনভয়েস {{invoice_no}} আংশিক পরিশোধ হয়েছে",
+                "collector": "{{collector_name}} {{invoice_no}}-এর জন্য {{payment_amount}} সংগ্রহ করেছেন",
+                "online": "{{client_name}} {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ করেছেন",
+                "wallet": "ওয়ালেট থেকে {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ হয়েছে"
+            }
         }
     },
     "about_page": {

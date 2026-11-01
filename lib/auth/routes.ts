@@ -8,6 +8,7 @@ export function clientLoginUrl(origin: string): string {
 }
 export const LEGACY_CLIENT_LOGIN_PATH = "/client/login";
 export const CLIENT_DASHBOARD_PATH = "/client/dashboard";
+export const CLIENT_PROFILE_PATH = "/client/profile";
 
 /** Marketing and tenant landing URLs. Signed-in visitors leave only these for the dashboard. */
 export function isHomePathname(pathname: string): boolean {

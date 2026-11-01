@@ -9,22 +9,16 @@ import { Badge } from "../ui/badge";
 import { SalaryRow } from "./salary-type";
 
 const STATUS_STYLES: Record<string, string> = {
-  paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
-  pending:
-    "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
-  approved:
-    "bg-blue-600/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400",
-  repay:
-    "bg-violet-600/10 text-violet-600 dark:bg-violet-400/10 dark:text-violet-400",
-  cancelled:
-    "bg-destructive/10 text-destructive dark:bg-destructive/20",
+  paid: "theme-badge-success",
+  pending: "theme-badge-warning",
+  approved: "theme-badge-info",
+  repay: "theme-badge-info",
+  cancelled: "theme-badge-danger",
 };
 
 const TYPE_STYLES: Record<string, string> = {
-  monthly:
-    "bg-purple-600/10 text-purple-600 dark:bg-purple-400/10 dark:text-purple-400",
-  advance:
-    "bg-orange-600/10 text-orange-600 dark:bg-orange-400/10 dark:text-orange-400",
+  monthly: "theme-badge-info",
+  advance: "theme-badge-warning",
 };
 
 type Props = {

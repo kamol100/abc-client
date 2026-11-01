@@ -8,6 +8,8 @@ describe("expense id prefix setting", () => {
             "invoice_prefix",
             "pid_prefix",
             "expense_id_prefix",
+            "product_code_prefix",
+            "ticket_code_prefix",
             "auto_inactive_client_invoice_due",
             "client_view_open_on_new_tab",
             "client_edit_open_on_new_tab",
@@ -28,5 +30,33 @@ describe("expense id prefix setting", () => {
     it("keeps a saved prefix", () => {
         expect(normalizeSettingValueForForm("expense_id_prefix", "BILL")).toBe("BILL");
         expect(normalizeSettingValueForForm("expense_id_prefix", " exp ")).toBe("exp");
+    });
+});
+
+describe("product code prefix setting", () => {
+    it("shows PRO when the company has not saved a prefix", () => {
+        expect(normalizeSettingValueForForm("product_code_prefix", undefined)).toBe("PRO");
+        expect(normalizeSettingValueForForm("product_code_prefix", null)).toBe("PRO");
+        expect(normalizeSettingValueForForm("product_code_prefix", "")).toBe("PRO");
+        expect(normalizeSettingValueForForm("product_code_prefix", "   ")).toBe("PRO");
+    });
+
+    it("keeps a saved prefix", () => {
+        expect(normalizeSettingValueForForm("product_code_prefix", "SKU")).toBe("SKU");
+        expect(normalizeSettingValueForForm("product_code_prefix", " pro ")).toBe("pro");
+    });
+});
+
+describe("ticket code prefix setting", () => {
+    it("shows TKT when the company has not saved a prefix", () => {
+        expect(normalizeSettingValueForForm("ticket_code_prefix", undefined)).toBe("TKT");
+        expect(normalizeSettingValueForForm("ticket_code_prefix", null)).toBe("TKT");
+        expect(normalizeSettingValueForForm("ticket_code_prefix", "")).toBe("TKT");
+        expect(normalizeSettingValueForForm("ticket_code_prefix", "   ")).toBe("TKT");
+    });
+
+    it("keeps a saved prefix", () => {
+        expect(normalizeSettingValueForForm("ticket_code_prefix", "SUP")).toBe("SUP");
+        expect(normalizeSettingValueForForm("ticket_code_prefix", " tkt ")).toBe("tkt");
     });
 });

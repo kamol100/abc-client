@@ -7,6 +7,7 @@ import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-build
 import ClientImageFields from "@/components/clients/client-image-fields";
 import ClientFormFieldSchema from "@/components/clients/client-form-schema";
 import { ClientFormSchema, type ClientRow } from "@/components/clients/client-type";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
 type Props = {
   mode?: "create" | "edit";
@@ -32,10 +33,17 @@ const ClientForm: FC<Props> = ({
   data,
 }) => {
   const router = useRouter();
+  const { data: nextSidResponse } = useApiQuery<ApiResponse<{ sid: number }>>({
+    queryKey: ["clients", "next-sid"],
+    url: "client-next-sid",
+    pagination: false,
+    enabled: mode === "create",
+  });
+  const nextSid = nextSidResponse?.data?.sid;
 
   return (
     <AccordionFormBuilder
-      formSchema={ClientFormFieldSchema({ mode })}
+      formSchema={ClientFormFieldSchema({ mode, nextSid })}
       grids={2}
       data={data}
       api={api}

@@ -1,17 +1,15 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Eye, Plus } from "lucide-react";
+import { Eye } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
+import { cellIndex, toNumber } from "@/lib/helper/helper";
 import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import { MyDialog } from "@/components/my-dialog";
-import { Badge } from "@/components/ui/badge";
-import FundTransactionForm from "@/components/fund-transactions/fund-transaction-form";
 import FundTransactionTable from "@/components/fund-transactions/fund-transaction-table";
 import FundForm from "./fund-form";
 import { FundRow } from "./fund-type";
@@ -23,11 +21,9 @@ type GetPagination = () => Pagination | undefined;
 const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
-  const [openTransactionForm, setOpenTransactionForm] = useState(false);
   const [openTransactions, setOpenTransactions] = useState(false);
 
   const canEdit = hasPermission("funds.edit");
-  const canCreateTransaction = hasPermission("fund-transactions.create");
   const canViewTransactions = hasPermission("fund-transactions.show");
   const canDelete = hasPermission("funds.delete");
 
@@ -40,27 +36,6 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
           api="/funds"
           method="PUT"
         />
-      )}
-
-      {canCreateTransaction && (
-        <>
-          <MyButton
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => setOpenTransactionForm(true)}
-            title={t("fund_transaction.create_title")}
-          >
-            <Plus className="h-4 w-4 " />
-          </MyButton>
-          <FundTransactionForm
-            fundId={fund.id}
-            fundName={fund.name}
-            fundBalance={fund.balance}
-            open={openTransactionForm}
-            onOpenChange={setOpenTransactionForm}
-          />
-        </>
       )}
 
       {canViewTransactions && (
@@ -86,7 +61,11 @@ const FundActionsCell: FC<{ fund: FundRow }> = ({ fund }) => {
               queryKey={`fund-transactions-${fund.id}`}
               includeFundFilter={false}
               showFundColumn={false}
-              hideCreateAction
+              fund={{
+                id: fund.id,
+                name: fund.name,
+                balance: fund.balance,
+              }}
             />
           </MyDialog>
         </>
@@ -156,7 +135,7 @@ export const getFundColumns = (
         <DataTableColumnHeader column={column} title="fund.balance.label" />
       ),
       cell: ({ row }) => (
-        <MyBadge icon={false} variant="outline" color="green">
+        <MyBadge icon={false} variant="outline" type="success">
           <DisplayCount amount={toNumber(row.original.balance)} formatCurrency />
         </MyBadge>
       ),

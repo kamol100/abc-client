@@ -17,10 +17,9 @@ import {
 import type { ProductMovementMode } from "@/components/products/product-movement-filter-schema";
 
 const STATUS_STYLES: Record<string, string> = {
-    new: "bg-blue-600/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400",
-    old: "bg-amber-600/10 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400",
-    replace:
-        "bg-purple-600/10 text-purple-600 dark:bg-purple-400/10 dark:text-purple-400",
+    new: "theme-badge-info",
+    old: "theme-badge-warning",
+    replace: "theme-badge-info",
 };
 
 type UseProductMovementColumnsOptions = {

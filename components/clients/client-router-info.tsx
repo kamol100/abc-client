@@ -362,7 +362,7 @@ const ClientRouterInfo: FC<Props> = ({ client }) => {
                     </InfoRow>
                     <InfoRow label={t("client.basic_view.is_online")}>
                         {routerData?.is_online ? (
-                            <Badge variant="default" className="gap-1 bg-green-600 hover:bg-green-700">
+                            <Badge variant="default" className="theme-badge-success-solid gap-1">
                                 <Network className="h-3.5 w-3.5" />
                                 {t("client.basic_view.online")}
                             </Badge>

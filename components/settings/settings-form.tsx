@@ -32,6 +32,8 @@ import {
 
 type SettingsFormProps = {
     section: SettingsSectionKey;
+    /** Full width, without the section heading. Use inside a dialog that already shows the title. */
+    embedded?: boolean;
 };
 
 type CommitFieldHandler = (
@@ -47,6 +49,7 @@ type SectionContentProps = {
     pendingKeys: Set<SettingsFieldKey>;
     commitField: CommitFieldHandler;
     renderField: (field: FormFieldConfig) => ReactNode;
+    hideHeader?: boolean;
 };
 
 function FieldValue({
@@ -93,6 +96,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
     pendingKeys,
     commitField,
     renderField,
+    hideHeader = false,
 }) => {
     const { t } = useTranslation();
     const [editingField, setEditingField] = useState<SettingsFieldKey | null>(null);
@@ -152,14 +156,16 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
 
     return (
         <div className="space-y-4">
-            <div className="rounded-md border px-4 py-3">
-                <h1 className="text-base sm:text-lg font-semibold">
-                    {t(SETTINGS_SECTION_SCHEMA[section].title)}
-                </h1>
-                <p className="text-sm text-muted-foreground mt-1">
-                    {t(SETTINGS_SECTION_SCHEMA[section].description)}
-                </p>
-            </div>
+            {!hideHeader && (
+                <div className="rounded-md border px-4 py-3">
+                    <h1 className="text-base sm:text-lg font-semibold">
+                        {t(SETTINGS_SECTION_SCHEMA[section].title)}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-1">
+                        {t(SETTINGS_SECTION_SCHEMA[section].description)}
+                    </p>
+                </div>
+            )}
 
             <div className="space-y-3">
                 {section === "dashboard" && sectionFields.length === 0 ? (
@@ -280,7 +286,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
     );
 };
 
-const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
+const SettingsForm: FC<SettingsFormProps> = ({ section, embedded = false }) => {
     const { t } = useTranslation();
     const { settings, updateSettings } = useSettings();
     const { hasPermission } = usePermissions();
@@ -353,7 +359,7 @@ const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
     );
 
     return (
-        <div className=" w-full sm:w-2/3 md:w-4/3 lg:w-1/2 flex justify-start pr-3">
+        <div className={embedded ? "w-full" : "w-full sm:w-2/3 md:w-4/3 lg:w-1/2 flex justify-start pr-3"}>
             <FormBuilder
                 formSchema={formSchema}
                 grids={1}
@@ -374,6 +380,7 @@ const SettingsForm: FC<SettingsFormProps> = ({ section }) => {
                         pendingKeys={pendingKeys}
                         commitField={commitField}
                         renderField={renderField}
+                        hideHeader={embedded}
                     />
                 )}
             </FormBuilder>

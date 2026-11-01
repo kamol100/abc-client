@@ -20,7 +20,9 @@ export interface Staff {
   address?: string;
   fund?: {
     id: number | string;
+    uuid?: string | null;
     name?: string | null;
+    balance?: number | string | null;
   } | null;
 }
 
@@ -52,6 +54,7 @@ export interface Profile {
   status: number;
   current_address?: string | null;
   avatar?: string | null;
+  photo?: string | null;
   staff?: Staff | null;
   company?: Company | null;
   reseller?: ProfileReseller | null;

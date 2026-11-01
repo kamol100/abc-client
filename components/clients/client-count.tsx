@@ -109,9 +109,9 @@ export default function ClientCount() {
                     )}
                     <ActivityItem
                         label={t("client.activity.online")}
-                        icon={<Wifi className="h-4 w-4 text-green-600 dark:text-green-400" />}
+                        icon={<Wifi className="h-4 w-4 theme-tone-success" />}
                         value={activity.online}
-                        valueClassName="text-green-600 dark:text-green-400"
+                        valueClassName="theme-tone-success"
                         showIcon={isMobile}
                     />
                     <ActivityItem

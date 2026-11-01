@@ -18,13 +18,15 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ClientProfile } from "@/components/client-area/client-profile";
-import { CLIENT_DASHBOARD_PATH } from "@/lib/auth/routes";
+import { CLIENT_DASHBOARD_PATH, CLIENT_PROFILE_PATH } from "@/lib/auth/routes";
 
 const CLIENT_ROUTE_TO_MENU_KEY: Record<string, string> = {
   [CLIENT_DASHBOARD_PATH]: "menu.dashboard.title",
+  [CLIENT_PROFILE_PATH]: "client_profile.profile",
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",
+  "/client/traffic-report": "menu.traffic_report.title",
   "/client/tickets": "menu.tickets.title",
   "/client/history": "menu.history.title",
 };
@@ -83,7 +85,7 @@ function ClientBreadcrumb() {
 
 export const ClientTopNavbar: FC = () => {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <header className="theme-header sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1 hidden md:flex" />
         <Separator orientation="vertical" className="mr-2 h-4 hidden md:block" />

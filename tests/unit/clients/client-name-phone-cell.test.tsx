@@ -19,6 +19,23 @@ vi.mock("react-i18next", () => ({
     }),
 }));
 
+vi.mock("next/link", () => ({
+    default: ({ href, children, ...props }: { href: string; children: React.ReactNode }) => (
+        <a href={href} {...props}>{children}</a>
+    ),
+}));
+
+const permissions = vi.hoisted(() => ({ allowed: true, newTab: false }));
+
+vi.mock("@/context/app-provider", () => ({
+    usePermissions: () => ({
+        hasPermission: (name: string) => name === "clients.show" && permissions.allowed,
+    }),
+    useSettings: () => ({
+        settings: { client_view_open_on_new_tab: permissions.newTab },
+    }),
+}));
+
 const client = (phone: string | null): ClientRow => ({
     status: 1,
     name: "Kamal",
@@ -100,6 +117,43 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         expect(toast.error).not.toHaveBeenCalled();
         vi.unstubAllGlobals();
         vi.restoreAllMocks();
+    });
+});
+
+describe("ClientNamePhoneCell view link", () => {
+    const viewable = { ...client("01712345678"), id: "client-uuid" };
+
+    it("opens the client details page from the username", () => {
+        permissions.allowed = true;
+        permissions.newTab = false;
+        render(<ClientNamePhoneCell client={viewable} />);
+
+        const link = screen.getByRole("link", { name: "kamal01" });
+        expect(link).toHaveAttribute("href", "/clients/view/client-uuid");
+        expect(link).toHaveAttribute("target", "_self");
+    });
+
+    it("opens the details page in a new tab when that setting is on", () => {
+        permissions.newTab = true;
+        render(<ClientNamePhoneCell client={viewable} />);
+
+        expect(screen.getByRole("link", { name: "kamal01" })).toHaveAttribute("target", "_blank");
+        permissions.newTab = false;
+    });
+
+    it("keeps the username as text without view permission", () => {
+        permissions.allowed = false;
+        render(<ClientNamePhoneCell client={viewable} />);
+
+        expect(screen.queryByRole("link", { name: "kamal01" })).not.toBeInTheDocument();
+        expect(screen.getByText("kamal01")).toBeInTheDocument();
+        permissions.allowed = true;
+    });
+
+    it("does not link when the details page is turned off", () => {
+        render(<ClientNamePhoneCell client={viewable} linkToView={false} />);
+
+        expect(screen.queryByRole("link", { name: "kamal01" })).not.toBeInTheDocument();
     });
 });
 

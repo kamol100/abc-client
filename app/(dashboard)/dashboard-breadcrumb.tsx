@@ -33,6 +33,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/client/invoices": "menu.invoice.title",
   "/client/pay": "menu.payment_due.title",
   "/client/payments": "menu.payments.title",
+  "/client/traffic-report": "menu.traffic_report.title",
   "/client-maps": "menu.maps.client_maps.title",
   "/tj-box-maps": "menu.maps.tj_box_maps.title",
   "/tj-boxes": "menu.maps.tj_boxes.title",
@@ -88,8 +89,10 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/settings/sms": "menu.settings.sms.title",
   "/settings/map": "menu.settings.map.title",
   "/settings/monitoring": "menu.settings.monitoring.title",
-  "/settings/telegram": "menu.settings.telegram.title",
+  "/telegram": "menu.communication.telegram.title",
   "/settings/olt": "menu.settings.olt.title",
+  "/settings/notifications": "menu.settings.notifications.title",
+  "/notifications": "menu.notifications.title",
 };
 
 /**
@@ -136,7 +139,7 @@ export function DashboardBreadcrumb() {
 
   if (isDashboard) {
     return (
-      <Breadcrumb>
+      <Breadcrumb className="hidden md:block">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
@@ -147,14 +150,14 @@ export function DashboardBreadcrumb() {
   }
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="hidden md:block">
       <BreadcrumbList>
-        <BreadcrumbItem className="hidden md:block">
+        <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/dashboard">{t("menu.dashboard.title")}</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator className="hidden md:block" />
+        <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
         </BreadcrumbItem>

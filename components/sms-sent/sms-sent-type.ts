@@ -104,6 +104,15 @@ export function isInvoiceDueSmsTemplate(templateType: string | null | undefined)
   );
 }
 
+export function isCustomOtherSmsTemplate(templateType: string | null | undefined): boolean {
+  return templateType === "custom_other";
+}
+
+/** Selected templates send to the client list, except custom_other which sends to a phone number. */
+export function usesClientListSmsTemplate(templateType: string | null | undefined): boolean {
+  return Boolean(templateType) && !isCustomOtherSmsTemplate(templateType);
+}
+
 export const SmsSentPayloadSchema = z.object({
   phone: z.string().nullable().optional(),
   sms_body: z.string(),
@@ -160,7 +169,7 @@ type BuildPayloadOptions = {
   filterValues: SmsSentClientFilterValues;
   smsCount: number;
   selectedClientIds?: (string | number)[];
-  preferClientIdsForTemplate?: boolean;
+  templateType?: string | null;
   mode?: SmsSendMode;
 };
 
@@ -169,16 +178,18 @@ export function buildSmsSentPayload({
   filterValues,
   smsCount,
   selectedClientIds,
-  preferClientIdsForTemplate = false,
+  templateType = null,
   mode = "live",
 }: BuildPayloadOptions): SmsSentPayload {
   const hasTemplate =
     formValues.sms_template_id !== null && formValues.sms_template_id !== undefined;
-  const shouldUseClientIdsForTemplate =
-    preferClientIdsForTemplate && hasTemplate && !!selectedClientIds?.length;
-  const phoneNumber = shouldUseClientIdsForTemplate ? null : formValues.phone?.trim() || null;
+  const phoneOnly = !hasTemplate || templateType == null || isCustomOtherSmsTemplate(templateType);
+  const phoneNumber = phoneOnly ? formValues.phone?.trim() || null : null;
   const smsBody = formValues.sms_body.trim();
   const clientFilter = buildSmsSentClientParams(filterValues);
+  const clientIds = !phoneOnly && selectedClientIds && selectedClientIds.length > 0
+    ? selectedClientIds
+    : null;
 
   return {
     phone: phoneNumber,
@@ -186,10 +197,10 @@ export function buildSmsSentPayload({
     sms_template_id: formValues.sms_template_id ?? null,
     message: smsBody,
     custom_message: smsBody,
-    all_client: hasTemplate && (!selectedClientIds || selectedClientIds.length === 0) ? 1 : 0,
+    all_client: !phoneOnly && !clientIds ? 1 : 0,
     status: filterValues.status === 0 || filterValues.status === 1 ? filterValues.status : null,
-    clientIds: selectedClientIds && selectedClientIds.length > 0 ? selectedClientIds : null,
-    client_filter: hasTemplate ? clientFilter : undefined,
+    clientIds,
+    client_filter: !phoneOnly ? clientFilter : undefined,
     sms_count: smsCount,
     mode,
   };
