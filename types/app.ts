@@ -20,7 +20,9 @@ export interface Staff {
   address?: string;
   fund?: {
     id: number | string;
+    uuid?: string | null;
     name?: string | null;
+    balance?: number | string | null;
   } | null;
 }
 

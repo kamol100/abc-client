@@ -3565,7 +3565,11 @@
         },
         "fund": {
             "label": "Fund",
-            "placeholder": "Select fund"
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Fund is required",
+                "unassigned": "You do not have a fund account. Please contact your administrator."
+            }
         },
         "transaction_type": {
             "label": "Transaction Type",

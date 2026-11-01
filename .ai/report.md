@@ -1,35 +1,26 @@
 ## Summary
 
-The theme system now has a Jomuna preset taken from the reference payroll app: cool slate surfaces, a teal-to-blue brand gradient, IBM Plex Sans with Hind Siliguri for Bengali, and soft active navigation. Existing color, density, radius, and drawer settings still work. Default stays the previous zinc look.
-
-## Architecture
-
-Presets, gradients, type, shadow, and border live as `data-*` attributes and CSS variables on `<html>`, same path as the existing color and density tokens. Custom colors are optional HSL overrides on the same element, so they win over a preset without a second theme engine. Preferences stay in the existing theme cookies (`themePrefs` plus the older color, density, and radius cookies). That is per browser, not per company. A later company-branding field can store the same settings object. No backend migration.
+Invoice rows that include a client now link the client name to the client details page.
 
 ## Frontend
 
-- Tokens, Jomuna light/dark palettes, and gradient utilities are in `app/globals.css`. Tailwind reads radius, type, shadow, border strength, success, and info from those variables.
-- Settings and the header customizer share `components/settings/themes.tsx`, with a live preview.
-- Layout, header, page canvas, dialogs, primary buttons, and the active sidebar item consume the tokens.
-- English and Bengali strings are in `public/lang/en.json` and `public/lang/bn.json`.
+- `components/invoices/invoice-column.tsx` renders the client name as a link to `/clients/view/{uuid}` when the invoice has a client uuid and the user has `clients.show`.
+- The link follows the existing `client_view_open_on_new_tab` setting. Without the client, or without permission, the cell stays plain text.
+- Imports in that file use the `@/` alias.
 
 ## Checks
 
 - `scripts/ai/typecheck` passed.
-- `npx vitest run tests/unit/theme/theme-settings.test.ts` passed (9 tests).
-
-## Follow-up
-
-Checked switches use the same brand gradient as primary buttons when gradients are on. The header wallet chip uses the header surface, border, and foreground text, so the balance stays readable in dark mode instead of the bright primary color.
-
-Status badges use the theme success, warning, danger, and info tokens instead of fixed green, red, and amber utilities. Jomuna success and info are readable ink colors in both modes, so soft badges stay legible on dark surfaces.
+- `npx vitest run tests/unit/invoices/invoice-column.test.tsx` passed (4 tests).
 
 ## Browser
 
-Signed in at `http://vp.isp.test` as `vp`. Jomuna light and dark applied without a reload. After a full navigation to Clients, dark Jomuna was still active: table header `#1b252e`, header text `#a3b1b8`, page `#0e141a`, sidebar `#151d24`, primary `#2bb3a0`. The Add button used the teal-to-blue gradient. The theme was then set back to Default and Light.
-
-A hydration overlay appeared once on the theme page during hot reload and named `ThemePreview`. A later full load of the dashboard and clients table did not show it.
+Signed in at `http://vp.isp.test` as `vp`. On Invoices, client names are links. Opening Karim Hossain went to `/clients/view/a2f269c6-2191-46c1-9e83-50d986bbeb73` and the page title was Client Details with that client loaded.
 
 ## Security
 
-Theme cookies are not an authorization boundary. Company branding is not stored on the API yet.
+The link uses the client uuid already returned on the invoice. `clients.show` only shows the link. The client show route remains the authorization check. No `company_id` is sent.
+
+## Unrelated working tree
+
+Left untouched: fund transaction form and table, fund column, client view pay button order, `public/lang/en.json`, `public/lang/bn.json`, `types/app.ts`, and `tests/unit/fund-transactions/`.

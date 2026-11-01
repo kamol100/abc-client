@@ -87,6 +87,18 @@ const ClientView: FC<Props> = ({ clientId }) => {
                             </Badge>
                         </div>
                         <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+                            {hasPermission("invoices.pay") && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setBulkPayOpen(true)}
+                                    tooltip="client.actions.pay"
+                                    aria-label={t("client.actions.pay")}
+                                >
+                                    <CreditCard className="h-4 w-4" />
+                                </MyButton>
+                            )}
                             {hasPermission("clients.edit") && (
                                 <MyButton
                                     action="edit"
@@ -116,18 +128,6 @@ const ClientView: FC<Props> = ({ clientId }) => {
                             >
                                 <Package className="h-4 w-4" />
                             </MyButton>
-                            {hasPermission("invoices.pay") && (
-                                <MyButton
-                                    action="edit"
-                                    icon={false}
-                                    size="icon"
-                                    onClick={() => setBulkPayOpen(true)}
-                                    tooltip="client.actions.pay"
-                                    aria-label={t("client.actions.pay")}
-                                >
-                                    <CreditCard className="h-4 w-4" />
-                                </MyButton>
-                            )}
                             {hasPermission("tickets.create") && (
                                 <MyButton
                                     action="edit"
