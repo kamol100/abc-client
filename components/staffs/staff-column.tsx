@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowLeftRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -9,6 +10,7 @@ import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import { DeleteModal } from "@/components/delete-modal";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { MyDialog } from "@/components/my-dialog";
+import MyTooltip from "@/components/my-tooltip";
 import { StaffResetPasswordFormFieldSchema } from "@/components/staffs/staff-form-schema";
 import {
   STAFF_RESET_PASSWORD_DEFAULTS,
@@ -16,7 +18,12 @@ import {
   StaffRow,
 } from "@/components/staffs/staff-type";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { usePermissions } from "@/context/app-provider";
+import { useStartImpersonation } from "@/hooks/use-start-impersonation";
+import { usePermissions, useProfile } from "@/context/app-provider";
+import {
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
   active: "success",
@@ -76,6 +83,94 @@ function StaffAccountLockButton({
         mutate({ status: nextStatus });
       }}
     />
+  );
+}
+
+function StaffImpersonateButton({ staff }: { staff: StaffRow }) {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const { profile } = useProfile();
+  const { impersonate, switching } = useStartImpersonation();
+  const [open, setOpen] = useState(false);
+  const staffId = String(staff.id);
+  const hasLogin = Boolean(staff.user?.uuid);
+  const inactive = String(staff.status ?? "active") === "inactive";
+  const isOwnAccount =
+    (profile?.id != null && profile.id === staff.user?.uuid) ||
+    (profile?.staff?.id != null && profile.staff.id === staffId);
+  const canStart = hasLogin && !inactive && !switching && !isOwnAccount;
+
+  if (!hasPermission("impersonate.staff") || isOwnAccount) {
+    return null;
+  }
+
+  const handleConfirm = async (close: () => void) => {
+    const started = await impersonate({ id: staffId }, "staff");
+    if (started) {
+      close();
+    }
+  };
+
+  return (
+    <>
+      <MyTooltip content="staff.impersonate.tooltip">
+        <span className="inline-flex">
+          <MyButton
+            type="button"
+            aria-label={t("staff.impersonate.tooltip")}
+            disabled={!canStart}
+            className="hover:bg-primary hover:text-primary-foreground px-2"
+            onClick={() => setOpen(true)}
+          >
+            <ArrowLeftRight />
+          </MyButton>
+        </span>
+      </MyTooltip>
+      <MyDialog
+        open={open}
+        onOpenChange={setOpen}
+        size="sm"
+        loading={switching}
+        footer={({ close, loading }) => (
+          <>
+            <MyButton
+              action="cancel"
+              variant="outline"
+              size="default"
+              onClick={close}
+              disabled={loading}
+              title={t("common.cancel")}
+            />
+            <MyButton
+              type="button"
+              variant="default"
+              size="default"
+              icon={false}
+              onClick={() => {
+                void handleConfirm(close);
+              }}
+              disabled={loading || !canStart}
+              loading={loading}
+              title="staff.impersonate.confirm_action"
+            />
+          </>
+        )}
+      >
+        <div className="flex flex-col items-center text-center gap-4 py-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <ArrowLeftRight className="h-8 w-8 text-primary" />
+          </div>
+          <div className="space-y-2">
+            <DialogTitle className="text-center">
+              {t("staff.impersonate.confirm_title")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {t("staff.impersonate.confirm", { name: staff.name })}
+            </DialogDescription>
+          </div>
+        </div>
+      </MyDialog>
+    </>
   );
 }
 
@@ -216,6 +311,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
             url={`/staffs/edit/${staffId}`}
             className="hover:bg-primary hover:text-primary-foreground px-2"
           />
+          <StaffImpersonateButton staff={staff} />
           <DeleteModal
             api_url={`/staffs/${staffId}`}
             keys="staffs"

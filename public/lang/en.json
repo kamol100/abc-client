@@ -1054,6 +1054,12 @@
         "unlock_account": "Unlock account",
         "account_locked": "Staff account locked",
         "account_unlocked": "Staff account unlocked",
+        "impersonate": {
+            "tooltip": "Login as this staff member",
+            "confirm_title": "Login as this staff member",
+            "confirm": "Log in as {{name}}? You can switch back to your account afterward.",
+            "confirm_action": "Login"
+        },
         "reset_password": {
             "title": "Reset password",
             "submit": "Reset password",

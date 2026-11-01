@@ -158,7 +158,7 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                <div className="w-16">{t("client.phone.label")}:</div>
+                                <div className="w-16">{t("common.phone")}:</div>
                                 <p>{numberText(model.customerPhone)}</p>
                             </div>
                         </div>

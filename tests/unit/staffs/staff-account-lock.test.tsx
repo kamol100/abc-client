@@ -25,6 +25,9 @@ vi.mock("@/context/app-provider", () => ({
   usePermissions: () => ({
     hasPermission: (name: string) => permissions.allowed.has(name),
   }),
+  useProfile: () => ({
+    profile: { id: "current-user", staff: { id: "current-staff" } },
+  }),
 }));
 
 vi.mock("@/hooks/use-api-mutation", () => ({
@@ -35,6 +38,13 @@ vi.mock("@/hooks/use-api-mutation", () => ({
       isPending: mutation.isPending,
     };
   },
+}));
+
+vi.mock("@/hooks/use-start-impersonation", () => ({
+  useStartImpersonation: () => ({
+    impersonate: vi.fn(),
+    switching: false,
+  }),
 }));
 
 vi.mock("@/hooks/use-api-query", () => ({
