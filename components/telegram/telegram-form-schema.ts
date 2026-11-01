@@ -1,11 +1,13 @@
 "use client";
 
 import { FieldConfig } from "@/components/form-wrapper/form-builder-type";
-import type { SettingsSwitchKey } from "@/components/settings/settings-type";
-import { TELEGRAM_STATUS } from "@/components/telegram/telegram-type";
+import {
+  TELEGRAM_STATUS,
+  type TelegramEventKey,
+} from "@/components/telegram/telegram-type";
 
 export type TelegramNotificationOption = {
-  key: SettingsSwitchKey;
+  key: TelegramEventKey;
   label: string;
 };
 
@@ -89,6 +91,12 @@ export const TELEGRAM_NOTIFICATION_GROUPS: TelegramNotificationGroup[] = [
       { key: "telegram_vendor_delete", label: "telegram.notifications.actions.delete" },
     ],
   },
+  {
+    title: "telegram.notifications.groups.onu",
+    options: [
+      { key: "telegram_onu_low_power", label: "telegram.notifications.actions.low_power" },
+    ],
+  },
 ];
 
 export function TelegramFormFieldSchema(): FieldConfig[] {
@@ -116,7 +124,7 @@ export function TelegramFormFieldSchema(): FieldConfig[] {
     {
       type: "dropdown",
       name: "zone_ids",
-      label: { labelText: "telegram.zones.label", mandatory: true },
+      label: { labelText: "telegram.zones.label" },
       placeholder: "telegram.zones.placeholder",
       api: "/dropdown-zones",
       isMulti: true,

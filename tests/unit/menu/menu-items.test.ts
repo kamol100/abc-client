@@ -130,7 +130,6 @@ describe("admin menu order", () => {
       "/settings/sms",
       "/settings/map",
       "/settings/monitoring",
-      "/settings/telegram",
       "/settings/olt",
       "/settings/notifications",
     ]);

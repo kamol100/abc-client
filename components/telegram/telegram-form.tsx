@@ -1,6 +1,7 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
@@ -24,15 +25,14 @@ type Props = {
 
 function TelegramNotificationOptions() {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState<ReadonlySet<string>>(() => new Set());
+  const { watch, setValue } = useFormContext();
+  const selected = new Set((watch("events") as string[] | undefined) ?? []);
 
   const toggleOption = (key: string, checked: boolean) => {
-    setSelected((current) => {
-      const next = new Set(current);
-      if (checked) next.add(key);
-      else next.delete(key);
-      return next;
-    });
+    const next = new Set(selected);
+    if (checked) next.add(key);
+    else next.delete(key);
+    setValue("events", Array.from(next), { shouldDirty: true, shouldValidate: true });
   };
 
   return (

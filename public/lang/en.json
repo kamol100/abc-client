@@ -3899,14 +3899,16 @@
                 "ticket": "Ticket",
                 "network": "Network",
                 "package": "Package",
-                "vendor": "Vendor"
+                "vendor": "Vendor",
+                "onu": "ONU"
             },
             "actions": {
                 "create": "Create",
                 "update": "Update",
                 "delete": "Delete",
                 "auto_generate": "Auto generate",
-                "paid": "Paid"
+                "paid": "Paid",
+                "low_power": "Low optical power"
             }
         }
     },
@@ -4824,9 +4826,6 @@
             "payments": {
                 "title": "Payments"
             },
-            "telegram": {
-                "title": "Telegram"
-            },
             "monitoring": {
                 "title": "Monitoring"
             },
@@ -4878,7 +4877,7 @@
             },
             "telegram": {
                 "title": "Telegram Settings",
-                "description": "Configure Telegram token and event notifications."
+                "description": "Configure the Telegram bot token."
             },
             "dashboard": {
                 "title": "Dashboard Settings",
@@ -4956,9 +4955,6 @@
                 "errors": {
                     "range": "Enter a value from -40 to -10"
                 }
-            },
-            "telegram_onu_low_power": {
-                "label": "Telegram alert for low ONU power"
             },
             "pid_prefix": {
                 "label": "Payment ID Prefix"
@@ -5053,10 +5049,6 @@
                 "label": "Telegram Bot Token",
                 "placeholder": "Enter Telegram bot token"
             },
-            "telegram_channel_id": {
-                "label": "Telegram Channel ID",
-                "placeholder": "Enter Telegram channel ID"
-            },
             "sms_auto_invoice_schedule": {
                 "label": "Auto Invoice SMS Schedule",
                 "placeholder": "Select SMS schedule time"
@@ -5104,81 +5096,6 @@
             },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "Auto Inactive Reseller Client Termination Date"
-            },
-            "telegram_client_create": {
-                "label": "Telegram Client Create"
-            },
-            "telegram_client_update": {
-                "label": "Telegram Client Update"
-            },
-            "telegram_client_delete": {
-                "label": "Telegram Client Delete"
-            },
-            "telegram_fund_transaction_create": {
-                "label": "Telegram Fund Transaction Create"
-            },
-            "telegram_fund_transaction_delete": {
-                "label": "Telegram Fund Transaction Delete"
-            },
-            "telegram_invoice_create": {
-                "label": "Telegram Invoice Create"
-            },
-            "telegram_invoice_auto_generate": {
-                "label": "Telegram Invoice Auto Generate"
-            },
-            "telegram_invoice_update": {
-                "label": "Telegram Invoice Update"
-            },
-            "telegram_invoice_paid": {
-                "label": "Telegram Invoice Paid"
-            },
-            "telegram_invoice_delete": {
-                "label": "Telegram Invoice Delete"
-            },
-            "telegram_expense_create": {
-                "label": "Telegram Expense Create"
-            },
-            "telegram_expense_update": {
-                "label": "Telegram Expense Update"
-            },
-            "telegram_expense_delete": {
-                "label": "Telegram Expense Delete"
-            },
-            "telegram_ticket_create": {
-                "label": "Telegram Ticket Create"
-            },
-            "telegram_ticket_update": {
-                "label": "Telegram Ticket Update"
-            },
-            "telegram_ticket_delete": {
-                "label": "Telegram Ticket Delete"
-            },
-            "telegram_network_create": {
-                "label": "Telegram Network Create"
-            },
-            "telegram_network_update": {
-                "label": "Telegram Network Update"
-            },
-            "telegram_network_delete": {
-                "label": "Telegram Network Delete"
-            },
-            "telegram_package_create": {
-                "label": "Telegram Package Create"
-            },
-            "telegram_package_update": {
-                "label": "Telegram Package Update"
-            },
-            "telegram_package_delete": {
-                "label": "Telegram Package Delete"
-            },
-            "telegram_vendor_create": {
-                "label": "Telegram Vendor Create"
-            },
-            "telegram_vendor_update": {
-                "label": "Telegram Vendor Update"
-            },
-            "telegram_vendor_delete": {
-                "label": "Telegram Vendor Delete"
             },
             "dashboard_show_client": {
                 "label": "Client Card"

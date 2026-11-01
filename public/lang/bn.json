@@ -3899,14 +3899,16 @@
                 "ticket": "টিকেট",
                 "network": "নেটওয়ার্ক",
                 "package": "প্যাকেজ",
-                "vendor": "ভেন্ডর"
+                "vendor": "ভেন্ডর",
+                "onu": "ওএনইউ"
             },
             "actions": {
                 "create": "ক্রিয়েট",
                 "update": "আপডেট",
                 "delete": "ডিলিট",
                 "auto_generate": "অটো জেনারেট",
-                "paid": "পেইড"
+                "paid": "পেইড",
+                "low_power": "লো অপটিক্যাল পাওয়ার"
             }
         }
     },
@@ -4824,9 +4826,6 @@
             "payments": {
                 "title": "পেমেন্ট"
             },
-            "telegram": {
-                "title": "টেলিগ্রাম"
-            },
             "monitoring": {
                 "title": "মনিটরিং"
             },
@@ -4878,7 +4877,7 @@
             },
             "telegram": {
                 "title": "টেলিগ্রাম সেটিংস",
-                "description": "টেলিগ্রাম টোকেন এবং ইভেন্ট নোটিফিকেশন কনফিগার করুন।"
+                "description": "টেলিগ্রাম বট টোকেন কনফিগার করুন।"
             },
             "dashboard": {
                 "title": "ড্যাশবোর্ড সেটিংস",
@@ -4956,9 +4955,6 @@
                 "errors": {
                     "range": "-40 থেকে -10 এর মধ্যে একটি মান দিন"
                 }
-            },
-            "telegram_onu_low_power": {
-                "label": "দুর্বল ওএনইউ পাওয়ারের টেলিগ্রাম অ্যালার্ট"
             },
             "pid_prefix": {
                 "label": "পেমেন্ট আইডি প্রিফিক্স"
@@ -5053,10 +5049,6 @@
                 "label": "টেলিগ্রাম বট টোকেন",
                 "placeholder": "টেলিগ্রাম বট টোকেন দিন"
             },
-            "telegram_channel_id": {
-                "label": "টেলিগ্রাম চ্যানেল আইডি",
-                "placeholder": "টেলিগ্রাম চ্যানেল আইডি দিন"
-            },
             "sms_auto_invoice_schedule": {
                 "label": "অটো ইনভয়েস SMS শিডিউল",
                 "placeholder": "SMS শিডিউল টাইম সিলেক্ট করুন"
@@ -5104,81 +5096,6 @@
             },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "অটো ইনঅ্যাক্টিভ রিসেলার ক্লায়েন্ট টার্মিনেশন তারিখ"
-            },
-            "telegram_client_create": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট ক্রিয়েট"
-            },
-            "telegram_client_update": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট আপডেট"
-            },
-            "telegram_client_delete": {
-                "label": "টেলিগ্রাম ক্লায়েন্ট ডিলিট"
-            },
-            "telegram_fund_transaction_create": {
-                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ক্রিয়েট"
-            },
-            "telegram_fund_transaction_delete": {
-                "label": "টেলিগ্রাম ফান্ড ট্রানজেকশন ডিলিট"
-            },
-            "telegram_invoice_create": {
-                "label": "টেলিগ্রাম ইনভয়েস ক্রিয়েট"
-            },
-            "telegram_invoice_auto_generate": {
-                "label": "টেলিগ্রাম ইনভয়েস অটো জেনারেট"
-            },
-            "telegram_invoice_update": {
-                "label": "টেলিগ্রাম ইনভয়েস আপডেট"
-            },
-            "telegram_invoice_paid": {
-                "label": "টেলিগ্রাম ইনভয়েস পেইড"
-            },
-            "telegram_invoice_delete": {
-                "label": "টেলিগ্রাম ইনভয়েস ডিলিট"
-            },
-            "telegram_expense_create": {
-                "label": "টেলিগ্রাম এক্সপেন্স ক্রিয়েট"
-            },
-            "telegram_expense_update": {
-                "label": "টেলিগ্রাম এক্সপেন্স আপডেট"
-            },
-            "telegram_expense_delete": {
-                "label": "টেলিগ্রাম এক্সপেন্স ডিলিট"
-            },
-            "telegram_ticket_create": {
-                "label": "টেলিগ্রাম টিকেট ক্রিয়েট"
-            },
-            "telegram_ticket_update": {
-                "label": "টেলিগ্রাম টিকেট আপডেট"
-            },
-            "telegram_ticket_delete": {
-                "label": "টেলিগ্রাম টিকেট ডিলিট"
-            },
-            "telegram_network_create": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক ক্রিয়েট"
-            },
-            "telegram_network_update": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক আপডেট"
-            },
-            "telegram_network_delete": {
-                "label": "টেলিগ্রাম নেটওয়ার্ক ডিলিট"
-            },
-            "telegram_package_create": {
-                "label": "টেলিগ্রাম প্যাকেজ ক্রিয়েট"
-            },
-            "telegram_package_update": {
-                "label": "টেলিগ্রাম প্যাকেজ আপডেট"
-            },
-            "telegram_package_delete": {
-                "label": "টেলিগ্রাম প্যাকেজ ডিলিট"
-            },
-            "telegram_vendor_create": {
-                "label": "টেলিগ্রাম ভেন্ডর ক্রিয়েট"
-            },
-            "telegram_vendor_update": {
-                "label": "টেলিগ্রাম ভেন্ডর আপডেট"
-            },
-            "telegram_vendor_delete": {
-                "label": "টেলিগ্রাম ভেন্ডর ডিলিট"
             },
             "dashboard_show_client": {
                 "label": "ক্লায়েন্ট কার্ড"

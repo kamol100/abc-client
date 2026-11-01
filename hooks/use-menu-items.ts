@@ -405,7 +405,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
         { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
         { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
-        { title: t("menu.settings.telegram.title"), url: "/settings/telegram", permission: "company-settings.access" },
         { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
         { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
       ],
