@@ -1,22 +1,23 @@
 ## Summary
 
-The add fund transaction form no longer asks for a transaction type. Every submit sends `transaction_type: "transfer"`, and Transfer To is required.
+A fund transfer now asks for the sender first and the receiver second. The sender is debited and the receiver is credited.
 
 ## Frontend
 
-- `fund-transaction-form-schema.ts` fields are destination fund, amount, and note.
-- `fund-transaction-form.tsx` always sets `transaction_type` to `"transfer"` on submit.
-- `FundTransactionFormSchema` accepts only `"transfer"` and requires `transfer_by`.
-- The transaction list and filter still show deposit, withdraw, expense, and salary rows that already exist.
+- Fund Send By is the `transfer_by` dropdown. Its balance is shown under the field and updates when the selection changes.
+- Fund Received By is the fund the request is posted to. Admins choose it. Other roles stay locked to the fund on their profile.
+- Choosing the same fund for both sides clears the sender. Empty save asks for a sender, a receiver, and an amount greater than 0.
+- Deposit, withdraw, expense, and salary rows already in the list are unchanged.
 
 ## Checks
 
 - `npx vitest run tests/unit/fund-transactions/fund-transaction-form.test.ts` passed (9 tests).
+- `scripts/ai/typecheck` passed.
 
 ## Browser
 
-Signed in at `http://vp.isp.test` as vp. Opened Add on Fund Transactions. The dialog shows Fund, Transfer To, Amount, and Note. Saving empty shows fund required, transfer fund required, and amount must be greater than 0. No transaction was created.
+Signed in at `http://vp.isp.test` as vp. Add Fund Transaction shows Fund Send By, Fund Received By, Amount, and Note. Saving empty shows sender required, receiver required, and amount must be greater than 0. Selecting cash shows Current Balance: ৳0 under Fund Send By. No transfer was saved.
 
 ## Security
 
-No tenant or permission change. The form still does not send `company_id`.
+The form still does not send `company_id`. The receiver id is only the fund uuid in the URL. The sender id is `transfer_by`.

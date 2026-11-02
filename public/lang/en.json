@@ -3580,6 +3580,14 @@
                 "unassigned": "You do not have a fund account. Please contact your administrator."
             }
         },
+        "received_by": {
+            "label": "Fund Received By:",
+            "placeholder": "Select fund",
+            "errors": {
+                "required": "Receiver fund is required"
+            }
+        },
+        "balance_unavailable": "Balance unavailable",
         "transaction_type": {
             "label": "Transaction Type",
             "placeholder": "Select transaction type",
@@ -3600,10 +3608,11 @@
             }
         },
         "transfer_by": {
-            "label": "Transfer To",
+            "label": "Fund Send By:",
             "placeholder": "Select fund",
             "errors": {
-                "required": "Transfer fund is required"
+                "required": "Sender fund is required",
+                "same": "Sender and receiver must be different funds"
             }
         },
         "note": {

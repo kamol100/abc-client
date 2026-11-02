@@ -103,12 +103,21 @@ describe("fundTransactionAccess", () => {
 });
 
 describe("FundTransactionFormFieldSchema", () => {
-  it("asks for a destination fund, amount, and note", () => {
-    const fields = FundTransactionFormFieldSchema("source-fund");
+  it("asks for the sender fund first, then amount and note", () => {
+    const fields = FundTransactionFormFieldSchema("receiver-fund");
+    const sender = fields[0];
 
     expect(fields.map((field) => field.name)).toEqual(["transfer_by", "amount", "note"]);
     expect(fields.some((field) => field.name === "transaction_type")).toBe(false);
-    expect("api" in fields[0] ? fields[0].api : "").toContain("filter=source-fund");
+    expect(sender && "label" in sender ? sender.label?.labelText : "").toBe(
+      "fund_transaction.transfer_by.label",
+    );
+    expect(sender && "api" in sender ? sender.api : "").toContain("filter=receiver-fund");
+    expect(sender && "populate" in sender ? sender.populate : []).toEqual([
+      { field: "sender_name", from: "name" },
+      { field: "sender_balance", from: "balance" },
+      { field: "sender_uuid", from: "uuid" },
+    ]);
   });
 });
 
@@ -137,7 +146,7 @@ describe("FundTransactionFormSchema", () => {
     );
   });
 
-  it("requires a destination fund for a transfer", () => {
+  it("requires a sender fund for a transfer", () => {
     const result = FundTransactionFormSchema.safeParse({
       amount: 10,
       transaction_type: "transfer",

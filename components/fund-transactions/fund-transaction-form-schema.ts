@@ -21,6 +21,11 @@ export const FundTransactionFormFieldSchema = (
       placeholder: "fund_transaction.transfer_by.placeholder",
       api: transferFundApi(excludeFundId),
       isClearable: true,
+      populate: [
+        { field: "sender_name", from: "name" },
+        { field: "sender_balance", from: "balance" },
+        { field: "sender_uuid", from: "uuid" },
+      ],
     },
     {
       type: "number",
