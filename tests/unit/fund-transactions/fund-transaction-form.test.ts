@@ -103,31 +103,12 @@ describe("fundTransactionAccess", () => {
 });
 
 describe("FundTransactionFormFieldSchema", () => {
-  it("orders transfer before amount and omits expense and salary", () => {
+  it("asks for a destination fund, amount, and note", () => {
     const fields = FundTransactionFormFieldSchema("source-fund");
-    const typeField = fields.find((field) => field.name === "transaction_type");
 
-    expect(fields.map((field) => field.name)).toEqual([
-      "transaction_type",
-      "transfer_by",
-      "amount",
-      "note",
-    ]);
-    expect(typeField && "options" in typeField ? typeField.options?.map((option) => option.value) : []).toEqual([
-      "deposit",
-      "transfer",
-      "withdraw",
-    ]);
-    expect(typeField && "defaultValue" in typeField ? typeField.defaultValue : null).toBe("transfer");
-    expect(fields.find((field) => field.name === "transfer_by") && "api" in fields[1] ? fields[1].api : "").toContain(
-      "filter=source-fund",
-    );
-  });
-
-  it("hides the transaction type for non-admin users", () => {
-    expect(
-      FundTransactionFormFieldSchema("source-fund", { showTransactionType: false }).map((field) => field.name),
-    ).toEqual(["transfer_by", "amount", "note"]);
+    expect(fields.map((field) => field.name)).toEqual(["transfer_by", "amount", "note"]);
+    expect(fields.some((field) => field.name === "transaction_type")).toBe(false);
+    expect("api" in fields[0] ? fields[0].api : "").toContain("filter=source-fund");
   });
 });
 
@@ -144,11 +125,14 @@ describe("FundTransactionFormSchema", () => {
     expect(parsed.note).toBeNull();
   });
 
-  it("rejects expense and salary", () => {
-    expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "expense", transfer_by: 1 }).success).toBe(
+  it("accepts only a transfer", () => {
+    expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "deposit", transfer_by: 1 }).success).toBe(
       false,
     );
-    expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "salary", transfer_by: 1 }).success).toBe(
+    expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "withdraw", transfer_by: 1 }).success).toBe(
+      false,
+    );
+    expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "expense", transfer_by: 1 }).success).toBe(
       false,
     );
   });

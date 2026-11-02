@@ -13,14 +13,7 @@ export const FundTransactionTypeValues = [
   "salary",
 ] as const;
 
-export const FundTransactionFormTypeValues = [
-  "deposit",
-  "transfer",
-  "withdraw",
-] as const;
-
 export const FundTransactionTypeSchema = z.enum(FundTransactionTypeValues);
-export const FundTransactionFormTypeSchema = z.enum(FundTransactionFormTypeValues);
 
 export const FundRefSchema = z
   .object({
@@ -54,10 +47,10 @@ export const FundTransactionFormSchema = z
       z.string().nullable().optional()
     ),
     transfer_by: optionalNullableNumber,
-    transaction_type: FundTransactionFormTypeSchema.default("transfer"),
+    transaction_type: z.literal("transfer").default("transfer"),
   })
   .superRefine((values, ctx) => {
-    if (values.transaction_type === "transfer" && !values.transfer_by) {
+    if (!values.transfer_by) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["transfer_by"],

@@ -8,46 +8,15 @@ const transferFundApi = (excludeFundId?: string | number | null) => {
   return `/dropdown-funds?filter=${encodeURIComponent(String(excludeFundId))}`;
 };
 
-const transactionTypeField = (): FieldConfig => ({
-  type: "dropdown",
-  name: "transaction_type",
-  label: {
-    labelText: "fund_transaction.transaction_type.label",
-    mandatory: true,
-  },
-  placeholder: "fund_transaction.transaction_type.placeholder",
-  defaultValue: "transfer",
-  options: [
-    {
-      value: "deposit",
-      label: "fund_transaction.transaction_type.options.deposit",
-    },
-    {
-      value: "transfer",
-      label: "fund_transaction.transaction_type.options.transfer",
-    },
-    {
-      value: "withdraw",
-      label: "fund_transaction.transaction_type.options.withdraw",
-    },
-  ],
-  isClearable: false,
-  isSearchable: false,
-});
-
 export const FundTransactionFormFieldSchema = (
   excludeFundId?: string | number | null,
-  options?: { showTransactionType?: boolean }
-): FieldConfig[] => {
-  const showTransactionType = options?.showTransactionType !== false;
-
-  return [
-    ...(showTransactionType ? [transactionTypeField()] : []),
+): FieldConfig[] => [
     {
       type: "dropdown",
       name: "transfer_by",
       label: {
         labelText: "fund_transaction.transfer_by.label",
+        mandatory: true,
       },
       placeholder: "fund_transaction.transfer_by.placeholder",
       api: transferFundApi(excludeFundId),
@@ -72,6 +41,5 @@ export const FundTransactionFormFieldSchema = (
       rows: 3,
     },
   ];
-};
 
 export default FundTransactionFormFieldSchema;

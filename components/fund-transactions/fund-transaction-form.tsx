@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import SelectDropdown from "@/components/select-dropdown";
 import FormTrigger from "@/components/form-trigger";
 import FormBuilder from "@/components/form-wrapper/form-builder";
-import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { fundTransactionAccess } from "@/components/fund-transactions/fund-transaction-access";
 import FundTransactionFormFieldSchema from "@/components/fund-transactions/fund-transaction-form-schema";
 import { FundTransactionFormSchema } from "@/components/fund-transactions/fund-transaction-type";
@@ -31,80 +30,36 @@ type FundTransactionFormProps = {
   trigger?: ReactNode;
 };
 
-const FundTransactionFormFields = ({
-  renderField,
-  fields,
-}: {
-  renderField: (field: FormFieldConfig) => ReactNode;
-  fields: FormFieldConfig[];
-}) => {
-  const transactionType = useWatch({ name: "transaction_type" });
-  const fieldMap = fields.reduce<Record<string, FormFieldConfig>>((acc, field) => {
-    acc[field.name] = field;
-    return acc;
-  }, {});
-
-  return (
-    <div className="grid w-full gap-4">
-      {fieldMap.transaction_type && renderField(fieldMap.transaction_type)}
-      {transactionType === "transfer" &&
-        fieldMap.transfer_by &&
-        renderField(fieldMap.transfer_by)}
-      {fieldMap.amount && renderField(fieldMap.amount)}
-      {fieldMap.note && renderField(fieldMap.note)}
-    </div>
-  );
-};
-
 const FundTransactionEditor = ({
   fundId,
   queryKey,
-  showTransactionType,
   actionButton,
 }: {
   fundId: string | null;
   queryKey: string;
-  showTransactionType: boolean;
   actionButton: boolean;
-}) => {
-  const formSchema = FundTransactionFormFieldSchema(fundId, {
-    showTransactionType,
-  });
-
-  return (
-    <FormBuilder
-      formSchema={formSchema}
-      grids={1}
-      api={fundId ? `/fund-transactions/${fundId}` : ""}
-      mode="create"
-      schema={FundTransactionFormSchema}
-      method="POST"
-      queryKey={queryKey}
-      actionButton={actionButton}
-      data={{
-        amount: 0,
-        note: "",
-        transfer_by: null,
-        transaction_type: "transfer",
-      }}
-      transformPayload={
-        showTransactionType
-          ? undefined
-          : (values: FieldValues) => ({
-              ...values,
-              transaction_type: "transfer",
-            })
-      }
-    >
-      {(renderField) => (
-        <FundTransactionFormFields
-          renderField={renderField}
-          fields={formSchema}
-        />
-      )}
-    </FormBuilder>
-  );
-};
+}) => (
+  <FormBuilder
+    formSchema={FundTransactionFormFieldSchema(fundId)}
+    grids={1}
+    api={fundId ? `/fund-transactions/${fundId}` : ""}
+    mode="create"
+    schema={FundTransactionFormSchema}
+    method="POST"
+    queryKey={queryKey}
+    actionButton={actionButton}
+    data={{
+      amount: 0,
+      note: "",
+      transfer_by: null,
+      transaction_type: "transfer",
+    }}
+    transformPayload={(values: FieldValues) => ({
+      ...values,
+      transaction_type: "transfer",
+    })}
+  />
+);
 
 const FundTransactionBody = ({
   queryKey,
@@ -121,10 +76,10 @@ const FundTransactionBody = ({
     staff: profile.staff,
     presetFund: presetFund
       ? {
-          uuid: presetFund.fund_uuid,
-          name: presetFund.fund_name,
-          balance: presetFund.fund_balance,
-        }
+        uuid: presetFund.fund_uuid,
+        name: presetFund.fund_name,
+        balance: presetFund.fund_balance,
+      }
       : null,
   });
 
@@ -195,9 +150,9 @@ const FundTransactionBody = ({
             access.lockFund
               ? undefined
               : [
-                  { field: "fund_name", from: "name" },
-                  { field: "fund_balance", from: "balance" },
-                ]
+                { field: "fund_name", from: "name" },
+                { field: "fund_balance", from: "balance" },
+              ]
           }
         />
       </Form>
@@ -217,7 +172,6 @@ const FundTransactionBody = ({
       <FundTransactionEditor
         fundId={access.blockSubmit ? null : selectedFundUuid}
         queryKey={queryKey}
-        showTransactionType={access.canChooseFund}
         actionButton={!access.blockSubmit}
       />
     </div>
@@ -236,10 +190,10 @@ const FundTransactionForm = ({
   const presetFund =
     fundId != null && fundId !== ""
       ? {
-          fund_uuid: String(fundId),
-          fund_name: fundName ?? "",
-          fund_balance: fundBalance,
-        }
+        fund_uuid: String(fundId),
+        fund_name: fundName ?? "",
+        fund_balance: fundBalance,
+      }
       : null;
 
   return (
