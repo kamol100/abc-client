@@ -158,12 +158,13 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.resellers.title"),
       url: "/resellers",
       icon: UserCheck,
-      permissions: ["resellers.access", "agents.access", "agent-transactions.access"],
+      permissions: ["resellers.access", "agents.access", "agent-transactions.access", "resellers.clients.report"],
       feature: "resellers",
       items: [
         { title: t("menu.resellers.title"), url: "/resellers", permission: "resellers.access" },
         { title: t("menu.agents.title"), url: "/agents", permission: "agents.access" },
         { title: t("menu.agent_transactions.title"), url: "/agent-transactions", permission: "agent-transactions.access" },
+        { title: t("menu.reports.reseller_clients.title"), url: "/reports/reseller-clients", permission: "resellers.clients.report" },
       ],
     },
     {
@@ -269,7 +270,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.reports.title"),
       url: "#",
       icon: FileBarChart,
-      permissions: ["reports.access", "resellers.clients.report"],
+      permissions: ["reports.access"],
       items: [
         { title: t("menu.reports.income_expense.title"), url: "/reports/income-expense", permission: "reports.access" },
         { title: t("menu.reports.funds.title"), url: "/reports/funds", permission: "funds.access" },
@@ -278,7 +279,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.reports.expenses.title"), url: "/reports/expenses", permission: "expenses.access" },
         { title: t("menu.reports.product_in.title"), url: "/reports/product-in", permission: "products-in.report" },
         { title: t("menu.reports.product_out.title"), url: "/reports/product-out", permission: "products-in.report" },
-        { title: t("menu.reports.reseller_clients.title"), url: "/reports/reseller-clients", permission: "resellers.clients.report" },
         { title: t("menu.reports.btrc.title"), url: "/reports/btrc", permission: "reports.access" },
       ],
     },

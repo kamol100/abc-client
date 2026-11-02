@@ -31,6 +31,21 @@ describe("ClientFormFieldSchema", () => {
     expect(editingUsername?.label).not.toHaveProperty("labelTrailing");
   });
 
+  it("uses the company payment deadline and falls back to day 11", () => {
+    const deadlineOf = (paymentDeadline?: unknown) => {
+      const field = ClientFormFieldSchema({ mode: "create", paymentDeadline })
+        .flatMap((section) => section.form)
+        .find((item) => item.name === "payment_deadline");
+      return field?.type === "dropdown" ? field.defaultValue : undefined;
+    };
+
+    expect(deadlineOf(5)).toBe("5");
+    expect(deadlineOf("20")).toBe("20");
+    expect(deadlineOf(undefined)).toBe("11");
+    expect(deadlineOf(0)).toBe("11");
+    expect(deadlineOf(31)).toBe("11");
+  });
+
   it("selects the first payment term option by default", () => {
     const sections = ClientFormFieldSchema({ mode: "create" });
     const paymentTerm = sections

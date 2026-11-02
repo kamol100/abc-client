@@ -5053,6 +5053,10 @@
                 "label": "টিকিট আইডি প্রিফিক্স",
                 "placeholder": "TKT"
             },
+            "payment_deadline": {
+                "label": "পেমেন্ট ডেডলাইন",
+                "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন"
+            },
             "client_view_open_on_new_tab": {
                 "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"
             },

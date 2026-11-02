@@ -1,4 +1,5 @@
 import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
+import { paymentDeadlineSetting } from "@/components/settings/settings-type";
 
 export const clientImageFields = [
   {
@@ -26,6 +27,7 @@ export type ClientImageFieldName = (typeof clientImageFields)[number]["name"];
 type Props = {
   mode?: "create" | "edit";
   nextSid?: number;
+  paymentDeadline?: unknown;
 };
 
 const paymentTermOptions = Array.from({ length: 12 }, (_, i) => ({
@@ -44,7 +46,7 @@ const paymentDeadlineOptions = Array.from({ length: 32 }, (_, i) => {
   return { value: String(i), label };
 });
 
-export const ClientFormFieldSchema = ({ mode = "create", nextSid }: Props): AccordionSection[] => {
+export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadline }: Props): AccordionSection[] => {
   return [
     {
       name: "common.basic_information",
@@ -63,9 +65,9 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid }: Props): Acco
             mandatory: true,
             ...(mode === "create" && nextSid != null
               ? {
-                  labelTrailing: "client.pppoe_username.next_sid",
-                  labelTrailingValues: { sid: nextSid },
-                }
+                labelTrailing: "client.pppoe_username.next_sid",
+                labelTrailingValues: { sid: nextSid },
+              }
               : {}),
           },
           placeholder: "client.pppoe_username.placeholder",
@@ -111,6 +113,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid }: Props): Acco
           label: { labelText: "client.payment_date.label" },
           placeholder: "client.payment_date.placeholder",
           options: paymentDeadlineOptions,
+          defaultValue: String(paymentDeadlineSetting(paymentDeadline)),
         },
         {
           type: "dropdown",

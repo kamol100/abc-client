@@ -1,22 +1,22 @@
 ## Summary
 
-The invoice receipt prints the company support phone from user settings. The support line is shown only when `settings.support_phone` is present.
+General settings now include a Payment Deadline dropdown, days 01–30. When the company has not saved one, the form and new clients use day 11.
 
 ## Frontend
 
-- The edit dialog and the profile details include Support Phone for a company. Reseller profile does not show it.
-- English and Bangla labels are under `company_profile.support_phone`.
-- The header menu still links to `/company-profile/{company uuid}`.
+- The field is on Settings → General, after the ticket prefix. It saves through the existing company settings request.
+- The new-client form and the sync-client import form use that saved day as the payment deadline default.
+- English and Bangla labels are `settings.fields.payment_deadline`.
 
 ## Checks
 
-- `scripts/ai/typecheck` passed earlier for the profile form.
-- Vitest passed for `tests/unit/invoices/invoice-receipt.test.tsx` (4 tests).
+- `npx vitest run tests/unit/settings/payment-deadline.test.ts tests/unit/settings/expense-id-prefix.test.ts tests/unit/clients/client-form-schema.test.ts` passed (14 tests).
+- `scripts/ai/typecheck` passed.
 
 ## Browser
 
-On `http://vp.isp.test/invoices`, the INV10 print preview shows `For support: 555555555`. The company phone on the receipt stays `22222222222`.
+The general settings page at `http://vp.isp.test/settings/general` did not load in the browser (the tab stayed blank), so the dropdown was not clicked in the app.
 
 ## Unrelated working tree
 
-Left untouched: invoice print settings, menu, and breadcrumb changes already in the working tree. `en.json` and `bn.json` already had those translation edits; only the support phone keys were added.
+Left in place: the earlier move of Reseller Clients from Reports into the Resellers menu (`hooks/use-menu-items.ts`, `tests/unit/menu/menu-items.test.ts`).

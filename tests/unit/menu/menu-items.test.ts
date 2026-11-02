@@ -70,6 +70,7 @@ describe("admin menu order", () => {
       "/resellers",
       "/agents",
       "/agent-transactions",
+      "/reports/reseller-clients",
       "/networks",
       "/noc",
       "/import-client",
@@ -104,7 +105,6 @@ describe("admin menu order", () => {
       "/reports/expenses",
       "/reports/product-in",
       "/reports/product-out",
-      "/reports/reseller-clients",
       "/reports/btrc",
       "/products",
       "/products/reports",
@@ -159,6 +159,14 @@ describe("admin menu permissions", () => {
 
   it("shows send sms inside communication without the other communication links", () => {
     expect(urls(selectMenuItems(menu, access(["sms-send.access"])))).toEqual(["/sms-send", "/subscription"]);
+  });
+
+  it("shows reseller clients under the reseller menu", () => {
+    const items = selectMenuItems(menu, access(["resellers.clients.report"]));
+    const resellers = group(items, 14);
+
+    expect(resellers.items?.map((sub) => sub.url)).toEqual(["/reports/reseller-clients"]);
+    expect(urls(items)).not.toContain("/reports/income-expense");
   });
 
   it("does not open a report link from an unrelated permission", () => {

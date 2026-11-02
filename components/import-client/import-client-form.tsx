@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-builder";
 import ImportClientFormFieldSchema from "@/components/import-client/import-client-form-schema";
@@ -38,6 +38,7 @@ export default function ImportClientForm({ syncClient }: ImportClientFormProps) 
     const router = useRouter();
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const { settings } = useSettings();
     const canImport = hasPermission("sync-clients.import");
     const defaultValues = useMemo(
         () => mapSyncClientToFormValues(syncClient),
@@ -56,7 +57,10 @@ export default function ImportClientForm({ syncClient }: ImportClientFormProps) 
                 </div>
             )}
             <AccordionFormBuilder
-                formSchema={ImportClientFormFieldSchema({ mode: "create" })}
+                formSchema={ImportClientFormFieldSchema({
+                    mode: "create",
+                    paymentDeadline: settings.payment_deadline,
+                })}
                 grids={2}
                 data={defaultValues as Record<string, unknown>}
                 api={`/sync-client/${syncClient.id}`}

@@ -1,5 +1,6 @@
 export interface Settings {
   auto_inactive_client_invoice_due?: number;
+  payment_deadline?: number | string | null;
   auto_inactive_reseller_client_termination_date?: number | string | null;
   gmap_api?: string;
   invoice_prefix?: string;

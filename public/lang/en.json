@@ -5053,6 +5053,10 @@
                 "label": "Ticket ID Prefix",
                 "placeholder": "TKT"
             },
+            "payment_deadline": {
+                "label": "Payment Deadline",
+                "placeholder": "Select payment deadline"
+            },
             "client_view_open_on_new_tab": {
                 "label": "Client view open on new tab"
             },

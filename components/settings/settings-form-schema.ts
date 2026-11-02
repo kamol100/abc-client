@@ -1,10 +1,11 @@
 import type { FormFieldConfig, SelectOption } from "@/components/form-wrapper/form-builder-type";
 import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
-import type {
-    SettingsFieldKey,
-    SettingsSelectKey,
-    SettingsSwitchKey,
-    SettingsTextKey,
+import {
+    PAYMENT_DEADLINE_RANGE,
+    type SettingsFieldKey,
+    type SettingsSelectKey,
+    type SettingsSwitchKey,
+    type SettingsTextKey,
 } from "@/components/settings/settings-type";
 
 export type SettingsSectionKey =
@@ -94,6 +95,17 @@ const MONITOR_FAIL_THRESHOLD_OPTIONS: SettingsOptionConfig[] = Array.from({ leng
     label: `settings.options.monitor_fail_threshold_${index + 1}`,
 }));
 
+const PAYMENT_DEADLINE_OPTIONS: SettingsOptionConfig[] = Array.from(
+    { length: PAYMENT_DEADLINE_RANGE.max - PAYMENT_DEADLINE_RANGE.min + 1 },
+    (_, index) => {
+        const day = PAYMENT_DEADLINE_RANGE.min + index;
+        return {
+            value: day,
+            label: String(day).padStart(2, "0"),
+        };
+    },
+);
+
 export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSectionSchema> = {
     general: {
         title: "settings.sections.general.title",
@@ -104,6 +116,7 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "expense_id_prefix" },
             { kind: "text", key: "product_code_prefix" },
             { kind: "text", key: "ticket_code_prefix" },
+            { kind: "select", key: "payment_deadline", options: PAYMENT_DEADLINE_OPTIONS },
             { kind: "switch", key: "auto_inactive_client_invoice_due" },
             { kind: "switch", key: "client_view_open_on_new_tab" },
             { kind: "switch", key: "client_edit_open_on_new_tab" },
