@@ -8,7 +8,7 @@ describe("staffProfileAvatarSrc", () => {
         id: "staff-1",
         photo: "staffs/1/staff-1/photo/file.jpg",
       }),
-    ).toBe("/api/staffs/staff-1/images/photo?v=staffs%2F1%2Fstaff-1%2Fphoto%2Ffile.jpg");
+    ).toBe("/api/staff-photo?v=staffs%2F1%2Fstaff-1%2Fphoto%2Ffile.jpg");
   });
 
   it("returns nothing when the staff has no photo", () => {

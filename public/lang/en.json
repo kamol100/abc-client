@@ -5291,6 +5291,7 @@
         "aria_label": "User menu",
         "menu": "User menu",
         "dashboard": "Dashboard",
+        "my_profile": "My profile",
         "reseller_profile": "Reseller Profile",
         "company_profile": "Company Profile",
         "settings": "Settings",
@@ -5350,6 +5351,33 @@
             "contact": "Contact",
             "address": "Address",
             "service": "Service"
+        }
+    },
+    "staff_account": {
+        "title": "My profile",
+        "subtitle": "Your staff record. You can change your name and photo. Other details stay read only.",
+        "change_photo": "Change photo",
+        "remove_photo": "Remove photo",
+        "remove_title": "Remove profile photo",
+        "remove_confirm": "Remove your profile photo?",
+        "photo_input": "Profile photo file",
+        "dummy_photo": "Profile photo placeholder",
+        "edit_name": "Edit name",
+        "save_name": "Save name",
+        "name_success": "Name updated",
+        "name_failed": "Could not update the name",
+        "name_min": "Name must be at least 2 characters",
+        "upload_success": "Profile photo updated",
+        "upload_failed": "Could not update the profile photo",
+        "remove_success": "Profile photo removed",
+        "remove_failed": "Could not remove the profile photo",
+        "missing": "No staff profile is linked to this account.",
+        "blood_group": "Blood group",
+        "sections": {
+            "personal": "Personal",
+            "contact": "Contact",
+            "address": "Address",
+            "work": "Work"
         }
     },
     "client_portal": {
