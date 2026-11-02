@@ -6,8 +6,9 @@ import { Table } from "@tanstack/react-table";
 
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { cn } from "@/lib/utils";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import ChangePagination from "@/components/change-pagination";
 import FormFilter from "@/components/form-wrapper/form-filter";
 import InputField from "@/components/form/input-field";
@@ -19,6 +20,12 @@ import { Maximize2, Minimize2 } from "lucide-react";
 import { MyDrawer } from "@/components/my-drawer";
 import { useFilterForm } from "@/hooks/use-filter-form";
 import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
+import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import {
+  MobileSearchSettingSchema,
+  type MobileSearchSetting,
+} from "@/components/profiles/staff-account-type";
+import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -35,6 +42,8 @@ interface DataTableToolbarProps<TData> {
   toolbarBeforeViewOptions?: ReactNode;
   /** Rendered immediately before the create/edit form trigger (e.g. import). */
   toolbarBeforeForm?: ReactNode;
+  /** When true, mobile may replace the filter sheet with the `any` text field. */
+  simpleSearch?: boolean;
 }
 
 export function DataTableToolbar<TData>({
@@ -50,6 +59,7 @@ export function DataTableToolbar<TData>({
   toolbarTitleClass = "",
   toolbarBeforeViewOptions,
   toolbarBeforeForm,
+  simpleSearch = false,
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -73,10 +83,29 @@ export function DataTableToolbar<TData>({
 
     return column;
   };
+  const { t } = useTranslation();
   const { isMobile } = useSidebar();
   const { isFixed, toggleMode } = useTableLayoutMode();
   const [showFilter, setShowFilter] = useState(false);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
+  const [simpleSearchOpen, setSimpleSearchOpen] = useState(false);
+  const wantsSimpleSearch = simpleSearch && isMobile;
+  const anyFields = useMemo(
+    () => anySearchFields(toolbarOptions?.filter),
+    [toolbarOptions?.filter],
+  );
+  const { data: staffAccount, isSuccess: staffAccountLoaded } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["staff-account"],
+    url: "staff-account",
+    pagination: false,
+    enabled: wantsSimpleSearch,
+  });
+  const mobileSearch = wantsSimpleSearch && staffAccountLoaded
+    ? readMobileSearch(staffAccount?.data)
+    : null;
+  const simpleSearchActive = mobileSearch?.mode === "simple" && anyFields.length > 0;
+  const simpleSearchPinned = mobileSearch?.mode === "simple" && mobileSearch.always_open && anyFields.length > 0;
+  const simpleSearchVisible = simpleSearchPinned || (simpleSearchActive && simpleSearchOpen);
 
   const filterHook = useFilterForm({
     formSchema: toolbarOptions?.filter || [],
@@ -153,7 +182,19 @@ export function DataTableToolbar<TData>({
           )}
 
           {toolbarOptions?.filter && (
-            isMobile ? (
+            simpleSearchActive ? (
+              <MyButton
+                action="filter"
+                size="default"
+                variant="outline"
+                disabled={simpleSearchPinned}
+                aria-label={t("common.filter")}
+                onClick={() => {
+                  if (simpleSearchPinned) return;
+                  setSimpleSearchOpen((open) => !open);
+                }}
+              />
+            ) : isMobile ? (
               <MyDrawer
                 open={filterDrawerOpen}
                 onOpenChange={setFilterDrawerOpen}
@@ -224,6 +265,35 @@ export function DataTableToolbar<TData>({
           {toolbarInfoComponent}
         </div>
       )}
+      {simpleSearchVisible && (
+        <div className="w-full">
+          <FormFilter
+            formSchema={anyFields}
+            grids={1}
+            setFilter={setFilter}
+            forceOpen
+            hideTrigger
+            className="w-full"
+            formHook={filterHook}
+          />
+        </div>
+      )}
     </div>
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function readMobileSearch(account: unknown): MobileSearchSetting | null {
+  if (!isRecord(account) || !isRecord(account.settings)) return null;
+  const parsed = MobileSearchSettingSchema.safeParse(account.settings.mobile_search);
+  return parsed.success ? parsed.data : null;
+}
+
+function anySearchFields(fields: FieldConfig[] | undefined): FieldConfig[] {
+  return (fields ?? []).filter(
+    (field) => field.type === "text" && field.name === "any" && field.watchForFilter === true,
   );
 }

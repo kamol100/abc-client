@@ -30,6 +30,10 @@ vi.mock("next/dynamic", () => ({
     default: () => () => null,
 }));
 
+vi.mock("@/components/clients/client-online-status-cell", () => ({
+    ClientOnlineStatusProvider: ({ children }: { children: unknown }) => children,
+}));
+
 vi.mock("@/hooks/use-api-query", () => ({
     default: (options: { url: string; queryKey: unknown[]; params?: Record<string, string> }) => {
         queryCalls.push({ url: options.url, queryKey: options.queryKey, params: options.params });
@@ -47,15 +51,18 @@ vi.mock("@/components/data-table/data-table", () => ({
         toolbarTitle,
         form,
         toolbarOptions,
+        simpleSearch,
     }: {
         toolbarTitle?: string;
         form?: () => null;
         toolbarOptions?: { filter?: Array<{ name: string }> };
+        simpleSearch?: boolean;
     }) => (
         <div>
             <span>{toolbarTitle}</span>
             <span>{form ? "has-create" : "report-only"}</span>
             <span>{toolbarOptions?.filter?.map((field) => field.name).join(",")}</span>
+            <span>{simpleSearch ? "simple-search-on" : "simple-search-off"}</span>
         </div>
     ),
 }));
@@ -79,6 +86,7 @@ describe("ClientTable reseller report", () => {
         expect(screen.getByText("menu.reports.reseller_clients.title (3)")).toBeInTheDocument();
         expect(screen.getByText("report-only")).toBeInTheDocument();
         expect(screen.getByText("any,network_id,zone_id,status,reseller_id")).toBeInTheDocument();
+        expect(screen.getByText("simple-search-off")).toBeInTheDocument();
         expect(queryCalls[0]?.params).toBeUndefined();
     });
 
@@ -116,6 +124,18 @@ describe("ClientTable reseller report", () => {
         expect(routerReplace).toHaveBeenCalledWith("/reports/reseller-clients");
     });
 
+    it("passes simple search only for the default client list", () => {
+        searchParamsState.value = "";
+
+        const { unmount } = render(<ClientTable />);
+        expect(screen.getByText("simple-search-on")).toBeInTheDocument();
+        unmount();
+
+        render(<ClientTable variant="reseller-clients" />);
+        expect(screen.getByText("simple-search-off")).toBeInTheDocument();
+        expect(screen.queryByText("simple-search-on")).not.toBeInTheDocument();
+    });
+
     it("keeps the company client list on the default table", () => {
         searchParamsState.value = "";
         queryCalls.length = 0;
@@ -129,5 +149,6 @@ describe("ClientTable reseller report", () => {
         expect(screen.getByText("client.title_plural (3)")).toBeInTheDocument();
         expect(screen.getByText("has-create")).toBeInTheDocument();
         expect(screen.getByText("any,network_id,zone_id,status")).toBeInTheDocument();
+        expect(screen.getByText("simple-search-on")).toBeInTheDocument();
     });
 });
