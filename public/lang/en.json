@@ -5373,6 +5373,23 @@
         "remove_failed": "Could not remove the profile photo",
         "missing": "No staff profile is linked to this account.",
         "blood_group": "Blood group",
+        "account_information": "Account information",
+        "account_settings": "Account settings",
+        "mobile_search": {
+            "title": "Mobile search",
+            "description": "Choose how search works on a phone. This is saved on your account.",
+            "mode_label": "Search style",
+            "simple": "Simple",
+            "simple_hint": "A compact search field.",
+            "default": "Default",
+            "default_hint": "The standard search field.",
+            "always_open": "Simple search always open",
+            "always_open_hint": "Keep the simple search field open."
+        },
+        "settings": {
+            "saved": "Settings saved",
+            "failed": "Could not save settings"
+        },
         "sections": {
             "personal": "Personal",
             "contact": "Contact",

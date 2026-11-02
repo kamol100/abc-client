@@ -1,5 +1,31 @@
 import { z } from "zod";
 
+const mobileSearchMode = z.preprocess(
+  (value) => (value === "default" ? "default" : "simple"),
+  z.enum(["simple", "default"]),
+);
+
+const mobileSearchOpen = z.preprocess((value) => {
+  if (value === true || value === 1 || value === "1" || value === "true") return true;
+  return false;
+}, z.boolean());
+
+export const MobileSearchSettingSchema = z.object({
+  mode: mobileSearchMode,
+  always_open: mobileSearchOpen,
+});
+
+export type MobileSearchSetting = z.infer<typeof MobileSearchSettingSchema>;
+
+export const UserAccountSettingsSchema = z.object({
+  mobile_search: z.preprocess(
+    (value) => (value && typeof value === "object" ? value : {}),
+    MobileSearchSettingSchema,
+  ),
+});
+
+export type UserAccountSettings = z.infer<typeof UserAccountSettingsSchema>;
+
 const optionalText = z
   .union([z.string(), z.number(), z.null()])
   .optional()
@@ -35,6 +61,10 @@ export const StaffAccountSchema = z.object({
     .nullable()
     .optional()
     .transform((value) => (value ?? []).map((role) => role.trim()).filter((role) => role !== "")),
+  settings: z.preprocess(
+    (value) => (value && typeof value === "object" ? value : {}),
+    UserAccountSettingsSchema,
+  ),
 });
 
 export type StaffAccount = z.infer<typeof StaffAccountSchema>;

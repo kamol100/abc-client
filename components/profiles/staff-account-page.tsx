@@ -12,11 +12,16 @@ import MyButton from "@/components/my-button";
 import { staffProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import {
   parseStaffAccount,
+  type MobileSearchSetting,
   type StaffAccount,
+  type UserAccountSettings,
 } from "@/components/profiles/staff-account-type";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
 import { useProfile } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
@@ -32,13 +37,6 @@ type PhotoResult = {
 const GENDER_LABELS: Record<string, string> = {
   male: "common.male",
   female: "common.female",
-};
-
-const MARITAL_LABELS: Record<string, string> = {
-  marred: "common.married",
-  married: "common.married",
-  unmarred: "common.unmarried",
-  unmarried: "common.unmarried",
 };
 
 export default function StaffAccountPage() {
@@ -121,6 +119,14 @@ export default function StaffAccountPage() {
     },
   });
 
+  const saveSettings = useApiMutation<unknown, Pick<UserAccountSettings, "mobile_search">>({
+    url: "/staff-account/settings",
+    method: "PUT",
+    invalidateKeys: "staff-account",
+    successMessage: "staff_account.settings.saved",
+    defaultErrorMessage: "staff_account.settings.failed",
+  });
+
   const busy = upload.isPending || remove.isPending;
   const busyRef = useRef(false);
 
@@ -153,6 +159,15 @@ export default function StaffAccountPage() {
     if (!account || name === (account.name ?? "")) return true;
     try {
       await saveName.mutateAsync({ name });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const submitSettings = async (mobileSearch: MobileSearchSetting): Promise<boolean> => {
+    try {
+      await saveSettings.mutateAsync({ mobile_search: mobileSearch });
       return true;
     } catch {
       return false;
@@ -194,6 +209,8 @@ export default function StaffAccountPage() {
           void selectFile(file);
         }}
         onRemove={() => setConfirmOpen(true)}
+        savingSettings={saveSettings.isPending}
+        onSaveSettings={submitSettings}
       />
       <MyDialog
         open={confirmOpen}
@@ -223,6 +240,8 @@ export function StaffAccountView({
   onCancelName,
   onSelectFile,
   onRemove,
+  savingSettings,
+  onSaveSettings,
 }: {
   account: StaffAccount;
   photo: string | null;
@@ -234,6 +253,8 @@ export function StaffAccountView({
   onCancelName: () => void;
   onSelectFile: (file: File) => void;
   onRemove: () => void;
+  savingSettings: boolean;
+  onSaveSettings: (mobileSearch: MobileSearchSetting) => Promise<boolean>;
 }) {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -286,6 +307,11 @@ export function StaffAccountView({
   };
 
   const roles = account.roles.length > 0 ? account.roles.join(", ") : null;
+  const address = account.present_address
+    ? { label: t("staff.present_address.label"), value: account.present_address }
+    : account.permanent_address
+      ? { label: t("staff.permanent_address.label"), value: account.permanent_address }
+      : null;
 
   return (
     <div className="space-y-4 pr-3">
@@ -359,7 +385,13 @@ export function StaffAccountView({
                   />
                 </div>
                 <div className="flex gap-2">
-                  <MyButton type="submit" action="save" loading={savingName} disabled={savingName}>
+                  <MyButton
+                    type="submit"
+                    action="save"
+                    loading={savingName}
+                    disabled={savingName}
+                    aria-label={t("staff_account.save_name")}
+                  >
                     <Save />
                   </MyButton>
                   <MyButton
@@ -367,6 +399,7 @@ export function StaffAccountView({
                     action="cancel"
                     variant="outline"
                     disabled={savingName}
+                    aria-label={t("common.cancel")}
                     onClick={() => {
                       onCancelName();
                       setEditingName(false);
@@ -394,7 +427,6 @@ export function StaffAccountView({
                 />
               </div>
             )}
-            <p className="max-w-xl text-sm text-muted-foreground">{t("staff_account.subtitle")}</p>
             <p className="text-xs text-muted-foreground">{t("staff.images.photo.hint")}</p>
             <div className="flex flex-wrap gap-2">
               <MyButton type="button" icon={false} onClick={openPicker} disabled={busy}>
@@ -411,40 +443,145 @@ export function StaffAccountView({
         </section>
       </Card>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <AccountSection title={t("staff_account.sections.personal")} icon={User}>
-          <InfoItem label={t("staff.gender.label")} value={mapped(account.gender, GENDER_LABELS)} />
-          <InfoItem
-            label={t("staff.marital_status.label")}
-            value={mapped(account.marital_status, MARITAL_LABELS)}
-          />
-          <InfoItem label={t("staff_account.blood_group")} value={account.blood_group} />
-          <InfoItem label={t("staff.date_of_birth.label")} value={formatAccountDate(account.date_of_birth)} />
-          <InfoItem label={t("staff.father_name.label")} value={account.father_name} />
-          <InfoItem label={t("staff.mother_name.label")} value={account.mother_name} />
-        </AccountSection>
-        <AccountSection title={t("staff_account.sections.contact")} icon={Phone}>
-          <InfoItem label={t("staff.phone.label")} value={account.phone} />
-          <InfoItem label={t("staff.email.label")} value={account.email} />
-          <InfoItem label={t("staff.social_media_address.label")} value={account.social_media_address} />
-        </AccountSection>
-        <AccountSection title={t("staff_account.sections.address")} icon={MapPin}>
-          <InfoItem label={t("staff.present_address.label")} value={account.present_address} />
-          <InfoItem label={t("staff.permanent_address.label")} value={account.permanent_address} />
-        </AccountSection>
-        <AccountSection title={t("staff_account.sections.work")} icon={Briefcase}>
-          <InfoItem label={t("staff.designation.label")} value={account.designation} />
-          <InfoItem label={t("staff.username.label")} value={account.username} />
-          <InfoItem label={t("staff.roles.label")} value={roles} />
-          <InfoItem label={t("staff.join_date.label")} value={formatAccountDate(account.join_date)} />
-          <InfoItem label={t("staff.job_experience.label")} value={account.job_experience} />
-        </AccountSection>
+      <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+        <Card>
+          <section>
+            <CardHeading title={t("staff_account.account_information")} />
+            <div className="divide-y divide-border">
+              <InfoCategory title={t("staff_account.sections.personal")} icon={User}>
+                <InfoItem label={t("staff.gender.label")} value={mapped(account.gender, GENDER_LABELS)} />
+                <InfoItem label={t("staff_account.blood_group")} value={account.blood_group} />
+                <InfoItem
+                  label={t("staff.date_of_birth.label")}
+                  value={formatAccountDate(account.date_of_birth)}
+                />
+              </InfoCategory>
+              <InfoCategory title={t("staff_account.sections.contact")} icon={Phone}>
+                <InfoItem label={t("staff.phone.label")} value={account.phone} />
+                <InfoItem label={t("staff.email.label")} value={account.email} />
+              </InfoCategory>
+              {address ? (
+                <InfoCategory title={t("staff_account.sections.address")} icon={MapPin}>
+                  <InfoItem label={address.label} value={address.value} />
+                </InfoCategory>
+              ) : null}
+              <InfoCategory title={t("staff_account.sections.work")} icon={Briefcase}>
+                <InfoItem label={t("staff.designation.label")} value={account.designation} />
+                <InfoItem label={t("staff.username.label")} value={account.username} />
+                <InfoItem label={t("staff.roles.label")} value={roles} />
+                <InfoItem label={t("staff.join_date.label")} value={formatAccountDate(account.join_date)} />
+              </InfoCategory>
+            </div>
+          </section>
+        </Card>
+
+        <Card>
+          <section aria-busy={savingSettings}>
+            <CardHeading title={t("staff_account.account_settings")} />
+            <MobileSearchFields
+              value={account.settings.mobile_search}
+              saving={savingSettings}
+              onSave={onSaveSettings}
+            />
+          </section>
+        </Card>
       </div>
     </div>
   );
 }
 
-function AccountSection({
+const SEARCH_MODES = ["simple", "default"] as const;
+
+function MobileSearchFields({
+  value,
+  saving,
+  onSave,
+}: {
+  value: MobileSearchSetting;
+  saving: boolean;
+  onSave: (next: MobileSearchSetting) => Promise<boolean>;
+}) {
+  const { t } = useTranslation();
+  const savedMode = value.mode;
+  const savedOpen = value.always_open;
+  const [search, setSearch] = useState(value);
+
+  useEffect(() => {
+    setSearch({ mode: savedMode, always_open: savedOpen });
+  }, [savedMode, savedOpen]);
+
+  const commit = async (next: MobileSearchSetting) => {
+    if (saving || (next.mode === search.mode && next.always_open === search.always_open)) return;
+    const previous = search;
+    setSearch(next);
+    const saved = await onSave(next);
+    if (!saved) setSearch(previous);
+  };
+
+  return (
+    <div className={cn("divide-y divide-border", saving && "opacity-60")}>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+        <span className="text-sm text-foreground">
+          {t("staff_account.mobile_search.title")}
+          <span className="px-2 text-muted-foreground" aria-hidden>
+            :
+          </span>
+        </span>
+        <RadioGroup
+          value={search.mode}
+          disabled={saving}
+          aria-label={t("staff_account.mobile_search.mode_label")}
+          className="flex flex-row flex-wrap gap-x-4 gap-y-2"
+          onValueChange={(mode) => {
+            if (mode === "simple" || mode === "default") {
+              void commit({ mode, always_open: search.always_open });
+            }
+          }}
+        >
+          {SEARCH_MODES.map((mode) => (
+            <label
+              key={mode}
+              htmlFor={`staff-mobile-search-${mode}`}
+              className={cn("flex cursor-pointer items-center gap-2 text-sm text-foreground", saving && "cursor-not-allowed")}
+            >
+              <RadioGroupItem
+                id={`staff-mobile-search-${mode}`}
+                value={mode}
+                disabled={saving}
+                aria-label={t(`staff_account.mobile_search.${mode}`)}
+              />
+              {t(`staff_account.mobile_search.${mode}`)}
+            </label>
+          ))}
+        </RadioGroup>
+      </div>
+      <div className="flex items-center justify-between gap-4 px-4 py-3">
+        <Label htmlFor="staff-mobile-search-open" className="text-sm font-normal text-foreground">
+          {t("staff_account.mobile_search.always_open")}
+        </Label>
+        <Switch
+          id="staff-mobile-search-open"
+          checked={search.always_open}
+          disabled={saving}
+          aria-label={t("staff_account.mobile_search.always_open")}
+          onCheckedChange={(alwaysOpen) => {
+            void commit({ mode: search.mode, always_open: alwaysOpen });
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CardHeading({ title }: { title: string }) {
+  return (
+    <div className="border-b border-border bg-muted/40 px-4 py-3">
+      <h2 className="text-base font-semibold text-foreground">{title}</h2>
+    </div>
+  );
+}
+
+function InfoCategory({
   title,
   icon: Icon,
   children,
@@ -454,23 +591,21 @@ function AccountSection({
   children: ReactNode;
 }) {
   return (
-    <Card>
-      <section className="p-4 sm:p-6">
-        <div className="flex items-center gap-2">
-          <Icon className="h-4 w-4 text-muted-foreground" aria-hidden />
-          <h2 className="text-base font-semibold text-foreground">{title}</h2>
-        </div>
-        <dl className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">{children}</dl>
-      </section>
-    </Card>
+    <section className="px-4 py-4">
+      <div className="mb-3 flex items-center gap-2">
+        <Icon className="h-4 w-4 text-muted-foreground" aria-hidden />
+        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      </div>
+      <dl className="space-y-3">{children}</dl>
+    </section>
   );
 }
 
 function InfoItem({ label, value }: { label: string; value?: string | null }) {
   const trimmed = value?.trim();
   return (
-    <div className="min-w-0 space-y-1">
-      <dt className="text-xs text-muted-foreground">{label}</dt>
+    <div className="grid grid-cols-[minmax(7rem,9rem)_1fr] items-start gap-3">
+      <dt className="text-sm text-muted-foreground">{label}</dt>
       <dd className="min-w-0 break-words text-sm font-medium text-foreground">
         {trimmed ? trimmed : <span className="font-normal text-muted-foreground">—</span>}
       </dd>
@@ -511,15 +646,17 @@ function StaffAccountSkeleton() {
           </div>
         </div>
       </Card>
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        {Array.from({ length: 4 }, (_, index) => (
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {Array.from({ length: 2 }, (_, index) => (
           <Card key={index}>
-            <div className="space-y-4 p-4 sm:p-6">
-              <Skeleton className="h-5 w-28" />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-              </div>
+            <div className="border-b border-border px-4 py-3">
+              <Skeleton className="h-5 w-40" />
+            </div>
+            <div className="space-y-3 p-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
             </div>
           </Card>
         ))}

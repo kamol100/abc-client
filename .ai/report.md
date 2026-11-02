@@ -1,22 +1,24 @@
 ## Summary
 
-Staff can open My profile from the company menu and the reseller menu. The page shows their photo, or a person placeholder when they have none. Name and photo can be changed. The rest of the staff record is read only.
+My profile now shows the photo card, then two cards: Account information on the left and Account settings on the right. Removed profile fields are no longer shown. Address appears only when one exists.
 
 ## Frontend
 
-- My profile sits under Company Profile and Reseller Profile and goes to `/staff-profile`.
-- The signed-in photo is loaded from `/api/staff-photo`, so the menu photo does not depend on the staff image permission.
-- The name is shown with an edit icon. Edit opens the field with Save and Cancel, and either button closes that editor. Save stores the name. Cancel restores it.
+- Dropped marital status, father's name, mother's name, social media, and job experience from the profile view.
+- Address uses the present address when it exists, otherwise the permanent address. The address category is hidden when both are empty.
+- Account information groups the remaining fields as Personal, Contact, Address, and Work.
+- Account settings holds mobile search as a compact row: label, then Simple and Default. The always-open switch stays on the next row. Descriptive hints are not shown.
+- English and Bangla labels: `staff_account.account_information` and `staff_account.account_settings`.
 
 ## Checks
 
-- `npx vitest run tests/unit/profiles/staff-account-page.test.tsx tests/unit/profiles/profile-avatar.test.ts` passed (7 tests).
+- `npx vitest run tests/unit/profiles/staff-account-page.test.tsx` passed (8 tests).
 - `scripts/ai/typecheck` passed.
 
 ## Browser
 
-Signed in at `http://vp.isp.test` as the company user vp. `/staff-profile` shows the stored photo, the name field, Change photo, and Remove photo. Gender, phone, and email are text, not inputs. The user menu lists My profile under Company Profile. Saving the name to `vp profile` updated the sidebar, then the name was saved back to `vp`. The reseller menu was not opened because this login is a company user. A new photo was not uploaded.
+Signed in at `http://vp.isp.test` as vp. The two cards sit side by side. This account has no address, so the address category is hidden. Choosing Default saved, then Simple was selected again.
 
 ## Security
 
-The page does not send `company_id` or `reseller_id`. Name is the only text field submitted. Photo upload goes to the signed-in staff photo endpoint.
+The page still sends only the settings group. It does not send `company_id` or `reseller_id`.
