@@ -9,11 +9,18 @@ import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/app/actions";
-import { ApiResponse } from "@/hooks/use-api-query";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { parseApiError } from "@/lib/helper/helper";
 import { Loader2, Printer } from "lucide-react";
 import InvoiceReceipt from "@/components/invoices/invoice-receipt";
-import { InvoiceDetail } from "./invoice-type";
+import {
+    InvoicePrintSettingsSchema,
+    receiptContentPaddingX,
+    receiptLineHeight,
+    type InvoicePrintSettings,
+} from "@/components/invoices/invoice-print-config";
+import { InvoiceDetail } from "@/components/invoices/invoice-type";
+import { usePathname } from "next/navigation";
 
 /** GOOJPRT PT-210: 58mm roll, 48mm print head, 203 dpi, 384 dots. */
 const PT210_PRINT_WIDTH_MM = 48;
@@ -32,24 +39,59 @@ const thermalFontFamily = () => {
     return hindFamily.length > 0 ? `${hindFamily}, sans-serif` : "sans-serif";
 };
 
-const paintThermalSurface = (element: HTMLElement) => {
+type ReceiptTypography = {
+    fontSize: number;
+    fontWeight: number;
+};
+
+const typographyFromReceipt = (element: HTMLElement): ReceiptTypography | null => {
+    const fontSize = Number(element.dataset.receiptFontSize);
+    const fontWeight = Number(element.dataset.receiptFontWeight);
+    if (!Number.isFinite(fontSize) || fontSize <= 0) return null;
+
+    return {
+        fontSize,
+        fontWeight: Number.isFinite(fontWeight) && fontWeight > 0 ? fontWeight : 700,
+    };
+};
+
+const paddingXFromReceipt = (element: HTMLElement): number => {
+    const raw = element.dataset.receiptPaddingX;
+    if (raw === undefined || raw === "") return receiptContentPaddingX("standard");
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed) || parsed < 0) return receiptContentPaddingX("standard");
+    return parsed;
+};
+
+const paintThermalSurface = (
+    element: HTMLElement,
+    typography: ReceiptTypography | null,
+    paddingX: number,
+) => {
+    const fontSize = typography?.fontSize ?? 28;
+    const fontWeight = typography?.fontWeight ?? 700;
     element.style.boxSizing = "border-box";
     element.style.width = `${PT210_PAGE_DOTS}px`;
     element.style.margin = "0";
-    element.style.padding = "16px 16px 24px";
+    element.style.paddingTop = "16px";
+    element.style.paddingRight = `${paddingX}px`;
+    element.style.paddingBottom = "24px";
+    element.style.paddingLeft = `${paddingX}px`;
+    element.style.overflow = "visible";
+    if (paddingX === 0) element.style.overflowWrap = "anywhere";
     element.style.border = "0";
     element.style.background = "#ffffff";
     element.style.color = "#000000";
     element.style.fontFamily = thermalFontFamily();
-    element.style.fontWeight = "700";
-    element.style.fontSize = "28px";
-    element.style.lineHeight = "36px";
+    element.style.fontWeight = String(fontWeight);
+    element.style.fontSize = `${fontSize}px`;
+    element.style.lineHeight = `${receiptLineHeight(fontSize)}px`;
     element.style.letterSpacing = "0px";
     element.style.setProperty("-webkit-font-smoothing", "auto");
     element.style.setProperty("-moz-osx-font-smoothing", "auto");
 };
 
-const forceThermalInk = (root: HTMLElement) => {
+const forceThermalInk = (root: HTMLElement, typography: ReceiptTypography | null) => {
     const paint = (node: HTMLElement, keepWhiteBackground: boolean) => {
         node.style.color = "#000000";
         node.style.borderColor = "#000000";
@@ -59,7 +101,11 @@ const forceThermalInk = (root: HTMLElement) => {
         node.style.filter = "none";
         node.style.backgroundColor = keepWhiteBackground ? "#ffffff" : "transparent";
         node.style.fontFamily = thermalFontFamily();
-        node.style.fontWeight = "700";
+        node.style.fontWeight = String(typography?.fontWeight ?? 700);
+        if (typography) {
+            node.style.fontSize = `${typography.fontSize}px`;
+            node.style.lineHeight = `${receiptLineHeight(typography.fontSize)}px`;
+        }
         node.style.setProperty("-webkit-font-smoothing", "auto");
     };
 
@@ -107,7 +153,7 @@ const flattenToInk = (source: HTMLCanvasElement) => {
     return target;
 };
 
-const toThermalCanvas = async (element: HTMLElement) => {
+const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypography | null) => {
     const source = await html2canvas(element, {
         scale: 2,
         useCORS: true,
@@ -118,7 +164,7 @@ const toThermalCanvas = async (element: HTMLElement) => {
         windowWidth: element.scrollWidth,
         windowHeight: element.scrollHeight,
         onclone: (_clonedDocument, clonedElement) => {
-            forceThermalInk(clonedElement);
+            forceThermalInk(clonedElement, typography);
         },
     });
     return flattenToInk(source);
@@ -153,6 +199,10 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
     onOpenChange,
 }) => {
     const { t } = useTranslation();
+    const pathname = usePathname();
+    const settingsUrl = pathname === "/client" || pathname.startsWith("/client/")
+        ? "client-invoice-print-settings"
+        : "invoice-print-settings";
     const receiptRef = useRef<HTMLDivElement | null>(null);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
     const normalizedProvidedInvoices = useMemo(
@@ -208,6 +258,24 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
         [detailResponse, normalizedProvidedInvoices],
     );
 
+    const {
+        data: printSettingsResponse,
+        isLoading: isSettingsLoading,
+        isError: isSettingsError,
+        error: settingsError,
+    } = useApiQuery<ApiResponse<InvoicePrintSettings>>({
+        queryKey: ["invoice-print-settings", settingsUrl],
+        url: settingsUrl,
+        pagination: false,
+        enabled: open,
+        staleTime: 0,
+    });
+
+    const printSettings = useMemo(() => {
+        const parsed = InvoicePrintSettingsSchema.safeParse(printSettingsResponse?.data);
+        return parsed.success ? parsed.data : null;
+    }, [printSettingsResponse]);
+
     const dateFormat = () => {
         const date = new Date();
         const day = date.getDate();
@@ -220,6 +288,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
         if (invoices.length === 0 || !receiptRef.current) return;
 
         const receiptElement = receiptRef.current;
+        const receiptRoot = receiptElement.querySelector<HTMLElement>("[data-receipt-root]") ?? receiptElement;
         const receiptHeader = receiptElement.querySelector<HTMLElement>("[data-receipt-header]");
         const receiptItemsHead = receiptElement.querySelector<HTMLElement>("[data-receipt-items-head]");
         const receiptItemsBody = receiptElement.querySelector<HTMLElement>("[data-receipt-items-body]");
@@ -228,12 +297,14 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             receiptElement.querySelectorAll<HTMLElement>("[data-receipt-item-row]"),
         );
 
-        if (!receiptHeader || !receiptItemsHead || !receiptItemsBody || !receiptSummary) return;
+        if (!receiptItemsBody || !receiptSummary) return;
 
         setIsGeneratingPdf(true);
         let stagingContainer: HTMLDivElement | null = null;
         try {
             await document.fonts.ready;
+            const typography = typographyFromReceipt(receiptRoot);
+            const paddingX = paddingXFromReceipt(receiptRoot);
             const pageContentWidthMm = PT210_PRINT_WIDTH_MM;
             const pageContentHeightMm = RECEIPT_MAX_PAGE_HEIGHT_MM;
 
@@ -255,22 +326,22 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             stagingContainer.style.background = "#ffffff";
             document.body.appendChild(stagingContainer);
 
-            const headerProbe = cloneForPdf(receiptHeader);
-            const itemsHeadProbe = cloneForPdf(receiptItemsHead);
+            const headerProbe = receiptHeader ? cloneForPdf(receiptHeader) : null;
+            const itemsHeadProbe = receiptItemsHead ? cloneForPdf(receiptItemsHead) : null;
             const summaryProbe = cloneForPdf(receiptSummary);
 
-            stagingContainer.appendChild(headerProbe);
-            stagingContainer.appendChild(itemsHeadProbe);
+            if (headerProbe) stagingContainer.appendChild(headerProbe);
+            if (itemsHeadProbe) stagingContainer.appendChild(itemsHeadProbe);
             stagingContainer.appendChild(summaryProbe);
 
             const [headerCanvas, itemsHeadCanvas, summaryCanvas] = await Promise.all([
-                toCanvas(headerProbe),
-                toCanvas(itemsHeadProbe),
+                headerProbe ? toCanvas(headerProbe) : Promise.resolve(null),
+                itemsHeadProbe ? toCanvas(itemsHeadProbe) : Promise.resolve(null),
                 toCanvas(summaryProbe),
             ]);
 
-            const headerHeightMm = canvasHeightToMm(headerCanvas, pageContentWidthMm);
-            const itemsHeadHeightMm = canvasHeightToMm(itemsHeadCanvas, pageContentWidthMm);
+            const headerHeightMm = headerCanvas ? canvasHeightToMm(headerCanvas, pageContentWidthMm) : 0;
+            const itemsHeadHeightMm = itemsHeadCanvas ? canvasHeightToMm(itemsHeadCanvas, pageContentWidthMm) : 0;
             const summaryHeightMm = canvasHeightToMm(summaryCanvas, pageContentWidthMm);
 
             stagingContainer.innerHTML = "";
@@ -333,9 +404,9 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 const includeSummary = pageIndex === paginatedRowIndexes.length - 1;
 
                 const pageContainer = document.createElement("div");
-                paintThermalSurface(pageContainer);
-                pageContainer.appendChild(cloneForPdf(receiptHeader));
-                pageContainer.appendChild(cloneForPdf(receiptItemsHead));
+                paintThermalSurface(pageContainer, typography, paddingX);
+                if (receiptHeader) pageContainer.appendChild(cloneForPdf(receiptHeader));
+                if (receiptItemsHead) pageContainer.appendChild(cloneForPdf(receiptItemsHead));
 
                 const pageRowsContainer = cloneForPdf(receiptItemsBody);
                 pageRowsContainer.innerHTML = "";
@@ -352,7 +423,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 }
 
                 stagingContainer.appendChild(pageContainer);
-                const pageCanvas = await toThermalCanvas(pageContainer);
+                const pageCanvas = await toThermalCanvas(pageContainer, typography);
                 stagingContainer.removeChild(pageContainer);
 
                 const pageImageHeightMm = Math.max(
@@ -416,7 +487,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                             variant="default"
                             size="default"
                             onClick={handleGeneratePDF}
-                            disabled={invoices.length === 0 || isGeneratingPdf}
+                            disabled={invoices.length === 0 || isGeneratingPdf || !printSettings}
                             title={t("invoice.print.print_button")}
                         >
                             {isGeneratingPdf ? (
@@ -431,7 +502,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 </div>
             )}
         >
-            {isDetailLoading && normalizedProvidedInvoices.length === 0 ? (
+            {((isDetailLoading && normalizedProvidedInvoices.length === 0) || isSettingsLoading) ? (
                 <div className="space-y-3 py-1">
                     <Skeleton className="h-16 w-full" />
                     <Skeleton className="h-[300px] w-full" />
@@ -444,6 +515,10 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
                     {t(parseApiError(detailError) || "common.failed_to_load_data")}
                 </div>
+            ) : isSettingsError || !printSettings ? (
+                <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                    {t(parseApiError(settingsError) || "settings.invoice_print.load_error")}
+                </div>
             ) : invoices.length === 0 ? (
                 <div className="rounded-md border border-muted p-3 text-sm text-muted-foreground">
                     {t("invoice.no_invoices")}
@@ -451,7 +526,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             ) : (
                 <div className="h-full overflow-y-auto pr-1">
                     <div ref={receiptRef} className="bg-white">
-                        <InvoiceReceipt invoices={invoices} />
+                        <InvoiceReceipt invoices={invoices} printSettings={printSettings} />
                     </div>
                     <p className="mt-3 text-center text-xs text-muted-foreground">
                         {t("invoice.print.paper_hint")}

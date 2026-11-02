@@ -1,6 +1,8 @@
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-const CompanyProfileFormFieldSchema = (): FormFieldConfig[] => [
+const CompanyProfileFormFieldSchema = (
+  options: { includeSupportPhone?: boolean } = {},
+): FormFieldConfig[] => [
   {
     type: "text",
     name: "name",
@@ -18,6 +20,18 @@ const CompanyProfileFormFieldSchema = (): FormFieldConfig[] => [
     },
     placeholder: "company_profile.phone.placeholder",
   },
+  ...(options.includeSupportPhone
+    ? [
+        {
+          type: "text" as const,
+          name: "support_phone",
+          label: {
+            labelText: "company_profile.support_phone.label",
+          },
+          placeholder: "company_profile.support_phone.placeholder",
+        },
+      ]
+    : []),
   {
     type: "email",
     name: "email",

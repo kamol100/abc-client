@@ -5,11 +5,19 @@ import { useTranslation } from "react-i18next";
 import { useSettings } from "@/context/app-provider";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
-import { InvoiceDetail } from "./invoice-type";
+import { amountInWords } from "@/components/invoices/amount-in-words";
+import {
+    receiptContentPaddingX,
+    receiptLineHeight,
+    type InvoicePrintSettings,
+} from "@/components/invoices/invoice-print-config";
+import { InvoiceDetail } from "@/components/invoices/invoice-type";
 
 type InvoiceReceiptProps = {
     invoices: InvoiceDetail[];
     className?: string;
+    printSettings?: InvoicePrintSettings;
+    printedAt?: Date;
 };
 
 const getSettingString = (
@@ -28,18 +36,13 @@ const getSettingString = (
 const ReceiptPair = ({
     label,
     value,
-    emphasized = false,
+    className,
 }: {
     label: string;
     value: string;
-    emphasized?: boolean;
+    className: string;
 }) => (
-    <div
-        className={cn(
-            "flex items-start justify-between gap-[12px] font-bold text-black",
-            emphasized ? "text-[36px] leading-[44px]" : "text-[28px] leading-[36px]",
-        )}
-    >
+    <div className={cn("flex items-start justify-between gap-[12px] text-black", className)}>
         <span className="shrink-0">{label}:</span>
         <span className="min-w-0 break-words text-right tabular-nums">{value}</span>
     </div>
@@ -65,14 +68,23 @@ const getInvoiceTotals = (invoice: InvoiceDetail) => {
     };
 };
 
-const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
+const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
+    invoices,
+    className,
+    printSettings,
+    printedAt,
+}) => {
     const { t } = useTranslation();
     const { settings } = useSettings();
-    const printedDateTimeText = useMemo(() => new Date().toLocaleString(), []);
+    const printedDateTimeText = useMemo(
+        () => (printedAt ?? new Date()).toLocaleString(),
+        [printedAt],
+    );
     const safeInvoices = useMemo(
         () => invoices.filter((invoice): invoice is InvoiceDetail => Boolean(invoice)),
         [invoices],
     );
+    const configured = printSettings != null;
 
     const companyName = getSettingString(settings, [
         "company",
@@ -82,6 +94,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
         "address",
     ]);
     const companyPhone = getSettingString(settings, ["company_phone", "phone"]);
+    const companySupportPhone = getSettingString(settings, ["support_phone"]);
 
     const clientIds = useMemo(() => {
         const ids = safeInvoices
@@ -166,55 +179,128 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
         [safeInvoices],
     );
 
+    const showCompanyName = configured ? printSettings.show_company_name : true;
+    const showCompanyAddress = (configured ? printSettings.show_company_address : true) && Boolean(companyAddress);
+    const showCompanyPhone = (configured ? printSettings.show_company_phone : true) && Boolean(companyPhone);
+    const showCompanyBlock = showCompanyName || showCompanyAddress || showCompanyPhone;
+    const showClientId = (configured ? printSettings.show_client_id : true) && clientIds.length > 0;
+    const showClientName = configured ? printSettings.show_client_name : true;
+    const showPppoe = (configured ? printSettings.show_client_pppoe_id : true) && clientPppoeUsernames.length > 0;
+    const showClientPhone = (configured ? printSettings.show_client_phone : true) && clientPhones.length > 0;
+    const showDateTime = configured ? printSettings.show_date_time : true;
+    const showClientBlock = showClientId || showClientName || showPppoe || showClientPhone || showDateTime;
+    const showItemHeader = configured ? printSettings.show_item_amount_header : true;
+    const showAmountInWords = configured ? printSettings.show_total_amount_in_words : false;
+    const showThankYou = configured ? printSettings.show_thank_you : true;
+    const showSupport = (configured ? printSettings.show_company_support_number : true) && Boolean(companySupportPhone);
+    const showFooter = showAmountInWords || showThankYou || showSupport;
+
+    const bodyText = configured
+        ? "leading-[var(--receipt-line-height)]"
+        : "text-[28px] font-bold leading-[36px]";
+    const titleText = configured
+        ? "leading-[var(--receipt-line-height)]"
+        : "text-[36px] font-bold leading-[44px]";
+    const itemText = configured
+        ? "leading-[var(--receipt-line-height)]"
+        : "text-[24px] font-bold leading-[30px]";
+    const lineHeight = configured ? receiptLineHeight(printSettings.font_size) : undefined;
+    const paddingX = configured ? receiptContentPaddingX(printSettings.content_spacing) : undefined;
+    const itemLabelClass = paddingX === 0 ? "min-w-0 break-words" : "min-w-0 truncate";
+
     return (
         <div
             className={cn(
-                "invoice-receipt-root mx-auto box-border w-[384px] max-w-full overflow-visible bg-white px-[16px] pb-[24px] pt-[16px] text-black",
+                "invoice-receipt-root mx-auto box-border w-[384px] max-w-full overflow-visible bg-white pb-[24px] pt-[16px] text-black",
+                configured ? paddingX === 0 && "[overflow-wrap:anywhere]" : "px-[16px]",
                 className,
             )}
             data-receipt-root
+            data-receipt-variant={configured ? "custom" : "original"}
+            data-receipt-font-size={configured ? printSettings.font_size : undefined}
+            data-receipt-font-weight={configured ? printSettings.font_weight : undefined}
+            data-receipt-padding-x={configured ? paddingX : undefined}
+            style={configured ? {
+                fontSize: `${printSettings.font_size}px`,
+                fontWeight: printSettings.font_weight,
+                lineHeight: `${lineHeight}px`,
+                ["--receipt-line-height" as string]: `${lineHeight}px`,
+                paddingLeft: `${paddingX}px`,
+                paddingRight: `${paddingX}px`,
+            } : undefined}
         >
-            <div data-receipt-header>
-                <div className="border-b-[3px] border-solid border-black pb-[12px] text-center text-black">
-                    <h3 className="break-words text-[36px] font-bold leading-[44px]">{companyName}</h3>
-                    {companyAddress && (
-                        <p className="mt-[6px] break-words text-[28px] font-bold leading-[36px]">{companyAddress}</p>
+            {(showCompanyBlock || showClientBlock) && (
+                <div data-receipt-header>
+                    {showCompanyBlock && (
+                        <div className="border-b-[3px] border-solid border-black pb-[12px] text-center text-black">
+                            {showCompanyName && (
+                                <h3 className={cn("break-words", titleText)}>{companyName}</h3>
+                            )}
+                            {showCompanyAddress && (
+                                <p className={cn("mt-[6px] break-words", bodyText)}>{companyAddress}</p>
+                            )}
+                            {showCompanyPhone && (
+                                <p className={cn("mt-[4px] break-words", bodyText)}>
+                                    {t("invoice.receipt.phone")}: {companyPhone}
+                                </p>
+                            )}
+                        </div>
                     )}
-                    {companyPhone && (
-                        <p className="mt-[4px] break-words text-[28px] font-bold leading-[36px]">
-                            {t("invoice.receipt.phone")}: {companyPhone}
-                        </p>
+
+                    {showClientBlock && (
+                        <div className="space-y-[4px] border-b-[3px] border-solid border-black py-[12px]">
+                            {showClientId && (
+                                <ReceiptPair
+                                    label={t("invoice.receipt.client_id")}
+                                    value={clientIds.join(", ")}
+                                    className={bodyText}
+                                />
+                            )}
+                            {showClientName && (
+                                <ReceiptPair
+                                    label={t("invoice.receipt.client")}
+                                    value={clientNames.length > 0 ? clientNames.join(", ") : "—"}
+                                    className={bodyText}
+                                />
+                            )}
+                            {showPppoe && (
+                                <ReceiptPair
+                                    label={t("invoice.receipt.pppoe_id")}
+                                    value={clientPppoeUsernames.join(", ")}
+                                    className={bodyText}
+                                />
+                            )}
+                            {showClientPhone && (
+                                <ReceiptPair
+                                    label={t("common.phone")}
+                                    value={clientPhones.join(", ")}
+                                    className={bodyText}
+                                />
+                            )}
+                            {showDateTime && (
+                                <ReceiptPair
+                                    label={t("invoice.receipt.date")}
+                                    value={printedDateTimeText}
+                                    className={bodyText}
+                                />
+                            )}
+                        </div>
                     )}
                 </div>
+            )}
 
-                <div className="space-y-[4px] border-b-[3px] border-solid border-black py-[12px]">
-                    {clientIds.length > 0 && (
-                        <ReceiptPair label={t("invoice.receipt.client_id")} value={clientIds.join(", ")} />
+            {showItemHeader && (
+                <div
+                    className={cn(
+                        "flex items-start justify-between gap-[12px] border-b-[3px] border-solid border-black py-[8px] text-black",
+                        bodyText,
                     )}
-                    <ReceiptPair
-                        label={t("invoice.receipt.client")}
-                        value={clientNames.length > 0 ? clientNames.join(", ") : "—"}
-                    />
-                    {clientPppoeUsernames.length > 0 && (
-                        <ReceiptPair
-                            label={t("invoice.receipt.pppoe_id")}
-                            value={clientPppoeUsernames.join(", ")}
-                        />
-                    )}
-                    {clientPhones.length > 0 && (
-                        <ReceiptPair label={t("common.phone")} value={clientPhones.join(", ")} />
-                    )}
-                    <ReceiptPair label={t("invoice.receipt.date")} value={printedDateTimeText} />
+                    data-receipt-items-head
+                >
+                    <span>{t("invoice.receipt.item")}</span>
+                    <span>{t("invoice.receipt.amount")}</span>
                 </div>
-            </div>
-
-            <div
-                className="flex items-start justify-between gap-[12px] border-b-[3px] border-solid border-black py-[8px] text-[28px] font-bold leading-[36px] text-black"
-                data-receipt-items-head
-            >
-                <span>{t("invoice.receipt.item")}</span>
-                <span>{t("invoice.receipt.amount")}</span>
-            </div>
+            )}
             <div data-receipt-items-body className="py-[8px]">
                 {invoiceGroups.map((group, groupIndex) => (
                     <div key={group.key} className="invoice-group">
@@ -228,10 +314,13 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                             group.lines.map((line, lineIndex) => (
                                 <div
                                     key={line.key}
-                                    className="flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-[24px] font-bold leading-[30px] text-black"
+                                    className={cn(
+                                        "flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-black",
+                                        itemText,
+                                    )}
                                     data-receipt-item-row
                                 >
-                                    <span className="min-w-0 truncate">
+                                    <span className={itemLabelClass}>
                                         {lineIndex === 0 ? `${group.invoiceLabel}: ` : ""}
                                         {line.description} {line.quantity}x{formatMoney(line.unitPrice)}
                                     </span>
@@ -240,10 +329,13 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                             ))
                         ) : (
                             <div
-                                className="flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-[24px] font-bold leading-[30px] text-black"
+                                className={cn(
+                                    "flex items-baseline justify-between gap-[8px] break-inside-avoid py-[4px] text-black",
+                                    itemText,
+                                )}
                                 data-receipt-item-row
                             >
-                                <span className="min-w-0 truncate">{group.invoiceLabel}: —</span>
+                                <span className={itemLabelClass}>{group.invoiceLabel}: —</span>
                                 <span className="shrink-0 tabular-nums">{formatMoney(0)}</span>
                             </div>
                         )}
@@ -255,21 +347,30 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({ invoices, className }) => {
                 className="space-y-[4px] break-inside-avoid border-t-[3px] border-solid border-black pt-[12px]"
                 data-receipt-summary
             >
-                <ReceiptPair label={t("invoice.receipt.sub_total")} value={formatMoney(totals.subTotal)} />
-                <ReceiptPair label={t("invoice.receipt.discount")} value={formatMoney(totals.totalDiscount)} />
-                <ReceiptPair label={t("invoice.receipt.total")} value={formatMoney(totals.totalAmount)} emphasized />
-                <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.amountPaid)} />
+                <ReceiptPair label={t("invoice.receipt.sub_total")} value={formatMoney(totals.subTotal)} className={bodyText} />
+                <ReceiptPair label={t("invoice.receipt.discount")} value={formatMoney(totals.totalDiscount)} className={bodyText} />
+                <ReceiptPair label={t("invoice.receipt.total")} value={formatMoney(totals.totalAmount)} className={titleText} />
+                <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.amountPaid)} className={bodyText} />
                 {totals.amountDue > 0 && (
-                    <ReceiptPair label={t("invoice.receipt.due")} value={formatMoney(totals.amountDue)} emphasized />
+                    <ReceiptPair label={t("invoice.receipt.due")} value={formatMoney(totals.amountDue)} className={titleText} />
                 )}
-                <div className="mt-[12px] border-t-[3px] border-solid border-black pt-[12px] text-center text-[28px] font-bold leading-[36px] text-black">
-                    {t("invoice.receipt.thank_you")}
-                    {companyPhone && (
-                        <p className="mt-[6px] break-words">
-                            {t("invoice.receipt.for_support")}: {companyPhone}
-                        </p>
-                    )}
-                </div>
+                {showFooter && (
+                    <div className={cn("mt-[12px] border-t-[3px] border-solid border-black pt-[12px] text-center text-black", bodyText)}>
+                        {showAmountInWords && (
+                            <p className="break-words">
+                                {amountInWords(totals.totalAmount)} {t("invoice.receipt.only")}
+                            </p>
+                        )}
+                        {showThankYou && (
+                            <p className={cn(showAmountInWords && "mt-[12px]")}>{t("invoice.receipt.thank_you")}</p>
+                        )}
+                        {showSupport && (
+                            <p className={cn("break-words", (showThankYou || showAmountInWords) && "mt-[6px]")}>
+                                {t("common.help")}: {companySupportPhone}
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

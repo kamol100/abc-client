@@ -92,6 +92,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/telegram": "menu.communication.telegram.title",
   "/settings/olt": "menu.settings.olt.title",
   "/settings/notifications": "menu.settings.notifications.title",
+  "/settings/invoice-print": "menu.settings.invoice_print.title",
   "/notifications": "menu.notifications.title",
 };
 

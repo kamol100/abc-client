@@ -407,6 +407,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
         { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
         { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
+        { title: t("menu.settings.invoice_print.title"), url: "/settings/invoice-print", permission: "company-settings.access" },
       ],
     },
     {

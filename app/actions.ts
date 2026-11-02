@@ -57,6 +57,7 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
         const options: RequestInit = {
             method: method,
             headers,
+            cache: "no-store",
         };
 
         if (data !== null && data !== undefined && (method === "POST" || method === "PUT" || method === "PATCH" || method === "DELETE")) {

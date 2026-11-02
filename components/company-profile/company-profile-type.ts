@@ -7,6 +7,7 @@ export const CompanyProfileRowSchema = z
     name: z.string().nullable().optional(),
     email: z.string().nullable().optional(),
     phone: z.string().nullable().optional(),
+    support_phone: z.string().nullable().optional(),
     address: z.string().nullable().optional(),
     status: z.union([z.string(), z.number()]).nullable().optional(),
     logo: z.string().nullable().optional(),
@@ -23,6 +24,12 @@ export const CompanyProfileFormSchema = z.object({
     .trim()
     .min(2, { message: "company_profile.name.errors.min" }),
   phone: z.string().trim().optional().or(z.literal("")),
+  support_phone: z
+    .string()
+    .trim()
+    .max(255, { message: "company_profile.support_phone.errors.max" })
+    .optional()
+    .or(z.literal("")),
   email: z
     .string()
     .trim()

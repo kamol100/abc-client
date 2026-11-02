@@ -1,5 +1,6 @@
 {
     "common": {
+        "help": "Help",
         "no_data": "No data",
         "january": "January",
         "february": "February",
@@ -1298,6 +1299,13 @@
             "label": "Phone Number",
             "placeholder": "Enter phone number"
         },
+        "support_phone": {
+            "label": "Support Phone",
+            "placeholder": "Enter support phone",
+            "errors": {
+                "max": "Support phone must be 255 characters or fewer"
+            }
+        },
         "email": {
             "label": "Email",
             "placeholder": "Enter email address",
@@ -1992,7 +2000,7 @@
             "phone": "Phone",
             "client_id": "ID",
             "client": "Client",
-            "pppoe_id": "pppoe ID",
+            "pppoe_id": "P-ID",
             "client_phone": "Client Phone",
             "invoice_id": "Invoice ID",
             "date": "Date",
@@ -2006,7 +2014,9 @@
             "paid": "Paid",
             "due": "Due",
             "thank_you": "Thank You",
-            "for_support": "For support"
+            "for_support": "For support",
+            "in_words": "In words",
+            "only": "Only"
         },
         "no_invoices": "No invoices found",
         "delete_confirmation": "Are you sure you want to delete this invoice?",
@@ -4853,6 +4863,9 @@
             },
             "notifications": {
                 "title": "Notifications"
+            },
+            "invoice_print": {
+                "title": "Invoice Print"
             }
         },
         "noc": {
@@ -4863,6 +4876,53 @@
         }
     },
     "settings": {
+        "invoice_print": {
+            "title": "Invoice Print Settings",
+            "description": "Choose what appears on a printed invoice receipt, then compare it with the original.",
+            "visibility": "Receipt details",
+            "typography": "Typography",
+            "font_size": "Font size",
+            "font_size_hint": "{{min}}–{{max}} px",
+            "font_weight": "Font weight",
+            "content_spacing": "Content Spacing",
+            "content_spacing_options": {
+                "comfortable": "Comfortable",
+                "standard": "Standard",
+                "compact": "Compact",
+                "narrow": "Narrow",
+                "full": "Full Width"
+            },
+            "content_spacing_hints": {
+                "comfortable": "More padding on both left and right sides.",
+                "standard": "The current spacing.",
+                "compact": "Less padding than Standard.",
+                "narrow": "A small gap from the page edges.",
+                "full": "Content uses the full page width."
+            },
+            "original_preview": "Original Preview",
+            "original_hint": "The current receipt, unchanged.",
+            "custom_preview": "Customized Preview",
+            "custom_hint": "Updates as you change the settings.",
+            "save": "Save Settings",
+            "reset": "Reset to Default",
+            "saved": "Invoice print settings saved",
+            "reset_done": "Invoice print settings reset to default",
+            "load_error": "Could not load invoice print settings",
+            "flags": {
+                "show_company_name": "Show company name",
+                "show_company_address": "Show company address",
+                "show_company_phone": "Show company phone",
+                "show_client_id": "Show client ID",
+                "show_client_name": "Show client name",
+                "show_client_pppoe_id": "Show client PPPoE ID",
+                "show_client_phone": "Show client phone",
+                "show_date_time": "Show date and time",
+                "show_item_amount_header": "Show item and amount header",
+                "show_total_amount_in_words": "Show total amount in words",
+                "show_thank_you": "Show thank-you message",
+                "show_company_support_number": "Show company support number"
+            }
+        },
         "actions": {
             "edit": "Edit"
         },

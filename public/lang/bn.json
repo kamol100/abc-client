@@ -1,5 +1,6 @@
 {
     "common": {
+        "help": "সহায়তা",
         "no_data": "কোনো ডাটা নেই",
         "january": "জানুয়ারি",
         "february": "ফেব্রুয়ারি",
@@ -1298,6 +1299,13 @@
             "label": "ফোন নম্বর",
             "placeholder": "ফোন নম্বর দিন"
         },
+        "support_phone": {
+            "label": "সাপোর্ট ফোন",
+            "placeholder": "সাপোর্ট ফোন দিন",
+            "errors": {
+                "max": "সাপোর্ট ফোন সর্বোচ্চ ২৫৫ অক্ষর হতে পারে"
+            }
+        },
         "email": {
             "label": "ইমেইল",
             "placeholder": "ইমেইল ঠিকানা দিন",
@@ -1992,7 +2000,7 @@
             "phone": "ফোন",
             "client_id": "আইডি",
             "client": "ক্লায়েন্ট",
-            "pppoe_id": "পিপিপিওই আইডি",
+            "pppoe_id": "P-ID",
             "client_phone": "ক্লায়েন্ট ফোন",
             "invoice_id": "আইডি",
             "date": "তারিখ",
@@ -2006,7 +2014,9 @@
             "paid": "পেইড",
             "due": "ডিউ",
             "thank_you": "ধন্যবাদ",
-            "for_support": "সাপোর্টের জন্য"
+            "for_support": "সাপোর্টের জন্য",
+            "in_words": "ইন ওয়ার্ডস",
+            "only": "অনলি"
         },
         "no_invoices": "কোনো ইনভয়েস পাওয়া যায়নি",
         "delete_confirmation": "আপনি কি নিশ্চিত এই ইনভয়েসটি ডিলিট করতে চান?",
@@ -4853,6 +4863,9 @@
             },
             "notifications": {
                 "title": "নোটিফিকেশন"
+            },
+            "invoice_print": {
+                "title": "ইনভয়েস প্রিন্ট"
             }
         },
         "noc": {
@@ -4863,6 +4876,53 @@
         }
     },
     "settings": {
+        "invoice_print": {
+            "title": "ইনভয়েস প্রিন্ট সেটিংস",
+            "description": "প্রিন্ট করা ইনভয়েস রসিদে কোন তথ্য দেখাবে তা ঠিক করুন, তারপর অরিজিনালের সাথে মিলিয়ে দেখুন।",
+            "visibility": "রসিদের তথ্য",
+            "typography": "টাইপোগ্রাফি",
+            "font_size": "ফন্ট সাইজ",
+            "font_size_hint": "{{min}}–{{max}} px",
+            "font_weight": "ফন্ট ওয়েট",
+            "content_spacing": "কনটেন্ট স্পেসিং",
+            "content_spacing_options": {
+                "comfortable": "কমফোর্টেবল",
+                "standard": "স্ট্যান্ডার্ড",
+                "compact": "কমপ্যাক্ট",
+                "narrow": "ন্যারো",
+                "full": "ফুল উইডথ"
+            },
+            "content_spacing_hints": {
+                "comfortable": "বাম ও ডান দিকে বেশি প্যাডিং।",
+                "standard": "বর্তমান স্পেসিং।",
+                "compact": "স্ট্যান্ডার্ডের চেয়ে কম প্যাডিং।",
+                "narrow": "পেজের কিনারা থেকে সামান্য ফাঁক।",
+                "full": "কনটেন্ট পুরো পেজ প্রস্থ ব্যবহার করে।"
+            },
+            "original_preview": "অরিজিনাল প্রিভিউ",
+            "original_hint": "বর্তমান রসিদ, অপরিবর্তিত।",
+            "custom_preview": "কাস্টমাইজড প্রিভিউ",
+            "custom_hint": "সেটিংস বদলালে সাথে সাথে আপডেট হয়।",
+            "save": "সেটিংস সেভ",
+            "reset": "ডিফল্টে রিসেট",
+            "saved": "ইনভয়েস প্রিন্ট সেটিংস সেভ হয়েছে",
+            "reset_done": "ইনভয়েস প্রিন্ট সেটিংস ডিফল্টে ফিরে গেছে",
+            "load_error": "ইনভয়েস প্রিন্ট সেটিংস লোড করা যায়নি",
+            "flags": {
+                "show_company_name": "কোম্পানির নাম দেখান",
+                "show_company_address": "কোম্পানির ঠিকানা দেখান",
+                "show_company_phone": "কোম্পানির ফোন দেখান",
+                "show_client_id": "ক্লায়েন্ট আইডি দেখান",
+                "show_client_name": "ক্লায়েন্টের নাম দেখান",
+                "show_client_pppoe_id": "ক্লায়েন্ট পিপিপিওই আইডি দেখান",
+                "show_client_phone": "ক্লায়েন্ট ফোন দেখান",
+                "show_date_time": "তারিখ ও সময় দেখান",
+                "show_item_amount_header": "আইটেম ও এমাউন্ট হেডার দেখান",
+                "show_total_amount_in_words": "মোট এমাউন্ট কথায় দেখান",
+                "show_thank_you": "থ্যাঙ্ক-ইউ মেসেজ দেখান",
+                "show_company_support_number": "কোম্পানির সাপোর্ট নম্বর দেখান"
+            }
+        },
         "actions": {
             "edit": "এডিট"
         },
