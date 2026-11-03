@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Billing reports</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between;">
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Reports</h1>
+    <button style="height: 36px; padding: 0 12px; margin-right: 8px; border-radius: 10px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font: inherit; font-size: 13px; font-weight: 500;">Last 6 months</button>
+  </header>
+
+  <section aria-labelledby="ie-h" style="margin: 8px 16px 0; padding: 16px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px;">
+    <h2 id="ie-h" style="margin: 0; font-size: 15px; font-weight: 600;">Income vs expense</h2>
+    <div style="font-size: 13px; color: #52675e; margin-top: 2px;">Nov: income ৳4,82,300 · expense ৳1,64,900</div>
+    <div role="img" aria-label="Monthly income and expense bars, June to November 2026; income rises each month, expense stays flat" style="margin-top: 16px; height: 120px; display: flex; align-items: flex-end; gap: 14px; border-bottom: 1px solid #d3e8dd;">
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 62%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 28%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 70%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 30%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 66%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 26%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 74%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 34%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 80%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 31%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+      <div style="flex: 1; display: flex; align-items: flex-end; gap: 3px; height: 100%;"><div style="flex: 1; height: 86%; background: #047857; border-radius: 4px 4px 0 0;"></div><div style="flex: 1; height: 29%; background: #a7f0cf; border-radius: 4px 4px 0 0;"></div></div>
+    </div>
+    <div style="display: flex; gap: 14px; margin-top: 6px; font-size: 11px; color: #52675e; text-align: center;">
+      <span style="flex: 1;">Jun</span><span style="flex: 1;">Jul</span><span style="flex: 1;">Aug</span><span style="flex: 1;">Sep</span><span style="flex: 1;">Oct</span><span style="flex: 1; color: #0b1f19; font-weight: 600;">Nov</span>
+    </div>
+    <div style="display: flex; gap: 16px; margin-top: 10px; font-size: 12px; color: #2d4a40;">
+      <span style="display: inline-flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #047857;"></span>Income</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px;"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 3px; background: #a7f0cf;"></span>Expense</span>
+    </div>
+  </section>
+
+  <h2 style="margin: 20px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Reports</h2>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Income vs expense</div><div style="font-size: 13px; color: #52675e;">PDF · by invoice and expense type</div></div>
+      <button aria-label="Download income vs expense" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share income vs expense" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"></rect><circle cx="12" cy="12" r="2.5"></circle></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Collections by collector</div><div style="font-size: 13px; color: #52675e;">By staff, fund and zone</div></div>
+      <button aria-label="Download collections by collector" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share collections by collector" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.5"></circle><path d="M3.5 20a6.5 6.5 0 0 1 13 0M19 8v6M16 11h6"></path></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">New clients</div><div style="font-size: 13px; color: #52675e;">Clients and resellers, by month</div></div>
+      <button aria-label="Download new clients" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share new clients" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6M9 13l6 5M15 13l-6 5"></path></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">BTRC client export</div><div style="font-size: 13px; color: #52675e;">XLS · by zone and status</div></div>
+      <button aria-label="Download BTRC client export" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share BTRC client export" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6M9 13l6 5M15 13l-6 5"></path></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">BTRC reseller export</div><div style="font-size: 13px; color: #52675e;">XLS · all resellers</div></div>
+      <button aria-label="Download BTRC reseller export" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share BTRC reseller export" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 10px 6px 10px 12px; min-height: 64px; box-sizing: border-box;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"></path><path d="m3 8 9 5 9-5M12 13v8"></path></svg></span>
+      <div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Stock in and out</div><div style="font-size: 13px; color: #52675e;">Purchases, issues, remaining</div></div>
+      <button aria-label="Download stock in and out" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg></button>
+      <button aria-label="Share stock in and out" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #2d4a40; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"></path></svg></button>
+    </li>
+  </ul>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding-bottom: 20px; box-sizing: border-box; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex;">
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></span>Home</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="M12 7v5l-5.5 5.5M12 12l5.5 5.5"></path></svg></span>Network</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"></path></svg></span>Clients</a>
+    <a href="#" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #047857; text-decoration: none; font-size: 11px; font-weight: 600;"><span style="width: 56px; height: 30px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg></span>Billing</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></span>More</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

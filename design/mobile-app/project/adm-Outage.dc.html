@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Outage incident</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif">
+  <header style="padding: 12px 8px 0; height: 68px; box-sizing: border-box; display: flex; align-items: center">
+    <a href="adm-Alarms.dc.html" aria-label="Back to network" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600">Incident</h1>
+    <button aria-label="Share incident" style="width: 44px; height: 44px; border-radius: 12px; border: 0; background: transparent; color: #0b1f19; display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"></path></svg>
+    </button>
+  </header>
+
+  <section style="margin: 0 16px; background: #ffffff; border: 1px solid #fecaca; border-radius: 16px; padding: 16px">
+    <div style="display: flex; gap: 8px">
+      <span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #b91c1c"></span>Outage · Open</span>
+      <span style="display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 600">Auto-detected</span>
+    </div>
+    <h2 style="margin: 12px 0 0; font-size: 22px; line-height: 28px; font-weight: 700">PON <span style="font-family: 'Geist Mono', monospace; font-weight: 600">EPON0/2</span> down</h2>
+    <p style="margin: 4px 0 0; font-size: 15px; line-height: 22px; color: #2d4a40">18 ONUs lost signal at 14:02 · likely fiber cut</p>
+    <p style="margin: 8px 0 0; font-size: 13px; line-height: 18px; color: #52675e">BDCOM P3600 · Mirpur POP. All 18 went LOS within 40 s on one port; the OLT and other ports stay up.</p>
+    <div style="margin-top: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <div style="background: #f5fbf8; border-radius: 12px; padding: 10px 12px"><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">18</div><div style="font-size: 12px; font-weight: 500; color: #52675e">Subscribers affected</div></div>
+      <div style="background: #f5fbf8; border-radius: 12px; padding: 10px 12px"><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">5</div><div style="font-size: 12px; font-weight: 500; color: #52675e">Duplicate tickets held</div></div>
+    </div>
+  </section>
+
+  <section aria-label="Subscribers notified" style="margin: 12px 16px 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <span style="width: 24px; height: 24px; border-radius: 999px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+      <span style="font-size: 15px; font-weight: 600; flex-grow: 1">Subscribers notified</span>
+      <span style="font-size: 12px; color: #52675e">14:06 · push and SMS</span>
+    </div>
+    <div style="margin-top: 12px; background: #e9f7f0; border-radius: 14px; padding: 12px; display: flex; gap: 10px">
+      <div style="width: 32px; height: 32px; border-radius: 8px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><circle cx="12" cy="20" r="1"></circle></svg>
+      </div>
+      <div style="min-width: 0">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #52675e"><span style="font-weight: 600">[ISP name]</span><span>now</span></div>
+        <div style="font-size: 14px; font-weight: 600; margin-top: 2px">Service issue in your area</div>
+        <div style="font-size: 13px; line-height: 18px; color: #2d4a40">We are fixing a fiber fault near Mirpur-10. Estimated fix by 17:30. No need to call.</div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Assignment" style="margin: 12px 16px 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 40px; height: 40px; border-radius: 999px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-weight: 600">S</div>
+      <div style="flex-grow: 1">
+        <div style="font-size: 15px; font-weight: 600">Sabbir · Technician</div>
+        <div style="font-size: 13px; color: #52675e">En route · 1.2 km away</div>
+      </div>
+      <a href="tel:+8801700000000" aria-label="Call Sabbir" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; color: #047857; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      </a>
+    </div>
+    <label for="eta" style="display: block; margin-top: 14px; font-size: 13px; font-weight: 500; color: #2d4a40">Estimated fix time</label>
+    <input id="eta" type="time" value="17:30" style="margin-top: 6px; width: 100%; height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; padding: 0 12px; font: 500 15px 'Geist', sans-serif; color: #0b1f19; background: #ffffff">
+  </section>
+
+  <section aria-label="Timeline" style="margin: 12px 16px 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px">
+    <h3 style="margin: 0 0 12px; font-size: 15px; font-weight: 600">Timeline</h3>
+    <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+      <li style="display: flex; gap: 12px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #52675e; width: 44px">14:02</span><span style="font-size: 14px">18 ONUs LOS on EPON0/2</span></li>
+      <li style="display: flex; gap: 12px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #52675e; width: 44px">14:03</span><span style="font-size: 14px">Incident created automatically</span></li>
+      <li style="display: flex; gap: 12px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #52675e; width: 44px">14:04</span><span style="font-size: 14px">Sabbir assigned</span></li>
+      <li style="display: flex; gap: 12px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #52675e; width: 44px">14:06</span><span style="font-size: 14px">18 subscribers notified</span></li>
+    </ol>
+  </section>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; box-shadow: 0 -12px 32px -16px rgba(4,63,51,0.35); display: flex; gap: 8px">
+    <button style="height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: 500 15px 'Geist', sans-serif">Update subscribers</button>
+    <button style="flex-grow: 1; height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font: 600 15px 'Geist', sans-serif">Resolve incident</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

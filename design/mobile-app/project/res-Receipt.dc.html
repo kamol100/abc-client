@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Receipt and print</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 8px 0; height: 68px; box-sizing: border-box;">
+    <a href="res-CollectPayment.dc.html" aria-label="Close receipt" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Receipt</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 4px 16px 0;">
+    <span style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 600;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      Payment saved · ৳1,050
+    </span>
+    <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; background: #ffffff; border: 1px solid #d3e8dd; color: #2d4a40; font-size: 12px; font-weight: 500;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>
+      RPP02N connected via Bluetooth
+    </span>
+  </div>
+
+  <div style="display: flex; justify-content: center; padding: 14px 0 0;">
+    <figure aria-label="Thermal receipt preview, 58 mm" style="margin: 0; width: 248px; background: #ffffff; border: 1px solid #d3e8dd; border-bottom: 0; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35); padding: 16px 14px 18px; box-sizing: border-box; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 16px; color: #0b1f19;">
+      <div style="text-align: center; font-size: 13px; font-weight: 600;">[ISP name]</div>
+      <div style="text-align: center; color: #2d4a40;">Kazipara Net · R-012</div>
+      <div style="text-align: center; color: #2d4a40;">Kazipara, Mirpur, Dhaka</div>
+      <div style="border-top: 1px dashed #52675e; margin: 8px 0;"></div>
+      <div style="display: flex; justify-content: space-between;"><span>Receipt</span><span>RC-2611-0215</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Date</span><span>03 Nov 2026 11:42</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Client</span><span>Rahim Uddin</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>ID</span><span>C-10482</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>User</span><span>rahim.mirpur10</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Period</span><span>Nov 2026</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Package</span><span>Home 20 Mbps</span></div>
+      <div style="border-top: 1px dashed #52675e; margin: 8px 0;"></div>
+      <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 600;"><span>PAID</span><span>৳1,050</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Method</span><span>Cash</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Collector</span><span>Nasrin</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>TrxID</span><span>TXN8K2F41Q</span></div>
+      <div style="display: flex; justify-content: space-between;"><span>Due now</span><span>৳0</span></div>
+      <div style="border-top: 1px dashed #52675e; margin: 8px 0;"></div>
+      <div style="text-align: center; color: #2d4a40;">Next bill due 10 Dec 2026</div>
+      <div style="text-align: center; color: #2d4a40;">Thank you</div>
+    </figure>
+  </div>
+  <div aria-hidden="true" style="margin: 0 auto; width: 248px; height: 10px; background: linear-gradient(135deg, #ffffff 50%, transparent 50%) 0 0 / 10px 10px repeat-x, linear-gradient(225deg, #ffffff 50%, transparent 50%) 0 0 / 10px 10px repeat-x;"></div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex; flex-direction: column; gap: 8px;">
+    <button style="height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"/><rect x="2" y="9" width="20" height="9" rx="2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print receipt
+    </button>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;">
+      <button style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg>
+        WhatsApp
+      </button>
+      <button style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        Send SMS
+      </button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Check my connection</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+  <header style="display: flex; align-items: center; gap: 8px; height: 56px; padding: 12px 16px 0 16px;">
+    <button type="button" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; color: #0b1f19;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <h1 style="flex: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Check my connection</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 20px; padding: 20px 16px 0 16px;">
+    <section style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700;">Checking your line</h2>
+      <p style="margin: 0; font-size: 15px; line-height: 22px; color: #2d4a40;">We test each link from your phone to the internet. Step 4 of 5.</p>
+      <div role="progressbar" aria-label="Overall progress" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" style="height: 8px; border-radius: 999px; background: #dcf1e6; overflow: hidden; margin-top: 4px;">
+        <div style="width: 72%; height: 8px; border-radius: 999px; background: #047857;"></div>
+      </div>
+    </section>
+
+    <ol aria-label="Checks" style="list-style: none; margin: 0; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px;">
+
+      <li style="display: flex; gap: 12px; padding: 16px; border-bottom: 1px solid #d3e8dd;">
+        <span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 500;">Phone to Wi-Fi</span>
+          <span style="font-size: 13px; color: #52675e;">Weak in this room · <span style="font-family: 'Geist Mono', monospace;">−74 dBm</span></span>
+        </div>
+        <span style="align-self: center; font-size: 12px; font-weight: 600; color: #047857;">Done</span>
+      </li>
+
+      <li style="display: flex; gap: 12px; padding: 16px; border-bottom: 1px solid #d3e8dd;">
+        <span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 500;">Router login session</span>
+          <span style="font-size: 13px; color: #52675e;">Online for 3 days</span>
+        </div>
+        <span style="align-self: center; font-size: 12px; font-weight: 600; color: #047857;">Done</span>
+      </li>
+
+      <li style="display: flex; gap: 12px; padding: 16px; border-bottom: 1px solid #d3e8dd;">
+        <span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 500;">Fiber signal</span>
+          <span style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">−24.6 dBm</span> · good</span>
+        </div>
+        <span style="align-self: center; font-size: 12px; font-weight: 600; color: #047857;">Done</span>
+      </li>
+
+      <li style="display: flex; gap: 12px; padding: 16px; border-bottom: 1px solid #d3e8dd; background: #e9f7f0;">
+        <span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#dcf1e6" stroke-width="2.5"></circle><path d="M12 3a9 9 0 0 1 9 9" stroke="#047857" stroke-width="2.5" stroke-linecap="round"></path></svg>
+        </span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="font-size: 15px; font-weight: 500;">Internet speed</span>
+            <span style="font-size: 12px; font-weight: 600; color: #047857;">62%</span>
+          </div>
+          <span style="font-size: 13px; color: #2d4a40;">Testing against [ISP name] · Mirpur POP</span>
+          <div role="progressbar" aria-label="Speed test progress" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="height: 6px; border-radius: 999px; background: #dcf1e6; overflow: hidden;">
+            <div style="width: 62%; height: 6px; border-radius: 999px; background: #047857;"></div>
+          </div>
+        </div>
+      </li>
+
+      <li style="display: flex; gap: 12px; padding: 16px;">
+        <span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: #eef2f1; color: #475569; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span>
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 500; color: #2d4a40;">Outage in your area</span>
+          <span style="font-size: 13px; color: #52675e;">Checks Mirpur-10 for known problems</span>
+        </div>
+        <span style="align-self: center; font-size: 12px; font-weight: 600; color: #475569;">Waiting</span>
+      </li>
+    </ol>
+
+    <p style="margin: 0; padding: 12px 16px; border-radius: 12px; background: #e0f2fe; color: #0369a1; font-size: 13px; line-height: 18px; font-weight: 500;">Keep the app open. It takes about 30 seconds. If you open a ticket, we attach this result.</p>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 36px;">
+    <button type="button" style="width: 100%; height: 48px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-family: inherit; font-size: 15px; font-weight: 600;">Cancel</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

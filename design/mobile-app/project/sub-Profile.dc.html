@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+  <header style="display: flex; align-items: center; height: 56px; padding: 12px 16px 0 16px;">
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Account</h1>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 0 16px;">
+
+    <section aria-label="Profile" style="display: flex; align-items: center; gap: 14px; padding: 16px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px;">
+      <div style="position: relative; flex-shrink: 0;">
+        <span role="img" aria-label="Profile photo" style="width: 56px; height: 56px; border-radius: 999px; background: #dcf1e6; color: #065f46; display: flex; align-items: center; justify-content: center;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+        <button type="button" aria-label="Change photo" style="position: absolute; right: -6px; bottom: -6px; width: 28px; height: 28px; border-radius: 999px; border: 2px solid #ffffff; background: #047857; color: #ffffff; display: flex; align-items: center; justify-content: center; padding: 0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+        <span style="font-size: 17px; font-weight: 600;">Rahim Uddin</span>
+        <span style="font-size: 13px; color: #52675e;">ID <span style="font-family: 'Geist Mono', monospace; color: #2d4a40;">C-10482</span> · +880 1711-234567</span>
+      </div>
+    </section>
+
+    <section aria-label="Service" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px;">
+      <h2 style="margin: 0; padding: 12px 0 4px 0; font-size: 13px; font-weight: 600; color: #52675e; text-transform: uppercase; letter-spacing: 0.04em;">Service</h2>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 15px; color: #2d4a40;">Package</span>
+        <span style="font-size: 15px; font-weight: 500;">Home 20 Mbps · ৳1,050/mo</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 15px; color: #2d4a40;">PPPoE username</span>
+        <span style="font-size: 14px; font-weight: 500; font-family: 'Geist Mono', monospace;">rahim.mirpur10</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px;">
+        <span style="font-size: 15px; color: #2d4a40;">Connected since</span>
+        <span style="font-size: 15px; font-weight: 500;">14 Mar 2024</span>
+      </div>
+    </section>
+
+    <section aria-label="Settings" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px;">
+      <h2 style="margin: 0; padding: 12px 0 4px 0; font-size: 13px; font-weight: 600; color: #52675e; text-transform: uppercase; letter-spacing: 0.04em;">Settings</h2>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #d3e8dd; gap: 12px;">
+        <span style="font-size: 15px;">Language</span>
+        <div role="group" aria-label="Language" style="display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: #e9f7f0;">
+          <button type="button" aria-pressed="true" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; font-family: inherit; font-size: 13px; font-weight: 600; color: #0b1f19;">English</button>
+          <button type="button" aria-pressed="false" lang="bn" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid transparent; background: transparent; font-family: 'Hind Siliguri', 'Geist', sans-serif; font-size: 14px; font-weight: 500; color: #2d4a40;">বাংলা</button>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #d3e8dd; gap: 12px;">
+        <span style="font-size: 15px;">Theme</span>
+        <div role="group" aria-label="Theme" style="display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: #e9f7f0;">
+          <button type="button" aria-pressed="true" style="height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; font-family: inherit; font-size: 13px; font-weight: 600; color: #0b1f19;">Light</button>
+          <button type="button" aria-pressed="false" style="height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid transparent; background: transparent; font-family: inherit; font-size: 13px; font-weight: 500; color: #2d4a40;">Dark</button>
+          <button type="button" aria-pressed="false" style="height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid transparent; background: transparent; font-family: inherit; font-size: 13px; font-weight: 500; color: #2d4a40;">System</button>
+        </div>
+      </div>
+
+      <a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #d3e8dd; text-decoration: none; color: #0b1f19;">
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 15px;">Notifications</span><span style="font-size: 12px; color: #52675e;">Bills, outages, ticket replies</span></span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </a>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 56px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 15px;">Unlock with fingerprint</span>
+        <button type="button" role="switch" aria-checked="true" aria-label="Unlock with fingerprint" style="width: 52px; height: 32px; border-radius: 999px; border: none; background: #047857; padding: 3px; display: flex; justify-content: flex-end;"><span style="width: 26px; height: 26px; border-radius: 999px; background: #ffffff;"></span></button>
+      </div>
+
+      <a href="#" style="display: flex; align-items: center; justify-content: space-between; min-height: 56px; text-decoration: none; color: #0b1f19;">
+        <span style="font-size: 15px;">Change password</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </a>
+    </section>
+
+    <button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #fee2e2; background: #ffffff; color: #b91c1c; font-family: inherit; font-size: 15px; font-weight: 600;">Sign out</button>
+    <p style="margin: 0; text-align: center; font-size: 12px; font-weight: 500; color: #52675e;">[ISP name] app · version 1.0.0 (1)</p>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding-bottom: 20px; display: flex; background: #ffffff; border-top: 1px solid #d3e8dd;">
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></span>Home</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"></path><path d="M9 7h6M9 11h6M9 15h4"></path></svg></span>Bills</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 17v-6M11 17V5M16 17v-9M20 17v-4"></path></svg></span>Usage</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path></svg></span>Support</a>
+    <a href="#" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #047857; font-size: 11px; font-weight: 600;"><span style="display: flex; padding: 4px 16px; border-radius: 999px; background: #d3f7e5;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>Account</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

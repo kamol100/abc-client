@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ping</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ff9a76}a:hover{color:#ffb38f}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #0d1324; color: #f1f4fb; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+  <header style="padding: 12px 8px 0 8px; height: 68px; box-sizing: border-box; display: flex; align-items: center;">
+    <a href="tech-Toolkit.dc.html" aria-label="Back to tools" style="width: 44px; height: 44px; border-radius: 12px; color: #f1f4fb; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <h1 style="flex-grow: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Ping</h1>
+    <span style="width: 44px; height: 44px;"></span>
+  </header>
+
+  <main style="padding: 4px 16px 0 16px; display: flex; flex-direction: column; gap: 14px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <label for="ping-target" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #d5dbea;">Target host or IP</label>
+      <input id="ping-target" type="text" value="10.20.14.1" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #27314d; background: #121a2e; color: #f1f4fb; padding: 0 14px; font-size: 15px; font-family: 'Geist Mono', monospace;">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button type="button" style="height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 13px; font-family: inherit;">Gateway</button>
+        <button type="button" aria-pressed="true" style="height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #ff9a76; background: rgba(255,154,118,0.14); color: #ff9a76; font-size: 13px; font-family: inherit;">Router</button>
+        <button type="button" style="height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 13px; font-family: 'Geist Mono', monospace;">8.8.8.8</button>
+        <button type="button" style="height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 13px; font-family: inherit;">[ISP] DNS</button>
+      </div>
+      <span style="font-size: 12px; line-height: 16px; color: #a3adc4;">Count 20 · interval 1 s · packet 56 bytes</span>
+    </div>
+
+    <section aria-label="Live latency" style="background: #121a2e; border: 1px solid #27314d; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-size: 13px; font-weight: 500; color: #d5dbea;">Latency per reply</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; background: rgba(255,154,118,0.14); color: #ff9a76; font-size: 12px; font-weight: 500;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #ff9a76;"></span>Running · 20 of 20</span>
+      </div>
+      <div style="position: relative; height: 120px; display: flex; align-items: flex-end; gap: 4px; border-bottom: 1px solid #27314d;">
+        <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; border-top: 1px dashed #27314d;"></div>
+        <span style="position: absolute; right: 0; top: -2px; font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace; background: #121a2e; padding-left: 4px;">10 ms</span>
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="20">
+          <div style="flex: 1; height: {{b.h}}px; border-radius: 3px 3px 0 0; background: {{b.c}};"></div>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace;"><span>seq 1</span><span>seq 20</span></div>
+    </section>
+
+    <section aria-label="Statistics" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;">
+      <div style="background: #121a2e; border: 1px solid #27314d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Sent</span><span style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums;">20</span></div>
+      <div style="background: #121a2e; border: 1px solid #27314d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Received</span><span style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums;">20</span></div>
+      <div style="background: #121a2e; border: 1px solid #27314d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Loss</span><span style="font-size: 18px; font-weight: 600; color: #4ade9a; font-variant-numeric: tabular-nums;">0%</span></div>
+      <div style="background: #121a2e; border: 1px solid #27314d; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Jitter</span><span style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums;">1.2<span style="font-size: 12px; font-weight: 500; color: #a3adc4;"> ms</span></span></div>
+      <div style="grid-column: span 4; background: #121a2e; border: 1px solid #27314d; border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 12px; color: #a3adc4;">min / avg / max</span>
+        <span style="font-size: 15px; font-weight: 600; font-family: 'Geist Mono', monospace;">2.1 / 3.4 / 9.8 ms</span>
+      </div>
+    </section>
+
+    <section aria-label="Replies" style="background: #141c33; border: 1px solid #27314d; border-radius: 12px; padding: 10px 12px; font-family: 'Geist Mono', monospace; font-size: 11.5px; line-height: 18px; color: #d5dbea; display: flex; flex-direction: column;">
+      <span>64 bytes from 10.20.14.1: seq=17 ttl=63 time=3.4 ms</span>
+      <span>64 bytes from 10.20.14.1: seq=18 ttl=63 time=2.6 ms</span>
+      <span>64 bytes from 10.20.14.1: seq=19 ttl=63 time=3.2 ms</span>
+      <span>64 bytes from 10.20.14.1: seq=20 ttl=63 time=3.3 ms</span>
+    </section>
+  </main>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px 16px; background: #0d1324; border-top: 1px solid #27314d; display: flex; gap: 10px;">
+    <button type="button" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid #ff7b7b; background: transparent; color: #ff7b7b; font-size: 15px; font-weight: 600; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Stop
+    </button>
+    <button type="button" style="flex: 1.4; height: 48px; border-radius: 12px; border: 0; background: #ff9a76; color: #1a0f0a; font-size: 15px; font-weight: 600; font-family: inherit;">Save to job T-2291</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ms = [3.1, 2.8, 3.4, 2.1, 3.0, 3.6, 2.9, 9.8, 3.2, 3.3, 2.7, 3.5, 3.1, 2.9, 3.8, 3.0, 3.4, 2.6, 3.2, 3.3];
+    return {
+      bars: ms.map((v) => ({ h: Math.round((v / 10) * 116), c: v > 8 ? '#ffc069' : '#ff9a76' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PON power budget</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ff9a76}a:hover{color:#ffb38f}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #0d1324; color: #f1f4fb; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+  <header style="padding: 12px 8px 0 8px; height: 68px; box-sizing: border-box; display: flex; align-items: center;">
+    <a href="tech-Toolkit.dc.html" aria-label="Back to tools" style="width: 44px; height: 44px; border-radius: 12px; color: #f1f4fb; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <h1 style="flex-grow: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">PON power budget</h1>
+    <span style="width: 44px; height: 44px;"></span>
+  </header>
+
+  <main style="padding: 4px 16px 0 16px; display: flex; flex-direction: column; gap: 12px;">
+    <form aria-label="Link losses" style="margin: 0; background: #121a2e; border: 1px solid #27314d; border-radius: 16px; padding: 4px 14px;">
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-tx" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">OLT Tx power</label>
+        <input id="pc-tx" type="text" value="+3.0" style="width: 72px; height: 34px; box-sizing: border-box; text-align: right; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 8px; font-size: 14px; font-family: 'Geist Mono', monospace;">
+        <span style="width: 44px; font-size: 12px; color: #a3adc4;">dBm</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-s1" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">Splitter 1</label>
+        <select id="pc-s1" style="width: 72px; height: 34px; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 6px; font-size: 14px; font-family: 'Geist Mono', monospace;"><option>1:8</option></select>
+        <span style="width: 44px; text-align: right; font-size: 13px; font-family: 'Geist Mono', monospace; color: #d5dbea;">10.5</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-s2" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">Splitter 2</label>
+        <select id="pc-s2" style="width: 72px; height: 34px; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 6px; font-size: 14px; font-family: 'Geist Mono', monospace;"><option>1:4</option></select>
+        <span style="width: 44px; text-align: right; font-size: 13px; font-family: 'Geist Mono', monospace; color: #d5dbea;">7.2</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-km" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">Fiber <span style="font-size: 12px; color: #a3adc4;">× 0.35 dB/km</span></label>
+        <input id="pc-km" type="text" value="2.4 km" style="width: 72px; height: 34px; box-sizing: border-box; text-align: right; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 8px; font-size: 14px; font-family: 'Geist Mono', monospace;">
+        <span style="width: 44px; text-align: right; font-size: 13px; font-family: 'Geist Mono', monospace; color: #d5dbea;">0.84</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-con" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">Connectors <span style="font-size: 12px; color: #a3adc4;">× 0.5 dB</span></label>
+        <input id="pc-con" type="text" value="4" style="width: 72px; height: 34px; box-sizing: border-box; text-align: right; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 8px; font-size: 14px; font-family: 'Geist Mono', monospace;">
+        <span style="width: 44px; text-align: right; font-size: 13px; font-family: 'Geist Mono', monospace; color: #d5dbea;">2.0</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 46px; border-bottom: 1px solid #27314d;">
+        <label for="pc-spl" style="flex-grow: 1; font-size: 14px; color: #d5dbea;">Splices <span style="font-size: 12px; color: #a3adc4;">× 0.1 dB</span></label>
+        <input id="pc-spl" type="text" value="6" style="width: 72px; height: 34px; box-sizing: border-box; text-align: right; border-radius: 8px; border: 1px solid #27314d; background: #141c33; color: #f1f4fb; padding: 0 8px; font-size: 14px; font-family: 'Geist Mono', monospace;">
+        <span style="width: 44px; text-align: right; font-size: 13px; font-family: 'Geist Mono', monospace; color: #d5dbea;">0.6</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 44px;">
+        <span style="flex-grow: 1; font-size: 14px; font-weight: 600;">Total loss</span>
+        <span style="font-size: 15px; font-weight: 600; font-family: 'Geist Mono', monospace;">21.1 dB</span>
+      </div>
+    </form>
+
+    <section aria-label="Result" style="background: #121a2e; border: 1px solid #27314d; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Expected Rx</span><span style="font-size: 18px; font-weight: 600; font-family: 'Geist Mono', monospace;">−18.1</span><span style="font-size: 11px; color: #a3adc4;">dBm</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Measured</span><span style="font-size: 18px; font-weight: 600; font-family: 'Geist Mono', monospace; color: #ffc069;">−24.6</span><span style="font-size: 11px; color: #a3adc4;">dBm · EPON0/1:4</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a3adc4;">Extra loss</span><span style="font-size: 18px; font-weight: 600; font-family: 'Geist Mono', monospace; color: #ffc069;">6.5</span><span style="font-size: 11px; color: #a3adc4;">dB</span></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div aria-hidden="true" style="position: relative; height: 10px; border-radius: 999px; overflow: hidden; display: flex;">
+          <span style="width: 13.6%; background: rgba(255,123,123,0.55);"></span>
+          <span style="width: 9.1%; background: rgba(255,192,105,0.55);"></span>
+          <span style="flex-grow: 1; background: rgba(74,222,154,0.4);"></span>
+        </div>
+        <div aria-hidden="true" style="position: relative; height: 22px;">
+          <span style="position: absolute; left: 24.5%; top: -18px; width: 2px; height: 16px; background: #ffc069;"></span>
+          <span style="position: absolute; left: 54.1%; top: -18px; width: 2px; height: 16px; background: #f1f4fb;"></span>
+          <span style="position: absolute; left: 13.6%; top: 0; transform: translateX(-50%); font-size: 11px; color: #ff7b7b; font-family: 'Geist Mono', monospace;">−27</span>
+          <span style="position: absolute; left: 24.5%; top: 0; font-size: 11px; color: #ffc069; font-family: 'Geist Mono', monospace; padding-left: 4px;">measured</span>
+          <span style="position: absolute; left: 54.1%; top: 0; font-size: 11px; color: #d5dbea; font-family: 'Geist Mono', monospace; padding-left: 4px;">expected</span>
+          <span style="position: absolute; right: 0; top: 0; font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace;">−8</span>
+        </div>
+        <span style="font-size: 12px; color: #a3adc4;">ONU sensitivity −27 dBm · 2.4 dB of margin left</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: rgba(255,192,105,0.12);">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffc069" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 14px; font-weight: 600; color: #ffc069;">Check connectors and drop cable</span><span style="font-size: 12px; line-height: 16px; color: #d5dbea;">6.5 dB more loss than the plan. Clean the SC/APC ends, then look for a tight bend on the drop.</span></span>
+      </div>
+    </section>
+  </main>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px 16px; background: #0d1324; border-top: 1px solid #27314d;">
+    <button type="button" style="width: 100%; height: 48px; border-radius: 12px; border: 0; background: #ff9a76; color: #1a0f0a; font-size: 15px; font-weight: 600; font-family: inherit;">Save to job T-2291</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

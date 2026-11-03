@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invoice detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 0; height: 68px; box-sizing: border-box">
+    <a href="sub-Invoices.dc.html" aria-label="Back" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0b1f19">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600">Invoice</h1>
+    <button type="button" aria-label="Share invoice" style="width: 44px; height: 44px; border-radius: 12px; border: none; background: transparent; color: #0b1f19; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+    </button>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 16px 140px">
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 15px; font-weight: 600">INV-2026-11-0482</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #b91c1c"></span>Due</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; font-weight: 500; color: #52675e">Billed to</span>
+          <span style="font-size: 15px; font-weight: 500">Rahim Uddin</span>
+          <span style="font-size: 13px; color: #52675e">ID C-10482</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 12px; font-weight: 500; color: #52675e">Issued</span>
+          <span style="font-size: 15px; font-weight: 500">1 Nov 2026</span>
+          <span style="font-size: 13px; color: #92400e; font-weight: 500">Pay by 10 Nov 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px">
+      <div style="display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #d3e8dd">
+        <span style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 500">Internet bill · Nov 2026</span>
+          <span style="font-size: 13px; color: #52675e">Home 20 Mbps · 1 month</span>
+        </span>
+        <span style="font-size: 15px; font-weight: 500">৳1,050</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #d3e8dd">
+        <span style="font-size: 15px; color: #2d4a40">Discount</span>
+        <span style="font-size: 15px; color: #2d4a40">−৳0</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #d3e8dd">
+        <span style="font-size: 15px; color: #2d4a40">Wallet applied</span>
+        <span style="font-size: 15px; color: #047857; font-weight: 500">−৳120</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0">
+        <span style="font-size: 17px; font-weight: 600">Total to pay</span>
+        <span style="font-size: 22px; font-weight: 700">৳930</span>
+      </div>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px">
+      <div style="display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #d3e8dd">
+        <span style="font-size: 13px; color: #52675e">PPPoE user</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 14px">rahim.mirpur10</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 16px">
+        <span style="font-size: 13px; color: #52675e">Zone</span>
+        <span style="font-size: 15px">Mirpur-10, Dhaka</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 16px 16px 32px; background: #ffffff; border-top: 1px solid #d3e8dd; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35); display: flex; flex-direction: column; gap: 10px">
+    <a href="sub-PayBill.dc.html" style="height: 48px; border-radius: 12px; background: #047857; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; text-decoration: none">Pay now · ৳930</a>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: inherit; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Download PDF</button>
+      <button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: inherit; font-size: 15px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Share</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

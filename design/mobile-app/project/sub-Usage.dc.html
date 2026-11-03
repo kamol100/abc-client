@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Usage</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 12px 16px 0 16px;">
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Usage</h1>
+    <button type="button" aria-label="Change period" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid #d3e8dd; border-radius: 12px; background: #ffffff; color: #0b1f19;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M8 2v4M16 2v4M3 10h18"></path></svg>
+    </button>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 0 16px;">
+
+    <section aria-label="Live speed" style="border-radius: 16px; padding: 16px; background: linear-gradient(135deg, #053f33 0%, #0f6f68 55%, #0e6a86 100%); color: #ffffff; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;"><span style="width: 8px; height: 8px; border-radius: 999px; background: #a7f0cf;"></span>Live now</span>
+        <span style="font-size: 12px; font-weight: 500; color: #d8f5ea;">Plan: Home 20 Mbps</span>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: flex-end;">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12px; font-weight: 500; color: #d8f5ea;">Download</span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 700;">↓ 18.4 <span style="font-size: 15px; font-weight: 500; font-family: 'Geist Mono', monospace;">Mbps</span></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 12px; font-weight: 500; color: #d8f5ea;">Upload</span>
+          <span style="font-size: 28px; line-height: 34px; font-weight: 700;">↑ 3.1 <span style="font-size: 15px; font-weight: 500; font-family: 'Geist Mono', monospace;">Mbps</span></span>
+        </div>
+      </div>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Today</span>
+        <span style="font-size: 22px; font-weight: 600;">3.2 <span style="font-size: 13px; font-weight: 500; color: #52675e;">GB</span></span>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">This month</span>
+        <span style="font-size: 22px; font-weight: 600;">9.6 <span style="font-size: 13px; font-weight: 500; color: #52675e;">GB</span></span>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Last month</span>
+        <span style="font-size: 22px; font-weight: 600;">58.6 <span style="font-size: 13px; font-weight: 500; color: #52675e;">GB</span></span>
+      </div>
+    </div>
+
+    <section aria-label="Daily data, last 30 days" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <h2 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600;">Last 30 days</h2>
+        <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 500; color: #52675e;">
+          <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: #047857;"></span>Download</span>
+          <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 3px; background: #6fcfa5;"></span>Upload</span>
+        </div>
+      </div>
+      <div style="position: relative; height: 128px; padding-left: 32px;">
+        <div style="position: absolute; left: 0; right: 0; bottom: 16px; height: 1px; background: #d3e8dd;"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 52px; height: 1px; background: #e9f7f0;"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 88px; height: 1px; background: #e9f7f0;"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 124px; height: 1px; background: #e9f7f0;"></div>
+        <span style="position: absolute; left: 0; bottom: 18px; font-size: 11px; color: #52675e;">0</span>
+        <span style="position: absolute; left: 0; bottom: 54px; font-size: 11px; color: #52675e;">1 GB</span>
+        <span style="position: absolute; left: 0; bottom: 90px; font-size: 11px; color: #52675e;">2 GB</span>
+        <span style="position: absolute; left: 0; bottom: 112px; font-size: 11px; color: #52675e;">3 GB</span>
+        <div style="position: absolute; left: 34px; right: 0; bottom: 16px; height: 112px; display: flex; align-items: flex-end; gap: 2px;">
+          <sc-for list="{{days}}" as="d" hint-placeholder-count="30">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 1px; height: 112px;">
+              <div style="height: {{d.ulH}}px; background: #6fcfa5; border-radius: 2px 2px 0 0;"></div>
+              <div style="height: {{d.dlH}}px; background: #047857;"></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="position: absolute; left: 34px; right: 0; bottom: 0; display: flex; justify-content: space-between; font-size: 11px; color: #52675e;">
+          <span>5 Oct</span><span>19 Oct</span><span>3 Nov</span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Connection session" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 15px; color: #2d4a40;">Session uptime</span>
+        <span style="font-size: 15px; font-weight: 600;">3d 4h</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd; gap: 12px;">
+        <span style="font-size: 15px; color: #2d4a40;">Last disconnect</span>
+        <span style="font-size: 13px; font-weight: 500; text-align: right;">2 Nov 01:12 · power cut at home</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px;">
+        <span style="font-size: 15px; color: #2d4a40;">IP address</span>
+        <span style="font-size: 14px; font-weight: 500; font-family: 'Geist Mono', monospace;">10.20.14.37</span>
+      </div>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding-bottom: 20px; display: flex; background: #ffffff; border-top: 1px solid #d3e8dd;">
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></span>Home</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"></path><path d="M9 7h6M9 11h6M9 15h4"></path></svg></span>Bills</a>
+    <a href="#" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #047857; font-size: 11px; font-weight: 600;"><span style="display: flex; padding: 4px 16px; border-radius: 999px; background: #d3f7e5;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M6 17v-6M11 17V5M16 17v-9M20 17v-4"></path></svg></span>Usage</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"></path></svg></span>Support</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 8px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;"><span style="display: flex; padding: 4px 16px; border-radius: 999px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>Account</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const dl = [1.4,1.9,2.2,1.1,1.6,2.4,2.6,1.3,1.5,1.8,2.1,1.2,1.7,2.3,2.5,1.4,1.6,1.9,2.0,1.1,1.5,2.2,2.4,1.3,1.6,1.8,2.1,1.0,1.4,1.7];
+    const ul = [0.3,0.4,0.4,0.2,0.3,0.5,0.4,0.2,0.3,0.3,0.4,0.2,0.3,0.4,0.5,0.3,0.3,0.4,0.4,0.2,0.3,0.4,0.5,0.2,0.3,0.3,0.4,0.2,0.3,0.4];
+    return { days: dl.map((v, i) => ({ dlH: Math.round(v * 36), ulH: Math.round(ul[i] * 36) })) };
+  }
+}
+</script>
+</body>
+</html>

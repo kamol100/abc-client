@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Traceroute</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ff9a76}a:hover{color:#ffb38f}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #0d1324; color: #f1f4fb; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+  <header style="padding: 12px 8px 0 8px; height: 68px; box-sizing: border-box; display: flex; align-items: center;">
+    <a href="tech-Toolkit.dc.html" aria-label="Back to tools" style="width: 44px; height: 44px; border-radius: 12px; color: #f1f4fb; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <h1 style="flex-grow: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Traceroute</h1>
+    <span style="width: 44px; height: 44px;"></span>
+  </header>
+
+  <main style="padding: 4px 16px 0 16px; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <label for="trace-target" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #d5dbea;">Destination</label>
+      <div style="display: flex; gap: 8px;">
+        <input id="trace-target" type="text" value="8.8.8.8" style="flex-grow: 1; min-width: 0; height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #27314d; background: #121a2e; color: #f1f4fb; padding: 0 14px; font-size: 15px; font-family: 'Geist Mono', monospace;">
+        <button type="button" style="height: 48px; padding: 0 18px; border-radius: 12px; border: 0; background: #ff9a76; color: #1a0f0a; font-size: 15px; font-weight: 600; font-family: inherit;">Run again</button>
+      </div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; background: rgba(74,222,154,0.14); color: #4ade9a; font-size: 12px; font-weight: 500;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #4ade9a;"></span>Reached in 9 hops</span>
+      <span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; background: rgba(255,192,105,0.14); color: #ffc069; font-size: 12px; font-weight: 500;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #ffc069;"></span>1 slow hop</span>
+    </div>
+
+    <ol aria-label="Hops" style="list-style: none; margin: 0; padding: 0; background: #121a2e; border: 1px solid #27314d; border-radius: 16px; overflow: hidden;">
+      <sc-for list="{{hops}}" as="h" hint-placeholder-count="9">
+        <li style="display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 14px; border-bottom: 1px solid #27314d; background: {{h.bg}};">
+          <span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 999px; border: 1px solid {{h.ring}}; color: {{h.ring}}; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;">{{h.n}}</span>
+          <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column;">
+            <span style="font-size: 13.5px; line-height: 18px; font-family: 'Geist Mono', monospace; color: #f1f4fb;">{{h.ip}}</span>
+            <span style="font-size: 12px; line-height: 16px; color: {{h.labelColor}};">{{h.label}}</span>
+          </span>
+          <span style="font-size: 13px; font-family: 'Geist Mono', monospace; color: {{h.msColor}}; white-space: nowrap;">{{h.ms}}</span>
+        </li>
+      </sc-for>
+    </ol>
+
+    <p style="margin: 0; display: flex; gap: 8px; align-items: flex-start; font-size: 12px; line-height: 16px; color: #a3adc4;">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      IPv4 only; hidden hops are normal behind CGNAT. The jump at hop 6 is the international link, not the customer's line.
+    </p>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const base = { bg: 'transparent', ring: '#27314d', labelColor: '#a3adc4', msColor: '#d5dbea' };
+    const rows = [
+      { n: 1, ip: '192.168.0.1', label: 'Home router · gateway', ms: '1.2 ms' },
+      { n: 2, ip: '10.20.0.1', label: 'BRAS · Mirpur POP', ms: '3.1 ms' },
+      { n: 3, ip: '* * *', label: 'Hidden hop · CGNAT', ms: 'no reply', hidden: true },
+      { n: 4, ip: '103.112.52.1', label: '[ISP name] core', ms: '4.8 ms' },
+      { n: 5, ip: '103.4.145.9', label: 'Upstream IIG', ms: '6.2 ms' },
+      { n: 6, ip: '72.14.218.33', label: 'Slow: international link', ms: '38.7 ms', warn: true },
+      { n: 7, ip: '142.250.229.81', label: 'Google', ms: '41.0 ms' },
+      { n: 8, ip: '142.251.49.215', label: 'Google', ms: '41.6 ms' },
+      { n: 9, ip: '8.8.8.8', label: 'dns.google · destination', ms: '40.9 ms', done: true }
+    ];
+    return {
+      hops: rows.map((r) => ({
+        ...base,
+        ...r,
+        bg: r.warn ? 'rgba(255,192,105,0.08)' : 'transparent',
+        ring: r.warn ? '#ffc069' : r.done ? '#4ade9a' : '#a3adc4',
+        labelColor: r.warn ? '#ffc069' : '#a3adc4',
+        msColor: r.warn ? '#ffc069' : r.hidden ? '#a3adc4' : '#d5dbea'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

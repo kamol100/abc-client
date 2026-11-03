@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bulk SMS</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0; height: 56px; display: flex; align-items: center; gap: 4px;">
+    <button aria-label="Back" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #0b1f19; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </button>
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Bulk SMS</h1>
+  </header>
+
+  <h2 style="margin: 8px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Audience</h2>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 0 16px;">
+    <label style="display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff;"><span style="font-size: 11px; font-weight: 500; color: #52675e;">Network</span><span style="font-size: 14px; font-weight: 500;">All routers</span></label>
+    <label style="display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff;"><span style="font-size: 11px; font-weight: 500; color: #52675e;">Zone</span><span style="font-size: 14px; font-weight: 500;">Mirpur-10</span></label>
+    <label style="display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 12px; border: 1px solid #047857; background: #ffffff;"><span style="font-size: 11px; font-weight: 500; color: #52675e;">Status</span><span style="font-size: 14px; font-weight: 500;">Due</span></label>
+  </div>
+  <div style="margin: 8px 16px 0; height: 44px; padding: 0 12px; border-radius: 12px; background: #d3f7e5; color: #065f46; display: flex; align-items: center; gap: 8px; font-size: 14px;">
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"></path></svg>
+    <span style="flex: 1;"><strong style="font-weight: 600;">312 recipients</strong></span>
+    <a href="#" style="font-size: 13px; font-weight: 600; color: #065f46;">View list</a>
+  </div>
+
+  <h2 style="margin: 16px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Message</h2>
+  <div style="padding: 0 16px;">
+    <label for="tpl" style="font-size: 12px; font-weight: 500; color: #52675e;">Template</label>
+    <button id="tpl" style="margin-top: 4px; width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: inherit; font-size: 15px; display: flex; align-items: center; justify-content: space-between;">Due reminder
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+    <label for="msg" style="display: block; margin-top: 12px; font-size: 12px; font-weight: 500; color: #52675e;">Text</label>
+    <textarea id="msg" rows="4" style="margin-top: 4px; width: 100%; box-sizing: border-box; padding: 12px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: inherit; font-size: 15px; line-height: 22px; resize: none;">Dear {name}, your internet bill of {due} is due on 10 Nov. Pay with bKash: {link} – [ISP name]</textarea>
+    <div style="display: flex; gap: 6px; margin-top: 8px; align-items: center;">
+      <button style="height: 28px; padding: 0 10px; border-radius: 999px; border: 1px solid #d3e8dd; background: #e9f7f0; color: #065f46; font-family: 'Geist Mono', monospace; font-size: 12px;">{name}</button>
+      <button style="height: 28px; padding: 0 10px; border-radius: 999px; border: 1px solid #d3e8dd; background: #e9f7f0; color: #065f46; font-family: 'Geist Mono', monospace; font-size: 12px;">{due}</button>
+      <button style="height: 28px; padding: 0 10px; border-radius: 999px; border: 1px solid #d3e8dd; background: #e9f7f0; color: #065f46; font-family: 'Geist Mono', monospace; font-size: 12px;">{link}</button>
+      <span style="margin-left: auto; font-size: 12px; color: #52675e;">2 units each</span>
+    </div>
+  </div>
+
+  <section aria-labelledby="cost-h" style="margin: 16px 16px 0; padding: 14px 16px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px;">
+    <h2 id="cost-h" style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Cost preview</h2>
+    <div style="display: flex; justify-content: space-between; font-size: 14px; line-height: 24px; color: #2d4a40;"><span>2 units × 312 recipients</span><span style="font-variant-numeric: tabular-nums;">624 units</span></div>
+    <div style="display: flex; justify-content: space-between; font-size: 14px; line-height: 24px; color: #2d4a40;"><span>Rate per unit</span><span style="font-variant-numeric: tabular-nums;">৳0.35</span></div>
+    <div style="height: 1px; background: #d3e8dd; margin: 6px 0;"></div>
+    <div style="display: flex; justify-content: space-between; font-size: 17px; font-weight: 600;"><span>Total</span><span style="font-variant-numeric: tabular-nums;">৳218.40</span></div>
+  </section>
+
+  <div style="margin: 12px 16px 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid #d3e8dd;">
+      <div><div style="font-size: 15px; font-weight: 500;">Schedule for later</div><div style="font-size: 12px; color: #52675e;">Sends now when off</div></div>
+      <button role="switch" aria-checked="false" aria-label="Schedule for later" style="width: 51px; height: 31px; border-radius: 999px; border: 0; background: #d3e8dd; padding: 2px; display: flex; justify-content: flex-start;"><span style="width: 27px; height: 27px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(11,31,25,0.25);"></span></button>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px;">
+      <div><div style="font-size: 15px; font-weight: 500;">Test mode (free)</div><div style="font-size: 12px; color: #52675e;">Sends only to your own number</div></div>
+      <button role="switch" aria-checked="false" aria-label="Test mode" style="width: 51px; height: 31px; border-radius: 999px; border: 0; background: #d3e8dd; padding: 2px; display: flex; justify-content: flex-start;"><span style="width: 27px; height: 27px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(11,31,25,0.25);"></span></button>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #f5fbf8; border-top: 1px solid #d3e8dd;">
+    <button style="width: 100%; height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font: inherit; font-size: 16px; font-weight: 600; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">Send to 312 clients · ৳218.40</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

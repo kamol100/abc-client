@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scan ONU serial</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: linear-gradient(180deg, #26302d 0%, #1a2321 45%, #0f1715 100%); color: #ffffff; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0; height: 68px; box-sizing: border-box; display: flex; align-items: center; gap: 4px;">
+    <a href="tech-Jobs.dc.html" aria-label="Close scanner" style="width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; color: #ffffff;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Scan ONU serial</h1>
+    <button aria-label="Torch" aria-pressed="false" style="width: 44px; height: 44px; border-radius: 999px; border: none; background: rgba(255,255,255,0.12); color: #ffffff; display: flex; align-items: center; justify-content: center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"></path><path d="M6 6h12"></path><path d="M12 12v2"></path></svg>
+    </button>
+  </header>
+
+  <div style="margin: 8px auto 0; width: max-content; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.12); display: flex; gap: 4px;">
+    <button aria-pressed="true" style="height: 32px; padding: 0 16px; border-radius: 999px; border: none; background: #ffffff; color: #0b1f19; font: 600 13px/18px 'Geist', sans-serif;">Barcode</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 16px; border-radius: 999px; border: none; background: transparent; color: #ffffff; font: 500 13px/18px 'Geist', sans-serif;">QR code</button>
+  </div>
+
+  <p style="margin: 28px 24px 0; text-align: center; font-size: 15px; line-height: 22px; color: #e3ece8;">Point the camera at the barcode on the ONU label</p>
+
+  <div style="position: absolute; left: 35px; top: 230px; width: 320px; height: 150px;">
+    <div style="position: absolute; left: 30px; top: 28px; width: 260px; height: 94px; border-radius: 6px; background: #eef1ef; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0.92;">
+      <span style="width: 220px; height: 58px; background: repeating-linear-gradient(90deg, #1b2321 0 2px, transparent 2px 4px, #1b2321 4px 7px, transparent 7px 9px, #1b2321 9px 10px, transparent 10px 13px, #1b2321 13px 16px, transparent 16px 17px);"></span>
+      <span style="font-family: 'Geist Mono', monospace; font-size: 11px; color: #1b2321; letter-spacing: 1px;">BDCM7A3F2C19</span>
+    </div>
+    <span style="position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-left: 3px solid #ffffff; border-top: 3px solid #ffffff; border-radius: 12px 0 0 0;"></span>
+    <span style="position: absolute; right: 0; top: 0; width: 34px; height: 34px; border-right: 3px solid #ffffff; border-top: 3px solid #ffffff; border-radius: 0 12px 0 0;"></span>
+    <span style="position: absolute; left: 0; bottom: 0; width: 34px; height: 34px; border-left: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-radius: 0 0 0 12px;"></span>
+    <span style="position: absolute; right: 0; bottom: 0; width: 34px; height: 34px; border-right: 3px solid #ffffff; border-bottom: 3px solid #ffffff; border-radius: 0 0 12px 0;"></span>
+    <span style="position: absolute; left: 14px; right: 14px; top: 74px; height: 2px; border-radius: 2px; background: #34d399; box-shadow: 0 0 12px 2px rgba(52,211,153,0.7);"></span>
+  </div>
+
+  <span style="position: absolute; left: 50%; top: 404px; transform: translateX(-50%); height: 32px; padding: 0 14px; border-radius: 999px; background: rgba(4,120,87,0.9); color: #ffffff; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Barcode detected</span>
+
+  <section aria-label="Detected ONU" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 16px 28px; background: #ffffff; color: #0b1f19; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 14px;">
+    <span style="align-self: center; width: 36px; height: 4px; border-radius: 999px; background: #d3e8dd;"></span>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h.01"></path><path d="M10 12h.01"></path><path d="M14 12h4"></path></svg>
+      </div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Serial · Code 128</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 20px; line-height: 26px; font-weight: 600;">BDCM:7A3F2C19</span>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 12px; background: #e9f7f0; font-size: 13px;">
+      <span style="color: #2d4a40;">MAC</span>
+      <span style="font-family: 'Geist Mono', monospace; color: #0b1f19;">E0:67:B3:4C:19:A2</span>
+    </div>
+    <a href="tech-BindOnu.dc.html" style="height: 48px; border-radius: 12px; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center;">Use this serial</a>
+    <button style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: 500 15px/20px 'Geist', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h.01"></path><path d="M10 8h.01"></path><path d="M14 8h.01"></path><path d="M18 8h.01"></path><path d="M8 12h.01"></path><path d="M12 12h.01"></path><path d="M16 12h.01"></path><path d="M7 16h10"></path></svg>Enter manually</button>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

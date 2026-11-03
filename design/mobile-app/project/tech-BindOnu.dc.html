@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bind ONU to client</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0; height: 68px; box-sizing: border-box; display: flex; align-items: center; gap: 4px;">
+    <a href="tech-ScanOnu.dc.html" aria-label="Back to scanner" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0b1f19;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Bind ONU</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <div style="padding: 4px 16px 0; display: flex; flex-direction: column; gap: 8px;">
+
+    <section aria-label="ONU found" style="padding: 16px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-size: 12px; font-weight: 600; color: #047857;">Found on OLT</span>
+        <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #047857;"></span>Online</span>
+      </div>
+      <span style="font-family: 'Geist Mono', monospace; font-size: 22px; line-height: 28px; font-weight: 600;">BDCM:7A3F2C19</span>
+      <dl style="margin: 0; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; min-height: 40px; align-items: center; border-top: 1px solid #d3e8dd;"><dt style="font-size: 13px; color: #52675e;">OLT</dt><dd style="margin: 0; font-size: 14px;">BDCOM P3600 · Mirpur POP</dd></div>
+        <div style="display: flex; justify-content: space-between; min-height: 40px; align-items: center; border-top: 1px solid #d3e8dd;"><dt style="font-size: 13px; color: #52675e;">Port</dt><dd style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 14px;">EPON0/1:4</dd></div>
+        <div style="display: flex; justify-content: space-between; min-height: 40px; align-items: center; border-top: 1px solid #d3e8dd;"><dt style="font-size: 13px; color: #52675e;">Rx power</dt><dd style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 14px;">−24.6 dBm <span style="font-family: 'Geist', sans-serif; font-size: 12px; color: #047857; font-weight: 600;">OK</span></dd></div>
+        <div style="display: flex; justify-content: space-between; min-height: 40px; align-items: center; border-top: 1px solid #d3e8dd;"><dt style="font-size: 13px; color: #52675e;">Binding</dt><dd style="margin: 0;"><span style="height: 24px; padding: 0 10px; border-radius: 999px; background: #eef2f1; color: #475569; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #475569;"></span>Unbound</span></dd></div>
+      </dl>
+    </section>
+
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 32px; color: #52675e; font-size: 12px; font-weight: 600;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>Bind to
+    </div>
+
+    <section aria-label="Target client" style="padding: 16px; background: #ffffff; border: 2px solid #047857; border-radius: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;">RU</div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column;">
+          <span style="font-size: 15px; font-weight: 600;">Rahim Uddin</span>
+          <span style="font-size: 13px; color: #52675e;">C-10482 · Mirpur-10</span>
+        </div>
+        <a href="#change-client" style="font-size: 13px; font-weight: 600; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center;">Change</a>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #2d4a40;">rahim.mirpur10</span>
+        <span style="height: 24px; padding: 0 10px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center;">From job T-2291</span>
+      </div>
+    </section>
+
+    <div aria-label="Example of a conflict" style="margin-top: 8px; padding: 12px 14px; border: 1px dashed #c8d9cf; border-radius: 14px; background: #e9f7f0; display: flex; gap: 10px; align-items: flex-start;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #52675e;">Example state</span>
+        <span style="font-size: 13px; line-height: 18px; color: #2d4a40;">Serial already bound to another client (Kamal Hossain · C-10311). Unbind it there first, or scan another ONU.</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex; flex-direction: column; gap: 8px;">
+    <button style="height: 48px; border-radius: 12px; border: none; background: #047857; color: #ffffff; font: 600 15px/20px 'Geist', sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Bind ONU to Rahim Uddin</button>
+    <span style="text-align: center; font-size: 12px; color: #52675e;">Links this ONU to the client's account. No reboot needed.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

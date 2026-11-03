@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Diagnosis result</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+  <header style="display: flex; align-items: center; gap: 8px; height: 56px; padding: 12px 16px 0 16px;">
+    <button type="button" aria-label="Close" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; color: #0b1f19;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+    </button>
+    <h1 style="flex: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Diagnosis</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 0 16px;">
+
+    <section style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px;">
+      <span style="width: 48px; height: 48px; border-radius: 14px; background: #fef3c7; color: #92400e; display: flex; align-items: center; justify-content: center;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"></path><path d="M8.5 16a5 5 0 0 1 7 0"></path><circle cx="12" cy="19.5" r="1"></circle><path d="M1.5 9a15 15 0 0 1 21 0" stroke-opacity="0.35"></path></svg>
+      </span>
+      <h2 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700;">Your line is fine. Wi-Fi is weak where you are.</h2>
+      <p style="margin: 0; font-size: 15px; line-height: 22px; color: #2d4a40;">The fiber and your internet session are healthy. The slowdown comes from the Wi-Fi signal in this room.</p>
+      <ul aria-label="Results by step" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px;">
+        <li style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 13px; font-weight: 500;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #92400e;"></span>Wi-Fi here · weak</li>
+        <li style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 500;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #047857;"></span>Login session · OK</li>
+        <li style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 500;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #047857;"></span>Fiber · −24.6 dBm</li>
+        <li style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 500;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #047857;"></span>Speed · 19.2 Mbps</li>
+        <li style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 500;"><span style="width: 7px; height: 7px; border-radius: 999px; background: #047857;"></span>Area outage · none</li>
+      </ul>
+    </section>
+
+    <section aria-label="What to try" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <h3 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600;">Try these first</h3>
+      <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px;">
+        <li style="display: flex; gap: 12px;">
+          <span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">1</span>
+          <span style="font-size: 15px; line-height: 22px;">Move closer to the router, or keep walls and metal cupboards out of the way.</span>
+        </li>
+        <li style="display: flex; gap: 12px;">
+          <span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">2</span>
+          <span style="font-size: 15px; line-height: 22px;">Switch to <span style="font-family: 'Geist Mono', monospace; font-size: 14px;">Rahim_5G</span> when you are in the same room as the router.</span>
+        </li>
+        <li style="display: flex; gap: 12px;">
+          <span style="flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;">3</span>
+          <span style="font-size: 15px; line-height: 22px;">Restart the router: unplug it for 10 seconds, plug it back in and wait 2 minutes.</span>
+        </li>
+      </ol>
+    </section>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 28px; display: flex; flex-direction: column; gap: 8px;">
+    <p style="margin: 0; text-align: center; font-size: 12px; line-height: 16px; font-weight: 500; color: #52675e;">We attach this diagnosis so the technician sees it.</p>
+    <button type="button" style="width: 100%; height: 48px; border-radius: 12px; border: none; background: #047857; color: #ffffff; font-family: inherit; font-size: 15px; font-weight: 600; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">Still slow? Open a ticket</button>
+    <button type="button" style="width: 100%; height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-family: inherit; font-size: 15px; font-weight: 600;">Run again</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

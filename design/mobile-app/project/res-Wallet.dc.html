@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wallet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; padding: 12px 16px 0; height: 60px; box-sizing: border-box;">
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Wallet</h1>
+  </header>
+
+  <main style="padding: 4px 16px 100px; display: flex; flex-direction: column; gap: 12px;">
+    <section aria-label="Balance" style="border-radius: 16px; padding: 16px; background: linear-gradient(135deg, #053f33 0%, #0f6f68 55%, #0e6a86 100%); color: #ffffff; display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 13px; font-weight: 500; color: #a7f0cf;">Kazipara Net · R-012</span>
+      <span style="font-size: 32px; line-height: 40px; font-weight: 700; font-variant-numeric: tabular-nums;">৳18,450</span>
+      <span style="font-size: 12px; color: #d7efe6;">Commission this month ৳2,140 · included</span>
+    </section>
+
+    <section aria-label="Top up with bKash" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600;">Top up</h2>
+        <span style="height: 24px; padding: 0 8px; border-radius: 999px; background: #e9f7f0; color: #2d4a40; font-size: 12px; font-weight: 500; display: flex; align-items: center;">via bKash</span>
+      </div>
+      <div role="group" aria-label="Amount" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;">
+        <button aria-pressed="false" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums;">৳5,000</button>
+        <button aria-pressed="true" style="height: 44px; border-radius: 12px; border: 2px solid #047857; background: #d3f7e5; color: #047857; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳10,000</button>
+        <button aria-pressed="false" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums;">৳20,000</button>
+        <button aria-pressed="false" style="height: 44px; border-radius: 12px; border: 1px dashed #52675e; background: #ffffff; color: #2d4a40; font-size: 14px; font-weight: 500;">Custom</button>
+      </div>
+      <button style="height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600;">Top up ৳10,000 with bKash</button>
+      <span style="font-size: 12px; line-height: 16px; color: #52675e;">You confirm in the bKash app; the balance updates when payment completes.</span>
+    </section>
+
+    <section aria-label="Transactions" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px 4px;">
+        <h2 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600;">Transactions</h2>
+        <button style="height: 32px; padding: 0 10px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 12px; font-weight: 500;">All types</button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 60px; box-sizing: border-box;">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+        <span style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;"><span style="font-size: 15px; font-weight: 500;">Top up · bKash</span><span style="font-size: 12px; color: #52675e;">2 Nov · TrxID <span style="font-family: 'Geist Mono', monospace;">BK9K2LMN4P</span></span></span>
+        <span style="font-size: 15px; font-weight: 600; color: #047857; font-variant-numeric: tabular-nums;">+৳10,000</span>
+      </div>
+      <div style="height: 1px; background: #d3e8dd; margin-left: 68px;"></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 60px; box-sizing: border-box;">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #eef2f1; color: #475569; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></span>
+        <span style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;"><span style="font-size: 15px; font-weight: 500;">Recharge · Shahin Alam</span><span style="font-size: 12px; color: #52675e;">2 Nov · 30 days</span></span>
+        <span style="font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;">−৳350</span>
+      </div>
+      <div style="height: 1px; background: #d3e8dd; margin-left: 68px;"></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 60px; box-sizing: border-box;">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 15l6-6M9.5 9.5h.01M14.5 14.5h.01"/></svg></span>
+        <span style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;"><span style="font-size: 15px; font-weight: 500;">Commission · October</span><span style="font-size: 12px; color: #52675e;">1 Nov · credited</span></span>
+        <span style="font-size: 15px; font-weight: 600; color: #047857; font-variant-numeric: tabular-nums;">+৳1,980</span>
+      </div>
+      <div style="height: 1px; background: #d3e8dd; margin-left: 68px;"></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; min-height: 60px; box-sizing: border-box;">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #eef2f1; color: #475569; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg></span>
+        <span style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;"><span style="font-size: 15px; font-weight: 500;">Recharge · Mitu Begum</span><span style="font-size: 12px; color: #52675e;">29 Oct · 30 days</span></span>
+        <span style="font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;">−৳350</span>
+      </div>
+    </section>
+  </main>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding: 8px 4px 20px; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex;">
+    <a href="res-Home.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;">
+      <span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>Home
+    </a>
+    <a href="res-Clients.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;">
+      <span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/><path d="M16 4a4 4 0 0 1 0 8"/><path d="M22 21c0-3-1.8-5.6-4.5-6.6"/></svg></span>Clients
+    </a>
+    <a href="res-CollectPayment.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;">
+      <span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></span>Collect
+    </a>
+    <a href="res-Wallet.dc.html" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #047857; font-size: 11px; font-weight: 500;">
+      <span style="width: 56px; height: 30px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12v4"/><circle cx="16" cy="13.5" r="1.25"/></svg></span>Wallet
+    </a>
+    <a href="#more" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500;">
+      <span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></span>More
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

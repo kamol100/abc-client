@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Recharge by days</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 8px 0; height: 68px; box-sizing: border-box;">
+    <a href="res-ClientDetail.dc.html" aria-label="Back" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Recharge by days</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <main style="padding: 8px 16px 0; display: flex; flex-direction: column; gap: 12px;">
+    <section aria-label="Client" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+      <span style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center;">RU</span>
+      <div style="flex-grow: 1; display: flex; flex-direction: column;">
+        <span style="font-size: 15px; font-weight: 500;">Rahim Uddin</span>
+        <span style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">rahim.mirpur10</span> · expires 9 Nov</span>
+      </div>
+    </section>
+
+    <section aria-label="Package" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Package</span>
+        <span style="font-size: 15px; font-weight: 600;">Home 20 Mbps</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: flex-end;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Your buying price</span>
+        <span style="font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;">৳700 / 30 days</span>
+      </div>
+    </section>
+
+    <section aria-label="Days to add" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+      <span style="font-size: 13px; font-weight: 500; color: #2d4a40;">Days to add</span>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <button aria-label="Fewer days" style="width: 52px; height: 52px; border-radius: 16px; border: 1px solid #d3e8dd; background: #e9f7f0; color: #047857; display: flex; align-items: center; justify-content: center; padding: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg>
+        </button>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span style="font-size: 44px; line-height: 50px; font-weight: 700; font-variant-numeric: tabular-nums;">30</span>
+          <span style="font-size: 13px; color: #52675e;">days</span>
+        </div>
+        <button aria-label="More days" style="width: 52px; height: 52px; border-radius: 16px; border: 1px solid #d3e8dd; background: #e9f7f0; color: #047857; display: flex; align-items: center; justify-content: center; padding: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+      <div role="group" aria-label="Quick pick" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px;">
+        <button aria-pressed="false" style="height: 40px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500;">7 days</button>
+        <button aria-pressed="false" style="height: 40px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500;">15 days</button>
+        <button aria-pressed="true" style="height: 40px; border-radius: 999px; border: 1px solid #047857; background: #047857; color: #ffffff; font-size: 13px; font-weight: 500;">30 days</button>
+        <button aria-pressed="false" style="height: 40px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500;">60 days</button>
+      </div>
+    </section>
+
+    <section aria-label="Cost" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 6px 16px; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; color: #52675e;"><span>Rate</span><span style="font-variant-numeric: tabular-nums;">৳700 ÷ 30 × 30 days</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid #d3e8dd; font-size: 17px; font-weight: 600;"><span>Cost</span><span style="font-variant-numeric: tabular-nums;">৳700</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid #d3e8dd; font-size: 15px;"><span style="color: #2d4a40;">Wallet now</span><span style="font-variant-numeric: tabular-nums;">৳18,450</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 15px;"><span style="color: #2d4a40;">Wallet after</span><span style="font-weight: 600; font-variant-numeric: tabular-nums;">৳17,750</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid #d3e8dd; font-size: 15px;"><span style="color: #2d4a40;">New expiry</span><span style="font-weight: 600; color: #047857;">9 Dec 2026</span></div>
+    </section>
+
+    <p style="margin: 0; display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 12px; background: #e0f2fe; color: #0369a1; font-size: 12px; line-height: 16px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+      Recharge is blocked when your wallet balance is lower than the cost. Top up the wallet first.
+    </p>
+  </main>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">
+    <button style="width: 100%; height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600;">Confirm recharge · ৳700</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

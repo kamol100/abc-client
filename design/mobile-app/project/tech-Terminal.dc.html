@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OLT terminal</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#ff9a76}a:hover{color:#ffb38f}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #0d1324; color: #f1f4fb; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; display: flex; flex-direction: column;">
+  <header style="padding: 12px 8px 0 8px; height: 68px; box-sizing: border-box; display: flex; align-items: center; flex-shrink: 0;">
+    <a href="tech-Toolkit.dc.html" aria-label="Back to tools" style="width: 44px; height: 44px; border-radius: 12px; color: #f1f4fb; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center;">
+      <h1 style="margin: 0; font-size: 17px; line-height: 22px; font-weight: 600;">BDCOM P3600</h1>
+      <span style="font-size: 12px; line-height: 16px; color: #a3adc4;">Mirpur POP · SSH · <span style="color: #4ade9a;">connected</span></span>
+    </div>
+    <button type="button" aria-label="End session" style="width: 44px; height: 44px; border-radius: 12px; border: 0; background: transparent; color: #ff7b7b; display: flex; align-items: center; justify-content: center; padding: 0;">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
+    </button>
+  </header>
+
+  <div role="note" style="flex-shrink: 0; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 16px; background: rgba(255,192,105,0.12); color: #ffc069; font-size: 12px; font-weight: 500;">
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Session recorded · via [ISP name] server · no password on this phone
+  </div>
+
+  <section aria-label="Terminal output" style="flex-grow: 1; min-height: 0; margin: 12px 12px 0 12px; padding: 12px; border-radius: 12px; background: #0a0f1d; border: 1px solid #27314d; overflow: hidden; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 17px; color: #d5dbea; white-space: pre-wrap; word-break: break-all;"><span style="color: #ff9a76;">Mirpur-OLT#</span>show epon onu-information interface epon 0/1
+Interface EPON0/1 has registered 6 ONUs:
+
+IntfName   MAC Address    Status     Dist(m)
+---------- -------------- ---------- -------
+EPON0/1:1  c83a.350a.1102 <span style="color: #4ade9a;">online</span>        1820
+EPON0/1:2  c83a.350a.1f40 <span style="color: #4ade9a;">online</span>        2110
+EPON0/1:3  c83a.3512.07aa <span style="color: #a3adc4;">offline</span>          -
+<span style="background: rgba(255,154,118,0.14); color: #f1f4fb;">EPON0/1:4  c83a.351f.7b20 <span style="color: #4ade9a;">online</span>        2400</span>
+EPON0/1:5  c83a.3522.9c31 <span style="color: #4ade9a;">online</span>        1460
+EPON0/1:6  c83a.3530.4e18 <span style="color: #ffc069;">dying-gasp</span>       -
+
+<span style="color: #ff9a76;">Mirpur-OLT#</span>show epon optical-transceiver-diagnosis interface epon 0/1:4
+  RxPower(dBm) : <span style="color: #ffc069;">-24.6</span>
+  TxPower(dBm) : 2.1
+  Temperature  : 41 C
+  Voltage      : 3.29 V
+
+<span style="color: #ff9a76;">Mirpur-OLT#</span><span style="display: inline-block; width: 7px; height: 14px; background: #ff9a76; vertical-align: -2px;"></span></section>
+
+  <div style="flex-shrink: 0; padding: 10px 12px 0 12px; display: flex; gap: 8px; overflow: hidden;">
+    <button type="button" style="flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 12px; font-family: 'Geist Mono', monospace;">show onu 0/1:4</button>
+    <button type="button" style="flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 12px; font-family: 'Geist Mono', monospace;">optical 0/1:4</button>
+    <button type="button" style="flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 12px; font-family: 'Geist Mono', monospace;">show alarms</button>
+    <button type="button" style="flex-shrink: 0; height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #27314d; background: #141c33; color: #d5dbea; font-size: 12px; font-family: 'Geist Mono', monospace;">show pon 0/1</button>
+  </div>
+
+  <div style="flex-shrink: 0; padding: 10px 12px 28px 12px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px;">
+    <button type="button" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 13px; font-family: 'Geist Mono', monospace;">Tab</button>
+    <button type="button" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 13px; font-family: 'Geist Mono', monospace;">Ctrl</button>
+    <button type="button" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 13px; font-family: 'Geist Mono', monospace;">Esc</button>
+    <button type="button" aria-label="Previous command" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 15px; font-family: 'Geist Mono', monospace;">↑</button>
+    <button type="button" aria-label="Next command" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 15px; font-family: 'Geist Mono', monospace;">↓</button>
+    <button type="button" aria-label="Pipe" style="height: 44px; border-radius: 10px; border: 1px solid #27314d; background: #1b2440; color: #f1f4fb; font-size: 15px; font-family: 'Geist Mono', monospace;">|</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

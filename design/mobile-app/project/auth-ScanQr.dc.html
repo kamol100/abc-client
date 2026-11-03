@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scan ISP QR code</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#a7f0cf}a:hover{color:#ffffff}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: radial-gradient(70% 50% at 50% 40%, #1f3a33 0%, #0b1f19 70%, #050d0b 100%); font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #ffffff; display: flex; flex-direction: column; padding: 12px 16px 40px 16px">
+  <div style="height: 56px; display: flex; align-items: center; justify-content: space-between">
+    <button type="button" aria-label="Close" style="width: 44px; height: 44px; border-radius: 999px; border: none; background: rgba(255,255,255,0.14); color: #ffffff; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+    </button>
+    <span style="font-size: 17px; line-height: 22px; font-weight: 600">Scan ISP QR code</span>
+    <button type="button" aria-label="Turn on torch" style="width: 44px; height: 44px; border-radius: 999px; border: none; background: rgba(255,255,255,0.14); color: #ffffff; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6c0 2-2 2-2 4v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V10c0-2-2-2-2-4V2h12z"></path><path d="M6 6h12M12 12v2"></path></svg>
+    </button>
+  </div>
+  <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px">
+    <div style="position: relative; width: 264px; height: 264px; border-radius: 28px; background: rgba(255,255,255,0.04)">
+      <div style="position: absolute; left: 0; top: 0; width: 48px; height: 48px; border-left: 4px solid #a7f0cf; border-top: 4px solid #a7f0cf; border-top-left-radius: 28px"></div>
+      <div style="position: absolute; right: 0; top: 0; width: 48px; height: 48px; border-right: 4px solid #a7f0cf; border-top: 4px solid #a7f0cf; border-top-right-radius: 28px"></div>
+      <div style="position: absolute; left: 0; bottom: 0; width: 48px; height: 48px; border-left: 4px solid #a7f0cf; border-bottom: 4px solid #a7f0cf; border-bottom-left-radius: 28px"></div>
+      <div style="position: absolute; right: 0; bottom: 0; width: 48px; height: 48px; border-right: 4px solid #a7f0cf; border-bottom: 4px solid #a7f0cf; border-bottom-right-radius: 28px"></div>
+      <div style="position: absolute; left: 24px; right: 24px; top: 128px; height: 2px; border-radius: 999px; background: #a7f0cf; opacity: 0.8"></div>
+    </div>
+    <p style="margin: 0; max-width: 260px; text-align: center; font-size: 15px; line-height: 22px; color: #e9f7f0">Point at the QR on your receipt or router sticker</p>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 12px">
+    <a href="auth-ChooseIsp.dc.html" style="display: flex; align-items: center; justify-content: center; height: 48px; width: 100%; border-radius: 12px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.24); color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600">Enter code instead</a>
+    <p style="margin: 0; font-size: 12px; line-height: 16px; color: #c4d6ce">The QR only picks your provider. You still sign in next.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ISP mobile design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1180px; box-sizing: border-box; padding: 56px 64px; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; display: flex; flex-direction: column; gap: 28px; overflow: hidden">
+
+  <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #047857">ISP mobile · Flutter</div>
+      <h1 style="margin: 0; font-size: 40px; line-height: 46px; font-weight: 700">Design system</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 22px; color: #52675e; max-width: 760px">Mint for light and Glow for dark, taken from the abc-client marketing skins. Geist for Latin, Hind Siliguri for Bangla, Geist Mono for IPs, MACs, serials and dBm. One staff app with a role-based home, one white-label subscriber app.</p>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center">
+      <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 600">English</span>
+      <span lang="bn" style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: #ffffff; border: 1px solid #d3e8dd; color: #2d4a40; font-size: 14px; font-weight: 500; font-family: 'Hind Siliguri', 'Geist', sans-serif">বাংলা</span>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Mint · light</h2>
+        <span style="font-size: 12px; color: #52675e">Default for every screen</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #f5fbf8; border: 1px solid #d3e8dd"></div><span style="font-size: 12px; font-weight: 600">Ground</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#f5fbf8</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd"></div><span style="font-size: 12px; font-weight: 600">Surface</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#ffffff</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #e9f7f0"></div><span style="font-size: 12px; font-weight: 600">Surface 2</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#e9f7f0</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #047857"></div><span style="font-size: 12px; font-weight: 600">Accent</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#047857</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #d3f7e5"></div><span style="font-size: 12px; font-weight: 600">Accent soft</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#d3f7e5</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #0b1f19"></div><span style="font-size: 12px; font-weight: 600">Ink</span><span style="font-size: 11px; color: #52675e; font-family: 'Geist Mono', monospace">#0b1f19</span></div>
+      </div>
+      <div style="height: 64px; border-radius: 14px; background: linear-gradient(135deg, #053f33 0%, #0f6f68 55%, #0e6a86 100%); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; color: #ffffff">
+        <span style="font-size: 14px; font-weight: 600">Night band · hero cards only</span>
+        <span style="font-size: 22px; font-weight: 700; color: #a7f0cf; font-variant-numeric: tabular-nums">৳4,82,300</span>
+      </div>
+    </div>
+
+    <div style="background: #0d1324; border: 1px solid #27314d; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; color: #f1f4fb">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Glow · dark</h2>
+        <span style="font-size: 12px; color: #a3adc4">Toolkit, terminal, NOC map, and the dark setting</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #0d1324; border: 1px solid #27314d"></div><span style="font-size: 12px; font-weight: 600">Ground</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#0d1324</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #121a2e; border: 1px solid #27314d"></div><span style="font-size: 12px; font-weight: 600">Surface</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#121a2e</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #1b2440"></div><span style="font-size: 12px; font-weight: 600">Surface 3</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#1b2440</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #ff9a76"></div><span style="font-size: 12px; font-weight: 600">Coral</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#ff9a76</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #2dd4bf"></div><span style="font-size: 12px; font-weight: 600">Teal</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#2dd4bf</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px"><div style="height: 56px; border-radius: 12px; background: #f1f4fb"></div><span style="font-size: 12px; font-weight: 600">Ink</span><span style="font-size: 11px; color: #a3adc4; font-family: 'Geist Mono', monospace">#f1f4fb</span></div>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(74,222,154,0.14); color: #4ade9a; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #4ade9a"></span>Online</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(255,192,105,0.14); color: #ffc069; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #ffc069"></span>Low power</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(255,123,123,0.14); color: #ff7b7b; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #ff7b7b"></span>LOS</span>
+        <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: rgba(124,196,255,0.14); color: #7cc4ff; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #7cc4ff"></span>Syncing</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 420px minmax(0, 1fr); gap: 24px">
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 600">Type</h2>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #d3e8dd; padding-bottom: 10px"><span style="font-size: 28px; line-height: 34px; font-weight: 700">Display</span><span style="font-size: 12px; color: #52675e">28 / 34 · 700</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #d3e8dd; padding-bottom: 10px"><span style="font-size: 20px; line-height: 26px; font-weight: 600">Title</span><span style="font-size: 12px; color: #52675e">20 / 26 · 600</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #d3e8dd; padding-bottom: 10px"><span style="font-size: 17px; line-height: 22px; font-weight: 600">Headline</span><span style="font-size: 12px; color: #52675e">17 / 22 · 600</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #d3e8dd; padding-bottom: 10px"><span style="font-size: 15px; line-height: 22px">Body text for lists and forms</span><span style="font-size: 12px; color: #52675e">15 / 22 · 400</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #d3e8dd; padding-bottom: 10px"><span lang="bn" style="font-size: 16px; line-height: 24px; font-family: 'Hind Siliguri', sans-serif">বিল পরিশোধ করুন</span><span style="font-size: 12px; color: #52675e">Bangla · Hind Siliguri</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 14px; font-family: 'Geist Mono', monospace">10.20.14.37 · −24.6 dBm</span><span style="font-size: 12px; color: #52675e">Mono · identifiers</span></div>
+    </div>
+
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 20px; padding: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Actions</h2>
+        <button type="button" style="height: 48px; border: 0; border-radius: 12px; background: #047857; color: #ffffff; font: 600 15px 'Geist', sans-serif">Pay ৳1,050 with bKash</button>
+        <button type="button" style="height: 44px; border: 1px solid #d3e8dd; border-radius: 12px; background: #ffffff; color: #0b1f19; font: 500 15px 'Geist', sans-serif">Download PDF</button>
+        <button type="button" style="height: 44px; border: 0; border-radius: 12px; background: #fee2e2; color: #b91c1c; font: 600 15px 'Geist', sans-serif">Reboot ONU</button>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="ds-code" style="font-size: 13px; font-weight: 500; color: #2d4a40">Company code</label>
+          <input id="ds-code" value="skyline" style="height: 48px; box-sizing: border-box; border: 1px solid #d3e8dd; border-radius: 12px; padding: 0 14px; font: 400 15px 'Geist', sans-serif; color: #0b1f19; background: #ffffff">
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Status</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #047857"></span>Online</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #b45309"></span>Due soon</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #b91c1c"></span>Overdue</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: #eef2f1; color: #475569; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #475569"></span>Offline</span>
+          <span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; border-radius: 999px; background: #0369a1"></span>In progress</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 12px; border-radius: 12px; background: #e0f2fe; color: #0369a1; font-size: 13px; font-weight: 500">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 2l20 20"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M5 12.9a10 10 0 0 1 5.2-2.8"></path><path d="M12 20h.01"></path></svg>
+          Offline · 3 items waiting to sync
+        </div>
+        <p style="margin: 0; font-size: 12px; line-height: 16px; color: #52675e">Status is always a dot plus a word, never colour alone.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Data</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div style="border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #52675e; font-weight: 500">Active clients</span><span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">1,248</span><span style="font-size: 12px; color: #047857">+37 this month</span></div>
+          <div style="border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #52675e; font-weight: 500">Dues</span><span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums">৳1,27,700</span><span style="font-size: 12px; color: #92400e">212 invoices</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border: 1px solid #d3e8dd; border-radius: 16px; padding: 0 12px">
+          <div style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600">RU</div>
+          <div style="display: flex; flex-direction: column; flex-grow: 1; gap: 2px"><span style="font-size: 15px; font-weight: 500">Rahim Uddin</span><span style="font-size: 13px; color: #52675e; font-family: 'Geist Mono', monospace">rahim.mirpur10</span></div>
+          <span style="font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums">৳1,050</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 600">Tab bars by role</h2>
+      <span style="font-size: 13px; color: #52675e">The staff app picks its tabs from the signed-in role and permissions</span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; color: #2d4a40">Subscriber app</span>
+        <div style="height: 64px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 11px; font-weight: 500; color: #52675e">
+          <span style="color: #047857; font-weight: 600">Home</span><span>Bills</span><span>Usage</span><span>Support</span><span>Account</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; color: #2d4a40">Reseller and collector</span>
+        <div style="height: 64px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 11px; font-weight: 500; color: #52675e">
+          <span style="color: #047857; font-weight: 600">Home</span><span>Clients</span><span>Collect</span><span>Wallet</span><span>More</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; color: #2d4a40">Technician</span>
+        <div style="height: 64px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; justify-items: center; font-size: 11px; font-weight: 500; color: #52675e">
+          <span style="color: #047857; font-weight: 600">Jobs</span><span>Map</span><span style="width: 44px; height: 44px; border-radius: 999px; background: #047857; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 600">Scan</span><span>Tools</span><span>More</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; color: #2d4a40">ISP admin</span>
+        <div style="height: 64px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; text-align: center; font-size: 11px; font-weight: 500; color: #52675e">
+          <span style="color: #047857; font-weight: 600">Home</span><span>Network</span><span>Clients</span><span>Billing</span><span>More</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

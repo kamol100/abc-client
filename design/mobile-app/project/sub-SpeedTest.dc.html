@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Speed test</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums;">
+
+  <header style="display: flex; align-items: center; gap: 8px; height: 56px; padding: 12px 16px 0 16px;">
+    <button type="button" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 12px; background: transparent; color: #0b1f19;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+    </button>
+    <h1 style="flex: 1; margin: 0; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Speed test</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 16px 0 16px;">
+
+    <section style="display: flex; flex-direction: column; align-items: center;">
+      <svg width="350" height="184" viewBox="0 0 350 184" role="img" aria-label="Download 19.2 Mbps on a 0 to 25 Mbps gauge; your plan is 20 Mbps">
+        <path d="M45 160 A130 130 0 0 1 305 160" fill="none" stroke="#dcf1e6" stroke-width="16" stroke-linecap="round"></path>
+        <path d="M45 160 A130 130 0 0 1 272 73.4" fill="none" stroke="#047857" stroke-width="16" stroke-linecap="round"></path>
+        <line x1="267.2" y1="93" x2="293.1" y2="74.2" stroke="#0b1f19" stroke-width="2" stroke-linecap="round"></line>
+        <text x="300" y="66" font-size="11" font-weight="600" fill="#2d4a40" font-family="Geist, sans-serif">Plan</text>
+        <g font-size="11" fill="#52675e" font-family="Geist, sans-serif" text-anchor="middle">
+          <text x="71" y="164">0</text>
+          <text x="91" y="103">5</text>
+          <text x="143" y="65">10</text>
+          <text x="207" y="65">15</text>
+          <text x="259" y="103">20</text>
+          <text x="279" y="164">25</text>
+        </g>
+        <text x="175" y="140" text-anchor="middle" font-size="44" font-weight="700" fill="#0b1f19" font-family="Geist, sans-serif">19.2</text>
+        <text x="175" y="164" text-anchor="middle" font-size="13" font-weight="500" fill="#52675e" font-family="Geist, sans-serif">Mbps download</text>
+      </svg>
+      <p style="margin: 4px 0 0 0; font-size: 13px; color: #52675e;">Server: <span style="color: #0b1f19; font-weight: 500;">[ISP name] · Mirpur POP</span></p>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Upload</span>
+        <span style="font-size: 22px; font-weight: 600;">4.8 <span style="font-size: 12px; font-weight: 500; color: #52675e; font-family: 'Geist Mono', monospace;">Mbps</span></span>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Ping</span>
+        <span style="font-size: 22px; font-weight: 600;">7 <span style="font-size: 12px; font-weight: 500; color: #52675e; font-family: 'Geist Mono', monospace;">ms</span></span>
+      </div>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e;">Jitter</span>
+        <span style="font-size: 22px; font-weight: 600;">2 <span style="font-size: 12px; font-weight: 500; color: #52675e; font-family: 'Geist Mono', monospace;">ms</span></span>
+      </div>
+    </div>
+
+    <section aria-label="Compared with your plan" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 15px; font-weight: 500;">Your plan: 20 Mbps</span>
+        <span style="font-size: 13px; font-weight: 600; color: #047857;">96% of plan</span>
+      </div>
+      <div role="progressbar" aria-label="Measured speed against plan" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100" style="height: 8px; border-radius: 999px; background: #dcf1e6; overflow: hidden;">
+        <div style="width: 96%; height: 8px; border-radius: 999px; background: #047857;"></div>
+      </div>
+    </section>
+
+    <section aria-label="Recent tests" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px;">
+      <h2 style="margin: 0; padding: 12px 0 4px 0; font-size: 15px; font-weight: 600;">Recent tests</h2>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 13px; color: #2d4a40;">Today 10:42</span>
+        <span style="font-size: 13px; font-weight: 500; font-family: 'Geist Mono', monospace;">↓19.2 ↑4.8 · 7 ms</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 13px; color: #2d4a40;">1 Nov 21:15</span>
+        <span style="font-size: 13px; font-weight: 500; font-family: 'Geist Mono', monospace;">↓12.6 ↑4.1 · 18 ms</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-bottom: 1px solid #d3e8dd;">
+        <span style="font-size: 13px; color: #2d4a40;">29 Oct 20:40</span>
+        <span style="font-size: 13px; font-weight: 500; font-family: 'Geist Mono', monospace;">↓11.9 ↑3.9 · 22 ms</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 48px;">
+        <span style="font-size: 13px; color: #2d4a40;">25 Oct 09:05</span>
+        <span style="font-size: 13px; font-weight: 500; font-family: 'Geist Mono', monospace;">↓19.6 ↑4.9 · 6 ms</span>
+      </div>
+    </section>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 28px;">
+    <button type="button" style="width: 100%; height: 48px; border-radius: 12px; border: none; background: #047857; color: #ffffff; font-family: inherit; font-size: 15px; font-weight: 600; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">Start again</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

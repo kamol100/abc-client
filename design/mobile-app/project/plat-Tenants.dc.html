@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Platform tenants</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between;">
+    <div><div style="font-size: 12px; font-weight: 500; color: #52675e;">Platform</div><h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Tenants</h1></div>
+    <button aria-label="Add tenant" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: #047857; color: #ffffff; display: flex; align-items: center; justify-content: center;">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+    </button>
+  </header>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 12px 16px 0;">
+    <div style="padding: 10px; border-radius: 14px; background: #ffffff; border: 1px solid #d3e8dd;"><div style="font-size: 12px; font-weight: 500; color: #52675e;">Tenants</div><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums;">64</div></div>
+    <div style="padding: 10px; border-radius: 14px; background: #ffffff; border: 1px solid #d3e8dd;"><div style="font-size: 12px; font-weight: 500; color: #0369a1;">Trial</div><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums;">6</div></div>
+    <div style="padding: 10px; border-radius: 14px; background: #ffffff; border: 1px solid #d3e8dd;"><div style="font-size: 12px; font-weight: 500; color: #92400e;">Grace</div><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums;">3</div></div>
+    <div style="padding: 10px; border-radius: 14px; background: #ffffff; border: 1px solid #d3e8dd;"><div style="font-size: 12px; font-weight: 500; color: #b91c1c;">Expired</div><div style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums;">2</div></div>
+  </div>
+
+  <div style="padding: 12px 16px 0;">
+    <label for="tenant-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden;">Search tenants</label>
+    <div style="height: 44px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; display: flex; align-items: center; gap: 8px; padding: 0 12px; box-sizing: border-box; color: #52675e;">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input id="tenant-search" type="search" placeholder="ISP name, domain or phone" style="border: 0; outline: 0; flex: 1; font: inherit; font-size: 15px; background: transparent; color: #0b1f19;">
+    </div>
+  </div>
+
+  <ul style="list-style: none; margin: 12px 16px 0; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"></path></svg></span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500;">[ISP 1]</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #047857;"></span>Active</span></div>
+        <div style="font-size: 13px; color: #52675e;">Business · 2,140 clients</div>
+      </div>
+      <div style="text-align: right; flex: none;"><div style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳12,300</div><button style="margin-top: 4px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; color: #047857; font: inherit; font-size: 12px; font-weight: 600;">Recharge wallet</button></div>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"></path></svg></span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500;">[ISP 2]</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #0369a1;"></span>Trial</span></div>
+        <div style="font-size: 13px; color: #52675e;">Starter · 180 clients · ends 12 Nov</div>
+      </div>
+      <div style="text-align: right; flex: none;"><div style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳0</div><button style="margin-top: 4px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; color: #047857; font: inherit; font-size: 12px; font-weight: 600;">Recharge wallet</button></div>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"></path></svg></span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500;">[ISP 3]</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #92400e;"></span>Grace</span></div>
+        <div style="font-size: 13px; color: #52675e;">Business · 960 clients · until 8 Nov</div>
+      </div>
+      <div style="text-align: right; flex: none;"><div style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳450</div><button style="margin-top: 4px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; color: #047857; font: inherit; font-size: 12px; font-weight: 600;">Recharge wallet</button></div>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: 1px solid #d3e8dd;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"></path></svg></span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500;">[ISP 4]</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #047857;"></span>Active</span></div>
+        <div style="font-size: 13px; color: #52675e;">Enterprise · 5,400 clients</div>
+      </div>
+      <div style="text-align: right; flex: none;"><div style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳48,000</div><button style="margin-top: 4px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; color: #047857; font: inherit; font-size: 12px; font-weight: 600;">Recharge wallet</button></div>
+    </li>
+    <li style="display: flex; align-items: center; gap: 12px; padding: 12px;">
+      <span aria-hidden="true" style="width: 40px; height: 40px; flex: none; border-radius: 10px; background: #eef2f1; color: #475569; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"></path></svg></span>
+      <div style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500;">[ISP 5]</span><span style="height: 22px; padding: 0 8px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #b91c1c;"></span>Expired</span></div>
+        <div style="font-size: 13px; color: #52675e;">Starter · 75 clients · read-only</div>
+      </div>
+      <div style="text-align: right; flex: none;"><div style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">৳0</div><button style="margin-top: 4px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid #d3e8dd; background: #ffffff; color: #047857; font: inherit; font-size: 12px; font-weight: 600;">Recharge wallet</button></div>
+    </li>
+  </ul>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding-bottom: 20px; box-sizing: border-box; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex;">
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></span>Home</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle><path d="M12 7v5l-5.5 5.5M12 12l5.5 5.5"></path></svg></span>Network</a>
+    <a href="#" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #047857; text-decoration: none; font-size: 11px; font-weight: 600;"><span style="width: 56px; height: 30px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 14h3M8 17h6"></path></svg></span>Tenants</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg></span>Billing</a>
+    <a href="#" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></span>More</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

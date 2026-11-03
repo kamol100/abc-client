@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New client</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button,input{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 8px 0; height: 68px; box-sizing: border-box;">
+    <a href="res-Clients.dc.html" aria-label="Cancel" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">New client</h1>
+    <span style="width: 44px;"></span>
+  </header>
+
+  <form style="padding: 4px 16px 0; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-size: 13px; font-weight: 500; color: #2d4a40;">Documents</span>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;">
+        <button type="button" style="height: 84px; border-radius: 12px; border: 1px solid #047857; background: #d3f7e5; color: #047857; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Photo added
+        </button>
+        <button type="button" style="height: 84px; border-radius: 12px; border: 1px dashed #52675e; background: #ffffff; color: #2d4a40; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 500;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg>NID front
+        </button>
+        <button type="button" style="height: 84px; border-radius: 12px; border: 1px dashed #52675e; background: #ffffff; color: #2d4a40; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 500;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 10h12M6 14h8"/></svg>NID back
+        </button>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-name" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Full name</label>
+        <input id="nc-name" value="Sharmin Akter" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-phone" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Phone</label>
+        <input id="nc-phone" type="tel" value="01711-208452" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; font-variant-numeric: tabular-nums; min-width: 0;">
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-user" style="font-size: 13px; font-weight: 500; color: #2d4a40;">PPPoE username</label>
+        <input id="nc-user" value="sharmin.kzp52" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-family: 'Geist Mono', monospace; font-size: 14px; color: #0b1f19; min-width: 0;">
+        <span style="font-size: 12px; color: #047857;">Suggested · available</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-pass" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Password</label>
+        <input id="nc-pass" type="password" value="kzp52-river" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+        <span style="font-size: 12px; color: #52675e;">Sent to client by SMS</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-pkg" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Package</label>
+        <button type="button" id="nc-pkg" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 15px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">Home 20 Mbps<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="nc-zone" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Zone</label>
+        <button type="button" id="nc-zone" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 15px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">Kazipara<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <span style="font-size: 13px; font-weight: 500; color: #2d4a40;">Location</span>
+      <div style="border-radius: 16px; border: 1px solid #d3e8dd; background: #ffffff; overflow: hidden;">
+        <div role="img" aria-label="Map preview with a pin at the client's house" style="position: relative; height: 96px; background: linear-gradient(90deg, rgba(4,120,87,0.08) 1px, transparent 1px) 0 0 / 24px 24px, linear-gradient(0deg, rgba(4,120,87,0.08) 1px, transparent 1px) 0 0 / 24px 24px, #e9f7f0;">
+          <div style="position: absolute; left: 0; right: 0; top: 52px; height: 10px; background: #ffffff;"></div>
+          <div style="position: absolute; top: 0; bottom: 0; left: 210px; width: 10px; background: #ffffff;"></div>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="#047857" stroke="#ffffff" stroke-width="1.5" aria-hidden="true" style="position: absolute; left: 164px; top: 20px;"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3" fill="#ffffff"/></svg>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px;">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #2d4a40;">23.8069, 90.3687</span>
+          <button type="button" style="height: 36px; padding: 0 10px; border-radius: 10px; border: 0; background: #d3f7e5; color: #047857; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Use current location</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <label for="nc-date" style="font-size: 13px; font-weight: 500; color: #2d4a40;">Connection date</label>
+      <button type="button" id="nc-date" style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font-size: 15px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">3 Nov 2026<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#52675e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button>
+    </div>
+  </form>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">
+    <button style="width: 100%; height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600;">Save client</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

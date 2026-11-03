@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Staff sign-in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19; display: flex; flex-direction: column; padding: 12px 16px 32px 16px; gap: 24px">
+  <div style="height: 56px; display: flex; align-items: center; justify-content: space-between">
+    <a href="auth-ChooseIsp.dc.html" aria-label="Change provider" style="width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #0b1f19">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <button type="button" lang="bn" style="height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-family: 'Hind Siliguri', sans-serif; font-size: 13px; font-weight: 500">বাংলা</button>
+  </div>
+  <div style="display: flex; align-items: center; gap: 12px">
+    <div style="width: 48px; height: 48px; border-radius: 14px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><path d="M12 20h.01"></path></svg>
+    </div>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 17px; line-height: 22px; font-weight: 600">[ISP name]</span>
+      <span style="font-size: 13px; line-height: 18px; color: #52675e; font-family: 'Geist Mono', monospace">skyline</span>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700">Staff sign-in</h1>
+    <p style="margin: 0; font-size: 15px; line-height: 22px; color: #52675e">For admins, resellers, collectors and technicians.</p>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <label for="u" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40">Username</label>
+      <input id="u" type="text" value="sabbir.tech" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 14px; font-family: 'Geist Mono', monospace; font-size: 16px; color: #0b1f19">
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <label for="p" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40">Password</label>
+      <div style="display: flex; align-items: center; height: 48px; box-sizing: border-box; border-radius: 12px; border: 2px solid #047857; background: #ffffff; padding: 0 4px 0 14px">
+        <input id="p" type="password" value="password12" style="flex-grow: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: inherit; font-size: 16px; color: #0b1f19">
+        <button type="button" aria-label="Show password" style="width: 44px; height: 44px; border: none; background: transparent; color: #52675e; display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </button>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <label style="display: flex; align-items: center; gap: 10px; font-size: 15px; line-height: 22px; min-height: 44px">
+        <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #047857; margin: 0">
+        Unlock with fingerprint next time
+      </label>
+    </div>
+    <a href="#" style="align-self: flex-start; font-size: 15px; line-height: 22px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Forgot password?</a>
+  </div>
+  <button type="button" style="height: 48px; border-radius: 12px; border: none; background: #047857; color: #ffffff; font-family: inherit; font-size: 15px; font-weight: 600">Sign in</button>
+  <p style="margin: auto 0 0 0; text-align: center; font-size: 15px; line-height: 22px; color: #52675e">Are you a customer? <a href="auth-SubscriberLogin.dc.html" style="font-weight: 600; text-decoration: none">Customer sign-in</a></p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

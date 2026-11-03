@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bills</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; font-variant-numeric: tabular-nums">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 0; height: 68px; box-sizing: border-box">
+    <h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">Bills</h1>
+    <a href="sub-Payments.dc.html" aria-label="Payment history" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; display: flex; align-items: center; justify-content: center; box-sizing: border-box">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
+    </a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 120px">
+    <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px">
+      <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 12px; font-weight: 500; color: #52675e">Total due</span>
+        <span style="font-size: 28px; line-height: 34px; font-weight: 700">৳1,050</span>
+        <span style="font-size: 13px; font-weight: 500; color: #92400e">1 bill · pay by 10 Nov</span>
+      </span>
+      <a href="sub-PayBill.dc.html" style="height: 44px; padding: 0 20px; border-radius: 12px; background: #047857; color: #ffffff; display: flex; align-items: center; font-size: 15px; font-weight: 600; text-decoration: none">Pay now</a>
+    </div>
+
+    <div role="tablist" aria-label="Bill status" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #e9f7f0">
+      <button type="button" role="tab" aria-selected="true" style="height: 36px; border-radius: 9px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Due</button>
+      <button type="button" role="tab" aria-selected="false" style="height: 36px; border-radius: 9px; border: 1px solid transparent; background: transparent; color: #52675e; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer">Paid</button>
+      <button type="button" role="tab" aria-selected="false" style="height: 36px; border-radius: 9px; border: 1px solid transparent; background: transparent; color: #52675e; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer">All</button>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #52675e">November 2026</h2>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px">
+        <a href="sub-InvoiceDetail.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px; box-sizing: border-box; text-decoration: none; color: #0b1f19">
+          <span style="width: 40px; height: 40px; border-radius: 12px; background: #fee2e2; color: #b91c1c; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>
+          <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 500">Internet bill</span>
+            <span style="font-size: 13px; color: #52675e">Due 10 Nov · INV-…0482</span>
+          </span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+            <span style="font-size: 15px; font-weight: 600">৳1,050</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #b91c1c"></span>Due</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #52675e">October 2026</h2>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px">
+        <a href="sub-InvoiceDetail.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px; box-sizing: border-box; text-decoration: none; color: #0b1f19; border-bottom: 1px solid #d3e8dd">
+          <span style="width: 40px; height: 40px; border-radius: 12px; background: #fef3c7; color: #92400e; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>
+          <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 500">Router installation</span>
+            <span style="font-size: 13px; color: #52675e">৳300 of ৳500 paid</span>
+          </span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+            <span style="font-size: 15px; font-weight: 600">৳200</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #92400e"></span>Partial</span>
+          </span>
+        </a>
+        <a href="sub-InvoiceDetail.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px; box-sizing: border-box; text-decoration: none; color: #0b1f19">
+          <span style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>
+          <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 500">Internet bill</span>
+            <span style="font-size: 13px; color: #52675e">Paid 8 Oct · bKash</span>
+          </span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+            <span style="font-size: 15px; font-weight: 600">৳1,050</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #047857"></span>Paid</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 style="margin: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #52675e">September 2026</h2>
+      <div style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px">
+        <a href="sub-InvoiceDetail.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; min-height: 64px; box-sizing: border-box; text-decoration: none; color: #0b1f19">
+          <span style="width: 40px; height: 40px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>
+          <span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 15px; font-weight: 500">Internet bill</span>
+            <span style="font-size: 13px; color: #52675e">Paid 9 Sep · Cash</span>
+          </span>
+          <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px">
+            <span style="font-size: 15px; font-weight: 600">৳1,050</span>
+            <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 600"><span style="width: 6px; height: 6px; border-radius: 999px; background: #047857"></span>Paid</span>
+          </span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: #ffffff; border-top: 1px solid #d3e8dd; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr))">
+    <a href="sub-Home.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e">
+      <span style="height: 30px; display: flex; align-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></span>
+      <span style="font-size: 11px; font-weight: 500">Home</span>
+    </a>
+    <a href="sub-Invoices.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #047857">
+      <span style="width: 56px; height: 30px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>
+      <span style="font-size: 11px; font-weight: 600">Bills</span>
+    </a>
+    <a href="sub-Usage.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e">
+      <span style="height: 30px; display: flex; align-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 16v-4M12 16V8M17 16v-6"/></svg></span>
+      <span style="font-size: 11px; font-weight: 500">Usage</span>
+    </a>
+    <a href="sub-Tickets.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e">
+      <span style="height: 30px; display: flex; align-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+      <span style="font-size: 11px; font-weight: 500">Support</span>
+    </a>
+    <a href="sub-Profile.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e">
+      <span style="height: 30px; display: flex; align-items: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+      <span style="font-size: 11px; font-weight: 500">Account</span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
