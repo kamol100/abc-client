@@ -1,18 +1,21 @@
 ## Summary
 
-The staff form can assign and clear zones. The API stores them on the staff member and returns them for the edit form.
+Invoice print settings now have Basic and Advanced modes. Basic prints the centered Genfive-style slip. Advanced keeps the existing receipt and its switches.
 
 ## Frontend
 
-- Basic information section in `components/staffs/staff-form-schema.ts` has a multi-select `zone_ids`, loaded from `/dropdown-zones`, mapped from `zones`.
-- `components/staffs/staff-type.ts` accepts `zones` on the staff row and `zone_ids` on the form. An empty selection submits `[]`.
-- `staff.zones.label` and `staff.zones.placeholder` are in `public/lang/en.json` and `public/lang/bn.json`.
-- The staff form component is unchanged. It already renders that schema.
+- Mode radios sit in the settings header. Basic is the default.
+- Basic shows thank-you, amount in words, support number, and the shared typography controls. Advanced keeps the full switch list.
+- The customized preview and the print dialog follow `mode`. Basic is captured as one thermal page so the border and type sizes stay intact.
+- Basic slip: company, address, invoice id and time, client name, `id@phone`, Total Bill, Paid & Discount (underlined), Total Due, optional words, thank-you, and HELP line.
+- English and Bangla strings are in `public/lang/en.json` and `public/lang/bn.json`.
 
 ## Checks
 
-- `npx vitest run tests/unit/staffs/staff-form-schema.test.ts` passed (3 tests).
+- `npx vitest run tests/unit/invoices/invoice-receipt.test.tsx tests/unit/settings/invoice-print-settings.test.tsx` passed (7 tests).
+- `npx tsc --noEmit` passed.
+- Signed in on `vp.isp.test` and checked the settings page. Basic preview matched the slip. Turning off thank-you removed it from the custom preview only. Advanced restored the existing receipt and the full switch list. Those toggles were not saved.
 
 ## Unrelated working tree
 
-Left in place: untracked `app/api/favicon/`, `lib/favicon/`, and `tests/unit/favicon/`. The branch was already one commit ahead of `origin/master`.
+None. Branch `master` is even with `origin/master` aside from these edits.

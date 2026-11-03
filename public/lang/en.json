@@ -2020,7 +2020,12 @@
             "thank_you": "Thank You",
             "for_support": "For support",
             "in_words": "In words",
-            "only": "Only"
+            "only": "Only",
+            "total_bill": "Total Bill",
+            "paid_and_discount": "Paid & Discount",
+            "total_due": "Total Due",
+            "taka": "Taka",
+            "help": "HELP"
         },
         "no_invoices": "No invoices found",
         "delete_confirmation": "Are you sure you want to delete this invoice?",
@@ -4944,6 +4949,11 @@
         "invoice_print": {
             "title": "Invoice Print Settings",
             "description": "Choose what appears on a printed invoice receipt, then compare it with the original.",
+            "mode_label": "Print mode",
+            "modes": {
+                "basic": "Basic mode",
+                "advanced": "Advanced mode"
+            },
             "visibility": "Receipt details",
             "typography": "Typography",
             "font_size": "Font size",

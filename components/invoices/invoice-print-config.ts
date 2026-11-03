@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+export const INVOICE_PRINT_MODES = ["basic", "advanced"] as const;
+
+export type InvoicePrintMode = (typeof INVOICE_PRINT_MODES)[number];
+
 export const INVOICE_PRINT_FONT_WEIGHTS = [400, 500, 600, 700, 800, 900] as const;
 
 export type InvoicePrintFontWeight = (typeof INVOICE_PRINT_FONT_WEIGHTS)[number];
@@ -39,7 +43,14 @@ export const INVOICE_PRINT_FLAG_KEYS = [
 
 export type InvoicePrintFlagKey = (typeof INVOICE_PRINT_FLAG_KEYS)[number];
 
+export const INVOICE_PRINT_BASIC_FLAG_KEYS = [
+    "show_thank_you",
+    "show_total_amount_in_words",
+    "show_company_support_number",
+] as const satisfies readonly InvoicePrintFlagKey[];
+
 export type InvoicePrintSettings = Record<InvoicePrintFlagKey, boolean> & {
+    mode: InvoicePrintMode;
     font_size: number;
     font_weight: InvoicePrintFontWeight;
     content_spacing: InvoicePrintContentSpacing;
@@ -48,6 +59,7 @@ export type InvoicePrintSettings = Record<InvoicePrintFlagKey, boolean> & {
 const flagSchema = z.boolean();
 
 export const InvoicePrintSettingsSchema: z.ZodType<InvoicePrintSettings> = z.object({
+    mode: z.enum(INVOICE_PRINT_MODES),
     show_company_name: flagSchema,
     show_company_address: flagSchema,
     show_company_phone: flagSchema,
@@ -73,6 +85,7 @@ export const InvoicePrintSettingsSchema: z.ZodType<InvoicePrintSettings> = z.obj
 });
 
 export const DEFAULT_INVOICE_PRINT_SETTINGS: InvoicePrintSettings = {
+    mode: "basic",
     show_company_name: true,
     show_company_address: true,
     show_company_phone: true,

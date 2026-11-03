@@ -101,10 +101,13 @@ const forceThermalInk = (root: HTMLElement, typography: ReceiptTypography | null
         node.style.filter = "none";
         node.style.backgroundColor = keepWhiteBackground ? "#ffffff" : "transparent";
         node.style.fontFamily = thermalFontFamily();
-        node.style.fontWeight = String(typography?.fontWeight ?? 700);
-        if (typography) {
-            node.style.fontSize = `${typography.fontSize}px`;
-            node.style.lineHeight = `${receiptLineHeight(typography.fontSize)}px`;
+        const preservesType = node.closest("[data-receipt-keep-type='true']") != null;
+        if (!preservesType) {
+            node.style.fontWeight = String(typography?.fontWeight ?? 700);
+            if (typography) {
+                node.style.fontSize = `${typography.fontSize}px`;
+                node.style.lineHeight = `${receiptLineHeight(typography.fontSize)}px`;
+            }
         }
         node.style.setProperty("-webkit-font-smoothing", "auto");
     };
@@ -174,6 +177,60 @@ const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypograp
 const thermalPageSize = (heightMm: number): { orientation: "p" | "l"; format: [number, number] } => {
     const orientation = heightMm >= PT210_PRINT_WIDTH_MM ? "p" : "l";
     return { orientation, format: [PT210_PRINT_WIDTH_MM, heightMm] };
+};
+
+const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
+    const firstInvoice = invoices[0];
+    const clientName = firstInvoice?.client?.name?.replace(/\s+/g, "-").toLowerCase() ?? "client";
+    const invoiceLabel = invoices.length > 1
+        ? "bulk-invoices"
+        : (firstInvoice?.trackID ?? `invoice-${firstInvoice?.id ?? ""}`);
+    return `${invoiceLabel}-${clientName}-${stamped}`;
+};
+
+const saveBasicReceiptPdf = async (receiptRoot: HTMLElement, pdfName: string) => {
+    const typography = typographyFromReceipt(receiptRoot);
+    const staging = document.createElement("div");
+    staging.style.position = "fixed";
+    staging.style.left = "-99999px";
+    staging.style.top = "0";
+    staging.style.width = `${PT210_PAGE_DOTS}px`;
+    staging.style.pointerEvents = "none";
+    staging.style.background = "#ffffff";
+    document.body.appendChild(staging);
+    try {
+        const page = receiptRoot.cloneNode(true) as HTMLElement;
+        page.style.boxSizing = "border-box";
+        page.style.width = `${PT210_PAGE_DOTS}px`;
+        page.style.maxWidth = "none";
+        page.style.margin = "0";
+        page.style.background = "#ffffff";
+        page.style.color = "#000000";
+        staging.appendChild(page);
+        const pageCanvas = await toThermalCanvas(page, typography);
+        const pageImageHeightMm = Math.max(canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM), 20);
+        const pageSize = thermalPageSize(pageImageHeightMm);
+        const pdf = new jsPDF({
+            orientation: pageSize.orientation,
+            unit: "mm",
+            format: pageSize.format,
+            compress: true,
+        });
+        pdf.setProperties({ title: pdfName });
+        pdf.addImage(
+            pageCanvas.toDataURL("image/png"),
+            "PNG",
+            0,
+            0,
+            PT210_PRINT_WIDTH_MM,
+            pageImageHeightMm,
+            undefined,
+            "NONE",
+        );
+        pdf.save(`${pdfName}.pdf`);
+    } finally {
+        staging.remove();
+    }
 };
 
 const cloneForPdf = (element: HTMLElement) => {
@@ -297,6 +354,20 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             receiptElement.querySelectorAll<HTMLElement>("[data-receipt-item-row]"),
         );
 
+        if (receiptRoot.dataset.receiptVariant === "basic") {
+            setIsGeneratingPdf(true);
+            try {
+                await document.fonts.ready;
+                await saveBasicReceiptPdf(receiptRoot, receiptPdfName(invoices, dateFormat()));
+                onOpenChange(false);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsGeneratingPdf(false);
+            }
+            return;
+        }
+
         if (!receiptItemsBody || !receiptSummary) return;
 
         setIsGeneratingPdf(true);
@@ -307,15 +378,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             const paddingX = paddingXFromReceipt(receiptRoot);
             const pageContentWidthMm = PT210_PRINT_WIDTH_MM;
             const pageContentHeightMm = RECEIPT_MAX_PAGE_HEIGHT_MM;
-
-            const firstInvoice = invoices[0];
-            const clientName =
-                firstInvoice?.client?.name?.replace(/\s+/g, "-").toLowerCase() ?? "client";
-            const invoiceLabel =
-                invoices.length > 1
-                    ? "bulk-invoices"
-                    : (firstInvoice?.trackID ?? `invoice-${firstInvoice?.id ?? ""}`);
-            const pdfName = `${invoiceLabel}-${clientName}-${dateFormat()}`;
+            const pdfName = receiptPdfName(invoices, dateFormat());
 
             stagingContainer = document.createElement("div");
             stagingContainer.style.position = "fixed";

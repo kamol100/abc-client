@@ -5,20 +5,24 @@ import { useTranslation } from "react-i18next";
 import InvoiceReceipt from "@/components/invoices/invoice-receipt";
 import {
     DEFAULT_INVOICE_PRINT_SETTINGS,
+    INVOICE_PRINT_BASIC_FLAG_KEYS,
     INVOICE_PRINT_CONTENT_SPACING,
     INVOICE_PRINT_FLAG_KEYS,
     INVOICE_PRINT_FONT_SIZE,
     INVOICE_PRINT_FONT_WEIGHTS,
+    INVOICE_PRINT_MODES,
     InvoicePrintSettingsSchema,
     type InvoicePrintContentSpacing,
     type InvoicePrintFlagKey,
     type InvoicePrintFontWeight,
+    type InvoicePrintMode,
     type InvoicePrintSettings,
 } from "@/components/invoices/invoice-print-config";
 import type { InvoiceDetail } from "@/components/invoices/invoice-type";
 import MyButton from "@/components/my-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
     Select,
     SelectContent,
@@ -32,6 +36,7 @@ import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 import { parseApiError } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 
 const previewPrintedAt = new Date(2026, 10, 2, 18, 17);
 
@@ -215,13 +220,42 @@ export function InvoicePrintSettingsPage() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="grid grid-cols-1 items-center gap-3 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
                 <div>
                     <h1 className="text-lg font-medium text-foreground">{t("settings.invoice_print.title")}</h1>
                     <p className="text-sm text-muted-foreground">{t("settings.invoice_print.description")}</p>
                 </div>
+                <RadioGroup
+                    value={draft.mode}
+                    disabled={!canEdit || pending}
+                    aria-label={t("settings.invoice_print.mode_label")}
+                    className="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2"
+                    onValueChange={(value) => {
+                        if (!(INVOICE_PRINT_MODES as readonly string[]).includes(value)) return;
+                        setDraft((current) => ({ ...current, mode: value as InvoicePrintMode }));
+                    }}
+                >
+                    {INVOICE_PRINT_MODES.map((mode) => (
+                        <label
+                            key={mode}
+                            htmlFor={`invoice-print-mode-${mode}`}
+                            className={cn(
+                                "flex cursor-pointer items-center gap-2 text-sm text-foreground",
+                                (!canEdit || pending) && "cursor-not-allowed",
+                            )}
+                        >
+                            <RadioGroupItem
+                                id={`invoice-print-mode-${mode}`}
+                                value={mode}
+                                disabled={!canEdit || pending}
+                                aria-label={t(`settings.invoice_print.modes.${mode}`)}
+                            />
+                            {t(`settings.invoice_print.modes.${mode}`)}
+                        </label>
+                    ))}
+                </RadioGroup>
                 {canEdit && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-end gap-2">
                         <MyButton
                             action="reset"
                             variant="outline"
@@ -245,7 +279,7 @@ export function InvoicePrintSettingsPage() {
             <section className="rounded-lg border border-border bg-card p-4">
                 <h2 className="text-sm font-medium text-foreground">{t("settings.invoice_print.visibility")}</h2>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    {INVOICE_PRINT_FLAG_KEYS.map((key) => (
+                    {(draft.mode === "basic" ? INVOICE_PRINT_BASIC_FLAG_KEYS : INVOICE_PRINT_FLAG_KEYS).map((key) => (
                         <div key={key} className="flex items-center justify-between gap-3">
                             <Label htmlFor={key}>{t(`settings.invoice_print.flags.${key}`)}</Label>
                             <Switch

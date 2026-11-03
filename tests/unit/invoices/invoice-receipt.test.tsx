@@ -65,14 +65,15 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.getByText("INV-12: Monthly package 1x800")).toBeInTheDocument();
         expect(screen.queryByText("invoice.receipt.invoice_id:")).not.toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.due:")).toBeInTheDocument();
-        expect(screen.getByText("invoice.receipt.for_support: 09666777888")).toBeInTheDocument();
-        expect(screen.queryByText("invoice.receipt.for_support: 22222222222")).not.toBeInTheDocument();
+        expect(screen.getByText("common.help: 09666777888")).toBeInTheDocument();
+        expect(screen.queryByText("common.help: 22222222222")).not.toBeInTheDocument();
         expect(screen.queryByText(/Seven Hundred Fifty/)).not.toBeInTheDocument();
     });
 
     it("hides a disabled field and applies typography only when print settings are passed", () => {
         const printSettings: InvoicePrintSettings = {
             ...DEFAULT_INVOICE_PRINT_SETTINGS,
+            mode: "advanced",
             show_company_name: false,
             show_thank_you: false,
             show_client_phone: false,
@@ -87,12 +88,17 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.queryByText("invoice.receipt.thank_you")).not.toBeInTheDocument();
         expect(screen.queryByText("01700000000")).not.toBeInTheDocument();
         expect(screen.getByText(/Seven Hundred Fifty/)).toBeInTheDocument();
-        expect(screen.getByText("invoice.receipt.for_support: 09666777888")).toBeInTheDocument();
+        expect(screen.getByText("common.help: 09666777888")).toBeInTheDocument();
         expect(container.innerHTML).not.toContain("text-[36px]");
     });
 
     it("prints the amount in words immediately before the thank-you message", () => {
-        render(<InvoiceReceipt invoices={[invoice]} printSettings={DEFAULT_INVOICE_PRINT_SETTINGS} />);
+        render(
+            <InvoiceReceipt
+                invoices={[invoice]}
+                printSettings={{ ...DEFAULT_INVOICE_PRINT_SETTINGS, mode: "advanced" }}
+            />,
+        );
 
         const paid = screen.getByText("invoice.receipt.paid:");
         const words = screen.getByText(/Seven Hundred Fifty invoice\.receipt\.only/);
@@ -119,7 +125,12 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(root()?.className).toContain("pb-[24px]");
         expect(root()).not.toHaveAttribute("data-receipt-padding-x");
 
-        rerender(<InvoiceReceipt invoices={[invoice]} printSettings={DEFAULT_INVOICE_PRINT_SETTINGS} />);
+        rerender(
+            <InvoiceReceipt
+                invoices={[invoice]}
+                printSettings={{ ...DEFAULT_INVOICE_PRINT_SETTINGS, mode: "advanced" }}
+            />,
+        );
         expect(root()).toHaveStyle({ paddingLeft: "16px", paddingRight: "16px" });
         expect(root()?.className).not.toContain("px-[16px]");
         expect(root()?.className).toContain("pt-[16px]");
@@ -129,7 +140,7 @@ describe("InvoiceReceipt thermal layout", () => {
         rerender(
             <InvoiceReceipt
                 invoices={[invoice]}
-                printSettings={{ ...DEFAULT_INVOICE_PRINT_SETTINGS, content_spacing: "full" }}
+                printSettings={{ ...DEFAULT_INVOICE_PRINT_SETTINGS, mode: "advanced", content_spacing: "full" }}
             />,
         );
         expect(root()).toHaveStyle({ paddingLeft: "0px", paddingRight: "0px" });
@@ -137,5 +148,61 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(root()?.className).toContain("[overflow-wrap:anywhere]");
         expect(root()?.querySelector("[data-receipt-item-row] span")?.className).toContain("break-words");
         expect(root()?.querySelector("[data-receipt-item-row] span")?.className).not.toContain("truncate");
+    });
+
+    it("renders the basic receipt as a centered bill with the optional footer", () => {
+        const printedAt = new Date(2025, 9, 1, 15, 22);
+        const basicSettings: InvoicePrintSettings = {
+            ...DEFAULT_INVOICE_PRINT_SETTINGS,
+            mode: "basic",
+            font_size: 32,
+            font_weight: 500,
+            content_spacing: "full",
+        };
+        const { container, rerender } = render(
+            <InvoiceReceipt invoices={[invoice]} printSettings={basicSettings} printedAt={printedAt} />,
+        );
+        const root = container.querySelector<HTMLElement>("[data-receipt-variant='basic']");
+
+        expect(root).toHaveStyle({ fontSize: "32px", fontWeight: "500" });
+        expect(root).toHaveAttribute("data-receipt-padding-x", "0");
+        expect(root?.className).toContain("[overflow-wrap:anywhere]");
+        expect(root?.querySelector("[data-receipt-frame]")).toHaveStyle({ paddingLeft: "0px", paddingRight: "0px" });
+        expect(screen.getByText("VP Net")).toHaveStyle({ fontSize: "32px", fontWeight: "500" });
+        expect(screen.getByText("Dhaka")).toHaveStyle({ fontSize: "19px", fontWeight: "400" });
+        expect(screen.getByText("INV-12 / October-1, 2025 3:22pm")).toBeInTheDocument();
+        expect(screen.getByText("Kamal")).toBeInTheDocument();
+        expect(screen.getByText("99@01700000000")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.total_bill")).toBeInTheDocument();
+        expect(screen.getByText("800.00")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.paid_and_discount")).toBeInTheDocument();
+        expect(screen.getByText("550.00")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.total_due")).toBeInTheDocument();
+        expect(screen.getByText("250.00")).toBeInTheDocument();
+        expect(screen.getByText("Eight Hundred invoice.receipt.taka.")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.thank_you")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.help - 09666777888")).toBeInTheDocument();
+        expect(screen.queryByText("22222222222")).not.toBeInTheDocument();
+        expect(screen.queryByText("kamal01")).not.toBeInTheDocument();
+        expect(screen.queryByText("INV-12: Monthly package 1x800")).not.toBeInTheDocument();
+        expect(screen.queryByText("invoice.receipt.item")).not.toBeInTheDocument();
+
+        rerender(
+            <InvoiceReceipt
+                invoices={[invoice]}
+                printedAt={printedAt}
+                printSettings={{
+                    ...basicSettings,
+                    show_thank_you: false,
+                    show_total_amount_in_words: false,
+                    show_company_support_number: false,
+                }}
+            />,
+        );
+
+        expect(screen.queryByText(/Eight Hundred/)).not.toBeInTheDocument();
+        expect(screen.queryByText("invoice.receipt.thank_you")).not.toBeInTheDocument();
+        expect(screen.queryByText(/09666777888/)).not.toBeInTheDocument();
+        expect(screen.getByText("800.00")).toBeInTheDocument();
     });
 });
