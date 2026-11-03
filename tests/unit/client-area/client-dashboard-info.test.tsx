@@ -13,6 +13,10 @@ vi.mock("react-i18next", () => ({
   }),
 }));
 
+vi.mock("@/components/clients/client-speed-widget", () => ({
+  default: ({ url }: { url?: string }) => <span>{url}</span>,
+}));
+
 const info: ClientDashboardInfoData = {
   customer_id: "12673",
   name: "Kamol",
@@ -35,6 +39,8 @@ describe("ClientDashboardInfo", () => {
     render(<ClientDashboardInfo data={info} isLoading={false} isError={false} />);
 
     expect(screen.getByRole("heading", { name: "client_dashboard.info.title" })).toBeInTheDocument();
+    expect(screen.getByText("client_dashboard.info.live_speed")).toBeInTheDocument();
+    expect(screen.getByText("client-dashboard-speed")).toBeInTheDocument();
     expect(screen.getByText("common.active")).toBeInTheDocument();
     expect(screen.getByText("client.basic_view.online")).toBeInTheDocument();
     expect(screen.getByText("client_dashboard.info.not_available")).toBeInTheDocument();

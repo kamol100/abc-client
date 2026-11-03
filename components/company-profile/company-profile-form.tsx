@@ -23,7 +23,10 @@ const CompanyProfileForm: FC<CompanyProfileFormProps> = ({
   company,
 }) => {
   const [open, setOpen] = useState(false);
-  const formSchema = useMemo(() => CompanyProfileFormFieldSchema(), []);
+  const formSchema = useMemo(
+    () => CompanyProfileFormFieldSchema({ includeSupportPhone: !isReseller }),
+    [isReseller],
+  );
 
   const endpoint = isReseller
     ? `reseller-company-profile/${companyId}`
@@ -39,6 +42,7 @@ const CompanyProfileForm: FC<CompanyProfileFormProps> = ({
     () => ({
       name: company.name ?? "",
       phone: company.phone ?? "",
+      ...(isReseller ? {} : { support_phone: company.support_phone ?? "" }),
       email: company.email ?? "",
       address: company.address ?? "",
     }),

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import DashboardSupportTicketCard from "@/components/dashboard/items/DashboardSupportTicketCard";
 import ClientDashboardInvoiceCard from "@/components/client-area/dashboard/ClientDashboardInvoiceCard";
 import ClientDashboardPaymentCard from "@/components/client-area/dashboard/ClientDashboardPaymentCard";
+import ClientDashboardUsageCard from "@/components/client-area/dashboard/ClientDashboardUsageCard";
 import { useClientDashboardData } from "@/components/client-area/dashboard/use-client-dashboard-data";
 import ClientDashboardInfo from "@/components/client-area/dashboard/ClientDashboardInfo";
 import BkashPaymentResultNotice from "@/components/bkash-payment/bkash-payment-result-notice";
@@ -24,6 +25,11 @@ export default function ClientDashboardContent() {
     isPaymentLoading,
     isPaymentFetching,
     isPaymentError,
+
+    usage,
+    isUsageLoading,
+    isUsageFetching,
+    isUsageError,
 
     info,
     isInfoLoading,
@@ -53,6 +59,12 @@ export default function ClientDashboardContent() {
           isLoading={isTicketLoading}
           isRefreshing={isTicketFetching}
           isError={isTicketError}
+        />
+        <ClientDashboardUsageCard
+          data={usage}
+          isLoading={isUsageLoading}
+          isRefreshing={isUsageFetching}
+          isError={isUsageError}
         />
       </div>
       <ClientDashboardInfo

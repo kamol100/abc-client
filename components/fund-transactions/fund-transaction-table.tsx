@@ -1,15 +1,20 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
-import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
-import FundTransactionFilterSchema from "./fund-transaction-filter-schema";
-import { getFundTransactionColumns } from "./fund-transaction-column";
-import { FundTransactionRow } from "./fund-transaction-type";
+import FundTransactionForm from "@/components/fund-transactions/fund-transaction-form";
+import FundTransactionFilterSchema from "@/components/fund-transactions/fund-transaction-filter-schema";
+import { getFundTransactionColumns } from "@/components/fund-transactions/fund-transaction-column";
+import { FundTransactionRow } from "@/components/fund-transactions/fund-transaction-type";
+
+type FundTransactionTarget = {
+  id: string | number;
+  name?: string | null;
+  balance?: number | string | null;
+};
 
 type FundTransactionTableProps = {
   apiUrl?: string;
@@ -17,6 +22,7 @@ type FundTransactionTableProps = {
   includeFundFilter?: boolean;
   showFundColumn?: boolean;
   hideCreateAction?: boolean;
+  fund?: FundTransactionTarget;
 };
 
 const FundTransactionTable: FC<FundTransactionTableProps> = ({
@@ -25,6 +31,7 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
   includeFundFilter = true,
   showFundColumn = true,
   hideCreateAction = false,
+  fund,
 }) => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
@@ -70,15 +77,21 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
       return undefined;
     }
 
-    const AddFromFunds = () => (
-      <MyButton size="default" variant="default" url="/funds">
-        <Plus />
-        {t("common.add")}
-      </MyButton>
+    const invalidateKeys = ["funds", "fund-transactions", queryKey]
+      .filter((key, index, keys) => Boolean(key) && keys.indexOf(key) === index)
+      .join(",");
+
+    const AddTransaction = () => (
+      <FundTransactionForm
+        fundId={fund?.id}
+        fundName={fund?.name}
+        fundBalance={fund?.balance}
+        queryKey={invalidateKeys}
+      />
     );
 
-    return AddFromFunds;
-  }, [hasPermission, hideCreateAction, t]);
+    return AddTransaction;
+  }, [fund?.balance, fund?.id, fund?.name, hasPermission, hideCreateAction, queryKey]);
 
   return (
     <DataTable

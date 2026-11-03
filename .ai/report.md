@@ -1,24 +1,21 @@
 ## Summary
 
-Choosing an **Invoice due** or **Invoice due reminder** template limits the Send SMS client table to clients who have an invoice with status `due`. Other templates still list every client with a phone. The list note explains the narrower set, and changing the template clears the previous selection.
+Invoice print settings now have Basic and Advanced modes. Basic prints the centered Genfive-style slip. Advanced keeps the existing receipt and its switches.
 
-## Cause
+## Frontend
 
-The table loaded `GET /sms-clients` with only the search, network, zone, and status filters. The send for those two template types already queues only due invoices, so the table included clients who would not receive the SMS.
-
-## Files
-
-- `components/sms-sent/sms-sent-form.tsx`
-- `components/sms-sent/sms-sent-type.ts`
-- `public/lang/en.json`, `public/lang/bn.json`
-- `tests/unit/sms-sent/sms-sent-type.test.ts`
+- Mode radios sit in the settings header. Basic is the default.
+- Basic shows thank-you, amount in words, support number, and the shared typography controls. Advanced keeps the full switch list.
+- The customized preview and the print dialog follow `mode`. Basic is captured as one thermal page so the border and type sizes stay intact.
+- Basic slip: company, address, invoice id and time, client name, `id@phone`, Total Bill, Paid & Discount (underlined), Total Due, optional words, thank-you, and HELP line.
+- English and Bangla strings are in `public/lang/en.json` and `public/lang/bn.json`.
 
 ## Checks
 
-- `scripts/ai/typecheck`: passed.
-- `vitest run tests/unit/sms-sent/sms-sent-type.test.ts`: 5 passed.
-- Browser: not rechecked. The client table appears only after the template details load, and the last signed-in check left the template dropdown on its loading indicator.
+- `npx vitest run tests/unit/invoices/invoice-receipt.test.tsx tests/unit/settings/invoice-print-settings.test.tsx` passed (7 tests).
+- `npx tsc --noEmit` passed.
+- Signed in on `vp.isp.test` and checked the settings page. Basic preview matched the slip. Turning off thank-you removed it from the custom preview only. Advanced restored the existing receipt and the full switch list. Those toggles were not saved.
 
-## Git
+## Unrelated working tree
 
-Uncommitted. Earlier uncommitted Send SMS due-amount work is still in `sms-sent-column.tsx`, `sms-sent-type.ts`, and `tests/unit/sms-sent/sms-sent-column.test.tsx`. Backend filter coverage is in `isp-backend`.
+None. Branch `master` is even with `origin/master` aside from these edits.

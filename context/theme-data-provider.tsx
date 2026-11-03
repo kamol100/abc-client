@@ -1,19 +1,36 @@
 "use client";
 
-import type { ThemeColor, ThemeDensity, ThemeNavDrawerSide, ThemeRadius, ThemeSettings, ThemeSettingsContextValue } from "@/types/theme-types";
+import {
+  applyThemeAttributes,
+  DEFAULT_THEME_SETTINGS,
+  settingsWithPreset,
+} from "@/lib/theme/theme-settings";
+import type {
+  ThemeBorder,
+  ThemeColor,
+  ThemeDensity,
+  ThemeFont,
+  ThemeFontSize,
+  ThemeGradientAngle,
+  ThemeGradientStyle,
+  ThemeGradients,
+  ThemeNavDrawerSide,
+  ThemeOverrideKey,
+  ThemeOverrides,
+  ThemePreset,
+  ThemeRadius,
+  ThemeRadiusToken,
+  ThemeSettings,
+  ThemeSettingsContextValue,
+  ThemeShadow,
+} from "@/types/theme-types";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
-export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
-  color: "zinc",
-  density: "comfortable",
-  radius: "0.5",
-  navDrawerSide: "right",
-};
-
+export { DEFAULT_THEME_SETTINGS };
 export const THEME_RADII: ThemeRadius[] = ["0", "0.3", "0.5", "0.75", "1.0"];
 
 const ThemeSettingsContext = createContext<ThemeSettingsContextValue>(
-  {} as ThemeSettingsContextValue
+  {} as ThemeSettingsContextValue,
 );
 
 interface ThemeSettingsProviderProps {
@@ -28,14 +45,12 @@ export default function ThemeSettingsProvider({
   const [settings, setSettings] = useState<ThemeSettings>({
     ...DEFAULT_THEME_SETTINGS,
     ...initialSettings,
+    overrides: initialSettings?.overrides ?? {},
   });
   const isInitialMount = useRef(true);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.dataset.themeColor = settings.color;
-    root.dataset.density = settings.density;
-    root.dataset.radius = settings.radius;
+    applyThemeAttributes(document.documentElement, settings);
   }, [settings]);
 
   useEffect(() => {
@@ -45,7 +60,7 @@ export default function ThemeSettingsProvider({
     }
 
     const timer = setTimeout(() => {
-      fetch("/api/theme", {
+      void fetch("/api/theme", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(settings),
@@ -55,25 +70,96 @@ export default function ThemeSettingsProvider({
     return () => clearTimeout(timer);
   }, [settings]);
 
-  const setColor = useCallback((color: ThemeColor) => {
-    setSettings((prev) => ({ ...prev, color }));
+  const patch = useCallback((partial: Partial<ThemeSettings>) => {
+    setSettings((current) => ({ ...current, ...partial }));
   }, []);
 
-  const setDensity = useCallback((density: ThemeDensity) => {
-    setSettings((prev) => ({ ...prev, density }));
+  const setColor = useCallback((color: ThemeColor) => patch({ color }), [patch]);
+  const setDensity = useCallback((density: ThemeDensity) => patch({ density }), [patch]);
+  const setRadius = useCallback((radius: ThemeRadius) => patch({ radius }), [patch]);
+  const setNavDrawerSide = useCallback(
+    (navDrawerSide: ThemeNavDrawerSide) => patch({ navDrawerSide }),
+    [patch],
+  );
+  const setPreset = useCallback((preset: ThemePreset) => {
+    setSettings((current) => settingsWithPreset(current, preset));
   }, []);
-
-  const setRadius = useCallback((radius: ThemeRadius) => {
-    setSettings((prev) => ({ ...prev, radius }));
+  const setGradients = useCallback((gradients: ThemeGradients) => patch({ gradients }), [patch]);
+  const setGradientStyle = useCallback(
+    (gradientStyle: ThemeGradientStyle) => patch({ gradientStyle }),
+    [patch],
+  );
+  const setGradientAngle = useCallback(
+    (gradientAngle: ThemeGradientAngle) => patch({ gradientAngle }),
+    [patch],
+  );
+  const setFont = useCallback((font: ThemeFont) => patch({ font }), [patch]);
+  const setFontSize = useCallback((fontSize: ThemeFontSize) => patch({ fontSize }), [patch]);
+  const setShadow = useCallback((shadow: ThemeShadow) => patch({ shadow }), [patch]);
+  const setBorder = useCallback((border: ThemeBorder) => patch({ border }), [patch]);
+  const setButtonRadius = useCallback(
+    (buttonRadius: ThemeRadiusToken) => patch({ buttonRadius }),
+    [patch],
+  );
+  const setCardRadius = useCallback((cardRadius: ThemeRadiusToken) => patch({ cardRadius }), [patch]);
+  const setDialogRadius = useCallback(
+    (dialogRadius: ThemeRadiusToken) => patch({ dialogRadius }),
+    [patch],
+  );
+  const setOverride = useCallback((key: ThemeOverrideKey, value: string | null) => {
+    setSettings((current) => {
+      const overrides: ThemeOverrides = { ...current.overrides };
+      if (value) {
+        overrides[key] = value;
+      } else {
+        delete overrides[key];
+      }
+      return { ...current, overrides };
+    });
   }, []);
-
-  const setNavDrawerSide = useCallback((navDrawerSide: ThemeNavDrawerSide) => {
-    setSettings((prev) => ({ ...prev, navDrawerSide }));
-  }, []);
+  const clearOverrides = useCallback(() => patch({ overrides: {} }), [patch]);
 
   const contextValue = useMemo(
-    () => ({ settings, setColor, setDensity, setRadius, setNavDrawerSide }),
-    [settings, setColor, setDensity, setRadius, setNavDrawerSide]
+    () => ({
+      settings,
+      setColor,
+      setDensity,
+      setRadius,
+      setNavDrawerSide,
+      setPreset,
+      setGradients,
+      setGradientStyle,
+      setGradientAngle,
+      setFont,
+      setFontSize,
+      setShadow,
+      setBorder,
+      setButtonRadius,
+      setCardRadius,
+      setDialogRadius,
+      setOverride,
+      clearOverrides,
+    }),
+    [
+      settings,
+      setColor,
+      setDensity,
+      setRadius,
+      setNavDrawerSide,
+      setPreset,
+      setGradients,
+      setGradientStyle,
+      setGradientAngle,
+      setFont,
+      setFontSize,
+      setShadow,
+      setBorder,
+      setButtonRadius,
+      setCardRadius,
+      setDialogRadius,
+      setOverride,
+      clearOverrides,
+    ],
   );
 
   return (

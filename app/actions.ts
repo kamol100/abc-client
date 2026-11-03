@@ -33,7 +33,7 @@ export async function getData(url: string) {
 type Props = {
     url: string;
     data?: unknown;
-    method?: "GET" | "POST" | "PUT" | "DELETE";
+    method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     version?: string;
     token?: string;
 };
@@ -57,9 +57,10 @@ export async function useFetch({ url, data = null, method = "GET", version = "v1
         const options: RequestInit = {
             method: method,
             headers,
+            cache: "no-store",
         };
 
-        if (data !== null && data !== undefined && (method === "POST" || method === "PUT" || method === "DELETE")) {
+        if (data !== null && data !== undefined && (method === "POST" || method === "PUT" || method === "PATCH" || method === "DELETE")) {
             options.body = isFormDataPayload ? data : JSON.stringify(data);
         }
 

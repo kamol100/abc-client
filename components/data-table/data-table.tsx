@@ -62,6 +62,8 @@ interface DataTableProps<TData, TValue> {
   initialColumnVisibility?: VisibilityState;
   toolbarBeforeViewOptions?: React.ReactNode;
   toolbarBeforeForm?: React.ReactNode;
+  /** Mobile client list only. Other tables keep the bottom-sheet filters. */
+  simpleSearch?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -83,6 +85,7 @@ export function DataTable<TData, TValue>({
   initialColumnVisibility,
   toolbarBeforeViewOptions,
   toolbarBeforeForm,
+  simpleSearch = false,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { t } = useTranslation();
@@ -156,6 +159,7 @@ export function DataTable<TData, TValue>({
             toolbarTitleClass={toolbarTitleClass}
             toolbarBeforeViewOptions={toolbarBeforeViewOptions}
             toolbarBeforeForm={toolbarBeforeForm}
+            simpleSearch={simpleSearch}
           />
         </div>
       )}

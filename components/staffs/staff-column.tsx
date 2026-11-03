@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowLeftRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -9,22 +10,20 @@ import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import { DeleteModal } from "@/components/delete-modal";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { MyDialog } from "@/components/my-dialog";
+import MyTooltip from "@/components/my-tooltip";
 import { StaffResetPasswordFormFieldSchema } from "@/components/staffs/staff-form-schema";
 import {
   STAFF_RESET_PASSWORD_DEFAULTS,
   StaffResetPasswordSchema,
   StaffRow,
 } from "@/components/staffs/staff-type";
-import { cn } from "@/lib/utils";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { usePermissions } from "@/context/app-provider";
-
-const STATUS_STYLES: Record<string, string> = {
-  active:
-    "bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40",
-  inactive:
-    "bg-destructive/10 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive",
-};
+import { useStartImpersonation } from "@/hooks/use-start-impersonation";
+import { usePermissions, useProfile } from "@/context/app-provider";
+import {
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
   active: "success",
@@ -33,10 +32,9 @@ const STATUS_BADGE_TYPES: Record<string, MyBadgeType> = {
 
 const StatusCell = ({ status }: { status: string }) => {
   const { t } = useTranslation();
-  const style = STATUS_STYLES[status] ?? STATUS_STYLES.inactive;
   const badgeType = STATUS_BADGE_TYPES[status] ?? "decline";
   return (
-    <MyBadge type={badgeType} className={cn(style)}>
+    <MyBadge type={badgeType} variant="soft">
       <span className="capitalize">{t(`common.${status}`)}</span>
     </MyBadge>
   );
@@ -85,6 +83,94 @@ function StaffAccountLockButton({
         mutate({ status: nextStatus });
       }}
     />
+  );
+}
+
+function StaffImpersonateButton({ staff }: { staff: StaffRow }) {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const { profile } = useProfile();
+  const { impersonate, switching } = useStartImpersonation();
+  const [open, setOpen] = useState(false);
+  const staffId = String(staff.id);
+  const hasLogin = Boolean(staff.user?.uuid);
+  const inactive = String(staff.status ?? "active") === "inactive";
+  const isOwnAccount =
+    (profile?.id != null && profile.id === staff.user?.uuid) ||
+    (profile?.staff?.id != null && profile.staff.id === staffId);
+  const canStart = hasLogin && !inactive && !switching && !isOwnAccount;
+
+  if (!hasPermission("impersonate.staff") || isOwnAccount) {
+    return null;
+  }
+
+  const handleConfirm = async (close: () => void) => {
+    const started = await impersonate({ id: staffId }, "staff");
+    if (started) {
+      close();
+    }
+  };
+
+  return (
+    <>
+      <MyTooltip content="staff.impersonate.tooltip">
+        <span className="inline-flex">
+          <MyButton
+            type="button"
+            aria-label={t("staff.impersonate.tooltip")}
+            disabled={!canStart}
+            className="hover:bg-primary hover:text-primary-foreground px-2"
+            onClick={() => setOpen(true)}
+          >
+            <ArrowLeftRight />
+          </MyButton>
+        </span>
+      </MyTooltip>
+      <MyDialog
+        open={open}
+        onOpenChange={setOpen}
+        size="sm"
+        loading={switching}
+        footer={({ close, loading }) => (
+          <>
+            <MyButton
+              action="cancel"
+              variant="outline"
+              size="default"
+              onClick={close}
+              disabled={loading}
+              title={t("common.cancel")}
+            />
+            <MyButton
+              type="button"
+              variant="default"
+              size="default"
+              icon={false}
+              onClick={() => {
+                void handleConfirm(close);
+              }}
+              disabled={loading || !canStart}
+              loading={loading}
+              title="staff.impersonate.confirm_action"
+            />
+          </>
+        )}
+      >
+        <div className="flex flex-col items-center text-center gap-4 py-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <ArrowLeftRight className="h-8 w-8 text-primary" />
+          </div>
+          <div className="space-y-2">
+            <DialogTitle className="text-center">
+              {t("staff.impersonate.confirm_title")}
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {t("staff.impersonate.confirm", { name: staff.name })}
+            </DialogDescription>
+          </div>
+        </div>
+      </MyDialog>
+    </>
   );
 }
 
@@ -195,6 +281,15 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
     cell: ({ row }) => <span>{row.original.email}</span>,
   },
   {
+    accessorKey: "zones",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="staff.zones.label" />
+    ),
+    cell: ({ row }) => (
+      <span>{(row.original.zones ?? []).map((zone) => zone.name).join(", ")}</span>
+    ),
+  },
+  {
     accessorKey: "join_date",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="staff.join_date.label" />
@@ -225,6 +320,7 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
             url={`/staffs/edit/${staffId}`}
             className="hover:bg-primary hover:text-primary-foreground px-2"
           />
+          <StaffImpersonateButton staff={staff} />
           <DeleteModal
             api_url={`/staffs/${staffId}`}
             keys="staffs"

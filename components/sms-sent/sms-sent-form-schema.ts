@@ -29,7 +29,7 @@ export const SmsSentFormFieldSchema = (): FieldConfig[] => {
         mandatory: true,
       },
       placeholder: "sms_sent.sms_body.placeholder",
-      rows: 4,
+      rows: 8,
     },
   ];
 };

@@ -47,10 +47,10 @@ export const FundTransactionFormSchema = z
       z.string().nullable().optional()
     ),
     transfer_by: optionalNullableNumber,
-    transaction_type: FundTransactionTypeSchema.default("deposit"),
+    transaction_type: z.literal("transfer").default("transfer"),
   })
   .superRefine((values, ctx) => {
-    if (values.transaction_type === "transfer" && !values.transfer_by) {
+    if (!values.transfer_by) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["transfer_by"],

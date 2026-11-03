@@ -1,5 +1,6 @@
 export interface Settings {
   auto_inactive_client_invoice_due?: number;
+  payment_deadline?: number | string | null;
   auto_inactive_reseller_client_termination_date?: number | string | null;
   gmap_api?: string;
   invoice_prefix?: string;
@@ -20,7 +21,9 @@ export interface Staff {
   address?: string;
   fund?: {
     id: number | string;
+    uuid?: string | null;
     name?: string | null;
+    balance?: number | string | null;
   } | null;
 }
 
@@ -52,6 +55,7 @@ export interface Profile {
   status: number;
   current_address?: string | null;
   avatar?: string | null;
+  photo?: string | null;
   staff?: Staff | null;
   company?: Company | null;
   reseller?: ProfileReseller | null;

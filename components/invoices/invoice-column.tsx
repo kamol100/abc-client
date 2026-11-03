@@ -1,15 +1,17 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import DisplayCount from "@/components/display-count";
 import MyBadge from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
-import { InvoiceRow } from "./invoice-type";
-import InvoiceRowActions from "./invoice-row-actions";
-import DisplayCount from "../display-count";
+import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
+import { InvoiceRow } from "@/components/invoices/invoice-type";
+import { usePermissions, useSettings } from "@/context/app-provider";
+import { toNumber } from "@/lib/helper/helper";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     paid: "success",
@@ -17,6 +19,28 @@ const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     partial: "warning",
     partial_paid: "warning",
 };
+
+function InvoiceClientName({ client }: { client: InvoiceRow["client"] }) {
+    const { hasPermission } = usePermissions();
+    const { settings } = useSettings();
+    const name = client?.name?.trim() ?? "";
+    const clientId = client?.uuid?.trim() ?? "";
+    const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
+
+    if (!canView) {
+        return <span className="text-sm">{name || "—"}</span>;
+    }
+
+    return (
+        <Link
+            href={`/clients/view/${clientId}`}
+            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+            className="text-sm underline-offset-4 hover:underline"
+        >
+            {name}
+        </Link>
+    );
+}
 
 export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
     const { t } = useTranslation();
@@ -67,9 +91,7 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                 header: ({ column }) => (
                     <DataTableColumnHeader column={column} title="invoice.client.label" />
                 ),
-                cell: ({ row }) => (
-                    <span className="text-sm">{row.original.client?.name ?? "—"}</span>
-                ),
+                cell: ({ row }) => <InvoiceClientName client={row.original.client} />,
                 enableSorting: false,
             },
             {

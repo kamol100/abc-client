@@ -1,41 +1,95 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  useFormField,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent } from "@/components/ui/card";
-import MyButton from "@/components/my-button";
+import { Form, FormControl, FormField, FormItem, useFormField } from "@/components/ui/form";
 import { buildDemoRequestSchema, type DemoRequestFormValues } from "@/lib/validations/demo-request-schema";
-import { cn } from "@/lib/utils";
 import { postPublicData } from "@/lib/api/api";
 
-function I18nFormMessage({ className }: { className?: string }) {
+// The helper line under each field: always present so the layout does not jump, filled only with an error.
+function FieldMessage() {
   const { error, formMessageId } = useFormField();
   const { t } = useTranslation();
-  if (!error?.message) return null;
   return (
-    <p
-      id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
-    >
-      {t(String(error.message))}
+    <p id={formMessageId} className="mkt-demo-msg">
+      {error?.message ? (
+        <>
+          <AlertCircle aria-hidden />
+          {t(String(error.message))}
+        </>
+      ) : null}
     </p>
+  );
+}
+
+function FieldLabel({ children, optional }: { children: ReactNode; optional?: boolean }) {
+  const { formItemId } = useFormField();
+  const { t } = useTranslation();
+  return (
+    <label htmlFor={formItemId} className="mkt-demo-label">
+      {children}
+      {optional && <span className="mkt-demo-label__opt">({t("demo_request.optional")})</span>}
+    </label>
+  );
+}
+
+type TextName = Exclude<keyof DemoRequestFormValues, "terms_accepted">;
+
+type TextFieldProps = {
+  name: TextName;
+  optional?: boolean;
+  required?: boolean;
+  multiline?: boolean;
+  type?: "text" | "email" | "url" | "tel";
+  inputMode?: "url" | "numeric";
+  autoComplete?: string;
+  placeholder?: string;
+};
+
+function TextField({ name, optional, required, multiline, type = "text", inputMode, autoComplete, placeholder }: TextFieldProps) {
+  const { control } = useFormContext<DemoRequestFormValues>();
+  const { t } = useTranslation();
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className="mkt-demo-field">
+          <FieldLabel optional={optional}>{t(`demo_request.fields.${name}.label`)}</FieldLabel>
+          <FormControl>
+            {multiline ? (
+              <textarea
+                rows={4}
+                autoComplete={autoComplete}
+                placeholder={placeholder}
+                className="mkt-demo-input"
+                aria-required={required || undefined}
+                {...field}
+                value={field.value ?? ""}
+              />
+            ) : (
+              <input
+                type={type}
+                inputMode={inputMode}
+                autoComplete={autoComplete}
+                placeholder={placeholder}
+                className="mkt-demo-input"
+                aria-required={required || undefined}
+                {...field}
+                value={field.value ?? ""}
+              />
+            )}
+          </FormControl>
+          <FieldMessage />
+        </FormItem>
+      )}
+    />
   );
 }
 
@@ -59,6 +113,7 @@ const defaultValues: DemoRequestFormValues = {
 export default function DemoRequestForm() {
   const { t, i18n } = useTranslation();
   const [submitSucceeded, setSubmitSucceeded] = useState(false);
+  const doneRef = useRef<HTMLHeadingElement>(null);
   const schema = useMemo(() => buildDemoRequestSchema(t), [t, i18n.language]);
 
   const form = useForm<DemoRequestFormValues>({
@@ -88,269 +143,125 @@ export default function DemoRequestForm() {
     },
   });
 
+  // Move focus to the confirmation once the API has answered, so keyboard and screen-reader users land on it.
+  useEffect(() => {
+    if (submitSucceeded) doneRef.current?.focus();
+  }, [submitSucceeded]);
+
   const onSubmit = (values: DemoRequestFormValues) => mutate(values);
 
   if (submitSucceeded) {
     return (
-      <Card className="mx-auto w-full max-w-2xl border bg-background">
-        <CardContent className="px-6 py-12 sm:px-10 sm:py-14">
-          <div className="mx-auto flex max-w-lg flex-col items-center gap-8 text-center">
-            <CheckCircle2
-              className="size-20 text-primary sm:size-24"
-              strokeWidth={1.25}
-              aria-hidden
-            />
-            <div className="space-y-3">
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                {t("demo_request.success.title")}
-              </h2>
-              <p className="text-base text-muted-foreground sm:text-lg">
-                {t("demo_request.success.message")}
-              </p>
-            </div>
-            <MyButton
-              url="/home"
-              variant="default"
-              size="default"
-              className="w-full min-w-[12rem] sm:w-auto"
-              icon={false}
-              title="demo_request.success.back"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="mkt-demo-done">
+        <CheckCircle2 className="mkt-demo-done__icon" strokeWidth={1.5} aria-hidden />
+        <h2 ref={doneRef} tabIndex={-1}>
+          {t("demo_request.success.title")}
+        </h2>
+        <p className="lead">{t("demo_request.success.message")}</p>
+        <Link href="/home" className="mkt-btn">
+          {t("demo_request.success.back")}
+        </Link>
+      </div>
     );
   }
 
   return (
-    <Card className="mx-auto w-full max-w-2xl border bg-background">
-      <CardContent className="pt-6 sm:pt-8">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <fieldset disabled={isPending} className="min-w-0 space-y-6 border-0 p-0">
-              <div className="grid gap-4 sm:grid-cols-1">
-                <FormField
-                  control={form.control}
-                  name="full_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("demo_request.fields.full_name.label")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          autoComplete="name"
-                          placeholder={t("demo_request.fields.full_name.placeholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mkt-demo-form">
+        <fieldset disabled={isPending} className="mkt-demo-fieldset">
+          <TextField name="full_name" required autoComplete="name" />
+          <TextField name="isp_name" required autoComplete="organization" />
 
-                <FormField
-                  control={form.control}
-                  name="isp_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("demo_request.fields.isp_name.label")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          autoComplete="organization"
-                          placeholder={t("demo_request.fields.isp_name.placeholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
+          <div className="mkt-demo-pair">
+            <TextField
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder={t("demo_request.fields.email.placeholder")}
+            />
+            <TextField
+              name="website"
+              optional
+              type="url"
+              inputMode="url"
+              autoComplete="url"
+              placeholder="https://example.isptik.com"
+            />
+          </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("demo_request.fields.email.label")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            autoComplete="email"
-                            placeholder={t("demo_request.fields.email.placeholder")}
-                            {...field}
-                            value={field.value ?? ""}
-                          />
-                        </FormControl>
-                        <I18nFormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="website"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("demo_request.fields.website.label")}
-                          <span className="ml-0.5 text-xs font-normal text-muted-foreground">
-                            ({t("demo_request.optional")})
-                          </span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="url"
-                            inputMode="url"
-                            autoComplete="url"
-                            placeholder={"https://example.isptik.com"}
-                            {...field}
-                          />
-                        </FormControl>
-                        <I18nFormMessage />
-                      </FormItem>
-                    )}
-                  />
+          <div className="mkt-demo-pair">
+            <TextField
+              name="phone"
+              required
+              type="tel"
+              autoComplete="tel"
+              placeholder={t("demo_request.fields.phone.placeholder")}
+            />
+            <TextField
+              name="user_count"
+              optional
+              inputMode="numeric"
+              placeholder={t("demo_request.fields.user_count.placeholder")}
+            />
+          </div>
+
+          <TextField
+            name="whatsapp"
+            required
+            type="tel"
+            autoComplete="tel"
+            placeholder={t("demo_request.fields.whatsapp.placeholder")}
+          />
+
+          <TextField
+            name="office_address"
+            optional
+            multiline
+            autoComplete="street-address"
+            placeholder={t("demo_request.fields.office_address.placeholder")}
+          />
+
+          <FormField
+            control={form.control}
+            name="terms_accepted"
+            render={({ field }) => (
+              <FormItem className="mkt-demo-terms">
+                <div className="mkt-demo-terms__row">
+                  <label className="mkt-demo-hit">
+                    <FormControl>
+                      <input
+                        type="checkbox"
+                        className="mkt-demo-check"
+                        name={field.name}
+                        ref={field.ref}
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        aria-required="true"
+                        aria-label={t("demo_request.fields.terms.aria")}
+                      />
+                    </FormControl>
+                  </label>
+                  <p className="mkt-demo-terms__text">
+                    <span>{t("demo_request.fields.terms.lead")} </span>
+                    {/* Both links point to /home until legal pages exist. */}
+                    <Link href="/home">{t("demo_request.fields.terms.terms_link")}</Link>
+                    <span> {t("demo_request.fields.terms.conjunction")} </span>
+                    <Link href="/home">{t("demo_request.fields.terms.privacy_link")}</Link>.
+                  </p>
                 </div>
+                <FieldMessage />
+              </FormItem>
+            )}
+          />
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("demo_request.fields.phone.label")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="tel"
-                            autoComplete="tel"
-                            placeholder={t("demo_request.fields.phone.placeholder")}
-                            {...field}
-                          />
-                        </FormControl>
-                        <I18nFormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="user_count"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          {t("demo_request.fields.user_count.label")}
-                          <span className="ml-0.5 text-xs font-normal text-muted-foreground">
-                            ({t("demo_request.optional")})
-                          </span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            inputMode="numeric"
-                            placeholder={t("demo_request.fields.user_count.placeholder")}
-                            {...field}
-                          />
-                        </FormControl>
-                        <I18nFormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="whatsapp"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("demo_request.fields.whatsapp.label")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="tel"
-                          autoComplete="tel"
-                          placeholder={t("demo_request.fields.whatsapp.placeholder")}
-                          {...field}
-                        />
-                      </FormControl>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="office_address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        {t("demo_request.fields.office_address.label")}
-                        <span className="ml-0.5 text-xs font-normal text-muted-foreground">
-                          ({t("demo_request.optional")})
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          rows={4}
-                          autoComplete="street-address"
-                          placeholder={t("demo_request.fields.office_address.placeholder")}
-                          className="resize-y min-h-[100px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="terms_accepted"
-                  render={({ field }) => (
-                    <FormItem className="space-y-2 rounded-md border p-4">
-                      <div className="flex items-start gap-3">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={(c) => field.onChange(c === true)}
-                            className="mt-0.5"
-                            aria-label={t("demo_request.fields.terms.aria")}
-                          />
-                        </FormControl>
-                        <p className="text-sm font-normal leading-snug text-foreground">
-                          <span>{t("demo_request.fields.terms.lead")} </span>
-                          <Link
-                            href="/home"
-                            className="text-primary underline"
-                          >
-                            {t("demo_request.fields.terms.terms_link")}
-                          </Link>
-                          <span> {t("demo_request.fields.terms.conjunction")} </span>
-                          <Link
-                            href="/home"
-                            className="text-primary underline"
-                          >
-                            {t("demo_request.fields.terms.privacy_link")}
-                          </Link>
-                          .
-                        </p>
-                      </div>
-                      <I18nFormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <MyButton
-                type="submit"
-                className="w-full sm:w-auto"
-                size="default"
-                variant="default"
-                icon={false}
-                loading={isPending}
-              >
-                {t("demo_request.form.submit")}
-              </MyButton>
-            </fieldset>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          <div className="mkt-demo-actions">
+            <button type="submit" className="mkt-btn mkt-demo-submit" aria-busy={isPending}>
+              {t("demo_request.form.submit")}
+              <Loader2 className="mkt-demo-spin" aria-hidden />
+            </button>
+          </div>
+        </fieldset>
+      </form>
+    </Form>
   );
 }

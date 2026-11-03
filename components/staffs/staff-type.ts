@@ -6,6 +6,11 @@ const RoleRefSchema = z.object({
   name: z.string(),
 });
 
+const ZoneRefSchema = z.object({
+  id: z.coerce.number(),
+  name: z.string(),
+});
+
 const dateOnlyField = z.preprocess(normalizeDateOnlyInput, z.string().optional());
 const UserRefSchema = z.object({
   uuid: z.string().optional(),
@@ -53,6 +58,7 @@ export const StaffRowSchema = z.object({
   salary_day: z.string().nullable().optional(),
   salary_generation_type: z.string().nullable().optional(),
   roles: z.array(RoleRefSchema).nullable().optional(),
+  zones: z.array(ZoneRefSchema).nullable().optional(),
   user: UserRefSchema.nullable().optional(),
   salary_items: z.array(SalaryItemSchema).nullable().optional(),
   salary_deductions: z.array(SalaryDeductionSchema).nullable().optional(),
@@ -68,6 +74,7 @@ export const StaffFormSchema = z.object({
   username: z.string().nullable().optional(),
   password: z.string().nullable().optional(),
   roles_id: z.array(z.coerce.number()).default([]),
+  zone_ids: z.array(z.coerce.number()).default([]),
   designation: z.string().nullable().optional().default(""),
   phone: z.string().min(11, {
     message: "staff.phone.errors.min",

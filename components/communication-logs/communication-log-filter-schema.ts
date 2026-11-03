@@ -10,7 +10,8 @@ export function CommunicationLogFilterSchema(): FieldConfig[] {
   ];
 
   const smsTypeOptions = [
-    { value: "custom", label: "communication_log.sms_type.options.custom" },
+    { value: "custom_client", label: "communication_log.sms_type.options.custom_client" },
+    { value: "custom_other", label: "communication_log.sms_type.options.custom_other" },
     { value: "invoice_due", label: "communication_log.sms_type.options.invoice_due" },
     { value: "invoice_due_reminder", label: "communication_log.sms_type.options.invoice_due_reminder" },
     { value: "client_activation", label: "communication_log.sms_type.options.client_activation" },

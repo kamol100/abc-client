@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings } from "lucide-react";
+import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePermissions } from "@/context/app-provider";
+import { STAFF_PROFILE_PATH } from "@/lib/auth/routes";
 import type { Profile } from "@/types/app";
 
 interface CompanyProfileProps {
@@ -88,6 +89,12 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
               </Link>
             </DropdownMenuItem>
           )}
+          <DropdownMenuItem asChild>
+            <Link href={STAFF_PROFILE_PATH} className="flex items-center gap-2">
+              <UserRound className="h-4 w-4" />
+              {t("user_profile.my_profile")}
+            </Link>
+          </DropdownMenuItem>
           {canAccessSettings && (
             <DropdownMenuItem asChild>
               <Link href="/settings" className="flex items-center gap-2">

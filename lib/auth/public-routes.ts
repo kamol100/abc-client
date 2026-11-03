@@ -5,6 +5,8 @@ const PUBLIC_PREFIX_PATHS = [
   "/features",
   "/pricing",
   "/demo-request",
+  "/about",
+  "/faq",
   "/pay",
   "/api/manifest",
   "/forgot-password",

@@ -37,11 +37,11 @@ export const useClientTicketColumns = (): ColumnDef<TicketRow>[] =>
   useMemo(
     () => [
       {
-        accessorKey: "ticketId",
+        accessorKey: "ticket_code",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ticket.ticket_id.label" />
         ),
-        cell: ({ row }) => <span>#{row.original.ticketId}</span>,
+        cell: ({ row }) => <span>{row.original.ticket_code}</span>,
         enableSorting: false,
         enableHiding: false,
       },

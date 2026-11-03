@@ -308,7 +308,7 @@ export function useArchivedClientColumns(): ColumnDef<ArchivedClientRow>[] {
             header: ({ column }) => (
                 <DataTableColumnHeader column={column} title="client.table.id_name_phone" />
             ),
-            cell: ({ row }) => <ClientNamePhoneCell client={row.original} />,
+            cell: ({ row }) => <ClientNamePhoneCell client={row.original} linkToView={false} />,
             enableSorting: false,
             enableHiding: false,
         },

@@ -35,6 +35,11 @@ const Label = ({
             {label?.labelSuffix ? <span className="normal-case"> {label.labelSuffix}</span> : null}
           </div>
           {label?.mandatory && <div className="text-destructive ml-1"> *</div>}
+          {label?.labelTrailing ? (
+            <span className="normal-case font-normal">
+              {t(label.labelTrailing, label.labelTrailingValues) as string}
+            </span>
+          ) : null}
           {label?.tooltip && (
             <MyTooltip
               content={<div className={label?.tooltipClass}>{t(label.tooltip)}</div>}

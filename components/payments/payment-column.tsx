@@ -11,10 +11,9 @@ import { PaymentRow } from "./payment-type";
 import DisplayCount from "../display-count";
 
 const STATUS_STYLES: Record<string, string> = {
-    paid: "bg-green-600/10 text-green-600 dark:bg-green-400/10 dark:text-green-400",
-    due: "bg-red-600/10 text-red-600 dark:bg-red-400/10 dark:text-red-400",
-    partial_paid:
-        "bg-yellow-600/10 text-yellow-600 dark:bg-yellow-400/10 dark:text-yellow-400",
+    paid: "theme-badge-success",
+    due: "theme-badge-danger",
+    partial_paid: "theme-badge-warning",
 };
 
 export const PaymentColumns: ColumnDef<PaymentRow>[] = [

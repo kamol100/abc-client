@@ -1,10 +1,11 @@
 import type { FormFieldConfig, SelectOption } from "@/components/form-wrapper/form-builder-type";
 import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
-import type {
-    SettingsFieldKey,
-    SettingsSelectKey,
-    SettingsSwitchKey,
-    SettingsTextKey,
+import {
+    PAYMENT_DEADLINE_RANGE,
+    type SettingsFieldKey,
+    type SettingsSelectKey,
+    type SettingsSwitchKey,
+    type SettingsTextKey,
 } from "@/components/settings/settings-type";
 
 export type SettingsSectionKey =
@@ -94,6 +95,17 @@ const MONITOR_FAIL_THRESHOLD_OPTIONS: SettingsOptionConfig[] = Array.from({ leng
     label: `settings.options.monitor_fail_threshold_${index + 1}`,
 }));
 
+const PAYMENT_DEADLINE_OPTIONS: SettingsOptionConfig[] = Array.from(
+    { length: PAYMENT_DEADLINE_RANGE.max - PAYMENT_DEADLINE_RANGE.min + 1 },
+    (_, index) => {
+        const day = PAYMENT_DEADLINE_RANGE.min + index;
+        return {
+            value: day,
+            label: String(day).padStart(2, "0"),
+        };
+    },
+);
+
 export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSectionSchema> = {
     general: {
         title: "settings.sections.general.title",
@@ -102,6 +114,9 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "invoice_prefix" },
             { kind: "text", key: "pid_prefix" },
             { kind: "text", key: "expense_id_prefix" },
+            { kind: "text", key: "product_code_prefix" },
+            { kind: "text", key: "ticket_code_prefix" },
+            { kind: "select", key: "payment_deadline", options: PAYMENT_DEADLINE_OPTIONS },
             { kind: "switch", key: "auto_inactive_client_invoice_due" },
             { kind: "switch", key: "client_view_open_on_new_tab" },
             { kind: "switch", key: "client_edit_open_on_new_tab" },
@@ -133,7 +148,6 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
         fields: [
             { kind: "select", key: "olt_poll_interval", options: OLT_POLL_INTERVAL_OPTIONS },
             { kind: "text", key: "onu_rx_power_low_dbm", inputType: "number" },
-            { kind: "switch", key: "telegram_onu_low_power" },
         ],
     },
     map: {
@@ -167,32 +181,6 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
         description: "settings.sections.telegram.description",
         fields: [
             { kind: "text", key: "telegram_bot_token" },
-            { kind: "text", key: "telegram_channel_id" },
-            { kind: "switch", key: "telegram_client_create" },
-            { kind: "switch", key: "telegram_client_update" },
-            { kind: "switch", key: "telegram_client_delete" },
-            { kind: "switch", key: "telegram_fund_transaction_create" },
-            { kind: "switch", key: "telegram_fund_transaction_delete" },
-            { kind: "switch", key: "telegram_invoice_create" },
-            { kind: "switch", key: "telegram_invoice_auto_generate" },
-            { kind: "switch", key: "telegram_invoice_update" },
-            { kind: "switch", key: "telegram_invoice_paid" },
-            { kind: "switch", key: "telegram_invoice_delete" },
-            { kind: "switch", key: "telegram_expense_create" },
-            { kind: "switch", key: "telegram_expense_update" },
-            { kind: "switch", key: "telegram_expense_delete" },
-            { kind: "switch", key: "telegram_ticket_create" },
-            { kind: "switch", key: "telegram_ticket_update" },
-            { kind: "switch", key: "telegram_ticket_delete" },
-            { kind: "switch", key: "telegram_network_create" },
-            { kind: "switch", key: "telegram_network_update" },
-            { kind: "switch", key: "telegram_network_delete" },
-            { kind: "switch", key: "telegram_package_create" },
-            { kind: "switch", key: "telegram_package_update" },
-            { kind: "switch", key: "telegram_package_delete" },
-            { kind: "switch", key: "telegram_vendor_create" },
-            { kind: "switch", key: "telegram_vendor_update" },
-            { kind: "switch", key: "telegram_vendor_delete" },
         ],
     },
 };

@@ -12,18 +12,15 @@ import { cn } from "@/lib/utils";
 type GetPagination = () => Pagination | undefined;
 
 const TYPE_BADGE_STYLES: Record<string, string> = {
-  commission:
-    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
-  deposit:
-    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
-  withdrawal:
-    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+  commission: "theme-badge-success",
+  deposit: "theme-badge-success",
+  withdrawal: "theme-badge-danger",
 };
 
 const TYPE_AMOUNT_STYLES: Record<string, string> = {
-  commission: "text-green-600 dark:text-green-400",
-  deposit: "text-green-600 dark:text-green-400",
-  withdrawal: "text-red-600 dark:text-red-400",
+  commission: "theme-tone-success",
+  deposit: "theme-tone-success",
+  withdrawal: "theme-tone-danger",
 };
 
 function TransactionTypeCell({

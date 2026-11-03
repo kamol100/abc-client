@@ -127,6 +127,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                     queryKey={isResellerReport ? "reseller-clients" : "clients"}
                     form={isResellerReport ? undefined : FormLink}
                     toolbarTitle={toolbarTitle}
+                    {...(variant === "default" ? { simpleSearch: true } : {})}
                 />
             </ClientOnlineStatusProvider>
         </div>

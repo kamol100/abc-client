@@ -10,12 +10,19 @@ const nextConfig: NextConfig = {
     root: projectRoot,
   },
   devIndicators: false,
-  allowedDevOrigins: ['192.168.0.102', 'isp.test', 'isp.local', 'app.isp.test', 'vp.isp.test', 'cp.isp.test'],
+  allowedDevOrigins: ['192.168.0.102', '192.168.1.243', 'isp.test', 'isp.local', 'app.isp.test', 'vp.isp.test', 'cp.isp.test'],
   reactStrictMode: true,
   logging: {
     fetches: {
       fullUrl: true
     }
+  },
+  async rewrites() {
+    return [
+      { source: "/favicon.ico", destination: "/api/favicon" },
+      { source: "/apple-touch-icon.png", destination: "/api/favicon" },
+      { source: "/apple-touch-icon-precomposed.png", destination: "/api/favicon" },
+    ];
   },
   images: {
     remotePatterns: [

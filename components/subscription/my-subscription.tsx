@@ -236,7 +236,7 @@ function PaymentNotice({
       className={cn(
         "flex items-center gap-2 rounded-md border px-4 py-3 text-sm",
         type === "success" &&
-          "border-green-600/30 bg-green-600/10 text-green-600 dark:border-green-400/30 dark:bg-green-400/10 dark:text-green-400",
+          "border-success/30 bg-success/10 theme-tone-success",
         type === "error" && "border-destructive/30 bg-destructive/10 text-destructive",
         type === "info" && "border-primary/30 bg-primary/10 text-primary",
       )}

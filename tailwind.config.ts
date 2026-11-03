@@ -65,8 +65,16 @@ export default {
     				DEFAULT: 'hsl(var(--warning))',
     				foreground: 'hsl(var(--warning-foreground))'
     			},
-    			border: 'hsl(var(--border))',
-    			input: 'hsl(var(--input))',
+    			success: {
+    				DEFAULT: 'hsl(var(--success))',
+    				foreground: 'hsl(var(--success-foreground))'
+    			},
+    			info: {
+    				DEFAULT: 'hsl(var(--info))',
+    				foreground: 'hsl(var(--info-foreground))'
+    			},
+    			border: 'hsl(var(--border) / var(--border-strength))',
+    			input: 'hsl(var(--input) / var(--border-strength))',
     			ring: 'hsl(var(--ring))',
     			chart: {
     				'1': 'hsl(var(--chart-1))',
@@ -82,14 +90,36 @@ export default {
     				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
     				accent: 'hsl(var(--sidebar-accent))',
     				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-    				border: 'hsl(var(--sidebar-border))',
+    				border: 'hsl(var(--sidebar-border) / var(--border-strength))',
     				ring: 'hsl(var(--sidebar-ring))'
     			}
     		},
+    		fontFamily: {
+    			sans: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    			heading: ['var(--font-heading)', 'ui-sans-serif', 'system-ui', 'sans-serif']
+    		},
+    		fontSize: {
+    			xs: ['var(--text-xs)', { lineHeight: 'var(--leading-xs)' }],
+    			sm: ['var(--text-sm)', { lineHeight: 'var(--leading-sm)' }],
+    			base: ['var(--text-base)', { lineHeight: 'var(--leading-base)' }],
+    			lg: ['var(--text-lg)', { lineHeight: 'var(--leading-lg)' }],
+    			xl: ['var(--text-xl)', { lineHeight: 'var(--leading-xl)' }],
+    			'2xl': ['var(--text-2xl)', { lineHeight: 'var(--leading-2xl)' }],
+    			'3xl': ['var(--text-3xl)', { lineHeight: 'var(--leading-3xl)' }],
+    			'4xl': ['var(--text-4xl)', { lineHeight: 'var(--leading-4xl)' }]
+    		},
+    		boxShadow: {
+    			sm: 'var(--shadow-sm)',
+    			DEFAULT: 'var(--shadow-card)',
+    			md: 'var(--shadow-md)',
+    			lg: 'var(--shadow-lg)'
+    		},
     		borderRadius: {
     			lg: 'var(--radius)',
-    			md: 'calc(var(--radius) - 2px)',
-    			sm: 'calc(var(--radius) - 4px)'
+    			md: 'var(--radius-button)',
+    			sm: 'calc(var(--radius) - 4px)',
+    			xl: 'var(--radius-card)',
+    			dialog: 'var(--radius-dialog)'
     		},
     		keyframes: {
     			'accordion-down': {

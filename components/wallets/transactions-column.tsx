@@ -10,15 +10,13 @@ import DisplayCount from "@/components/display-count";
 import { WalletTransactionRow } from "@/components/wallets/wallet-type";
 
 const TRANSACTION_TYPE_BADGE_STYLES: Record<string, string> = {
-  deposit:
-    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
-  deduction:
-    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+  deposit: "theme-badge-success",
+  deduction: "theme-badge-danger",
 };
 
 const TRANSACTION_TYPE_AMOUNT_STYLES: Record<string, string> = {
-  deposit: "text-green-600 dark:text-green-400",
-  deduction: "text-red-600 dark:text-red-400",
+  deposit: "theme-tone-success",
+  deduction: "theme-tone-danger",
 };
 
 const TransactionTypeCell = ({

@@ -69,6 +69,16 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
           valueKey: "roles",
         },
         {
+          type: "dropdown",
+          name: "zone_ids",
+          label: { labelText: "staff.zones.label" },
+          placeholder: "staff.zones.placeholder",
+          api: "/dropdown-zones",
+          isMulti: true,
+          valueMapping: { idKey: "id", labelKey: "name" },
+          valueKey: "zones",
+        },
+        {
           type: "text",
           name: "designation",
           label: { labelText: "staff.designation.label" },

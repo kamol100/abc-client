@@ -15,7 +15,7 @@ Load context in this order:
 1. This file.
 2. `.ai/workflows/` for the task type.
 3. `.cursor/skills/agent/SKILL.md` when adding or changing a CRUD screen.
-4. `isp-backend/.ai/tenancy.md` when the screen sends or displays company- or reseller-scoped data (sibling checkout).
+4. `.cursor/rules/architecture.mdc` (frontend tenant rules, always), and `../isp-backend/docs/architecture/multi-tenancy.md` (canonical, sibling checkout) when the screen sends or displays company- or reseller-scoped data, or touches auth, sessions, caching, impersonation, or tenant administration.
 5. The nearest feature folder under `components/` and its page. Do not load the whole `components/ui` tree.
 
 ## Frontend rules
@@ -36,7 +36,7 @@ The API envelope is `{ success, status, data }`. Lists are `data.data.data` plus
 
 Do not invent endpoints. If a field is missing, check the Laravel resource before changing the UI to guess.
 
-Tenant and reseller filtering is enforced by the API. The UI still hides actions the user cannot perform. Do not send `company_id` as a writable field to hop tenants.
+Tenant and reseller filtering is enforced by the API. The UI still hides actions the user cannot perform. Do not send `company_id` or `reseller_id` as a writable field to hop tenants. `company_id = 1` is the platform tenant; platform screens rely on platform-only API permissions, not on the company id.
 
 ## Testing and checks
 

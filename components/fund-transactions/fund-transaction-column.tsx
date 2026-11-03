@@ -14,24 +14,19 @@ import DisplayCount from "../display-count";
 type GetPagination = () => Pagination | undefined;
 
 const TYPE_BADGE_STYLES: Record<string, string> = {
-  deposit:
-    "bg-green-600/10 text-green-600 dark:bg-green-500/10 dark:text-green-400",
-  transfer:
-    "bg-yellow-600/10 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-300",
-  withdraw:
-    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-  expense:
-    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-  salary:
-    "bg-red-600/10 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+  deposit: "theme-badge-success",
+  transfer: "theme-badge-warning",
+  withdraw: "theme-badge-danger",
+  expense: "theme-badge-danger",
+  salary: "theme-badge-danger",
 };
 
 const TYPE_AMOUNT_STYLES: Record<string, string> = {
-  deposit: "text-green-600 dark:text-green-400",
-  transfer: "text-yellow-700 dark:text-yellow-300",
-  withdraw: "text-red-600 dark:text-red-400",
-  expense: "text-red-600 dark:text-red-400",
-  salary: "text-red-600 dark:text-red-400",
+  deposit: "theme-tone-success",
+  transfer: "theme-tone-warning",
+  withdraw: "theme-tone-danger",
+  expense: "theme-tone-danger",
+  salary: "theme-tone-danger",
 };
 
 const FundTransactionActions = ({ row }: { row: FundTransactionRow }) => {

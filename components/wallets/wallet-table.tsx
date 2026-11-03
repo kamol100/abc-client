@@ -26,7 +26,7 @@ const StatusNotice: FC<{
     className={cn(
       "rounded-md border px-4 py-3 text-sm",
       type === "success" &&
-      "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+      "border-success/30 bg-success/10 theme-tone-success",
       type === "error" &&
       "border-destructive/30 bg-destructive/10 text-destructive",
       type === "info" &&

@@ -1,0 +1,34 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "shape": "Spec Sheet (MikroTik-modelled)",
+  "theme": "brand: mikrotik.com style reference",
+  "axes": "light/grotesk-sans/neutral",
+  "hero": "Stage carousel on night, product built left, spec right",
+  "nav": "MikroTik bar, transparent over home hero",
+  "footer": "night mast, company facts over links",
+  "imagery": "product built in data-slots",
+  "photos": [],
+  "entry": "components/marketing/marketing.css",
+  "sections": [
+   "hero",
+   "modules grid",
+   "OLT/ONU",
+   "billing to bKash",
+   "NOC and re-sync",
+   "Bangladesh facts",
+   "pricing",
+   "demo band"
+  ],
+  "signature": "the product shown working in each hero slide",
+  "waived": [
+   "1",
+   "64",
+   "84"
+  ],
+  "prompt": "ISP management software marketing site for Bangladesh ISPs, hero and menu like mikrotik.com",
+  "date": "2026-10-28"
+ }
+]

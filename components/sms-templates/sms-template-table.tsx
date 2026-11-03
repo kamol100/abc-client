@@ -1,18 +1,31 @@
 "use client";
 
+import { Import } from "lucide-react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
-import { usePermissions } from "@/context/app-provider";
+import MyButton from "@/components/my-button";
 import SmsTemplateForm from "@/components/sms-templates/sms-template-form";
 import { useSmsTemplateColumns } from "@/components/sms-templates/sms-template-column";
 import { SmsTemplateRow } from "@/components/sms-templates/sms-template-type";
+import { usePermissions } from "@/context/app-provider";
+import useApiMutation from "@/hooks/use-api-mutation";
+import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 
 const SmsTemplateTable: FC = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const columns = useSmsTemplateColumns();
+  const canCreate = hasPermission("sms-templates.create");
+
+  const { mutate: importTemplates, isPending: isImporting } = useApiMutation<
+    { message: string },
+    { message: "import" }
+  >({
+    url: "sms-templates",
+    invalidateKeys: "sms-templates",
+    successMessage: "sms_template.import_success",
+  });
 
   const { data, isLoading, isFetching, setCurrentPage } =
     useApiQuery<PaginatedApiResponse<SmsTemplateRow>>({
@@ -37,8 +50,24 @@ const SmsTemplateTable: FC = () => {
       isLoading={isLoading}
       isFetching={isFetching}
       queryKey="sms-templates"
-      form={hasPermission("sms-templates.create") ? SmsTemplateForm : undefined}
+      form={canCreate ? SmsTemplateForm : undefined}
       toolbarTitle={toolbarTitle}
+      toolbarBeforeViewOptions={
+        canCreate ? (
+          <MyButton
+            type="button"
+            size="default"
+            variant="outline"
+            icon={false}
+            loading={isImporting}
+            disabled={isImporting}
+            onClick={() => importTemplates({ message: "import" })}
+          >
+            <Import aria-hidden />
+            {t("sms_template.import")}
+          </MyButton>
+        ) : undefined
+      }
     />
   );
 };

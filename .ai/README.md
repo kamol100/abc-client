@@ -1,6 +1,6 @@
 # Agent harness
 
-Instructions and command wrappers for this Next.js app. The API harness is the sibling repo `isp-backend` (`AGENTS.md`, `.ai/tenancy.md`).
+Instructions and command wrappers for this Next.js app. The API harness is the sibling repo `isp-backend` (`AGENTS.md`, `docs/architecture/multi-tenancy.md`). Frontend tenant rules: `../.cursor/rules/architecture.mdc`.
 
 | Path | Purpose |
 |---|---|

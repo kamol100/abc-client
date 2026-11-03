@@ -192,6 +192,15 @@ const CompanyProfileClient: FC<CompanyProfileClientProps> = ({
             <span className="text-sm">{company.phone || "-"}</span>
           </div>
 
+          {!isReseller && (
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center">
+              <span className="text-sm font-medium sm:w-40">
+                {t("company_profile.support_phone.label")}
+              </span>
+              <span className="text-sm">{company.support_phone || "-"}</span>
+            </div>
+          )}
+
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center">
             <span className="text-sm font-medium sm:w-40">
               {t("company_profile.email.label")}

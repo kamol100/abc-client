@@ -34,106 +34,43 @@ export type MyBadgeVariant = "default" | "outline" | "soft" | "ghost";
 
 export type MyBadgeSize = "sm" | "md" | "lg";
 
-/** Theme-aware semantic color class maps per type. Uses CSS variables only. */
-const TYPE_STYLES: Record<
-  MyBadgeType,
-  Record<MyBadgeVariant, { base: string }>
-> = {
-  success: {
-    default: {
-      base: "bg-primary text-primary-foreground border-transparent shadow",
-    },
-    outline: { base: "border-primary text-primary bg-transparent" },
-    soft: { base: "bg-primary/15 text-primary border-transparent" },
-    ghost: { base: "text-primary bg-transparent border-transparent" },
-  },
-  error: {
-    default: {
-      base: "bg-destructive text-destructive-foreground border-transparent shadow",
-    },
-    outline: { base: "border-destructive text-destructive bg-transparent" },
-    soft: { base: "bg-destructive/15 text-destructive border-transparent" },
-    ghost: { base: "text-destructive bg-transparent border-transparent" },
-  },
-  warning: {
-    default: {
-      base: "bg-chart-4 text-foreground border-transparent shadow",
-    },
-    outline: { base: "border-chart-4 text-chart-4 bg-transparent" },
-    soft: { base: "bg-chart-4/20 text-chart-4 border-transparent" },
-    ghost: { base: "text-chart-4 bg-transparent border-transparent" },
-  },
-  info: {
-    default: {
-      base: "bg-primary text-primary-foreground border-transparent shadow",
-    },
-    outline: { base: "border-primary text-primary bg-transparent" },
-    soft: { base: "bg-primary/15 text-primary border-transparent" },
-    ghost: { base: "text-primary bg-transparent border-transparent" },
-  },
-  decline: {
-    default: {
-      base: "bg-destructive text-destructive-foreground border-transparent shadow",
-    },
-    outline: { base: "border-destructive text-destructive bg-transparent" },
-    soft: { base: "bg-destructive/15 text-destructive border-transparent" },
-    ghost: { base: "text-destructive bg-transparent border-transparent" },
-  },
-  pending: {
-    default: {
-      base: "bg-muted text-muted-foreground border-transparent",
-    },
-    outline: {
-      base: "border-muted-foreground/40 text-muted-foreground bg-transparent",
-    },
-    soft: { base: "bg-muted text-muted-foreground border-transparent" },
-    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
-  },
-  partial: {
-    default: {
-      base: "bg-muted text-muted-foreground border-transparent",
-    },
-    outline: { base: "border-muted-foreground/40 text-muted-foreground bg-transparent" },
-    soft: { base: "bg-muted text-muted-foreground border-transparent" },
-    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
-  },
-  open: {
-    default: {
-      base: "bg-primary text-primary-foreground border-transparent shadow",
-    },
-    outline: { base: "border-primary text-primary bg-transparent" },
-    soft: { base: "bg-primary/15 text-primary border-transparent" },
-    ghost: { base: "text-primary bg-transparent border-transparent" },
-  },
-  in_progress: {
-    default: {
-      base: "bg-muted text-muted-foreground border-transparent",
-    },
-    outline: {
-      base: "border-muted-foreground/40 text-muted-foreground bg-transparent",
-    },
-    soft: { base: "bg-muted text-muted-foreground border-transparent" },
-    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
-  },
-  resolved: {
-    default: {
-      base: "bg-primary text-primary-foreground border-transparent shadow",
-    },
-    outline: { base: "border-primary text-primary bg-transparent" },
-    soft: { base: "bg-primary/15 text-primary border-transparent" },
-    ghost: { base: "text-primary bg-transparent border-transparent" },
-  },
-  closed: {
-    default: {
-      base: "bg-muted text-muted-foreground border-transparent",
-    },
-    outline: {
-      base: "border-muted-foreground/40 text-muted-foreground bg-transparent",
-    },
-    soft: { base: "bg-muted text-muted-foreground border-transparent" },
-    ghost: { base: "text-muted-foreground bg-transparent border-transparent" },
-  },
+export const themeBadgeClass = {
+  success: "theme-badge-success",
+  warning: "theme-badge-warning",
+  danger: "theme-badge-danger",
+  info: "theme-badge-info",
+} as const;
+
+export const themeToneClass = {
+  success: "theme-tone-success",
+  warning: "theme-tone-warning",
+  danger: "theme-tone-danger",
+  info: "theme-tone-info",
+} as const;
+
+type BadgeTone = "success" | "warning" | "danger" | "info" | "muted";
+
+const TYPE_TONE: Record<MyBadgeType, BadgeTone> = {
+  success: "success",
+  error: "danger",
+  warning: "warning",
+  info: "info",
+  decline: "danger",
+  pending: "muted",
+  partial: "warning",
+  open: "info",
+  in_progress: "warning",
+  resolved: "success",
+  closed: "muted",
 };
+
+function badgeToneClass(type: MyBadgeType, variant: MyBadgeVariant): string {
+  const tone = TYPE_TONE[type];
+  if (variant === "outline") return `theme-badge-${tone}-outline`;
+  if (variant === "ghost") return `theme-badge-${tone}-ghost`;
+  if (variant === "default") return `theme-badge-${tone}-solid`;
+  return `theme-badge-${tone}`;
+}
 
 const SIZE_STYLES: Record<MyBadgeSize, { container: string; icon: string }> = {
   sm: {
@@ -187,7 +124,7 @@ const MyBadge = forwardRef<HTMLSpanElement, MyBadgeProps>(
     },
     ref
   ) => {
-    const typeStyle = TYPE_STYLES[type][variant].base;
+    const typeStyle = badgeToneClass(type, variant);
     const sizeStyles = SIZE_STYLES[size];
     const DefaultIcon = TYPE_ICONS[type];
 
@@ -214,6 +151,7 @@ const MyBadge = forwardRef<HTMLSpanElement, MyBadgeProps>(
         className={cn(
           "inline-flex items-center transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
           borderClass,
+          variant === "default" && "shadow",
           typeStyle,
           sizeStyles.container,
           loading && "opacity-80 pointer-events-none",

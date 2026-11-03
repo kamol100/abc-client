@@ -6,12 +6,14 @@ import type {
 
 type Props = {
     mode?: "create" | "edit";
+    paymentDeadline?: unknown;
 };
 
 export function ImportClientFormFieldSchema({
     mode = "create",
+    paymentDeadline,
 }: Props): AccordionSection[] {
-    const sections = ClientFormFieldSchema({ mode });
+    const sections = ClientFormFieldSchema({ mode, paymentDeadline });
     const profileField: FormFieldConfig = {
         type: "text",
         name: "mikrotik_profile",

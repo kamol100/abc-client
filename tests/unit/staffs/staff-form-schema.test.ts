@@ -25,6 +25,23 @@ describe("StaffFormSchema", () => {
     expect(names).not.toContain("nid");
   });
 
+  it("assigns zones from the basic section", () => {
+    const sections = StaffFormSchema({});
+    const basic = sections.find((section) => section.name === "common.basic_information");
+    const zones = basic?.form.find((field) => field.name === "zone_ids");
+
+    expect(zones).toMatchObject({
+      type: "dropdown",
+      name: "zone_ids",
+      label: { labelText: "staff.zones.label" },
+      placeholder: "staff.zones.placeholder",
+      api: "/dropdown-zones",
+      isMulti: true,
+      valueMapping: { idKey: "id", labelKey: "name" },
+      valueKey: "zones",
+    });
+  });
+
   it("does not require an empty salary row", () => {
     const sections = StaffFormSchema({});
     const salary = sections.find((section) => section.name === "common.salary_information");

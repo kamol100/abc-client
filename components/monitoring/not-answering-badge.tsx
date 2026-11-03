@@ -36,7 +36,7 @@ export default function NotAnsweringBadge({ state, failures, threshold, classNam
         <span
             role="status"
             className={cn(
-                "inline-flex items-center gap-1 rounded-md bg-amber-500/15 px-1.5 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-300",
+                "theme-badge-warning inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium",
                 className
             )}
         >

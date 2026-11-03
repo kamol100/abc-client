@@ -9,9 +9,10 @@ import type { ApiResponse } from "@/hooks/use-api-query";
 // OLT polling (phase 3, Settings → OLT polling). Kept in their own lists so other sections merge cleanly.
 export const OLT_SETTINGS_TEXT_KEYS = ["onu_rx_power_low_dbm"] as const;
 export const OLT_SETTINGS_SELECT_KEYS = ["olt_poll_interval"] as const;
-export const OLT_SETTINGS_SWITCH_KEYS = ["telegram_onu_low_power"] as const;
 /** The API accepts −40 … −10 dBm (default −27). */
 export const ONU_RX_LOW_DBM_RANGE = { min: -40, max: -10 } as const;
+/** Day of the month used as the default client payment deadline. */
+export const PAYMENT_DEADLINE_RANGE = { min: 1, max: 30, fallback: 11 } as const;
 
 export const SETTINGS_TEXT_KEYS = [
     ...OLT_SETTINGS_TEXT_KEYS,
@@ -22,8 +23,9 @@ export const SETTINGS_TEXT_KEYS = [
     "invoice_prefix",
     "pid_prefix",
     "expense_id_prefix",
+    "product_code_prefix",
+    "ticket_code_prefix",
     "telegram_bot_token",
-    "telegram_channel_id",
 ] as const;
 
 export const SETTINGS_SELECT_KEYS = [
@@ -33,10 +35,10 @@ export const SETTINGS_SELECT_KEYS = [
     "sms_invoice_reminder_before_day",
     "device_monitor_interval",
     "device_monitor_fail_threshold",
+    "payment_deadline",
 ] as const;
 
 export const SETTINGS_SWITCH_KEYS = [
-    ...OLT_SETTINGS_SWITCH_KEYS,
     "sms_after_client_create",
     "sms_after_client_activated",
     "sms_after_client_deactivated",
@@ -51,31 +53,6 @@ export const SETTINGS_SWITCH_KEYS = [
     "auto_inactive_reseller_client_termination_date",
     "client_view_open_on_new_tab",
     "client_edit_open_on_new_tab",
-    "telegram_client_create",
-    "telegram_client_update",
-    "telegram_client_delete",
-    "telegram_fund_transaction_create",
-    "telegram_fund_transaction_delete",
-    "telegram_invoice_create",
-    "telegram_invoice_auto_generate",
-    "telegram_invoice_update",
-    "telegram_invoice_paid",
-    "telegram_invoice_delete",
-    "telegram_expense_create",
-    "telegram_expense_update",
-    "telegram_expense_delete",
-    "telegram_ticket_create",
-    "telegram_ticket_update",
-    "telegram_ticket_delete",
-    "telegram_network_create",
-    "telegram_network_update",
-    "telegram_network_delete",
-    "telegram_package_create",
-    "telegram_package_update",
-    "telegram_package_delete",
-    "telegram_vendor_create",
-    "telegram_vendor_update",
-    "telegram_vendor_delete",
     "dashboard_show_client",
     "dashboard_show_reseller",
     "dashboard_show_invoice",
@@ -131,7 +108,6 @@ export const SettingsRowSchema = z
     .object({
         olt_poll_interval: NullableStringOrNumberSchema,
         onu_rx_power_low_dbm: NullableStringOrNumberSchema,
-        telegram_onu_low_power: NullableBooleanLikeSchema,
         invoice_due_reminder_voice_campaign_name: NullableStringSchema,
         gmap_api: NullableStringSchema,
         lat: NullableStringOrNumberSchema,
@@ -139,15 +115,17 @@ export const SettingsRowSchema = z
         invoice_prefix: NullableStringSchema,
         pid_prefix: NullableStringSchema.default("PAY"),
         expense_id_prefix: NullableStringSchema.default("EXP"),
+        product_code_prefix: NullableStringSchema.default("PRO"),
+        ticket_code_prefix: NullableStringSchema.default("TKT"),
         client_view_open_on_new_tab: NullableBooleanLikeSchema.default(0),
         client_edit_open_on_new_tab: NullableBooleanLikeSchema.default(0),
         telegram_bot_token: NullableStringSchema,
-        telegram_channel_id: NullableStringSchema,
         sms_auto_invoice_schedule: NullableStringOrNumberSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableStringOrNumberSchema,
         device_monitor_interval: NullableStringOrNumberSchema,
         device_monitor_fail_threshold: NullableStringOrNumberSchema,
+        payment_deadline: NullableStringOrNumberSchema,
         sms_after_client_create: NullableBooleanLikeSchema,
         sms_after_client_activated: NullableBooleanLikeSchema,
         sms_after_client_deactivated: NullableBooleanLikeSchema,
@@ -159,31 +137,6 @@ export const SettingsRowSchema = z
         sms_auto_invoice_due_reminder: NullableBooleanLikeSchema,
         voice_call_invoice_reminder: NullableBooleanLikeSchema,
         auto_inactive_client_invoice_due: NullableBooleanLikeSchema,
-        telegram_client_create: NullableBooleanLikeSchema,
-        telegram_client_update: NullableBooleanLikeSchema,
-        telegram_client_delete: NullableBooleanLikeSchema,
-        telegram_fund_transaction_create: NullableBooleanLikeSchema,
-        telegram_fund_transaction_delete: NullableBooleanLikeSchema,
-        telegram_invoice_create: NullableBooleanLikeSchema,
-        telegram_invoice_auto_generate: NullableBooleanLikeSchema,
-        telegram_invoice_update: NullableBooleanLikeSchema,
-        telegram_invoice_paid: NullableBooleanLikeSchema,
-        telegram_invoice_delete: NullableBooleanLikeSchema,
-        telegram_expense_create: NullableBooleanLikeSchema,
-        telegram_expense_update: NullableBooleanLikeSchema,
-        telegram_expense_delete: NullableBooleanLikeSchema,
-        telegram_ticket_create: NullableBooleanLikeSchema,
-        telegram_ticket_update: NullableBooleanLikeSchema,
-        telegram_ticket_delete: NullableBooleanLikeSchema,
-        telegram_network_create: NullableBooleanLikeSchema,
-        telegram_network_update: NullableBooleanLikeSchema,
-        telegram_network_delete: NullableBooleanLikeSchema,
-        telegram_package_create: NullableBooleanLikeSchema,
-        telegram_package_update: NullableBooleanLikeSchema,
-        telegram_package_delete: NullableBooleanLikeSchema,
-        telegram_vendor_create: NullableBooleanLikeSchema,
-        telegram_vendor_update: NullableBooleanLikeSchema,
-        telegram_vendor_delete: NullableBooleanLikeSchema,
         ...dashboardVisibilityFields(NullableBooleanLikeSchema),
     })
     .passthrough();
@@ -204,20 +157,21 @@ export const SettingsFormSchema = z
                 (Number(value) >= ONU_RX_LOW_DBM_RANGE.min && Number(value) <= ONU_RX_LOW_DBM_RANGE.max),
             { message: "settings.fields.onu_rx_power_low_dbm.errors.range" }
         ),
-        telegram_onu_low_power: NullableSwitchFormSchema,
         invoice_due_reminder_voice_campaign_name: NullableTextFormSchema,
         gmap_api: NullableTextFormSchema,
         lat: NullableNumberFormSchema,
         lon: NullableNumberFormSchema,
         invoice_prefix: NullableTextFormSchema,
         expense_id_prefix: NullableTextFormSchema,
+        product_code_prefix: NullableTextFormSchema,
+        ticket_code_prefix: NullableTextFormSchema,
         telegram_bot_token: NullableTextFormSchema,
-        telegram_channel_id: NullableTextFormSchema,
         sms_auto_invoice_schedule: NullableNumberFormSchema,
         invoice_due_reminder_channel: SettingsReminderChannelSchema.nullable().optional(),
         sms_invoice_reminder_before_day: NullableNumberFormSchema,
         device_monitor_interval: NullableNumberFormSchema,
         device_monitor_fail_threshold: NullableNumberFormSchema,
+        payment_deadline: NullableNumberFormSchema,
         sms_after_client_create: NullableSwitchFormSchema,
         sms_after_client_activated: NullableSwitchFormSchema,
         sms_after_client_deactivated: NullableSwitchFormSchema,
@@ -229,31 +183,6 @@ export const SettingsFormSchema = z
         sms_auto_invoice_due_reminder: NullableSwitchFormSchema,
         voice_call_invoice_reminder: NullableSwitchFormSchema,
         auto_inactive_client_invoice_due: NullableSwitchFormSchema,
-        telegram_client_create: NullableSwitchFormSchema,
-        telegram_client_update: NullableSwitchFormSchema,
-        telegram_client_delete: NullableSwitchFormSchema,
-        telegram_fund_transaction_create: NullableSwitchFormSchema,
-        telegram_fund_transaction_delete: NullableSwitchFormSchema,
-        telegram_invoice_create: NullableSwitchFormSchema,
-        telegram_invoice_auto_generate: NullableSwitchFormSchema,
-        telegram_invoice_update: NullableSwitchFormSchema,
-        telegram_invoice_paid: NullableSwitchFormSchema,
-        telegram_invoice_delete: NullableSwitchFormSchema,
-        telegram_expense_create: NullableSwitchFormSchema,
-        telegram_expense_update: NullableSwitchFormSchema,
-        telegram_expense_delete: NullableSwitchFormSchema,
-        telegram_ticket_create: NullableSwitchFormSchema,
-        telegram_ticket_update: NullableSwitchFormSchema,
-        telegram_ticket_delete: NullableSwitchFormSchema,
-        telegram_network_create: NullableSwitchFormSchema,
-        telegram_network_update: NullableSwitchFormSchema,
-        telegram_network_delete: NullableSwitchFormSchema,
-        telegram_package_create: NullableSwitchFormSchema,
-        telegram_package_update: NullableSwitchFormSchema,
-        telegram_package_delete: NullableSwitchFormSchema,
-        telegram_vendor_create: NullableSwitchFormSchema,
-        telegram_vendor_update: NullableSwitchFormSchema,
-        telegram_vendor_delete: NullableSwitchFormSchema,
         ...dashboardVisibilityFormFields,
     })
     .passthrough();
@@ -274,6 +203,7 @@ const NUMBER_SELECT_KEYS = new Set<SettingsSelectKey>([
     "sms_invoice_reminder_before_day",
     "device_monitor_interval",
     "device_monitor_fail_threshold",
+    "payment_deadline",
 ]);
 // Shown when the company never saved the setting: automatic checks off, mark down after 2 failed checks.
 const NUMBER_SELECT_DEFAULTS: Partial<Record<SettingsSelectKey, number>> = {
@@ -298,6 +228,19 @@ function toBoolean(value: unknown): boolean {
         return normalized === "1" || normalized === "true";
     }
     return false;
+}
+
+export function paymentDeadlineSetting(value: unknown): number {
+    const parsed = toNumberOrNull(value);
+    if (
+        parsed !== null &&
+        Number.isInteger(parsed) &&
+        parsed >= PAYMENT_DEADLINE_RANGE.min &&
+        parsed <= PAYMENT_DEADLINE_RANGE.max
+    ) {
+        return parsed;
+    }
+    return PAYMENT_DEADLINE_RANGE.fallback;
 }
 
 function toNumberOrNull(value: unknown): number | null {
@@ -329,6 +272,9 @@ export function normalizeSettingValueForForm(
 
     if (isSettingsSelectKey(key)) {
         if (NUMBER_SELECT_KEYS.has(key)) {
+            if (key === "payment_deadline") {
+                return paymentDeadlineSetting(value);
+            }
             return toNumberOrNull(value) ?? NUMBER_SELECT_DEFAULTS[key] ?? null;
         }
         if (key === "invoice_due_reminder_channel") {
@@ -343,6 +289,16 @@ export function normalizeSettingValueForForm(
     if (key === "expense_id_prefix") {
         const prefix = toStringOrEmpty(value).trim();
         return prefix || "EXP";
+    }
+
+    if (key === "product_code_prefix") {
+        const prefix = toStringOrEmpty(value).trim();
+        return prefix || "PRO";
+    }
+
+    if (key === "ticket_code_prefix") {
+        const prefix = toStringOrEmpty(value).trim();
+        return prefix || "TKT";
     }
 
     return toStringOrEmpty(value);
