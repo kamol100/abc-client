@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
       fullUrl: true
     }
   },
+  async rewrites() {
+    return [
+      { source: "/favicon.ico", destination: "/api/favicon" },
+      { source: "/apple-touch-icon.png", destination: "/api/favicon" },
+      { source: "/apple-touch-icon-precomposed.png", destination: "/api/favicon" },
+    ];
+  },
   images: {
     remotePatterns: [
       {

@@ -7,7 +7,6 @@ import TanstackProvider from "@/context/tanstack-provider";
 import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
-import { resolveApiAssetUrlWithFallback } from "@/lib/helper/helper";
 import { THEME_BOOT_SCRIPT, readThemeSettings, themeOverrideStyle } from "@/lib/theme/theme-settings";
 import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
@@ -68,7 +67,6 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getCompany();
-  const faviconHref = resolveApiAssetUrlWithFallback(settings?.favicon, "/favicon.ico");
 
   return {
     title: {
@@ -78,9 +76,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: settings?.address ?? "Total ISP management company",
     manifest: "/api/manifest",
     icons: {
-      icon: faviconHref,
-      shortcut: faviconHref,
-      apple: faviconHref,
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
     },
     appleWebApp: {
       capable: true,
@@ -142,7 +140,6 @@ export default async function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
-        <link rel="apple-touch-icon" href="/pwa/icon-192x192.svg" />
       </head>
       <body
         className="antialiased"

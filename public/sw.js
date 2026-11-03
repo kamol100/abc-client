@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline";
 
@@ -14,6 +14,8 @@ const PRECACHE_ASSETS = [
 // Patterns that should NEVER be cached (auth, API, sensitive data)
 const NEVER_CACHE_PATTERNS = [
   /\/api\//,          // All API routes (including Next.js API routes)
+  /\/favicon\.ico$/,
+  /\/apple-touch-icon/,
   /\/auth\//,         // Auth endpoints
   /\/_next\/data\//,  // Next.js server-side data fetches (may contain auth state)
   /\/_next\/static\//, // Avoid stale JS/CSS chunks after deployments
