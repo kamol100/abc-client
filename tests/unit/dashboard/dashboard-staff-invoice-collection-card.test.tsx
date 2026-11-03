@@ -33,9 +33,9 @@ describe("DashboardStaffInvoiceCollectionCard", () => {
     const name = screen.getByText(collection.staff_name);
     expect(name).toHaveClass("truncate");
     expect(name).toHaveAttribute("title", collection.staff_name);
-    expect(screen.getByText("5,000/-")).toBeInTheDocument();
-    expect(screen.getByText("40,000/-")).toBeInTheDocument();
-    expect(screen.getByText("50,000/-")).toBeInTheDocument();
+    expect(screen.getAllByText("5,000.00/-").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("40,000.00/-").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("50,000.00/-").length).toBeGreaterThan(0);
     expect(screen.getByText("dashboard.metrics.today:")).toBeInTheDocument();
     expect(screen.getByText("dashboard.metrics.this_month:")).toBeInTheDocument();
     expect(screen.getByText("dashboard.metrics.last_month:")).toBeInTheDocument();

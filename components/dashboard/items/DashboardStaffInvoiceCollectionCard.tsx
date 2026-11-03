@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/components/card";
-import { formatDashboardValue } from "@/components/dashboard/dashboard-constants";
+import DisplayCount from "@/components/display-count";
 import type { DashboardStaffInvoiceCollection } from "@/components/dashboard/dashboard-type";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
@@ -70,8 +70,8 @@ export default function DashboardStaffInvoiceCollectionCard({
             {METRICS.map(({ labelKey, key }) => (
               <div key={key} className="flex items-center justify-between gap-3 text-xs">
                 <span className="text-muted-foreground">{t(labelKey)}:</span>
-                <span className="font-semibold tabular-nums text-foreground">
-                  {formatDashboardValue(data[key])}/-
+                <span className="font-semibold text-foreground">
+                  <DisplayCount amount={data[key]} translation={false} formatCurrency />
                 </span>
               </div>
             ))}

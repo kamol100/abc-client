@@ -1,6 +1,6 @@
 ## Summary
 
-The dashboard shows an invoice collection card for the logged-in staff when today, this month, or last month is greater than zero. The title is “Invoice collection by:” plus the staff name. A long name truncates with an ellipsis. Today, This month, and Last month sit at the bottom of the card, the same way the other summary cards do. Each amount ends in `/-`.
+The dashboard shows an invoice collection card for the logged-in staff when today, this month, or last month is greater than zero. The title is “Invoice collection by:” plus the staff name. A long name truncates with an ellipsis. Today, This month, and Last month sit at the bottom of the card, the same way the other summary cards do. Each amount uses the money format `2,000.00/-`.
 
 ## Frontend
 
