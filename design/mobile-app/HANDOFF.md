@@ -46,7 +46,7 @@ Pages and file prefixes under `project/`:
 - technician: `tech-*` (14; the toolkit row is dark)
 - admin: `adm-*` (14) and `plat-Tenants`
 
-Screens are static mockups (390x844) with a few artboard links; not yet a clickable prototype.
+134 screens (every web feature, see COVERAGE.md) sit on one canvas page and are a click-through prototype (Play on any board, start at auth-Splash); link map in NAV.md. In-screen controls (tabs, toggles) are still static.
 Nobody has visually reviewed the rendered boards yet.
 
 ## Open questions (from the feature plan)
@@ -57,7 +57,6 @@ ZTE/hotspot priority; repo for the Flutter app.
 
 ## Suggested next steps
 
-1. Review the rendered canvas and fix overflow/clipping; make the main flows clickable
-   (subscriber pay flow, technician job flow).
+1. Review the rendered canvas and fix overflow/clipping
 2. Add missing states: empty, loading, error, offline, 402 subscription-expired, permission-denied.
 3. Turn SPEC.md into Flutter theme tokens (ThemeData light/dark) when the Flutter repo exists.

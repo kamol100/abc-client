@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Company and invoice print</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif;">
+
+  <header style="padding: 12px 8px 0; height: 56px; display: flex; align-items: center; gap: 4px;">
+    <a href="set-Settings.dc.html" aria-label="Back" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: transparent; color: #0b1f19; display: flex; align-items: center; justify-content: center; text-decoration: none"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></a>
+    <div style="flex: 1; min-width: 0;"><div style="font-size: 12px; font-weight: 500; color: #52675e;">Settings</div><h1 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600;">Company and invoice print</h1></div>
+    
+  </header>
+  <h2 style="margin: 12px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">General</h2>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-name" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Company name</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-name" value="[ISP name]" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: inherit; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-phone" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Support phone</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-phone" value="01711-000000" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-deadline" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Payment deadline (day of month)</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-deadline" value="10" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li><div style="padding: 10px 14px;"><label for="co-lat" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Latitude</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-lat" value="23.8069" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div><div style="padding: 10px 14px;"><label for="co-lon" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Longitude</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-lon" value="90.3687" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+  </ul>
+  <h2 style="margin: 20px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">ID prefixes</h2>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-inv" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Invoice prefix</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-inv" value="INV" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-pid" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Client ID prefix</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-pid" value="C" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-tkt" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Ticket code prefix</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-tkt" value="T" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="padding: 10px 14px;"><label for="co-exp" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Expense ID prefix</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-exp" value="EXP" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+    <li><div style="padding: 10px 14px;"><label for="co-prod" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Product code prefix</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-prod" value="PRD" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+  </ul>
+  <h2 style="margin: 20px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Invoice print</h2>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; min-height: 56px; box-sizing: border-box;"><div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Show company logo</div></div><button role="switch" aria-checked="true" aria-label="Show company logo" style="width: 51px; height: 31px; flex: none; border-radius: 999px; border: 0; background: #047857; padding: 2px; display: flex; justify-content: flex-end;"><span style="width: 27px; height: 27px; border-radius: 50%; background: #ffffff;"></span></button></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; min-height: 56px; box-sizing: border-box;"><div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Show payment deadline</div></div><button role="switch" aria-checked="true" aria-label="Show payment deadline" style="width: 51px; height: 31px; flex: none; border-radius: 999px; border: 0; background: #047857; padding: 2px; display: flex; justify-content: flex-end;"><span style="width: 27px; height: 27px; border-radius: 50%; background: #ffffff;"></span></button></div></li>
+    <li style="border-bottom: 1px solid #d3e8dd;"><div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; min-height: 56px; box-sizing: border-box;"><div style="flex: 1; min-width: 0;"><div style="font-size: 15px; font-weight: 500;">Show client PPPoE username</div></div><button role="switch" aria-checked="false" aria-label="Show client PPPoE username" style="width: 51px; height: 31px; flex: none; border-radius: 999px; border: 0; background: #9aa9a2; padding: 2px; display: flex; justify-content: flex-start;"><span style="width: 27px; height: 27px; border-radius: 50%; background: #ffffff;"></span></button></div></li>
+    <li><div style="padding: 10px 14px;"><label for="co-foot" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Footer note</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-foot" value="Pay by bKash or to your collector." style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: inherit; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+  </ul>
+  <h2 style="margin: 20px 16px 8px; font-size: 13px; font-weight: 600; color: #2d4a40;">Map</h2>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li><div style="padding: 10px 14px;"><label for="co-gmap" style="display: block; font-size: 12px; font-weight: 500; color: #52675e; margin-bottom: 4px;">Google Maps API key</label><div style="height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #f5fbf8; display: flex; align-items: center; padding: 0 12px; gap: 8px;"><input id="co-gmap" value="AIza••••••••••••" style="border: 0; outline: 0; flex: 1; min-width: 0; font-family: 'Geist Mono', monospace; font-size: 15px; background: transparent; color: #0b1f19;"></div></div></li>
+  </ul>
+  <div style="padding: 20px 16px 120px;"><button style="background: #047857; color: #ffffff; border: 0; height: 48px; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; box-sizing: border-box;">Save changes</button></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

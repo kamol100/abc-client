@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add reseller</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button,input,select,textarea{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 8px 0; height: 68px; box-sizing: border-box;">
+    <a href="adm-Resellers.dc.html" aria-label="Back to resellers" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Add reseller</h1>
+    <span style="width: 44px; height: 44px;"></span>
+  </header>
+  <div style="height: 776px; overflow: hidden;"><main style="padding: 8px 16px 110px; display: flex; flex-direction: column; gap: 12px;">
+    <section aria-label="Basic information" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Basic information</h2></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-name" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Name <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="f-name" type="text" placeholder="Reseller name" value="Kazipara Net" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-user" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Username <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="f-user" type="text" placeholder="Login username" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-pass" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Password <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="f-pass" type="password" placeholder="Minimum 8 characters" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-phone" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Phone <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="f-phone" type="tel" placeholder="01XXXXXXXXX" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-net" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Network <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <select id="f-net" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19;"><option selected>Mirpur POP · CCR2004</option><option>Uttara POP</option></select>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-pkg" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Packages</label>
+        <select id="f-pkg" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19;"><option selected>Home 10 Mbps, Home 20 Mbps</option></select>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-zone" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Zone</label>
+        <select id="f-zone" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19;"><option selected>Kazipara</option><option>Mirpur-10</option><option>Pallabi</option></select>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-co" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Company</label>
+        <input id="f-co" type="text" placeholder="Company name" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-cophone" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Company phone</label>
+        <input id="f-cophone" type="tel" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-coaddr" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Company address</label>
+        <textarea id="f-coaddr" rows="2" placeholder="Address" style="box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 10px 12px; font-size: 15px; color: #0b1f19; resize: none;"></textarea>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-prefix" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Prefix</label>
+        <input id="f-prefix" type="text" placeholder="KZP" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-status" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Status</label>
+        <select id="f-status" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19;"><option selected>Active</option><option>Inactive</option></select>
+      </div>
+    </section>
+    <section aria-label="Billing information" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Billing information</h2></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-od" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Over due amount</label>
+        <input id="f-od" type="number" placeholder="৳ 0" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px;">
+        <legend style="padding: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Billing type</legend>
+        <div style="display: flex; gap: 20px;"><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-bt" value="Prepaid" checked style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">Prepaid</label><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-bt" value="Postpaid" style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">Postpaid</label></div>
+      </fieldset>
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px;">
+        <legend style="padding: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Auto recharge</legend>
+        <div style="display: flex; gap: 20px;"><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-ar" value="Yes" checked style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">Yes</label><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-ar" value="No" style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">No</label></div>
+      </fieldset>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-th" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Terminate hour</label>
+        <input id="f-th" type="number" placeholder="0-23" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-tm" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Terminate minute</label>
+        <input id="f-tm" type="number" placeholder="0-59" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-ss" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Serial start from</label>
+        <input id="f-ss" type="number" placeholder="1" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-agent" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Agent</label>
+        <select id="f-agent" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19;"><option selected>Jamal Hossain</option><option>No agent</option></select>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-comm" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Commission (%) <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="f-comm" type="number" placeholder="5" value="5" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <label for="f-cc" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; font-size: 15px;">Count commission
+        <span style="position: relative; width: 48px; height: 28px; flex-shrink: 0;"><input id="f-cc" type="checkbox" role="switch" checked style="position: absolute; inset: 0; width: 48px; height: 28px; margin: 0; opacity: 0;"><span style="position: absolute; inset: 0; border-radius: 999px; background: #047857;"></span><span style="position: absolute; top: 2px; left: 22px; width: 24px; height: 24px; border-radius: 999px; background: #ffffff;"></span></span>
+      </label>
+    </section>
+    <section aria-label="Advance information" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Advance information</h2></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-fa" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Father name</label>
+        <input id="f-fa" type="text" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-mo" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Mother name</label>
+        <input id="f-mo" type="text" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-pr" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Present address</label>
+        <textarea id="f-pr" rows="2" placeholder="" style="box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 10px 12px; font-size: 15px; color: #0b1f19; resize: none;"></textarea>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-pe" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Permanent address</label>
+        <textarea id="f-pe" rows="2" placeholder="" style="box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 10px 12px; font-size: 15px; color: #0b1f19; resize: none;"></textarea>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-soc" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Social media account</label>
+        <input id="f-soc" type="text" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-em" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Email</label>
+        <input id="f-em" type="email" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px;">
+        <legend style="padding: 0; font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Gender</legend>
+        <div style="display: flex; gap: 20px;"><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-g" value="Male" checked style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">Male</label><label style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px;"><input type="radio" name="f-g" value="Female" style="width: 20px; height: 20px; accent-color: #047857; margin: 0;">Female</label></div>
+      </fieldset>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="f-jd" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Join date</label>
+        <input id="f-jd" type="date" placeholder="" style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 12px; border: 1px dashed #d3e8dd; border-radius: 12px; background: #f5fbf8;"><span style="width: 44px; height: 44px; border-radius: 12px; background: #e9f7f0; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span style="flex-grow: 1; display: flex; flex-direction: column;"><span style="font-size: 14px; font-weight: 500;">Avatar</span><span style="font-size: 12px; color: #52675e;">Square photo, JPG or PNG</span></span><button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #d3e8dd; background: #ffffff; font-size: 13px; font-weight: 600;">Upload</button></div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 12px; border: 1px dashed #d3e8dd; border-radius: 12px; background: #f5fbf8;"><span style="width: 44px; height: 44px; border-radius: 12px; background: #e9f7f0; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span style="flex-grow: 1; display: flex; flex-direction: column;"><span style="font-size: 14px; font-weight: 500;">NID front</span><span style="font-size: 12px; color: #52675e;">Clear photo of the front side</span></span><button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #d3e8dd; background: #ffffff; font-size: 13px; font-weight: 600;">Upload</button></div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 8px 12px; border: 1px dashed #d3e8dd; border-radius: 12px; background: #f5fbf8;"><span style="width: 44px; height: 44px; border-radius: 12px; background: #e9f7f0; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><span style="flex-grow: 1; display: flex; flex-direction: column;"><span style="font-size: 14px; font-weight: 500;">NID back</span><span style="font-size: 12px; color: #52675e;">Clear photo of the back side</span></span><button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #d3e8dd; background: #ffffff; font-size: 13px; font-weight: 600;">Upload</button></div>
+    </section>
+  </main></div>
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 16px 28px; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex; gap: 10px; box-shadow: 0 12px 32px -16px rgba(4,63,51,0.35);">
+    <a href="adm-Resellers.dc.html" style="height: 48px; padding: 0 16px; box-sizing: border-box; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; color: #0b1f19; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">Cancel</a>
+    <a href="adm-ResellerDetail.dc.html" style="flex-grow: 1; height: 48px; padding: 0 16px; box-sizing: border-box; border-radius: 12px; background: #047857; border: 1px solid #047857; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">Save reseller</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

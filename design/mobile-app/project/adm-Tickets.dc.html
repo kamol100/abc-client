@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tickets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; box-sizing: border-box; background: #f5fbf8; color: #0b1f19; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif">
+  <header style="padding: 12px 8px 0; height: 56px; box-sizing: content-box; display: flex; align-items: center; gap: 4px">
+    <a href="adm-More.dc.html" aria-label="Back" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center; text-decoration: none"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></a>
+    <h1 style="margin: 0; flex-grow: 1; font-size: 20px; line-height: 26px; font-weight: 600">Tickets</h1>
+    <button aria-label="New ticket" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; display: flex; align-items: center; justify-content: center; padding: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+  </header>
+  <div style="padding: 4px 16px 0"><label style="display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #52675e"><span style="display:flex"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span><input placeholder="Search ticket, client, subject" aria-label="Search ticket, client, subject" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: 400 15px 'Geist', sans-serif; color: #0b1f19"></label></div>
+  <div style="padding: 8px 16px 0; display: flex; gap: 8px; overflow: hidden">
+    <button aria-pressed="true" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #047857; background: #d3f7e5; color: #047857; font: 600 13px 'Geist', sans-serif; flex-shrink: 0">All</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font: 500 13px 'Geist', sans-serif; flex-shrink: 0">Open</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font: 500 13px 'Geist', sans-serif; flex-shrink: 0">In progress</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font: 500 13px 'Geist', sans-serif; flex-shrink: 0">Resolved</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font: 500 13px 'Geist', sans-serif; flex-shrink: 0">Closed</button>
+  </div>
+  <div style="padding: 12px 16px 0; display: flex; flex-direction: column; gap: 8px">
+    <a href="adm-TicketDetail.dc.html" style="display: block; padding: 12px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; text-decoration: none; color: #0b1f19">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: #52675e">T-2291</span><span style="flex-grow: 1"></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #92400e"></span>Medium</span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #92400e"></span>In progress</span></div>
+      <div style="font-size: 15px; line-height: 20px; font-weight: 600; margin-top: 6px">Slow speed in evening</div>
+      <div style="font-size: 13px; line-height: 18px; color: #52675e; margin-top: 2px">Rahim Uddin · C-10482 · Mirpur-10</div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #52675e"><span>Assigned: <strong style="font-weight: 600; color: #2d4a40">Sabbir</strong></span><span style="flex-grow: 1"></span><span>3 replies</span><span>2 h ago</span></div>
+    </a>
+    <a href="adm-TicketDetail.dc.html" style="display: block; padding: 12px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; text-decoration: none; color: #0b1f19">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: #52675e">T-2290</span><span style="flex-grow: 1"></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #b91c1c"></span>High</span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #0369a1"></span>Open</span></div>
+      <div style="font-size: 15px; line-height: 20px; font-weight: 600; margin-top: 6px">Router keeps rebooting</div>
+      <div style="font-size: 13px; line-height: 18px; color: #52675e; margin-top: 2px">Shirin Akter · Pallabi</div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #52675e"><span>Assigned: <strong style="font-weight: 600; color: #2d4a40">Not assigned</strong></span><span style="flex-grow: 1"></span><span>0 replies</span><span>3 h ago</span></div>
+    </a>
+    <a href="adm-TicketDetail.dc.html" style="display: block; padding: 12px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; text-decoration: none; color: #0b1f19">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: #52675e">T-2287</span><span style="flex-grow: 1"></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #eef2f1; color: #475569; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #475569"></span>Low</span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #0369a1"></span>Open</span></div>
+      <div style="font-size: 15px; line-height: 20px; font-weight: 600; margin-top: 6px">Bill amount looks wrong</div>
+      <div style="font-size: 13px; line-height: 18px; color: #52675e; margin-top: 2px">Jamal Hossain · Kazipara</div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #52675e"><span>Assigned: <strong style="font-weight: 600; color: #2d4a40">Nasrin</strong></span><span style="flex-grow: 1"></span><span>1 replies</span><span>Yesterday</span></div>
+    </a>
+    <a href="adm-TicketDetail.dc.html" style="display: block; padding: 12px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; text-decoration: none; color: #0b1f19">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: #52675e">T-2284</span><span style="flex-grow: 1"></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #eef2f1; color: #475569; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #475569"></span>Low</span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #d3f7e5; color: #047857; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #047857"></span>Resolved</span></div>
+      <div style="font-size: 15px; line-height: 20px; font-weight: 600; margin-top: 6px">Wi-Fi password change</div>
+      <div style="font-size: 13px; line-height: 18px; color: #52675e; margin-top: 2px">Mitu Rahman · Uttara Sector 7</div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #52675e"><span>Assigned: <strong style="font-weight: 600; color: #2d4a40">Sabbir</strong></span><span style="flex-grow: 1"></span><span>4 replies</span><span>Yesterday</span></div>
+    </a>
+    <a href="adm-TicketDetail.dc.html" style="display: block; padding: 12px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; text-decoration: none; color: #0b1f19">
+      <div style="display: flex; align-items: center; gap: 8px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: #52675e">T-2279</span><span style="flex-grow: 1"></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #fee2e2; color: #b91c1c; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #b91c1c"></span>High</span><span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: #eef2f1; color: #475569; font-size: 12px; font-weight: 600; flex-shrink: 0"><span style="width: 6px; height: 6px; border-radius: 999px; background: #475569"></span>Closed</span></div>
+      <div style="font-size: 15px; line-height: 20px; font-weight: 600; margin-top: 6px">Connection drops after rain</div>
+      <div style="font-size: 13px; line-height: 18px; color: #52675e; margin-top: 2px">Hasan Mahmud · Mirpur-11</div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: #52675e"><span>Assigned: <strong style="font-weight: 600; color: #2d4a40">Sabbir</strong></span><span style="flex-grow: 1"></span><span>6 replies</span><span>2 Nov</span></div>
+    </a>
+  </div>
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding: 8px 4px 20px; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex">
+    <a href="adm-Home.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path></svg></span>Home</a>
+    <a href="adm-Alarms.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></span>Network</a>
+    <a href="adm-Clients.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>Clients</a>
+    <a href="adm-Reports.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #52675e; font-size: 11px; font-weight: 500">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18"></path></svg></span>Billing</a>
+    <a href="adm-More.dc.html" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #047857; font-size: 11px; font-weight: 500">
+      <span style="width: 56px; height: 32px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></span>More</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

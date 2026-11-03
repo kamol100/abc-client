@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reseller detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button,input,select,textarea{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 8px 0; height: 68px; box-sizing: border-box;">
+    <a href="adm-Resellers.dc.html" aria-label="Back to resellers" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <h1 style="margin: 0; flex-grow: 1; text-align: center; font-size: 17px; line-height: 22px; font-weight: 600;">Reseller</h1>
+    <a href="adm-ResellerForm.dc.html" aria-label="Edit reseller" style="width: 44px; height: 44px; border-radius: 12px; color: #0b1f19; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></a>
+  </header>
+  <div style="height: 776px; overflow: hidden;"><main style="padding: 8px 16px 40px; display: flex; flex-direction: column; gap: 12px;">
+    <section aria-label="Wallet" style="background: linear-gradient(135deg, #053f33 0%, #0f6f68 55%, #0e6a86 100%); color: #ffffff; border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="width: 48px; height: 48px; border-radius: 14px; background: rgba(255,255,255,0.16); font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center;">KN</span>
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 17px; line-height: 22px; font-weight: 600;">Kazipara Net (R-012)</span><span style="font-size: 13px; color: #a7f0cf;"><span style="font-family: 'Geist Mono', monospace;">kazipara.net</span> · Prefix KZP</span></div>
+      </div>
+      <div style="display: flex; align-items: flex-end; justify-content: space-between;">
+        <div style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #a7f0cf;">Wallet balance</span><span style="font-size: 28px; line-height: 34px; font-weight: 700; font-variant-numeric: tabular-nums;">৳18,450</span></div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;"><span style="font-size: 12px; color: #ffffff;">Prepaid · Auto recharge on</span><span style="height: 24px; padding: 0 8px; border-radius: 999px; background: rgba(255,255,255,0.18); font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 5px;"><span style="width: 6px; height: 6px; border-radius: 999px; background: #a7f0cf;"></span>Active</span></div>
+      </div>
+    </section>
+    <div role="group" aria-label="View" style="display: flex; gap: 2px; padding: 3px; background: #e9f7f0; border-radius: 13px;"><button type="button" aria-pressed="true" style="flex: 1; height: 36px; border-radius: 10px; background: #ffffff; border: 1px solid #d3e8dd; color: #0b1f19; font-size: 13px; font-weight: 600;">Profile</button><button type="button" aria-pressed="false" style="flex: 1; height: 36px; border-radius: 10px; background: transparent; border: 1px solid transparent; color: #52675e; font-size: 13px; font-weight: 600;">Packages</button><button type="button" aria-pressed="false" style="flex: 1; height: 36px; border-radius: 10px; background: transparent; border: 1px solid transparent; color: #52675e; font-size: 13px; font-weight: 600;">Clients</button></div>
+    <section aria-label="Recharge wallet" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Recharge wallet</h2></div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="rc-amt" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Amount <span style="color: #b91c1c;" aria-hidden="true">*</span></label>
+        <input id="rc-amt" type="number" placeholder="৳ 0" required style="height: 48px; box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 0 12px; font-size: 15px; color: #0b1f19; min-width: 0;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <label for="rc-note" style="font-size: 13px; line-height: 18px; font-weight: 500; color: #2d4a40;">Note</label>
+        <textarea id="rc-note" rows="2" placeholder="Optional note" style="box-sizing: border-box; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; padding: 10px 12px; font-size: 15px; color: #0b1f19; resize: none;"></textarea>
+      </div>
+      <button type="button" style="height: 48px; border-radius: 12px; border: 0; background: #047857; color: #ffffff; font-size: 15px; font-weight: 600;">Recharge wallet</button>
+    </section>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <a href="adm-Clients.dc.html" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 14px 16px; text-decoration: none; color: #0b1f19; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #52675e;">Active clients</span><span style="font-size: 22px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums;">48</span><span style="font-size: 12px; color: #047857; font-weight: 500;">View clients</span></a>
+      <a href="adm-Clients.dc.html" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 14px 16px; text-decoration: none; color: #0b1f19; display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 12px; color: #52675e;">Inactive clients</span><span style="font-size: 22px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums;">3</span><span style="font-size: 12px; color: #047857; font-weight: 500;">View clients</span></a>
+    </div>
+    <a href="adm-ResellerPackages.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 16px; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; color: #0b1f19; text-decoration: none; font-size: 15px; font-weight: 500;"><span style="width: 36px; height: 36px; border-radius: 12px; background: #d3f7e5; color: #047857; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span><span style="flex-grow: 1;">Packages <span style="color: #52675e; font-weight: 400;">· Home 10, 20, 30 Mbps</span></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+    <section aria-label="Profile" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Profile</h2></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Reseller ID</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">R-012</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Phone</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">01712 345 678</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Email</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">kazipara.net@example.com</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Zone</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Kazipara</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Network</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Mirpur POP · CCR2004</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Agent</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Jamal Hossain</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Gender</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Male</span></div>
+    </section>
+    <section aria-label="Account" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Account and billing</h2></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Username</span><span style="font-weight: 500; text-align: right; font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums;">kazipara.net</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Billing type</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Prepaid</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Auto recharge</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Yes</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Over due amount</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">৳2,000</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Terminate time</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">23:30</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Serial starts from</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">1001</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Commission</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">5%</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Count commission</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Yes</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Join date</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">12 Jan 2025</span></div>
+    </section>
+    <section aria-label="Additional" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;"><h2 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600;">Company and family</h2></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Company</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Kazipara Net</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Company phone</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">01712 345 600</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Present address</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">Kazipara, Mirpur, Dhaka</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 14px; line-height: 20px;"><span style="color: #52675e;">Social account</span><span style="font-weight: 500; text-align: right; font-variant-numeric: tabular-nums;">facebook.com/kazipara.net</span></div>
+    </section>
+    <section aria-label="Reseller settings" style="background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; padding: 4px 16px; display: flex; flex-direction: column; gap: 12px;">
+      <label for="rs-auto" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; font-size: 15px;">Auto inactive client on termination date
+        <span style="position: relative; width: 48px; height: 28px; flex-shrink: 0;"><input id="rs-auto" type="checkbox" role="switch" checked style="position: absolute; inset: 0; width: 48px; height: 28px; margin: 0; opacity: 0;"><span style="position: absolute; inset: 0; border-radius: 999px; background: #047857;"></span><span style="position: absolute; top: 2px; left: 22px; width: 24px; height: 24px; border-radius: 999px; background: #ffffff;"></span></span>
+      </label>
+    </section>
+  </main></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

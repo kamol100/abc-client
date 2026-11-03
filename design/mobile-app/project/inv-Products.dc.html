@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inventory</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Hind+Siliguri:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+button,input,select,textarea{font:inherit}
+a{color:#047857}a:hover{color:#065f46}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; overflow: hidden; box-sizing: border-box; background: #f5fbf8; font-family: 'Geist', 'Hind Siliguri', system-ui, sans-serif; color: #0b1f19;">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 12px 16px 0; height: 68px; box-sizing: border-box;">
+    <h1 style="margin: 0; flex-grow: 1; font-size: 20px; line-height: 26px; font-weight: 600;">Inventory <span style="font-size: 15px; font-weight: 500; color: #52675e; font-variant-numeric: tabular-nums;">4</span></h1>
+    <button aria-label="Sort and filter" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #d3e8dd; background: #ffffff; color: #0b1f19; display: flex; align-items: center; justify-content: center; padding: 0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg></button>
+  </header>
+  <div style="padding: 8px 16px 0;">
+    <label for="pd-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Search products</label>
+    <div style="height: 44px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; display: flex; align-items: center; gap: 8px; padding: 0 12px; color: #52675e;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="pd-search" type="search" placeholder="Product name or code" style="flex-grow: 1; border: 0; outline: none; background: transparent; font-size: 15px; color: #0b1f19; min-width: 0;">
+    </div>
+  </div>
+  <div style="display: flex; gap: 8px; padding: 12px 16px 0;">
+    <a href="inv-StockIn.dc.html" style="flex: 1; height: 44px; border-radius: 12px; background: #047857; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Stock in</a>
+    <a href="inv-StockOut.dc.html" style="flex: 1; height: 44px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; color: #0b1f19; text-decoration: none; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M4 20h16"/></svg>Stock out</a>
+    <button type="button" aria-label="Add product" style="width: 44px; height: 44px; border-radius: 12px; background: #ffffff; border: 1px solid #d3e8dd; color: #0b1f19; display: flex; align-items: center; justify-content: center; padding: 0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <div role="group" aria-label="Filter" style="display: flex; gap: 8px; padding: 12px 16px; overflow: hidden; white-space: nowrap;">
+    <button aria-pressed="true" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #047857; background: #047857; color: #ffffff; font-size: 13px; font-weight: 500; flex-shrink: 0;">All 4</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500; flex-shrink: 0;">Router and ONU</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500; flex-shrink: 0;">Cable</button>
+    <button aria-pressed="false" style="height: 32px; padding: 0 14px; border-radius: 999px; border: 1px solid #d3e8dd; background: #ffffff; color: #2d4a40; font-size: 13px; font-weight: 500; flex-shrink: 0;">Accessories</button>
+  </div>
+  <ul style="list-style: none; margin: 0 16px; padding: 0; background: #ffffff; border: 1px solid #d3e8dd; border-radius: 16px; overflow: hidden;">
+    <li style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500; flex-grow: 1;">Dual-band ONU AX1800</span><span style="height: 24px; padding: 0 8px; border-radius: 999px; background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; white-space: nowrap;">Serial</span></div>
+      <div style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">ONU-0012</span> · Router and ONU · Pcs · VAT 5%</div>
+      <div style="display: flex; gap: 8px; font-variant-numeric: tabular-nums;">
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock in</span><span style="font-size: 15px; font-weight: 600;">40</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock out</span><span style="font-size: 15px; font-weight: 600;">22</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #d3f7e5; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #047857;">Remaining</span><span style="font-size: 15px; font-weight: 600; color: #047857;">18</span></span>
+      </div>
+    </li>
+    <li style="border-top: 1px solid #d3e8dd; margin-left: 16px;"></li>
+    <li style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500; flex-grow: 1;">Drop fiber 1 core</span></div>
+      <div style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">FBR-0003</span> · Cable · Meter · VAT 0%</div>
+      <div style="display: flex; gap: 8px; font-variant-numeric: tabular-nums;">
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock in</span><span style="font-size: 15px; font-weight: 600;">5,000</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock out</span><span style="font-size: 15px; font-weight: 600;">3,200</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #d3f7e5; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #047857;">Remaining</span><span style="font-size: 15px; font-weight: 600; color: #047857;">1,800</span></span>
+      </div>
+    </li>
+    <li style="border-top: 1px solid #d3e8dd; margin-left: 16px;"></li>
+    <li style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500; flex-grow: 1;">SC/APC fast connector</span></div>
+      <div style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">CNT-0007</span> · Accessories · Pcs · VAT 0%</div>
+      <div style="display: flex; gap: 8px; font-variant-numeric: tabular-nums;">
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock in</span><span style="font-size: 15px; font-weight: 600;">200</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock out</span><span style="font-size: 15px; font-weight: 600;">150</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #d3f7e5; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #047857;">Remaining</span><span style="font-size: 15px; font-weight: 600; color: #047857;">50</span></span>
+      </div>
+    </li>
+    <li style="border-top: 1px solid #d3e8dd; margin-left: 16px;"></li>
+    <li style="padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 15px; font-weight: 500; flex-grow: 1;">PLC splitter 1:8</span></div>
+      <div style="font-size: 13px; color: #52675e;"><span style="font-family: 'Geist Mono', monospace;">SPL-0002</span> · Passive · Pcs · VAT 5%</div>
+      <div style="display: flex; gap: 8px; font-variant-numeric: tabular-nums;">
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock in</span><span style="font-size: 15px; font-weight: 600;">30</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #e9f7f0; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #52675e;">Stock out</span><span style="font-size: 15px; font-weight: 600;">12</span></span>
+        <span style="flex: 1; border-radius: 10px; background: #d3f7e5; padding: 6px 10px; display: flex; flex-direction: column;"><span style="font-size: 11px; color: #047857;">Remaining</span><span style="font-size: 15px; font-weight: 600; color: #047857;">18</span></span>
+      </div>
+    </li>
+  </ul>
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; padding-bottom: 20px; box-sizing: border-box; background: #ffffff; border-top: 1px solid #d3e8dd; display: flex;">
+    <a href="adm-Home.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>Home</a>
+    <a href="adm-Alarms.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5l-5.5 5.5M12 12l5.5 5.5"/></svg></span>Network</a>
+    <a href="adm-Clients.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span>Clients</a>
+    <a href="adm-Reports.dc.html" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #52675e; text-decoration: none; font-size: 11px; font-weight: 500;"><span style="width: 56px; height: 30px; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>Billing</a>
+    <a href="adm-More.dc.html" aria-current="page" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #047857; text-decoration: none; font-size: 11px; font-weight: 600;"><span style="width: 56px; height: 30px; border-radius: 999px; background: #d3f7e5; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></span>More</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

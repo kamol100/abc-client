@@ -1,102 +1,1343 @@
 {
-  "v": 3,
-  "createdOnFiles": {"v": 1, "at": "2026-11-03T12:00:00Z"},
-  "title": "ISP Mobile App Design",
-  "launch": {"view": "canvas", "page": "foundations"},
-  "pages": [
-    {"id": "foundations", "name": "Design system and sign-in"},
-    {"id": "subscriber", "name": "Subscriber app"},
-    {"id": "reseller", "name": "Reseller and collector"},
-    {"id": "technician", "name": "Field technician"},
-    {"id": "admin", "name": "ISP admin and NOC"}
-  ],
-  "boards": {
-    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 1180, "title": "Design system", "page": "foundations"},
-    "auth-Splash.dc.html": {"x": 0, "y": 1560, "w": 390, "h": 844, "title": "Splash", "page": "foundations"},
-    "auth-ChooseIsp.dc.html": {"x": 470, "y": 1560, "w": 390, "h": 844, "title": "Choose your ISP", "page": "foundations"},
-    "auth-ScanQr.dc.html": {"x": 940, "y": 1560, "w": 390, "h": 844, "title": "Scan ISP QR code", "page": "foundations"},
-    "auth-StaffLogin.dc.html": {"x": 1410, "y": 1560, "w": 390, "h": 844, "title": "Staff sign-in", "page": "foundations"},
-    "auth-SubscriberLogin.dc.html": {"x": 1880, "y": 1560, "w": 390, "h": 844, "title": "Subscriber sign-in (Bangla)", "page": "foundations"},
-    "auth-Otp.dc.html": {"x": 2350, "y": 1560, "w": 390, "h": 844, "title": "OTP verification", "page": "foundations"},
-    "auth-Unlock.dc.html": {"x": 2820, "y": 1560, "w": 390, "h": 844, "title": "Biometric unlock", "page": "foundations"},
-    "auth-ForceUpdate.dc.html": {"x": 3290, "y": 1560, "w": 390, "h": 844, "title": "Update required", "page": "foundations"},
-
-    "sub-Home.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Home", "page": "subscriber"},
-    "sub-PayBill.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "Pay bill", "page": "subscriber"},
-    "sub-BkashCheckout.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "bKash checkout", "page": "subscriber"},
-    "sub-PaymentSuccess.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "Payment received", "page": "subscriber"},
-    "sub-Invoices.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "Bills", "page": "subscriber"},
-    "sub-InvoiceDetail.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 844, "title": "Invoice detail", "page": "subscriber"},
-    "sub-Payments.dc.html": {"x": 2820, "y": 0, "w": 390, "h": 844, "title": "Payment history", "page": "subscriber"},
-    "sub-Usage.dc.html": {"x": 0, "y": 1264, "w": 390, "h": 844, "title": "Usage", "page": "subscriber"},
-    "sub-CheckConnection.dc.html": {"x": 470, "y": 1264, "w": 390, "h": 844, "title": "Check my connection", "page": "subscriber"},
-    "sub-DiagnosisResult.dc.html": {"x": 940, "y": 1264, "w": 390, "h": 844, "title": "Diagnosis result", "page": "subscriber"},
-    "sub-SpeedTest.dc.html": {"x": 1410, "y": 1264, "w": 390, "h": 844, "title": "Speed test", "page": "subscriber"},
-    "sub-WifiHelper.dc.html": {"x": 1880, "y": 1264, "w": 390, "h": 844, "title": "Wi-Fi helper", "page": "subscriber"},
-    "sub-Tickets.dc.html": {"x": 2350, "y": 1264, "w": 390, "h": 844, "title": "Support tickets", "page": "subscriber"},
-    "sub-TicketChat.dc.html": {"x": 2820, "y": 1264, "w": 390, "h": 844, "title": "Ticket conversation", "page": "subscriber"},
-    "sub-Profile.dc.html": {"x": 3290, "y": 1264, "w": 390, "h": 844, "title": "Account", "page": "subscriber"},
-
-    "res-Home.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Reseller home", "page": "reseller"},
-    "res-Clients.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "My clients", "page": "reseller"},
-    "res-ClientDetail.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "Client detail", "page": "reseller"},
-    "res-Recharge.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "Recharge by days", "page": "reseller"},
-    "res-CollectPayment.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "Collect payment", "page": "reseller"},
-    "res-Receipt.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 844, "title": "Receipt and print", "page": "reseller"},
-    "res-Wallet.dc.html": {"x": 2820, "y": 0, "w": 390, "h": 844, "title": "Wallet", "page": "reseller"},
-    "res-NewClient.dc.html": {"x": 3290, "y": 0, "w": 390, "h": 844, "title": "New client", "page": "reseller"},
-
-    "tech-Jobs.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Job inbox", "page": "technician"},
-    "tech-JobDetail.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "Job detail", "page": "technician"},
-    "tech-Map.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "Field map", "page": "technician"},
-    "tech-ClientCard.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "Client line check", "page": "technician"},
-    "tech-ScanOnu.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "Scan ONU serial", "page": "technician"},
-    "tech-BindOnu.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 844, "title": "Bind ONU to client", "page": "technician"},
-    "tech-CloseJob.dc.html": {"x": 2820, "y": 0, "w": 390, "h": 844, "title": "Close job with proof", "page": "technician"},
-    "tech-Toolkit.dc.html": {"x": 0, "y": 1264, "w": 390, "h": 844, "title": "Network toolkit (dark)", "page": "technician"},
-    "tech-Ping.dc.html": {"x": 470, "y": 1264, "w": 390, "h": 844, "title": "Ping", "page": "technician"},
-    "tech-Traceroute.dc.html": {"x": 940, "y": 1264, "w": 390, "h": 844, "title": "Traceroute", "page": "technician"},
-    "tech-LanScan.dc.html": {"x": 1410, "y": 1264, "w": 390, "h": 844, "title": "LAN scan", "page": "technician"},
-    "tech-PonCalc.dc.html": {"x": 1880, "y": 1264, "w": 390, "h": 844, "title": "PON power budget", "page": "technician"},
-    "tech-SyncQueue.dc.html": {"x": 2350, "y": 1264, "w": 390, "h": 844, "title": "Offline sync queue", "page": "technician"},
-    "tech-Terminal.dc.html": {"x": 2820, "y": 1264, "w": 390, "h": 844, "title": "OLT terminal", "page": "technician"},
-
-    "adm-Home.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Owner dashboard", "page": "admin"},
-    "adm-Alarms.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "Alarms", "page": "admin"},
-    "adm-AlarmDetail.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "Alarm detail", "page": "admin"},
-    "adm-NocMap.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "NOC map (dark)", "page": "admin"},
-    "adm-OltDetail.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "OLT detail", "page": "admin"},
-    "adm-Onus.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 844, "title": "ONU list", "page": "admin"},
-    "adm-Outage.dc.html": {"x": 2820, "y": 0, "w": 390, "h": 844, "title": "Outage incident", "page": "admin"},
-    "adm-Clients.dc.html": {"x": 0, "y": 1264, "w": 390, "h": 844, "title": "Clients", "page": "admin"},
-    "adm-Client360.dc.html": {"x": 470, "y": 1264, "w": 390, "h": 844, "title": "Client 360", "page": "admin"},
-    "adm-Approvals.dc.html": {"x": 940, "y": 1264, "w": 390, "h": 844, "title": "Approvals", "page": "admin"},
-    "adm-BulkSms.dc.html": {"x": 1410, "y": 1264, "w": 390, "h": 844, "title": "Bulk SMS", "page": "admin"},
-    "adm-Reports.dc.html": {"x": 1880, "y": 1264, "w": 390, "h": 844, "title": "Reports", "page": "admin"},
-    "adm-Notifications.dc.html": {"x": 2350, "y": 1264, "w": 390, "h": 844, "title": "Notifications and push", "page": "admin"},
-    "adm-More.dc.html": {"x": 2820, "y": 1264, "w": 390, "h": 844, "title": "More and switch account", "page": "admin"},
-    "plat-Tenants.dc.html": {"x": 3290, "y": 1264, "w": 390, "h": 844, "title": "Platform: tenants", "page": "admin"}
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-03T12:00:00Z"
+ },
+ "title": "ISP Mobile App Design",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 1180,
+   "title": "Design system"
   },
-  "order": [
-    "Main.dc.html",
-    "auth-Splash.dc.html", "auth-ChooseIsp.dc.html", "auth-ScanQr.dc.html", "auth-StaffLogin.dc.html", "auth-SubscriberLogin.dc.html", "auth-Otp.dc.html", "auth-Unlock.dc.html", "auth-ForceUpdate.dc.html",
-    "sub-Home.dc.html", "sub-PayBill.dc.html", "sub-BkashCheckout.dc.html", "sub-PaymentSuccess.dc.html", "sub-Invoices.dc.html", "sub-InvoiceDetail.dc.html", "sub-Payments.dc.html",
-    "sub-Usage.dc.html", "sub-CheckConnection.dc.html", "sub-DiagnosisResult.dc.html", "sub-SpeedTest.dc.html", "sub-WifiHelper.dc.html", "sub-Tickets.dc.html", "sub-TicketChat.dc.html", "sub-Profile.dc.html",
-    "res-Home.dc.html", "res-Clients.dc.html", "res-ClientDetail.dc.html", "res-Recharge.dc.html", "res-CollectPayment.dc.html", "res-Receipt.dc.html", "res-Wallet.dc.html", "res-NewClient.dc.html",
-    "tech-Jobs.dc.html", "tech-JobDetail.dc.html", "tech-Map.dc.html", "tech-ClientCard.dc.html", "tech-ScanOnu.dc.html", "tech-BindOnu.dc.html", "tech-CloseJob.dc.html",
-    "tech-Toolkit.dc.html", "tech-Ping.dc.html", "tech-Traceroute.dc.html", "tech-LanScan.dc.html", "tech-PonCalc.dc.html", "tech-SyncQueue.dc.html", "tech-Terminal.dc.html",
-    "adm-Home.dc.html", "adm-Alarms.dc.html", "adm-AlarmDetail.dc.html", "adm-NocMap.dc.html", "adm-OltDetail.dc.html", "adm-Onus.dc.html", "adm-Outage.dc.html",
-    "adm-Clients.dc.html", "adm-Client360.dc.html", "adm-Approvals.dc.html", "adm-BulkSms.dc.html", "adm-Reports.dc.html", "adm-Notifications.dc.html", "adm-More.dc.html", "plat-Tenants.dc.html"
-  ],
-  "notes": {
-    "n-auth": {"x": 0, "y": 1300, "text": "Sign-in and onboarding", "kind": "title1", "maxW": 3680, "page": "foundations"},
-    "n-sub1": {"x": 0, "y": -260, "text": "Subscriber: home and billing", "kind": "title1", "maxW": 3210, "page": "subscriber"},
-    "n-sub2": {"x": 0, "y": 1004, "text": "Subscriber: usage, self-diagnosis and support", "kind": "title1", "maxW": 3680, "page": "subscriber"},
-    "n-res": {"x": 0, "y": -260, "text": "Reseller and bill collector", "kind": "title1", "maxW": 3680, "page": "reseller"},
-    "n-tech1": {"x": 0, "y": -260, "text": "Technician: jobs, map and ONU work", "kind": "title1", "maxW": 3210, "page": "technician"},
-    "n-tech2": {"x": 0, "y": 1004, "text": "Technician: network toolkit (dark theme)", "kind": "title1", "maxW": 3210, "page": "technician"},
-    "n-adm1": {"x": 0, "y": -260, "text": "Admin: dashboard, alarms and NOC", "kind": "title1", "maxW": 3210, "page": "admin"},
-    "n-adm2": {"x": 0, "y": 1004, "text": "Admin: clients, approvals, messaging and platform", "kind": "title1", "maxW": 3680, "page": "admin"}
+  "auth-Splash.dc.html": {
+   "x": 0,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Splash",
+   "is_interactive": true
   },
-  "designSystems": []
+  "auth-ChooseIsp.dc.html": {
+   "x": 470,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Choose your ISP",
+   "is_interactive": true
+  },
+  "auth-ScanQr.dc.html": {
+   "x": 940,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Scan ISP QR code",
+   "is_interactive": true
+  },
+  "auth-StaffLogin.dc.html": {
+   "x": 1410,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Staff sign-in",
+   "is_interactive": true
+  },
+  "auth-SubscriberLogin.dc.html": {
+   "x": 1880,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Subscriber sign-in (Bangla)",
+   "is_interactive": true
+  },
+  "auth-Otp.dc.html": {
+   "x": 2350,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "OTP verification",
+   "is_interactive": true
+  },
+  "auth-Unlock.dc.html": {
+   "x": 2820,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Biometric unlock",
+   "is_interactive": true
+  },
+  "auth-ForceUpdate.dc.html": {
+   "x": 3290,
+   "y": 1560,
+   "w": 390,
+   "h": 844,
+   "title": "Update required",
+   "is_interactive": true
+  },
+  "sub-Home.dc.html": {
+   "x": 0,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Home",
+   "is_interactive": true
+  },
+  "sub-PayBill.dc.html": {
+   "x": 470,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Pay bill",
+   "is_interactive": true
+  },
+  "sub-BkashCheckout.dc.html": {
+   "x": 940,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "bKash checkout",
+   "is_interactive": true
+  },
+  "sub-PaymentSuccess.dc.html": {
+   "x": 1410,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Payment received",
+   "is_interactive": true
+  },
+  "sub-Invoices.dc.html": {
+   "x": 1880,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Bills",
+   "is_interactive": true
+  },
+  "sub-InvoiceDetail.dc.html": {
+   "x": 2350,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Invoice detail",
+   "is_interactive": true
+  },
+  "sub-Payments.dc.html": {
+   "x": 2820,
+   "y": 2964,
+   "w": 390,
+   "h": 844,
+   "title": "Payment history",
+   "is_interactive": true
+  },
+  "sub-Usage.dc.html": {
+   "x": 0,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Usage",
+   "is_interactive": true
+  },
+  "sub-CheckConnection.dc.html": {
+   "x": 470,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Check my connection",
+   "is_interactive": true
+  },
+  "sub-DiagnosisResult.dc.html": {
+   "x": 940,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Diagnosis result",
+   "is_interactive": true
+  },
+  "sub-SpeedTest.dc.html": {
+   "x": 1410,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Speed test",
+   "is_interactive": true
+  },
+  "sub-WifiHelper.dc.html": {
+   "x": 1880,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Wi-Fi helper",
+   "is_interactive": true
+  },
+  "sub-Tickets.dc.html": {
+   "x": 2350,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Support tickets",
+   "is_interactive": true
+  },
+  "sub-TicketChat.dc.html": {
+   "x": 2820,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Ticket conversation",
+   "is_interactive": true
+  },
+  "sub-Profile.dc.html": {
+   "x": 3290,
+   "y": 4228,
+   "w": 390,
+   "h": 844,
+   "title": "Account",
+   "is_interactive": true
+  },
+  "res-Home.dc.html": {
+   "x": 0,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Reseller home",
+   "is_interactive": true
+  },
+  "res-Clients.dc.html": {
+   "x": 470,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "My clients",
+   "is_interactive": true
+  },
+  "res-ClientDetail.dc.html": {
+   "x": 940,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Client detail",
+   "is_interactive": true
+  },
+  "res-Recharge.dc.html": {
+   "x": 1410,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Recharge by days",
+   "is_interactive": true
+  },
+  "res-CollectPayment.dc.html": {
+   "x": 1880,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Collect payment",
+   "is_interactive": true
+  },
+  "res-Receipt.dc.html": {
+   "x": 2350,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Receipt and print",
+   "is_interactive": true
+  },
+  "res-Wallet.dc.html": {
+   "x": 2820,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "Wallet",
+   "is_interactive": true
+  },
+  "res-NewClient.dc.html": {
+   "x": 3290,
+   "y": 5632,
+   "w": 390,
+   "h": 844,
+   "title": "New client",
+   "is_interactive": true
+  },
+  "tech-Jobs.dc.html": {
+   "x": 0,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Job inbox",
+   "is_interactive": true
+  },
+  "tech-JobDetail.dc.html": {
+   "x": 470,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Job detail",
+   "is_interactive": true
+  },
+  "tech-Map.dc.html": {
+   "x": 940,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Field map",
+   "is_interactive": true
+  },
+  "tech-ClientCard.dc.html": {
+   "x": 1410,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Client line check",
+   "is_interactive": true
+  },
+  "tech-ScanOnu.dc.html": {
+   "x": 1880,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Scan ONU serial",
+   "is_interactive": true
+  },
+  "tech-BindOnu.dc.html": {
+   "x": 2350,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Bind ONU to client",
+   "is_interactive": true
+  },
+  "tech-CloseJob.dc.html": {
+   "x": 2820,
+   "y": 7036,
+   "w": 390,
+   "h": 844,
+   "title": "Close job with proof",
+   "is_interactive": true
+  },
+  "tech-Toolkit.dc.html": {
+   "x": 0,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "Network toolkit (dark)",
+   "is_interactive": true
+  },
+  "tech-Ping.dc.html": {
+   "x": 470,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "Ping",
+   "is_interactive": true
+  },
+  "tech-Traceroute.dc.html": {
+   "x": 940,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "Traceroute",
+   "is_interactive": true
+  },
+  "tech-LanScan.dc.html": {
+   "x": 1410,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "LAN scan",
+   "is_interactive": true
+  },
+  "tech-PonCalc.dc.html": {
+   "x": 1880,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "PON power budget",
+   "is_interactive": true
+  },
+  "tech-SyncQueue.dc.html": {
+   "x": 2350,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "Offline sync queue",
+   "is_interactive": true
+  },
+  "tech-Terminal.dc.html": {
+   "x": 2820,
+   "y": 8300,
+   "w": 390,
+   "h": 844,
+   "title": "OLT terminal",
+   "is_interactive": true
+  },
+  "adm-Home.dc.html": {
+   "x": 0,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "Owner dashboard",
+   "is_interactive": true
+  },
+  "adm-Alarms.dc.html": {
+   "x": 470,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "Alarms",
+   "is_interactive": true
+  },
+  "adm-AlarmDetail.dc.html": {
+   "x": 940,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "Alarm detail",
+   "is_interactive": true
+  },
+  "adm-NocMap.dc.html": {
+   "x": 1410,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "NOC map (dark)",
+   "is_interactive": true
+  },
+  "adm-OltDetail.dc.html": {
+   "x": 1880,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "OLT detail",
+   "is_interactive": true
+  },
+  "adm-Onus.dc.html": {
+   "x": 2350,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "ONU list",
+   "is_interactive": true
+  },
+  "adm-Outage.dc.html": {
+   "x": 2820,
+   "y": 9704,
+   "w": 390,
+   "h": 844,
+   "title": "Outage incident",
+   "is_interactive": true
+  },
+  "adm-Clients.dc.html": {
+   "x": 0,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Clients",
+   "is_interactive": true
+  },
+  "adm-Client360.dc.html": {
+   "x": 470,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Client 360",
+   "is_interactive": true
+  },
+  "adm-Approvals.dc.html": {
+   "x": 940,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Approvals",
+   "is_interactive": true
+  },
+  "adm-BulkSms.dc.html": {
+   "x": 1410,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Bulk SMS",
+   "is_interactive": true
+  },
+  "adm-Reports.dc.html": {
+   "x": 1880,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Reports",
+   "is_interactive": true
+  },
+  "adm-Notifications.dc.html": {
+   "x": 2350,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Notifications and push",
+   "is_interactive": true
+  },
+  "adm-More.dc.html": {
+   "x": 2820,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "More and switch account",
+   "is_interactive": true
+  },
+  "plat-Tenants.dc.html": {
+   "x": 3290,
+   "y": 10968,
+   "w": 390,
+   "h": 844,
+   "title": "Platform: tenants",
+   "is_interactive": true
+  },
+  "auth-ForgotPassword.dc.html": {
+   "x": 0,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "Forgot password",
+   "is_interactive": true
+  },
+  "auth-ResetPassword.dc.html": {
+   "x": 470,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "Set new password",
+   "is_interactive": true
+  },
+  "sub-NewTicket.dc.html": {
+   "x": 940,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "New support ticket",
+   "is_interactive": true
+  },
+  "sub-Notifications.dc.html": {
+   "x": 1410,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "Notifications",
+   "is_interactive": true
+  },
+  "sub-ChangePassword.dc.html": {
+   "x": 1880,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "Change password",
+   "is_interactive": true
+  },
+  "state-Offline.dc.html": {
+   "x": 2350,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "No connection (staff app, cached data banner)",
+   "is_interactive": true
+  },
+  "state-Error.dc.html": {
+   "x": 2820,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "Something went wrong / retry",
+   "is_interactive": true
+  },
+  "state-SubscriptionExpired.dc.html": {
+   "x": 3290,
+   "y": 12372,
+   "w": 390,
+   "h": 844,
+   "title": "ISP subscription expired (API 402)",
+   "is_interactive": true
+  },
+  "state-NoPermission.dc.html": {
+   "x": 0,
+   "y": 13336,
+   "w": 390,
+   "h": 844,
+   "title": "No access to this screen (permission denied)",
+   "is_interactive": true
+  },
+  "adm-Subscription.dc.html": {
+   "x": 470,
+   "y": 13336,
+   "w": 390,
+   "h": 844,
+   "title": "Plan and billing (tenant's own plan, renew from wallet, invoices)",
+   "is_interactive": true
+  },
+  "adm-ClientEdit.dc.html": {
+   "x": 0,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Edit client",
+   "is_interactive": true
+  },
+  "adm-ChangePackage.dc.html": {
+   "x": 470,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Change package (sheet)",
+   "is_interactive": true
+  },
+  "adm-ArchivedClients.dc.html": {
+   "x": 940,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Archived clients (restore)",
+   "is_interactive": true
+  },
+  "adm-ClientMap.dc.html": {
+   "x": 1410,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Client map",
+   "is_interactive": true
+  },
+  "adm-Packages.dc.html": {
+   "x": 1880,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Client packages",
+   "is_interactive": true
+  },
+  "adm-PackageDetail.dc.html": {
+   "x": 2350,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Package detail",
+   "is_interactive": true
+  },
+  "adm-ClientWallets.dc.html": {
+   "x": 2820,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Client wallets",
+   "is_interactive": true
+  },
+  "adm-ImportClients.dc.html": {
+   "x": 3290,
+   "y": 14740,
+   "w": 390,
+   "h": 844,
+   "title": "Import clients (file pick, mapping, progress)",
+   "is_interactive": true
+  },
+  "adm-Invoices.dc.html": {
+   "x": 0,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Invoices (staff)",
+   "is_interactive": true
+  },
+  "adm-InvoiceDetail.dc.html": {
+   "x": 470,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Invoice detail (print, share, collect, edit)",
+   "is_interactive": true
+  },
+  "adm-InvoiceCreate.dc.html": {
+   "x": 940,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Create invoice",
+   "is_interactive": true
+  },
+  "adm-Payments.dc.html": {
+   "x": 1410,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Payments (staff list)",
+   "is_interactive": true
+  },
+  "adm-PaymentDetail.dc.html": {
+   "x": 1880,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Payment detail",
+   "is_interactive": true
+  },
+  "adm-ReportDetail.dc.html": {
+   "x": 2350,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Report: income vs expense (filters, chart, table, export)",
+   "is_interactive": true
+  },
+  "adm-BtrcExport.dc.html": {
+   "x": 2820,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "BTRC export",
+   "is_interactive": true
+  },
+  "adm-PaymentGateways.dc.html": {
+   "x": 3290,
+   "y": 16144,
+   "w": 390,
+   "h": 844,
+   "title": "Payment gateways (bKash config)",
+   "is_interactive": true
+  },
+  "set-Lookups.dc.html": {
+   "x": 0,
+   "y": 17108,
+   "w": 390,
+   "h": 844,
+   "title": "Lookup lists hub (zones, sub-zones, device types, unit types, product categories, vendors, invoice types, expense types, ticket subjects, tags, MikroTik packages)",
+   "is_interactive": true
+  },
+  "set-LookupList.dc.html": {
+   "x": 470,
+   "y": 17108,
+   "w": 390,
+   "h": 844,
+   "title": "Zones (template for every lookup list; add/edit sheet, sub-zones)",
+   "is_interactive": true
+  },
+  "adm-Funds.dc.html": {
+   "x": 0,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Funds",
+   "is_interactive": true
+  },
+  "adm-FundTransfer.dc.html": {
+   "x": 470,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Fund transactions / transfer",
+   "is_interactive": true
+  },
+  "adm-Expenses.dc.html": {
+   "x": 940,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Expenses",
+   "is_interactive": true
+  },
+  "adm-ExpenseAdd.dc.html": {
+   "x": 1410,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Add expense (receipt photo)",
+   "is_interactive": true
+  },
+  "adm-Salaries.dc.html": {
+   "x": 1880,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Salaries",
+   "is_interactive": true
+  },
+  "adm-SalaryPay.dc.html": {
+   "x": 2350,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Pay salary",
+   "is_interactive": true
+  },
+  "adm-Staff.dc.html": {
+   "x": 2820,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Staff",
+   "is_interactive": true
+  },
+  "adm-StaffDetail.dc.html": {
+   "x": 3290,
+   "y": 18512,
+   "w": 390,
+   "h": 844,
+   "title": "Staff profile",
+   "is_interactive": true
+  },
+  "adm-StaffForm.dc.html": {
+   "x": 0,
+   "y": 19476,
+   "w": 390,
+   "h": 844,
+   "title": "Add / edit staff",
+   "is_interactive": true
+  },
+  "adm-Olts.dc.html": {
+   "x": 0,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "OLTs",
+   "is_interactive": true
+  },
+  "adm-Routers.dc.html": {
+   "x": 470,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "MikroTik routers",
+   "is_interactive": true
+  },
+  "adm-RouterDetail.dc.html": {
+   "x": 940,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "Router detail (status, PPPoE sessions, resources)",
+   "is_interactive": true
+  },
+  "adm-ReSync.dc.html": {
+   "x": 1410,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "Re-sync with MikroTik",
+   "is_interactive": true
+  },
+  "adm-MikrotikCommands.dc.html": {
+   "x": 1880,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "Router commands",
+   "is_interactive": true
+  },
+  "adm-Devices.dc.html": {
+   "x": 2350,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "Devices",
+   "is_interactive": true
+  },
+  "tech-TjBoxes.dc.html": {
+   "x": 2820,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "TJ boxes (list + map toggle)",
+   "is_interactive": true
+  },
+  "tech-TjBoxDetail.dc.html": {
+   "x": 3290,
+   "y": 20880,
+   "w": 390,
+   "h": 844,
+   "title": "TJ box detail (location, splitter ports, clients)",
+   "is_interactive": true
+  },
+  "adm-MikrotikPackages.dc.html": {
+   "x": 0,
+   "y": 21844,
+   "w": 390,
+   "h": 844,
+   "title": "MikroTik packages (profiles)",
+   "is_interactive": true
+  },
+  "adm-Resellers.dc.html": {
+   "x": 0,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Resellers",
+   "is_interactive": true
+  },
+  "adm-ResellerDetail.dc.html": {
+   "x": 470,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Reseller detail (wallet, clients, packages)",
+   "is_interactive": true
+  },
+  "adm-ResellerForm.dc.html": {
+   "x": 940,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Add / edit reseller",
+   "is_interactive": true
+  },
+  "adm-ResellerPackages.dc.html": {
+   "x": 1410,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Reseller packages",
+   "is_interactive": true
+  },
+  "adm-Agents.dc.html": {
+   "x": 1880,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Agents",
+   "is_interactive": true
+  },
+  "adm-AgentDetail.dc.html": {
+   "x": 2350,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Agent detail and transactions",
+   "is_interactive": true
+  },
+  "inv-Products.dc.html": {
+   "x": 2820,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Inventory",
+   "is_interactive": true
+  },
+  "inv-StockIn.dc.html": {
+   "x": 3290,
+   "y": 23248,
+   "w": 390,
+   "h": 844,
+   "title": "Stock in (purchase)",
+   "is_interactive": true
+  },
+  "inv-StockOut.dc.html": {
+   "x": 0,
+   "y": 24212,
+   "w": 390,
+   "h": 844,
+   "title": "Stock out (issue to technician / job)",
+   "is_interactive": true
+  },
+  "adm-Tickets.dc.html": {
+   "x": 0,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Tickets (staff inbox)",
+   "is_interactive": true
+  },
+  "adm-TicketDetail.dc.html": {
+   "x": 470,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Ticket detail (assign, status, replies)",
+   "is_interactive": true
+  },
+  "adm-SmsTemplates.dc.html": {
+   "x": 940,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "SMS templates",
+   "is_interactive": true
+  },
+  "adm-SmsLogs.dc.html": {
+   "x": 1410,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Message log",
+   "is_interactive": true
+  },
+  "adm-SmsQueue.dc.html": {
+   "x": 1880,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Message queue",
+   "is_interactive": true
+  },
+  "adm-ActivityLog.dc.html": {
+   "x": 2350,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Activity log",
+   "is_interactive": true
+  },
+  "adm-Histories.dc.html": {
+   "x": 2820,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "Change history",
+   "is_interactive": true
+  },
+  "adm-Gateways.dc.html": {
+   "x": 3290,
+   "y": 25616,
+   "w": 390,
+   "h": 844,
+   "title": "SMS and Telegram gateways",
+   "is_interactive": true
+  },
+  "set-Settings.dc.html": {
+   "x": 0,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Settings hub (every web settings page + config groups, language, theme, push)",
+   "is_interactive": true
+  },
+  "set-Company.dc.html": {
+   "x": 470,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Company and invoice print (general, invoice-print, map)",
+   "is_interactive": true
+  },
+  "set-Alerts.dc.html": {
+   "x": 940,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Notifications, SMS, monitoring and OLT settings",
+   "is_interactive": true
+  },
+  "set-Appearance.dc.html": {
+   "x": 1410,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Theme, dashboard and table preferences",
+   "is_interactive": true
+  },
+  "adm-Users.dc.html": {
+   "x": 1880,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Users",
+   "is_interactive": true
+  },
+  "adm-Roles.dc.html": {
+   "x": 2350,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Roles",
+   "is_interactive": true
+  },
+  "adm-RolePermissions.dc.html": {
+   "x": 2820,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Role permissions (grouped toggles)",
+   "is_interactive": true
+  },
+  "plat-CompanyDetail.dc.html": {
+   "x": 3290,
+   "y": 27020,
+   "w": 390,
+   "h": 844,
+   "title": "Tenant detail (profile, subscription, wallet)",
+   "is_interactive": true
+  },
+  "plat-Plans.dc.html": {
+   "x": 0,
+   "y": 27984,
+   "w": 390,
+   "h": 844,
+   "title": "Subscription plans and features",
+   "is_interactive": true
+  },
+  "plat-DemoRequests.dc.html": {
+   "x": 470,
+   "y": 27984,
+   "w": 390,
+   "h": 844,
+   "title": "Demo requests",
+   "is_interactive": true
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "auth-Splash.dc.html",
+  "auth-ChooseIsp.dc.html",
+  "auth-ScanQr.dc.html",
+  "auth-StaffLogin.dc.html",
+  "auth-SubscriberLogin.dc.html",
+  "auth-Otp.dc.html",
+  "auth-Unlock.dc.html",
+  "auth-ForceUpdate.dc.html",
+  "sub-Home.dc.html",
+  "sub-PayBill.dc.html",
+  "sub-BkashCheckout.dc.html",
+  "sub-PaymentSuccess.dc.html",
+  "sub-Invoices.dc.html",
+  "sub-InvoiceDetail.dc.html",
+  "sub-Payments.dc.html",
+  "sub-Usage.dc.html",
+  "sub-CheckConnection.dc.html",
+  "sub-DiagnosisResult.dc.html",
+  "sub-SpeedTest.dc.html",
+  "sub-WifiHelper.dc.html",
+  "sub-Tickets.dc.html",
+  "sub-TicketChat.dc.html",
+  "sub-Profile.dc.html",
+  "res-Home.dc.html",
+  "res-Clients.dc.html",
+  "res-ClientDetail.dc.html",
+  "res-Recharge.dc.html",
+  "res-CollectPayment.dc.html",
+  "res-Receipt.dc.html",
+  "res-Wallet.dc.html",
+  "res-NewClient.dc.html",
+  "tech-Jobs.dc.html",
+  "tech-JobDetail.dc.html",
+  "tech-Map.dc.html",
+  "tech-ClientCard.dc.html",
+  "tech-ScanOnu.dc.html",
+  "tech-BindOnu.dc.html",
+  "tech-CloseJob.dc.html",
+  "tech-Toolkit.dc.html",
+  "tech-Ping.dc.html",
+  "tech-Traceroute.dc.html",
+  "tech-LanScan.dc.html",
+  "tech-PonCalc.dc.html",
+  "tech-SyncQueue.dc.html",
+  "tech-Terminal.dc.html",
+  "adm-Home.dc.html",
+  "adm-Alarms.dc.html",
+  "adm-AlarmDetail.dc.html",
+  "adm-NocMap.dc.html",
+  "adm-OltDetail.dc.html",
+  "adm-Onus.dc.html",
+  "adm-Outage.dc.html",
+  "adm-Clients.dc.html",
+  "adm-Client360.dc.html",
+  "adm-Approvals.dc.html",
+  "adm-BulkSms.dc.html",
+  "adm-Reports.dc.html",
+  "adm-Notifications.dc.html",
+  "adm-More.dc.html",
+  "plat-Tenants.dc.html",
+  "auth-ForgotPassword.dc.html",
+  "auth-ResetPassword.dc.html",
+  "sub-NewTicket.dc.html",
+  "sub-Notifications.dc.html",
+  "sub-ChangePassword.dc.html",
+  "state-Offline.dc.html",
+  "state-Error.dc.html",
+  "state-SubscriptionExpired.dc.html",
+  "state-NoPermission.dc.html",
+  "adm-Subscription.dc.html",
+  "adm-ClientEdit.dc.html",
+  "adm-ChangePackage.dc.html",
+  "adm-ArchivedClients.dc.html",
+  "adm-ClientMap.dc.html",
+  "adm-Packages.dc.html",
+  "adm-PackageDetail.dc.html",
+  "adm-ClientWallets.dc.html",
+  "adm-ImportClients.dc.html",
+  "adm-Invoices.dc.html",
+  "adm-InvoiceDetail.dc.html",
+  "adm-InvoiceCreate.dc.html",
+  "adm-Payments.dc.html",
+  "adm-PaymentDetail.dc.html",
+  "adm-ReportDetail.dc.html",
+  "adm-BtrcExport.dc.html",
+  "adm-PaymentGateways.dc.html",
+  "set-Lookups.dc.html",
+  "set-LookupList.dc.html",
+  "adm-Funds.dc.html",
+  "adm-FundTransfer.dc.html",
+  "adm-Expenses.dc.html",
+  "adm-ExpenseAdd.dc.html",
+  "adm-Salaries.dc.html",
+  "adm-SalaryPay.dc.html",
+  "adm-Staff.dc.html",
+  "adm-StaffDetail.dc.html",
+  "adm-StaffForm.dc.html",
+  "adm-Olts.dc.html",
+  "adm-Routers.dc.html",
+  "adm-RouterDetail.dc.html",
+  "adm-ReSync.dc.html",
+  "adm-MikrotikCommands.dc.html",
+  "adm-Devices.dc.html",
+  "tech-TjBoxes.dc.html",
+  "tech-TjBoxDetail.dc.html",
+  "adm-MikrotikPackages.dc.html",
+  "adm-Resellers.dc.html",
+  "adm-ResellerDetail.dc.html",
+  "adm-ResellerForm.dc.html",
+  "adm-ResellerPackages.dc.html",
+  "adm-Agents.dc.html",
+  "adm-AgentDetail.dc.html",
+  "inv-Products.dc.html",
+  "inv-StockIn.dc.html",
+  "inv-StockOut.dc.html",
+  "adm-Tickets.dc.html",
+  "adm-TicketDetail.dc.html",
+  "adm-SmsTemplates.dc.html",
+  "adm-SmsLogs.dc.html",
+  "adm-SmsQueue.dc.html",
+  "adm-ActivityLog.dc.html",
+  "adm-Histories.dc.html",
+  "adm-Gateways.dc.html",
+  "set-Settings.dc.html",
+  "set-Company.dc.html",
+  "set-Alerts.dc.html",
+  "set-Appearance.dc.html",
+  "adm-Users.dc.html",
+  "adm-Roles.dc.html",
+  "adm-RolePermissions.dc.html",
+  "plat-CompanyDetail.dc.html",
+  "plat-Plans.dc.html",
+  "plat-DemoRequests.dc.html"
+ ],
+ "notes": {
+  "n-auth": {
+   "x": 0,
+   "y": 1300,
+   "text": "Sign-in and onboarding",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-sub1": {
+   "x": 0,
+   "y": 2704,
+   "text": "Subscriber: home and billing",
+   "kind": "title1",
+   "maxW": 3210
+  },
+  "n-sub2": {
+   "x": 0,
+   "y": 3968,
+   "text": "Subscriber: usage, self-diagnosis and support",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-res": {
+   "x": 0,
+   "y": 5372,
+   "text": "Reseller and bill collector",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-tech1": {
+   "x": 0,
+   "y": 6776,
+   "text": "Technician: jobs, map and ONU work",
+   "kind": "title1",
+   "maxW": 3210
+  },
+  "n-tech2": {
+   "x": 0,
+   "y": 8040,
+   "text": "Technician: network toolkit (dark theme)",
+   "kind": "title1",
+   "maxW": 3210
+  },
+  "n-adm1": {
+   "x": 0,
+   "y": 9444,
+   "text": "Admin: dashboard, alarms and NOC",
+   "kind": "title1",
+   "maxW": 3210
+  },
+  "n-adm2": {
+   "x": 0,
+   "y": 10708,
+   "text": "Admin: clients, approvals, messaging and platform",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-ds": {
+   "x": 0,
+   "y": -260,
+   "text": "Design system",
+   "kind": "title1",
+   "maxW": 1440
+  },
+  "n-r2g1": {
+   "x": 0,
+   "y": 12112,
+   "text": "Account recovery, subscriber extras, app states and plan",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g2": {
+   "x": 0,
+   "y": 14480,
+   "text": "Clients: edit, packages, wallets, archive, map, import",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g3": {
+   "x": 0,
+   "y": 15884,
+   "text": "Billing: invoices, payments, reports, gateways, lookup lists",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g4": {
+   "x": 0,
+   "y": 18252,
+   "text": "Finance and HR: funds, expenses, salaries, staff",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g5": {
+   "x": 0,
+   "y": 20620,
+   "text": "Network: OLTs, MikroTik routers, devices, TJ boxes",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g6": {
+   "x": 0,
+   "y": 22988,
+   "text": "Resellers, agents and inventory",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g7": {
+   "x": 0,
+   "y": 25356,
+   "text": "Support, SMS and logs",
+   "kind": "title1",
+   "maxW": 3680
+  },
+  "n-r2g8": {
+   "x": 0,
+   "y": 26760,
+   "text": "Settings, access control and platform",
+   "kind": "title1",
+   "maxW": 3680
+  }
+ },
+ "designSystems": []
 }
