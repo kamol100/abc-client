@@ -1,7 +1,7 @@
 import { keepPreviousData } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
 import { resolveDashboardVisibility } from "@/components/dashboard/dashboard-visibility";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions, useProfile, useSettings } from "@/context/app-provider";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
 import DashboardTopDueInvoiceFilterSchema, {
   DASHBOARD_TOP_DUE_INVOICE_DEFAULT_LIMIT,
@@ -17,6 +17,8 @@ import {
   DashboardGraphSchema,
   DashboardInvoiceSummarySchema,
   DashboardInvoicePaidSummarySchema,
+  DashboardStaffInvoiceCollectionSchema,
+  hasStaffInvoiceCollection,
   DashboardTicketSummarySchema,
   DashboardTopDueInvoiceResponseSchema,
   DashboardZoneWiseTopInvoiceDueSchema,
@@ -32,7 +34,9 @@ function parseFilterParams(raw: string | null, defaultLimit: number): Record<str
 
 export function useDashboardData() {
   const { hasPermission } = usePermissions();
+  const { profile } = useProfile();
   const { settings } = useSettings();
+  const hasStaff = Boolean(profile.staff);
   const canSee = useMemo(
     () => resolveDashboardVisibility(hasPermission, settings),
     [hasPermission, settings],
@@ -134,6 +138,18 @@ export function useDashboardData() {
     url: "dashboard-invoice-paid-summary",
     pagination: false,
     enabled: canSee.invoicePaid,
+  });
+
+  const {
+    data: staffCollectionResponse,
+    isLoading: isStaffCollectionLoading,
+    isFetching: isStaffCollectionFetching,
+    isError: isStaffCollectionError,
+  } = useApiQuery<ApiResponse<unknown>>({
+    queryKey: ["dashboard-staff-invoice-collection"],
+    url: "dashboard-staff-invoice-collection",
+    pagination: false,
+    enabled: hasStaff,
   });
 
   const {
@@ -257,6 +273,15 @@ export function useDashboardData() {
       : { total_paid_amount: 0, today_paid_amount: 0, this_month_paid_amount: 0, last_month_paid_amount: 0 };
   }, [invoicePaidSummaryResponse?.data]);
 
+  const staffCollection = useMemo(() => {
+    const parsed = DashboardStaffInvoiceCollectionSchema.safeParse(staffCollectionResponse?.data);
+    return parsed.success
+      ? parsed.data
+      : { staff_name: null, today_amount: 0, this_month_amount: 0, last_month_amount: 0 };
+  }, [staffCollectionResponse?.data]);
+
+  const showStaffCollection = hasStaff && hasStaffInvoiceCollection(staffCollection);
+
   const expenseSummary = useMemo(() => {
     const parsed = DashboardExpenseSummarySchema.safeParse(expenseSummaryResponse?.data);
     return parsed.success
@@ -319,6 +344,14 @@ export function useDashboardData() {
     isInvoicePaidSummaryLoading,
     isInvoicePaidSummaryFetching,
     isInvoicePaidSummaryError,
+
+    hasStaff,
+    showStaffCollection,
+    staffName: staffCollection.staff_name || profile.staff?.name || "",
+    staffCollection,
+    isStaffCollectionLoading,
+    isStaffCollectionFetching,
+    isStaffCollectionError,
 
     expenseSummary,
     isExpenseSummaryLoading,

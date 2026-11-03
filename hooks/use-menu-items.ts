@@ -122,23 +122,12 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.invoice.title"),
       url: "#",
       icon: FileText,
-      permissions: ["invoices.access", "invoice-types.access"],
+      permissions: ["invoices.access", "invoice-types.access", "payments.access"],
       feature: "billing",
       items: [
         { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
-        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
-      ],
-    },
-    {
-      id: 10,
-      title: t("menu.payments.title"),
-      url: "#",
-      icon: Banknote,
-      permissions: ["payments.access", "payment-gateways.access"],
-      feature: "billing",
-      items: [
         { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
-        { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
+        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
       ],
     },
     {
@@ -349,6 +338,14 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.role_permission.roles.title"), url: "/roles", permission: "roles.access" },
         { title: t("menu.role_permission.permissions.title"), url: "/permissions", permission: "permissions.access" },
       ],
+    },
+    {
+      id: 10,
+      title: t("menu.payments.gateways.title"),
+      url: "/payment-gateways",
+      icon: Banknote,
+      permissions: ["payment-gateways.access"],
+      feature: "billing",
     },
     {
       id: 36,

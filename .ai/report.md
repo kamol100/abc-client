@@ -1,22 +1,19 @@
 ## Summary
 
-The ticket status column is a colored button with the status icon. Opening it lists the four statuses. Choosing one saves without the edit form.
+The dashboard shows an invoice collection card for the logged-in staff when today, this month, or last month is greater than zero. The title is “Invoice collection by:” plus the staff name. A long name truncates with an ellipsis. Today, This month, and Last month sit at the bottom of the card, the same way the other summary cards do. Each amount ends in `/-`.
 
 ## Frontend
 
-- Users with `tickets.edit` see a status button in the status column. It uses the status color and icon. The menu lists Open, In progress, Resolved, and Closed with the same color and icon.
-- The choice sends `PUT /tickets/{id}` with `{ status }` only and refreshes the tickets list.
-- A failed save puts the previous status back. The control stays disabled while the request is in flight.
-- Users without `tickets.edit` still see the status badge. The client portal table is unchanged.
-- English and Bangla strings: `ticket.status.change`, `ticket.status.updated`.
+- The card loads `GET /dashboard-staff-invoice-collection` only when the session profile has a staff record.
+- Amounts come from payments whose `collect_by` is that staff id.
+- English and Bangla: `dashboard.cards.invoice_collection_by`. The period labels reuse the existing dashboard metric keys.
 
 ## Checks
 
-- `npx vitest run tests/unit/tickets/ticket-status-select.test.tsx` passed (3 tests).
+- `npx vitest run tests/unit/dashboard/dashboard-staff-invoice-collection-card.test.tsx` passed.
 - `scripts/ai/typecheck` passed.
-- `scripts/ai/frontend-check` reached the unit suite. 17 failures are in date picker, pay, maps, column visibility, client account, and reseller filter tests. The ticket status test is not among them.
-- Signed in on `vp.isp.test` as vp. The status column shows a colored button with its icon. The menu lists Open, In Progress, Resolved, and Closed. TKT4 changed to In Progress and was set back to Open.
+- On `vp.isp.test` the collection card is hidden. Staff vp has no invoice payments in today, this month, or last month. The other summary cards stay in place, with their period rows at the bottom of each card.
 
 ## Unrelated working tree
 
-Invoice print files were already modified and were left alone: `components/invoices/invoice-print-dialog.tsx`, `components/invoices/invoice-receipt.tsx`, `tests/unit/invoices/invoice-receipt.test.tsx`.
+`hooks/use-menu-items.ts` was already modified and was left alone.

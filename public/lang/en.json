@@ -4527,7 +4527,8 @@
             "total_expense": "Total Expense",
             "expense": "Expense",
             "fund": "Fund",
-            "support_ticket": "Support Ticket"
+            "support_ticket": "Support Ticket",
+            "invoice_collection_by": "Invoice collection by:"
         },
         "metrics": {
             "active": "Active",

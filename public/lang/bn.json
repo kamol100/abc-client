@@ -4527,7 +4527,8 @@
             "total_expense": "টোটাল এক্সপেন্স",
             "expense": "এক্সপেন্স",
             "fund": "ফান্ড",
-            "support_ticket": "সাপোর্ট টিকেট"
+            "support_ticket": "সাপোর্ট টিকেট",
+            "invoice_collection_by": "ইনভয়েস কালেকশন:"
         },
         "metrics": {
             "active": "অ্যাক্টিভ",
