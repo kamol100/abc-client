@@ -281,6 +281,15 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
     cell: ({ row }) => <span>{row.original.email}</span>,
   },
   {
+    accessorKey: "zones",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="staff.zones.label" />
+    ),
+    cell: ({ row }) => (
+      <span>{(row.original.zones ?? []).map((zone) => zone.name).join(", ")}</span>
+    ),
+  },
+  {
     accessorKey: "join_date",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="staff.join_date.label" />

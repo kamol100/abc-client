@@ -972,6 +972,10 @@
             "label": "রোল ও পার্মিশন",
             "placeholder": "রোল নির্বাচন করুন"
         },
+        "zones": {
+            "label": "জোন",
+            "placeholder": "জোন নির্বাচন করুন"
+        },
         "designation": {
             "label": "পদবি",
             "placeholder": "পদবি দিন"

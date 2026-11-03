@@ -972,6 +972,10 @@
             "label": "Role & Permission",
             "placeholder": "Select roles"
         },
+        "zones": {
+            "label": "Zones",
+            "placeholder": "Select zones"
+        },
         "designation": {
             "label": "Designation",
             "placeholder": "Enter designation"
