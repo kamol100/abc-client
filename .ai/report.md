@@ -1,21 +1,22 @@
 ## Summary
 
-Invoice print settings now have Basic and Advanced modes. Basic prints the centered Genfive-style slip. Advanced keeps the existing receipt and its switches.
+The ticket status column is a colored button with the status icon. Opening it lists the four statuses. Choosing one saves without the edit form.
 
 ## Frontend
 
-- Mode radios sit in the settings header. Basic is the default.
-- Basic shows thank-you, amount in words, support number, and the shared typography controls. Advanced keeps the full switch list.
-- The customized preview and the print dialog follow `mode`. Basic is captured as one thermal page so the border and type sizes stay intact.
-- Basic slip: company, address, invoice id and time, client name, `id@phone`, Total Bill, Paid & Discount (underlined), Total Due, optional words, thank-you, and HELP line.
-- English and Bangla strings are in `public/lang/en.json` and `public/lang/bn.json`.
+- Users with `tickets.edit` see a status button in the status column. It uses the status color and icon. The menu lists Open, In progress, Resolved, and Closed with the same color and icon.
+- The choice sends `PUT /tickets/{id}` with `{ status }` only and refreshes the tickets list.
+- A failed save puts the previous status back. The control stays disabled while the request is in flight.
+- Users without `tickets.edit` still see the status badge. The client portal table is unchanged.
+- English and Bangla strings: `ticket.status.change`, `ticket.status.updated`.
 
 ## Checks
 
-- `npx vitest run tests/unit/invoices/invoice-receipt.test.tsx tests/unit/settings/invoice-print-settings.test.tsx` passed (7 tests).
-- `npx tsc --noEmit` passed.
-- Signed in on `vp.isp.test` and checked the settings page. Basic preview matched the slip. Turning off thank-you removed it from the custom preview only. Advanced restored the existing receipt and the full switch list. Those toggles were not saved.
+- `npx vitest run tests/unit/tickets/ticket-status-select.test.tsx` passed (3 tests).
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/frontend-check` reached the unit suite. 17 failures are in date picker, pay, maps, column visibility, client account, and reseller filter tests. The ticket status test is not among them.
+- Signed in on `vp.isp.test` as vp. The status column shows a colored button with its icon. The menu lists Open, In Progress, Resolved, and Closed. TKT4 changed to In Progress and was set back to Open.
 
 ## Unrelated working tree
 
-None. Branch `master` is even with `origin/master` aside from these edits.
+Invoice print files were already modified and were left alone: `components/invoices/invoice-print-dialog.tsx`, `components/invoices/invoice-receipt.tsx`, `tests/unit/invoices/invoice-receipt.test.tsx`.

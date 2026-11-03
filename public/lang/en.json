@@ -2152,6 +2152,8 @@
         },
         "status": {
             "label": "Status",
+            "change": "Change status",
+            "updated": "Ticket status updated",
             "open": "Open",
             "in_progress": "In Progress",
             "resolved": "Resolved",

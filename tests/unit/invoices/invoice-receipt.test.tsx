@@ -168,14 +168,14 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(root).toHaveAttribute("data-receipt-padding-x", "0");
         expect(root?.className).toContain("[overflow-wrap:anywhere]");
         expect(root?.querySelector("[data-receipt-frame]")).toHaveStyle({ paddingLeft: "0px", paddingRight: "0px" });
-        expect(screen.getByText("VP Net")).toHaveStyle({ fontSize: "32px", fontWeight: "500" });
-        expect(screen.getByText("Dhaka")).toHaveStyle({ fontSize: "19px", fontWeight: "400" });
+        expect(screen.getByText("VP Net")).toHaveStyle({ fontSize: "32px", fontWeight: "500", lineHeight: "38px" });
+        expect(screen.getByText("Dhaka")).toHaveStyle({ fontSize: "19px", fontWeight: "400", lineHeight: "23px" });
         expect(screen.getByText("INV-12 / October-1, 2025 3:22pm")).toBeInTheDocument();
         expect(screen.getByText("Kamal")).toBeInTheDocument();
         expect(screen.getByText("99@01700000000")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.total_bill")).toBeInTheDocument();
         expect(screen.getByText("800.00")).toBeInTheDocument();
-        expect(screen.getByText("invoice.receipt.paid_and_discount")).toBeInTheDocument();
+        expect(screen.getByText("invoice.receipt.paid_and_discount")).toHaveStyle({ fontWeight: "700" });
         expect(screen.getByText("550.00")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.total_due")).toBeInTheDocument();
         expect(screen.getByText("250.00")).toBeInTheDocument();
