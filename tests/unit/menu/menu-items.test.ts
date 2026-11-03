@@ -105,6 +105,7 @@ describe("admin menu order", () => {
       "/reports/expenses",
       "/reports/product-in",
       "/reports/product-out",
+      "/reports/new-clients",
       "/reports/btrc",
       "/products",
       "/products/reports",
@@ -173,6 +174,7 @@ describe("admin menu permissions", () => {
     expect(urls(selectMenuItems(menu, access(["funds.access"])))).toEqual(["/funds", "/subscription"]);
     expect(urls(selectMenuItems(menu, access(["reports.access"])))).toEqual([
       "/reports/income-expense",
+      "/reports/new-clients",
       "/reports/btrc",
       "/subscription",
     ]);
