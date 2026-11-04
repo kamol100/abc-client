@@ -9,8 +9,8 @@ alwaysApply: true
 ## Core Framework
 | Package | Version | Purpose |
 |---------|---------|---------|
-| Next.js | 16.1.6 | React framework (App Router) |
-| React | 19.2.4 | UI library |
+| Next.js | 16.4.5 | React framework (App Router) |
+| React | 19.3.1 | UI library |
 | TypeScript | 5.9.3 | Type safety |
 
 ## Styling & UI

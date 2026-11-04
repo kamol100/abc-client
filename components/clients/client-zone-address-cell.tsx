@@ -68,9 +68,9 @@ function ClientAddressLine({ address, inactive }: { address: string; inactive: b
     }, [address, expanded]);
 
     return (
-        <div className={cn("flex min-w-0 gap-0.5", expanded ? "items-start" : "items-center")}>
-            <span
-                ref={textRef}
+        <div className={cn("flex min-w-0", expanded ? "items-start gap-0.5" : "items-center")}>
+            <div
+                ref={textRef as unknown as React.RefObject<HTMLDivElement>}
                 className={cn(
                     "min-w-0 flex-1 text-sm",
                     expanded ? "break-words" : "line-clamp-1",
@@ -78,12 +78,15 @@ function ClientAddressLine({ address, inactive }: { address: string; inactive: b
                 )}
             >
                 {address || "—"}
-            </span>
+            </div>
             {address && (overflows || expanded) ? (
                 <MyTooltip content={labelKey}>
                     <button
                         type="button"
-                        className="inline-flex shrink-0 items-center p-0 text-muted-foreground hover:text-foreground"
+                        className={cn(
+                            "inline-flex shrink-0 items-center p-0 text-muted-foreground hover:text-foreground",
+                            !expanded && "-ml-1.5",
+                        )}
                         aria-expanded={expanded}
                         aria-label={t(labelKey)}
                         onClick={(event) => {
