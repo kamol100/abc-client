@@ -1,5 +1,6 @@
 {
     "common": {
+        "no_invoice_this_month": "No invoice this month",
         "help": "Help",
         "no_data": "No data",
         "january": "January",

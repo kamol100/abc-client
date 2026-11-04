@@ -1,5 +1,6 @@
 {
     "common": {
+        "no_invoice_this_month": "এই মাসে ইনভয়েস নেই",
         "help": "সহায়তা",
         "no_data": "কোনো ডাটা নেই",
         "january": "জানুয়ারি",
