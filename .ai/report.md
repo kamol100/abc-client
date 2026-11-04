@@ -1,27 +1,26 @@
 ## Summary
 
-Client row actions now include Add Map for users with `clients.map.add`. The dialog reads the browser's high-accuracy location, shows a marker, and saves only those coordinates.
+Clicking the client ping button opens a dialog and lists each router reply. The dialog has Ping again and Cancel.
 
 ## Frontend
 
-- The menu item sits immediately after Client Lock and uses `MapPin`.
-- It is shown only when `hasPermission("clients.map.add")` is true.
-- Opening the dialog calls `navigator.geolocation.getCurrentPosition` with `enableHighAccuracy: true`, `maximumAge: 0`, and a 15 second timeout. A denied, unavailable, timed-out, insecure, or unsupported lookup shows the existing location error text and does not fill coordinates.
-- After a fix, the dialog shows the Leaflet marker already used by the client maps, plus latitude and longitude. Save stays disabled until that fix exists.
-- Save posts to `POST /clients/{id}/add-client-map` through `useApiMutation` (`addClientMapUrl`). Success closes the dialog, toasts, and refreshes `clients`, `reseller-clients`, and `client-maps`. Failure leaves the dialog open and toasts the API error.
-- Cancel closes the dialog and does not call the API.
-- Client Lock is unchanged. `getCurrentGeolocation` still falls back to a low-accuracy fix for the client form. Add Map does not use that fallback.
-- English and Bangla strings were added under `client.actions.add_map` and `client.map`.
+- The radio button still sits next to the device-login button. A valid IP opens the dialog and calls `GET /client-ping/{client}?ip=`.
+- The table columns are S/L, IP Address, Time, Size, TTL, and Status. OK is green. A timeout row has no time, size, or TTL.
+- The footer shows Pinged, OK, Timeout, and LOSS. LOSS is red. Ping again is the icon button. Cancel closes the dialog and drops a reply that is still in flight.
+- The first ping shows placeholder rows. Ping again keeps the last replies on screen until the new ones arrive.
+- An invalid IP still disables both buttons and does not call the API.
+- English and Bangla strings are under `client.basic_view.ping_*`.
 
 ## Checks
 
-- `npx vitest run tests/unit/lib/high-accuracy-geolocation.test.ts tests/unit/clients/client-add-map-dialog.test.tsx` passed (6 tests).
+- `npx vitest run tests/unit/clients/client-router-info.test.tsx tests/unit/clients/client-view-ping-button.test.tsx tests/unit/clients/client-online-status-cell.test.tsx` passed (10 tests).
 - `scripts/ai/typecheck` passed.
 - `public/lang/en.json` and `public/lang/bn.json` both parse.
+- `scripts/ai/test` finished with 18 failures in other files: date pickers, menu order, pay page, client account, column visibility, reseller filter, and an empty map test file. None of those files were changed.
 
 ## Browser
 
-`http://vp.isp.test/clients` redirects to `/admin` when there is no session. The Add Map click, GPS prompt, preview, and save were not exercised in a signed-in browser. The dialog behavior is covered by the unit tests above.
+`http://127.0.0.1:3000` redirects and `http://vp.isp.test/admin` returns 403 without a session. The dialog was not opened in a signed-in browser. The click, table, ping again, and cancel behavior is covered by the unit test above.
 
 ## Unrelated
 

@@ -1,18 +1,28 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, Loader2, LogIn, Network, Radio, X } from "lucide-react";
-import { toast } from "react-toastify";
+import { LogIn, Network, Radio, RefreshCw } from "lucide-react";
 import { useFetch } from "@/app/actions";
 import MyTooltip from "@/components/my-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import { ClientRow, ClientUsage, getClientId, RouterInfo } from "@/components/clients/client-type";
 import ClientSpeedWidget from "@/components/clients/client-speed-widget";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { formatDataUsage } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 import MyButton, { type ButtonProps } from "@/components/my-button";
+import { MyDialog, useMyDialogClose } from "@/components/my-dialog";
 
 type ClientWithRouter = Pick<ClientRow, "id" | "router_info" | "network">;
 
@@ -29,12 +39,28 @@ const InfoRow: FC<{ label: string; children: React.ReactNode }> = ({ label, chil
 );
 
 const ROUTER_INFO_ROW_COUNT = 7;
-const PING_RESULT_DISPLAY_MS = 2000;
 const ROUTER_INFO_STALE_MS = 30_000;
 const CLIENT_USAGE_STALE_MS = 60_000;
 const CLIENT_DEVICE_PORT = 80;
+const PING_PLACEHOLDER_ROWS = 5;
 
-type PingState = "idle" | "loading" | "success" | "error";
+interface PingReply {
+    seq: number;
+    host: string;
+    time: string | null;
+    size: string | null;
+    ttl: string | null;
+    status: "ok" | "timeout";
+}
+
+interface PingReport {
+    reachable: boolean;
+    sent: number;
+    received: number;
+    timeout: number;
+    packet_loss: number;
+    replies: PingReply[];
+}
 
 interface ClientIpPingButtonProps {
     clientId: string;
@@ -88,6 +114,71 @@ function clientDeviceUrl(ip: string): string {
     return `http://${host}:${CLIENT_DEVICE_PORT}`;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null;
+}
+
+function textOrNull(value: unknown): string | null {
+    return typeof value === "string" && value.trim() !== "" ? value : null;
+}
+
+function wholeNumber(value: unknown, fallback: number): number {
+    const number = typeof value === "number" || typeof value === "string" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) ? number : fallback;
+}
+
+function readPingReport(value: unknown): PingReport | null {
+    if (typeof value !== "object" || value === null) {
+        return null;
+    }
+
+    const record = value as Record<string, unknown>;
+    const replies: PingReply[] = [];
+
+    if (Array.isArray(record.replies)) {
+        for (const item of record.replies) {
+            if (typeof item !== "object" || item === null) {
+                continue;
+            }
+
+            const row = item as Record<string, unknown>;
+            const host = textOrNull(row.host);
+            if (!host) {
+                continue;
+            }
+
+            replies.push({
+                seq: wholeNumber(row.seq, replies.length + 1),
+                host,
+                time: textOrNull(row.time),
+                size: textOrNull(row.size),
+                ttl: textOrNull(row.ttl),
+                status: row.status === "timeout" ? "timeout" : "ok",
+            });
+        }
+    }
+
+    const sent = wholeNumber(record.sent, replies.length);
+    const received = wholeNumber(
+        record.received,
+        replies.filter((reply) => reply.status === "ok").length,
+    );
+    const timeout = wholeNumber(record.timeout, Math.max(0, sent - received));
+
+    if (replies.length === 0 && typeof record.reachable !== "boolean" && record.sent === undefined) {
+        return null;
+    }
+
+    return {
+        reachable: typeof record.reachable === "boolean" ? record.reachable : received > 0,
+        sent,
+        received,
+        timeout,
+        packet_loss: wholeNumber(record.packet_loss, sent > 0 ? (timeout / sent) * 100 : 0),
+        replies,
+    };
+}
+
 function useClientRouterInfo(clientId: string, enabled = true) {
     return useApiQuery<ApiResponse<RouterInfo>>({
         queryKey: ["client-router-info", clientId],
@@ -99,14 +190,134 @@ function useClientRouterInfo(clientId: string, enabled = true) {
     });
 }
 
+function ClientIpPingDialogBody({
+    ipAddress,
+    report,
+    pinging,
+    failed,
+    onPingAgain,
+}: {
+    ipAddress: string;
+    report: PingReport | null;
+    pinging: boolean;
+    failed: boolean;
+    onPingAgain: () => void;
+}) {
+    const { t } = useTranslation();
+    const close = useMyDialogClose();
+    const showPlaceholder = pinging && !report;
+    const showFailure = !pinging && (failed || (report !== null && report.replies.length === 0));
+    const loss = report ? `${report.packet_loss.toFixed(2)}%` : null;
+
+    return (
+        <div className="overflow-hidden rounded-md border">
+            <Table aria-busy={pinging}>
+                <TableHeader>
+                    <TableRow className="border-0 bg-foreground hover:bg-foreground">
+                        <TableHead className="h-9 w-14 text-center text-background">{t("client.basic_view.ping_sl")}</TableHead>
+                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_ip")}</TableHead>
+                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_time")}</TableHead>
+                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_size")}</TableHead>
+                        <TableHead className="h-9 w-16 text-center text-background">{t("client.basic_view.ping_ttl")}</TableHead>
+                        <TableHead className="h-9 w-24 text-center text-background">{t("client.basic_view.ping_status")}</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {showPlaceholder ? (
+                        Array.from({ length: PING_PLACEHOLDER_ROWS }).map((_, index) => (
+                            <TableRow key={index}>
+                                <TableCell colSpan={6}>
+                                    <Skeleton className="h-4 w-full" />
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    ) : null}
+                    {showFailure ? (
+                        <TableRow>
+                            <TableCell colSpan={6} className="text-center text-destructive">
+                                {t("client.basic_view.ping_failed", { ip: ipAddress })}
+                            </TableCell>
+                        </TableRow>
+                    ) : null}
+                    {report?.replies.map((reply) => (
+                        <TableRow key={reply.seq}>
+                            <TableCell className="text-center">{reply.seq}</TableCell>
+                            <TableCell className="text-center">{reply.host}</TableCell>
+                            <TableCell className="text-center">{reply.time ?? "—"}</TableCell>
+                            <TableCell className="text-center">{reply.size ?? "—"}</TableCell>
+                            <TableCell className="text-center">{reply.ttl ?? "—"}</TableCell>
+                            <TableCell
+                                className={cn(
+                                    "text-center font-medium",
+                                    reply.status === "ok"
+                                        ? "text-green-600 dark:text-green-400"
+                                        : "text-destructive",
+                                )}
+                            >
+                                {reply.status === "ok"
+                                    ? t("client.basic_view.ping_status_ok")
+                                    : t("client.basic_view.ping_status_timeout")}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+                <TableFooter>
+                    <TableRow className="hover:bg-transparent">
+                        <TableCell colSpan={6}>
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                {report ? (
+                                    <p className="text-sm">
+                                        <span>{t("client.basic_view.ping_pinged")}: {report.sent}</span>
+                                        <span className="text-muted-foreground"> || </span>
+                                        <span className="font-medium text-green-600 dark:text-green-400">
+                                            {t("client.basic_view.ping_ok")}: {report.received}
+                                        </span>
+                                        <span className="text-muted-foreground"> || </span>
+                                        <span>{t("client.basic_view.ping_timeout")}: {report.timeout}</span>
+                                        <span className="text-muted-foreground"> || </span>
+                                        <span className="font-medium text-destructive">
+                                            {t("client.basic_view.ping_loss")}: {loss}
+                                        </span>
+                                    </p>
+                                ) : (
+                                    <span className="sr-only">{pinging ? t("common.loading") : ""}</span>
+                                )}
+                                <div className="ml-auto flex items-center gap-2">
+                                    <MyButton type="button" variant="outline" onClick={() => close?.()}>
+                                        {t("common.cancel")}
+                                    </MyButton>
+                                    <MyButton
+                                        type="button"
+                                        variant="default"
+                                        size="icon"
+                                        loading={pinging}
+                                        onClick={onPingAgain}
+                                        aria-label={t("client.basic_view.ping_again")}
+                                        tooltip="client.basic_view.ping_again"
+                                    >
+                                        {pinging ? null : <RefreshCw className="h-4 w-4" />}
+                                    </MyButton>
+                                </div>
+                            </div>
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
+        </div>
+    );
+}
+
 function ClientIpPingControl({
     clientId,
     ipAddress,
     buttonVariant = "outline",
 }: ClientIpPingButtonProps) {
     const { t } = useTranslation();
-    const [pingState, setPingState] = useState<PingState>("idle");
-    const resetTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [open, setOpen] = useState(false);
+    const [pinging, setPinging] = useState(false);
+    const [failed, setFailed] = useState(false);
+    const [report, setReport] = useState<PingReport | null>(null);
+    const requestIdRef = useRef(0);
     const pingIp = validIpAddress(ipAddress);
     const tooltipKey = pingIp ? "client.basic_view.ping" : "client.basic_view.ping_unavailable";
     const deviceUrl = pingIp ? clientDeviceUrl(pingIp) : null;
@@ -114,51 +325,66 @@ function ClientIpPingControl({
         ? t("client.basic_view.open_ip", { url: deviceUrl })
         : t("client.basic_view.ping_unavailable");
 
-    useEffect(() => {
-        return () => {
-            if (resetTimeoutRef.current) {
-                clearTimeout(resetTimeoutRef.current);
-            }
-        };
-    }, []);
-
-    const scheduleReset = () => {
-        if (resetTimeoutRef.current) {
-            clearTimeout(resetTimeoutRef.current);
-        }
-
-        resetTimeoutRef.current = setTimeout(() => {
-            setPingState("idle");
-        }, PING_RESULT_DISPLAY_MS);
-    };
-
-    const handlePing = async () => {
-        if (!pingIp || pingState === "loading") {
+    const runPing = async () => {
+        if (!pingIp) {
             return;
         }
 
-        setPingState("loading");
+        const requestId = ++requestIdRef.current;
+        setPinging(true);
+        setFailed(false);
 
         try {
-            const result = await useFetch({
+            const result: unknown = await useFetch({
                 url: `/client-ping/${clientId}?ip=${encodeURIComponent(pingIp)}`,
             });
-            const reachable = Boolean(
-                result?.success && (result.data as { reachable?: boolean } | undefined)?.reachable
-            );
-            if (reachable) {
-                setPingState("success");
-                toast.success(t("client.basic_view.ping_success", { ip: pingIp }));
-            } else {
-                setPingState("error");
-                toast.error(t("client.basic_view.ping_failed", { ip: pingIp }));
+
+            if (requestId !== requestIdRef.current) {
+                return;
             }
+
+            const parsed = isRecord(result) && result.success === true
+                ? readPingReport(result.data)
+                : null;
+            if (!parsed) {
+                setReport(null);
+                setFailed(true);
+                return;
+            }
+
+            setReport(parsed);
         } catch {
-            setPingState("error");
-            toast.error(t("client.basic_view.ping_failed", { ip: pingIp }));
+            if (requestId !== requestIdRef.current) {
+                return;
+            }
+
+            setReport(null);
+            setFailed(true);
+        } finally {
+            if (requestId === requestIdRef.current) {
+                setPinging(false);
+            }
+        }
+    };
+
+    const openDialog = () => {
+        if (!pingIp) {
+            return;
         }
 
-        scheduleReset();
+        setReport(null);
+        setFailed(false);
+        setOpen(true);
+        void runPing();
+    };
+
+    const handleOpenChange = (next: boolean) => {
+        if (!next) {
+            requestIdRef.current += 1;
+            setPinging(false);
+        }
+
+        setOpen(next);
     };
 
     const handleOpenDevice = () => {
@@ -169,29 +395,19 @@ function ClientIpPingControl({
         window.open(deviceUrl, "_blank", "noopener,noreferrer");
     };
 
-    const pingIcon =
-        pingState === "loading" ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-        ) : pingState === "success" ? (
-            <Check className="h-4 w-4 text-green-600" />
-        ) : pingState === "error" ? (
-            <X className="h-4 w-4 text-destructive" />
-        ) : (
-            <Radio className="h-4 w-4" />
-        );
-
     return (
         <div className="flex items-center gap-2">
             <MyButton
                 type="button"
                 variant={buttonVariant}
                 size="icon"
-                disabled={!pingIp || pingState === "loading"}
-                onClick={handlePing}
+                disabled={!pingIp}
+                onClick={openDialog}
                 tooltip={tooltipKey}
                 aria-label={t(tooltipKey)}
+                aria-haspopup="dialog"
             >
-                {pingIcon}
+                <Radio className="h-4 w-4" />
             </MyButton>
             <MyButton
                 type="button"
@@ -204,6 +420,25 @@ function ClientIpPingControl({
             >
                 <LogIn className="h-4 w-4" />
             </MyButton>
+            <MyDialog
+                open={open}
+                onOpenChange={handleOpenChange}
+                title="client.basic_view.ping_results"
+                description="client.basic_view.ping_description"
+                titleValues={{ ip: pingIp ?? "" }}
+                size="3xl"
+                showFooter={false}
+            >
+                {pingIp ? (
+                    <ClientIpPingDialogBody
+                        ipAddress={pingIp}
+                        report={report}
+                        pinging={pinging}
+                        failed={failed}
+                        onPingAgain={() => void runPing()}
+                    />
+                ) : null}
+            </MyDialog>
         </div>
     );
 }

@@ -21,10 +21,19 @@ vi.mock("react-toastify", () => ({
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
-        t: (key: string, options?: { url?: string }) => {
+        t: (key: string, options?: { url?: string; ip?: string }) => {
             if (key === "client.basic_view.ping") return "Ping on this ip";
             if (key === "client.basic_view.ping_unavailable") return "ip not found";
             if (key === "client.basic_view.open_ip") return `Open ${options?.url}`;
+            if (key === "client.basic_view.ping_again") return "Ping again";
+            if (key === "client.basic_view.ping_failed") return `${options?.ip ?? ""} is unreachable`;
+            if (key === "common.cancel") return "Cancel";
+            if (key === "client.basic_view.ping_status_ok") return "OK";
+            if (key === "client.basic_view.ping_status_timeout") return "timeout";
+            if (key === "client.basic_view.ping_pinged") return "Pinged";
+            if (key === "client.basic_view.ping_ok") return "OK";
+            if (key === "client.basic_view.ping_timeout") return "Timeout";
+            if (key === "client.basic_view.ping_loss") return "LOSS";
             return key;
         },
     }),
@@ -41,6 +50,23 @@ function routerCalls() {
 
 function pingCalls() {
     return useFetch.mock.calls.filter((call) => String(call[0]?.url).includes("client-ping"));
+}
+
+function reachablePing(host = "10.0.0.8") {
+    return {
+        success: true,
+        data: {
+            reachable: true,
+            sent: 2,
+            received: 1,
+            timeout: 1,
+            packet_loss: 50,
+            replies: [
+                { seq: 1, host, time: "1ms487us", size: "56", ttl: "64", status: "ok" },
+                { seq: 2, host, time: null, size: null, ttl: null, status: "timeout" },
+            ],
+        },
+    };
 }
 
 function renderPing(queryClient = new QueryClient({
@@ -147,7 +173,7 @@ describe("ClientRouterInfo ping button", () => {
     it("pings a valid IP and reuses the cached router response", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (url.includes("client-ping")) {
-                return { success: true, data: { reachable: true } };
+                return reachablePing();
             }
 
             return {
@@ -179,9 +205,22 @@ describe("ClientRouterInfo ping button", () => {
         expect(await screen.findByRole("tooltip")).toHaveTextContent("Ping on this ip");
 
         await user.click(pingButton);
+        expect(await screen.findByRole("dialog")).toBeInTheDocument();
+        expect(await screen.findByText("1ms487us")).toBeInTheDocument();
+        expect(screen.getByText("timeout")).toBeInTheDocument();
+        expect(screen.getByText("Pinged: 2")).toBeInTheDocument();
+        expect(screen.getByText("OK: 1")).toBeInTheDocument();
+        expect(screen.getByText("Timeout: 1")).toBeInTheDocument();
+        expect(screen.getByText("LOSS: 50.00%")).toBeInTheDocument();
         await waitFor(() => expect(pingCalls()).toHaveLength(1));
         expect(pingCalls()[0][0].url).toBe("/client-ping/client-1?ip=10.0.0.8");
         expect(routerCalls()).toHaveLength(1);
+
+        await user.click(screen.getByRole("button", { name: "Ping again" }));
+        await waitFor(() => expect(pingCalls()).toHaveLength(2));
+
+        await user.click(screen.getByRole("button", { name: "Cancel" }));
+        await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
 
         view.rerender(
             <QueryClientProvider client={queryClient}>
@@ -197,7 +236,7 @@ describe("ClientRouterInfo ping button", () => {
     it("uses a provided IP without fetching router information", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (url.includes("client-ping")) {
-                return { success: true, data: { reachable: true } };
+                return reachablePing();
             }
 
             return { success: true, data: { ip_address: "10.9.9.9" } };
@@ -218,10 +257,13 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(0);
 
         await user.click(pingButton);
+        expect(await screen.findByRole("dialog")).toBeInTheDocument();
         await waitFor(() => expect(pingCalls()).toHaveLength(1));
         expect(pingCalls()[0][0].url).toBe("/client-ping/client-1?ip=10.0.0.8");
         expect(routerCalls()).toHaveLength(0);
 
+        await user.click(screen.getByRole("button", { name: "Cancel" }));
+        await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
         await user.click(openButton);
         expect(open).toHaveBeenCalledWith("http://10.0.0.8:80", "_blank", "noopener,noreferrer");
         open.mockRestore();
