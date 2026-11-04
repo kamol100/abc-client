@@ -1,39 +1,28 @@
 ## Summary
 
-The address chevron now sits against the truncated address ellipsis.
-
-## Cause
-
-The collapsed address row used a 2px gap, and the ChevronDown glyph sits inset inside its box, so the icon looked a little to the right of the "...".
+Client row actions now include Add Map for users with `clients.map.add`. The dialog reads the browser's high-accuracy location, shows a marker, and saves only those coordinates.
 
 ## Frontend
 
-- Collapsed address toggle uses no row gap and `-ml-1.5` so the chevron meets the ellipsis.
-- Expanded address keeps a small gap so the icon does not cover the wrapped text.
+- The menu item sits immediately after Client Lock and uses `MapPin`.
+- It is shown only when `hasPermission("clients.map.add")` is true.
+- Opening the dialog calls `navigator.geolocation.getCurrentPosition` with `enableHighAccuracy: true`, `maximumAge: 0`, and a 15 second timeout. A denied, unavailable, timed-out, insecure, or unsupported lookup shows the existing location error text and does not fill coordinates.
+- After a fix, the dialog shows the Leaflet marker already used by the client maps, plus latitude and longitude. Save stays disabled until that fix exists.
+- Save posts to `POST /clients/{id}/add-client-map` through `useApiMutation` (`addClientMapUrl`). Success closes the dialog, toasts, and refreshes `clients`, `reseller-clients`, and `client-maps`. Failure leaves the dialog open and toasts the API error.
+- Cancel closes the dialog and does not call the API.
+- Client Lock is unchanged. `getCurrentGeolocation` still falls back to a low-accuracy fix for the client form. Add Map does not use that fallback.
+- English and Bangla strings were added under `client.actions.add_map` and `client.map`.
 
 ## Checks
 
-- `npx vitest run tests/unit/clients/client-zone-address-cell.test.tsx` passed (3 tests).
+- `npx vitest run tests/unit/lib/high-accuracy-geolocation.test.ts tests/unit/clients/client-add-map-dialog.test.tsx` passed (6 tests).
+- `scripts/ai/typecheck` passed.
+- `public/lang/en.json` and `public/lang/bn.json` both parse.
 
 ## Browser
 
-On `http://vp.isp.test/clients`, Farhana Akter’s address shows `Dhanmondi, Dhaka...` with the chevron immediately after the ellipsis. Expanding and collapsing that address still works.
+`http://vp.isp.test/clients` redirects to `/admin` when there is no session. The Add Map click, GPS prompt, preview, and save were not exercised in a signed-in browser. The dialog behavior is covered by the unit tests above.
 
-## Package update
+## Unrelated
 
-Next.js is 16.4.5, which includes the Google font loader fix. The shadcn CLI is 4.23.0. Existing `components/ui` files were not regenerated, and Tailwind 3 / Zod 3 stayed in place. Cache Components was not turned on.
-
-Also moved within the current major: React 19.3.1, `eslint-config-next` 16.4.5, and the in-range Radix, TanStack Query, React Hook Form, and related patches. Left on the current major: Tailwind, Zod, TypeScript, lucide-react, date-fns, i18next, react-i18next, TanStack Table, next-auth v5, react-day-picker, and Motion.
-
-## Checks
-
-- `npx next build` passed on Next.js 16.4.5 (Turbopack). TypeScript finished, 133 pages generated, and the `next/font/google` query error did not appear.
-- `scripts/ai/test`: 18 failed, 537 passed. Failures match existing source/test drift (October 2026 date-picker labels while the calendar opens on November 2026, menu order, filter schema, QueryClient, `usePathname` mock). `react-day-picker` stayed at 9.14.0.
-
-## Left untouched
-
-- `components/clients/client-zone-address-cell.tsx` was already modified and was not part of this update.
-
-## react-i18next lookup
-
-`import { useTranslation } from "react-i18next"` in `components/clients/client-zone-address-cell.tsx` resolves. `react-i18next@15.7.4` is linked and ships `index.d.mts`. `tsc --noEmit --incremental false` reports no missing module, and the editor diagnostics for that file are clean. No source change.
+The working tree was clean before this change. No unrelated files were left modified.

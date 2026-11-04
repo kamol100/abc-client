@@ -1573,7 +1573,18 @@
             "recharge_client": "Recharge Client",
             "lock": "Lock Client",
             "unlock": "Unlock Client",
+            "add_map": "Add Map",
             "delete": "Delete"
+        },
+        "map": {
+            "title": "Add Map",
+            "description": "Review this location before saving it on the client.",
+            "locating": "Getting the current location…",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "submit": "Save location",
+            "saved": "Map location saved",
+            "failed": "Could not save the map location"
         },
         "lock": {
             "confirm_lock": "Lock this client? The client stays in your list. Other staff will no longer see them.",

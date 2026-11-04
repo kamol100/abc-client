@@ -360,19 +360,35 @@ function readCurrentPosition(options: PositionOptions): Promise<GeolocationCoord
 
 export type GeolocationCoords = { latitude: number; longitude: number };
 
-export function getCurrentGeolocation(): Promise<GeolocationCoords> {
-    if (typeof window === "undefined" || typeof navigator === "undefined") {
-        return Promise.reject(new Error("Geolocation is not supported by your browser."));
-    }
-
-    if (!navigator.geolocation) {
-        return Promise.reject(new Error("Geolocation is not supported by your browser."));
+function geolocationSupportError(): Error | null {
+    if (typeof window === "undefined" || typeof navigator === "undefined" || !navigator.geolocation) {
+        return new Error("Geolocation is not supported by your browser.");
     }
 
     if (!window.isSecureContext) {
-        return Promise.reject(
-            new Error("Geolocation requires a secure connection (HTTPS).")
-        );
+        return new Error("Geolocation requires a secure connection (HTTPS).");
+    }
+
+    return null;
+}
+
+export function getHighAccuracyGeolocation(): Promise<GeolocationCoords> {
+    const supportError = geolocationSupportError();
+    if (supportError) {
+        return Promise.reject(supportError);
+    }
+
+    return readCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+    });
+}
+
+export function getCurrentGeolocation(): Promise<GeolocationCoords> {
+    const supportError = geolocationSupportError();
+    if (supportError) {
+        return Promise.reject(supportError);
     }
 
     const lowAccuracyOptions: PositionOptions = {
