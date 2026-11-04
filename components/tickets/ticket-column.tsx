@@ -1,22 +1,17 @@
 "use client";
 
+import ChoiceMenu from "@/components/choice-menu";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge from "@/components/my-badge";
 import TicketRowActions from "@/components/tickets/ticket-row-actions";
 import { STATUS_OPTIONS, TicketRow } from "@/components/tickets/ticket-type";
 import { Badge } from "@/components/ui/badge";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { cn } from "@/lib/utils";
+import useApiQuery from "@/hooks/use-api-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { User } from "lucide-react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 const priorityVariant = (p: string) => {
@@ -44,14 +39,14 @@ function TicketStatusSelect({ ticket }: { ticket: TicketRow }) {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const [status, setStatus] = useState<TicketRow["status"]>(ticket.status);
-    const canEdit = hasPermission("tickets.edit");
+    const canEdit = hasPermission("tickets.status.update");
 
     useEffect(() => {
         setStatus(ticket.status);
     }, [ticket.status]);
 
     const { mutate, isPending } = useApiMutation<unknown, { status: TicketRow["status"] }>({
-        url: `/tickets/${ticket.id}`,
+        url: `/ticket-status/${ticket.id}`,
         method: "PUT",
         invalidateKeys: "tickets",
         successMessage: "ticket.status.updated",
@@ -77,38 +72,124 @@ function TicketStatusSelect({ ticket }: { ticket: TicketRow }) {
     };
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <button
-                    type="button"
-                    aria-label={`${t("ticket.status.change")}: ${statusLabel}`}
-                    disabled={isPending}
-                    className={cn(
-                        "inline-flex h-8 items-center gap-1 rounded-md",
-                        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-                        "disabled:cursor-not-allowed disabled:opacity-50",
-                    )}
-                >
-                    <MyBadge type={statusBadgeType(status)} variant="soft" size="sm" loading={isPending}>
-                        {statusLabel}
+        <ChoiceMenu
+            ariaLabel={`${t("ticket.status.change")}: ${statusLabel}`}
+            value={status}
+            disabled={isPending}
+            trigger={(
+                <MyBadge type={statusBadgeType(status)} variant="soft" size="sm" loading={isPending}>
+                    {statusLabel}
+                </MyBadge>
+            )}
+            options={STATUS_OPTIONS.map((option) => ({
+                value: option.value,
+                content: (
+                    <MyBadge type={option.value} variant="soft" size="sm">
+                        {t(option.label)}
                     </MyBadge>
-                    <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-                </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-                {STATUS_OPTIONS.map((option) => (
-                    <DropdownMenuItem
-                        key={option.value}
-                        className="cursor-pointer p-1"
-                        onSelect={() => applyStatus(option.value)}
-                    >
-                        <MyBadge type={option.value} variant="soft" size="sm">
-                            {t(option.label)}
-                        </MyBadge>
-                    </DropdownMenuItem>
-                ))}
-            </DropdownMenuContent>
-        </DropdownMenu>
+                ),
+            }))}
+            onSelect={applyStatus}
+        />
+    );
+}
+
+const UNASSIGNED_VALUE = "";
+
+type StaffChoice = {
+    id: number;
+    name: string;
+};
+
+function toStaffChoice(value: { id?: unknown; name?: unknown } | null | undefined): StaffChoice | null {
+    if (!value || typeof value.name !== "string") return null;
+    const id = Number(value.id);
+    if (!Number.isInteger(id)) return null;
+    return { id, name: value.name };
+}
+
+function WithUserIcon({ children }: { children: ReactNode }) {
+    return (
+        <span className="inline-flex items-center gap-2">
+            <User aria-hidden className="h-3.5 w-3.5 shrink-0" />
+            <span>{children}</span>
+        </span>
+    );
+}
+
+function TicketAssigneeSelect({ ticket }: { ticket: TicketRow }) {
+    const { t } = useTranslation();
+    const { hasPermission } = usePermissions();
+    const canAssign = hasPermission("tickets.assignee.update");
+    const [assignee, setAssignee] = useState<StaffChoice | null>(toStaffChoice(ticket.staff));
+
+    useEffect(() => {
+        setAssignee(toStaffChoice(ticket.staff));
+    }, [ticket.staff]);
+
+    const { data: staffResponse } = useApiQuery<{ data?: Array<{ id?: unknown; name?: unknown }> }>({
+        queryKey: ["dropdown-staffs"],
+        url: "dropdown-staffs",
+        pagination: false,
+        enabled: canAssign,
+    });
+
+    const { mutate, isPending } = useApiMutation<unknown, { assigned_to: number | null }>({
+        url: `/ticket-assignee/${ticket.id}`,
+        method: "PUT",
+        invalidateKeys: "tickets",
+        successMessage: "ticket.assigned_to.updated",
+        onError: () => setAssignee(toStaffChoice(ticket.staff)),
+    });
+
+    const label = assignee?.name ?? t("ticket.not_assigned");
+    const staffRows = useMemo(() => {
+        const rows = Array.isArray(staffResponse?.data) ? staffResponse.data : [];
+        const choices = new Map<number, StaffChoice>();
+        const current = toStaffChoice(ticket.staff);
+        if (current) choices.set(current.id, current);
+        for (const row of rows) {
+            const choice = toStaffChoice(row);
+            if (choice) choices.set(choice.id, choice);
+        }
+        return [...choices.values()];
+    }, [staffResponse?.data, ticket.staff]);
+
+    const applyAssignee = (value: string) => {
+        const next = value === UNASSIGNED_VALUE
+            ? null
+            : staffRows.find((staff) => String(staff.id) === value) ?? null;
+        if ((next?.id ?? null) === (assignee?.id ?? null)) return;
+        setAssignee(next);
+        mutate({ assigned_to: next?.id ?? null });
+    };
+
+    if (!canAssign) {
+        return (
+            <span className="inline-flex h-8 items-center text-sm">
+                <WithUserIcon>{label}</WithUserIcon>
+            </span>
+        );
+    }
+
+    return (
+        <ChoiceMenu
+            ariaLabel={`${t("ticket.assigned_to.change")}: ${label}`}
+            value={assignee ? String(assignee.id) : UNASSIGNED_VALUE}
+            disabled={isPending}
+            trigger={<WithUserIcon>{label}</WithUserIcon>}
+            options={[
+                {
+                    value: UNASSIGNED_VALUE,
+                    content: <WithUserIcon>{t("ticket.not_assigned")}</WithUserIcon>,
+                },
+                ...staffRows.map((staff) => ({
+                    value: String(staff.id),
+                    content: <WithUserIcon>{staff.name}</WithUserIcon>,
+                })),
+            ]}
+            onSelect={applyAssignee}
+        />
     );
 }
 
@@ -174,8 +255,9 @@ export const TicketColumns: ColumnDef<TicketRow>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="ticket.assigned_to.label" />
         ),
-        cell: ({ row }) => <span>{row.original.staff?.name ?? "—"}</span>,
+        cell: ({ row }) => <TicketAssigneeSelect ticket={row.original} />,
         enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: "messages_count",
@@ -206,6 +288,7 @@ export const TicketColumns: ColumnDef<TicketRow>[] = [
         ),
         cell: ({ row }) => <TicketStatusSelect ticket={row.original} />,
         enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: "created_at",

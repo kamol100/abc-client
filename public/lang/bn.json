@@ -1544,7 +1544,9 @@
         "edit_title": "এডিট",
         "delete_confirmation": "আপনি কি নিশ্চিত এই ক্লায়েন্টটি মুছে ফেলতে চান?",
         "address": {
-            "label": "ঠিকানা"
+            "label": "ঠিকানা",
+            "show_more": "আরও দেখুন",
+            "show_less": "কম দেখুন"
         },
         "connection_type": {
             "label": "কানেকশন টাইপ",
@@ -2135,7 +2137,9 @@
         },
         "assigned_to": {
             "label": "স্টাফ (অ্যাসাইন করা)",
-            "placeholder": "স্টাফ"
+            "placeholder": "স্টাফ",
+            "change": "অ্যাসাইনি বদলান",
+            "updated": "টিকেট অ্যাসাইনি আপডেট হয়েছে"
         },
         "message": {
             "label": "মেসেজ",
