@@ -25,6 +25,17 @@ export const ClientFilterSchema = (): FieldConfig[] => {
         },
         {
             type: "dropdown",
+            name: "billing_type",
+            placeholder: "client.billing_type.placeholder",
+            permission: true,
+            options: [
+                { value: "auto", label: "common.auto" },
+                { value: "manual", label: "common.manual" },
+                { value: "no_invoice_this_month", label: "common.no_invoice_this_month" },
+            ],
+        },
+        {
+            type: "dropdown",
             name: "status",
             placeholder: "client.status.placeholder",
             permission: true,

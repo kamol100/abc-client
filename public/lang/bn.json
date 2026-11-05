@@ -5289,6 +5289,10 @@
             "auto_inactive_client_invoice_due": {
                 "label": "অটো ইনঅ্যাক্টিভ ক্লায়েন্ট ইনভয়েস ডিউ"
             },
+            "auto_inactive_client_time": {
+                "label": "ক্লায়েন্ট অটো ইনঅ্যাক্টিভ সময়",
+                "placeholder": "অটো ইনঅ্যাক্টিভ সময় নির্বাচন করুন"
+            },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "অটো ইনঅ্যাক্টিভ রিসেলার ক্লায়েন্ট টার্মিনেশন তারিখ"
             },

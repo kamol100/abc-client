@@ -5289,6 +5289,10 @@
             "auto_inactive_client_invoice_due": {
                 "label": "Auto Inactive Client Invoice Due"
             },
+            "auto_inactive_client_time": {
+                "label": "Client Auto Inactive Time",
+                "placeholder": "Select auto inactive time"
+            },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "Auto Inactive Reseller Client Termination Date"
             },

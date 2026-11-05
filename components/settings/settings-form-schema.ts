@@ -1,6 +1,7 @@
 import type { FormFieldConfig, SelectOption } from "@/components/form-wrapper/form-builder-type";
 import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
 import {
+    CLIENT_AUTO_INACTIVE_TIME_RANGE,
     PAYMENT_DEADLINE_RANGE,
     type SettingsFieldKey,
     type SettingsSelectKey,
@@ -106,6 +107,17 @@ const PAYMENT_DEADLINE_OPTIONS: SettingsOptionConfig[] = Array.from(
     },
 );
 
+const CLIENT_AUTO_INACTIVE_TIME_OPTIONS: SettingsOptionConfig[] = Array.from(
+    { length: CLIENT_AUTO_INACTIVE_TIME_RANGE.max - CLIENT_AUTO_INACTIVE_TIME_RANGE.min + 1 },
+    (_, index) => {
+        const hour = CLIENT_AUTO_INACTIVE_TIME_RANGE.min + index;
+        return {
+            value: hour,
+            label: String(hour).padStart(2, "0"),
+        };
+    },
+);
+
 export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSectionSchema> = {
     general: {
         title: "settings.sections.general.title",
@@ -118,6 +130,7 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "text", key: "ticket_code_prefix" },
             { kind: "select", key: "payment_deadline", options: PAYMENT_DEADLINE_OPTIONS },
             { kind: "switch", key: "auto_inactive_client_invoice_due" },
+            { kind: "select", key: "auto_inactive_client_time", options: CLIENT_AUTO_INACTIVE_TIME_OPTIONS },
             { kind: "switch", key: "client_view_open_on_new_tab" },
             { kind: "switch", key: "client_edit_open_on_new_tab" },
         ],
