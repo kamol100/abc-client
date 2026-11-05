@@ -26,6 +26,9 @@ import { usePathname } from "next/navigation";
 const PT210_PRINT_WIDTH_MM = 48;
 const PT210_PAGE_DOTS = 384;
 const RECEIPT_MAX_PAGE_HEIGHT_MM = 280;
+/** Print drivers auto-rotate pages that are not clearly taller than wide, which prints blank on the 58mm roll. */
+const RECEIPT_MIN_PAGE_HEIGHT_MM = 60;
+const RECEIPT_MIN_PAGE_DOTS = Math.ceil((RECEIPT_MIN_PAGE_HEIGHT_MM * PT210_PAGE_DOTS) / PT210_PRINT_WIDTH_MM);
 const PAGE_CAPACITY_BUFFER_MM = 2;
 const INK_THRESHOLD = 168;
 
@@ -166,12 +169,15 @@ const flattenToInk = (source: HTMLCanvasElement) => {
     return target;
 };
 
-/** A short basic slip is wider than it is tall. Landscape pages come out blank on the PT-210. */
+export const thermalPageHeightDots = (contentHeightDots: number) =>
+    Math.max(Math.ceil(contentHeightDots), RECEIPT_MIN_PAGE_DOTS);
+
 const padThermalCanvasToPortrait = (source: HTMLCanvasElement) => {
-    if (source.height >= source.width) return source;
+    const pageHeight = thermalPageHeightDots(source.height);
+    if (pageHeight === source.height) return source;
     const target = document.createElement("canvas");
     target.width = source.width;
-    target.height = source.width;
+    target.height = pageHeight;
     const context = target.getContext("2d");
     if (!context) return source;
     context.fillStyle = "#ffffff";
@@ -195,12 +201,6 @@ const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypograp
         },
     });
     return flattenToInk(source);
-};
-
-/** jsPDF swaps a portrait page when the strip is shorter than it is wide. */
-const thermalPageSize = (heightMm: number): { orientation: "p" | "l"; format: [number, number] } => {
-    const orientation = heightMm >= PT210_PRINT_WIDTH_MM ? "p" : "l";
-    return { orientation, format: [PT210_PRINT_WIDTH_MM, heightMm] };
 };
 
 const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
@@ -451,27 +451,21 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 }
 
                 stagingContainer.appendChild(pageContainer);
-                const capturedCanvas = await toThermalCanvas(pageContainer, typography);
-                const pageCanvas = receiptRoot.dataset.receiptVariant === "basic"
-                    ? padThermalCanvasToPortrait(capturedCanvas)
-                    : capturedCanvas;
+                const pageCanvas = padThermalCanvasToPortrait(await toThermalCanvas(pageContainer, typography));
                 stagingContainer.removeChild(pageContainer);
 
-                const pageImageHeightMm = Math.max(
-                    canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM),
-                    20,
-                );
-                const pageSize = thermalPageSize(pageImageHeightMm);
+                const pageImageHeightMm = canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM);
+                const pageFormat: [number, number] = [PT210_PRINT_WIDTH_MM, pageImageHeightMm];
                 if (!pdf) {
                     pdf = new jsPDF({
-                        orientation: pageSize.orientation,
+                        orientation: "p",
                         unit: "mm",
-                        format: pageSize.format,
+                        format: pageFormat,
                         compress: true,
                     });
                     pdf.setProperties({ title: pdfName });
                 } else {
-                    pdf.addPage(pageSize.format, pageSize.orientation);
+                    pdf.addPage(pageFormat, "p");
                 }
 
                 pdf.addImage(
