@@ -1,27 +1,27 @@
 ## Summary
 
-Thermal receipt PDFs are now always portrait pages at least 60mm tall, in both Basic and Advanced modes. Short receipts used to become landscape pages (Advanced) or exactly square 48×48mm pages (Basic). Print drivers auto-rotate those, and the slip comes out blank. Tall receipts were already portrait and printed.
+Expense list status changes moved from the approve and decline icon buttons into a status dropdown on the status column, matching the ticket status menu.
 
 ## Frontend
 
-- `components/invoices/invoice-print-dialog.tsx`: every captured page is padded with white to at least 480 dots (60mm), and jsPDF pages are always created as portrait. Removed the landscape branch, the Basic-only square padding, and the 20mm stretch.
-- `tests/unit/invoices/invoice-print-dialog.test.ts`: page height rule.
+- `components/expenses/expense-column.tsx`: actions keep edit and delete. The status cell uses `ChoiceMenu` with Pending, Approved, and Declined. Choosing a status sends `PUT /expense-status/{id}` and rolls back on error. Users without `expenses.approval` see the badge only.
+- `components/expenses/expense-type.ts` and `expense-form-schema.ts`: shared status options for the menu and the expense form.
+- `public/lang/en.json` and `public/lang/bn.json`: `expense.status.change`.
+- `tests/unit/expenses/expense-status-select.test.tsx`: menu options, save, permission badge, and no approve/decline buttons.
 
 ## Browser
 
-On `vp.isp.test`, the real Print button was instrumented:
-
-- Captured bitmaps always had ink: desktop, 390px phone viewport, dark theme, default and 12px/400 fonts. The PDF image is plain RGB with no soft mask.
-- Before: small Basic slip was a 48×48mm page; Advanced at 12px measured 377px tall, which made a landscape page.
-- After: default Basic 48×63mm, small Basic 48×60mm, a short reseller invoice 48×60mm, all portrait. Repeated printing without refresh gave identical output.
-
-Not verified: physical printer output, Advanced mode end to end (saved settings were left on Basic; it shares the same page code), and multi-page receipts (no long invoice in local data).
+No dev server was running, and the expenses page needs a signed-in session. The dropdown was not clicked in the browser. The unit test covers the menu, the status request, and the badge shown without `expenses.approval`.
 
 ## Checks
 
-- `npx vitest run tests/unit/invoices/` passed (12 files, 47 tests).
+- `npx vitest run tests/unit/expenses/expense-status-select.test.tsx` passed (4 tests).
 - `scripts/ai/typecheck` passed.
+
+## Security
+
+`PUT /expense-status/{expense}` (`expense.status.update`) sits in the `auth:sanctum` + `subscription` group and is not behind the `permissions` middleware. `expenses.approval` only hides the menu. The seeded permission name and the route name also differ, so the API does not enforce the permission the form and this menu use.
 
 ## Unrelated
 
-None in the working tree.
+Left untouched: `components/clients/client-view.tsx`, `tests/unit/clients/client-view-ping-button.test.tsx`.

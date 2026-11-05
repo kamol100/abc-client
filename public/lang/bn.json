@@ -2673,7 +2673,8 @@
             "placeholder": "এক্সপেন্স তারিখ"
         },
         "status": {
-            "placeholder": "অবস্থা"
+            "placeholder": "অবস্থা",
+            "change": "স্ট্যাটাস বদলান"
         },
         "approve": "অনুমোদন",
         "decline": "প্রত্যাখ্যান",

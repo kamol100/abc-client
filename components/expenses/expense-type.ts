@@ -52,6 +52,16 @@ export const ExpenseRowSchema = z.object({
 
 export type ExpenseRow = z.infer<typeof ExpenseRowSchema>;
 
+export const EXPENSE_STATUSES = ["pending", "approved", "declined"] as const;
+
+export type ExpenseStatus = (typeof EXPENSE_STATUSES)[number];
+
+export const EXPENSE_STATUS_OPTIONS: { value: ExpenseStatus; label: string }[] = [
+    { value: "pending", label: "common.pending" },
+    { value: "approved", label: "common.approved" },
+    { value: "declined", label: "expense.declined" },
+];
+
 export type ExpenseReports = {
     total_amount?: number | null;
     pending_amount?: number | null;

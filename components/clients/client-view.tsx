@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import {
     ArrowLeft,
     CreditCard,
+    MapPin,
     MessageSquare,
     Package,
     RotateCcw,
@@ -34,6 +35,7 @@ import type { OnuSummary } from "@/components/onu/onu-type";
 
 const ClientSmsDialog = dynamic(() => import("@/components/clients/client-sms"), { ssr: false });
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
+const ClientAddMapDialog = dynamic(() => import("@/components/clients/client-add-map-dialog"), { ssr: false });
 
 interface Props {
     clientId: string;
@@ -59,6 +61,8 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const [smsOpen, setSmsOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
     const [lockOpen, setLockOpen] = useState(false);
+    const [mapOpen, setMapOpen] = useState(false);
+    const canAddMap = hasPermission("clients.map.add");
     const { data, isLoading } = useApiQuery<ApiResponse<ClientRow>>({
         queryKey: ["clients", "detail", clientId],
         url: `clients/${clientId}`,
@@ -128,6 +132,18 @@ const ClientView: FC<Props> = ({ clientId }) => {
                             >
                                 <Package className="h-4 w-4" />
                             </MyButton>
+                            {canAddMap && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setMapOpen(true)}
+                                    tooltip="client.actions.add_map"
+                                    aria-label={t("client.actions.add_map")}
+                                >
+                                    <MapPin className="h-4 w-4" />
+                                </MyButton>
+                            )}
                             {hasPermission("tickets.create") && (
                                 <MyButton
                                     action="edit"
@@ -206,6 +222,13 @@ const ClientView: FC<Props> = ({ clientId }) => {
                         open={changePackageOpen}
                         onOpenChange={setChangePackageOpen}
                     />
+                    {canAddMap && (
+                        <ClientAddMapDialog
+                            clientId={getClientId(client) ?? clientId}
+                            open={mapOpen}
+                            onOpenChange={setMapOpen}
+                        />
+                    )}
 
                     <BulkInvoicePayDialog
                         invoiceDue={client.invoiceDue ?? []}

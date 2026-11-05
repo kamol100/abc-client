@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
+import { EXPENSE_STATUS_OPTIONS } from "@/components/expenses/expense-type";
+import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { usePermissions } from "@/context/app-provider";
-import { FormFieldConfig } from "../form-wrapper/form-builder-type";
 
 export const ExpenseFormFieldSchema = (): FormFieldConfig[] => {
     const { t } = useTranslation();
@@ -67,11 +68,10 @@ export const ExpenseFormFieldSchema = (): FormFieldConfig[] => {
             label: { labelText: t("common.status") },
             placeholder: t("expense.status.placeholder"),
             permission: hasPermission("expenses.approval"),
-            options: [
-                { value: "pending", label: t("common.pending") },
-                { value: "approved", label: t("common.approved") },
-                { value: "declined", label: t("expense.declined") },
-            ],
+            options: EXPENSE_STATUS_OPTIONS.map((option) => ({
+                value: option.value,
+                label: t(option.label),
+            })),
         },
         {
             type: "textarea",

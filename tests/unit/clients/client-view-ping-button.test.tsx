@@ -39,6 +39,10 @@ vi.mock("@/components/clients/client-change-package-dialog", () => ({
     default: () => null,
 }));
 
+vi.mock("@/components/clients/client-add-map-dialog", () => ({
+    default: () => null,
+}));
+
 vi.mock("@/components/clients/client-sms", () => ({
     default: () => null,
 }));
@@ -107,7 +111,10 @@ describe("ClientView ping button placement", () => {
             </QueryClientProvider>
         );
 
-        const smsButton = await screen.findByRole("button", { name: "client.actions.sms" });
+        const packageButton = await screen.findByRole("button", { name: "client.actions.change_package" });
+        const mapButton = screen.getByRole("button", { name: "client.actions.add_map" });
+        const smsButton = screen.getByRole("button", { name: "client.actions.sms" });
+        expect(packageButton.compareDocumentPosition(mapButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
         const lockButton = screen.getByRole("button", { name: "client.actions.lock" });
         await waitFor(() => {
             expect(screen.getByRole("button", { name: "Ping on this ip" })).toBeEnabled();

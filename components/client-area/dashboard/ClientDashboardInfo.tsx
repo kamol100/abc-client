@@ -57,9 +57,6 @@ export default function ClientDashboardInfo({ data, isLoading, isError }: Props)
             <InfoItem label={t("client_dashboard.info.onu_status")}>
               <OnuStatus status={data.onu_status} />
             </InfoItem>
-            <InfoItem label={t("client_dashboard.info.customer_id")}>
-              <InfoText value={data.customer_id} />
-            </InfoItem>
             <InfoItem label={t("client_dashboard.info.account_expiration")}>
               <Expiration value={data.termination_date} />
             </InfoItem>
@@ -71,9 +68,6 @@ export default function ClientDashboardInfo({ data, isLoading, isError }: Props)
             </InfoItem>
             <InfoItem label={t("client_dashboard.info.phone")}>
               <InfoText value={data.phone} />
-            </InfoItem>
-            <InfoItem label={t("client_dashboard.info.alternate_phone")}>
-              <InfoText value={data.alternate_phone} />
             </InfoItem>
             <InfoItem label={t("client_dashboard.info.email")}>
               <InfoText value={data.email} />

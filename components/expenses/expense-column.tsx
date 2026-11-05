@@ -1,74 +1,95 @@
 "use client";
 
-import { formatMoney } from "@/lib/helper/helper";
 import { ColumnDef } from "@tanstack/react-table";
-import { CheckCircle2, Loader2, XCircle } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import MyBadge from "../my-badge";
-import { DeleteModal } from "../delete-modal";
+import ChoiceMenu from "@/components/choice-menu";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { DeleteModal } from "@/components/delete-modal";
+import ExpenseForm from "@/components/expenses/expense-form";
+import {
+    EXPENSE_STATUS_OPTIONS,
+    ExpenseRow,
+    ExpenseStatus,
+} from "@/components/expenses/expense-type";
+import MyBadge, { MyBadgeType } from "@/components/my-badge";
+import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
-import ExpenseForm from "./expense-form";
-import { ExpenseRow } from "./expense-type";
-import MyButton from "../my-button";
+import { formatMoney } from "@/lib/helper/helper";
 
-const STATUS_BADGE_TYPE = {
-    approved: "success" as const,
-    pending: "pending" as const,
-    declined: "decline" as const,
+const STATUS_BADGE_TYPE: Record<ExpenseStatus, MyBadgeType> = {
+    approved: "success",
+    pending: "pending",
+    declined: "decline",
 };
 
-const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
-    const { t } = useTranslation();
+function expenseStatus(value: string | null | undefined): ExpenseStatus {
+    if (value === "pending" || value === "approved" || value === "declined") return value;
+    return "pending";
+}
 
-    const { mutate: updateStatus, isPending, variables } = useApiMutation<
-        unknown,
-        { status: string }
-    >({
+function ExpenseStatusSelect({ expense }: { expense: ExpenseRow }) {
+    const { t } = useTranslation();
+    const { hasPermission } = usePermissions();
+    const [status, setStatus] = useState<ExpenseStatus>(expenseStatus(expense.status));
+    const canChange = hasPermission("expenses.approval");
+
+    useEffect(() => {
+        setStatus(expenseStatus(expense.status));
+    }, [expense.status]);
+
+    const { mutate, isPending } = useApiMutation<unknown, { status: ExpenseStatus }>({
         url: `/expense-status/${expense.id}`,
         method: "PUT",
         invalidateKeys: "expenses",
         successMessage: "expense.status_updated",
+        onError: () => setStatus(expenseStatus(expense.status)),
     });
 
-    const isApproving = isPending && variables?.status === "approved";
-    const isDeclining = isPending && variables?.status === "declined";
+    const statusLabel = t(
+        EXPENSE_STATUS_OPTIONS.find((option) => option.value === status)?.label ?? "common.pending",
+    );
+
+    if (!canChange) {
+        return (
+            <MyBadge type={STATUS_BADGE_TYPE[status]} variant="soft" size="sm">
+                {statusLabel}
+            </MyBadge>
+        );
+    }
+
+    const applyStatus = (nextStatus: ExpenseStatus) => {
+        if (nextStatus === status) return;
+        setStatus(nextStatus);
+        mutate({ status: nextStatus });
+    };
 
     return (
+        <ChoiceMenu
+            ariaLabel={`${t("expense.status.change")}: ${statusLabel}`}
+            value={status}
+            disabled={isPending}
+            trigger={(
+                <MyBadge type={STATUS_BADGE_TYPE[status]} variant="soft" size="sm" loading={isPending}>
+                    {statusLabel}
+                </MyBadge>
+            )}
+            options={EXPENSE_STATUS_OPTIONS.map((option) => ({
+                value: option.value,
+                content: (
+                    <MyBadge type={STATUS_BADGE_TYPE[option.value]} variant="soft" size="sm">
+                        {t(option.label)}
+                    </MyBadge>
+                ),
+            }))}
+            onSelect={applyStatus}
+        />
+    );
+}
+
+const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
+    return (
         <div className="flex items-end justify-end gap-1 mr-2">
-            {expense.status !== "approved" && (
-                <MyButton
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
-                    disabled={isPending}
-                    onClick={() => updateStatus({ status: "approved" })}
-                    title={t("expense.approve")}
-                >
-                    {isApproving ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                        <CheckCircle2 className="h-4 w-4" />
-                    )}
-                </MyButton>
-            )}
-            {expense.status !== "declined" && (
-                <MyButton
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
-                    disabled={isPending}
-                    onClick={() => updateStatus({ status: "declined" })}
-                    title={t("expense.decline")}
-                >
-                    {isDeclining ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                        <XCircle className="h-4 w-4" />
-                    )}
-                </MyButton>
-            )}
             <ExpenseForm
                 mode="edit"
                 data={{ id: expense.id }}
@@ -174,15 +195,8 @@ export const ExpenseColumns: ColumnDef<ExpenseRow>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="common.status" />
         ),
-        cell: ({ row }) => {
-            const status = (row.original.status ?? "pending") as keyof typeof STATUS_BADGE_TYPE;
-            const type = STATUS_BADGE_TYPE[status] ?? "pending";
-            return (
-                <MyBadge type={type} variant="soft">
-                    <span className="capitalize">{status}</span>
-                </MyBadge>
-            );
-        },
+        cell: ({ row }) => <ExpenseStatusSelect expense={row.original} />,
+        enableSorting: false,
     },
     {
         id: "actions",

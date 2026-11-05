@@ -2673,7 +2673,8 @@
             "placeholder": "Select expense date"
         },
         "status": {
-            "placeholder": "Select status"
+            "placeholder": "Select status",
+            "change": "Change status"
         },
         "approve": "Approve",
         "decline": "Decline",
