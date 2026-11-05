@@ -1135,6 +1135,10 @@
                 "required": "Status is required"
             }
         },
+        "expense_type": {
+            "label": "Expense Type",
+            "placeholder": "Select expense type"
+        },
         "amount": {
             "label": "Amount",
             "placeholder": "Enter amount",
@@ -3779,6 +3783,13 @@
                 "errors": {
                     "required": "Amount is required",
                     "min": "Amount must be greater than 0"
+                }
+            },
+            "fund": {
+                "label": "Fund",
+                "placeholder": "Select fund",
+                "errors": {
+                    "required": "Fund is required"
                 }
             },
             "messages": {

@@ -52,6 +52,16 @@ export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
       ],
     },
     {
+      type: "dropdown",
+      name: "expense_type_id",
+      label: { labelText: "salary.expense_type.label" },
+      placeholder: "salary.expense_type.placeholder",
+      api: "/dropdown-expense-types",
+      valueKey: "expenseType",
+      valueMapping: { idKey: "id", labelKey: "name" },
+      isClearable: true,
+    },
+    {
       type: "number",
       name: "amount",
       label: { labelText: "salary.amount.label", mandatory: true },

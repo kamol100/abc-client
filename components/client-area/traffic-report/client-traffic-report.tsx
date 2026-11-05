@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "lucide-react";
+import { CloudDownload, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
@@ -141,7 +141,7 @@ function SummaryCards({
             className={cn("flex items-center gap-4 rounded-lg px-4 py-4", card.className)}
           >
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-background/25">
-              <User className="h-7 w-7" aria-hidden />
+              <CloudDownload className="h-7 w-7" aria-hidden />
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wide">

@@ -28,7 +28,7 @@ export const ResellerWalletRechargeDialog: FC<ResellerWalletRechargeDialogProps>
     const formSchema = useMemo(() => ResellerWalletFormFieldSchema(), []);
     const walletId = reseller.wallet?.id;
 
-    const defaultValues = useMemo<ResellerWalletRechargeFormInput>(
+    const defaultValues = useMemo(
         () => ({
             recharge_method: "cash",
             balance: 0,

@@ -196,6 +196,7 @@ const SalaryFormContent: FC<ContentProps> = ({
         {field("staff_id")}
         {field("date")}
         {field("status")}
+        {field("expense_type_id")}
         {salaryType === "advance" && field("amount")}
       </div>
 

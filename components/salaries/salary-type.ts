@@ -12,6 +12,11 @@ const FundRefSchema = z.object({
   name: z.string(),
 });
 
+const ExpenseTypeRefSchema = z.object({
+  id: z.coerce.number(),
+  name: z.string(),
+});
+
 export type StaffRef = z.infer<typeof StaffRefSchema>;
 export type FundRef = z.infer<typeof FundRefSchema>;
 
@@ -39,6 +44,8 @@ export const SalaryRowSchema = z.object({
   salary_type: z.string(),
   fund_id: z.coerce.number().nullable().optional(),
   fund: FundRefSchema.nullable().optional(),
+  expense_type_id: z.coerce.number().nullable().optional(),
+  expenseType: ExpenseTypeRefSchema.nullable().optional(),
   note: z.string().nullable().optional(),
   status: z.string(),
 }).passthrough();
@@ -68,6 +75,10 @@ export const SalaryFormSchema = z.object({
   status: z.string()
     .min(1, { message: "salary.status.errors.required" })
     .default("pending"),
+  expense_type_id: z.preprocess(
+    (value) => (value === "" || value === null || value === undefined ? undefined : value),
+    z.coerce.number().int().positive().optional(),
+  ),
 });
 
 export type SalaryFormInput = z.input<typeof SalaryFormSchema>;

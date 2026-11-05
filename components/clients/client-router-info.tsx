@@ -213,13 +213,13 @@ function ClientIpPingDialogBody({
         <div className="overflow-hidden rounded-md border">
             <Table aria-busy={pinging}>
                 <TableHeader>
-                    <TableRow className="border-0 bg-foreground hover:bg-foreground">
-                        <TableHead className="h-9 w-14 text-center text-background">{t("client.basic_view.ping_sl")}</TableHead>
-                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_ip")}</TableHead>
-                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_time")}</TableHead>
-                        <TableHead className="h-9 text-center text-background">{t("client.basic_view.ping_size")}</TableHead>
-                        <TableHead className="h-9 w-16 text-center text-background">{t("client.basic_view.ping_ttl")}</TableHead>
-                        <TableHead className="h-9 w-24 text-center text-background">{t("client.basic_view.ping_status")}</TableHead>
+                    <TableRow className="border-border bg-muted hover:bg-muted">
+                        <TableHead className="h-9 w-14 text-center">{t("client.basic_view.ping_sl")}</TableHead>
+                        <TableHead className="h-9 text-center">{t("client.basic_view.ping_ip")}</TableHead>
+                        <TableHead className="h-9 text-center">{t("client.basic_view.ping_time")}</TableHead>
+                        <TableHead className="h-9 text-center">{t("client.basic_view.ping_size")}</TableHead>
+                        <TableHead className="h-9 w-16 text-center">{t("client.basic_view.ping_ttl")}</TableHead>
+                        <TableHead className="h-9 w-24 text-center">{t("client.basic_view.ping_status")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
