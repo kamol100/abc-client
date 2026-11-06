@@ -160,6 +160,7 @@ export function DataTable<TData, TValue>({
             toolbarBeforeViewOptions={toolbarBeforeViewOptions}
             toolbarBeforeForm={toolbarBeforeForm}
             simpleSearch={simpleSearch}
+            resultCount={paginationData?.total}
           />
         </div>
       )}

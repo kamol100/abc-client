@@ -1,25 +1,23 @@
 ## Summary
 
-The client status switch still calls `PUT /client-status/{id}`. If the client is inactive and this month has no internet bill, the API returns a preview and the switch opens a bill dialog. The client becomes active only after that bill is generated.
+Opening a list filter no longer hides the result count. A count chip sits at the start of the open filter row on every paginated data table.
 
 ## Frontend
 
-- `components/clients/client-status-toggle.tsx` keeps the switch. Deactivation is unchanged. Activation without a current internet bill opens the dialog instead of flipping the switch.
-- The dialog shows PPPoE username, name, package, and price, the generate date, the calculated adjust amount, remaining days, payment deadline (1–30), termination date, and a required note.
-- The adjust amount starts as the API value. Editing it is marked Edited and is not overwritten. Submit sends that amount.
-- A failed generate leaves the dialog open. Success closes it, toasts, and refreshes the client list.
-- The missing-bill response does not toast. Other errors still do (`ignoreError` on `useApiMutation`).
-- Copy is in `public/lang/en.json` and `public/lang/bn.json` under `client.activation`.
+- `DataTable` passes `pagination.total` into the shared toolbar.
+- Desktop filters, the mobile filter drawer, and mobile simple search all render that total as a pill before the fields.
+- The chip uses `DisplayCount`, so English and Bangla digits follow the active language. The closed toolbar title is unchanged.
+- Lists with no pagination total do not show the chip. Map screens and the income/expense report are not paginated tables, so they are unchanged.
 
 ## Browser
 
-No app server was running, and this screen needs a signed-in staff session, so the dialog was not clicked in a browser. Vitest covered opening the dialog, the 400 / 24-day preview, blocking submit without a note, an edited amount, a failed submit that keeps the dialog, and success that closes it and checks the switch.
+No app server was running, and the clients screen needs a signed-in session, so the chip was not clicked in a browser. Vitest covered a closed filter, an opened filter with `1,284` before the field, a pinned-open filter showing `0`, and a data table passing `902` into the chip.
 
 ## Checks
 
-- `npx vitest run tests/unit/clients/client-activation.test.tsx`: 5 passed.
+- `npx vitest run tests/unit/data-table/filter-result-count.test.tsx tests/unit/form/filter-toggle-reset.test.tsx tests/unit/data-table/filter-layout-preview.test.tsx tests/unit/data-table/mobile-simple-search.test.tsx`: 14 passed.
 - `scripts/ai/typecheck` passed.
 
 ## Unrelated
 
-Left untouched: the in-progress removal of client NID fields, and `tests/unit/expenses/`.
+Working tree was clean before this change.

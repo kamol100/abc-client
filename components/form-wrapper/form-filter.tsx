@@ -5,6 +5,8 @@ import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import DisplayCount from "@/components/display-count";
 import MyButton from "@/components/my-button";
 import InputField from "@/components/form/input-field";
 import DatePicker from "@/components/form/DatePicker";
@@ -36,6 +38,8 @@ type FormFilterProps = {
   formHook?: ReturnType<typeof useFilterForm>;
   /** How many flexible rows to use. Omitted keeps the single `grids` row. */
   filterRows?: number;
+  /** Matching row count. Shown at the start of the open filter row. */
+  resultCount?: number;
 };
 
 function FilterTextField({
@@ -122,7 +126,9 @@ const FormFilter = ({
   hideTrigger = false,
   formHook,
   filterRows,
+  resultCount,
 }: FormFilterProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(forceOpen);
 
   const internalHook = useFilterForm({ formSchema, setFilter, watchFields, defaultFilter });
@@ -226,15 +232,23 @@ const FormFilter = ({
       )}
     >
       {fieldsOpen && (
-        <div className={cn("w-full", rowCount != null && "min-w-0")}>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(submitFilter)}
-              className={cn("flex w-full", rowCount != null && "min-w-0")}
-            >
-              {renderFilterFields()}
-            </form>
-          </Form>
+        <div className={cn(
+          "flex w-full min-w-0 gap-2",
+          rowCount != null ? "items-start" : "items-center",
+        )}>
+          {hasResultCount(resultCount) && (
+            <FilterResultCount count={resultCount} label={t("common.results")} />
+          )}
+          <div className="min-w-0 flex-1">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(submitFilter)}
+                className={cn("flex w-full", rowCount != null && "min-w-0")}
+              >
+                {renderFilterFields()}
+              </form>
+            </Form>
+          </div>
         </div>
       )}
       <div>
@@ -267,5 +281,21 @@ const FormFilter = ({
     </div>
   );
 };
+
+function hasResultCount(value: number | undefined): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function FilterResultCount({ count, label }: { count: number; label: string }) {
+  return (
+    <span
+      data-testid="filter-result-count"
+      className="inline-flex h-9 shrink-0 items-center rounded-full border border-border bg-background px-3 text-sm font-medium text-foreground"
+    >
+      <span className="sr-only">{label}</span>
+      <DisplayCount amount={count} />
+    </span>
+  );
+}
 
 export default FormFilter;
