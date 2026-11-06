@@ -107,10 +107,9 @@ const MikrotikCommandTable: FC = () => {
             </p>
           ) : rows.length > 0 ? (
             <>
-              <DataTable data={rows} columns={MikrotikCommandColumns} toolbar={false} />
               <div className="space-y-2">
                 <p className="text-sm font-medium">
-                  {t("mikrotik_command.result.raw_title")}
+                  {t("mikrotik_command.result.raw_title", { count: rows.length })}
                 </p>
                 <pre className="rounded-md border bg-muted/30 p-3 text-xs whitespace-pre-wrap break-words font-mono">
                   {rawResultText}

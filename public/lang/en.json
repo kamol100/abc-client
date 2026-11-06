@@ -4287,7 +4287,7 @@
             "description": "Response data from the Mikrotik API.",
             "initial_hint": "Select a network and command, then click run.",
             "empty": "No result found for this command.",
-            "raw_title": "Raw Response",
+            "raw_title": "Raw Response ({{count}})",
             "single_value": "Value",
             "row_key": "Row {{index}}"
         }
