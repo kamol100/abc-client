@@ -1,27 +1,25 @@
 ## Summary
 
-Expense list status changes moved from the approve and decline icon buttons into a status dropdown on the status column, matching the ticket status menu.
+The client status switch still calls `PUT /client-status/{id}`. If the client is inactive and this month has no internet bill, the API returns a preview and the switch opens a bill dialog. The client becomes active only after that bill is generated.
 
 ## Frontend
 
-- `components/expenses/expense-column.tsx`: actions keep edit and delete. The status cell uses `ChoiceMenu` with Pending, Approved, and Declined. Choosing a status sends `PUT /expense-status/{id}` and rolls back on error. Users without `expenses.approval` see the badge only.
-- `components/expenses/expense-type.ts` and `expense-form-schema.ts`: shared status options for the menu and the expense form.
-- `public/lang/en.json` and `public/lang/bn.json`: `expense.status.change`.
-- `tests/unit/expenses/expense-status-select.test.tsx`: menu options, save, permission badge, and no approve/decline buttons.
+- `components/clients/client-status-toggle.tsx` keeps the switch. Deactivation is unchanged. Activation without a current internet bill opens the dialog instead of flipping the switch.
+- The dialog shows PPPoE username, name, package, and price, the generate date, the calculated adjust amount, remaining days, payment deadline (1–30), termination date, and a required note.
+- The adjust amount starts as the API value. Editing it is marked Edited and is not overwritten. Submit sends that amount.
+- A failed generate leaves the dialog open. Success closes it, toasts, and refreshes the client list.
+- The missing-bill response does not toast. Other errors still do (`ignoreError` on `useApiMutation`).
+- Copy is in `public/lang/en.json` and `public/lang/bn.json` under `client.activation`.
 
 ## Browser
 
-No dev server was running, and the expenses page needs a signed-in session. The dropdown was not clicked in the browser. The unit test covers the menu, the status request, and the badge shown without `expenses.approval`.
+No app server was running, and this screen needs a signed-in staff session, so the dialog was not clicked in a browser. Vitest covered opening the dialog, the 400 / 24-day preview, blocking submit without a note, an edited amount, a failed submit that keeps the dialog, and success that closes it and checks the switch.
 
 ## Checks
 
-- `npx vitest run tests/unit/expenses/expense-status-select.test.tsx` passed (4 tests).
+- `npx vitest run tests/unit/clients/client-activation.test.tsx`: 5 passed.
 - `scripts/ai/typecheck` passed.
-
-## Security
-
-`PUT /expense-status/{expense}` (`expense.status.update`) sits in the `auth:sanctum` + `subscription` group and is not behind the `permissions` middleware. `expenses.approval` only hides the menu. The seeded permission name and the route name also differ, so the API does not enforce the permission the form and this menu use.
 
 ## Unrelated
 
-Left untouched: `components/clients/client-view.tsx`, `tests/unit/clients/client-view-ping-button.test.tsx`.
+Left untouched: the in-progress removal of client NID fields, and `tests/unit/expenses/`.

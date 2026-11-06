@@ -1563,6 +1563,44 @@
             "placeholder": "Select connection mode"
         },
         "status_updated": "Client status updated successfully",
+        "activation": {
+            "title": "Generate internet bill",
+            "description": "Review the bill, then the client becomes active.",
+            "client_info": "Client info",
+            "generate_date": "Generated bill date",
+            "adjust": "Adjust [{{month}}] bill",
+            "remaining_days": "{{count}} days",
+            "amount_calculated": "Calculated",
+            "amount_edited": "Edited",
+            "deadline_label": "Payment deadline",
+            "termination_date": "Termination date",
+            "termination_placeholder": "Select termination date",
+            "note_label": "Note",
+            "note_placeholder": "Write note...",
+            "submit": "Generate and activate",
+            "required": "Generate the current month internet bill before activating this client.",
+            "invoice_permission": "You do not have permission to generate invoices.",
+            "package_invalid": "Assign a package with a price before activating this client.",
+            "type_missing": "Internet bill invoice type is not configured.",
+            "failed": "Invoice generation failed. The client was not activated.",
+            "amount": {
+                "errors": {
+                    "required": "Enter the adjust amount.",
+                    "invalid": "Enter a valid amount.",
+                    "min": "Amount must be at least 1."
+                }
+            },
+            "note": {
+                "errors": {
+                    "required": "A note is required."
+                }
+            },
+            "deadline": {
+                "errors": {
+                    "required": "Select a payment deadline."
+                }
+            }
+        },
         "actions": {
             "view": "View",
             "edit": "Edit",
@@ -5530,7 +5568,6 @@
         "remove_title": "Remove profile photo",
         "remove_confirm": "Remove your profile photo?",
         "photo_input": "Profile photo file",
-        "nid": "National ID",
         "upload_success": "Profile photo updated",
         "upload_failed": "Could not update the profile photo",
         "remove_success": "Profile photo removed",

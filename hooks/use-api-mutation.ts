@@ -17,6 +17,7 @@ interface UseApiMutationOptions<TData = unknown, TVariables = void> {
   redirectTo?: string;
   onSuccess?: (data: TData) => void;
   onError?: (error: unknown) => void;
+  ignoreError?: (error: unknown) => boolean;
 }
 
 export default function useApiMutation<
@@ -31,6 +32,7 @@ export default function useApiMutation<
   redirectTo,
   onSuccess,
   onError,
+  ignoreError,
 }: UseApiMutationOptions<TData, TVariables>) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -61,8 +63,9 @@ export default function useApiMutation<
       onSuccess?.(data);
     },
     onError: (error) => {
-      // A translated message_key when the API sends one, a friendly text for 429, else the API message.
-      toast.error(apiErrorText(error, t, defaultErrorMessage));
+      if (!ignoreError?.(error)) {
+        toast.error(apiErrorText(error, t, defaultErrorMessage));
+      }
       onError?.(error);
     },
   });

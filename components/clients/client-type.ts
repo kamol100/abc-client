@@ -166,7 +166,6 @@ export const ClientFormSchema = z.object({
     adr_longitude: nullableCoercedText,
     father_name: nullableText,
     occupation: nullableText,
-    nid: nullableText,
     nid_front: nullableText,
     nid_back: nullableText,
     photo: nullableText,

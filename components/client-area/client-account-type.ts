@@ -15,7 +15,6 @@ export const ClientAccountSchema = z.object({
   name: optionalText,
   father_name: optionalText,
   occupation: optionalText,
-  nid: optionalText,
   phone: optionalText,
   alternate_phone: optionalText,
   email: optionalText,
