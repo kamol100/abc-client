@@ -42,6 +42,7 @@ type BaseFieldConfig = {
     placeholder?: string;
     permission?: boolean;
     disabled?: boolean;
+    readOnly?: boolean;
     className?: string;
     order?: number;
     rules?: RegisterOptions;

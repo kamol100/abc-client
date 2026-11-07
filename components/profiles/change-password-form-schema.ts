@@ -32,4 +32,26 @@ export const ChangePasswordFormFieldSchema = (): FieldConfig[] => {
   ];
 };
 
+export const ChangeUsernameFormFieldSchema = (): FieldConfig[] => {
+  return [
+    {
+      type: "text",
+      name: "current_username",
+      label: {
+        labelText: "user_profile.account_security.change_username.current_username.label",
+      },
+      readOnly: true,
+    },
+    {
+      type: "text",
+      name: "username",
+      label: {
+        labelText: "user_profile.account_security.change_username.username.label",
+        mandatory: true,
+      },
+      placeholder: "user_profile.account_security.change_username.username.placeholder",
+    },
+  ];
+};
+
 export default ChangePasswordFormFieldSchema;

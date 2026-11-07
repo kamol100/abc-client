@@ -366,6 +366,7 @@ const FormBuilder = ({
             type={f.type}
             rules={f.rules}
             disabled={f.disabled}
+            readOnly={f.readOnly}
           />
         );
       case "password":

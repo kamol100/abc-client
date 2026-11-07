@@ -233,9 +233,29 @@ export const StaffColumns: ColumnDef<StaffRow>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="staff.name.label" />
     ),
-    cell: ({ row }) => (
-      <div className="w-[150px] capitalize">{row.original.name}</div>
+    cell: ({ row }) => {
+      return (
+        <div className="flex min-w-[150px] flex-col">
+          <span className="capitalize">{row.original.name}</span>
+        </div>
+      );
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "username",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="staff.username.label" />
     ),
+    cell: ({ row }) => {
+      const username = row.original.user?.username;
+      return (
+        <div className="flex min-w-[150px] flex-col">
+          <span className="capitalize">{username}</span>
+        </div>
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },

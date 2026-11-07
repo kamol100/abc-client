@@ -5723,6 +5723,27 @@
                     "mismatch": "Passwords do not match"
                 }
             }
+        },
+        "account_security": {
+            "label": "Change Password/Username",
+            "title": "Change Password/Username",
+            "tabs": {
+                "password": "Reset Password",
+                "username": "Update Username"
+            },
+            "change_username": {
+                "success": "Username updated successfully",
+                "current_username": {
+                    "label": "Current username"
+                },
+                "username": {
+                    "label": "New username",
+                    "placeholder": "Enter new username",
+                    "errors": {
+                        "required": "Username is required"
+                    }
+                }
+            }
         }
     },
     "client_profile": {

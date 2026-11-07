@@ -5723,6 +5723,27 @@
                     "mismatch": "পাসওয়ার্ড মিলছে না"
                 }
             }
+        },
+        "account_security": {
+            "label": "পাসওয়ার্ড/ইউজারনেম পরিবর্তন",
+            "title": "পাসওয়ার্ড/ইউজারনেম পরিবর্তন",
+            "tabs": {
+                "password": "পাসওয়ার্ড রিসেট",
+                "username": "ইউজারনেম আপডেট"
+            },
+            "change_username": {
+                "success": "ইউজারনেম সফলভাবে আপডেট হয়েছে",
+                "current_username": {
+                    "label": "বর্তমান ইউজারনেম"
+                },
+                "username": {
+                    "label": "নতুন ইউজারনেম",
+                    "placeholder": "নতুন ইউজারনেম দিন",
+                    "errors": {
+                        "required": "ইউজারনেম আবশ্যক"
+                    }
+                }
+            }
         }
     },
     "client_profile": {

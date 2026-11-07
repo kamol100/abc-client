@@ -46,3 +46,21 @@ export const CHANGE_PASSWORD_DEFAULTS: ChangePasswordFormInput = {
   password: "",
   password_confirmation: "",
 };
+
+export const ChangeUsernameFormSchema = z.object({
+  username: z
+    .string({
+      required_error:
+        "user_profile.account_security.change_username.username.errors.required",
+      invalid_type_error:
+        "user_profile.account_security.change_username.username.errors.required",
+    })
+    .trim()
+    .min(1, {
+      message:
+        "user_profile.account_security.change_username.username.errors.required",
+    }),
+});
+
+export type ChangeUsernameFormInput = z.input<typeof ChangeUsernameFormSchema>;
+export type ChangeUsernamePayload = z.output<typeof ChangeUsernameFormSchema>;

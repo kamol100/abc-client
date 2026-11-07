@@ -50,6 +50,7 @@ export interface ProfileReseller {
 
 export interface Profile {
   id: string;
+  username?: string;
   phone?: number | string;
   name: string;
   email?: string;
