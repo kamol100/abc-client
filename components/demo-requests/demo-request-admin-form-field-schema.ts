@@ -18,7 +18,7 @@ const DemoRequestAdminFormFieldSchema = (): FieldConfig[] => {
             placeholder: "admin_demo_request.fields.username.placeholder",
         },
         {
-            type: "password",
+            type: "text",
             name: "password",
             label: { labelText: "admin_demo_request.fields.password.label" },
             placeholder: "admin_demo_request.fields.password.placeholder",
@@ -45,7 +45,7 @@ const DemoRequestAdminFormFieldSchema = (): FieldConfig[] => {
             type: "text",
             name: "website",
             label: { labelText: "admin_demo_request.fields.website.label" },
-            placeholder: "https://example.isptik.com",
+            placeholder: "admin_demo_request.fields.website.placeholder",
         },
         {
             type: "text",

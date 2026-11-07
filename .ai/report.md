@@ -1,24 +1,19 @@
 ## Summary
 
-The demo request edit dialog now edits every fillable field, including a new username and password.
+`http://mk.isp.test/` opened the Laravel API page because the local nginx proxy only forwarded a fixed host list to Next.js. The company row was already correct.
 
-## Frontend
+## Change
 
-- `demo-request-status-form.tsx` sends full name, ISP name, email, website, phone, WhatsApp, user count, office address, terms accepted, status, username, and password.
-- `demo-request-admin-form-field-schema.ts` and `demo-request-type.ts` match those fields.
-- The details dialog shows username and password.
-- English and Bangla strings are in `public/lang/en.json` and `public/lang/bn.json`.
+- `docker/nginx/default.conf` now sends `*.isp.test` to the Next.js app. `api.isp.test` stays on the API server as an exact name.
+- Nginx was reloaded.
 
 ## Checks
 
-- `npx vitest run tests/unit/demo-request/demo-request-schema.test.ts`: 4 passed.
-- `scripts/ai/typecheck`: passed.
-- Browser: `http://isp.test/demo-requests`, signed in as Super Admin. The edit dialog opened with the existing row filled in, including username and password inputs. Saving `demo.user` / `demo-pass` failed because MySQL does not have the new columns yet. The row was not updated.
+- Company `mk` (id 7) has domain `mk.isp.test` and status `active`. `GET /api/v1/company-data?host=mk.isp.test` returns that company.
+- After reload, `http://mk.isp.test/` is a Next.js 307 to `/home`, then 200. The page title is `ISP Management Platform | mk` and the heading is `Welcome to mk`.
+- `http://api.isp.test/up` still returns 200.
+- `http://vp.isp.test/` still reaches the VP app (existing session lands on the dashboard).
 
 ## Remaining
 
-- Apply `2026_11_07_153600_add_username_and_password_to_demo_requests_table` on the API database, then save again.
-
-## Unrelated working tree
-
-Left as found: the public website field change in `demo-request-form.tsx` and `lib/validations/demo-request-schema.ts`, and `next.config.ts` (`demo.isp.test`, `mk.isp.test`).
+- In `/etc/hosts`, `app.isp.test` is `27.0.0.1`. The other tenant hosts use `127.0.0.1`.

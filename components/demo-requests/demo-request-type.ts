@@ -31,6 +31,8 @@ const optionalUserCount = z
 const requiredPhone = (requiredMessage: string, invalidMessage: string) =>
     z.string().trim().min(1, requiredMessage).refine(isBangladeshMobile, invalidMessage);
 
+const SUBDOMAIN = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.){2,}[a-z]{2,}$/i;
+
 export const DEMO_REQUEST_STATUSES = ["pending", "approved", "rejected"] as const;
 
 export type DemoRequestStatus = (typeof DEMO_REQUEST_STATUSES)[number];
@@ -95,6 +97,50 @@ export const DemoRequestAdminEditFormSchema = z.object({
     }),
     username: optionalText(USERNAME_MAX, "admin_demo_request.fields.username.errors.max"),
     password: optionalText(PASSWORD_MAX, "admin_demo_request.fields.password.errors.max"),
+}).superRefine((value, ctx) => {
+    if (value.status !== "approved") {
+        return;
+    }
+
+    if (value.username.length === 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["username"],
+            message: "admin_demo_request.fields.username.errors.required",
+        });
+    }
+
+    if (value.password.length < 8) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["password"],
+            message: value.password.length === 0
+                ? "admin_demo_request.fields.password.errors.required"
+                : "admin_demo_request.fields.password.errors.min",
+        });
+    }
+
+    if (value.website.length === 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["website"],
+            message: "admin_demo_request.fields.website.errors.required",
+        });
+    } else if (!SUBDOMAIN.test(value.website)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["website"],
+            message: "admin_demo_request.fields.website.errors.subdomain",
+        });
+    }
+
+    if (value.phone.length === 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["phone"],
+            message: "demo_request.fields.phone.errors.required",
+        });
+    }
 });
 
 export type DemoRequestAdminEditFormInput = z.input<typeof DemoRequestAdminEditFormSchema>;

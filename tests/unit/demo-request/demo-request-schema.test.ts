@@ -56,11 +56,44 @@ describe("DemoRequestAdminEditFormSchema", () => {
     }
   });
 
-  it("accepts empty username and password", () => {
+  it("accepts a subdomain website when approving", () => {
+    const dotted = DemoRequestAdminEditFormSchema.safeParse({
+      ...adminEdit,
+      website: "xxx.xxxxx.com",
+    });
+    const testDomain = DemoRequestAdminEditFormSchema.safeParse({
+      ...adminEdit,
+      website: "xxx.xxxxxx.test",
+    });
+
+    expect(dotted.success).toBe(true);
+    expect(testDomain.success).toBe(true);
+  });
+
+  it("rejects approval without username, a short password, or a non-domain website", () => {
     const result = DemoRequestAdminEditFormSchema.safeParse({
       ...adminEdit,
       username: "",
+      password: "short",
+      website: "https://xxx.xxxxx.com",
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const fields = result.error.issues.map((issue) => issue.path[0]);
+      expect(fields).toContain("username");
+      expect(fields).toContain("password");
+      expect(fields).toContain("website");
+    }
+  });
+
+  it("allows a pending update without username, password, or a subdomain", () => {
+    const result = DemoRequestAdminEditFormSchema.safeParse({
+      ...adminEdit,
+      status: "pending",
+      username: "",
       password: "",
+      website: "ddd",
     });
 
     expect(result.success).toBe(true);

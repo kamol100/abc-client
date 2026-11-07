@@ -3420,7 +3420,12 @@
                 "label": "Email"
             },
             "website": {
-                "label": "Website"
+                "label": "Website",
+                "placeholder": "name.example.com",
+                "errors": {
+                    "required": "Website is required to approve this request",
+                    "subdomain": "Enter a domain such as name.example.com"
+                }
             },
             "phone": {
                 "label": "Phone"
@@ -3445,6 +3450,7 @@
                 "label": "Username",
                 "placeholder": "Demo username",
                 "errors": {
+                    "required": "Username is required to approve this request",
                     "max": "Username is too long"
                 }
             },
@@ -3452,6 +3458,8 @@
                 "label": "Password",
                 "placeholder": "Demo password",
                 "errors": {
+                    "required": "Password is required to approve this request",
+                    "min": "Password must be at least 8 characters",
                     "max": "Password is too long"
                 }
             },
