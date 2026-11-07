@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import InputField from "@/components/form/input-field";
+import { PasswordField } from "@/components/form/password-field";
 import { CLIENT_DASHBOARD_PATH, CLIENT_LOGIN_PATH } from "@/lib/auth/routes";
 
 const CLIENT_AUTH_API = "/auth/client";
@@ -176,8 +177,7 @@ export function ClientLoginForm({
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="password">{t("client_login.password.label")}</Label>
-                    <InputField
-                      type="password"
+                    <PasswordField
                       name="password"
                       placeholder="client_login.password.placeholder"
                     />

@@ -9,6 +9,7 @@ import FormWrapper from "./form-wrapper";
 import CheckboxField from "../form/checkbox-field";
 import DatePicker from "../form/DatePicker";
 import InputField from "../form/input-field";
+import PasswordField from "../form/password-field";
 import RadioField from "../form/radio-field";
 import Switch from "../form/switch";
 import TextareaField from "../form/textarea-field";
@@ -356,7 +357,6 @@ const FormBuilder = ({
     switch (f.type) {
       case "text":
       case "email":
-      case "password":
       case "number":
         return (
           <InputField
@@ -364,6 +364,16 @@ const FormBuilder = ({
             label={f.label}
             placeholder={f.placeholder}
             type={f.type}
+            rules={f.rules}
+            disabled={f.disabled}
+          />
+        );
+      case "password":
+        return (
+          <PasswordField
+            name={name}
+            label={f.label}
+            placeholder={f.placeholder}
             rules={f.rules}
             disabled={f.disabled}
           />

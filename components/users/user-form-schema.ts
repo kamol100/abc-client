@@ -35,22 +35,6 @@ export const UserFormSchema = ({ mode = "create" }: Props): FieldConfig[] => {
             placeholder: "user.email.placeholder",
         },
         {
-            type: "dropdown",
-            label: {
-                labelText: "user.roles.label",
-                mandatory: true,
-            },
-            name: "roles_id",
-            placeholder: "user.roles.placeholder",
-            isMulti: true,
-            api: "/dropdown-roles",
-            valueKey: "roles",
-            valueMapping: {
-                idKey: "id",
-                labelKey: "name",
-            },
-        },
-        {
             type: "text",
             label: {
                 labelText: "user.password.label",

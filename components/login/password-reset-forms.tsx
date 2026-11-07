@@ -1,6 +1,7 @@
 "use client";
 
 import InputField from "@/components/form/input-field";
+import { PasswordField } from "@/components/form/password-field";
 import { MyButton } from "@/components/my-button";
 import {
   ForgotPasswordSchema,
@@ -235,14 +236,12 @@ export function ResetPasswordForm({ companyLogoUrl, companyName, className }: Pa
           <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid gap-6 pb-6">
               <p className="text-sm text-muted-foreground">{t("password_reset.reset_description")}</p>
-              <InputField
-                type="password"
+              <PasswordField
                 name="password"
                 label={{ labelText: "password_reset.password.label" }}
                 placeholder="password_reset.password.placeholder"
               />
-              <InputField
-                type="password"
+              <PasswordField
                 name="password_confirmation"
                 label={{ labelText: "password_reset.password_confirmation.label" }}
                 placeholder="password_reset.password_confirmation.placeholder"

@@ -1,19 +1,19 @@
 ## Summary
 
-`http://mk.isp.test/` opened the Laravel API page because the local nginx proxy only forwarded a fixed host list to Next.js. The company row was already correct.
+The user form no longer asks for roles. Username stays on create and edit, and the edit form can change it.
 
-## Change
+## Frontend
 
-- `docker/nginx/default.conf` now sends `*.isp.test` to the Next.js app. `api.isp.test` stays on the API server as an exact name.
-- Nginx was reloaded.
+- Removed the roles dropdown from `UserFormSchema` for both create and edit.
+- Dropped `roles_id` from the create and update Zod schemas so the form can submit without a role.
+- Username remains required and is shown on both modes. Password and confirm stay create-only.
 
 ## Checks
 
-- Company `mk` (id 7) has domain `mk.isp.test` and status `active`. `GET /api/v1/company-data?host=mk.isp.test` returns that company.
-- After reload, `http://mk.isp.test/` is a Next.js 307 to `/home`, then 200. The page title is `ISP Management Platform | mk` and the heading is `Welcome to mk`.
-- `http://api.isp.test/up` still returns 200.
-- `http://vp.isp.test/` still reaches the VP app (existing session lands on the dashboard).
+- `npx vitest run tests/unit/users/user-form-schema.test.ts`: 2 passed.
+- `scripts/ai/typecheck` passed.
+- Browser: Add User and Edit User on `http://app.isp.test/users` have no roles field. Edit opens with the current username filled, and the field accepts a new value. The dialog was cancelled so the live user was not saved.
 
-## Remaining
+## Unrelated working tree
 
-- In `/etc/hosts`, `app.isp.test` is `27.0.0.1`. The other tenant hosts use `127.0.0.1`.
+Left as found: password field visibility work (`components/form/password-field.tsx`, `input-field.tsx`, login and reset forms, form builder, company column, lang files, `tests/unit/form/password-visibility.test.tsx`).

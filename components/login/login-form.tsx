@@ -1,6 +1,7 @@
 "use client";
 import { MyButton } from "@/components/my-button";
 import InputField from "@/components/form/input-field";
+import { PasswordField } from "@/components/form/password-field";
 import { Login, LoginSchema } from "@/components/schema/login";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -211,8 +212,7 @@ export function LoginForm({
                         {t("login.forgot_password")}
                       </Link>
                     </div>
-                    <InputField
-                      type="password"
+                    <PasswordField
                       name="password"
                       placeholder="login.password.placeholder"
                     />

@@ -39,6 +39,8 @@
         "name": "Name",
         "username": "Username",
         "password": "Password",
+        "show_password": "Show password",
+        "hide_password": "Hide password",
         "roles": "Roles",
         "note": "Note",
         "date": "Date",
@@ -409,7 +411,7 @@
         "edit_title": "Edit User",
         "delete_confirmation": "Are you sure you want to delete this user?",
         "name": {
-            "label": "User Name",
+            "label": "Name",
             "tooltip": "Enter the full legal name of the user",
             "placeholder": "Enter the full legal name of the user",
             "errors": {
