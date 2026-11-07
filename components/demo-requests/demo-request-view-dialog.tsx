@@ -21,6 +21,8 @@ const DETAIL_FIELD_KEYS = [
     "user_count",
     "whatsapp",
     "office_address",
+    "username",
+    "password",
 ] as const satisfies readonly (keyof DemoRequestRow)[];
 
 function formatOptionalString(value: string | null | undefined, empty: string): string {
@@ -58,7 +60,7 @@ export function DemoRequestViewDialog({ demoRequestId, open, onOpenChange }: Pro
             )}
             {isPending && (
                 <div className="flex flex-col gap-3">
-                    {Array.from({ length: 12 }).map((_, i) => (
+                    {Array.from({ length: 14 }).map((_, i) => (
                         <Skeleton key={i} className="h-5 w-full" />
                     ))}
                 </div>

@@ -182,8 +182,6 @@ export default function DemoRequestForm() {
             <TextField
               name="website"
               optional
-              type="url"
-              inputMode="url"
               autoComplete="url"
               placeholder="https://example.isptik.com"
             />

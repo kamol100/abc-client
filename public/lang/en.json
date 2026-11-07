@@ -3396,14 +3396,14 @@
     "admin_demo_request": {
         "title": "Demo requests",
         "title_plural": "Demo requests",
-        "edit_title": "Update status",
+        "edit_title": "Edit demo request",
         "view": "View",
         "view_title": "Demo request details",
         "load_error": "Could not load this demo request.",
         "delete_confirmation": "Are you sure you want to delete this demo request? This action cannot be undone.",
         "empty_value": "—",
         "toast": {
-            "updated": "Status updated successfully."
+            "updated": "Demo request updated successfully."
         },
         "terms_accepted": {
             "yes": "Yes",
@@ -3440,6 +3440,20 @@
             "status": {
                 "label": "Status",
                 "placeholder": "Select status"
+            },
+            "username": {
+                "label": "Username",
+                "placeholder": "Demo username",
+                "errors": {
+                    "max": "Username is too long"
+                }
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Demo password",
+                "errors": {
+                    "max": "Password is too long"
+                }
             },
             "created_at": {
                 "label": "Submitted"

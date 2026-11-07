@@ -1,29 +1,24 @@
-## Button label
-
-The MikroTik load button (`mikrotik_sync.sync.actions.load`) now reads Import / ইমপোর্ট. The request still posts to `/mikrotik-sync/load`.
-
 ## Summary
 
-The MikroTik sync filter bar now includes a reseller dropdown. Choosing a reseller sends `reseller_id` and the list shows only that reseller's rows.
+The demo request edit dialog now edits every fillable field, including a new username and password.
 
 ## Frontend
 
-- `components/mikrotik-sync/mikrotik-sync-filter-schema.ts` adds a clearable dropdown named `reseller_id`. Options come from `/dropdown-resellers/company`.
-- `components/mikrotik-sync/mikrotik-sync-table.tsx` lays the filters out on two rows so the extra field fits.
-- `public/lang/en.json` and `public/lang/bn.json` add `mikrotik_sync.filters.reseller.placeholder`.
-- `tests/unit/mikrotik-sync/mikrotik-sync-filter-schema.test.ts` checks the dropdown contract.
-
-The list query still uses `mikrotik-sync`. No `company_id` is sent. `reseller_id` is a filter value, not an authorization input.
+- `demo-request-status-form.tsx` sends full name, ISP name, email, website, phone, WhatsApp, user count, office address, terms accepted, status, username, and password.
+- `demo-request-admin-form-field-schema.ts` and `demo-request-type.ts` match those fields.
+- The details dialog shows username and password.
+- English and Bangla strings are in `public/lang/en.json` and `public/lang/bn.json`.
 
 ## Checks
 
+- `npx vitest run tests/unit/demo-request/demo-request-schema.test.ts`: 4 passed.
 - `scripts/ai/typecheck`: passed.
-- `npx vitest run tests/unit/mikrotik-sync/mikrotik-sync-filter-schema.test.ts`: 1 passed.
-- `public/lang/en.json` and `public/lang/bn.json` parse as JSON.
-- `npm run lint` was not run. This repo's ESLint config is already known to fail under Next 16.
-- Browser: `http://localhost:3000/mikrotik-sync` redirects to `/admin` login. The dropdown was not exercised in a signed-in session.
+- Browser: `http://isp.test/demo-requests`, signed in as Super Admin. The edit dialog opened with the existing row filled in, including username and password inputs. Saving `demo.user` / `demo-pass` failed because MySQL does not have the new columns yet. The row was not updated.
 
 ## Remaining
 
-- The reseller options require the existing `dropdown.resellers` permission, the same gate used by the client reseller filter and the bulk import dialog.
-- The matching API filter is `ExactColumn('reseller_id')` in the backend `MikrotikSync` filter pipeline.
+- Apply `2026_11_07_153600_add_username_and_password_to_demo_requests_table` on the API database, then save again.
+
+## Unrelated working tree
+
+Left as found: the public website field change in `demo-request-form.tsx` and `lib/validations/demo-request-schema.ts`, and `next.config.ts` (`demo.isp.test`, `mk.isp.test`).
