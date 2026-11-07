@@ -4459,6 +4459,9 @@
                     "not_imported": "Not Imported"
                 }
             },
+            "reseller": {
+                "placeholder": "Select reseller"
+            },
             "client_status_mikrotik": {
                 "placeholder": "Select Mikrotik status",
                 "options": {

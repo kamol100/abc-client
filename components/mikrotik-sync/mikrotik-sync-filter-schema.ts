@@ -37,6 +37,13 @@ export function MikrotikSyncFilterSchema(): FieldConfig[] {
     },
     {
       type: "dropdown",
+      name: "reseller_id",
+      placeholder: "mikrotik_sync.filters.reseller.placeholder",
+      isClearable: true,
+      api: "/dropdown-resellers/company",
+    },
+    {
+      type: "dropdown",
       name: "client_status_mikrotik",
       placeholder: "mikrotik_sync.filters.client_status_mikrotik.placeholder",
       isClearable: true,

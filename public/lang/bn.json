@@ -4459,6 +4459,9 @@
                     "not_imported": "নট ইমপোর্টেড"
                 }
             },
+            "reseller": {
+                "placeholder": "রিসেলার সিলেক্ট করুন"
+            },
             "client_status_mikrotik": {
                 "placeholder": "মাইক্রোটিক স্ট্যাটাস সিলেক্ট করুন",
                 "options": {

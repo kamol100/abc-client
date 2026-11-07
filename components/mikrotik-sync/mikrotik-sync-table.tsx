@@ -102,7 +102,8 @@ const MikrotikSyncTable: FC = () => {
     importableIds.length > 0 && importableIds.every((id) => selectedIds.includes(id));
   const toolbarOptions = useMemo(
     () => ({
-      filter: MikrotikSyncFilterSchema()
+      filter: MikrotikSyncFilterSchema(),
+      filter_row: 2,
     }),
     [],
   );
