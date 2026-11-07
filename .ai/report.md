@@ -1,3 +1,7 @@
+## Button label
+
+The MikroTik load button (`mikrotik_sync.sync.actions.load`) now reads Import / ইমপোর্ট. The request still posts to `/mikrotik-sync/load`.
+
 ## Summary
 
 The MikroTik sync filter bar now includes a reseller dropdown. Choosing a reseller sends `reseller_id` and the list shows only that reseller's rows.

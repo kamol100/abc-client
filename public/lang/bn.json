@@ -4421,7 +4421,7 @@
                 }
             },
             "actions": {
-                "load": "সিঙ্ক",
+                "load": "ইমপোর্ট",
                 "all_sync": "অল সিঙ্ক"
             },
             "descriptions": {

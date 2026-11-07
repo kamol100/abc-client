@@ -171,8 +171,8 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       items: [
         { title: t("menu.networks.title"), url: "/networks", permission: "networks.access", requiresAny: networkGate, feature: networkFeature },
         { title: t("menu.noc.title"), url: "/noc", permission: "monitoring.summary", requiresAny: ["monitoring.summary"], feature: "olts" },
-        { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access", requiresAny: syncGate, feature: networkFeature },
-        { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access", requiresAny: syncGate, feature: networkFeature },
+        // { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access", requiresAny: syncGate, feature: networkFeature },
+        // { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access", requiresAny: syncGate, feature: networkFeature },
         { title: t("menu.mikrotik_sync.unified.title"), url: "/mikrotik-sync", permission: "mikrotik-sync.access", requiresAny: ["mikrotik-sync.access"], feature: networkFeature },
         { title: t("menu.mikrotik_commands.title"), url: "/mikrotik-commands", permission: "mikrotik-command.access", requiresAny: ["mikrotik-command.access"], feature: networkFeature },
         { title: t("menu.packages.mikrotik_package.title"), url: "/mikrotik-packages", permission: "mikrotik-packages.access", requiresAny: packageGate },

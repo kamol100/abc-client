@@ -4421,7 +4421,7 @@
                 }
             },
             "actions": {
-                "load": "Sync",
+                "load": "Import",
                 "all_sync": "All Sync"
             },
             "descriptions": {

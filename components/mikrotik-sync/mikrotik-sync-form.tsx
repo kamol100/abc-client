@@ -78,7 +78,7 @@ export default function MikrotikSyncForm({
           <div>
             <div className="flex items-center gap-2">
               <Label label={networkField.label} />
-              <p className="text-sm font-normal text-muted-foreground">
+              <p className="text-sm font-normal text-muted-foreground -mt-1.5">
                 {t(config.descriptionKey)}
               </p>
             </div>
