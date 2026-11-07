@@ -84,6 +84,7 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/companies": "menu.companies.title",
   "/import-client": "menu.mikrotik_sync.import.title",
   "/re-sync": "menu.mikrotik_sync.re_sync.title",
+  "/mikrotik-sync": "menu.mikrotik_sync.unified.title",
   "/roles": "menu.role_permission.roles.title",
   "/permissions": "menu.role_permission.permissions.title",
   "/settings/general": "menu.settings.general.title",
@@ -110,7 +111,7 @@ const DYNAMIC_ROUTE_PATTERNS: { pattern: RegExp; key: string }[] = [
   { pattern: /^\/staffs\/edit\/[^/]+$/, key: "menu.staffs.title" },
   { pattern: /^\/salaries\/edit\/[^/]+$/, key: "menu.staffs.salaries.title" },
   { pattern: /^\/olts\/view\/[^/]+$/, key: "olt.view_title" },
-  { pattern: /^\/olts\/view\/[^/]+\/monitoring$/, key: "olt.monitoring_title" },
+  { pattern: /^\/mikrotik-sync\/import\/[^/]+$/, key: "mikrotik_sync.import_title" },
 ];
 
 function getPageTitleKey(pathname: string): string {

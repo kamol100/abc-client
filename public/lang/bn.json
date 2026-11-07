@@ -4405,6 +4405,148 @@
             "inactive_clients": "ইনঅ্যাক্টিভ ক্লায়েন্ট"
         }
     },
+    "mikrotik_sync": {
+        "title": "মাইক্রোটিক সিঙ্ক",
+        "title_plural": "মাইক্রোটিক সিঙ্ক",
+        "import_title": "ইমপোর্ট ক্লায়েন্ট",
+        "any_search": {
+            "placeholder": "নাম, ক্লায়েন্ট, অথবা প্রোফাইল দিয়ে সার্চ করুন"
+        },
+        "sync": {
+            "network": {
+                "label": "নেটওয়ার্ক",
+                "placeholder": "নেটওয়ার্ক সিলেক্ট করুন",
+                "errors": {
+                    "required": "নেটওয়ার্ক আবশ্যক"
+                }
+            },
+            "actions": {
+                "load": "সিঙ্ক",
+                "all_sync": "অল সিঙ্ক"
+            },
+            "descriptions": {
+                "load": "মাইক্রোটিক থেকে ডেটা লোড করে এই অ্যাপে ইমপোর্ট করুন।",
+                "resolve": "ক্লায়েন্টের প্যাকেজ ও স্ট্যাটাস মাইক্রোটিক এবং অ্যাপের সাথে সিঙ্ক করুন।"
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "select": "সারি নির্বাচন করুন",
+            "select_all": "সব নির্বাচন করুন",
+            "name": "নাম",
+            "reseller": "রিসেলার",
+            "client_in_mikrotik": "মাইক্রোটিকে ক্লায়েন্ট",
+            "client_in_app": "অ্যাপে ক্লায়েন্ট",
+            "mikrotik_profile": "মাইক্রোটিক প্রোফাইল",
+            "app_profile": "অ্যাপ প্রোফাইল",
+            "client_status_mikrotik": "মাইক্রোটিক স্ট্যাটাস",
+            "client_status_app": "অ্যাপ স্ট্যাটাস",
+            "disabled": "ডিসেবল",
+            "sync_status": "সিঙ্ক স্ট্যাটাস"
+        },
+        "filters": {
+            "disabled": {
+                "placeholder": "ডিসেবল স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "true": "হ্যাঁ",
+                    "false": "না"
+                }
+            },
+            "syncd_status": {
+                "placeholder": "সিঙ্ক স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "imported": "ইমপোর্টেড",
+                    "not_imported": "নট ইমপোর্টেড"
+                }
+            },
+            "client_status_mikrotik": {
+                "placeholder": "মাইক্রোটিক স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "active": "অ্যাক্টিভ",
+                    "inactive": "ইনঅ্যাক্টিভ"
+                }
+            },
+            "client": {
+                "placeholder": "ক্লায়েন্ট সোর্স সিলেক্ট করুন",
+                "options": {
+                    "mikrotik": "মাইক্রোটিকে ক্লায়েন্ট",
+                    "app": "অ্যাপে ক্লায়েন্ট"
+                }
+            },
+            "mikrotik_match": {
+                "placeholder": "ম্যাচ স্ট্যাটাস সিলেক্ট করুন",
+                "options": {
+                    "match": "ম্যাচ",
+                    "not_match": "নট ম্যাচ"
+                }
+            }
+        },
+        "summary": {
+            "empty": "কোনো সামারি নেই",
+            "total_clients": "ক্লায়েন্ট",
+            "match": "ম্যাচ",
+            "not_match": "নট ম্যাচ"
+        },
+        "status": {
+            "active": "অ্যাক্টিভ",
+            "inactive": "ইনঅ্যাক্টিভ"
+        },
+        "actions": {
+            "import": "ইমপোর্ট",
+            "individual_sync": "ইনডিভিজুয়াল সিঙ্ক"
+        },
+        "bulk": {
+            "title": "ক্লায়েন্ট ইমপোর্ট",
+            "description": "সিলেক্টেড ক্লায়েন্ট কীভাবে ইমপোর্ট হবে তা বেছে নিন।",
+            "import_as": {
+                "label": "ইমপোর্ট ধরন",
+                "options": {
+                    "own": "নিজের ক্লায়েন্ট হিসেবে ইমপোর্ট",
+                    "reseller": "রিসেলার ক্লায়েন্ট হিসেবে ইমপোর্ট"
+                }
+            },
+            "reseller": {
+                "label": "রিসেলার",
+                "placeholder": "রিসেলার সিলেক্ট করুন",
+                "errors": {
+                    "required": "রিসেলার আবশ্যক"
+                }
+            }
+        },
+        "messages": {
+            "load_success": "মাইক্রোটিক সিঙ্ক সফলভাবে সম্পন্ন হয়েছে",
+            "all_sync_success": "সব ক্লায়েন্ট সফলভাবে সিঙ্ক হয়েছে",
+            "individual_sync_success": "ক্লায়েন্ট সফলভাবে সিঙ্ক হয়েছে",
+            "import_success": "ক্লায়েন্ট সফলভাবে ইমপোর্ট হয়েছে",
+            "delete_confirmation": "আপনি কি নিশ্চিত এই সিঙ্ক ক্লায়েন্টটি ডিলিট করতে চান?",
+            "delete_client_confirmation": "আপনি কি নিশ্চিত এই ক্লায়েন্টটি ডিলিট করতে চান?",
+            "select_all_pages": "সব পেজের সব ক্লায়েন্ট ({{count}}) ইমপোর্ট হবে।",
+            "bulk_import_queued": "বাল্ক ইমপোর্ট কিউতে যোগ হয়েছে"
+        },
+        "mikrotik_profile": {
+            "label": "মাইক্রোটিক প্রোফাইল",
+            "placeholder": "মাইক্রোটিক প্রোফাইল দিন"
+        },
+        "network_id": {
+            "errors": {
+                "required": "নেটওয়ার্ক আবশ্যক"
+            }
+        },
+        "package_id": {
+            "errors": {
+                "required": "প্যাকেজ আবশ্যক"
+            }
+        },
+        "payment_term": {
+            "errors": {
+                "required": "পেমেন্ট টার্ম আবশ্যক"
+            }
+        },
+        "import_detail": {
+            "error_title": "এরর",
+            "load_failed": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।"
+        }
+    },
     "import_client": {
         "title": "ইমপোর্ট ক্লায়েন্ট",
         "title_plural": "ইমপোর্ট ক্লায়েন্ট",
@@ -4979,6 +5121,9 @@
             },
             "re_sync": {
                 "title": "রি-সিঙ্ক"
+            },
+            "unified": {
+                "title": "মাইক্রোটিক সিঙ্ক"
             }
         },
         "role_permission": {
