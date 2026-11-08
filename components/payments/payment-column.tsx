@@ -1,14 +1,41 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import MyButton from "../my-button";
-import { DataTableColumnHeader } from "../data-table/data-table-column-header";
-import { Badge } from "../ui/badge";
-import { DeleteModal } from "../delete-modal";
-import { PaymentRow } from "./payment-type";
-import DisplayCount from "../display-count";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { DeleteModal } from "@/components/delete-modal";
+import DisplayCount from "@/components/display-count";
+import { PaymentRow } from "@/components/payments/payment-type";
+import { Badge } from "@/components/ui/badge";
+import { usePermissions, useSettings } from "@/context/app-provider";
+import { toNumber } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
+
+function PaymentClientName({ client }: { client: PaymentRow["client"] }) {
+    const { hasPermission } = usePermissions();
+    const { settings } = useSettings();
+    const name = client?.name?.trim() ?? "";
+    const clientId = client?.uuid?.trim() ?? "";
+    const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
+
+    if (!canView) {
+        return (
+            <div className="w-[120px] capitalize truncate text-sm">
+                {name || "—"}
+            </div>
+        );
+    }
+
+    return (
+        <Link
+            href={`/clients/view/${clientId}`}
+            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+            className="block w-[120px] capitalize truncate text-sm underline-offset-4 hover:underline"
+        >
+            {name}
+        </Link>
+    );
+}
 
 const STATUS_STYLES: Record<string, string> = {
     paid: "theme-badge-success",
@@ -63,11 +90,7 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
                 title="payment.client.label"
             />
         ),
-        cell: ({ row }) => (
-            <div className="w-[120px] capitalize truncate">
-                {row.original.client?.name ?? "—"}
-            </div>
-        ),
+        cell: ({ row }) => <PaymentClientName client={row.original.client} />,
         enableSorting: false,
     },
     {
