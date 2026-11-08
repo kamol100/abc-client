@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import PlanFeatureMatrix from "@/components/subscription/plan-feature-matrix";
@@ -19,8 +19,34 @@ vi.mock("@/hooks/use-api-query", () => ({
     data: {
       data: {
         data: [
-          { id: "feature-1", key: "clients", name: "Clients" },
-          { id: "feature-2", key: "billing", name: "Billing" },
+          {
+            id: "feature-1",
+            key: "clients",
+            name: "Clients",
+            description: "Clients, packages, and zones",
+            permissions: [
+              { name: "clients.show", access_type: "read" },
+              { name: "clients.index", access_type: "write" },
+            ],
+          },
+          {
+            id: "feature-2",
+            key: "billing",
+            name: "Billing",
+            permissions: [
+              { name: "invoices.show", access_type: "read" },
+              { name: "invoices.store", access_type: "write" },
+            ],
+          },
+          {
+            id: "feature-3",
+            key: "core",
+            name: "Core",
+            permissions: [
+              { name: "dashboard.access", access_type: "read" },
+              { name: "roles.store", access_type: "write" },
+            ],
+          },
         ],
       },
     },
@@ -91,5 +117,42 @@ describe("PlanFeatureMatrix", () => {
         { id: "feature-2", expired_mode: "read_only" },
       ],
     });
+  });
+
+  it("shows which routes stay after expiry", async () => {
+    vi.stubGlobal("ResizeObserver", ResizeObserverStub);
+    const user = userEvent.setup();
+    renderMatrix([{ id: "feature-1", expired_mode: "read_only" }]);
+
+    await user.click(screen.getByRole("button", { name: "subscription.plan.features" }));
+
+    expect(screen.getByText("clients.show")).toBeInTheDocument();
+    expect(screen.getByText("subscription.plan.inspector.kept")).toBeInTheDocument();
+    expect(screen.getByText("subscription.plan.inspector.dropped")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "subscription.plan.inspector.filter_write" }));
+    expect(screen.queryByText("clients.show")).not.toBeInTheDocument();
+    expect(screen.getByText("clients.index")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "subscription.plan.inspector.while_active" }));
+    expect(screen.getAllByText("subscription.plan.inspector.granted").length).toBeGreaterThan(0);
+  });
+
+  it("leaves Core routes off the plan when Core is not included", async () => {
+    vi.stubGlobal("ResizeObserver", ResizeObserverStub);
+    const user = userEvent.setup();
+    renderMatrix([{ id: "feature-1", expired_mode: "full" }]);
+
+    await user.click(screen.getByRole("button", { name: "subscription.plan.features" }));
+    const core = screen.getByRole("checkbox", { name: "Core" });
+    const row = core.parentElement?.parentElement;
+    if (!row) throw new Error("Core row was not rendered");
+    await user.click(within(row).getByText("subscription.plan.inspector.off_plan"));
+
+    expect(core).not.toBeChecked();
+    expect(screen.getByText("dashboard.access")).toBeInTheDocument();
+    expect(screen.getByText("roles.store")).toBeInTheDocument();
+    expect(screen.getAllByText("subscription.plan.inspector.not_on_plan").length).toBeGreaterThan(0);
+    expect(screen.queryByText("subscription.plan.inspector.kept_core_read")).not.toBeInTheDocument();
   });
 });

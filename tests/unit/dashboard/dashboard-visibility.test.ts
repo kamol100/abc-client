@@ -38,8 +38,8 @@ describe("dashboard visibility settings", () => {
 
     expect(visibility.client).toBe(false);
     expect(visibility.reseller).toBe(false);
-    expect(visibility.topDueInvoices).toBe(true);
-    expect(visibility.zoneDue).toBe(true);
+    expect(visibility.topDueInvoices).toBe(false);
+    expect(visibility.zoneDue).toBe(false);
   });
 
   it("shows a permitted item when its setting has never been saved", () => {

@@ -49,12 +49,12 @@ export const DASHBOARD_VISIBILITY_ITEMS = [
   {
     id: "topDueInvoices",
     settingKey: "dashboard_show_top_due_invoices",
-    permission: null,
+    permission: DASHBOARD_CARD_PERMISSIONS.invoice,
   },
   {
     id: "zoneDue",
     settingKey: "dashboard_show_zone_due",
-    permission: null,
+    permission: DASHBOARD_CARD_PERMISSIONS.invoice,
   },
   {
     id: "invoiceExpenseGraph",
@@ -99,7 +99,7 @@ export function resolveDashboardVisibility(
   const visibility = {} as DashboardVisibilityMap;
 
   for (const item of DASHBOARD_VISIBILITY_ITEMS) {
-    const allowed = item.permission === null || hasPermission(item.permission);
+    const allowed = hasPermission(item.permission);
     visibility[item.id] = allowed && isDashboardItemVisible(settings?.[item.settingKey]);
   }
 

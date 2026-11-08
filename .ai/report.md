@@ -1,27 +1,19 @@
 ## Summary
 
-The payments table client name now opens that client's details page.
+The plan inspector no longer treats Core read routes as included when Core is off the plan. The dashboard stops requesting invoice lists that a Clients-only company cannot use.
 
 ## Frontend
 
-- `components/payments/payment-column.tsx` renders the client name as a link to `/clients/view/{uuid}` when the user has `clients.show`.
-- The link follows `client_view_open_on_new_tab`. Without permission, or when the payment has no client, the name stays plain text.
-- `components/payments/payment-type.ts` accepts the client `uuid` on the payment row.
-
-## Backend
-
-- `PaymentResource` now includes `client.uuid`. The details route uses the client UUID, and the payment payload previously returned only the numeric client id.
+- `plan-feature-matrix.tsx` uses the same rule as the API: a route is granted only when its feature is on the plan, and the expiry mode decides what remains after expiry.
+- The “Kept · Core read” result and its copy were removed from `en.json` and `bn.json`.
+- Top due invoices and zone dues require `dashboard-card.invoice`. Staff invoice collection uses that same permission, so a Clients-only session does not call those endpoints.
 
 ## Checks
 
-- Vitest: `tests/unit/payments/payment-column.test.tsx` — 4 passed.
-- Pest: `PaymentsControllerTest` "shows a payment with client invoice zone relations" — passed.
-- Browser on `http://app.isp.test/payments`: "Fabiola Von" links to `/clients/view/a2a9b8ce-1959-438c-ab86-3725ac3d5437` and that page loads as Client Details.
+- Typecheck: `scripts/ai/typecheck` passed.
+- Vitest: `tests/unit/subscription/plan-feature-matrix.test.tsx` and `tests/unit/dashboard/dashboard-visibility.test.ts` — 10 passed.
+- Browser on `http://cp.isp.test` as `cp`: sidebar is Dashboard, Clients, Networks, Zones, Maps, and Subscription. Clients opens and shows the empty table. Opening `/roles` directly no longer lists roles.
 
 ## Security
 
-- The link is hidden without `clients.show`. The API still authorizes `clients.show`. `uuid` is the existing public client id, not a new tenant field.
-
-## Left untouched
-
-- Backend working tree already had unrelated staff and username-change files: `Staff.php`, `StaffResource.php`, `ChangeUsernameRequest.php`, `UniqueCompanyUsername.php`, `AuthChangeUsernameTest.php`.
+The screen still only hides actions. The API is what returns 402. No `company_id` is sent.

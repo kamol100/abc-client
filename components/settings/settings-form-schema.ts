@@ -175,11 +175,11 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
     dashboard: {
         title: "settings.sections.dashboard.title",
         description: "settings.sections.dashboard.description",
-        fields: DASHBOARD_VISIBILITY_ITEMS.map((item): SettingsSwitchFieldSchema =>
-            item.permission
-                ? { kind: "switch", key: item.settingKey, permission: item.permission }
-                : { kind: "switch", key: item.settingKey },
-        ),
+        fields: DASHBOARD_VISIBILITY_ITEMS.map((item): SettingsSwitchFieldSchema => ({
+            kind: "switch",
+            key: item.settingKey,
+            permission: item.permission,
+        })),
     },
     monitoring: {
         title: "settings.sections.monitoring.title",

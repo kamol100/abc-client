@@ -1,5 +1,6 @@
 import { keepPreviousData } from "@tanstack/react-query";
 import { useCallback, useMemo, useState } from "react";
+import { DASHBOARD_CARD_PERMISSIONS } from "@/components/dashboard/dashboard-constants";
 import { resolveDashboardVisibility } from "@/components/dashboard/dashboard-visibility";
 import { usePermissions, useProfile, useSettings } from "@/context/app-provider";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
@@ -149,7 +150,7 @@ export function useDashboardData() {
     queryKey: ["dashboard-staff-invoice-collection"],
     url: "dashboard-staff-invoice-collection",
     pagination: false,
-    enabled: hasStaff,
+    enabled: hasStaff && hasPermission(DASHBOARD_CARD_PERMISSIONS.invoice),
   });
 
   const {
