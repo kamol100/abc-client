@@ -7717,6 +7717,11 @@
             "features_saved": "Plan features saved",
             "inspector": {
                 "summary": "{{included}} of {{total}} features · {{active}} routes while active · {{kept}} kept after expiry",
+                "remove_title": "Remove features from this plan?",
+                "remove_feature": "{{name}}: {{companies}} companies will lose this feature. {{staff}} staff and {{resellers}} resellers who have it now will lose it.",
+                "remove_restore": "Adding a removed feature back later gives it only to each company's Admin role. Staff and resellers do not get it back. Assign it again on each company.",
+                "remove_confirm": "Remove and save",
+                "impact_failed": "The impact of this change could not be loaded. Nothing was saved.",
                 "route_one": "{{count}} route · {{read}} read · {{write}} write",
                 "routes": "{{count}} routes · {{read}} read · {{write}} write",
                 "off_plan": "Off this plan",

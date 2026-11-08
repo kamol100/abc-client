@@ -1,19 +1,21 @@
 ## Summary
 
-The plan inspector no longer treats Core read routes as included when Core is off the plan. The dashboard stops requesting invoice lists that a Clients-only company cannot use.
+Saving plan features now asks for confirmation when the save removes a feature. The warning shows how many companies, staff, and resellers lose it, and that adding it back later restores only the company Admin role.
 
 ## Frontend
 
-- `plan-feature-matrix.tsx` uses the same rule as the API: a route is granted only when its feature is on the plan, and the expiry mode decides what remains after expiry.
-- The “Kept · Core read” result and its copy were removed from `en.json` and `bn.json`.
-- Top due invoices and zone dues require `dashboard-card.invoice`. Staff invoice collection uses that same permission, so a Clients-only session does not call those endpoints.
+- The save button in `plan-feature-matrix.tsx` calls `POST /subscription-plans/{id}/features/impact` first.
+- No removed features: the existing PUT runs immediately.
+- One or more removed features: a warning dialog lists each feature with its company, staff, and reseller counts, plus the restore note. Confirm runs the same PUT. Cancel leaves the selection as it is and does not save.
+- A failed impact request shows an error and does not save.
+- Copy is in `public/lang/en.json` and `public/lang/bn.json`.
 
 ## Checks
 
 - Typecheck: `scripts/ai/typecheck` passed.
-- Vitest: `tests/unit/subscription/plan-feature-matrix.test.tsx` and `tests/unit/dashboard/dashboard-visibility.test.ts` — 10 passed.
-- Browser on `http://cp.isp.test` as `cp`: sidebar is Dashboard, Clients, Networks, Zones, Maps, and Subscription. Clients opens and shows the empty table. Opening `/roles` directly no longer lists roles.
+- Vitest: `tests/unit/subscription/plan-feature-matrix.test.tsx` — 6 passed.
+- Browser on `http://app.isp.test/subscription-plans`: unchecking Clients and choosing Save opened “Remove features from this plan?” with “Clients: 2 companies will lose this feature. 2 staff and 0 resellers who have it now will lose it.” Cancel closed the warning. Clients was checked again and the dialog was closed. Nothing was saved.
 
 ## Security
 
-The screen still only hides actions. The API is what returns 402. No `company_id` is sent.
+The screen still only explains the API result. No `company_id` is sent.

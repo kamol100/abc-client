@@ -10,7 +10,7 @@ import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type ExpiredMode = "full" | "read_only" | "disabled";
@@ -39,6 +39,14 @@ interface SelectedFeature {
 
 interface SavedPlan {
   features?: Array<{ id: string; expired_mode: string }>;
+}
+
+interface RemovedFeatureImpact {
+  id: string;
+  name: string;
+  companies: number;
+  staff: number;
+  resellers: number;
 }
 
 interface RouteRow {
@@ -150,6 +158,10 @@ export default function PlanFeatureMatrix({
   const [standing, setStanding] = useState<Standing>("expired");
   const [filter, setFilter] = useState<RouteFilter>("all");
   const [query, setQuery] = useState("");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [removed, setRemoved] = useState<RemovedFeatureImpact[]>([]);
+  const [impactError, setImpactError] = useState(false);
+  const pendingFeatures = useRef<SelectedFeature[]>(initial);
   const initialSignature = selectionSignature(initial);
   if (!open && syncedSignature !== initialSignature) {
     setSyncedSignature(initialSignature);
@@ -173,10 +185,25 @@ export default function PlanFeatureMatrix({
       const saved = toSelected(plan.features);
       setSyncedSignature(selectionSignature(saved));
       setSelected(saved);
+      setConfirmOpen(false);
       queryClient.setQueriesData({ queryKey: ["subscription-plans"] }, (current) =>
         updatePlanFeatures(current, planId, saved)
       );
     },
+  });
+  const impact = useApiMutation<{ removed: RemovedFeatureImpact[] }, { features: SelectedFeature[] }>({
+    url: `/subscription-plans/${planId}/features/impact`,
+    method: "POST",
+    onSuccess: (result) => {
+      setImpactError(false);
+      if (result.removed.length === 0) {
+        mutation.mutate({ features: pendingFeatures.current });
+        return;
+      }
+      setRemoved(result.removed);
+      setConfirmOpen(true);
+    },
+    onError: () => setImpactError(true),
   });
 
   const choiceFor = (id: string) => selected.find((item) => item.id === id);
@@ -228,6 +255,12 @@ export default function PlanFeatureMatrix({
   });
   const readCount = routes.filter((route) => route.access === "read").length;
 
+  const requestSave = () => {
+    pendingFeatures.current = selected;
+    setImpactError(false);
+    impact.mutate({ features: selected });
+  };
+
   const closeInspector = (next: boolean) => {
     setOpen(next);
     if (next) return;
@@ -235,6 +268,8 @@ export default function PlanFeatureMatrix({
     setStanding("expired");
     setFilter("all");
     setQuery("");
+    setConfirmOpen(false);
+    setImpactError(false);
   };
 
   return (
@@ -435,14 +470,43 @@ export default function PlanFeatureMatrix({
                   type="button"
                   action="save"
                   title="common.save"
-                  loading={mutation.isPending}
-                  onClick={() => mutation.mutate({ features: selected })}
+                  loading={impact.isPending || mutation.isPending}
+                  onClick={requestSave}
                 />
+                {impactError ? (
+                  <p className="text-sm text-destructive">{t("subscription.plan.inspector.impact_failed")}</p>
+                ) : null}
               </div>
             )}
           </div>
         </div>
       )}
+      <MyDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="subscription.plan.inspector.remove_title"
+        description="subscription.plan.inspector.remove_restore"
+        variant="destructive"
+        confirmText="subscription.plan.inspector.remove_confirm"
+        cancelText="common.cancel"
+        loading={mutation.isPending}
+        onConfirm={async () => {
+          await mutation.mutateAsync({ features: pendingFeatures.current });
+        }}
+      >
+        <div className="space-y-3">
+          {removed.map((feature) => (
+            <p key={feature.id} className="text-sm">
+              {t("subscription.plan.inspector.remove_feature", {
+                name: feature.name,
+                companies: feature.companies,
+                staff: feature.staff,
+                resellers: feature.resellers,
+              })}
+            </p>
+          ))}
+        </div>
+      </MyDialog>
     </MyDialog>
   );
 }
