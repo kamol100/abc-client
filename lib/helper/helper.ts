@@ -193,6 +193,13 @@ export function subscriptionErrorKey(code: string | undefined): string | null {
     return null;
 }
 
+export function subscriptionDenialCode(response: unknown): "feature_not_in_plan" | "subscription_expired" | null {
+    if (!response || typeof response !== "object" || !("code" in response)) return null;
+    const code = response.code;
+    if (code === "feature_not_in_plan" || code === "subscription_expired") return code;
+    return null;
+}
+
 export function parseApiError(error: unknown): string | false {
     const err = error as ApiErrorShape;
     const subscriptionKey = subscriptionErrorKey(err?.code);

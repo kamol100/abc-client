@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isMenuFeatureLocked, parseApiError, subscriptionErrorKey } from "@/lib/helper/helper";
+import { isMenuFeatureLocked, parseApiError, subscriptionDenialCode, subscriptionErrorKey } from "@/lib/helper/helper";
 
 describe("subscription access", () => {
   it("locks a menu feature only after the subscription expires", () => {
@@ -14,5 +14,7 @@ describe("subscription access", () => {
     expect(subscriptionErrorKey("feature_not_in_plan")).toBe("subscription.feature_not_in_plan");
     expect(parseApiError({ code: "subscription_expired", message: "raw" })).toBe("subscription.expired_action");
     expect(parseApiError({ message: "Other failure" })).toBe("Other failure");
+    expect(subscriptionDenialCode({ code: "feature_not_in_plan" })).toBe("feature_not_in_plan");
+    expect(subscriptionDenialCode({ message: "Other failure" })).toBeNull();
   });
 });

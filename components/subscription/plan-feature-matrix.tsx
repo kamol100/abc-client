@@ -1,16 +1,21 @@
 "use client";
 
+import { SelectOption } from "@/components/form-wrapper/form-builder-type";
 import { FormLoader } from "@/components/loader/form-loader";
 import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
+import SelectDropdown from "@/components/select-dropdown";
+import { accessTypeFor, catalogPermissionNames } from "@/components/subscription/feature-permission-editor";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 type ExpiredMode = "full" | "read_only" | "disabled";
@@ -49,6 +54,11 @@ interface RemovedFeatureImpact {
   resellers: number;
 }
 
+interface PermissionAction {
+  featureId: string;
+  name: string;
+}
+
 interface RouteRow {
   name: string;
   group: string;
@@ -58,6 +68,12 @@ interface RouteRow {
 }
 
 const FILTERS: RouteFilter[] = ["all", "read", "write", "kept", "dropped"];
+
+const EXPIRY_OPTIONS: SelectOption[] = [
+  { value: "full", label: "subscription.mode.full" },
+  { value: "read_only", label: "subscription.mode.read_only" },
+  { value: "disabled", label: "subscription.mode.disabled" },
+];
 
 const RESULT_BADGE: Record<RouteResult, MyBadgeType> = {
   granted: "success",
@@ -123,6 +139,152 @@ function updatePlanFeatures(current: unknown, planId: string, features: Selected
   };
 }
 
+function ExpiryModeField({
+  mode,
+  disabled,
+  onModeChange,
+}: {
+  mode: ExpiredMode;
+  disabled: boolean;
+  onModeChange: (mode: ExpiredMode) => void;
+}) {
+  const values = useMemo(() => ({ expired_mode: mode }), [mode]);
+  const form = useForm<{ expired_mode: ExpiredMode }>({ values });
+
+  return (
+    <FormProvider {...form}>
+      <div className="w-full sm:w-64">
+        <SelectDropdown
+          name="expired_mode"
+          label={{
+            labelText: "subscription.plan.inspector.expiry_rule",
+            className: "sr-only",
+          }}
+          options={EXPIRY_OPTIONS}
+          isDisabled={disabled}
+          isClearable={false}
+          isSearchable={false}
+          onValueChange={(value) => {
+            if (typeof value === "string" && isExpiredMode(value)) onModeChange(value);
+          }}
+        />
+      </div>
+    </FormProvider>
+  );
+}
+
+function AddPermissionDialog({
+  open,
+  onOpenChange,
+  features,
+  defaultFeatureId,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  features: FeatureOption[];
+  defaultFeatureId: string;
+}) {
+  const { t } = useTranslation();
+  const form = useForm<{ feature_id: string; name: string }>({
+    defaultValues: { feature_id: defaultFeatureId, name: "" },
+  });
+  const featureId = form.watch("feature_id") || "";
+  const permissionName = form.watch("name") || "";
+  const { data: catalog, isLoading: isCatalogLoading } = useApiQuery<{ data?: unknown }>({
+    queryKey: ["permissions", "unassigned"],
+    url: "permissions",
+    pagination: false,
+    enabled: open,
+  });
+  const addPermission = useApiMutation<unknown, { permissions: Array<{ name: string; access_type: AccessType }> }>({
+    url: `/features/${featureId || "_"}/permissions`,
+    method: "PUT",
+    invalidateKeys: "features,feature",
+    successMessage: "subscription.feature.saved",
+  });
+
+  const featureOptions = useMemo<SelectOption[]>(
+    () => features.map((feature) => ({ value: feature.id, label: feature.name })),
+    [features]
+  );
+  const assignedNames = useMemo(() => {
+    const names = new Set<string>();
+    for (const feature of features) {
+      for (const permission of feature.permissions ?? []) names.add(permission.name);
+    }
+    return names;
+  }, [features]);
+  const permissionOptions = useMemo<SelectOption[]>(
+    () =>
+      catalogPermissionNames(catalog?.data)
+        .filter((name) => !assignedNames.has(name))
+        .map((name) => ({ value: name, label: name })),
+    [assignedNames, catalog?.data]
+  );
+  const canSave = featureId.length > 0 && permissionName.length > 0;
+
+  const save = async (close: () => void) => {
+    const feature = features.find((item) => item.id === featureId);
+    if (!feature || !canSave) return;
+    const permissions: Array<{ name: string; access_type: AccessType }> = (feature.permissions ?? []).map((permission) => ({
+      name: permission.name,
+      access_type: accessOf(permission),
+    }));
+    if (!permissions.some((permission) => permission.name === permissionName)) {
+      permissions.push({ name: permissionName, access_type: accessTypeFor(permissionName) });
+    }
+    await addPermission.mutateAsync({ permissions });
+    close();
+  };
+
+  return (
+    <MyDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="subscription.plan.inspector.add_permission_title"
+      description="subscription.plan.inspector.add_permission_detail"
+      loading={addPermission.isPending}
+      footer={({ close, loading }) => (
+        <>
+          <MyButton type="button" variant="outline" icon={false} title="common.cancel" onClick={close} disabled={loading} />
+          <MyButton
+            type="button"
+            action="save"
+            title="subscription.plan.inspector.add_permission_save"
+            disabled={!canSave || loading}
+            loading={loading}
+            onClick={() => save(close)}
+          />
+        </>
+      )}
+    >
+      <FormProvider {...form}>
+        <div className="space-y-3">
+          <SelectDropdown
+            name="feature_id"
+            label={{ labelText: "subscription.plan.inspector.add_permission_feature", mandatory: true }}
+            options={featureOptions}
+            isClearable={false}
+            isSearchable
+          />
+          <SelectDropdown
+            name="name"
+            label={{ labelText: "subscription.plan.inspector.add_permission_permission", mandatory: true }}
+            options={permissionOptions}
+            isLoading={isCatalogLoading}
+            isClearable={false}
+            isSearchable
+            placeholder="subscription.plan.inspector.add_permission_choose"
+          />
+          {!isCatalogLoading && permissionOptions.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{t("subscription.plan.inspector.add_permission_empty")}</p>
+          ) : null}
+        </div>
+      </FormProvider>
+    </MyDialog>
+  );
+}
+
 function featureRoutes(
   feature: FeatureOption,
   choice: SelectedFeature | undefined,
@@ -145,11 +307,15 @@ function featureRoutes(
 export default function PlanFeatureMatrix({
   planId,
   initial = [],
+  readOnly = false,
 }: {
   planId: string;
   initial?: SelectedFeature[];
+  readOnly?: boolean;
 }) {
   const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const canManagePermissions = !readOnly && hasPermission("features.permissions");
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<SelectedFeature[]>(initial);
@@ -161,6 +327,11 @@ export default function PlanFeatureMatrix({
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [removed, setRemoved] = useState<RemovedFeatureImpact[]>([]);
   const [impactError, setImpactError] = useState(false);
+  const [move, setMove] = useState<PermissionAction | null>(null);
+  const [moveTarget, setMoveTarget] = useState("");
+  const [remove, setRemove] = useState<PermissionAction | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
+  const [addSession, setAddSession] = useState(0);
   const pendingFeatures = useRef<SelectedFeature[]>(initial);
   const initialSignature = selectionSignature(initial);
   if (!open && syncedSignature !== initialSignature) {
@@ -205,10 +376,28 @@ export default function PlanFeatureMatrix({
     },
     onError: () => setImpactError(true),
   });
+  const movePermission = useApiMutation<unknown, { name: string; feature_id: string }>({
+    url: `/features/${move?.featureId ?? "_"}/permissions/move`,
+    method: "POST",
+    invalidateKeys: "features",
+    successMessage: "subscription.plan.inspector.moved",
+    onSuccess: () => {
+      setMove(null);
+      setMoveTarget("");
+    },
+  });
+  const removePermission = useApiMutation<unknown, { name: string }>({
+    url: `/features/${remove?.featureId ?? "_"}/permissions/remove`,
+    method: "POST",
+    invalidateKeys: "features",
+    successMessage: "subscription.feature.removed",
+    onSuccess: () => setRemove(null),
+  });
 
   const choiceFor = (id: string) => selected.find((item) => item.id === id);
 
   const toggle = (id: string, checked: boolean) => {
+    if (readOnly) return;
     setSelectedId(id);
     setSelected((current) => {
       if (!checked) return current.filter((item) => item.id !== id);
@@ -218,6 +407,7 @@ export default function PlanFeatureMatrix({
   };
 
   const setMode = (id: string, expired_mode: ExpiredMode) => {
+    if (readOnly) return;
     setSelected((current) => current.map((item) => (item.id === id ? { ...item, expired_mode } : item)));
   };
 
@@ -270,6 +460,10 @@ export default function PlanFeatureMatrix({
     setQuery("");
     setConfirmOpen(false);
     setImpactError(false);
+    setMove(null);
+    setMoveTarget("");
+    setRemove(null);
+    setAddOpen(false);
   };
 
   return (
@@ -314,9 +508,10 @@ export default function PlanFeatureMatrix({
                       <Checkbox
                         id={checkboxId}
                         checked={Boolean(choice)}
+                        disabled={readOnly}
                         onCheckedChange={(checked) => toggle(feature.id, checked === true)}
                       />
-                      <label htmlFor={checkboxId} className="cursor-pointer text-sm font-medium">
+                      <label htmlFor={checkboxId} className={cn("text-sm font-medium", readOnly ? "cursor-default" : "cursor-pointer")}>
                         {feature.name}
                       </label>
                     </div>
@@ -361,29 +556,31 @@ export default function PlanFeatureMatrix({
                     <Checkbox
                       id={`${planId}-${current.id}-included`}
                       checked={Boolean(currentChoice)}
+                      disabled={readOnly}
                       onCheckedChange={(checked) => toggle(current.id, checked === true)}
                     />
-                    <label htmlFor={`${planId}-${current.id}-included`} className="cursor-pointer text-sm">
+                    <label htmlFor={`${planId}-${current.id}-included`} className={cn("text-sm", readOnly ? "cursor-default" : "cursor-pointer")}>
                       {t("subscription.plan.inspector.on_plan")}
                     </label>
                   </div>
-                  <label className="sr-only" htmlFor={`${planId}-expiry`}>
-                    {t("subscription.plan.inspector.expiry_rule")}
-                  </label>
-                  <select
-                    id={`${planId}-expiry`}
-                    className="h-9 rounded-md border border-input bg-background px-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
-                    disabled={!currentChoice}
-                    value={currentChoice?.expired_mode ?? "read_only"}
-                    onChange={(event) => {
-                      const mode = event.target.value;
-                      if (isExpiredMode(mode)) setMode(current.id, mode);
-                    }}
-                  >
-                    <option value="full">{t("subscription.mode.full")}</option>
-                    <option value="read_only">{t("subscription.mode.read_only")}</option>
-                    <option value="disabled">{t("subscription.mode.disabled")}</option>
-                  </select>
+                  <ExpiryModeField
+                    mode={currentChoice?.expired_mode ?? "read_only"}
+                    disabled={readOnly || !currentChoice}
+                    onModeChange={(mode) => setMode(current.id, mode)}
+                  />
+                  {canManagePermissions ? (
+                    <MyButton
+                      type="button"
+                      action="add"
+                      size="default"
+                      className="mt-2"
+                      title="subscription.plan.inspector.add_permission"
+                      onClick={() => {
+                        setAddSession((session) => session + 1);
+                        setAddOpen(true);
+                      }}
+                    />
+                  ) : null}
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
@@ -439,9 +636,12 @@ export default function PlanFeatureMatrix({
                           <th className="py-2 pr-3 font-medium">{t("subscription.plan.inspector.group")}</th>
                           <th className="py-2 pr-3 font-medium">{t("subscription.plan.inspector.route")}</th>
                           <th className="py-2 pr-3 font-medium">{t("subscription.plan.inspector.access")}</th>
-                          <th className="py-2 font-medium">
+                          <th className="py-2 pr-3 font-medium">
                             {t(standing === "active" ? "subscription.plan.inspector.result_while_active" : "subscription.plan.inspector.result_after_expiry")}
                           </th>
+                          {canManagePermissions ? (
+                            <th className="py-2 text-right font-medium">{t("subscription.plan.inspector.actions")}</th>
+                          ) : null}
                         </tr>
                       </thead>
                       <tbody>
@@ -454,11 +654,40 @@ export default function PlanFeatureMatrix({
                                 {t(`subscription.mode.${route.access}`)}
                               </MyBadge>
                             </td>
-                            <td className="py-2">
+                            <td className="py-2 pr-3">
                               <MyBadge type={RESULT_BADGE[route.result]} variant="soft" size="sm" icon={false}>
                                 {t(`subscription.plan.inspector.${route.result}`)}
                               </MyBadge>
                             </td>
+                            {canManagePermissions ? (
+                              <td className="py-2">
+                                <div className="flex items-center justify-end gap-2">
+                                  <MyButton
+                                    type="button"
+                                    action="move"
+                                    size="sm"
+                                    variant="outline"
+                                    tooltip="subscription.plan.inspector.move_permission"
+                                    aria-label={t("subscription.plan.inspector.move_permission")}
+                                    disabled={movePermission.isPending || removePermission.isPending}
+                                    onClick={() => {
+                                      setMoveTarget("");
+                                      setMove({ featureId: current.id, name: route.name });
+                                    }}
+                                  />
+                                  <MyButton
+                                    type="button"
+                                    action="delete"
+                                    size="sm"
+                                    variant="outline"
+                                    tooltip="subscription.plan.inspector.remove_permission"
+                                    aria-label={t("subscription.plan.inspector.remove_permission")}
+                                    disabled={movePermission.isPending || removePermission.isPending}
+                                    onClick={() => setRemove({ featureId: current.id, name: route.name })}
+                                  />
+                                </div>
+                              </td>
+                            ) : null}
                           </tr>
                         ))}
                       </tbody>
@@ -466,16 +695,20 @@ export default function PlanFeatureMatrix({
                   </div>
                 )}
 
-                <MyButton
-                  type="button"
-                  action="save"
-                  title="common.save"
-                  loading={impact.isPending || mutation.isPending}
-                  onClick={requestSave}
-                />
-                {impactError ? (
-                  <p className="text-sm text-destructive">{t("subscription.plan.inspector.impact_failed")}</p>
-                ) : null}
+                {readOnly ? null : (
+                  <>
+                    <MyButton
+                      type="button"
+                      action="save"
+                      title="common.save"
+                      loading={impact.isPending || mutation.isPending}
+                      onClick={requestSave}
+                    />
+                    {impactError ? (
+                      <p className="text-sm text-destructive">{t("subscription.plan.inspector.impact_failed")}</p>
+                    ) : null}
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -506,6 +739,85 @@ export default function PlanFeatureMatrix({
             </p>
           ))}
         </div>
+      </MyDialog>
+      {current && canManagePermissions ? (
+        <AddPermissionDialog
+          key={addSession}
+          open={addOpen}
+          onOpenChange={setAddOpen}
+          features={features}
+          defaultFeatureId={current.id}
+        />
+      ) : null}
+      <MyDialog
+        open={move !== null}
+        onOpenChange={(next) => {
+          if (next) return;
+          setMove(null);
+          setMoveTarget("");
+        }}
+        title="subscription.plan.inspector.move_title"
+        description="subscription.plan.inspector.move_detail"
+        loading={movePermission.isPending}
+        footer={({ close, loading }) => (
+          <>
+            <MyButton type="button" variant="outline" icon={false} title="common.cancel" onClick={close} disabled={loading} />
+            <MyButton
+              type="button"
+              action="save"
+              title="subscription.plan.inspector.move_confirm"
+              disabled={!moveTarget || loading}
+              loading={loading}
+              onClick={async () => {
+                if (!move || !moveTarget) return;
+                await movePermission.mutateAsync({ name: move.name, feature_id: moveTarget });
+                close();
+              }}
+            />
+          </>
+        )}
+      >
+        <div className="space-y-3">
+          <p className="text-sm font-medium">{move?.name}</p>
+          <div className="space-y-1">
+            <label className="text-sm" htmlFor={`${planId}-move-target`}>
+              {t("subscription.plan.inspector.move_target")}
+            </label>
+            <select
+              id={`${planId}-move-target`}
+              className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
+              value={moveTarget}
+              onChange={(event) => setMoveTarget(event.target.value)}
+            >
+              <option value="">{t("subscription.plan.inspector.move_choose")}</option>
+              {features
+                .filter((feature) => feature.id !== move?.featureId)
+                .map((feature) => (
+                  <option key={feature.id} value={feature.id}>
+                    {feature.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+      </MyDialog>
+      <MyDialog
+        open={remove !== null}
+        onOpenChange={(next) => {
+          if (!next) setRemove(null);
+        }}
+        title="subscription.plan.inspector.remove_permission_title"
+        description="subscription.plan.inspector.remove_permission_detail"
+        variant="destructive"
+        confirmText="subscription.feature.remove"
+        cancelText="common.cancel"
+        loading={removePermission.isPending}
+        onConfirm={async () => {
+          if (!remove) return;
+          await removePermission.mutateAsync({ name: remove.name });
+        }}
+      >
+        <p className="text-sm font-medium">{remove?.name}</p>
       </MyDialog>
     </MyDialog>
   );

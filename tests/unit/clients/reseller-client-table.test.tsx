@@ -3,7 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ClientTable from "@/components/clients/client-table";
 
-const queryCalls = vi.hoisted(() => [] as Array<{ url: string; queryKey: unknown[]; params?: Record<string, string> }>);
+const queryCalls = vi.hoisted(() => [] as Array<{ url: string; queryKey: unknown[]; params?: Record<string, string>; enabled?: boolean }>);
+const clientAccess = vi.hoisted(() => ({ list: true, create: true }));
 const routerReplace = vi.hoisted(() => vi.fn());
 const searchParamsState = vi.hoisted(() => ({ value: "" }));
 
@@ -34,9 +35,16 @@ vi.mock("@/components/clients/client-online-status-cell", () => ({
     ClientOnlineStatusProvider: ({ children }: { children: unknown }) => children,
 }));
 
+vi.mock("@/context/app-provider", () => ({
+    usePermissions: () => ({
+        hasPermission: (name: string) =>
+            (name === "clients.access" && clientAccess.list) || (name === "clients.create" && clientAccess.create),
+    }),
+}));
+
 vi.mock("@/hooks/use-api-query", () => ({
-    default: (options: { url: string; queryKey: unknown[]; params?: Record<string, string> }) => {
-        queryCalls.push({ url: options.url, queryKey: options.queryKey, params: options.params });
+    default: (options: { url: string; queryKey: unknown[]; params?: Record<string, string>; enabled?: boolean }) => {
+        queryCalls.push({ url: options.url, queryKey: options.queryKey, params: options.params, enabled: options.enabled });
         return {
             data: { data: { data: [], pagination: { total: 3 } } },
             isLoading: false,
@@ -70,6 +78,8 @@ vi.mock("@/components/data-table/data-table", () => ({
 describe("ClientTable reseller report", () => {
     afterEach(() => {
         searchParamsState.value = "";
+        clientAccess.list = true;
+        clientAccess.create = true;
         window.history.replaceState(null, "", "/");
     });
 
@@ -150,5 +160,24 @@ describe("ClientTable reseller report", () => {
         expect(screen.getByText("has-create")).toBeInTheDocument();
         expect(screen.getByText("any,network_id,zone_id,status")).toBeInTheDocument();
         expect(screen.getByText("simple-search-on")).toBeInTheDocument();
+    });
+
+    it("hides the client list and the add button when the plan removed those permissions", () => {
+        clientAccess.list = false;
+        clientAccess.create = false;
+        queryCalls.length = 0;
+
+        const { unmount } = render(<ClientTable />);
+
+        expect(screen.getByText("subscription.feature_not_in_plan")).toBeInTheDocument();
+        expect(screen.queryByText("has-create")).not.toBeInTheDocument();
+        expect(queryCalls[0]?.enabled).toBe(false);
+        unmount();
+
+        clientAccess.list = true;
+        queryCalls.length = 0;
+        render(<ClientTable />);
+        expect(screen.getByText("report-only")).toBeInTheDocument();
+        expect(screen.queryByText("has-create")).not.toBeInTheDocument();
     });
 });

@@ -41,6 +41,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     queryKey: ["settings"],
     url: "user-settings",
     pagination: false,
+    refetchOnWindowFocus: true,
+    refetchInterval: 30_000,
   });
 
   React.useEffect(() => {

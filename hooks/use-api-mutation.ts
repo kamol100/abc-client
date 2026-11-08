@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { apiErrorText } from "@/lib/helper/helper";
+import { apiErrorText, subscriptionDenialCode } from "@/lib/helper/helper";
 import { sanitizeServerActionPayload } from "@/lib/helper/server-action-payload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -49,7 +49,12 @@ export default function useApiMutation<
         method,
         ...(payload !== undefined && { data: payload }),
       });
-      if (!result?.success) throw result;
+      if (!result?.success) {
+        if (subscriptionDenialCode(result)) {
+          void queryClient.invalidateQueries({ queryKey: ["settings"] });
+        }
+        throw result;
+      }
       return result?.data as TData;
     },
     onSuccess: (data) => {
