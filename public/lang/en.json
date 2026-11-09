@@ -2758,6 +2758,9 @@
         "product_code": {
             "label": "Product ID"
         },
+        "any_search": {
+            "placeholder": "Search by product ID, name, or description"
+        },
         "stock_in": {
             "label": "Stock In"
         },

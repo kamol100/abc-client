@@ -1,18 +1,22 @@
 ## Summary
 
-The histories filter now has a client dropdown and a date range on the Date column, matching the invoice filter.
+The products table now filters by product ID, name, or description, plus category, unit type, and has serial.
 
 ## Frontend
 
-- Client uses `/dropdown-clients` and sends `client_id`.
-- Date is a range on `created_at` and sends `from,to`.
-- The filter uses two rows so the four fields stay readable.
+- Any search sends `any` and matches product ID, name, and description.
+- Category uses `/dropdown-product-categories` and sends `product_category_id`.
+- Unit type uses `/dropdown-unit-types` and sends `unit_type_id`.
+- Has serial sends `has_serial` as `1` or `0`.
+- The four fields sit on two rows so they stay visible in the toolbar.
 
 ## Checks
 
 - `scripts/ai/typecheck`: passed.
-- Browser at `http://app.isp.test/histories`: choosing Testuser02 narrowed the list from 10 rows to that client's 2 rows. A 1–9 Nov 2026 range on top of that client returned 0 rows. Those client rows are dated 30 Oct 2026.
+- `scripts/ai/test`: 21 failed across 10 files (maps, client dashboard, reseller filters, date picker, column visibility, menu, and pay). None are product filter tests.
+- Browser at `http://app.isp.test/products`: `zzz` returned no rows, `PRO1` returned Test Product. Has serial No returned no rows; Yes returned PRO1. Category `instrument` kept PRO1. Unit type Meter with that category and Yes returned no rows.
 
 ## Notes
 
-- Existing uncommitted history-column, history-type, and unit-test changes were already in the tree and were left as they were.
+- The product list API did not accept these query params before this change. The matching filters were added in `isp-backend`.
+- One category option named `onu` renders as `key 'onu (en)' returned an object instead of string.` That label was already stored as an object and was left as it was.
