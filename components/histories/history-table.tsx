@@ -45,7 +45,7 @@ const HistoryTable: FC = () => {
     const toolbarOptions = useMemo(
         () => ({
             filter: HistoryFilterSchema(),
-            watchFields: ["description", "created_at"],
+            watchFields: ["description"],
         }),
         []
     );

@@ -1,10 +1,34 @@
 "use client";
 
+import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { cellIndex, formatKey } from "@/lib/helper/helper";
 import MyTooltip from "@/components/my-tooltip";
-import type { HistoryRow } from "./history-type";
+import type { HistoryRow } from "@/components/histories/history-type";
+import { usePermissions, useSettings } from "@/context/app-provider";
+import { cellIndex, formatKey } from "@/lib/helper/helper";
+
+function HistoryClientName({ client }: { client: HistoryRow["client"] }) {
+    const { hasPermission } = usePermissions();
+    const { settings } = useSettings();
+    const name = client?.name?.trim() ?? "";
+    const clientId = client?.uuid?.trim() ?? "";
+    const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
+
+    if (!canView) {
+        return <span className="text-sm capitalize">{name || "—"}</span>;
+    }
+
+    return (
+        <Link
+            href={`/clients/view/${clientId}`}
+            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+            className="text-sm capitalize underline-offset-4 hover:underline"
+        >
+            {name}
+        </Link>
+    );
+}
 
 type GetPagination = () => Pagination | undefined;
 
@@ -57,6 +81,17 @@ export function getHistoryColumns(
                     {row.original.staff ?? "—"}
                 </span>
             ),
+            enableSorting: false,
+        },
+        {
+            accessorKey: "client.name",
+            header: ({ column }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="history.client.label"
+                />
+            ),
+            cell: ({ row }) => <HistoryClientName client={row.original.client} />,
             enableSorting: false,
         },
         {

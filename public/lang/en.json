@@ -3492,6 +3492,10 @@
             "label": "Staff",
             "placeholder": "Select staff"
         },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client"
+        },
         "description": {
             "label": "Description",
             "placeholder": "Search description"
@@ -3504,7 +3508,7 @@
         },
         "created_at": {
             "label": "Date",
-            "placeholder": "Search date"
+            "placeholder": "Date"
         }
     },
     "unit_type": {
