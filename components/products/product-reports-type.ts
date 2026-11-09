@@ -5,12 +5,8 @@ import { ProductMovementRowSchema } from "@/components/products/product-movement
 export const ProductReportRowSchema = ProductMovementRowSchema.extend({}).passthrough();
 
 export const ProductReportSummarySchema = z.object({
-    actual_quantity: z.coerce.number().nullable().optional(),
-    actual_total_price: z.coerce.number().nullable().optional(),
-    product_in_current_quantity: z.coerce.number().nullable().optional(),
-    product_in_current_total_price: z.coerce.number().nullable().optional(),
-    product_out_current_quantity: z.coerce.number().nullable().optional(),
-    product_out_current_total_price: z.coerce.number().nullable().optional(),
+    quantity: z.coerce.number().nullable().optional(),
+    total_price: z.coerce.number().nullable().optional(),
 }).passthrough();
 
 export type ProductReportRow = z.infer<typeof ProductReportRowSchema>;

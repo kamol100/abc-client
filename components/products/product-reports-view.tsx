@@ -11,31 +11,30 @@ const ProductReportsView = () => {
     const [mode, setMode] = useState<ProductMovementMode>("in");
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center gap-2">
-                <MyButton
-                    action="create"
-                    icon={false}
-                    variant={mode === "in" ? "default" : "outline"}
-                    size="default"
-                    onClick={() => setMode("in")}
-                    title={t("product_reports.toggle.in")}
-                />
-                <MyButton
-                    action="create"
-                    icon={false}
-                    variant={mode === "out" ? "default" : "outline"}
-                    size="default"
-                    onClick={() => setMode("out")}
-                    title={t("product_reports.toggle.out")}
-                />
-            </div>
-
-            <ProductReportsTable
-                mode={mode}
-                toolbarTitleKey="menu.products.reports.title"
-            />
-        </div>
+        <ProductReportsTable
+            mode={mode}
+            toolbarTitleKey="menu.products.reports.title"
+            header={
+                <div className="flex items-center gap-2">
+                    <MyButton
+                        action="create"
+                        icon={false}
+                        variant={mode === "in" ? "default" : "outline"}
+                        size="default"
+                        onClick={() => setMode("in")}
+                        title={t("product_reports.toggle.in")}
+                    />
+                    <MyButton
+                        action="create"
+                        icon={false}
+                        variant={mode === "out" ? "default" : "outline"}
+                        size="default"
+                        onClick={() => setMode("out")}
+                        title={t("product_reports.toggle.out")}
+                    />
+                </div>
+            }
+        />
     );
 };
 

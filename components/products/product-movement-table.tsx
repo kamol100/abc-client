@@ -64,14 +64,8 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
         ? `${t(toolbarTitleKey)} (${pagination.total})`
         : t(toolbarTitleKey);
 
-    const summaryTotalPrice =
-        mode === "in"
-            ? toNumber(reports?.product_in_current_total_price)
-            : toNumber(reports?.product_out_current_total_price);
-    const summaryTotalQuantity =
-        mode === "in"
-            ? toNumber(reports?.product_in_current_quantity)
-            : toNumber(reports?.product_out_current_quantity);
+    const summaryTotalPrice = toNumber(reports?.total_price);
+    const summaryTotalQuantity = toNumber(reports?.quantity);
 
     return (
         <div className="space-y-4">

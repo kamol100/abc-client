@@ -3081,10 +3081,8 @@
             "out": "প্রোডাক্ট আউট"
         },
         "summary": {
-            "actual_quantity": "একচুয়াল কোয়ান্টিটি",
-            "actual_price": "একচুয়াল প্রাইস",
-            "current_quantity": "কারেন্ট কোয়ান্টিটি",
-            "current_price": "কারেন্ট প্রাইস"
+            "quantity": "কোয়ান্টিটি",
+            "total_price": "টোটাল প্রাইস"
         },
         "columns": {
             "sl": "SL",

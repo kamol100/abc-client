@@ -1,22 +1,20 @@
 ## Summary
 
-The products table now filters by product ID, name, or description, plus category, unit type, and has serial.
+Product report totals now sit on the right of the Product In and Product Out buttons, and show only quantity and total price for the current list.
 
 ## Frontend
 
-- Any search sends `any` and matches product ID, name, and description.
-- Category uses `/dropdown-product-categories` and sends `product_category_id`.
-- Unit type uses `/dropdown-unit-types` and sends `unit_type_id`.
-- Has serial sends `has_serial` as `1` or `0`.
-- The four fields sit on two rows so they stay visible in the toolbar.
+- Quantity and total price are inline chips, the same height as the Product In and Product Out buttons, aligned to the right.
+- Product In showed quantity 2 and ৳100, matching the row. Product Out showed quantity 1 and ৳70, matching that row.
+- The Product In report page (`/reports/product-in`) shows the same pair at the top right, with no toggle.
+- Product movement details read `reports.quantity` and `reports.total_price`.
 
 ## Checks
 
 - `scripts/ai/typecheck`: passed.
-- `scripts/ai/test`: 21 failed across 10 files (maps, client dashboard, reseller filters, date picker, column visibility, menu, and pay). None are product filter tests.
-- Browser at `http://app.isp.test/products`: `zzz` returned no rows, `PRO1` returned Test Product. Has serial No returned no rows; Yes returned PRO1. Category `instrument` kept PRO1. Unit type Meter with that category and Yes returned no rows.
+- Browser at `http://app.isp.test/products/reports` and `http://app.isp.test/reports/product-in`.
 
 ## Notes
 
-- The product list API did not accept these query params before this change. The matching filters were added in `isp-backend`.
-- One category option named `onu` renders as `key 'onu (en)' returned an object instead of string.` That label was already stored as an object and was left as it was.
+- Earlier uncommitted product-code column work is still in `product-reports-table.tsx` and `product-movement-type.ts`.
+- Product detail movement pages were not opened in the browser.

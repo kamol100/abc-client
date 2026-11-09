@@ -3081,10 +3081,8 @@
             "out": "Product Out"
         },
         "summary": {
-            "actual_quantity": "Actual Quantity",
-            "actual_price": "Actual Price",
-            "current_quantity": "Current Quantity",
-            "current_price": "Current Price"
+            "quantity": "Quantity",
+            "total_price": "Total Price"
         },
         "columns": {
             "sl": "SL",
