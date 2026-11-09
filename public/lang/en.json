@@ -2689,7 +2689,10 @@
         },
         "fund": {
             "label": "Payment Method",
-            "placeholder": "Select fund"
+            "placeholder": "Select fund",
+            "errors": {
+                "no_access": "You do not have any fund access"
+            }
         },
         "expense_type": {
             "label": "Expense Type",

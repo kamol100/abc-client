@@ -88,14 +88,19 @@ function ExpenseStatusSelect({ expense }: { expense: ExpenseRow }) {
 }
 
 const ExpenseActions: FC<{ expense: ExpenseRow }> = ({ expense }) => {
+    const { hasPermission } = usePermissions();
+    const canEdit = hasPermission("expenses.edit");
+
     return (
         <div className="flex items-end justify-end gap-1 mr-2">
-            <ExpenseForm
-                mode="edit"
-                data={{ id: expense.id }}
-                api="/expenses"
-                method="PUT"
-            />
+            {canEdit ? (
+                <ExpenseForm
+                    mode="edit"
+                    data={{ id: expense.id }}
+                    api="/expenses"
+                    method="PUT"
+                />
+            ) : null}
             <DeleteModal
                 api_url={`/expenses/${expense.id}`}
                 keys="expenses"

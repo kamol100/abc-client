@@ -27,7 +27,7 @@ vi.mock("@/hooks/use-api-mutation", () => ({
 }));
 
 vi.mock("@/components/expenses/expense-form", () => ({
-    default: () => null,
+    default: () => <div data-testid="expense-form" />,
 }));
 
 vi.mock("@/components/delete-modal", () => ({
@@ -119,5 +119,21 @@ describe("expense status column", () => {
         expect(view.queryByRole("button", { name: "expense.approve" })).not.toBeInTheDocument();
         expect(view.queryByRole("button", { name: "expense.decline" })).not.toBeInTheDocument();
         expect(view.container.querySelector("svg")).not.toBeInTheDocument();
+    });
+
+    it("hides expense editing without expenses.edit", () => {
+        permissions.names = ["expenses.approval"];
+
+        const view = renderCell("actions");
+
+        expect(view.queryByTestId("expense-form")).not.toBeInTheDocument();
+    });
+
+    it("shows expense editing when the user has expenses.edit", () => {
+        permissions.names = ["expenses.edit"];
+
+        const view = renderCell("actions");
+
+        expect(view.getByTestId("expense-form")).toBeInTheDocument();
     });
 });

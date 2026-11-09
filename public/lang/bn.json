@@ -2689,7 +2689,10 @@
         },
         "fund": {
             "label": "পেমেন্ট পদ্ধতি",
-            "placeholder": "ফান্ড"
+            "placeholder": "ফান্ড",
+            "errors": {
+                "no_access": "আপনার কোনো ফান্ড অ্যাক্সেস নেই"
+            }
         },
         "expense_type": {
             "label": "এক্সপেন্স টাইপ",
