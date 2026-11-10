@@ -8029,6 +8029,10 @@
                 "collector": "{{collector_name}} {{invoice_no}}-এর জন্য {{payment_amount}} সংগ্রহ করেছেন",
                 "online": "{{client_name}} {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ করেছেন",
                 "wallet": "ওয়ালেট থেকে {{invoice_no}}-এর জন্য {{payment_amount}} পরিশোধ হয়েছে"
+            },
+            "sms_not_sent": {
+                "title": "রিমাইন্ডার পাঠানো যায়নি",
+                "message": "{{client_name}}-এর ফোন নম্বর নেই, তাই ইনভয়েস {{invoice_no}}-এর রিমাইন্ডার পাঠানো যায়নি।"
             }
         }
     },

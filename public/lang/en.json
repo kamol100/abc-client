@@ -8029,6 +8029,10 @@
                 "collector": "{{collector_name}} collected {{payment_amount}} toward {{invoice_no}}",
                 "online": "{{client_name}} paid {{payment_amount}} toward {{invoice_no}}",
                 "wallet": "Wallet paid {{payment_amount}} toward {{invoice_no}}"
+            },
+            "sms_not_sent": {
+                "title": "Reminder not sent",
+                "message": "Invoice {{invoice_no}} for {{client_name}} could not be sent because the client has no phone number."
             }
         }
     },

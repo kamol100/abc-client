@@ -27,6 +27,7 @@ export const NOTIFICATION_EVENTS = [
     { value: "invoice_partially_paid", category: "invoice" },
     { value: "invoices_generated", category: "invoice" },
     { value: "invoice_overdue", category: "invoice" },
+    { value: "sms_not_sent", category: "invoice" },
 ] as const;
 
 export type NotificationEventValue = (typeof NOTIFICATION_EVENTS)[number]["value"];

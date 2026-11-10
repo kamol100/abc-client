@@ -1,13 +1,12 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
-import Card from "@/components/card";
-import { CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { formatMoney, toNumber } from "@/lib/helper/helper";
+import MyButton from "@/components/my-button";
+import ProductReportsSummary from "@/components/products/product-reports-summary";
 import ProductMovementFilterSchema, {
     ProductMovementMode,
 } from "@/components/products/product-movement-filter-schema";
@@ -18,11 +17,14 @@ type ProductMovementTableProps = {
     mode: ProductMovementMode;
     productId: string;
     backUrl?: string;
+    leading?: ReactNode;
 };
 
 const ProductMovementTable: FC<ProductMovementTableProps> = ({
     mode,
     productId,
+    backUrl,
+    leading,
 }) => {
     const { t } = useTranslation();
     const [filterValue, setFilter] = useState<string | null>(null);
@@ -47,7 +49,7 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
     const rows = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
     const reports = data?.data?.reports;
-    const columns = useProductMovementColumns({ mode, pagination });
+    const columns = useProductMovementColumns({ mode });
 
     const toolbarOptions = useMemo(
         () => ({
@@ -64,38 +66,27 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
         ? `${t(toolbarTitleKey)} (${pagination.total})`
         : t(toolbarTitleKey);
 
-    const summaryTotalPrice = toNumber(reports?.total_price);
-    const summaryTotalQuantity = toNumber(reports?.quantity);
-
     return (
         <div className="space-y-4">
-            {isLoading ? (
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <Skeleton className="h-20 w-full" />
-                    <Skeleton className="h-20 w-full" />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                {leading}
+                <div className="ml-auto flex items-center gap-2">
+                    <ProductReportsSummary reports={reports} isLoading={isLoading} />
+                    {backUrl ? (
+                        <MyButton
+                            action="cancel"
+                            icon={false}
+                            variant="default"
+                            size="icon"
+                            url={backUrl}
+                            tooltip={t("product_movement.actions.back_to_products")}
+                            aria-label={t("product_movement.actions.back_to_products")}
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                        </MyButton>
+                    ) : null}
                 </div>
-            ) : (
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <Card>
-                        <CardContent className="p-4 space-y-1">
-                            <p className="text-xs text-muted-foreground">
-                                {t("product_movement.summary.total_price")}
-                            </p>
-                            <p className="text-xl font-semibold text-primary">
-                                ৳{formatMoney(summaryTotalPrice)}
-                            </p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="p-4 space-y-1">
-                            <p className="text-xs text-muted-foreground">
-                                {t("product_movement.summary.total_quantity")}
-                            </p>
-                            <p className="text-xl font-semibold">{summaryTotalQuantity}</p>
-                        </CardContent>
-                    </Card>
-                </div>
-            )}
+            </div>
 
             <DataTable
                 data={rows}
