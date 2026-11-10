@@ -46,7 +46,7 @@ export async function GET(
     const query = params.toString();
     const upstream = await fetch(`${apiBase}/api/v1/${REPORTS[kind]}${query ? `?${query}` : ""}`, {
         headers: {
-            Accept: "text/csv, application/json",
+            Accept: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/json",
             Authorization: `Bearer ${token}`,
             "X-Requested-With": "XMLHttpRequest",
         },
@@ -64,10 +64,12 @@ export async function GET(
     return new NextResponse(upstream.body, {
         status: upstream.status,
         headers: {
-            "Content-Type": upstream.headers.get("content-type") ?? "text/csv; charset=UTF-8",
+            "Content-Type":
+                upstream.headers.get("content-type")
+                ?? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "Content-Disposition":
                 upstream.headers.get("content-disposition")
-                ?? `attachment; filename="${kind === "clients" ? "BTRC_Clients_List.xls" : "BTRC_Resellers_List.xls"}"`,
+                ?? `attachment; filename="${kind === "clients" ? "BTRC_Clients_List.xlsx" : "BTRC_Resellers_List.xlsx"}"`,
             "Cache-Control": "no-store",
         },
     });

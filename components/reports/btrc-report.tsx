@@ -235,7 +235,7 @@ function resellerFields(
 
 function ClientReportSection() {
     const { t } = useTranslation();
-    const { pending, download } = useReportDownload("clients", "BTRC_Clients_List.xls");
+    const { pending, download } = useReportDownload("clients", "BTRC_Clients_List.xlsx");
     const zonesQuery = useApiQuery<ApiResponse<unknown>>({
         queryKey: ["dropdown-zones", "btrc"],
         url: "dropdown-zones",
@@ -284,7 +284,7 @@ function ClientReportSection() {
 
 function ResellerReportSection() {
     const { t } = useTranslation();
-    const { pending, download } = useReportDownload("resellers", "BTRC_Resellers_List.xls");
+    const { pending, download } = useReportDownload("resellers", "BTRC_Resellers_List.xlsx");
     const resellersQuery = useApiQuery<ApiResponse<unknown>>({
         queryKey: ["dropdown-resellers", "btrc"],
         url: "dropdown-resellers",

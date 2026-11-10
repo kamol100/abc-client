@@ -2539,7 +2539,7 @@
     },
     "btrc": {
         "title": "BTRC Reports",
-        "download": "Download XLS Report",
+        "download": "Download XLSX Report",
         "download_success": "Report downloaded",
         "download_failed": "Could not generate the report",
         "client": {
@@ -9118,7 +9118,7 @@
                         "scope": "All clients with resellers, or own clients",
                         "filters": "Filter by zone and client status",
                         "reseller": "One reseller or all resellers",
-                        "columns": "SID, package, bandwidth and connection date"
+                        "columns": "Sl, month, year, username, mobile, address, bandwidth, IP, activation date and price"
                     }
                 },
                 "money": {
@@ -9147,7 +9147,7 @@
             "specs": {
                 "format": {
                     "label": "BTRC format",
-                    "value": "XLS"
+                    "value": "XLSX"
                 },
                 "btrc": {
                     "label": "BTRC reports",
@@ -9163,7 +9163,7 @@
                 },
                 "client_columns": {
                     "label": "Client columns",
-                    "value": "SL, SID, name, phone, email, username, zone, address, network, package, bandwidth, connection date, status"
+                    "value": "Sl, month, year, username, client type, mobile, address, bandwidth, allocated IP, activation date, selling price"
                 },
                 "reseller_columns": {
                     "label": "Reseller columns",
@@ -9185,7 +9185,7 @@
             "sample": {
                 "zone": "Mohammadpur"
             },
-            "sample_alt": "BTRC Reports: client and reseller filters with Download XLS Report"
+            "sample_alt": "BTRC Reports: client and reseller filters with Download XLSX Report"
         },
         "portal": {
             "meta_title": "Customer portal and Quick Pay",
