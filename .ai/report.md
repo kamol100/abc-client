@@ -1,20 +1,17 @@
-## Summary
-
-The BTRC report download now saves the ISP Downstream Info workbook. The spreadsheet is built by the API. This app only requests that file and saves it.
+Thermal receipt PDFs now carry the viewer preference `PrintScaling: None`. Bills printed from a PC through the 58mm printer driver came out the wrong size in both Basic and Advanced modes. The PDF page is 48mm wide; without the preference a PDF viewer fits that page to whatever paper the driver reports, which rescales the strip.
 
 ## Frontend
 
-- Client and reseller downloads fall back to `.xlsx` names: `BTRC_Clients_List.xlsx` and `BTRC_Resellers_List.xlsx`.
-- The proxy route forwards the workbook content type.
-- The button label is "Download XLSX Report" in English and Bangla.
-- The reports marketing copy that listed the old columns now lists the downstream columns.
+- `components/invoices/invoice-print-dialog.tsx`: the PDF is created by `createThermalPdf`, which sets the preference. Page size, capture, and receipt layout are unchanged.
+- `tests/unit/invoices/invoice-print-dialog.test.ts`: the generated PDF contains `/PrintScaling /None` and keeps its 48mm width.
 
 ## Checks
 
-- `npx vitest run tests/unit/reports/btrc-report.test.tsx`: 6 passed.
-- `en.json` and `bn.json` both parse.
+- `vitest run tests/unit/invoices tests/unit/settings` passed (16 files, 60 tests).
+- `tsc --noEmit` passed.
 
-## Notes
+Not verified: physical printer output, and whether the PDF viewer in use honours the preference.
 
-- The logged-in download was not opened in the browser. No app session was running, and the file contents are covered by the API tests.
-- Other marketing sentences outside the reports module still say XLS.
+## Unrelated
+
+None in the working tree.
