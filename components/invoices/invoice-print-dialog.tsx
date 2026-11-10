@@ -203,6 +203,20 @@ const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypograp
     return flattenToInk(source);
 };
 
+export const createThermalPdf = (pageFormat: [number, number], title: string) => {
+    const pdf = new jsPDF({
+        orientation: "p",
+        unit: "mm",
+        format: pageFormat,
+        compress: true,
+    });
+    pdf.setProperties({ title });
+    // Without this the viewer fits the 48mm page to whatever paper the printer driver reports,
+    // so the strip prints too big or too small. "None" makes actual size the default.
+    pdf.viewerPreferences({ PrintScaling: "None" });
+    return pdf;
+};
+
 const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
     const firstInvoice = invoices[0];
     const clientName = firstInvoice?.client?.name?.replace(/\s+/g, "-").toLowerCase() ?? "client";
@@ -457,13 +471,7 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 const pageImageHeightMm = canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM);
                 const pageFormat: [number, number] = [PT210_PRINT_WIDTH_MM, pageImageHeightMm];
                 if (!pdf) {
-                    pdf = new jsPDF({
-                        orientation: "p",
-                        unit: "mm",
-                        format: pageFormat,
-                        compress: true,
-                    });
-                    pdf.setProperties({ title: pdfName });
+                    pdf = createThermalPdf(pageFormat, pdfName);
                 } else {
                     pdf.addPage(pageFormat, "p");
                 }

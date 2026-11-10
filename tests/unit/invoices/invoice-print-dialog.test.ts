@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { thermalPageHeightDots } from "@/components/invoices/invoice-print-dialog";
+import { createThermalPdf, thermalPageHeightDots } from "@/components/invoices/invoice-print-dialog";
 
 vi.mock("@/app/actions", () => ({ useFetch: vi.fn() }));
 
@@ -17,5 +17,15 @@ describe("thermalPageHeightDots", () => {
     it("keeps tall receipts at their own height", () => {
         expect(thermalPageHeightDots(505)).toBe(505);
         expect(thermalPageHeightDots(2240)).toBe(2240);
+    });
+});
+
+describe("createThermalPdf", () => {
+    it("asks the viewer to print at actual size so the driver paper does not rescale the 48mm strip", () => {
+        const pdf = createThermalPdf([48, 70], "INV-12");
+
+        expect(pdf.output()).toMatch(/\/PrintScaling\s*\/None/);
+        expect(pdf.internal.pageSize.getWidth()).toBeCloseTo(48, 3);
+        expect(pdf.internal.pageSize.getHeight()).toBeCloseTo(70, 3);
     });
 });
