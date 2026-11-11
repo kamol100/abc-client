@@ -32,7 +32,7 @@ export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId }) => {
   const { data, isLoading, isFetching, setCurrentPage } =
     useApiQuery<PaginatedApiResponse<WalletTransactionRow>>({
       queryKey: ["wallet-transactions", resolvedWalletId],
-      url: `wallets/${resolvedWalletId}/transactions`,
+      url: `wallets/${resolvedWalletId}/wallet-transactions`,
       params,
       enabled: !!resolvedWalletId,
     });

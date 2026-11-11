@@ -81,7 +81,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadlin
         {
           type: "text",
           name: "phone",
-          label: { labelText: "client.phone.label" },
+          label: { labelText: "client.phone.label", mandatory: true },
           placeholder: "client.phone.placeholder",
         },
         {
