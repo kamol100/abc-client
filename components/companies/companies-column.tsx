@@ -54,6 +54,15 @@ export const CompaniesColumns: ColumnDef<CompanyRow>[] = [
         enableHiding: false,
     },
     {
+        accessorKey: "domain",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="company.domain.label" />
+        ),
+        cell: ({ row }) => <div>{row.original.domain}</div>,
+        enableSorting: false,
+        enableHiding: false,
+    },
+    {
         accessorKey: "subscription_plan",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="company.subscription_plan.label" />

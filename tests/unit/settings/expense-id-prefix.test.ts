@@ -12,6 +12,7 @@ describe("expense id prefix setting", () => {
             "ticket_code_prefix",
             "payment_deadline",
             "auto_inactive_client_invoice_due",
+            "auto_inactive_client_time",
             "client_view_open_on_new_tab",
             "client_edit_open_on_new_tab",
         ]);

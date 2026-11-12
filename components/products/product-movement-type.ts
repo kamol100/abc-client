@@ -13,6 +13,7 @@ export const ProductSerialItemSchema = z.object({
 export const ProductRefSchema = z.object({
     id: z.coerce.number(),
     name: NullableTextSchema,
+    product_code: NullableTextSchema,
 }).passthrough();
 
 export const StaffRefSchema = z.object({
@@ -66,10 +67,8 @@ export const ProductMovementRowSchema = z.object({
 }).passthrough();
 
 export const ProductMovementReportsSchema = z.object({
-    product_in_current_total_price: z.coerce.number().nullable().optional(),
-    product_in_current_quantity: z.coerce.number().nullable().optional(),
-    product_out_current_total_price: z.coerce.number().nullable().optional(),
-    product_out_current_quantity: z.coerce.number().nullable().optional(),
+    quantity: z.coerce.number().nullable().optional(),
+    total_price: z.coerce.number().nullable().optional(),
 }).passthrough();
 
 export type ProductSerialItem = z.infer<typeof ProductSerialItemSchema>;

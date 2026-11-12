@@ -20,6 +20,12 @@ export const CompanySubscriptionRowSchema = z.object({
   plan: z.object({
     id: z.string(),
     name: z.string(),
+    features: z.array(z.object({
+      id: z.string(),
+      key: z.string().optional(),
+      name: z.string().optional(),
+      expired_mode: z.string(),
+    })).optional(),
   }).optional(),
 }).passthrough();
 

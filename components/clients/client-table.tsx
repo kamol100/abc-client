@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { useSidebar } from "@/components/ui/sidebar";
+import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
@@ -30,6 +31,7 @@ function createdAtFromLocation(): string {
 
 const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) => {
     const { t } = useTranslation();
+    const { hasPermission } = usePermissions();
     const router = useRouter();
     const [createdAtFromBrowser, setCreatedAtFromBrowser] = useState<string | null>(null);
     const activeCreatedAt = createdAtFromBrowser === null ? createdAt : createdAtFromBrowser || undefined;
@@ -37,6 +39,8 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
     const { isMobile } = useSidebar();
     const columns = useClientColumns();
     const isResellerReport = variant === "reseller-clients";
+    const canListClients = isResellerReport || hasPermission("clients.access");
+    const canCreateClient = !isResellerReport && hasPermission("clients.create");
     const showNewClientsThisMonth = activeCreatedAt === NEW_CLIENTS_THIS_MONTH;
 
     useEffect(() => {
@@ -67,7 +71,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
             queryKey: isResellerReport ? ["reseller-clients"] : ["clients"],
             url: isResellerReport ? "resellers/clients" : "clients",
             params,
-            enabled: filterReady,
+            enabled: filterReady && canListClients,
         });
 
     const clients = data?.data?.data ?? [];
@@ -94,6 +98,14 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
     const toolbarTitle = pagination?.total
         ? `${t(titleKey)} (${pagination.total})`
         : t(titleKey);
+
+    if (!canListClients) {
+        return (
+            <p className="py-6 text-center text-sm text-muted-foreground">
+                {t("subscription.feature_not_in_plan")}
+            </p>
+        );
+    }
 
     return (
         <div className="flex min-h-0 flex-1 flex-col gap-3">
@@ -125,7 +137,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
                     isLoading={!filterReady || isLoading}
                     isFetching={isFetching}
                     queryKey={isResellerReport ? "reseller-clients" : "clients"}
-                    form={isResellerReport ? undefined : FormLink}
+                    form={canCreateClient ? FormLink : undefined}
                     toolbarTitle={toolbarTitle}
                     {...(variant === "default" ? { simpleSearch: true } : {})}
                 />

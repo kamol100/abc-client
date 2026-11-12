@@ -1,0 +1,24 @@
+{
+  "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_TICKET_ARTIFACT_DIR=/tmp/isp-support-tickets npm run test:e2e:tickets",
+  "timestamp": "2026-11-12T15:07:19Z",
+  "source_revision": "64fcbb7",
+  "source_state": "uncommitted support-ticket suite on master; preexisting login, playwright config, auth state, and client-suite files were left in place",
+  "environment": "CP http://cp.isp.test and MK http://mk.isp.test; credentials from ignored local tenant env; Asia/Dhaka; workers 1",
+  "result": "10 passed, 1 failed",
+  "passed": [
+    "ST-A01 anonymous staff list and detail require login",
+    "ST-A03 another company cannot read or change a known ticket UUID",
+    "ST-A05 logout and browser back do not restore the ticket list",
+    "ST-C01 view opens the selected UUID and back returns to the list",
+    "ST-C02 a staff reply is stored once and remains after reload",
+    "ST-C03 an empty reply is rejected and adds no message",
+    "ST-F01 create keeps medium/open defaults and the UUID detail survives reload",
+    "ST-F03 missing client and a short message stay on the form and create nothing",
+    "ST-L01 authorized list matches the backend page after reload",
+    "ST-L04 an unmatched ticket code is empty and clearing it restores the owned ticket"
+  ],
+  "failed": [
+    "ST-A03 a foreign client id cannot replace the ticket client"
+  ],
+  "artifact": "/tmp/isp-support-tickets/results.json"
+}

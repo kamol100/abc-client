@@ -44,6 +44,8 @@ interface DataTableToolbarProps<TData> {
   toolbarBeforeForm?: ReactNode;
   /** When true, mobile may replace the filter sheet with the `any` text field. */
   simpleSearch?: boolean;
+  /** Current list total, shown on the open filter row. */
+  resultCount?: number;
 }
 
 export function DataTableToolbar<TData>({
@@ -60,6 +62,7 @@ export function DataTableToolbar<TData>({
   toolbarBeforeViewOptions,
   toolbarBeforeForm,
   simpleSearch = false,
+  resultCount,
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -242,6 +245,7 @@ export function DataTableToolbar<TData>({
                   hideTrigger
                   className="flex flex-col gap-4"
                   formHook={filterHook}
+                  resultCount={resultCount}
                 />
               </MyDrawer>
             ) : (
@@ -253,6 +257,7 @@ export function DataTableToolbar<TData>({
                 watchFields={toolbarOptions?.watchFields}
                 searchButton
                 setShowFilter={setShowFilter}
+                resultCount={resultCount}
               />
             )
           )}
@@ -275,6 +280,7 @@ export function DataTableToolbar<TData>({
             hideTrigger
             className="w-full"
             formHook={filterHook}
+            resultCount={resultCount}
           />
         </div>
       )}

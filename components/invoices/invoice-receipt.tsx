@@ -67,11 +67,14 @@ const basicTextStyle = (
     weight: number,
     ratio: number,
     regular = false,
-): CSSProperties => ({
-    fontSize: `${ratio === 1 ? base : basicFontSize(base, ratio)}px`,
-    lineHeight: 1.2,
-    fontWeight: regular ? 400 : weight,
-});
+): CSSProperties => {
+    const size = ratio === 1 ? base : basicFontSize(base, ratio);
+    return {
+        fontSize: `${size}px`,
+        lineHeight: `${Math.round(size * 1.2)}px`,
+        fontWeight: regular ? 400 : weight,
+    };
+};
 
 const formatBasicPrintedAt = (date: Date): string => {
     const month = date.toLocaleString("en-US", { month: "long" });
@@ -175,27 +178,28 @@ const BasicInvoiceReceipt = ({
             <div
                 className="border border-solid border-black/20 pb-[1.15em] pt-[0.9em]"
                 data-receipt-frame
-                data-receipt-keep-type="true"
                 style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
             >
-                <div className="text-center text-black" data-receipt-header>
-                    <h3 className="break-words" style={companyStyle}>{companyName}</h3>
-                    {companyAddress && (
-                        <p className="mt-[0.45em] break-words" style={addressStyle}>{companyAddress}</p>
-                    )}
-                    <p className="mt-[0.35em] break-words" style={metaStyle}>{stamp}</p>
+                <div data-receipt-header>
+                    <div className="text-center text-black">
+                        <h3 className="break-words" style={companyStyle}>{companyName}</h3>
+                        {companyAddress && (
+                            <p className="mt-[0.45em] break-words" style={addressStyle}>{companyAddress}</p>
+                        )}
+                        <p className="mt-[0.35em] break-words" style={metaStyle}>{stamp}</p>
+                    </div>
+
+                    <div className="mt-[1.45em] text-center text-black">
+                        <p className="break-words" style={clientStyle}>
+                            {clientNames.length > 0 ? clientNames.join(", ") : "—"}
+                        </p>
+                        {clientContacts.map((contact) => (
+                            <p key={contact} className="mt-[0.35em] break-words" style={contactStyle}>{contact}</p>
+                        ))}
+                    </div>
                 </div>
 
-                <div className="mt-[1.45em] text-center text-black">
-                    <p className="break-words" style={clientStyle}>
-                        {clientNames.length > 0 ? clientNames.join(", ") : "—"}
-                    </p>
-                    {clientContacts.map((contact) => (
-                        <p key={contact} className="mt-[0.35em] break-words" style={contactStyle}>{contact}</p>
-                    ))}
-                </div>
-
-                <div data-receipt-items-body className="hidden" />
+                <div data-receipt-items-body />
 
                 <div className="mt-[1.7em] space-y-[0.42em] text-black" data-receipt-summary>
                     <BasicMoneyRow
@@ -207,7 +211,7 @@ const BasicInvoiceReceipt = ({
                     <BasicMoneyRow
                         label={t("invoice.receipt.paid_and_discount")}
                         value={formatMoney(paidAndDiscount, 2)}
-                        labelStyle={labelStyle}
+                        labelStyle={{ ...labelStyle, fontWeight: 700 }}
                         valueStyle={amountStyle}
                     />
                     <div className="flex justify-end" aria-hidden>

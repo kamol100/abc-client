@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
@@ -24,12 +24,10 @@ const STATUS_STYLES: Record<string, string> = {
 
 type UseProductMovementColumnsOptions = {
     mode: ProductMovementMode;
-    pagination?: Pagination;
 };
 
 export function useProductMovementColumns({
     mode,
-    pagination,
 }: UseProductMovementColumnsOptions): ColumnDef<ProductMovementRow>[] {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
@@ -42,15 +40,16 @@ export function useProductMovementColumns({
 
         return [
             {
-                id: "sl",
+                id: "product_code",
+                accessorFn: (row) => row.product?.product_code,
                 header: ({ column }) => (
                     <DataTableColumnHeader
                         column={column}
-                        title="product_movement.columns.sl"
+                        title="product.product_code.label"
                     />
                 ),
                 cell: ({ row }) => (
-                    <span className="font-medium">{cellIndex(row.index, pagination)}</span>
+                    <span className="font-medium">{row.original.product?.product_code || "-"}</span>
                 ),
                 enableSorting: false,
                 enableHiding: false,
@@ -271,5 +270,5 @@ export function useProductMovementColumns({
                 enableHiding: false,
             },
         ];
-    }, [hasPermission, mode, pagination, t]);
+    }, [hasPermission, mode, t]);
 }

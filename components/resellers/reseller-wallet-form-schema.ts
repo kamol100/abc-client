@@ -11,6 +11,16 @@ const ResellerWalletFormFieldSchema = (): FormFieldConfig[] => [
     placeholder: "reseller.wallet_recharge.balance.placeholder",
   },
   {
+    type: "dropdown",
+    name: "fund_id",
+    label: {
+      labelText: "reseller.wallet_recharge.fund.label",
+      mandatory: true,
+    },
+    placeholder: "reseller.wallet_recharge.fund.placeholder",
+    api: "/dropdown-funds",
+  },
+  {
     type: "textarea",
     name: "note",
     label: {

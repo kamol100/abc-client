@@ -197,6 +197,13 @@ export const ResellerWalletRechargeFormSchema = z.object({
             invalid_type_error: "reseller.wallet_recharge.balance.errors.required",
         })
         .gt(0, { message: "reseller.wallet_recharge.balance.errors.min" }),
+    fund_id: z.coerce
+        .number({
+            required_error: "reseller.wallet_recharge.fund.errors.required",
+            invalid_type_error: "reseller.wallet_recharge.fund.errors.required",
+        })
+        .int()
+        .min(1, { message: "reseller.wallet_recharge.fund.errors.required" }),
     note: z.string().nullable().optional(),
 });
 

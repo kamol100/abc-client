@@ -27,7 +27,6 @@ const account: ClientAccount = {
   name: "Kamol Hasan",
   father_name: "Karim",
   occupation: null,
-  nid: "1990123456789",
   phone: "01677217129",
   alternate_phone: null,
   email: "kamol@example.test",
@@ -73,7 +72,7 @@ describe("ClientAccountView", () => {
     expect(screen.getByText("12673 · bns250532")).toBeInTheDocument();
     expect(screen.getByText("common.active")).toBeInTheDocument();
     expect(screen.getByText("Karim")).toBeInTheDocument();
-    expect(screen.getByText("1990123456789")).toBeInTheDocument();
+    expect(screen.queryByText("1990123456789")).not.toBeInTheDocument();
     expect(screen.getByText("01677217129")).toBeInTheDocument();
     expect(screen.getByText("kamol@example.test")).toBeInTheDocument();
     expect(screen.getByText("Road 4")).toBeInTheDocument();
@@ -81,8 +80,6 @@ describe("ClientAccountView", () => {
     expect(screen.getByText("Regular-840")).toBeInTheDocument();
     expect(screen.getByText("20 Mbps")).toBeInTheDocument();
     expect(screen.getByText("North Zone")).toBeInTheDocument();
-    expect(screen.getByText("client.type.home")).toBeInTheDocument();
-    expect(screen.getByText("client.connection_type.dedicated")).toBeInTheDocument();
     expect(screen.getByText("client.cable_type.options.fiber")).toBeInTheDocument();
     expect(screen.getByText("15-Jan-24")).toBeInTheDocument();
     expect(screen.getByText("01-Nov-26")).toBeInTheDocument();

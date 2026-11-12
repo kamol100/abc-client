@@ -13,6 +13,8 @@ export const OLT_SETTINGS_SELECT_KEYS = ["olt_poll_interval"] as const;
 export const ONU_RX_LOW_DBM_RANGE = { min: -40, max: -10 } as const;
 /** Day of the month used as the default client payment deadline. */
 export const PAYMENT_DEADLINE_RANGE = { min: 1, max: 30, fallback: 11 } as const;
+/** Hour of day (00–23) for the client auto inactive setting. */
+export const CLIENT_AUTO_INACTIVE_TIME_RANGE = { min: 0, max: 23, fallback: 12 } as const;
 
 export const SETTINGS_TEXT_KEYS = [
     ...OLT_SETTINGS_TEXT_KEYS,
@@ -36,6 +38,7 @@ export const SETTINGS_SELECT_KEYS = [
     "device_monitor_interval",
     "device_monitor_fail_threshold",
     "payment_deadline",
+    "auto_inactive_client_time",
 ] as const;
 
 export const SETTINGS_SWITCH_KEYS = [
@@ -126,6 +129,7 @@ export const SettingsRowSchema = z
         device_monitor_interval: NullableStringOrNumberSchema,
         device_monitor_fail_threshold: NullableStringOrNumberSchema,
         payment_deadline: NullableStringOrNumberSchema,
+        auto_inactive_client_time: NullableStringOrNumberSchema,
         sms_after_client_create: NullableBooleanLikeSchema,
         sms_after_client_activated: NullableBooleanLikeSchema,
         sms_after_client_deactivated: NullableBooleanLikeSchema,
@@ -172,6 +176,7 @@ export const SettingsFormSchema = z
         device_monitor_interval: NullableNumberFormSchema,
         device_monitor_fail_threshold: NullableNumberFormSchema,
         payment_deadline: NullableNumberFormSchema,
+        auto_inactive_client_time: NullableNumberFormSchema,
         sms_after_client_create: NullableSwitchFormSchema,
         sms_after_client_activated: NullableSwitchFormSchema,
         sms_after_client_deactivated: NullableSwitchFormSchema,
@@ -204,6 +209,7 @@ const NUMBER_SELECT_KEYS = new Set<SettingsSelectKey>([
     "device_monitor_interval",
     "device_monitor_fail_threshold",
     "payment_deadline",
+    "auto_inactive_client_time",
 ]);
 // Shown when the company never saved the setting: automatic checks off, mark down after 2 failed checks.
 const NUMBER_SELECT_DEFAULTS: Partial<Record<SettingsSelectKey, number>> = {
@@ -230,17 +236,28 @@ function toBoolean(value: unknown): boolean {
     return false;
 }
 
-export function paymentDeadlineSetting(value: unknown): number {
+function integerSetting(
+    value: unknown,
+    range: { min: number; max: number; fallback: number },
+): number {
     const parsed = toNumberOrNull(value);
     if (
         parsed !== null &&
         Number.isInteger(parsed) &&
-        parsed >= PAYMENT_DEADLINE_RANGE.min &&
-        parsed <= PAYMENT_DEADLINE_RANGE.max
+        parsed >= range.min &&
+        parsed <= range.max
     ) {
         return parsed;
     }
-    return PAYMENT_DEADLINE_RANGE.fallback;
+    return range.fallback;
+}
+
+export function paymentDeadlineSetting(value: unknown): number {
+    return integerSetting(value, PAYMENT_DEADLINE_RANGE);
+}
+
+export function clientAutoInactiveTimeSetting(value: unknown): number {
+    return integerSetting(value, CLIENT_AUTO_INACTIVE_TIME_RANGE);
 }
 
 function toNumberOrNull(value: unknown): number | null {
@@ -274,6 +291,9 @@ export function normalizeSettingValueForForm(
         if (NUMBER_SELECT_KEYS.has(key)) {
             if (key === "payment_deadline") {
                 return paymentDeadlineSetting(value);
+            }
+            if (key === "auto_inactive_client_time") {
+                return clientAutoInactiveTimeSetting(value);
             }
             return toNumberOrNull(value) ?? NUMBER_SELECT_DEFAULTS[key] ?? null;
         }

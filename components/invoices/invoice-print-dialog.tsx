@@ -26,6 +26,9 @@ import { usePathname } from "next/navigation";
 const PT210_PRINT_WIDTH_MM = 48;
 const PT210_PAGE_DOTS = 384;
 const RECEIPT_MAX_PAGE_HEIGHT_MM = 280;
+/** Print drivers auto-rotate pages that are not clearly taller than wide, which prints blank on the 58mm roll. */
+const RECEIPT_MIN_PAGE_HEIGHT_MM = 60;
+const RECEIPT_MIN_PAGE_DOTS = Math.ceil((RECEIPT_MIN_PAGE_HEIGHT_MM * PT210_PAGE_DOTS) / PT210_PRINT_WIDTH_MM);
 const PAGE_CAPACITY_BUFFER_MM = 2;
 const INK_THRESHOLD = 168;
 
@@ -89,6 +92,7 @@ const paintThermalSurface = (
     element.style.letterSpacing = "0px";
     element.style.setProperty("-webkit-font-smoothing", "auto");
     element.style.setProperty("-moz-osx-font-smoothing", "auto");
+    element.dataset.thermalSurface = "true";
 };
 
 const forceThermalInk = (root: HTMLElement, typography: ReceiptTypography | null) => {
@@ -101,15 +105,24 @@ const forceThermalInk = (root: HTMLElement, typography: ReceiptTypography | null
         node.style.filter = "none";
         node.style.backgroundColor = keepWhiteBackground ? "#ffffff" : "transparent";
         node.style.fontFamily = thermalFontFamily();
-        const preservesType = node.closest("[data-receipt-keep-type='true']") != null;
-        if (!preservesType) {
-            node.style.fontWeight = String(typography?.fontWeight ?? 700);
-            if (typography) {
-                node.style.fontSize = `${typography.fontSize}px`;
-                node.style.lineHeight = `${receiptLineHeight(typography.fontSize)}px`;
-            }
-        }
         node.style.setProperty("-webkit-font-smoothing", "auto");
+        const inlineSize = node.dataset.thermalSurface === "true"
+            ? Number.NaN
+            : Number.parseFloat(node.style.fontSize);
+        if (Number.isFinite(inlineSize) && inlineSize > 0) {
+            const inlineWeight = Number.parseFloat(node.style.fontWeight);
+            node.style.fontSize = `${inlineSize}px`;
+            node.style.lineHeight = `${Math.round(inlineSize * 1.2)}px`;
+            if (Number.isFinite(inlineWeight) && inlineWeight > 0) {
+                node.style.fontWeight = String(inlineWeight);
+            }
+            return;
+        }
+        node.style.fontWeight = String(typography?.fontWeight ?? 700);
+        if (typography) {
+            node.style.fontSize = `${typography.fontSize}px`;
+            node.style.lineHeight = `${receiptLineHeight(typography.fontSize)}px`;
+        }
     };
 
     paint(root, true);
@@ -156,6 +169,23 @@ const flattenToInk = (source: HTMLCanvasElement) => {
     return target;
 };
 
+export const thermalPageHeightDots = (contentHeightDots: number) =>
+    Math.max(Math.ceil(contentHeightDots), RECEIPT_MIN_PAGE_DOTS);
+
+const padThermalCanvasToPortrait = (source: HTMLCanvasElement) => {
+    const pageHeight = thermalPageHeightDots(source.height);
+    if (pageHeight === source.height) return source;
+    const target = document.createElement("canvas");
+    target.width = source.width;
+    target.height = pageHeight;
+    const context = target.getContext("2d");
+    if (!context) return source;
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, target.width, target.height);
+    context.drawImage(source, 0, 0);
+    return target;
+};
+
 const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypography | null) => {
     const source = await html2canvas(element, {
         scale: 2,
@@ -173,10 +203,18 @@ const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypograp
     return flattenToInk(source);
 };
 
-/** jsPDF swaps a portrait page when the strip is shorter than it is wide. */
-const thermalPageSize = (heightMm: number): { orientation: "p" | "l"; format: [number, number] } => {
-    const orientation = heightMm >= PT210_PRINT_WIDTH_MM ? "p" : "l";
-    return { orientation, format: [PT210_PRINT_WIDTH_MM, heightMm] };
+export const createThermalPdf = (pageFormat: [number, number], title: string) => {
+    const pdf = new jsPDF({
+        orientation: "p",
+        unit: "mm",
+        format: pageFormat,
+        compress: true,
+    });
+    pdf.setProperties({ title });
+    // Without this the viewer fits the 48mm page to whatever paper the printer driver reports,
+    // so the strip prints too big or too small. "None" makes actual size the default.
+    pdf.viewerPreferences({ PrintScaling: "None" });
+    return pdf;
 };
 
 const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
@@ -186,51 +224,6 @@ const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
         ? "bulk-invoices"
         : (firstInvoice?.trackID ?? `invoice-${firstInvoice?.id ?? ""}`);
     return `${invoiceLabel}-${clientName}-${stamped}`;
-};
-
-const saveBasicReceiptPdf = async (receiptRoot: HTMLElement, pdfName: string) => {
-    const typography = typographyFromReceipt(receiptRoot);
-    const staging = document.createElement("div");
-    staging.style.position = "fixed";
-    staging.style.left = "-99999px";
-    staging.style.top = "0";
-    staging.style.width = `${PT210_PAGE_DOTS}px`;
-    staging.style.pointerEvents = "none";
-    staging.style.background = "#ffffff";
-    document.body.appendChild(staging);
-    try {
-        const page = receiptRoot.cloneNode(true) as HTMLElement;
-        page.style.boxSizing = "border-box";
-        page.style.width = `${PT210_PAGE_DOTS}px`;
-        page.style.maxWidth = "none";
-        page.style.margin = "0";
-        page.style.background = "#ffffff";
-        page.style.color = "#000000";
-        staging.appendChild(page);
-        const pageCanvas = await toThermalCanvas(page, typography);
-        const pageImageHeightMm = Math.max(canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM), 20);
-        const pageSize = thermalPageSize(pageImageHeightMm);
-        const pdf = new jsPDF({
-            orientation: pageSize.orientation,
-            unit: "mm",
-            format: pageSize.format,
-            compress: true,
-        });
-        pdf.setProperties({ title: pdfName });
-        pdf.addImage(
-            pageCanvas.toDataURL("image/png"),
-            "PNG",
-            0,
-            0,
-            PT210_PRINT_WIDTH_MM,
-            pageImageHeightMm,
-            undefined,
-            "NONE",
-        );
-        pdf.save(`${pdfName}.pdf`);
-    } finally {
-        staging.remove();
-    }
 };
 
 const cloneForPdf = (element: HTMLElement) => {
@@ -354,20 +347,6 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
             receiptElement.querySelectorAll<HTMLElement>("[data-receipt-item-row]"),
         );
 
-        if (receiptRoot.dataset.receiptVariant === "basic") {
-            setIsGeneratingPdf(true);
-            try {
-                await document.fonts.ready;
-                await saveBasicReceiptPdf(receiptRoot, receiptPdfName(invoices, dateFormat()));
-                onOpenChange(false);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsGeneratingPdf(false);
-            }
-            return;
-        }
-
         if (!receiptItemsBody || !receiptSummary) return;
 
         setIsGeneratingPdf(true);
@@ -486,24 +465,15 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                 }
 
                 stagingContainer.appendChild(pageContainer);
-                const pageCanvas = await toThermalCanvas(pageContainer, typography);
+                const pageCanvas = padThermalCanvasToPortrait(await toThermalCanvas(pageContainer, typography));
                 stagingContainer.removeChild(pageContainer);
 
-                const pageImageHeightMm = Math.max(
-                    canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM),
-                    20,
-                );
-                const pageSize = thermalPageSize(pageImageHeightMm);
+                const pageImageHeightMm = canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM);
+                const pageFormat: [number, number] = [PT210_PRINT_WIDTH_MM, pageImageHeightMm];
                 if (!pdf) {
-                    pdf = new jsPDF({
-                        orientation: pageSize.orientation,
-                        unit: "mm",
-                        format: pageSize.format,
-                        compress: true,
-                    });
-                    pdf.setProperties({ title: pdfName });
+                    pdf = createThermalPdf(pageFormat, pdfName);
                 } else {
-                    pdf.addPage(pageSize.format, pageSize.orientation);
+                    pdf.addPage(pageFormat, "p");
                 }
 
                 pdf.addImage(

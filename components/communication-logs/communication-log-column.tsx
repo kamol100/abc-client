@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { FlaskConical, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
-import { Badge } from "@/components/ui/badge";
+import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import { cellIndex } from "@/lib/helper/helper";
 import { usePermissions } from "@/context/app-provider";
-import type { CommunicationLogRow } from "./communication-log-type";
+import type { CommunicationLogRow } from "@/components/communication-logs/communication-log-type";
 
 const BODY_MAX_LENGTH = 50;
 
@@ -226,26 +227,22 @@ function CommunicationLogBodyCell({ body }: { body?: string | null }) {
   );
 }
 
+const STATUS_BADGE: Record<string, { type: MyBadgeType; icon?: LucideIcon }> = {
+  sent: { type: "success" },
+  failed: { type: "error" },
+  simulated: { type: "info", icon: FlaskConical },
+  unknown: { type: "pending" },
+};
+
 function CommunicationLogStatusCell({ status }: { status?: string | null }) {
   const { t } = useTranslation();
-  const key = status ?? "unknown";
+  const key = status && STATUS_BADGE[status] ? status : "unknown";
+  const badge = STATUS_BADGE[key];
 
-  if (key === "simulated") {
-    return (
-      <Badge variant="outline">{t("communication_log.status.options.simulated")}</Badge>
-    );
-  }
-
-  const colorClass =
-    key === "sent"
-      ? "text-green-600 dark:text-green-400"
-      : key === "failed"
-        ? "text-red-600 dark:text-red-400"
-        : "text-muted-foreground";
   return (
-    <span className={`capitalize ${colorClass}`}>
+    <MyBadge type={badge.type} icon={badge.icon} variant="soft" size="sm">
       {t(`communication_log.status.options.${key}`)}
-    </span>
+    </MyBadge>
   );
 }
 

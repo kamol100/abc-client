@@ -1,11 +1,12 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { objectToQueryString, parseApiError } from "@/lib/helper/helper";
+import { objectToQueryString, parseApiError, subscriptionDenialCode } from "@/lib/helper/helper";
 import {
   keepPreviousData,
   QueryKey,
   useQuery,
+  useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query";
 import { useState } from "react";
@@ -38,6 +39,7 @@ export default function useApiQuery<TData = unknown>({
   params,
   pagination = true,
   version,
+  retry: callerRetry,
   ...queryOptions
 }: UseApiQueryOptions<TData>) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,6 +62,7 @@ export default function useApiQuery<TData = unknown>({
     return qs ? `/${url}?${qs}` : `/${url}`;
   };
 
+  const queryClient = useQueryClient();
   const fullQueryKey: QueryKey = [
     ...queryKey,
     ...(pagination ? [{ page: currentPage }] : []),
@@ -73,13 +76,27 @@ export default function useApiQuery<TData = unknown>({
         ...(version && { version }),
       });
       if (!response?.success) {
+        if (subscriptionDenialCode(response)) {
+          void queryClient.invalidateQueries({ queryKey: ["settings"] });
+        }
         throw new Error(parseApiError(response) || "Request failed");
       }
       return response as TData;
     },
     placeholderData: pagination ? keepPreviousData : undefined,
     refetchOnWindowFocus: false,
-    retry: 2,
+    retry: (failureCount, error) => {
+      if (
+        error instanceof Error &&
+        (error.message === "subscription.feature_not_in_plan" || error.message === "subscription.expired_action")
+      ) {
+        return false;
+      }
+      if (typeof callerRetry === "function") return callerRetry(failureCount, error) === true;
+      if (typeof callerRetry === "number") return failureCount < callerRetry;
+      if (callerRetry === false) return false;
+      return failureCount < 2;
+    },
     ...queryOptions,
   });
 

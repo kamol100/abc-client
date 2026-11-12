@@ -27,6 +27,10 @@ vi.mock("next/link", () => ({
 
 const permissions = vi.hoisted(() => ({ allowed: true, newTab: false }));
 
+vi.mock("@/hooks/use-api-query", () => ({
+    default: () => ({ data: undefined, isLoading: false, isFetching: false, isError: false }),
+}));
+
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: (name: string) => name === "clients.show" && permissions.allowed,

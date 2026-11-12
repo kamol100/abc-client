@@ -14,6 +14,9 @@ import {
   Search,
   Trash2,
   X,
+  Import,
+  RefreshCw,
+  ArrowRightLeft,
 } from "lucide-react";
 import Link from "next/link";
 import { forwardRef, ReactNode } from "react";
@@ -37,6 +40,9 @@ const ACTION_ICONS = {
   minus: Minus,
   lock: Lock,
   unlock: LockOpen,
+  import: Import,
+  sync: RefreshCw,
+  move: ArrowRightLeft,
 } as const;
 
 export type MyButtonActionType = keyof typeof ACTION_ICONS;

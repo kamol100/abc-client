@@ -6,6 +6,7 @@ import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardCl
 import DashboardResellerSummaryCard from "@/components/dashboard/items/DashboardResellerSummaryCard";
 import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
 import DashboardInvoicePaidSummaryCard from "@/components/dashboard/items/DashboardInvoicePaidSummaryCard";
+import DashboardStaffInvoiceCollectionCard from "@/components/dashboard/items/DashboardStaffInvoiceCollectionCard";
 import DashboardExpenseSummaryCard from "@/components/dashboard/items/DashboardExpenseSummaryCard";
 import DashboardFundSummaryCard from "@/components/dashboard/items/DashboardFundSummaryCard";
 import DashboardSupportTicketCard from "@/components/dashboard/items/DashboardSupportTicketCard";
@@ -37,6 +38,13 @@ export default function DashboardOverview() {
     isInvoicePaidSummaryLoading,
     isInvoicePaidSummaryFetching,
     isInvoicePaidSummaryError,
+
+    showStaffCollection,
+    staffName,
+    staffCollection,
+    isStaffCollectionLoading,
+    isStaffCollectionFetching,
+    isStaffCollectionError,
 
     invoiceDueSummary,
     isInvoiceDueSummaryLoading,
@@ -87,7 +95,8 @@ export default function DashboardOverview() {
     canSee.expense ||
     canSee.fund ||
     canSee.ticket ||
-    canSee.productStock;
+    canSee.productStock ||
+    showStaffCollection;
 
   return (
     <div className="space-y-4">
@@ -127,6 +136,16 @@ export default function DashboardOverview() {
               isLoading={isInvoicePaidSummaryLoading}
               isRefreshing={isInvoicePaidSummaryFetching}
               isError={isInvoicePaidSummaryError}
+            />
+          )}
+
+          {showStaffCollection && (
+            <DashboardStaffInvoiceCollectionCard
+              staffName={staffName}
+              data={staffCollection}
+              isLoading={isStaffCollectionLoading}
+              isRefreshing={isStaffCollectionFetching}
+              isError={isStaffCollectionError}
             />
           )}
 

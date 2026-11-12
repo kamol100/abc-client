@@ -31,14 +31,14 @@ function formatPermissionLabel(name: string): string {
   return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
-const accessTypeFor = (name: string): PermissionRow["access_type"] => {
+export function accessTypeFor(name: string): PermissionRow["access_type"] {
   if (name.includes("dashboard") || READ_SUFFIXES.some((suffix) => name.endsWith(suffix))) {
     return "read";
   }
   return "write";
-};
+}
 
-const permissionNames = (value: unknown): string[] => {
+export function catalogPermissionNames(value: unknown): string[] {
   const rows = Array.isArray(value)
     ? value
     : value && typeof value === "object" && "data" in value && Array.isArray(value.data)
@@ -49,7 +49,7 @@ const permissionNames = (value: unknown): string[] => {
     if (!item || typeof item !== "object" || !("name" in item)) return [];
     return typeof item.name === "string" ? [item.name] : [];
   });
-};
+}
 
 export default function FeaturePermissionEditor({ featureId }: { featureId: string }) {
   const { t } = useTranslation();
@@ -88,7 +88,7 @@ export default function FeaturePermissionEditor({ featureId }: { featureId: stri
 
   const options = useMemo<SelectOption[]>(() => {
     const assigned = new Set(permissions.map((permission) => permission.name));
-    return permissionNames(catalog?.data)
+    return catalogPermissionNames(catalog?.data)
       .filter((name) => !assigned.has(name))
       .map((name) => ({ value: name, label: formatPermissionLabel(name) }));
   }, [catalog?.data, permissions]);

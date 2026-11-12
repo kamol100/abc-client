@@ -1,5 +1,6 @@
 {
     "common": {
+        "no_invoice_this_month": "No invoice this month",
         "help": "Help",
         "no_data": "No data",
         "january": "January",
@@ -17,6 +18,7 @@
         "fiber": "Fiber",
         "onu": "ONU",
         "filter": "Filter",
+        "results": "Results",
         "reset": "Reset",
         "clear": "Clear",
         "apply": "Apply",
@@ -37,6 +39,8 @@
         "name": "Name",
         "username": "Username",
         "password": "Password",
+        "show_password": "Show password",
+        "hide_password": "Hide password",
         "roles": "Roles",
         "note": "Note",
         "date": "Date",
@@ -407,7 +411,7 @@
         "edit_title": "Edit User",
         "delete_confirmation": "Are you sure you want to delete this user?",
         "name": {
-            "label": "User Name",
+            "label": "Name",
             "tooltip": "Enter the full legal name of the user",
             "placeholder": "Enter the full legal name of the user",
             "errors": {
@@ -1134,6 +1138,10 @@
                 "required": "Status is required"
             }
         },
+        "expense_type": {
+            "label": "Expense Type",
+            "placeholder": "Select expense type"
+        },
         "amount": {
             "label": "Amount",
             "placeholder": "Enter amount",
@@ -1445,6 +1453,18 @@
             "label": "Discount",
             "placeholder": "0.00"
         },
+        "sms_status": {
+            "label": "SMS",
+            "unknown": "SMS status unknown",
+            "success": "SMS sent",
+            "failed": "SMS failed",
+            "sent_at": "Sent at",
+            "failed_at": "Failed at",
+            "reason": "Reason",
+            "no_record": "No SMS record for this month",
+            "invoice_due": "Invoice Due",
+            "invoice_due_reminder": "Invoice Due Reminder"
+        },
         "payment_date": {
             "label": "Payment Date",
             "placeholder": "Select payment date",
@@ -1543,7 +1563,9 @@
         "edit_title": "Edit Client",
         "delete_confirmation": "Are you sure you want to delete this client?",
         "address": {
-            "label": "Address"
+            "label": "Address",
+            "show_more": "Show more",
+            "show_less": "Show less"
         },
         "connection_type": {
             "label": "Connection Type",
@@ -1556,6 +1578,44 @@
             "placeholder": "Select connection mode"
         },
         "status_updated": "Client status updated successfully",
+        "activation": {
+            "title": "Generate internet bill",
+            "description": "Review the bill, then the client becomes active.",
+            "client_info": "Client info",
+            "generate_date": "Generated bill date",
+            "adjust": "Adjust [{{month}}] bill",
+            "remaining_days": "{{count}} days",
+            "amount_calculated": "Calculated",
+            "amount_edited": "Edited",
+            "deadline_label": "Payment deadline",
+            "termination_date": "Termination date",
+            "termination_placeholder": "Select termination date",
+            "note_label": "Note",
+            "note_placeholder": "Write note...",
+            "submit": "Generate and activate",
+            "required": "Generate the current month internet bill before activating this client.",
+            "invoice_permission": "You do not have permission to generate invoices.",
+            "package_invalid": "Assign a package with a price before activating this client.",
+            "type_missing": "Internet bill invoice type is not configured.",
+            "failed": "Invoice generation failed. The client was not activated.",
+            "amount": {
+                "errors": {
+                    "required": "Enter the adjust amount.",
+                    "invalid": "Enter a valid amount.",
+                    "min": "Amount must be at least 1."
+                }
+            },
+            "note": {
+                "errors": {
+                    "required": "A note is required."
+                }
+            },
+            "deadline": {
+                "errors": {
+                    "required": "Select a payment deadline."
+                }
+            }
+        },
         "actions": {
             "view": "View",
             "edit": "Edit",
@@ -1570,7 +1630,18 @@
             "recharge_client": "Recharge Client",
             "lock": "Lock Client",
             "unlock": "Unlock Client",
+            "add_map": "Add Map",
             "delete": "Delete"
+        },
+        "map": {
+            "title": "Add Map",
+            "description": "Review this location before saving it on the client.",
+            "locating": "Getting the current location…",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "submit": "Save location",
+            "saved": "Map location saved",
+            "failed": "Could not save the map location"
         },
         "lock": {
             "confirm_lock": "Lock this client? The client stays in your list. Other staff will no longer see them.",
@@ -1640,6 +1711,21 @@
             "ping_unavailable": "ip not found",
             "ping_success": "{{ip}} is reachable",
             "ping_failed": "{{ip}} is unreachable",
+            "ping_results": "Ping {{ip}}",
+            "ping_description": "Replies from the client router",
+            "ping_again": "Ping again",
+            "ping_sl": "S/L",
+            "ping_ip": "IP Address",
+            "ping_time": "Time",
+            "ping_size": "Size",
+            "ping_ttl": "TTL",
+            "ping_status": "Status",
+            "ping_status_ok": "OK",
+            "ping_status_timeout": "timeout",
+            "ping_pinged": "Pinged",
+            "ping_ok": "OK",
+            "ping_timeout": "Timeout",
+            "ping_loss": "LOSS",
             "open_ip": "Open {{url}}",
             "tk": "TK."
         },
@@ -2134,7 +2220,9 @@
         },
         "assigned_to": {
             "label": "Assigned To",
-            "placeholder": "Select staff"
+            "placeholder": "Select staff",
+            "change": "Change assignee",
+            "updated": "Ticket assignee updated"
         },
         "message": {
             "label": "Message",
@@ -2152,6 +2240,8 @@
         },
         "status": {
             "label": "Status",
+            "change": "Change status",
+            "updated": "Ticket status updated",
             "open": "Open",
             "in_progress": "In Progress",
             "resolved": "Resolved",
@@ -2461,7 +2551,7 @@
     },
     "btrc": {
         "title": "BTRC Reports",
-        "download": "Download XLS Report",
+        "download": "Download XLSX Report",
         "download_success": "Report downloaded",
         "download_failed": "Could not generate the report",
         "client": {
@@ -2611,7 +2701,10 @@
         },
         "fund": {
             "label": "Payment Method",
-            "placeholder": "Select fund"
+            "placeholder": "Select fund",
+            "errors": {
+                "no_access": "You do not have any fund access"
+            }
         },
         "expense_type": {
             "label": "Expense Type",
@@ -2636,7 +2729,8 @@
             "placeholder": "Select expense date"
         },
         "status": {
-            "placeholder": "Select status"
+            "placeholder": "Select status",
+            "change": "Change status"
         },
         "approve": "Approve",
         "decline": "Decline",
@@ -2675,6 +2769,9 @@
         "sl": "SL",
         "product_code": {
             "label": "Product ID"
+        },
+        "any_search": {
+            "placeholder": "Search by product ID, name, or description"
         },
         "stock_in": {
             "label": "Stock In"
@@ -2996,10 +3093,8 @@
             "out": "Product Out"
         },
         "summary": {
-            "actual_quantity": "Actual Quantity",
-            "actual_price": "Actual Price",
-            "current_quantity": "Current Quantity",
-            "current_price": "Current Price"
+            "quantity": "Quantity",
+            "total_price": "Total Price"
         },
         "columns": {
             "sl": "SL",
@@ -3319,14 +3414,14 @@
     "admin_demo_request": {
         "title": "Demo requests",
         "title_plural": "Demo requests",
-        "edit_title": "Update status",
+        "edit_title": "Edit demo request",
         "view": "View",
         "view_title": "Demo request details",
         "load_error": "Could not load this demo request.",
         "delete_confirmation": "Are you sure you want to delete this demo request? This action cannot be undone.",
         "empty_value": "—",
         "toast": {
-            "updated": "Status updated successfully."
+            "updated": "Demo request updated successfully."
         },
         "terms_accepted": {
             "yes": "Yes",
@@ -3343,7 +3438,12 @@
                 "label": "Email"
             },
             "website": {
-                "label": "Website"
+                "label": "Website",
+                "placeholder": "name.example.com",
+                "errors": {
+                    "required": "Website is required to approve this request",
+                    "subdomain": "Enter a domain such as name.example.com"
+                }
             },
             "phone": {
                 "label": "Phone"
@@ -3363,6 +3463,23 @@
             "status": {
                 "label": "Status",
                 "placeholder": "Select status"
+            },
+            "username": {
+                "label": "Username",
+                "placeholder": "Demo username",
+                "errors": {
+                    "required": "Username is required to approve this request",
+                    "max": "Username is too long"
+                }
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Demo password",
+                "errors": {
+                    "required": "Password is required to approve this request",
+                    "min": "Password must be at least 8 characters",
+                    "max": "Password is too long"
+                }
             },
             "created_at": {
                 "label": "Submitted"
@@ -3388,6 +3505,10 @@
             "label": "Staff",
             "placeholder": "Select staff"
         },
+        "client": {
+            "label": "Client",
+            "placeholder": "Select client"
+        },
         "description": {
             "label": "Description",
             "placeholder": "Search description"
@@ -3400,7 +3521,7 @@
         },
         "created_at": {
             "label": "Date",
-            "placeholder": "Search date"
+            "placeholder": "Date"
         }
     },
     "unit_type": {
@@ -3746,6 +3867,13 @@
                 "errors": {
                     "required": "Amount is required",
                     "min": "Amount must be greater than 0"
+                }
+            },
+            "fund": {
+                "label": "Fund",
+                "placeholder": "Select fund",
+                "errors": {
+                    "required": "Fund is required"
                 }
             },
             "messages": {
@@ -4203,7 +4331,7 @@
             "description": "Response data from the Mikrotik API.",
             "initial_hint": "Select a network and command, then click run.",
             "empty": "No result found for this command.",
-            "raw_title": "Raw Response",
+            "raw_title": "Raw Response ({{count}})",
             "single_value": "Value",
             "row_key": "Row {{index}}"
         }
@@ -4319,6 +4447,151 @@
             "usage_information": "Usage Information",
             "active_clients": "Active Clients",
             "inactive_clients": "Inactive Clients"
+        }
+    },
+    "mikrotik_sync": {
+        "title": "MikroTik Sync",
+        "title_plural": "MikroTik Sync",
+        "import_title": "Import Client",
+        "any_search": {
+            "placeholder": "Search by name, client, or profile"
+        },
+        "sync": {
+            "network": {
+                "label": "Network",
+                "placeholder": "Select network",
+                "errors": {
+                    "required": "Network is required"
+                }
+            },
+            "actions": {
+                "load": "Import",
+                "all_sync": "All Sync"
+            },
+            "descriptions": {
+                "load": "Load data from MikroTik and import it into this app.",
+                "resolve": "Sync client package and status between MikroTik and this app."
+            }
+        },
+        "table": {
+            "sl": "SL",
+            "select": "Select row",
+            "select_all": "Select all",
+            "name": "Name",
+            "reseller": "Reseller",
+            "client_in_mikrotik": "Client In Mikrotik",
+            "client_in_app": "Client In App",
+            "mikrotik_profile": "Mikrotik Profile",
+            "app_profile": "App Profile",
+            "client_status_mikrotik": "Mikrotik Status",
+            "client_status_app": "App Status",
+            "disabled": "Disabled",
+            "sync_status": "Sync Status"
+        },
+        "filters": {
+            "disabled": {
+                "placeholder": "Select disabled status",
+                "options": {
+                    "true": "Yes",
+                    "false": "No"
+                }
+            },
+            "syncd_status": {
+                "placeholder": "Select sync status",
+                "options": {
+                    "imported": "Imported",
+                    "not_imported": "Not Imported"
+                }
+            },
+            "reseller": {
+                "placeholder": "Select reseller"
+            },
+            "client_status_mikrotik": {
+                "placeholder": "Select Mikrotik status",
+                "options": {
+                    "active": "Active",
+                    "inactive": "Inactive"
+                }
+            },
+            "client": {
+                "placeholder": "Select client source",
+                "options": {
+                    "mikrotik": "Client in Mikrotik",
+                    "app": "Client in App"
+                }
+            },
+            "mikrotik_match": {
+                "placeholder": "Select match status",
+                "options": {
+                    "match": "Match",
+                    "not_match": "Not Match"
+                }
+            }
+        },
+        "summary": {
+            "empty": "No summary available",
+            "total_clients": "Client",
+            "match": "Match",
+            "not_match": "Not Match"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "actions": {
+            "import": "Import",
+            "individual_sync": "Individual Sync"
+        },
+        "bulk": {
+            "title": "Import clients",
+            "description": "Choose how the selected clients should be imported.",
+            "import_as": {
+                "label": "Import as",
+                "options": {
+                    "own": "Import as Own Client",
+                    "reseller": "Import as Reseller Client"
+                }
+            },
+            "reseller": {
+                "label": "Reseller",
+                "placeholder": "Select reseller",
+                "errors": {
+                    "required": "Reseller is required"
+                }
+            }
+        },
+        "messages": {
+            "load_success": "Mikrotik sync completed successfully",
+            "all_sync_success": "All clients synced successfully",
+            "individual_sync_success": "Client synced successfully",
+            "import_success": "Client imported successfully",
+            "delete_confirmation": "Are you sure you want to delete this synced client?",
+            "delete_client_confirmation": "Are you sure you want to delete this client?",
+            "select_all_pages": "All clients ({{count}}) across every page will be imported.",
+            "bulk_import_queued": "Bulk import queued"
+        },
+        "mikrotik_profile": {
+            "label": "Mikrotik Profile",
+            "placeholder": "Enter Mikrotik profile"
+        },
+        "network_id": {
+            "errors": {
+                "required": "Network is required"
+            }
+        },
+        "package_id": {
+            "errors": {
+                "required": "Package is required"
+            }
+        },
+        "payment_term": {
+            "errors": {
+                "required": "Payment term is required"
+            }
+        },
+        "import_detail": {
+            "error_title": "Error",
+            "load_failed": "Something went wrong. Please try again."
         }
     },
     "import_client": {
@@ -4525,7 +4798,8 @@
             "total_expense": "Total Expense",
             "expense": "Expense",
             "fund": "Fund",
-            "support_ticket": "Support Ticket"
+            "support_ticket": "Support Ticket",
+            "invoice_collection_by": "Invoice collection by:"
         },
         "metrics": {
             "active": "Active",
@@ -4894,6 +5168,9 @@
             },
             "re_sync": {
                 "title": "Re-Sync"
+            },
+            "unified": {
+                "title": "MikroTik Sync"
             }
         },
         "role_permission": {
@@ -5255,6 +5532,10 @@
             "auto_inactive_client_invoice_due": {
                 "label": "Auto Inactive Client Invoice Due"
             },
+            "auto_inactive_client_time": {
+                "label": "Client Auto Inactive Time",
+                "placeholder": "Select auto inactive time"
+            },
             "auto_inactive_reseller_client_termination_date": {
                 "label": "Auto Inactive Reseller Client Termination Date"
             },
@@ -5462,6 +5743,27 @@
                     "mismatch": "Passwords do not match"
                 }
             }
+        },
+        "account_security": {
+            "label": "Change Password/Username",
+            "title": "Change Password/Username",
+            "tabs": {
+                "password": "Reset Password",
+                "username": "Update Username"
+            },
+            "change_username": {
+                "success": "Username updated successfully",
+                "current_username": {
+                    "label": "Current username"
+                },
+                "username": {
+                    "label": "New username",
+                    "placeholder": "Enter new username",
+                    "errors": {
+                        "required": "Username is required"
+                    }
+                }
+            }
         }
     },
     "client_profile": {
@@ -5480,7 +5782,6 @@
         "remove_title": "Remove profile photo",
         "remove_confirm": "Remove your profile photo?",
         "photo_input": "Profile photo file",
-        "nid": "National ID",
         "upload_success": "Profile photo updated",
         "upload_failed": "Could not update the profile photo",
         "remove_success": "Profile photo removed",
@@ -7411,9 +7712,9 @@
             "none": "None"
         },
         "mode": {
-            "full": "Full access after expiry",
-            "read_only": "Read-only after expiry",
-            "disabled": "Locked after expiry",
+            "full": "Keep all after expiry",
+            "read_only": "Keep Read routes only",
+            "disabled": "Remove after expiry",
             "read": "Read",
             "write": "Write"
         },
@@ -7434,6 +7735,64 @@
             "edit": "Edit plan",
             "features": "Plan features",
             "features_saved": "Plan features saved",
+            "inspector": {
+                "summary": "{{included}} of {{total}} features · {{active}} routes while active · {{kept}} kept after expiry",
+                "remove_title": "Remove features from this plan?",
+                "remove_feature": "{{name}}: {{companies}} companies will lose this feature. {{staff}} staff and {{resellers}} resellers who have it now will lose it.",
+                "remove_restore": "Adding a removed feature back later gives it only to each company's Admin role. Staff and resellers do not get it back. Assign it again on each company.",
+                "remove_confirm": "Remove and save",
+                "impact_failed": "The impact of this change could not be loaded. Nothing was saved.",
+                "actions": "Actions",
+                "move_permission": "Move to another feature",
+                "remove_permission": "Remove from this feature",
+                "move_title": "Move permission",
+                "move_detail": "This route leaves the selected feature and joins the feature you choose. Its access stays the same.",
+                "move_target": "Feature",
+                "move_choose": "Choose a feature",
+                "move_confirm": "Move",
+                "moved": "Permission moved",
+                "remove_permission_title": "Remove this permission?",
+                "remove_permission_detail": "This takes the route off the selected feature only. The permission stays in the catalog. Companies whose plan includes this feature will no longer get this route from it.",
+                "route_one": "{{count}} route · {{read}} read · {{write}} write",
+                "routes": "{{count}} routes · {{read}} read · {{write}} write",
+                "off_plan": "Off this plan",
+                "on_plan": "On this plan",
+                "filter_routes": "Filter routes",
+                "while_active": "While active",
+                "after_expiry": "After expiry",
+                "filter_all": "All",
+                "filter_read": "Read",
+                "filter_write": "Write",
+                "filter_kept": "Kept",
+                "filter_dropped": "Dropped",
+                "group": "Group",
+                "route": "Route",
+                "access": "Access",
+                "result_while_active": "While active",
+                "result_after_expiry": "After expiry",
+                "granted": "Granted",
+                "kept": "Kept",
+                "dropped": "Dropped",
+                "not_on_plan": "Not on plan",
+                "preview_active": "While the subscription is active, trialing, or in grace, every route on this feature is granted. The expiry rule applies after it ends.",
+                "expiry_full": "After expiry, every route on this feature stays.",
+                "expiry_read_only": "After expiry, routes marked Read stay. Routes marked Write are removed.",
+                "expiry_disabled": "After expiry, every route on this feature is removed.",
+                "off_plan_detail": "This feature is off the plan, so its routes are not granted.",
+                "read_only_hint": "Read only keeps routes marked Read. Most index, create, and update routes are Write, so they are removed after expiry.",
+                "no_matches": "No routes match this filter.",
+                "empty": "No features yet.",
+                "features": "Features",
+                "expiry_rule": "After expiry",
+                "add_permission": "Add permission",
+                "add_permission_title": "Add permission",
+                "add_permission_detail": "Choose the feature and a permission that is not on any feature yet.",
+                "add_permission_feature": "Feature",
+                "add_permission_permission": "Permission",
+                "add_permission_choose": "Choose a permission",
+                "add_permission_empty": "Every permission is already on a feature.",
+                "add_permission_save": "Save permission"
+            },
             "delete_confirm": "Delete this subscription plan?",
             "name_required": "Name is required",
             "price_required": "Price is required"
@@ -7682,6 +8041,10 @@
                 "collector": "{{collector_name}} collected {{payment_amount}} toward {{invoice_no}}",
                 "online": "{{client_name}} paid {{payment_amount}} toward {{invoice_no}}",
                 "wallet": "Wallet paid {{payment_amount}} toward {{invoice_no}}"
+            },
+            "sms_not_sent": {
+                "title": "Reminder not sent",
+                "message": "Invoice {{invoice_no}} for {{client_name}} could not be sent because the client has no phone number."
             }
         }
     },
@@ -8767,7 +9130,7 @@
                         "scope": "All clients with resellers, or own clients",
                         "filters": "Filter by zone and client status",
                         "reseller": "One reseller or all resellers",
-                        "columns": "SID, package, bandwidth and connection date"
+                        "columns": "Sl, month, year, username, mobile, address, bandwidth, IP, activation date and price"
                     }
                 },
                 "money": {
@@ -8796,7 +9159,7 @@
             "specs": {
                 "format": {
                     "label": "BTRC format",
-                    "value": "XLS"
+                    "value": "XLSX"
                 },
                 "btrc": {
                     "label": "BTRC reports",
@@ -8812,7 +9175,7 @@
                 },
                 "client_columns": {
                     "label": "Client columns",
-                    "value": "SL, SID, name, phone, email, username, zone, address, network, package, bandwidth, connection date, status"
+                    "value": "Sl, month, year, username, client type, mobile, address, bandwidth, allocated IP, activation date, selling price"
                 },
                 "reseller_columns": {
                     "label": "Reseller columns",
@@ -8834,7 +9197,7 @@
             "sample": {
                 "zone": "Mohammadpur"
             },
-            "sample_alt": "BTRC Reports: client and reseller filters with Download XLS Report"
+            "sample_alt": "BTRC Reports: client and reseller filters with Download XLSX Report"
         },
         "portal": {
             "meta_title": "Customer portal and Quick Pay",

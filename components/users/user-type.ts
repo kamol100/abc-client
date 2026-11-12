@@ -48,11 +48,7 @@ export type UserRow = z.infer<typeof UserRowSchema>;
 
 export type UserDetail = UserRow;
 
-const BaseUserFormSchema = UserCoreSchema.extend({
-    roles_id: z.array(z.coerce.number()).min(1, { message: "user.roles.errors.min" }),
-});
-
-export const CreateUserFormSchema = BaseUserFormSchema.extend({
+export const CreateUserFormSchema = UserCoreSchema.extend({
     password: z.string({
         required_error: "user.password.errors.required",
         invalid_type_error: "user.password.errors.invalid",
@@ -71,7 +67,7 @@ export const CreateUserFormSchema = BaseUserFormSchema.extend({
     }
 }).transform(({ confirm, ...payload }) => payload);
 
-export const UpdateUserFormSchema = BaseUserFormSchema.extend({
+export const UpdateUserFormSchema = UserCoreSchema.extend({
     password: z.string({
         required_error: "user.password.errors.required",
         invalid_type_error: "user.password.errors.invalid",

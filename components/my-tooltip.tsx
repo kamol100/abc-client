@@ -21,6 +21,8 @@ export interface MyTooltipProps {
   disabled?: boolean;
   /** Extra classes applied to the tooltip content bubble. */
   className?: string;
+  /** Extra classes on the trigger wrapper so it can shrink inside a flex row. */
+  triggerClassName?: string;
   /** Gap between trigger and content in px. Default: 4 */
   sideOffset?: number;
 }
@@ -52,6 +54,7 @@ export function MyTooltip({
   delay = 300,
   disabled = false,
   className,
+  triggerClassName,
   sideOffset = 4,
 }: MyTooltipProps) {
   const { t } = useTranslation();
@@ -66,7 +69,7 @@ export function MyTooltip({
       <TooltipPrimitive.Root>
         <TooltipPrimitive.Trigger asChild>
           {/* asChild merges tooltip a11y attrs onto the actual trigger element */}
-          <span className="inline-flex">{children}</span>
+          <span className={cn("inline-flex", triggerClassName)}>{children}</span>
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content

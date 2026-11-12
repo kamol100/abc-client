@@ -23,6 +23,7 @@ import {
     Eye,
     FileText,
     Lock,
+    MapPin,
     MessageSquare,
     Package,
     RotateCcw,
@@ -47,6 +48,7 @@ import { ResellerRechargeDialog } from "@/components/wallets/reseller-recharge";
 import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
 
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
+const ClientAddMapDialog = dynamic(() => import("@/components/clients/client-add-map-dialog"), { ssr: false });
 
 interface ClientRowActionsProps {
     row: Row<ClientRow>;
@@ -69,6 +71,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const [smsOpen, setSmsOpen] = useState(false);
     const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
     const [lockOpen, setLockOpen] = useState(false);
+    const [mapOpen, setMapOpen] = useState(false);
+    const canAddMap = hasPermission("clients.map.add");
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [mikrotikDelete, setMikrotikDelete] = useState(false);
 
@@ -198,6 +202,15 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                         {t(isLocked ? "client.actions.unlock" : "client.actions.lock")}
                     </DropdownMenuItem>
                 )}
+                {canAddMap && (
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onSelect={() => setMapOpen(true)}
+                    >
+                        <MapPin className="mr-2 h-4 w-4" />
+                        {t("client.actions.add_map")}
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 {hasPermission("clients.delete") && (
                     <DropdownMenuItem
@@ -284,6 +297,14 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     isLocked={isLocked}
                     open={lockOpen}
                     onOpenChange={setLockOpen}
+                />
+            )}
+
+            {canAddMap && (
+                <ClientAddMapDialog
+                    clientId={clientId}
+                    open={mapOpen}
+                    onOpenChange={setMapOpen}
                 />
             )}
 

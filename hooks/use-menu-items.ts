@@ -85,7 +85,7 @@ const networkGate = [
   "onus.access",
 ];
 const packageGate = ["packages.access", "resellers.access"];
-const syncGate = ["sync-clients.access", "client-sync.access"];
+const syncGate = ["sync-clients.access", "client-sync.access", "mikrotik-sync.access"];
 
 export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
   return [
@@ -122,23 +122,12 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.invoice.title"),
       url: "#",
       icon: FileText,
-      permissions: ["invoices.access", "invoice-types.access"],
+      permissions: ["invoices.access", "invoice-types.access", "payments.access"],
       feature: "billing",
       items: [
         { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
-        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
-      ],
-    },
-    {
-      id: 10,
-      title: t("menu.payments.title"),
-      url: "#",
-      icon: Banknote,
-      permissions: ["payments.access", "payment-gateways.access"],
-      feature: "billing",
-      items: [
         { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
-        { title: t("menu.payments.gateways.title"), url: "/payment-gateways", permission: "payment-gateways.access" },
+        { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
       ],
     },
     {
@@ -182,8 +171,9 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       items: [
         { title: t("menu.networks.title"), url: "/networks", permission: "networks.access", requiresAny: networkGate, feature: networkFeature },
         { title: t("menu.noc.title"), url: "/noc", permission: "monitoring.summary", requiresAny: ["monitoring.summary"], feature: "olts" },
-        { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access", requiresAny: syncGate, feature: networkFeature },
-        { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access", requiresAny: syncGate, feature: networkFeature },
+        // { title: t("menu.mikrotik_sync.import.title"), url: "/import-client", permission: "sync-clients.access", requiresAny: syncGate, feature: networkFeature },
+        // { title: t("menu.mikrotik_sync.re_sync.title"), url: "/re-sync", permission: "client-sync.access", requiresAny: syncGate, feature: networkFeature },
+        { title: t("menu.mikrotik_sync.unified.title"), url: "/mikrotik-sync", permission: "mikrotik-sync.access", requiresAny: ["mikrotik-sync.access"], feature: networkFeature },
         { title: t("menu.mikrotik_commands.title"), url: "/mikrotik-commands", permission: "mikrotik-command.access", requiresAny: ["mikrotik-command.access"], feature: networkFeature },
         { title: t("menu.packages.mikrotik_package.title"), url: "/mikrotik-packages", permission: "mikrotik-packages.access", requiresAny: packageGate },
         { title: t("menu.packages.client_package.title"), url: "/client-packages", permission: "packages.access", requiresAny: packageGate },
@@ -349,6 +339,14 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.role_permission.roles.title"), url: "/roles", permission: "roles.access" },
         { title: t("menu.role_permission.permissions.title"), url: "/permissions", permission: "permissions.access" },
       ],
+    },
+    {
+      id: 10,
+      title: t("menu.payments.gateways.title"),
+      url: "/payment-gateways",
+      icon: Banknote,
+      permissions: ["payment-gateways.access"],
+      feature: "billing",
     },
     {
       id: 36,

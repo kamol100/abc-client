@@ -131,6 +131,15 @@ export const DashboardInvoicePaidSummarySchema = z
   })
   .passthrough();
 
+export const DashboardStaffInvoiceCollectionSchema = z
+  .object({
+    staff_name: NullableStringSchema.optional().default(null),
+    today_amount: NumberLikeSchema.optional().default(0),
+    this_month_amount: NumberLikeSchema.optional().default(0),
+    last_month_amount: NumberLikeSchema.optional().default(0),
+  })
+  .passthrough();
+
 export const DashboardExpenseSummarySchema = z
   .object({
     total_expense_amount: NumberLikeSchema.optional().default(0),
@@ -193,6 +202,13 @@ export type DashboardZoneWiseTopInvoiceDue = z.infer<typeof DashboardZoneWiseTop
 export type DashboardInvoiceSummary = z.infer<typeof DashboardInvoiceSummarySchema>;
 export type DashboardInvoiceDueSummary = DashboardInvoiceSummary;
 export type DashboardInvoicePaidSummary = z.infer<typeof DashboardInvoicePaidSummarySchema>;
+export type DashboardStaffInvoiceCollection = z.infer<typeof DashboardStaffInvoiceCollectionSchema>;
+
+export function hasStaffInvoiceCollection(
+  data: Pick<DashboardStaffInvoiceCollection, "today_amount" | "this_month_amount" | "last_month_amount">,
+): boolean {
+  return data.today_amount > 0 || data.this_month_amount > 0 || data.last_month_amount > 0;
+}
 export type DashboardExpenseSummary = z.infer<typeof DashboardExpenseSummarySchema>;
 export type DashboardFundSummary = z.infer<typeof DashboardFundSummarySchema>;
 export type DashboardProductStockCategory = z.infer<typeof DashboardProductStockCategorySchema>;

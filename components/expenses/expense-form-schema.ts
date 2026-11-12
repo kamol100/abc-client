@@ -1,8 +1,48 @@
 import { useTranslation } from "react-i18next";
+import { type ExpenseFundAccess } from "@/components/expenses/expense-fund-access";
+import { EXPENSE_STATUS_OPTIONS } from "@/components/expenses/expense-type";
+import { DropdownFieldConfig, FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { usePermissions } from "@/context/app-provider";
-import { FormFieldConfig } from "../form-wrapper/form-builder-type";
 
-export const ExpenseFormFieldSchema = (): FormFieldConfig[] => {
+const fundField = (
+    mode: "create" | "edit",
+    fundAccess: ExpenseFundAccess,
+    label: string,
+    placeholder: string,
+): DropdownFieldConfig => {
+    const lockedOption =
+        fundAccess.assignedFundId == null
+            ? []
+            : [{
+                value: fundAccess.assignedFundId,
+                label: fundAccess.assignedFundName || String(fundAccess.assignedFundId),
+            }];
+
+    return {
+        type: "dropdown",
+        name: "fund_id",
+        label: { labelText: label },
+        placeholder,
+        valueKey: "fund",
+        valueMapping: { idKey: "id", labelKey: "name" },
+        isDisabled: fundAccess.lockFund,
+        isClearable: !fundAccess.lockFund,
+        ...(fundAccess.lockFund
+            ? { options: lockedOption }
+            : { api: "/dropdown-funds" }),
+        ...(mode === "create" && fundAccess.assignedFundId != null
+            ? { defaultValue: fundAccess.assignedFundId }
+            : {}),
+    };
+};
+
+export const ExpenseFormFieldSchema = ({
+    mode,
+    fundAccess,
+}: {
+    mode: "create" | "edit";
+    fundAccess: ExpenseFundAccess;
+}): FormFieldConfig[] => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
 
@@ -22,15 +62,12 @@ export const ExpenseFormFieldSchema = (): FormFieldConfig[] => {
             valueKey: "staff",
             valueMapping: { idKey: "id", labelKey: "name" },
         },
-        {
-            type: "dropdown",
-            name: "fund_id",
-            label: { labelText: t("expense.fund.label") },
-            placeholder: t("expense.fund.placeholder"),
-            api: "/dropdown-funds",
-            valueKey: "fund",
-            valueMapping: { idKey: "id", labelKey: "name" },
-        },
+        fundField(
+            mode,
+            fundAccess,
+            t("expense.fund.label"),
+            t("expense.fund.placeholder"),
+        ),
         {
             type: "dropdown",
             name: "expense_type_id",
@@ -67,11 +104,10 @@ export const ExpenseFormFieldSchema = (): FormFieldConfig[] => {
             label: { labelText: t("common.status") },
             placeholder: t("expense.status.placeholder"),
             permission: hasPermission("expenses.approval"),
-            options: [
-                { value: "pending", label: t("common.pending") },
-                { value: "approved", label: t("common.approved") },
-                { value: "declined", label: t("expense.declined") },
-            ],
+            options: EXPENSE_STATUS_OPTIONS.map((option) => ({
+                value: option.value,
+                label: t(option.label),
+            })),
         },
         {
             type: "textarea",

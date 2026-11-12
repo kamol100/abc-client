@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const ClientRefSchema = z.object({
     id: z.coerce.number(),
+    uuid: z.string().nullable().optional(),
     name: z.string(),
     phone: z.string().nullable().optional(),
     current_address: z.string().nullable().optional(),

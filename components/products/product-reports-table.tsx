@@ -1,11 +1,11 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery from "@/hooks/use-api-query";
-import { cellIndex, formatMoney, toNumber } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
@@ -25,6 +25,7 @@ type ProductReportsTableProps = {
     mode: ProductMovementMode;
     toolbarTitleKey: string;
     showCreateAction?: boolean;
+    header?: ReactNode;
 };
 
 const STATUS_STYLES: Record<string, string> = {
@@ -35,25 +36,37 @@ const STATUS_STYLES: Record<string, string> = {
 
 function useProductReportsColumns(
     mode: ProductMovementMode,
-    pagination?: Pagination,
 ): ColumnDef<ProductReportRow>[] {
     const { t } = useTranslation();
 
     return useMemo(
         () => [
             {
-                id: "sl",
+                id: "product_code",
+                accessorFn: (row) => row.product?.product_code,
                 header: ({ column }) => (
                     <DataTableColumnHeader
                         column={column}
-                        title="product_reports.columns.sl"
+                        title="product.product_code.label"
                     />
                 ),
                 cell: ({ row }) => (
-                    <span className="font-medium">{cellIndex(row.index, pagination)}</span>
+                    <span className="font-medium">{row.original.product?.product_code || "-"}</span>
                 ),
                 enableSorting: false,
                 enableHiding: false,
+            },
+            {
+                id: "product_name",
+                accessorFn: (row) => row.product?.name,
+                header: ({ column }) => (
+                    <DataTableColumnHeader
+                        column={column}
+                        title="product.name.label"
+                    />
+                ),
+                cell: ({ row }) => <span>{row.original.product?.name || "-"}</span>,
+                enableSorting: false,
             },
             {
                 id: "date",
@@ -176,7 +189,7 @@ function useProductReportsColumns(
                 enableSorting: false,
             },
         ],
-        [mode, pagination, t],
+        [mode, t],
     );
 }
 
@@ -184,6 +197,7 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
     mode,
     toolbarTitleKey,
     showCreateAction = false,
+    header,
 }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
@@ -209,7 +223,7 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
     const rows = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
     const reports = data?.data?.reports;
-    const columns = useProductReportsColumns(mode, pagination);
+    const columns = useProductReportsColumns(mode);
 
     const toolbarOptions = useMemo(
         () => ({
@@ -239,8 +253,17 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
 
     return (
         <div className="space-y-4">
-            {(isLoading || reports) && (
-                <ProductReportsSummary reports={reports} mode={mode} isLoading={isLoading} />
+            {(header || isLoading || reports) && (
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    {header}
+                    {(isLoading || reports) && (
+                        <ProductReportsSummary
+                            reports={reports}
+                            isLoading={isLoading}
+                            className="ml-auto"
+                        />
+                    )}
+                </div>
             )}
 
             <DataTable

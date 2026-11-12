@@ -7,7 +7,8 @@ import AccordionFormBuilder from "@/components/form-wrapper/accordion-form-build
 import ClientImageFields from "@/components/clients/client-image-fields";
 import ClientFormFieldSchema from "@/components/clients/client-form-schema";
 import { ClientFormSchema, type ClientRow } from "@/components/clients/client-type";
-import { useSettings } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
+import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 
 type Props = {
@@ -34,7 +35,10 @@ const ClientForm: FC<Props> = ({
   data,
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
   const { settings } = useSettings();
+  const denied = mode === "create" ? !hasPermission("clients.create") : !hasPermission("clients.edit");
   const { data: nextSidResponse } = useApiQuery<ApiResponse<{ sid: number }>>({
     queryKey: ["clients", "next-sid"],
     url: "client-next-sid",
@@ -42,6 +46,14 @@ const ClientForm: FC<Props> = ({
     enabled: mode === "create",
   });
   const nextSid = nextSidResponse?.data?.sid;
+
+  if (denied) {
+    return (
+      <p className="py-6 text-center text-sm text-muted-foreground">
+        {t("subscription.feature_not_in_plan")}
+      </p>
+    );
+  }
 
   return (
     <AccordionFormBuilder

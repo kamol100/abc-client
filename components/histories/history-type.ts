@@ -2,11 +2,17 @@ import { z } from "zod";
 
 export const HistoryRecordSchema = z.record(z.unknown());
 
+export const HistoryClientSchema = z.object({
+    uuid: z.string(),
+    name: z.string().nullable().optional(),
+});
+
 export const HistoryRowSchema = z
     .object({
         id: z.union([z.string(), z.coerce.number()]),
         description: z.string().nullable().optional(),
         staff: z.string().nullable().optional(),
+        client: HistoryClientSchema.nullable().optional(),
         old_data: HistoryRecordSchema.nullable().optional(),
         new_data: HistoryRecordSchema.nullable().optional(),
         created_at: z.string().nullable().optional(),

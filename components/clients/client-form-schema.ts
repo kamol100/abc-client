@@ -81,7 +81,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadlin
         {
           type: "text",
           name: "phone",
-          label: { labelText: "client.phone.label" },
+          label: { labelText: "client.phone.label", mandatory: true },
           placeholder: "client.phone.placeholder",
         },
         {
@@ -151,7 +151,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadlin
           options: [
             { label: "common.auto", value: "auto" },
             { label: "common.manual", value: "manual" },
-            { label: "common.no_bill", value: "no_bill" },
+            { label: "common.no_invoice_this_month", value: "no_invoice_this_month" },
           ],
         },
         {

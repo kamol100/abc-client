@@ -4,6 +4,7 @@ import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, UserRound } fr
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import MyTooltip from "@/components/my-tooltip";
 import { ChangePasswordDialog } from "@/components/profiles/change-password-dialog";
 import { staffProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import {
@@ -25,6 +26,19 @@ import type { Profile } from "@/types/app";
 
 interface CompanyProfileProps {
   profile: Profile;
+}
+
+function TruncatedMenuLabel({ label }: { label: string }) {
+  return (
+    <MyTooltip
+      content={label}
+      placement="left"
+      delay={200}
+      triggerClassName="min-w-0 flex-1"
+    >
+      <span className="block min-w-0 flex-1 truncate">{label}</span>
+    </MyTooltip>
+  );
 }
 
 export function CompanyProfile({ profile }: CompanyProfileProps) {
@@ -104,11 +118,11 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
-            className="cursor-pointer"
+            className="cursor-pointer overflow-hidden"
             onSelect={() => setChangePasswordOpen(true)}
           >
             <LockIcon className="h-4 w-4" />
-            {t("user_profile.change_password.label")}
+            <TruncatedMenuLabel label={t("user_profile.account_security.label")} />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

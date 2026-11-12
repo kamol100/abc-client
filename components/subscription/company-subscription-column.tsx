@@ -8,6 +8,7 @@ import MyBadge, { type MyBadgeType } from "@/components/my-badge";
 import MyButton from "@/components/my-button";
 import CompanySubscriptionForm from "@/components/subscription/company-subscription-form";
 import { CompanySubscriptionRow } from "@/components/subscription/company-subscription-type";
+import PlanFeatureMatrix from "@/components/subscription/plan-feature-matrix";
 import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { ApiResponse } from "@/hooks/use-api-query";
@@ -49,6 +50,17 @@ function SubscriptionActions({ row }: { row: CompanySubscriptionRow }) {
 
   return (
     <div className="flex items-center justify-end gap-2">
+      {row.plan?.id ? (
+        <PlanFeatureMatrix
+          planId={row.plan.id}
+          readOnly
+          initial={(row.plan.features ?? []).flatMap((feature) =>
+            feature.expired_mode === "full" || feature.expired_mode === "read_only" || feature.expired_mode === "disabled"
+              ? [{ id: feature.id, expired_mode: feature.expired_mode }]
+              : []
+          )}
+        />
+      ) : null}
       {hasPermission("company-subscriptions.edit") && (
         <CompanySubscriptionForm mode="edit" data={row} api="/company-subscriptions" method="PUT" />
       )}

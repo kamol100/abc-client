@@ -1,0 +1,723 @@
+# Source evidence — application-shell
+
+Generated from static source inspection on 2026-11-12. Literal references can include inactive paths, aliases and shared subfeatures. Confirm reachability/middleware and final payload before implementation.
+
+## Frontend files
+
+- `app/(dashboard)/layout.tsx`
+- `app/(dashboard)/top-navbar.tsx`
+- `components/tenant-switcher.tsx`
+- `hooks/use-client-menu-items.ts`
+- `hooks/use-menu-items.ts`
+- `proxy.ts`
+
+## Observed permission checks
+
+- `notifications.access`
+
+## Observed API templates (not validated endpoints)
+
+- `#`
+- `/activity-logs`
+- `/agent-transactions`
+- `/agents`
+- `/archived-clients`
+- `/client-maps`
+- `/client-packages`
+- `/client-wallets`
+- `/client/dashboard`
+- `/client/invoices`
+- `/client/pay`
+- `/client/payments`
+- `/client/tickets`
+- `/client/traffic-report`
+- `/clients`
+- `/communication-gateways`
+- `/communication-logs`
+- `/communication-queue`
+- `/companies`
+- `/company-subscriptions`
+- `/dashboard`
+- `/demo-requests`
+- `/device-types`
+- `/devices`
+- `/expense-types`
+- `/expenses`
+- `/fund-transactions`
+- `/funds`
+- `/histories`
+- `/impersonate/leave`
+- `/impersonate/leave-all`
+- `/impersonate/status`
+- `/import-client`
+- `/invoice-types`
+- `/invoices`
+- `/mikrotik-commands`
+- `/mikrotik-packages`
+- `/mikrotik-sync`
+- `/my-wallets`
+- `/networks`
+- `/noc`
+- `/olts`
+- `/onus`
+- `/payment-gateways`
+- `/payments`
+- `/permissions`
+- `/product-categories`
+- `/products`
+- `/products/reports`
+- `/re-sync`
+- `/reports/btrc`
+- `/reports/expenses`
+- `/reports/funds`
+- `/reports/income-expense`
+- `/reports/invoices`
+- `/reports/new-clients`
+- `/reports/payments`
+- `/reports/product-in`
+- `/reports/product-out`
+- `/reports/reseller-clients`
+- `/reseller-packages`
+- `/resellers`
+- `/roles`
+- `/salaries`
+- `/settings/dashboard`
+- `/settings/general`
+- `/settings/invoice-print`
+- `/settings/map`
+- `/settings/monitoring`
+- `/settings/notifications`
+- `/settings/olt`
+- `/settings/sms`
+- `/sms-send`
+- `/sms-templates`
+- `/staffs`
+- `/sub-zones`
+- `/subjects`
+- `/subscription`
+- `/subscription-features`
+- `/subscription-plans`
+- `/tags`
+- `/telegram`
+- `/tickets`
+- `/tj-box-maps`
+- `/tj-boxes`
+- `/unit-types`
+- `/user-settings`
+- `/users`
+- `/vendors`
+- `/zones`
+
+## Observed form/config field names
+
+- None extracted; inspect page, shared components and dynamic configuration.
+
+## Matching backend route declarations
+
+- GET `/status` → `impersonate.status`; `ImpersonationController::status`; `../isp-backend/routes/api.php:148`
+- POST `/staff/{staff}` → `impersonate.staff`; `ImpersonationController::impersonateStaff`; `../isp-backend/routes/api.php:155`
+- POST `/{user}` → `impersonate.start`; `ImpersonationController::impersonate`; `../isp-backend/routes/api.php:156`
+- GET `/users` → `users.access`; `UserController::index`; `../isp-backend/routes/api.php:160`
+- POST `/users` → `users.create`; `UserController::store`; `../isp-backend/routes/api.php:161`
+- GET `/users/{user}` → `users.show`; `UserController::show`; `../isp-backend/routes/api.php:162`
+- PUT `/users/{uuid}` → `users.edit`; `UserController::update`; `../isp-backend/routes/api.php:163`
+- DELETE `/users/{user}` → `users.delete`; `UserController::destroy`; `../isp-backend/routes/api.php:164`
+- GET `/roles` → `roles.access`; `RolesController::index`; `../isp-backend/routes/api.php:167`
+- POST `/roles` → `roles.create`; `RolesController::store`; `../isp-backend/routes/api.php:168`
+- PUT `/roles/{uuid}` → `roles.edit`; `RolesController::update`; `../isp-backend/routes/api.php:169`
+- DELETE `/roles/{id}` → `roles.delete`; `RolesController::destroy`; `../isp-backend/routes/api.php:170`
+- GET `/permissions` → `permissions.access`; `PermissionsController::index`; `../isp-backend/routes/api.php:173`
+- POST `/permission-add` → `permissions.add`; `RolePermissionController::add`; `../isp-backend/routes/api.php:176`
+- POST `/permission-remove` → `permissions.remove`; `RolePermissionController::remove`; `../isp-backend/routes/api.php:177`
+- GET `/networks` → `networks.access`; `NetworksController::index`; `../isp-backend/routes/api.php:180`
+- GET `/networks/{networks}` → `networks.show`; `NetworksController::show`; `../isp-backend/routes/api.php:181`
+- POST `/networks` → `networks.create`; `NetworksController::store`; `../isp-backend/routes/api.php:182`
+- PUT `/networks/{networks}` → `networks.edit`; `NetworksController::update`; `../isp-backend/routes/api.php:183`
+- DELETE `/networks/{networks}` → `networks.delete`; `NetworksController::destroy`; `../isp-backend/routes/api.php:184`
+- GET `/mikrotik-packages` → `mikrotik-packages.access`; `MikrotikPackageController::index`; `../isp-backend/routes/api.php:187`
+- POST `/mikrotik-packages` → `mikrotik-packages.create`; `MikrotikPackageController::store`; `../isp-backend/routes/api.php:188`
+- PUT `/mikrotik-packages/{id}` → `mikrotik-packages.edit`; `MikrotikPackageController::update`; `../isp-backend/routes/api.php:189`
+- DELETE `/mikrotik-packages/{id}` → `mikrotik-packages.delete`; `MikrotikPackageController::destroy`; `../isp-backend/routes/api.php:190`
+- GET `/zones` → `zones.access`; `ZoneController::index`; `../isp-backend/routes/api.php:200`
+- GET `/zones/{zone}` → `zones.show`; `ZoneController::show`; `../isp-backend/routes/api.php:201`
+- POST `/zones` → `zones.create`; `ZoneController::store`; `../isp-backend/routes/api.php:202`
+- PUT `/zones/{zone}` → `zones.edit`; `ZoneController::update`; `../isp-backend/routes/api.php:203`
+- DELETE `/zones/{zone}` → `zones.delete`; `ZoneController::destroy`; `../isp-backend/routes/api.php:204`
+- GET `/sub-zones` → `sub-zones.access`; `SubZoneController::index`; `../isp-backend/routes/api.php:207`
+- GET `/sub-zones/{subZone}` → `sub-zones.show`; `SubZoneController::show`; `../isp-backend/routes/api.php:208`
+- POST `/sub-zones` → `sub-zones.create`; `SubZoneController::store`; `../isp-backend/routes/api.php:209`
+- PUT `/sub-zones/{subZone}` → `sub-zones.edit`; `SubZoneController::update`; `../isp-backend/routes/api.php:210`
+- DELETE `/sub-zones/{subZone}` → `sub-zones.delete`; `SubZoneController::destroy`; `../isp-backend/routes/api.php:211`
+- GET `/clients` → `clients.access`; `ClientController::index`; `../isp-backend/routes/api.php:215`
+- GET `/client-next-sid` → `clients.next-sid`; `ClientController::nextSid`; `../isp-backend/routes/api.php:216`
+- GET `/client-maps` → `clients.map`; `ClientController::getClientMaps`; `../isp-backend/routes/api.php:217`
+- GET `/clients/{client}` → `clients.show`; `ClientController::show`; `../isp-backend/routes/api.php:218`
+- GET `/clients/{client}/sms-status` → `clients.sms-status`; `ClientController::smsStatus`; `../isp-backend/routes/api.php:219`
+- POST `/clients` → `clients.create`; `ClientController::store`; `../isp-backend/routes/api.php:220`
+- PUT `/clients/{client}` → `clients.edit`; `ClientController::update`; `../isp-backend/routes/api.php:221`
+- POST `/clients/{client}/add-client-map` → `clients.map.add`; `ClientController::addClientMap`; `../isp-backend/routes/api.php:222`
+- PUT `/client-status/{client}` → `clients.status`; `ClientController::updateClientStatus`; `../isp-backend/routes/api.php:232`
+- DELETE `/clients/{client}` → `clients.delete`; `ClientController::destroy`; `../isp-backend/routes/api.php:233`
+- GET `/archived-clients` → `archived-clients.access`; `ArchivedClientController::index`; `../isp-backend/routes/api.php:234`
+- POST `/archived-clients/{uuid}/restore` → `archived-clients.restore`; `ArchivedClientController::restore`; `../isp-backend/routes/api.php:235`
+- DELETE `/archived-clients/{uuid}` → `archived-clients.delete`; `ArchivedClientController::destroy`; `../isp-backend/routes/api.php:236`
+- GET `/clients/{client}/netactive` → `clients.active`; `ClientController::mikrotikActive`; `../isp-backend/routes/api.php:237`
+- GET `/btrc/clients` → `reports.btrc-clients.report`; `ClientController::btrcClientReport`; `../isp-backend/routes/api.php:238`
+- GET `/btrc/resellers` → `reports.btrc-resellers.report`; `ClientController::btrcResellerReport`; `../isp-backend/routes/api.php:239`
+- GET `/new-clients/clients` → `reports.new-clients.report`; `ClientController::newClientReport`; `../isp-backend/routes/api.php:240`
+- GET `/new-clients/resellers` → `reports.new-client-resellers.report`; `ClientController::newClientResellerReport`; `../isp-backend/routes/api.php:241`
+- GET `/resellers` → `resellers.access`; `ResellerController::index`; `../isp-backend/routes/api.php:244`
+- GET `/resellers/client/{reseller}` → `resellers.client`; `ResellerController::resellerClient`; `../isp-backend/routes/api.php:245`
+- GET `/resellers/clients` → `resellers.clients.report`; `ResellerController::resellerClients`; `../isp-backend/routes/api.php:246`
+- GET `/resellers/export-files` → `resellers.export-files`; `ResellerController::exportFiles`; `../isp-backend/routes/api.php:247`
+- POST `/resellers/import` → `resellers.import`; `ResellerController::importFromExport`; `../isp-backend/routes/api.php:248`
+- GET `/resellers/{reseller}` → `resellers.show`; `ResellerController::show`; `../isp-backend/routes/api.php:249`
+- GET `/resellers/company/{reseller}` → `company-profile.access`; `ResellerController::company`; `../isp-backend/routes/api.php:250`
+- POST `/resellers` → `resellers.create`; `ResellerController::store`; `../isp-backend/routes/api.php:251`
+- PUT `/resellers/{reseller}` → `resellers.edit`; `ResellerController::update`; `../isp-backend/routes/api.php:252`
+- DELETE `/resellers/{reseller}` → `resellers.delete`; `ResellerController::destroy`; `../isp-backend/routes/api.php:262`
+- GET `/invoices` → `invoices.access`; `InvoicesController::index`; `../isp-backend/routes/api.php:265`
+- GET `/invoices/{invoices}` → `invoices.show`; `InvoicesController::show`; `../isp-backend/routes/api.php:266`
+- POST `/invoices/bulk-pay` → `invoices.pay`; `InvoicesController::bulkPay`; `../isp-backend/routes/api.php:267`
+- POST `/invoices` → `invoices.create`; `InvoicesController::store`; `../isp-backend/routes/api.php:268`
+- PUT `/invoices/{invoices}` → `invoices.edit`; `InvoicesController::update`; `../isp-backend/routes/api.php:269`
+- DELETE `/invoices/{invoices}` → `invoices.delete`; `InvoicesController::destroy`; `../isp-backend/routes/api.php:271`
+- GET `/invoice-types` → `invoice-types.access`; `InvoiceTypeController::index`; `../isp-backend/routes/api.php:274`
+- POST `/invoice-types` → `invoice-types.create`; `InvoiceTypeController::store`; `../isp-backend/routes/api.php:275`
+- GET `/invoice-types/{invoiceType}` → `invoice-types.show`; `InvoiceTypeController::show`; `../isp-backend/routes/api.php:276`
+- PUT `/invoice-types/{invoiceType}` → `invoice-types.edit`; `InvoiceTypeController::update`; `../isp-backend/routes/api.php:277`
+- DELETE `/invoice-types/{invoiceType}` → `invoice-types.delete`; `InvoiceTypeController::destroy`; `../isp-backend/routes/api.php:278`
+- GET `/device-types` → `device-types.access`; `DeviceTypeController::index`; `../isp-backend/routes/api.php:281`
+- POST `/device-types` → `device-types.create`; `DeviceTypeController::store`; `../isp-backend/routes/api.php:282`
+- GET `/device-types/{deviceType}` → `device-types.show`; `DeviceTypeController::show`; `../isp-backend/routes/api.php:283`
+- PUT `/device-types/{deviceType}` → `device-types.edit`; `DeviceTypeController::update`; `../isp-backend/routes/api.php:284`
+- DELETE `/device-types/{deviceType}` → `device-types.delete`; `DeviceTypeController::destroy`; `../isp-backend/routes/api.php:285`
+- GET `/devices` → `devices.access`; `DeviceController::index`; `../isp-backend/routes/api.php:288`
+- GET `/devices/{device}` → `devices.show`; `DeviceController::show`; `../isp-backend/routes/api.php:289`
+- POST `/devices` → `devices.create`; `DeviceController::store`; `../isp-backend/routes/api.php:290`
+- PUT `/devices/{device}` → `devices.edit`; `DeviceController::update`; `../isp-backend/routes/api.php:291`
+- DELETE `/devices/{device}` → `devices.delete`; `DeviceController::destroy`; `../isp-backend/routes/api.php:292`
+- POST `/devices/{device}/ping` → `devices.ping`; `DeviceMonitoringController::ping`; `../isp-backend/routes/api.php:295`
+- GET `/devices/{device}/monitoring` → `devices.monitoring`; `DeviceMonitoringController::monitoring`; `../isp-backend/routes/api.php:296`
+- GET `/devices/{device}/checks` → `devices.history`; `DeviceMonitoringController::checks`; `../isp-backend/routes/api.php:297`
+- GET `/olts` → `olts.access`; `OltController::index`; `../isp-backend/routes/api.php:298`
+- GET `/olts/{device}` → `olts.show`; `OltController::show`; `../isp-backend/routes/api.php:299`
+- GET `/olts/{device}/clients` → `olts.clients`; `OltController::clients`; `../isp-backend/routes/api.php:300`
+- DELETE `/olts/{device}/access` → `olts.access-remove`; `OltAccessController::destroy`; `../isp-backend/routes/api.php:303`
+- POST `/olts/{device}/access/test` → `olts.access-test`; `OltAccessController::test`; `../isp-backend/routes/api.php:304`
+- POST `/olts/{device}/poll` → `olts.poll`; `OltController::poll`; `../isp-backend/routes/api.php:305`
+- GET `/onus` → `onus.access`; `OnuController::index`; `../isp-backend/routes/api.php:306`
+- PUT `/onus/{onu}` → `onus.edit`; `OnuController::update`; `../isp-backend/routes/api.php:307`
+- GET `/payments` → `payments.access`; `PaymentsController::index`; `../isp-backend/routes/api.php:312`
+- GET `/payments/{payment}` → `payments.show`; `PaymentsController::show`; `../isp-backend/routes/api.php:313`
+- POST `/payments` → `payments.create`; `PaymentsController::store`; `../isp-backend/routes/api.php:314`
+- PUT `/payments/{payment}` → `payments.edit`; `PaymentsController::update`; `../isp-backend/routes/api.php:315`
+- DELETE `/payments/{payment}` → `payments.delete`; `PaymentsController::destroy`; `../isp-backend/routes/api.php:316`
+- GET `/products` → `products.access`; `ProductController::index`; `../isp-backend/routes/api.php:319`
+- POST `/products` → `products.create`; `ProductController::store`; `../isp-backend/routes/api.php:320`
+- GET `/products/{product}` → `products.show`; `ProductController::show`; `../isp-backend/routes/api.php:321`
+- PUT `/products/{product}` → `products.edit`; `ProductController::update`; `../isp-backend/routes/api.php:322`
+- DELETE `/products/{product}` → `products.delete`; `ProductController::destroy`; `../isp-backend/routes/api.php:323`
+- DELETE `/products/{product}` → `products.delete`; `ProductController::destroy`; `../isp-backend/routes/api.php:338`
+- GET `/vendors` → `vendors.access`; `VendorController::index`; `../isp-backend/routes/api.php:341`
+- POST `/vendors` → `vendors.create`; `VendorController::store`; `../isp-backend/routes/api.php:342`
+- GET `/vendors/{vendor}` → `vendors.show`; `VendorController::show`; `../isp-backend/routes/api.php:343`
+- PUT `/vendors/{vendor}` → `vendors.edit`; `VendorController::update`; `../isp-backend/routes/api.php:344`
+- DELETE `/vendors/{vendor}` → `vendors.delete`; `VendorController::destroy`; `../isp-backend/routes/api.php:345`
+- GET `/agents` → `agents.access`; `AgentController::index`; `../isp-backend/routes/api.php:348`
+- POST `/agents` → `agents.create`; `AgentController::store`; `../isp-backend/routes/api.php:349`
+- GET `/agents/{agent}` → `agents.show`; `AgentController::show`; `../isp-backend/routes/api.php:350`
+- PUT `/agents/{agent}` → `agents.edit`; `AgentController::update`; `../isp-backend/routes/api.php:351`
+- DELETE `/agents/{agent}` → `agents.delete`; `AgentController::destroy`; `../isp-backend/routes/api.php:352`
+- GET `/agent-transactions` → `agent-transactions.access`; `AgentTransactionController::index`; `../isp-backend/routes/api.php:353`
+- GET `/agent-transactions/{agent}` → `agent-transactions.show`; `AgentTransactionController::show`; `../isp-backend/routes/api.php:354`
+- POST `/agent-transactions/{agent}` → `agent-transactions.create`; `AgentTransactionController::store`; `../isp-backend/routes/api.php:355`
+- GET `/product-categories` → `product-categories.access`; `ProductCategoryController::index`; `../isp-backend/routes/api.php:358`
+- POST `/product-categories` → `product-categories.create`; `ProductCategoryController::store`; `../isp-backend/routes/api.php:359`
+- GET `/product-categories/{productCategory}` → `product-categories.show`; `ProductCategoryController::show`; `../isp-backend/routes/api.php:360`
+- PUT `/product-categories/{productCategory}` → `product-categories.edit`; `ProductCategoryController::update`; `../isp-backend/routes/api.php:361`
+- DELETE `/product-categories/{productCategory}` → `product-categories.delete`; `ProductCategoryController::destroy`; `../isp-backend/routes/api.php:362`
+- GET `/expenses` → `expenses.access`; `ExpenseController::index`; `../isp-backend/routes/api.php:365`
+- POST `/expenses` → `expenses.create`; `ExpenseController::store`; `../isp-backend/routes/api.php:366`
+- GET `/expenses/{expense}` → `expenses.show`; `ExpenseController::show`; `../isp-backend/routes/api.php:367`
+- PUT `/expenses/{expense}` → `expenses.edit`; `ExpenseController::update`; `../isp-backend/routes/api.php:368`
+- DELETE `/expenses/{expense}` → `expenses.delete`; `ExpenseController::destroy`; `../isp-backend/routes/api.php:369`
+- GET `/expense-types` → `expense-types.access`; `ExpenseTypeController::index`; `../isp-backend/routes/api.php:372`
+- POST `/expense-types` → `expense-types.create`; `ExpenseTypeController::store`; `../isp-backend/routes/api.php:373`
+- GET `/expense-types/{expenseType}` → `expense-types.show`; `ExpenseTypeController::show`; `../isp-backend/routes/api.php:374`
+- PUT `/expense-types/{expenseType}` → `expense-types.edit`; `ExpenseTypeController::update`; `../isp-backend/routes/api.php:375`
+- DELETE `/expense-types/{expenseType}` → `expense-types.delete`; `ExpenseTypeController::destroy`; `../isp-backend/routes/api.php:376`
+- GET `/unit-types` → `unit-types.access`; `UnitTypeController::index`; `../isp-backend/routes/api.php:379`
+- POST `/unit-types` → `unit-types.create`; `UnitTypeController::store`; `../isp-backend/routes/api.php:380`
+- GET `/unit-types/{unitType}` → `unit-types.show`; `UnitTypeController::show`; `../isp-backend/routes/api.php:381`
+- PUT `/unit-types/{unitType}` → `unit-types.edit`; `UnitTypeController::update`; `../isp-backend/routes/api.php:382`
+- DELETE `/unit-types/{unitType}` → `unit-types.delete`; `UnitTypeController::destroy`; `../isp-backend/routes/api.php:383`
+- GET `/communication-logs` → `communication-logs.access`; `CommunicationLogController::index`; `../isp-backend/routes/api.php:386`
+- GET `/communication-logs/{communicationLog}` → `communication-logs.show`; `CommunicationLogController::show`; `../isp-backend/routes/api.php:387`
+- DELETE `/communication-logs/{communicationLog}` → `communication-logs.delete`; `CommunicationLogController::destroy`; `../isp-backend/routes/api.php:388`
+- GET `/communication-queue` → `communication-queue.access`; `CommunicationQueueController::index`; `../isp-backend/routes/api.php:391`
+- POST `/communication-queue/{communicationQueue}/resend` → `communication-queue.resend`; `CommunicationQueueController::resend`; `../isp-backend/routes/api.php:392`
+- POST `/communication-queue/resend-all` → `communication-queue.resend-all`; `CommunicationQueueController::resendAll`; `../isp-backend/routes/api.php:393`
+- GET `/sms-templates` → `sms-templates.access`; `SmsTemplateController::index`; `../isp-backend/routes/api.php:396`
+- POST `/sms-templates` → `sms-templates.create`; `SmsTemplateController::store`; `../isp-backend/routes/api.php:397`
+- GET `/sms-templates/{smsTemplate}` → `sms-templates.show`; `SmsTemplateController::show`; `../isp-backend/routes/api.php:398`
+- PUT `/sms-templates/{smsTemplate}` → `sms-templates.edit`; `SmsTemplateController::update`; `../isp-backend/routes/api.php:399`
+- DELETE `/sms-templates/{smsTemplate}` → `sms-templates.delete`; `SmsTemplateController::destroy`; `../isp-backend/routes/api.php:400`
+- GET `/communication-gateways` → `communication-gateways.access`; `CommunicationGatewayController::index`; `../isp-backend/routes/api.php:403`
+- POST `/communication-gateways` → `communication-gateways.create`; `CommunicationGatewayController::store`; `../isp-backend/routes/api.php:404`
+- GET `/communication-gateways/{communicationGateway}` → `communication-gateways.show`; `CommunicationGatewayController::show`; `../isp-backend/routes/api.php:405`
+- PUT `/communication-gateways/{communicationGateway}` → `communication-gateways.edit`; `CommunicationGatewayController::update`; `../isp-backend/routes/api.php:406`
+- DELETE `/communication-gateways/{communicationGateway}` → `communication-gateways.delete`; `CommunicationGatewayController::destroy`; `../isp-backend/routes/api.php:407`
+- GET `/telegram` → `telegram.access`; `TelegramController::index`; `../isp-backend/routes/api.php:409`
+- POST `/telegram` → `telegram.create`; `TelegramController::store`; `../isp-backend/routes/api.php:410`
+- GET `/telegram/{telegram}` → `telegram.show`; `TelegramController::show`; `../isp-backend/routes/api.php:411`
+- PUT `/telegram/{telegram}` → `telegram.edit`; `TelegramController::update`; `../isp-backend/routes/api.php:412`
+- DELETE `/telegram/{telegram}` → `telegram.delete`; `TelegramController::destroy`; `../isp-backend/routes/api.php:413`
+- GET `/staffs` → `staffs.access`; `StaffController::index`; `../isp-backend/routes/api.php:431`
+- POST `/staffs` → `staffs.create`; `StaffController::store`; `../isp-backend/routes/api.php:432`
+- GET `/staffs/{staff}` → `staffs.show`; `StaffController::show`; `../isp-backend/routes/api.php:433`
+- PUT `/staffs/{staff}` → `staffs.edit`; `StaffController::update`; `../isp-backend/routes/api.php:434`
+- PUT `/staffs/{staff}/status` → `staffs.status`; `StaffController::updateStatus`; `../isp-backend/routes/api.php:435`
+- PUT `/staffs/{staff}/password` → `staffs.reset-password`; `StaffController::resetPassword`; `../isp-backend/routes/api.php:436`
+- DELETE `/staffs/{staff}` → `staffs.delete`; `StaffController::destroy`; `../isp-backend/routes/api.php:446`
+- GET `/salaries` → `salaries.access`; `SalaryController::index`; `../isp-backend/routes/api.php:449`
+- POST `/salaries` → `salaries.create`; `SalaryController::store`; `../isp-backend/routes/api.php:450`
+- GET `/salaries/{salary}` → `salaries.show`; `SalaryController::show`; `../isp-backend/routes/api.php:451`
+- PUT `/salaries/{salary}` → `salaries.edit`; `SalaryController::update`; `../isp-backend/routes/api.php:452`
+- DELETE `/salaries/{salary}` → `salaries.delete`; `SalaryController::destroy`; `../isp-backend/routes/api.php:453`
+- GET `/payment-gateways` → `payment-gateways.access`; `PaymentGatewayController::index`; `../isp-backend/routes/api.php:456`
+- POST `/payment-gateways` → `payment-gateways.create`; `PaymentGatewayController::store`; `../isp-backend/routes/api.php:457`
+- GET `/payment-gateways/{paymentGateway}` → `payment-gateways.show`; `PaymentGatewayController::show`; `../isp-backend/routes/api.php:458`
+- PUT `/payment-gateways/{paymentGateway}` → `payment-gateways.edit`; `PaymentGatewayController::update`; `../isp-backend/routes/api.php:459`
+- DELETE `/payment-gateways/{paymentGateway}` → `payment-gateways.delete`; `PaymentGatewayController::destroy`; `../isp-backend/routes/api.php:460`
+- PUT `/payment-gateways/{paymentGateway}/status` → `payment-gateways.status`; `PaymentGatewayController::toggleStatus`; `../isp-backend/routes/api.php:461`
+- PUT `/payment-gateways/{paymentGateway}/default` → `payment-gateways.default`; `PaymentGatewayController::makeDefault`; `../isp-backend/routes/api.php:462`
+- GET `/funds` → `funds.access`; `FundController::index`; `../isp-backend/routes/api.php:472`
+- POST `/funds` → `funds.create`; `FundController::store`; `../isp-backend/routes/api.php:473`
+- GET `/funds/{fund}` → `funds.show`; `FundController::show`; `../isp-backend/routes/api.php:474`
+- PUT `/funds/{fund}` → `funds.edit`; `FundController::update`; `../isp-backend/routes/api.php:475`
+- DELETE `/funds/{fund}` → `funds.delete`; `FundController::destroy`; `../isp-backend/routes/api.php:476`
+- GET `/tj-boxes` → `tj-boxes.access`; `TjBoxController::index`; `../isp-backend/routes/api.php:479`
+- GET `/tj-boxes-map` → `tj-boxes.map`; `TjBoxController::map`; `../isp-backend/routes/api.php:480`
+- POST `/tj-boxes` → `tj-boxes.create`; `TjBoxController::store`; `../isp-backend/routes/api.php:481`
+- GET `/tj-boxes/{tjBox}` → `tj-boxes.show`; `TjBoxController::show`; `../isp-backend/routes/api.php:482`
+- PUT `/tj-boxes/{tjBox}` → `tj-boxes.edit`; `TjBoxController::update`; `../isp-backend/routes/api.php:483`
+- DELETE `/tj-boxes/{tjBox}` → `tj-boxes.delete`; `TjBoxController::destroy`; `../isp-backend/routes/api.php:484`
+- GET `/fund-transactions` → `fund-transactions.access`; `FundTransactionController::index`; `../isp-backend/routes/api.php:487`
+- GET `/fund-transactions/{fund}` → `fund-transactions.show`; `FundTransactionController::show`; `../isp-backend/routes/api.php:488`
+- POST `/fund-transactions/{fund}` → `fund-transactions.create`; `FundTransactionController::store`; `../isp-backend/routes/api.php:489`
+- DELETE `/fund-transactions/{fundTransaction}` → `fund-transactions.delete`; `FundTransactionController::destroy`; `../isp-backend/routes/api.php:490`
+- GET `/activity-logs` → `activity-logs.access`; `ActivityLogsController::index`; `../isp-backend/routes/api.php:500`
+- DELETE `/activity-logs/{id}` → `activity-logs.delete`; `ActivityLogsController::destroy`; `../isp-backend/routes/api.php:501`
+- GET `/demo-requests` → `demo-requests.access`; `DemoRequestController::index`; `../isp-backend/routes/api.php:504`
+- GET `/demo-requests/{demoRequest}` → `demo-requests.show`; `DemoRequestController::show`; `../isp-backend/routes/api.php:505`
+- PUT `/demo-requests/{demoRequest}` → `demo-requests.edit`; `DemoRequestController::update`; `../isp-backend/routes/api.php:506`
+- DELETE `/demo-requests/{demoRequest}` → `demo-requests.delete`; `DemoRequestController::delete`; `../isp-backend/routes/api.php:507`
+- GET `/companies` → `companies.access`; `CompanyController::index`; `../isp-backend/routes/api.php:510`
+- GET `/companies/export-files` → `companies.export-files`; `CompanyController::exportFiles`; `../isp-backend/routes/api.php:511`
+- POST `/companies/import` → `companies.import`; `CompanyController::importFromExport`; `../isp-backend/routes/api.php:512`
+- POST `/companies` → `companies.create`; `CompanyController::store`; `../isp-backend/routes/api.php:513`
+- GET `/companies/{company}` → `companies.show`; `CompanyController::show`; `../isp-backend/routes/api.php:514`
+- PUT `/companies/{company}` → `companies.edit`; `CompanyController::update`; `../isp-backend/routes/api.php:515`
+- DELETE `/companies/{company}` → `companies.delete`; `CompanyController::destroy`; `../isp-backend/routes/api.php:516`
+- POST `/mikrotik-sync` → `sync-clients.sync`; `SyncClientController::mikrotikSync`; `../isp-backend/routes/api.php:521`
+- GET `/mikrotik-sync` → `mikrotik-sync.access`; `MikrotikSyncController::index`; `../isp-backend/routes/api.php:534`
+- POST `/mikrotik-sync/load` → `mikrotik-sync.load`; `MikrotikSyncController::load`; `../isp-backend/routes/api.php:535`
+- POST `/mikrotik-sync/resolve-all` → `mikrotik-sync.all-sync`; `MikrotikSyncController::resolveAll`; `../isp-backend/routes/api.php:536`
+- POST `/mikrotik-sync/bulk-import` → `mikrotik-sync.bulk-import`; `MikrotikSyncController::bulkImport`; `../isp-backend/routes/api.php:537`
+- GET `/mikrotik-sync/{mikrotikSync}` → `mikrotik-sync.show`; `MikrotikSyncController::show`; `../isp-backend/routes/api.php:538`
+- PUT `/mikrotik-sync/{mikrotikSync}/resolve` → `mikrotik-sync.individual-sync`; `MikrotikSyncController::resolveOne`; `../isp-backend/routes/api.php:539`
+- POST `/mikrotik-sync/{mikrotikSync}/import` → `mikrotik-sync.import`; `MikrotikSyncController::import`; `../isp-backend/routes/api.php:540`
+- DELETE `/mikrotik-sync/{mikrotikSync}` → `mikrotik-sync.delete`; `MikrotikSyncController::destroy`; `../isp-backend/routes/api.php:541`
+- GET `/tickets` → `tickets.access`; `TicketController::index`; `../isp-backend/routes/api.php:554`
+- POST `/tickets` → `tickets.create`; `TicketController::store`; `../isp-backend/routes/api.php:555`
+- GET `/tickets/{ticket}` → `tickets.show`; `TicketController::show`; `../isp-backend/routes/api.php:556`
+- PUT `/tickets/{ticket}` → `tickets.edit`; `TicketController::update`; `../isp-backend/routes/api.php:557`
+- PUT `/ticket-status/{ticket}` → `tickets.status.update`; `TicketController::updateStatus`; `../isp-backend/routes/api.php:558`
+- PUT `/ticket-assignee/{ticket}` → `tickets.assignee.update`; `TicketController::updateAssignee`; `../isp-backend/routes/api.php:559`
+- DELETE `/tickets/{ticket}` → `tickets.delete`; `TicketController::destroy`; `../isp-backend/routes/api.php:560`
+- GET `/histories` → `histories.access`; `HistoryController::index`; `../isp-backend/routes/api.php:563`
+- POST `/histories` → `histories.create`; `HistoryController::store`; `../isp-backend/routes/api.php:564`
+- GET `/histories/{history}` → `histories.show`; `HistoryController::show`; `../isp-backend/routes/api.php:565`
+- PUT `/histories/{history}` → `histories.edit`; `HistoryController::update`; `../isp-backend/routes/api.php:566`
+- DELETE `/histories/{history}` → `histories.delete`; `HistoryController::destroy`; `../isp-backend/routes/api.php:567`
+- GET `/subjects` → `subjects.access`; `SubjectController::index`; `../isp-backend/routes/api.php:577`
+- POST `/subjects` → `subjects.create`; `SubjectController::store`; `../isp-backend/routes/api.php:578`
+- GET `/subjects/{subject}` → `subjects.show`; `SubjectController::show`; `../isp-backend/routes/api.php:579`
+- PUT `/subjects/{subject}` → `subjects.edit`; `SubjectController::update`; `../isp-backend/routes/api.php:580`
+- DELETE `/subjects/{subject}` → `subjects.delete`; `SubjectController::destroy`; `../isp-backend/routes/api.php:581`
+- GET `/tags` → `tags.access`; `TagsController::index`; `../isp-backend/routes/api.php:584`
+- POST `/tags` → `tags.create`; `TagsController::store`; `../isp-backend/routes/api.php:585`
+- GET `/tags/{tag}` → `tags.show`; `TagsController::show`; `../isp-backend/routes/api.php:586`
+- PUT `/tags/{tag}` → `tags.edit`; `TagsController::update`; `../isp-backend/routes/api.php:587`
+- DELETE `/tags/{tag}` → `tags.delete`; `TagsController::destroy`; `../isp-backend/routes/api.php:588`
+- GET `/subscription-plans` → `subscription-plans.access`; `SubscriptionPlanController::index`; `../isp-backend/routes/api.php:597`
+- POST `/subscription-plans` → `subscription-plans.create`; `SubscriptionPlanController::store`; `../isp-backend/routes/api.php:598`
+- GET `/subscription-plans/{subscription_plan}` → `subscription-plans.show`; `SubscriptionPlanController::show`; `../isp-backend/routes/api.php:599`
+- PUT `/subscription-plans/{subscription_plan}` → `subscription-plans.edit`; `SubscriptionPlanController::update`; `../isp-backend/routes/api.php:600`
+- DELETE `/subscription-plans/{subscription_plan}` → `subscription-plans.delete`; `SubscriptionPlanController::destroy`; `../isp-backend/routes/api.php:601`
+- POST `/subscription-plans/{subscription_plan}/features/impact` → `subscription-plans.features.impact`; `SubscriptionPlanController::featureRemovalImpact`; `../isp-backend/routes/api.php:602`
+- PUT `/subscription-plans/{subscription_plan}/features` → `subscription-plans.features`; `SubscriptionPlanController::syncFeatures`; `../isp-backend/routes/api.php:603`
+- GET `/company-subscriptions` → `company-subscriptions.access`; `CompanySubscriptionController::index`; `../isp-backend/routes/api.php:614`
+- POST `/company-subscriptions` → `company-subscriptions.create`; `CompanySubscriptionController::store`; `../isp-backend/routes/api.php:615`
+- PUT `/company-subscriptions/{company_subscription}` → `company-subscriptions.edit`; `CompanySubscriptionController::update`; `../isp-backend/routes/api.php:616`
+- DELETE `/company-subscriptions/{company_subscription}` → `company-subscriptions.delete`; `CompanySubscriptionController::destroy`; `../isp-backend/routes/api.php:617`
+- POST `/company-subscriptions/{company_subscription}/cancel` → `company-subscriptions.cancel`; `CompanySubscriptionController::cancel`; `../isp-backend/routes/api.php:618`
+- GET `/get-product/{productId}` → `products.get.product`; `ProductController::getProduct`; `../isp-backend/routes/api.php:623`
+- GET `/impersonate-company-users` → `impersonate.company.users`; `ImpersonationController::impersonateCompanyUser`; `../isp-backend/routes/api.php:624`
+- GET `/impersonate-reseller-users` → `impersonate.reseller.users`; `ImpersonationController::impersonateResellerUser`; `../isp-backend/routes/api.php:625`
+- GET `/salary-deduction/{staffId}` → `salaries.deduction`; `StaffController::salaryDeduction`; `../isp-backend/routes/api.php:626`
+- POST `/tickets/{ticket}/messages` → `tickets.reply`; `TicketController::storeMessage`; `../isp-backend/routes/api.php:628`
+- GET `tickets/{ticket}/messages` → `tickets.messages`; `TicketController::getMessages`; `../isp-backend/routes/api.php:629`
+- GET `/invoice-type` → `invoices.type`; `InvoicesController::invoiceType`; `../isp-backend/routes/api.php:630`
+- GET `/invoice-due/{invoice_uuid}` → `invoices.due`; `InvoiceDueController::invoiceDue`; `../isp-backend/routes/api.php:631`
+- PUT `/invoice-discount/{invoice}` → `invoices.discount.update`; `InvoicesController::updateDiscount`; `../isp-backend/routes/api.php:632`
+- GET `/dashboard-client-count` → `dashboard.client.count`; `DashboardController::clientCount`; `../isp-backend/routes/api.php:634`
+- GET `/dashboard-reseller-count` → `dashboard.reseller.count`; `DashboardController::resellerCount`; `../isp-backend/routes/api.php:635`
+- GET `/client-activity` → `client.activity`; `ClientController::getClientsActivity`; `../isp-backend/routes/api.php:636`
+- GET `/dashboard-invoice-summary` → `dashboard.invoice.summary`; `DashboardController::invoiceSummary`; `../isp-backend/routes/api.php:637`
+- GET `/dashboard-invoice-due-summary` → `dashboard.invoice.due.summary`; `DashboardController::invoiceDueSummary`; `../isp-backend/routes/api.php:638`
+- GET `/dashboard-invoice-paid-summary` → `dashboard.invoice.paid.summary`; `DashboardController::invoicePaidSummary`; `../isp-backend/routes/api.php:639`
+- GET `/dashboard-staff-invoice-collection` → `dashboard.staff.invoice.collection`; `DashboardController::staffInvoiceCollection`; `../isp-backend/routes/api.php:640`
+- GET `/dashboard-graph-chart` → `dashboard.graph.chart`; `DashboardController::graphChart`; `../isp-backend/routes/api.php:641`
+- GET `/dashboard-top-due-invoices` → `dashboard.top.due.invoices`; `DashboardController::topDueInvoice`; `../isp-backend/routes/api.php:642`
+- GET `/dashboard-zone-wise-top-invoice-due` → `dashboard.zone.wise.top.invoice.due`; `DashboardController::zoneWiseTopInvoiceDue`; `../isp-backend/routes/api.php:643`
+- GET `/dashboard-expense-summary` → `dashboard.expense.summary`; `DashboardController::expenseSummary`; `../isp-backend/routes/api.php:644`
+- GET `/dashboard-fund-summary` → `dashboard.fund.summary`; `DashboardController::fundSummary`; `../isp-backend/routes/api.php:645`
+- GET `/dashboard-product-stock-summary` → `dashboard.product.stock.summary`; `DashboardController::productStockSummary`; `../isp-backend/routes/api.php:646`
+- GET `/dashboard-ticket-summary` → `dashboard.ticket.summary`; `DashboardController::ticketSummary`; `../isp-backend/routes/api.php:647`
+- PUT `/clients/{client}/lock` → `clients.lock`; `ClientController::lock`; `../isp-backend/routes/api.php:650`
+- GET `/clients/{client}/{period?}` → `clients.graph`; `ClientController::clientGraph`; `../isp-backend/routes/api.php:651`
+- GET `/client-router-info/{client}` → `clients.router.info`; `ClientController::routerInfo`; `../isp-backend/routes/api.php:652`
+- GET `/client-usage/{client}` → `clients.usage`; `ClientController::usage`; `../isp-backend/routes/api.php:653`
+- GET `/client-ping/{client}` → `clients.ping`; `ClientController::pingIp`; `../isp-backend/routes/api.php:654`
+- GET `/clients-speed/{client}` → `clients.speed`; `ClientController::getClientUpDownSpeed`; `../isp-backend/routes/api.php:655`
+- PUT `/clients-change-package/{client}` → `clients.change.package`; `ClientController::changeClientPackage`; `../isp-backend/routes/api.php:656`
+- GET `/clients-history/{client}` → `clients.history`; `HistoryController::clientHistory`; `../isp-backend/routes/api.php:657`
+- GET `/client-online-status` → `client.online.status.batch`; `ClientController::onlineStatusBatch`; `../isp-backend/routes/api.php:658`
+- GET `/client-online-status/{uuid}` → `client.online.status`; `ClientController::onlineStatus`; `../isp-backend/routes/api.php:659`
+- POST `/client-reset-session/{client}` → `client.reset.session`; `ClientController::resetSession`; `../isp-backend/routes/api.php:660`
+- GET `/resellers/client/{package}` → `resellers.client.package`; `ResellerController::packageClient`; `../isp-backend/routes/api.php:664`
+- GET `/settings` → `get.settings`; `CompanyController::getSettings`; `../isp-backend/routes/api.php:670`
+- GET `/user-settings` → `get.user.settings`; `UserController::getSettings`; `../isp-backend/routes/api.php:671`
+- GET `/notifications` → `notifications.index`; `NotificationController::index`; `../isp-backend/routes/api.php:672`
+- GET `/notifications/recent` → `notifications.recent`; `NotificationController::recent`; `../isp-backend/routes/api.php:673`
+- GET `/notifications/unread-count` → `notifications.unread-count`; `NotificationController::unreadCount`; `../isp-backend/routes/api.php:674`
+- PATCH `/notifications/read-all` → `notifications.read-all`; `NotificationController::markAllRead`; `../isp-backend/routes/api.php:675`
+- PATCH `/notifications/{notification}/read` → `notifications.read`; `NotificationController::markRead`; `../isp-backend/routes/api.php:676`
+- PATCH `/notifications/{notification}/unread` → `notifications.unread`; `NotificationController::markUnread`; `../isp-backend/routes/api.php:677`
+- GET `/my-subscription` → `subscription.my`; `CompanySubscriptionController::mine`; `../isp-backend/routes/api.php:678`
+- GET `/my-subscription/invoices` → `subscription.my.invoices`; `CompanySubscriptionController::invoices`; `../isp-backend/routes/api.php:679`
+- GET `/my-subscription/invoices/payable` → `subscription.my.invoices.payable`; `CompanySubscriptionController::payable`; `../isp-backend/routes/api.php:680`
+- POST `/my-subscription/invoices/pay/wallet` → `subscription.my.invoices.pay.wallet`; `CompanySubscriptionController::payWallet`; `../isp-backend/routes/api.php:681`
+- POST `/my-subscription/invoices/pay/bkash` → `subscription.my.invoices.pay.bkash`; `CompanySubscriptionController::payBkash`; `../isp-backend/routes/api.php:682`
+- POST `/my-subscription/invoices/pay/bkash/execute` → `subscription.my.invoices.pay.bkash.execute`; `CompanySubscriptionController::executeBkash`; `../isp-backend/routes/api.php:683`
+- POST `/olts/{device}/access/detect-community` → `olts.access-detect-community`; `OltAccessController::detectCommunity`; `../isp-backend/routes/api.php:696`
+- GET `/sms-template/{id}` → `sms-templates.id-show`; `SmsTemplateController::showById`; `../isp-backend/routes/api.php:710`
+- PUT `/staffs/item-per-page/{staff}` → `staff.pagination.length`; `StaffController::setPaginationLength`; `../isp-backend/routes/api.php:739`
+- POST `/auth/client` → `clients.login`; `AuthController::login`; `../isp-backend/routes/client.php:22`
+- GET `/client-invoices` → `client.invoices`; `InvoiceController::index`; `../isp-backend/routes/client.php:25`
+- GET `/client-invoice-print-settings` → `client.invoice-print-settings`; `InvoicePrintSettingsController::show`; `../isp-backend/routes/client.php:26`
+- GET `/client-payments` → `client.payments`; `PaymentController::index`; `../isp-backend/routes/client.php:27`
+- GET `/client-traffic-report` → `client.traffic-report`; `TrafficReportController::index`; `../isp-backend/routes/client.php:28`
+- GET `/client-tickets` → `client.tickets`; `TicketController::index`; `../isp-backend/routes/client.php:29`
+- POST `/client-tickets` → `client.tickets.create`; `TicketController::store`; `../isp-backend/routes/client.php:30`
+- GET `/client-tickets/{ticket}` → `client.tickets.show`; `TicketController::reply`; `../isp-backend/routes/client.php:31`
+- GET `/client-tickets/{ticket}/messages` → `client.tickets.messages`; `TicketController::getMessages`; `../isp-backend/routes/client.php:32`
+- POST `/client-tickets/{ticket}/messages` → `client.tickets.reply`; `TicketController::storeMessage`; `../isp-backend/routes/client.php:33`
+- GET `/client-dropdown-subjects` → `client.dropdown.subjects`; `TicketController::dropdownSubjects`; `../isp-backend/routes/client.php:34`
+- GET `/client-dashboard-invoice-summary` → `client.dashboard.invoice.summary`; `DashboardController::invoiceSummary`; `../isp-backend/routes/client.php:36`
+- GET `/client-invoice-payment` → `client.invoice.payment`; `DashboardController::invoicePayment`; `../isp-backend/routes/client.php:37`
+- GET `/client-dashboard-ticket-summary` → `client.dashboard.ticket.summary`; `DashboardController::ticketSummary`; `../isp-backend/routes/client.php:38`
+- GET `/client-dashboard-usage` → `client.dashboard.usage`; `DashboardController::usage`; `../isp-backend/routes/client.php:39`
+- GET `/client-dashboard-info` → `client.dashboard.info`; `DashboardController::info`; `../isp-backend/routes/client.php:40`
+- GET `/client-dashboard-speed` → `client.dashboard.speed`; `DashboardController::speed`; `../isp-backend/routes/client.php:41`
+- GET `/client-profile` → `client.profile`; `ClientController::clientProfile`; `../isp-backend/routes/client.php:44`
+- GET `/client-account` → `client.account`; `ClientController::account`; `../isp-backend/routes/client.php:45`
+- GET `/client-photo` → `client.photo`; `ClientController::photo`; `../isp-backend/routes/client.php:46`
+- POST `/client-photo` → `client.photo.upload`; `ClientController::uploadPhoto`; `../isp-backend/routes/client.php:47`
+- DELETE `/client-photo` → `client.photo.remove`; `ClientController::removePhoto`; `../isp-backend/routes/client.php:48`
+
+## Backend contract files to review
+
+- `../isp-backend/app/Http/Controllers/CompanyController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ActivityLogsController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/AgentController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/AgentTransactionController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ArchivedClientController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/Auth/AuthController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ClientController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/CommunicationGatewayController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/CommunicationLogController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/CommunicationQueueController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/CompanySubscriptionController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/DashboardController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/DemoRequestController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/DeviceController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/DeviceMonitoringController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/DeviceTypeController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ExpenseController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ExpenseTypeController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/FundController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/FundTransactionController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/HistoryController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ImpersonationController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/InvoiceDueController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/InvoicePrintSettingsController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/InvoiceTypeController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/InvoicesController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/MikrotikPackageController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/MikrotikSyncController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/NetworksController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/NotificationController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/OltAccessController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/OltController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/OnuController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/PaymentGatewayController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/PaymentsController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/PermissionsController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ProductCategoryController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ProductController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ResellerController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/RolePermissionController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/RolesController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SalaryController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SmsTemplateController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/StaffController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SubZoneController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SubjectController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SubscriptionPlanController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/SyncClientController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/TagsController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/TelegramController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/TicketController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/TjBoxController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/UnitTypeController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/UserController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/VendorController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/ZoneController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/Auth/AuthController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/ClientController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/CompanyController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/DashboardController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/DemoRequestController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/InvoiceController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/PaymentController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/TicketController.php`
+- `../isp-backend/app/Http/Controllers/V1/Client/TrafficReportController.php`
+- `../isp-backend/app/Http/Requests/AddClientMapRequest.php`
+- `../isp-backend/app/Http/Requests/BtrcClientReportRequest.php`
+- `../isp-backend/app/Http/Requests/BtrcResellerReportRequest.php`
+- `../isp-backend/app/Http/Requests/BulkImportMikrotikSyncRequest.php`
+- `../isp-backend/app/Http/Requests/BulkImportSyncClientRequest.php`
+- `../isp-backend/app/Http/Requests/BulkInvoicePayRequest.php`
+- `../isp-backend/app/Http/Requests/ChangePasswordRequest.php`
+- `../isp-backend/app/Http/Requests/ChangeUsernameRequest.php`
+- `../isp-backend/app/Http/Requests/ClientLoginRequest.php`
+- `../isp-backend/app/Http/Requests/ClientTrafficReportRequest.php`
+- `../isp-backend/app/Http/Requests/CreateSubscriptionBkashPaymentRequest.php`
+- `../isp-backend/app/Http/Requests/ExecuteSubscriptionBkashPaymentRequest.php`
+- `../isp-backend/app/Http/Requests/ExpenseTypeRequest.php`
+- `../isp-backend/app/Http/Requests/ImportCompanyExportRequest.php`
+- `../isp-backend/app/Http/Requests/ImportMikrotikSyncRequest.php`
+- `../isp-backend/app/Http/Requests/ImportResellerExportRequest.php`
+- `../isp-backend/app/Http/Requests/InvoicePayRequest.php`
+- `../isp-backend/app/Http/Requests/InvoiceTypeRequest.php`
+- `../isp-backend/app/Http/Requests/ListNotificationsRequest.php`
+- `../isp-backend/app/Http/Requests/LoadMikrotikSyncRequest.php`
+- `../isp-backend/app/Http/Requests/LoginRequest.php`
+- `../isp-backend/app/Http/Requests/NetworkRequest.php`
+- `../isp-backend/app/Http/Requests/NewClientReportRequest.php`
+- `../isp-backend/app/Http/Requests/NewClientResellerReportRequest.php`
+- `../isp-backend/app/Http/Requests/OltAccessRequest.php`
+- `../isp-backend/app/Http/Requests/PaySubscriptionInvoicesRequest.php`
+- `../isp-backend/app/Http/Requests/RemoveClientImageRequest.php`
+- `../isp-backend/app/Http/Requests/RemoveResellerImageRequest.php`
+- `../isp-backend/app/Http/Requests/RemoveStaffImageRequest.php`
+- `../isp-backend/app/Http/Requests/ResetStaffPasswordRequest.php`
+- `../isp-backend/app/Http/Requests/ResolveMikrotikSyncRequest.php`
+- `../isp-backend/app/Http/Requests/RestoreArchivedClientRequest.php`
+- `../isp-backend/app/Http/Requests/RolePermissionRequest.php`
+- `../isp-backend/app/Http/Requests/RoleRequest.php`
+- `../isp-backend/app/Http/Requests/SignupRequest.php`
+- `../isp-backend/app/Http/Requests/StoreAgentRequest.php`
+- `../isp-backend/app/Http/Requests/StoreAgentTransactionRequest.php`
+- `../isp-backend/app/Http/Requests/StoreClientRequest.php`
+- `../isp-backend/app/Http/Requests/StoreCommunicationGatewayRequest.php`
+- `../isp-backend/app/Http/Requests/StoreCompanyRequest.php`
+- `../isp-backend/app/Http/Requests/StoreCompanySubscriptionRequest.php`
+- `../isp-backend/app/Http/Requests/StoreDemoRequest.php`
+- `../isp-backend/app/Http/Requests/StoreDeviceRequest.php`
+- `../isp-backend/app/Http/Requests/StoreDeviceTypeRequest.php`
+- `../isp-backend/app/Http/Requests/StoreExpenseRequest.php`
+- `../isp-backend/app/Http/Requests/StoreFundRequest.php`
+- `../isp-backend/app/Http/Requests/StoreFundTransactionRequest.php`
+- `../isp-backend/app/Http/Requests/StoreInvoicesRequest.php`
+- `../isp-backend/app/Http/Requests/StorePaymentGatewayRequest.php`
+- `../isp-backend/app/Http/Requests/StorePaymentRequest.php`
+- `../isp-backend/app/Http/Requests/StoreProductCategoryRequest.php`
+- `../isp-backend/app/Http/Requests/StoreProductRequest.php`
+- `../isp-backend/app/Http/Requests/StoreResellerRequest.php`
+- `../isp-backend/app/Http/Requests/StoreSalaryRequest.php`
+- `../isp-backend/app/Http/Requests/StoreSmsTemplateRequest.php`
+- `../isp-backend/app/Http/Requests/StoreStaffRequest.php`
+- `../isp-backend/app/Http/Requests/StoreSubZoneRequest.php`
+- `../isp-backend/app/Http/Requests/StoreSubjectRequest.php`
+- `../isp-backend/app/Http/Requests/StoreTagRequest.php`
+- `../isp-backend/app/Http/Requests/StoreTelegramRequest.php`
+- `../isp-backend/app/Http/Requests/StoreTicketRequest.php`
+- `../isp-backend/app/Http/Requests/StoreTjBoxRequest.php`
+- `../isp-backend/app/Http/Requests/StoreUnitTypeRequest.php`
+- `../isp-backend/app/Http/Requests/StoreVendorRequest.php`
+- `../isp-backend/app/Http/Requests/StoreZoneRequest.php`
+- `../isp-backend/app/Http/Requests/SubscriptionPlanRequest.php`
+- `../isp-backend/app/Http/Requests/SyncPlanFeaturesRequest.php`
+- `../isp-backend/app/Http/Requests/TopDueInvoiceRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateAgentRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateClientRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateClientStatusRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateCommunicationGatewayRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateCompanyProfileRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateCompanyRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateCompanySettingsRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateCompanySubscriptionRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateDemoRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateDeviceRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateDeviceTypeRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateExpenseRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateFundRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateFundTransactionRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateInvoicePrintSettingsRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateInvoicesRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateOnuRequest.php`
+- `../isp-backend/app/Http/Requests/UpdatePaymentGatewayRequest.php`
+- `../isp-backend/app/Http/Requests/UpdatePaymentRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateProductCategoryRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateProductRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateResellerRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateSalaryRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateSmsTemplateRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateStaffRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateStaffStatusRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateSubZoneRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateSubjectRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateSyncClientRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTagRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTelegramRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTicketAssigneeRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTicketRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTicketStatusRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateTjBoxRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateUnitTypeRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateVendorRequest.php`
+- `../isp-backend/app/Http/Requests/UpdateZoneRequest.php`
+- `../isp-backend/app/Http/Requests/UploadClientImageRequest.php`
+- `../isp-backend/app/Http/Requests/UploadClientPhotoRequest.php`
+- `../isp-backend/app/Http/Requests/UploadResellerImageRequest.php`
+- `../isp-backend/app/Http/Requests/UploadStaffImageRequest.php`
+- `../isp-backend/app/Http/Requests/UserUpdateRequest.php`
+- `../isp-backend/app/Http/Requests/ZoneWiseTopInvoiceDueRequest.php`
+- `../isp-backend/app/Http/Resources/ActivityLogsCollection.php`
+- `../isp-backend/app/Http/Resources/AgentCollection.php`
+- `../isp-backend/app/Http/Resources/AgentResource.php`
+- `../isp-backend/app/Http/Resources/AgentTransactionCollection.php`
+- `../isp-backend/app/Http/Resources/AgentTransactionResource.php`
+- `../isp-backend/app/Http/Resources/AuthResource.php`
+- `../isp-backend/app/Http/Resources/ClientAccountResource.php`
+- `../isp-backend/app/Http/Resources/ClientAuthResource.php`
+- `../isp-backend/app/Http/Resources/ClientCollection.php`
+- `../isp-backend/app/Http/Resources/ClientDropdownResource.php`
+- `../isp-backend/app/Http/Resources/ClientPaymentResource.php`
+- `../isp-backend/app/Http/Resources/ClientProfileResource.php`
+- `../isp-backend/app/Http/Resources/ClientResource.php`
+- `../isp-backend/app/Http/Resources/CommunicationGatewayCollection.php`
+- `../isp-backend/app/Http/Resources/CommunicationGatewayResource.php`
+- `../isp-backend/app/Http/Resources/CommunicationLogCollection.php`
+- `../isp-backend/app/Http/Resources/CommunicationLogResource.php`
+- `../isp-backend/app/Http/Resources/CommunicationQueueCollection.php`
+- `../isp-backend/app/Http/Resources/CompanyCollection.php`
+- `../isp-backend/app/Http/Resources/CompanyPublicResource.php`
+- `../isp-backend/app/Http/Resources/CompanyResource.php`
+- `../isp-backend/app/Http/Resources/CompanySubscriptionCollection.php`
+- `../isp-backend/app/Http/Resources/CompanySubscriptionResource.php`
+- `../isp-backend/app/Http/Resources/DemoRequestCollection.php`
+- `../isp-backend/app/Http/Resources/DemoRequestResource.php`
+- `../isp-backend/app/Http/Resources/DeviceCollection.php`
+- `../isp-backend/app/Http/Resources/DeviceMapResource.php`
+- `../isp-backend/app/Http/Resources/DeviceResource.php`
+- `../isp-backend/app/Http/Resources/DeviceTypeCollection.php`
+- `../isp-backend/app/Http/Resources/DeviceTypeResource.php`
+- `../isp-backend/app/Http/Resources/ExpenseCollection.php`
+- `../isp-backend/app/Http/Resources/ExpenseResource.php`
+- `../isp-backend/app/Http/Resources/ExpenseTypeCollection.php`
+- `../isp-backend/app/Http/Resources/ExpenseTypeResource.php`
+- `../isp-backend/app/Http/Resources/FundCollection.php`
+- `../isp-backend/app/Http/Resources/FundResource.php`
+- `../isp-backend/app/Http/Resources/FundTransactionCollection.php`
+- `../isp-backend/app/Http/Resources/FundTransactionResource.php`
+- `../isp-backend/app/Http/Resources/HistoryCollection.php`
+- `../isp-backend/app/Http/Resources/ImpersonationResource.php`
+- `../isp-backend/app/Http/Resources/InvoiceCollection.php`
+- `../isp-backend/app/Http/Resources/InvoiceResource.php`
+- `../isp-backend/app/Http/Resources/InvoiceTypeCollection.php`
+- `../isp-backend/app/Http/Resources/InvoiceTypeResource.php`
+- `../isp-backend/app/Http/Resources/MikrotikSyncCollection.php`
+- `../isp-backend/app/Http/Resources/MikrotikSyncResource.php`
+- `../isp-backend/app/Http/Resources/NetworkCollection.php`
+- `../isp-backend/app/Http/Resources/NetworkResource.php`
+- `../isp-backend/app/Http/Resources/NotificationCollection.php`
+- `../isp-backend/app/Http/Resources/NotificationResource.php`
+- `../isp-backend/app/Http/Resources/OnuResource.php`
+- `../isp-backend/app/Http/Resources/OnuSummaryResource.php`
+- `../isp-backend/app/Http/Resources/PackagesResource.php`
+- `../isp-backend/app/Http/Resources/PaginatedCollection.php`
+- `../isp-backend/app/Http/Resources/PaymentCollection.php`
+- `../isp-backend/app/Http/Resources/PaymentGatewayCollection.php`
+- `../isp-backend/app/Http/Resources/PaymentGatewayResource.php`
+- `../isp-backend/app/Http/Resources/PaymentResource.php`
+- `../isp-backend/app/Http/Resources/PermissionResource.php`
+- `../isp-backend/app/Http/Resources/ProductCategoryCollection.php`
+- `../isp-backend/app/Http/Resources/ProductCategoryResource.php`
+- `../isp-backend/app/Http/Resources/ProductCollection.php`
+- `../isp-backend/app/Http/Resources/ProductDropdownResource.php`
+- `../isp-backend/app/Http/Resources/ProductResource.php`
+- `../isp-backend/app/Http/Resources/ResellerCollection.php`
+- `../isp-backend/app/Http/Resources/ResellerCompanyResource.php`
+- `../isp-backend/app/Http/Resources/ResellerResource.php`
+- `../isp-backend/app/Http/Resources/RoleCollection.php`
+- `../isp-backend/app/Http/Resources/RoleResource.php`
+- `../isp-backend/app/Http/Resources/SalaryCollection.php`
+- `../isp-backend/app/Http/Resources/SalaryResource.php`
+- `../isp-backend/app/Http/Resources/SingleSmsTemplateResource.php`
+- `../isp-backend/app/Http/Resources/SmsTemplateCollection.php`
+- `../isp-backend/app/Http/Resources/SmsTemplateResource.php`
+- `../isp-backend/app/Http/Resources/StaffCollection.php`
+- `../isp-backend/app/Http/Resources/StaffResource.php`
+- `../isp-backend/app/Http/Resources/SubZoneCollection.php`
+- `../isp-backend/app/Http/Resources/SubZoneResource.php`
+- `../isp-backend/app/Http/Resources/SubjectCollection.php`
+- `../isp-backend/app/Http/Resources/SubjectResource.php`
+- `../isp-backend/app/Http/Resources/SubscriptionPlanCollection.php`
+- `../isp-backend/app/Http/Resources/SubscriptionPlanResource.php`
+- `../isp-backend/app/Http/Resources/SyncClientCollection.php`
+- `../isp-backend/app/Http/Resources/SyncClientResource.php`
+- `../isp-backend/app/Http/Resources/TagCollection.php`
+- `../isp-backend/app/Http/Resources/TagResource.php`
+- `../isp-backend/app/Http/Resources/TelegramCollection.php`
+- `../isp-backend/app/Http/Resources/TelegramResource.php`
+- `../isp-backend/app/Http/Resources/TicketCollection.php`
+- `../isp-backend/app/Http/Resources/TicketMessageResource.php`
+- `../isp-backend/app/Http/Resources/TicketResource.php`
+- `../isp-backend/app/Http/Resources/TjBoxCollection.php`
+- `../isp-backend/app/Http/Resources/TjBoxResource.php`
+- `../isp-backend/app/Http/Resources/TopDueInvoiceResource.php`
+- `../isp-backend/app/Http/Resources/UnitTypeCollection.php`
+- `../isp-backend/app/Http/Resources/UnitTypeResource.php`
+- `../isp-backend/app/Http/Resources/UserCollection.php`
+- `../isp-backend/app/Http/Resources/UserProfileResource.php`
+- `../isp-backend/app/Http/Resources/UserResource.php`
+- `../isp-backend/app/Http/Resources/VendorCollection.php`
+- `../isp-backend/app/Http/Resources/VendorResource.php`
+- `../isp-backend/app/Http/Resources/ZoneCollection.php`
+- `../isp-backend/app/Http/Resources/ZoneResource.php`
+- `../isp-backend/app/Http/Resources/ZoneWiseTopInvoiceDueResource.php`

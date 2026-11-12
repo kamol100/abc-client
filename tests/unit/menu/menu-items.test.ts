@@ -32,7 +32,6 @@ describe("admin menu order", () => {
       "#",
       "#",
       "#",
-      "#",
       "/resellers",
       "#",
       "#",
@@ -48,6 +47,7 @@ describe("admin menu order", () => {
       "/histories",
       "/users",
       "#",
+      "/payment-gateways",
       "/subscription",
       "/companies",
       "/demo-requests",
@@ -62,9 +62,8 @@ describe("admin menu order", () => {
       "/subjects",
       "/tags",
       "/invoices",
-      "/invoice-types",
       "/payments",
-      "/payment-gateways",
+      "/invoice-types",
       "/expenses",
       "/expense-types",
       "/resellers",
@@ -75,6 +74,7 @@ describe("admin menu order", () => {
       "/noc",
       "/import-client",
       "/re-sync",
+      "/mikrotik-sync",
       "/mikrotik-commands",
       "/mikrotik-packages",
       "/client-packages",
@@ -119,6 +119,7 @@ describe("admin menu order", () => {
       "/users",
       "/roles",
       "/permissions",
+      "/payment-gateways",
       "/subscription",
       "/companies",
       "/demo-requests",
@@ -152,6 +153,13 @@ describe("admin menu permissions", () => {
 
     expect(urls(hidden)).toEqual(["/subscription"]);
     expect(urls(visible)).toEqual(["/mikrotik-packages", "/client-packages", "/subscription"]);
+  });
+
+  it("shows mikrotik sync for its own permission", () => {
+    expect(urls(selectMenuItems(menu, access(["mikrotik-sync.access"])))).toEqual([
+      "/mikrotik-sync",
+      "/subscription",
+    ]);
   });
 
   it("shows noc only with monitoring access", () => {
@@ -198,6 +206,7 @@ describe("admin menu feature locks", () => {
       "/networks",
       "/import-client",
       "/re-sync",
+      "/mikrotik-sync",
       "/mikrotik-commands",
       "/devices",
       "/device-types",

@@ -6,8 +6,9 @@ import { Copy, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 import Card from "@/components/card";
 import ClientCopyPhoneButton from "@/components/clients/client-copy-phone-button";
+import ClientSmsStatus from "@/components/clients/client-sms-status";
 import ClientWhatsAppLink from "@/components/clients/client-whatsapp-link";
-import { ClientRow } from "./client-type";
+import { ClientRow, getClientId } from "@/components/clients/client-type";
 import ClientRouterInfo from "./client-router-info";
 import { formatMoney } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
@@ -150,6 +151,9 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.discount.label")}>
                         {client?.discount ?? "—"}
+                    </InfoRow>
+                    <InfoRow labelWidth="w-36" label={t("client.sms_status.label")}>
+                        <ClientSmsStatus clientId={getClientId(client)} />
                     </InfoRow>
                 </div>
             </Card>

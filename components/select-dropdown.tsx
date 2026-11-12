@@ -58,6 +58,9 @@ const selectDropdownSelectComponents = {
   ClearIndicator: SelectClearIndicator,
 };
 
+/** Theme `text-sm`. 0.875rem (14px) at the default `md` font size. */
+const dropdownFontSize = "var(--text-sm)";
+
 type DropdownApiItem = {
   id: string | number;
   name: string;
@@ -269,6 +272,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                     : "none",
                   backgroundColor: "transparent",
                   color: `hsl(var(--foreground))`,
+                  fontSize: dropdownFontSize,
                   transition: "colors 200ms ease",
                   "&:hover": {
                     borderColor: error
@@ -290,12 +294,13 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 placeholder: (base) => ({
                   ...base,
                   color: `hsl(var(--muted-foreground))`,
-                  fontSize: "var(--font-size-sm)",
+                  fontSize: dropdownFontSize,
                   opacity: 1,
                 }),
                 singleValue: (base) => ({
                   ...base,
                   color: `hsl(var(--foreground))`,
+                  fontSize: dropdownFontSize,
                 }),
                 multiValue: (base) => ({
                   ...base,
@@ -304,6 +309,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 multiValueLabel: (base) => ({
                   ...base,
                   color: `hsl(var(--foreground))`,
+                  fontSize: dropdownFontSize,
                   padding: `var(--space-0_5) var(--space-1)`,
                 }),
                 multiValueRemove: (base) => ({
@@ -339,6 +345,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                   ...base,
                   borderRadius: "calc(var(--radius) - 2px)",
                   border: `1px solid hsl(var(--border))`,
+                  fontSize: dropdownFontSize,
                   overflow: "hidden",
                   zIndex: 9999,
                 }),
@@ -354,6 +361,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
                 }),
                 option: (base, state) => ({
                   ...base,
+                  fontSize: dropdownFontSize,
                   padding: `var(--space-2) var(--space-3)`,
                   backgroundColor: state.isSelected
                     ? `hsl(var(--primary))`

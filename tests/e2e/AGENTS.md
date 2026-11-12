@@ -1,0 +1,15 @@
+# Mandatory Playwright agent instructions
+
+Applies to all Playwright tests, fixtures, helpers, setup and specifications in this directory. Read the root constitution first, then [initial test guidelines](specifications/INITIAL-TEST-GUIDELINES.md), [coverage policy](specifications/COVERAGE-POLICY.md), and the feature ticket before writing tests.
+
+- Browser login MUST use registered local tenant hosts. Never authenticate against localhost:3000, localhost:3001 or 127.0.0.1 as a fallback.
+- Company tenants: http://cp.isp.test/admin (cp) and http://mk.isp.test/admin (mk). Their authenticated company_id scopes normal business data.
+- Administration: http://app.isp.test/admin (kamol). Authorized platform workflows may intentionally read/manage other tenants; hostname or company_id alone grants no permission.
+- Credentials live in ignored .env.e2e.tenants.local. Never hardcode passwords in specs/docs, print secrets, or commit generated sessions.
+- Standard npm run test:e2e runs every root-level playwright*.config.ts suite, including all client projects, invoices, support tickets, and legacy tests. Invoice checks use `npm run test:e2e:invoices` and `playwright.invoices.config.ts`. It continues after a failing suite and returns failure if any suite fails. Isolated client mutations require their documented fixture controls; do not silently exclude them from the full command. Add future feature configs at the root with distinct test/report directories. Focused suites have separate npm scripts. Support tickets use `npm run test:e2e:tickets` and `playwright.support-tickets.config.ts`. Use playwright.clients.config.ts for the CLIENT-001 suite: it explicitly loads tenant keys and uses host/persona-isolated in-memory sessions. The preexisting default playwright.config.ts/helpers remain separate and must not be assumed tenant-aware.
+- Verify exact host, authenticated dashboard and expected identity/permissions after login. Remaining on /admin, HTTP200 or cookie existence alone does not prove success.
+- Never reuse session storage across hosts/personas or use app administration credentials to satisfy a company-isolation test.
+- Missing host/backend/profile/permissions is a fixture/environment failure; report it instead of changing host, swallowing auth errors or weakening assertions.
+- Use approved company A/B fixtures for isolation tests and authorized/unauthorized platform personas separately. Never assume platform cross-tenant access must always fail.
+- Read backend contracts; use semantic locators, independent test data, safe cleanup, controlled external integrations and fresh persistence assertions.
+- Preserve preexisting edits, record actual commands/results, update coverage register only with real evidence, and finish with .ai/report.md.

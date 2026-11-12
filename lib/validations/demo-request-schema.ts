@@ -1,4 +1,4 @@
-import { isBangladeshMobile, isValidHttpDomainUrl } from "@/lib/helper/helper";
+import { isBangladeshMobile } from "@/lib/helper/helper";
 import { z } from "zod";
 
 const TEXT_MAX = 200;
@@ -28,11 +28,7 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
       website: z
         .string()
         .trim()
-        .max(2000, err("demo_request.fields.website.errors.max"))
-        .refine(
-          (s) => s.length === 0 || isValidHttpDomainUrl(s),
-          err("demo_request.fields.website.errors.invalid")
-        ),
+        .max(2000, err("demo_request.fields.website.errors.max")),
       phone: z
         .string()
         .trim()
