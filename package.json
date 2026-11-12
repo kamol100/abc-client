@@ -10,8 +10,13 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e": "node scripts/run-e2e.mjs",
+    "test:e2e:ui": "node scripts/run-e2e.mjs --ui",
+    "test:e2e:clients": "playwright test --config=playwright.clients.config.ts --project=clients-chromium",
+    "test:e2e:clients:isolated": "playwright test --config=playwright.clients.config.ts --project=clients-isolated",
+    "test:e2e:legacy": "playwright test --config=playwright.config.ts",
+    "test:e2e:invoices": "playwright test --config=playwright.invoices.config.ts",
+    "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

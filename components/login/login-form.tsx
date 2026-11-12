@@ -36,7 +36,6 @@ export function LoginForm({
   const authError = searchParams.get("error");
   const authCode = searchParams.get("code");
   const authNotice = authCode ? `${authError ?? ""}:${authCode}` : authError;
-  const [host, setHost] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [handledAuthError, setHandledAuthError] = useState<string | null>(null);
@@ -54,12 +53,6 @@ export function LoginForm({
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    const domain = window?.location?.hostname;
-    setHost(domain ?? "");
-  }, [mounted]);
 
   useEffect(() => {
     setLogoSource(companyLogoUrl ?? DEFAULT_LOGO);
@@ -91,7 +84,7 @@ export function LoginForm({
           : "/dashboard";
       const result = await signIn("credentials", {
         ...data,
-        host,
+        host: window.location.hostname,
         redirect: false,
         redirectTo,
       });

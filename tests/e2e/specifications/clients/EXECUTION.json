@@ -1,0 +1,327 @@
+{
+  "scope": "Executed slices only; all parent CLIENT-001 criteria are not completed.",
+  "source_revision": "64fcbb7636468053cd70b69ce9ee585eb21008c2",
+  "test_source_sha256": {
+    "playwright.clients.config.ts": "276dc8d8a343372a75ad3902bb9214258376176989376f319990d263aada097b",
+    "tests/e2e/clients/fixtures.ts": "9e3962d862cd8b5a2b74e90697b36a9137689f14b3ebf4e78483913590558829",
+    "tests/e2e/clients/read-only.spec.ts": "1b87235d31aebf2425ae073dd8ea61a3a191ccfaf93a11801f32c7805fa04806",
+    "tests/e2e/clients/environment.ts": "19622de4260d920ea326bcca80eb90eb5b571d457ce9afbc215a4d50c2d487f2",
+    "tests/e2e/clients/isolated.spec.ts": "f8ce00e3556e744f2f6bc5896975a6ceac6de9058f06d6d2e53a400498a2cc3c"
+  },
+  "runs": {
+    "cp": {
+      "host": "http://cp.isp.test",
+      "timestamp": "2026-11-12T14:24:00.342Z",
+      "command": "E2E_CLIENT_ARTIFACT_DIR=/tmp/isp-client-e2e-cp ./node_modules/.bin/playwright test --config=playwright.clients.config.ts --project=clients-chromium",
+      "passed": 28,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "CL-L01 client list reflects backend identities and pagination total after reload",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by name matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by pppoe_username matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by phone matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L05 current-month deep link and show-all preserve URL and data scope",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L06 unmatched search renders empty results and can be cleared",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D01 identity opens selected UUID detail",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D01 view-action opens selected UUID detail",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D02 selected client detail retains identity and package after reload",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D06 phone and WhatsApp links target the selected client",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/create requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/edit/00000000-0000-0000-0000-000000000001 requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/view/00000000-0000-0000-0000-000000000001 requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A04 CP and MK cannot retrieve the other's visible client UUID",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing name rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing pppoe_username rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing pppoe_password rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing network_id rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing package_id rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F08 cancel create leaves no saved test identity",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F06 create billing defaults match company settings",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 one-character name is rejected before create",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 status=1 matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 status=0 matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=auto matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=manual matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=no_invoice_this_month matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        }
+      ],
+      "artifact": "/tmp/isp-client-e2e-cp/results.json"
+    },
+    "mk": {
+      "host": "http://mk.isp.test",
+      "timestamp": "2026-11-12T14:24:57.668Z",
+      "command": "E2E_TENANT=mk E2E_CLIENT_ARTIFACT_DIR=/tmp/isp-client-e2e-mk ./node_modules/.bin/playwright test --config=playwright.clients.config.ts --project=clients-chromium",
+      "passed": 28,
+      "failed": 0,
+      "tests": [
+        {
+          "title": "CL-L01 client list reflects backend identities and pagination total after reload",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by name matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by pppoe_username matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L02 search by phone matches independent API result and reset",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L05 current-month deep link and show-all preserve URL and data scope",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L06 unmatched search renders empty results and can be cleared",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D01 identity opens selected UUID detail",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D01 view-action opens selected UUID detail",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D02 selected client detail retains identity and package after reload",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-D06 phone and WhatsApp links target the selected client",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/create requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/edit/00000000-0000-0000-0000-000000000001 requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A01 anonymous /clients/view/00000000-0000-0000-0000-000000000001 requires staff login",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-A04 CP and MK cannot retrieve the other's visible client UUID",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing name rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing pppoe_username rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing pppoe_password rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing network_id rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 missing package_id rejects create without persistence",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F08 cancel create leaves no saved test identity",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F06 create billing defaults match company settings",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-F02 one-character name is rejected before create",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 status=1 matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 status=0 matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=auto matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=manual matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        },
+        {
+          "title": "CL-L03 billing_type=no_invoice_this_month matches backend inclusion and exclusion",
+          "status": "passed",
+          "path": "tests/e2e/clients/read-only.spec.ts"
+        }
+      ],
+      "artifact": "/tmp/isp-client-e2e-mk/results.json"
+    }
+  },
+  "isolated_mutations": {
+    "collected_tests": 4,
+    "status": "not-run",
+    "reason": "No isolated fake-router/notification fixture supplied; no mutation executed."
+  },
+  "typecheck": {
+    "command": "scripts/ai/typecheck",
+    "result": "passed"
+  },
+  "unit": {
+    "command": "scripts/ai/test",
+    "result": "failed",
+    "failed_unchanged_files": 10
+  }
+}

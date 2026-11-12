@@ -1,0 +1,746 @@
+[
+  {
+    "feature": "activity-logs",
+    "ticket": "activity-logs/ACTIVITY-LOGS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "agent-transactions",
+    "ticket": "agent-transactions/AGENT-TRANSACTIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "agents",
+    "ticket": "agents/AGENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "application-shell",
+    "ticket": "application-shell/APPLICATION-SHELL-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "archived-clients",
+    "ticket": "archived-clients/ARCHIVED-CLIENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "client-maps",
+    "ticket": "client-maps/CLIENT-MAPS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "client-packages",
+    "ticket": "client-packages/CLIENT-PACKAGES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "client-wallets",
+    "ticket": "client-wallets/CLIENT-WALLETS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "clients",
+    "ticket": "clients/CLIENT-001-client-management.md",
+    "stage": "partially-implemented",
+    "specs": [
+      "tests/e2e/clients/read-only.spec.ts",
+      "tests/e2e/clients/isolated.spec.ts"
+    ],
+    "last_run": null
+  },
+  {
+    "feature": "communication-gateways",
+    "ticket": "communication-gateways/COMMUNICATION-GATEWAYS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "communication-logs",
+    "ticket": "communication-logs/COMMUNICATION-LOGS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "communication-queue",
+    "ticket": "communication-queue/COMMUNICATION-QUEUE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "companies",
+    "ticket": "companies/COMPANIES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "company-profile",
+    "ticket": "company-profile/COMPANY-PROFILE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "company-subscriptions",
+    "ticket": "company-subscriptions/COMPANY-SUBSCRIPTIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "cross-feature-journeys",
+    "ticket": "cross-feature-journeys/CROSS-FEATURE-JOURNEYS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "dashboard",
+    "ticket": "dashboard/DASHBOARD-001-staff-dashboard.md",
+    "stage": "detailed-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "demo-requests",
+    "ticket": "demo-requests/DEMO-REQUESTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "device-types",
+    "ticket": "device-types/DEVICE-TYPES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "devices",
+    "ticket": "devices/DEVICES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "expense-types",
+    "ticket": "expense-types/EXPENSE-TYPES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "expenses",
+    "ticket": "expenses/EXPENSE-001-expense-management.md",
+    "stage": "detailed-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "fund-transactions",
+    "ticket": "fund-transactions/FUND-TRANSACTIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "funds",
+    "ticket": "funds/FUNDS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "histories",
+    "ticket": "histories/HISTORIES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "import-client",
+    "ticket": "import-client/IMPORT-CLIENT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "invoice-types",
+    "ticket": "invoice-types/INVOICE-TYPES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "invoices",
+    "ticket": "invoices/INVOICE-001-invoice-management.md",
+    "stage": "partially-implemented",
+    "specs": [
+      "tests/e2e/invoices/access.spec.ts",
+      "tests/e2e/invoices/documents.spec.ts",
+      "tests/e2e/invoices/forms.spec.ts",
+      "tests/e2e/invoices/list.spec.ts",
+      "tests/e2e/invoices/payments.spec.ts"
+    ],
+    "last_run": null
+  },
+  {
+    "feature": "legacy-settings",
+    "ticket": "legacy-settings/LEGACY-SETTINGS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "mikrotik-commands",
+    "ticket": "mikrotik-commands/MIKROTIK-COMMANDS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "mikrotik-packages",
+    "ticket": "mikrotik-packages/MIKROTIK-PACKAGES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "mikrotik-sync",
+    "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "my-wallets",
+    "ticket": "my-wallets/MY-WALLETS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "networks",
+    "ticket": "networks/NETWORK-001-network-management.md",
+    "stage": "detailed-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "noc",
+    "ticket": "noc/NOC-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "notifications",
+    "ticket": "notifications/NOTIFICATIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "offline",
+    "ticket": "offline/OFFLINE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "olts",
+    "ticket": "olts/OLTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "onus",
+    "ticket": "onus/ONUS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "payment-gateways",
+    "ticket": "payment-gateways/PAYMENT-GATEWAYS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "payments",
+    "ticket": "payments/PAYMENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "permissions",
+    "ticket": "permissions/PERMISSIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-dashboard",
+    "ticket": "portal-dashboard/PORTAL-DASHBOARD-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-invoices",
+    "ticket": "portal-invoices/PORTAL-INVOICES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-payments",
+    "ticket": "portal-payments/PORTAL-PAYMENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-profile",
+    "ticket": "portal-profile/PORTAL-PROFILE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-tickets",
+    "ticket": "portal-tickets/PORTAL-TICKETS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "portal-traffic-report",
+    "ticket": "portal-traffic-report/PORTAL-TRAFFIC-REPORT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "product-categories",
+    "ticket": "product-categories/PRODUCT-CATEGORIES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-about",
+    "ticket": "public-about/PUBLIC-ABOUT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-demo-request",
+    "ticket": "public-demo-request/PUBLIC-DEMO-REQUEST-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-entry",
+    "ticket": "public-entry/PUBLIC-ENTRY-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-faq",
+    "ticket": "public-faq/PUBLIC-FAQ-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-features",
+    "ticket": "public-features/PUBLIC-FEATURES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-home",
+    "ticket": "public-home/PUBLIC-HOME-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-payments",
+    "ticket": "public-payments/PUBLIC-PAYMENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "public-pricing",
+    "ticket": "public-pricing/PUBLIC-PRICING-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "re-sync",
+    "ticket": "re-sync/RE-SYNC-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-btrc",
+    "ticket": "reports-btrc/REPORTS-BTRC-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-expenses",
+    "ticket": "reports-expenses/REPORTS-EXPENSES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-funds",
+    "ticket": "reports-funds/REPORTS-FUNDS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-hub",
+    "ticket": "reports-hub/REPORTS-HUB-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-income-expense",
+    "ticket": "reports-income-expense/REPORTS-INCOME-EXPENSE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-invoices",
+    "ticket": "reports-invoices/REPORTS-INVOICES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-new-clients",
+    "ticket": "reports-new-clients/REPORTS-NEW-CLIENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-payments",
+    "ticket": "reports-payments/REPORTS-PAYMENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-product-in",
+    "ticket": "reports-product-in/REPORTS-PRODUCT-IN-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-product-out",
+    "ticket": "reports-product-out/REPORTS-PRODUCT-OUT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reports-reseller-clients",
+    "ticket": "reports-reseller-clients/REPORTS-RESELLER-CLIENTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reseller-packages",
+    "ticket": "reseller-packages/RESELLER-PACKAGES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "reseller-profile",
+    "ticket": "reseller-profile/RESELLER-PROFILE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "resellers",
+    "ticket": "resellers/RESELLER-001-reseller-management.md",
+    "stage": "detailed-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "roles",
+    "ticket": "roles/ROLES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "salaries",
+    "ticket": "salaries/SALARIES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-dashboard",
+    "ticket": "settings-dashboard/SETTINGS-DASHBOARD-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-entry",
+    "ticket": "settings-entry/SETTINGS-ENTRY-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-general",
+    "ticket": "settings-general/SETTINGS-GENERAL-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-invoice-print",
+    "ticket": "settings-invoice-print/SETTINGS-INVOICE-PRINT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-map",
+    "ticket": "settings-map/SETTINGS-MAP-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-monitoring",
+    "ticket": "settings-monitoring/SETTINGS-MONITORING-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-notifications",
+    "ticket": "settings-notifications/SETTINGS-NOTIFICATIONS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-olt",
+    "ticket": "settings-olt/SETTINGS-OLT-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "settings-sms",
+    "ticket": "settings-sms/SETTINGS-SMS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "shared-ui",
+    "ticket": "shared-ui/SHARED-UI-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "sms-send",
+    "ticket": "sms-send/SMS-SEND-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "sms-templates",
+    "ticket": "sms-templates/SMS-TEMPLATES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "staff-profile",
+    "ticket": "staff-profile/STAFF-PROFILE-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "staffs",
+    "ticket": "staffs/STAFFS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "sub-zones",
+    "ticket": "sub-zones/SUB-ZONES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "subjects",
+    "ticket": "subjects/SUBJECTS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "subscription",
+    "ticket": "subscription/SUBSCRIPTION-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "subscription-features",
+    "ticket": "subscription-features/SUBSCRIPTION-FEATURES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "subscription-plans",
+    "ticket": "subscription-plans/SUBSCRIPTION-PLANS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "support-tickets",
+    "ticket": "support-tickets/SUPPORT-001-support-tickets.md",
+    "stage": "detailed-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "tables",
+    "ticket": "tables/TABLES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "tags",
+    "ticket": "tags/TAGS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "telegram",
+    "ticket": "telegram/TELEGRAM-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "tj-box-maps",
+    "ticket": "tj-box-maps/TJ-BOX-MAPS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "tj-boxes",
+    "ticket": "tj-boxes/TJ-BOXES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "unit-types",
+    "ticket": "unit-types/UNIT-TYPES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "users",
+    "ticket": "users/USERS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "vendors",
+    "ticket": "vendors/VENDORS-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "zones",
+    "ticket": "zones/ZONES-001.md",
+    "stage": "source-inventoried-draft",
+    "specs": [],
+    "last_run": null
+  }
+]

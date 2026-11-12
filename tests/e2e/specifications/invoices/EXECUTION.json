@@ -1,0 +1,737 @@
+{
+  "ticket": "INVOICE-001",
+  "scope": "Partial nonmutating executable slices; no whole parent scenario marked passing.",
+  "source_state": {
+    "head": "64fcbb7636468053cd70b69ce9ee585eb21008c2",
+    "worktree": "Includes preexisting local changes; test/feature source SHA-256 values below.",
+    "sha256": {
+      "app/actions.ts": "79fad9dd5ab0a69784b56cd70acb1abd065954835f1f1c90d117d10039104f60",
+      "components/invoices/amount-in-words.ts": "30156efa44bdaa19049cf6b71a365df04dc580f16d3f6a65a0946bf45857cdd4",
+      "components/invoices/bulk-invoice-pay-dialog.tsx": "8af301f0ecb95f2a9db96a7df75f807dc664ba5ffa8e1c496fc456062c3d280e",
+      "components/invoices/client-invoice-columns.tsx": "b56a870d7e9b5e2c3d618a9be4a23e3c5e9b38b788ea20ab7a967038c1e571d1",
+      "components/invoices/client-invoice-filter-schema.ts": "8576f3808f20ebd5c3a3a174794d3c7b382717976885df25b6fe558698983799",
+      "components/invoices/client-invoice-params.ts": "d8d7351f54d13680df023b66dab9a66dadf6eb0799e46e7199eff7edc0bc72ea",
+      "components/invoices/client-invoice-table.tsx": "2490fc3ba72cabc3377b7500863e4448b014148e193e41be6132727768029a6c",
+      "components/invoices/invoice-column.tsx": "986dddcbc460cd65d3d913a1417eb6f82637c2047c716d0ce7e0f42646751d78",
+      "components/invoices/invoice-discount-dialog.tsx": "9c04e7eabfdac6322f3111ef83e92476e89c71f1ce132ab40a19cff71d7a5d1c",
+      "components/invoices/invoice-filter-schema.ts": "f2fe1f5c75b558753366a27c44ab3496e8fd060873eeec1bae5fda080f5bfaaa",
+      "components/invoices/invoice-form-schema.ts": "55aa3f95f57fb1064f72d7d1f9d29f221a46e6a48e887adcf7b516fee98add31",
+      "components/invoices/invoice-form.tsx": "67a316897769173459318538ba0874b0cb2b0e1781106014a8ff3e9cab7f5ccf",
+      "components/invoices/invoice-lines-editor.tsx": "61d0b4bc95880acd9d7f5435d6edbb1b0bb053e1b65f563c1fd030c24daa4fad",
+      "components/invoices/invoice-pay-dialog.tsx": "d09dea404d37dab1dce05292593f64229482574e5bb3497aa6fb506e7746db3d",
+      "components/invoices/invoice-print-config.ts": "9a62e00c1c1b18a3be05ada318f79a3b47d36fd56f6181d6ff161d7c0a6c948c",
+      "components/invoices/invoice-print-dialog.tsx": "1df7ac9bb2d5fa50b839a1d20b55bf8be07be359042bba590f2db9b1f3f5860e",
+      "components/invoices/invoice-receipt.tsx": "4312ce033f48d710ad2cc820022ee452dee1046fff3d3f7a11974101c88571d3",
+      "components/invoices/invoice-reports.tsx": "7b1f5bc1e666bbe377e4ea810779fd77a28338d20d6962f3f5302cb96955ca31",
+      "components/invoices/invoice-row-actions.tsx": "a1872a2e7775a31e6c3c878c08d0d305175fd7f68f20af8110c02c429eabec29",
+      "components/invoices/invoice-table.tsx": "d6eb4f04997c8c9d6b494936e616f75118981f8bc12224b9aa60b4fdadf0600c",
+      "components/invoices/invoice-totals.tsx": "fe0213c71d2398d47a0dfca750e4666373b38ed12f98d361812076a1f101559c",
+      "components/invoices/invoice-type.ts": "223943ca3504cef3d328b3961383faf99f461d239f926d8972f0fb715cdd7f10",
+      "components/invoices/invoice-view-dialog.tsx": "e71d5b56a85e1db7b5686d4696ee84f744059dd21b64d877a31092e5438ceec5",
+      "components/invoices/invoice-view-document.tsx": "e3dbecc9cb8eed154110fe86a4c7a930750e4d31bde144489a0c1149afc2fea3",
+      "components/invoices/invoice-view-model.ts": "d10b9d72da2361f948a92df277a0aa825723cfee465329de161dc5e468646b34",
+      "components/invoices/lazy-bulk-invoice-pay-dialog.tsx": "639f557070fdd611740cf283870a63ffb38c704df4449f89cead25b0ccecdeaf",
+      "components/invoices/payment-fund-access.ts": "d5f6d21e4f0cd953eade7e3f418b2221ec64bc5fd38be119af93a0213bfdfbbe",
+      "components/login/login-form.tsx": "b42fe76c19c6b0d1e96ef022873bd62ce20fd7146d544c1e96625fefbe7d8e21",
+      "playwright.invoices.config.ts": "99b706f181a94ef62d60c67c3d2e884efacc0910581011e3dbce39456319771b",
+      "tests/e2e/clients/environment.ts": "19622de4260d920ea326bcca80eb90eb5b571d457ce9afbc215a4d50c2d487f2",
+      "tests/e2e/clients/fixtures.ts": "9e3962d862cd8b5a2b74e90697b36a9137689f14b3ebf4e78483913590558829",
+      "tests/e2e/invoices/access.spec.ts": "fd440dd225746ccbbb7f17ea0459f9f0d4d22d10858a61819ffba832ba2bec29",
+      "tests/e2e/invoices/documents.spec.ts": "77fd847fa9dad3171523e4f2507391f332951c99a7958e73ac266a861ed114f7",
+      "tests/e2e/invoices/fixtures.ts": "2a733c0f67e0680940bee5605e9a896c955eab88cff53fe5d455cdf75447022f",
+      "tests/e2e/invoices/forms.spec.ts": "8f9dc1c992e7d04951908710c2df0ada21c6c0ef1becbce3c1ea8f41b448ac98",
+      "tests/e2e/invoices/list.spec.ts": "758898859b9cfb94bbc5bd013a0e16f5c2fb3e1756597f6f3ab213bd853c464e",
+      "tests/e2e/invoices/payments.spec.ts": "de024e802923d72a1c6f11fe1cc0e16127e4a08185814a47fec0e84079afb407"
+    }
+  },
+  "runs": [
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "E2E_INVOICE_ARTIFACT_DIR=/tmp/isp-invoices-cp npm run test:e2e:invoices",
+      "timestamp": "2026-11-12T16:00:21.056Z",
+      "duration_ms": 77710.145,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "report": "/tmp/isp-invoices-cp/results.json",
+      "report_sha256": "b3c24ea2099a41a61dfd5660cc9051757056f586a3c28df4f174f949b22b51f6",
+      "tests": [
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/create redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/edit/00000000-0000-0000-0000-000000000001 redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/client/00000000-0000-0000-0000-000000000001 redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A03 CP and MK reject foreign invoice detail UUID and exclude foreign track search",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-D01 selected invoice document shows API identity and persisted line descriptions",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-D04 document print invokes browser print with selected identity and cleans up",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-A05 cancelling deletion preserves the selected due invoice",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid client blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid type blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid description blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid zero amount blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid negative amount blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid zero quantity blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F03 adding and removing unsaved lines preserves retained values and quantity totals",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F04 create defaults to due today no SMS and cancelling creates no invoice",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F07 paid requires payment fields and switching due hides them",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F07 partial_paid requires payment fields and switching due hides them",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F08 due edit hydrates saved description quantity and note without saving",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F10 cancelling edited note preserves persisted invoice identity and financial fields",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F11 oversized UTF-8 note is rejected with input preserved",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L01 list identities dates client type and status match API after reload",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 track ID search includes selected invoice excludes others and resets",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=due matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=paid matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=partial matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 invoice_type_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 client_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 zone_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 combined track and status filters reset to unfiltered identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 creator filter matches backend page and clearing restores baseline",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L03 pagination controls reflect bounds and available page identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L05 client UUID history scopes rows and retains scope after reload",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L06 unmatched track ID renders empty results and clearing restores rows",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/payments.spec.ts",
+          "title": "IV-P01 pay dialog offers only selected client's backend outstanding identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/payments.spec.ts",
+          "title": "IV-P02 deselecting all clears totals and cancel preserves invoice amounts",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "tenant": "mk",
+      "origin": "http://mk.isp.test",
+      "command": "E2E_TENANT=mk E2E_INVOICE_ARTIFACT_DIR=/tmp/isp-invoices-mk npm run test:e2e:invoices",
+      "timestamp": "2026-11-12T16:00:25.893Z",
+      "duration_ms": 86559.904,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "report": "/tmp/isp-invoices-mk/results.json",
+      "report_sha256": "edf16589988c9ae8d9588984b499f73cf7b10f3ce89d980056d2b355c3398ddb",
+      "tests": [
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/create redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/edit/00000000-0000-0000-0000-000000000001 redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A01 anonymous /invoices/client/00000000-0000-0000-0000-000000000001 redirects to same-host staff login",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/access.spec.ts",
+          "title": "IV-A03 CP and MK reject foreign invoice detail UUID and exclude foreign track search",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-D01 selected invoice document shows API identity and persisted line descriptions",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-D04 document print invokes browser print with selected identity and cleans up",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/documents.spec.ts",
+          "title": "IV-A05 cancelling deletion preserves the selected due invoice",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid client blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid type blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid description blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid zero amount blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid negative amount blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F02 invalid zero quantity blocks create and preserves recoverable input",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F03 adding and removing unsaved lines preserves retained values and quantity totals",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F04 create defaults to due today no SMS and cancelling creates no invoice",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F07 paid requires payment fields and switching due hides them",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F07 partial_paid requires payment fields and switching due hides them",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F08 due edit hydrates saved description quantity and note without saving",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F10 cancelling edited note preserves persisted invoice identity and financial fields",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/forms.spec.ts",
+          "title": "IV-F11 oversized UTF-8 note is rejected with input preserved",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L01 list identities dates client type and status match API after reload",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 track ID search includes selected invoice excludes others and resets",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=due matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=paid matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 status=partial matches API inclusion and exclusion",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 invoice_type_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 client_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 zone_id dropdown matches included and excluded invoice identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 combined track and status filters reset to unfiltered identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L02 creator filter matches backend page and clearing restores baseline",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L03 pagination controls reflect bounds and available page identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L05 client UUID history scopes rows and retains scope after reload",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/list.spec.ts",
+          "title": "IV-L06 unmatched track ID renders empty results and clearing restores rows",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/payments.spec.ts",
+          "title": "IV-P01 pay dialog offers only selected client's backend outstanding identities",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/invoices/payments.spec.ts",
+          "title": "IV-P02 deselecting all clears totals and cancel preserves invoice amounts",
+          "project": "invoices-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "typecheck": "passed",
+    "invoice_unit_tests": "12 files / 48 tests passed",
+    "all_suite_discovery": "90 tests across clients 32, legacy 11, invoices 36, support tickets 11"
+  },
+  "limits": [
+    "Single-page pagination boundary exercised; multi-page branch unexecuted.",
+    "Creator filter API/UI agreement only; resource omits creator.",
+    "No financial mutation or fund/ledger side-effect coverage.",
+    "No full parent scenario passing credit; review remains pending.",
+    "Document content verified, lazy detail fetch not proven."
+  ]
+}

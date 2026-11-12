@@ -1,0 +1,11 @@
+---
+description: Mandatory local tenant login and test-writing guidance for Playwright work.
+globs: "tests/e2e/**,playwright.config.ts"
+alwaysApply: false
+---
+
+# Playwright testing
+
+Read `tests/e2e/AGENTS.md` and `tests/e2e/specifications/INITIAL-TEST-GUIDELINES.md` before editing Playwright tests, fixtures, helpers, configuration or specifications.
+
+Use CP/MK company hosts and APP administration host with explicit persona selection. Never use localhost login or reuse host sessions. Respect permission-backed platform cross-tenant administration separately from ordinary company isolation. Keep credentials in ignored local environment or CI secrets, never committed tests or artifacts.

@@ -1,0 +1,39 @@
+# Source evidence — mikrotik-commands
+
+Generated from static source inspection on 2026-11-12. Literal references can include inactive paths, aliases and shared subfeatures. Confirm reachability/middleware and final payload before implementation.
+
+## Frontend files
+
+- `app/(dashboard)/mikrotik-commands/page.tsx`
+- `components/mikrotik-commands/mikrotik-command-column.tsx`
+- `components/mikrotik-commands/mikrotik-command-form-schema.ts`
+- `components/mikrotik-commands/mikrotik-command-form.tsx`
+- `components/mikrotik-commands/mikrotik-command-table.tsx`
+- `components/mikrotik-commands/mikrotik-command-type.ts`
+
+## Observed permission checks
+
+- None extracted; inspect page, shared components and dynamic configuration.
+
+## Observed API templates (not validated endpoints)
+
+- `/dropdown-networks`
+- `/mikrotik-command`
+
+## Observed form/config field names
+
+- `command`
+- `network_id`
+
+## Matching backend route declarations
+
+- POST `/mikrotik-command` → `mikrotik-command.access`; `MikrotikCommandController::command`; `../isp-backend/routes/api.php:551`
+- GET `/dropdown-networks` → `dropdown.networks`; `NetworksController::dropdownList`; `../isp-backend/routes/api.php:697`
+
+## Backend contract files to review
+
+- `../isp-backend/app/Http/Controllers/V1/Admin/MikrotikCommandController.php`
+- `../isp-backend/app/Http/Controllers/V1/Admin/NetworksController.php`
+- `../isp-backend/app/Http/Requests/NetworkRequest.php`
+- `../isp-backend/app/Http/Resources/NetworkCollection.php`
+- `../isp-backend/app/Http/Resources/NetworkResource.php`

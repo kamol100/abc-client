@@ -1,0 +1,30 @@
+
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "mlx/qwen-coder",
+  "providers": {
+    "mlx": {
+      "name": "Local MLX Server",
+      "package": "@opencode/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "http://127.0.0.1:8080/v1"
+      },
+      "models": {
+        "qwen-coder": {
+          "name": "Qwen Coder (Local MLX)",
+          "modelID": "mlx-community/Qwen3-Coder-30B-A3B-Instruct-4bit",
+          "limit": {
+            "context": 32768,
+            "output": 4096
+          },
+          "capabilities": {
+            "tools": true,
+            "input": ["text"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  }
+}
+

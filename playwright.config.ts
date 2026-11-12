@@ -27,8 +27,8 @@ function loadE2EEnv(): void {
 
 loadE2EEnv();
 
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 3000);
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://vp.isp.test";
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 3001);
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3001";
 const backendApiUrl = process.env.NEXTAPI_URL ?? "http://localhost:8000";
 const managesDevServer = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/.test(baseURL);
 const startCommand =
@@ -49,6 +49,8 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      // Root specs belong to this legacy suite; feature directories have their own configs.
+      testMatch: /tests[\\/]e2e[\\/][^\\/]+\.spec\.ts$/,
       testIgnore: /global-setup\.ts/,
       use: { ...devices["Desktop Chrome"] },
     },

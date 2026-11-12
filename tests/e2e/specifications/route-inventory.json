@@ -1,0 +1,1106 @@
+[
+  {
+    "route": "/activity-logs",
+    "page": "app/(dashboard)/activity-logs/page.tsx",
+    "feature": "activity-logs",
+    "ticket": "activity-logs/ACTIVITY-LOGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/agent-transactions",
+    "page": "app/(dashboard)/agent-transactions/page.tsx",
+    "feature": "agent-transactions",
+    "ticket": "agent-transactions/AGENT-TRANSACTIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/agents",
+    "page": "app/(dashboard)/agents/page.tsx",
+    "feature": "agents",
+    "ticket": "agents/AGENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/archived-clients",
+    "page": "app/(dashboard)/archived-clients/page.tsx",
+    "feature": "archived-clients",
+    "ticket": "archived-clients/ARCHIVED-CLIENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/login",
+    "page": "app/(client-auth)/client/login/page.tsx",
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/login",
+    "page": "app/(client-auth)/login/page.tsx",
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/admin",
+    "page": "app/admin/page.tsx",
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/forgot-password",
+    "page": "app/forgot-password/page.tsx",
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reset-password",
+    "page": "app/reset-password/page.tsx",
+    "feature": "authentication",
+    "ticket": "authentication/AUTHENTICATION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client-maps",
+    "page": "app/(dashboard)/client-maps/page.tsx",
+    "feature": "client-maps",
+    "ticket": "client-maps/CLIENT-MAPS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client-packages",
+    "page": "app/(dashboard)/client-packages/page.tsx",
+    "feature": "client-packages",
+    "ticket": "client-packages/CLIENT-PACKAGES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client-packages/view/[id]",
+    "page": "app/(dashboard)/client-packages/view/[id]/page.tsx",
+    "feature": "client-packages",
+    "ticket": "client-packages/CLIENT-PACKAGES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client-wallets",
+    "page": "app/(dashboard)/client-wallets/page.tsx",
+    "feature": "client-wallets",
+    "ticket": "client-wallets/CLIENT-WALLETS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/clients/create",
+    "page": "app/(dashboard)/clients/create/page.tsx",
+    "feature": "clients",
+    "ticket": "clients/CLIENT-001-client-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/clients/edit/[id]",
+    "page": "app/(dashboard)/clients/edit/[id]/page.tsx",
+    "feature": "clients",
+    "ticket": "clients/CLIENT-001-client-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/clients",
+    "page": "app/(dashboard)/clients/page.tsx",
+    "feature": "clients",
+    "ticket": "clients/CLIENT-001-client-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/clients/view/[id]",
+    "page": "app/(dashboard)/clients/view/[id]/page.tsx",
+    "feature": "clients",
+    "ticket": "clients/CLIENT-001-client-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/communication-gateways",
+    "page": "app/(dashboard)/communication-gateways/page.tsx",
+    "feature": "communication-gateways",
+    "ticket": "communication-gateways/COMMUNICATION-GATEWAYS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/communication-logs",
+    "page": "app/(dashboard)/communication-logs/page.tsx",
+    "feature": "communication-logs",
+    "ticket": "communication-logs/COMMUNICATION-LOGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/communication-queue",
+    "page": "app/(dashboard)/communication-queue/page.tsx",
+    "feature": "communication-queue",
+    "ticket": "communication-queue/COMMUNICATION-QUEUE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/companies",
+    "page": "app/(dashboard)/companies/page.tsx",
+    "feature": "companies",
+    "ticket": "companies/COMPANIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/company-profile/[id]",
+    "page": "app/(dashboard)/company-profile/[id]/page.tsx",
+    "feature": "company-profile",
+    "ticket": "company-profile/COMPANY-PROFILE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/company-subscriptions",
+    "page": "app/(dashboard)/company-subscriptions/page.tsx",
+    "feature": "company-subscriptions",
+    "ticket": "company-subscriptions/COMPANY-SUBSCRIPTIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/dashboard",
+    "page": "app/(dashboard)/dashboard/page.tsx",
+    "feature": "dashboard",
+    "ticket": "dashboard/DASHBOARD-001-staff-dashboard.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/demo-requests",
+    "page": "app/(dashboard)/demo-requests/page.tsx",
+    "feature": "demo-requests",
+    "ticket": "demo-requests/DEMO-REQUESTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/device-types",
+    "page": "app/(dashboard)/device-types/page.tsx",
+    "feature": "device-types",
+    "ticket": "device-types/DEVICE-TYPES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/devices",
+    "page": "app/(dashboard)/devices/page.tsx",
+    "feature": "devices",
+    "ticket": "devices/DEVICES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/expense-types",
+    "page": "app/(dashboard)/expense-types/page.tsx",
+    "feature": "expense-types",
+    "ticket": "expense-types/EXPENSE-TYPES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/expenses",
+    "page": "app/(dashboard)/expenses/page.tsx",
+    "feature": "expenses",
+    "ticket": "expenses/EXPENSE-001-expense-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/fund-transactions",
+    "page": "app/(dashboard)/fund-transactions/page.tsx",
+    "feature": "fund-transactions",
+    "ticket": "fund-transactions/FUND-TRANSACTIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/funds",
+    "page": "app/(dashboard)/funds/page.tsx",
+    "feature": "funds",
+    "ticket": "funds/FUNDS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/histories",
+    "page": "app/(dashboard)/histories/page.tsx",
+    "feature": "histories",
+    "ticket": "histories/HISTORIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/import-client/import/[id]",
+    "page": "app/(dashboard)/import-client/import/[id]/page.tsx",
+    "feature": "import-client",
+    "ticket": "import-client/IMPORT-CLIENT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/import-client",
+    "page": "app/(dashboard)/import-client/page.tsx",
+    "feature": "import-client",
+    "ticket": "import-client/IMPORT-CLIENT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/invoice-types",
+    "page": "app/(dashboard)/invoice-types/page.tsx",
+    "feature": "invoice-types",
+    "ticket": "invoice-types/INVOICE-TYPES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/invoices/client/[id]",
+    "page": "app/(dashboard)/invoices/client/[id]/page.tsx",
+    "feature": "invoices",
+    "ticket": "invoices/INVOICE-001-invoice-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/invoices/create",
+    "page": "app/(dashboard)/invoices/create/page.tsx",
+    "feature": "invoices",
+    "ticket": "invoices/INVOICE-001-invoice-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/invoices/edit/[id]",
+    "page": "app/(dashboard)/invoices/edit/[id]/page.tsx",
+    "feature": "invoices",
+    "ticket": "invoices/INVOICE-001-invoice-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/invoices",
+    "page": "app/(dashboard)/invoices/page.tsx",
+    "feature": "invoices",
+    "ticket": "invoices/INVOICE-001-invoice-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/setting/dashboard",
+    "page": "app/(dashboard)/setting/dashboard/page.tsx",
+    "feature": "legacy-settings",
+    "ticket": "legacy-settings/LEGACY-SETTINGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/setting/general",
+    "page": "app/(dashboard)/setting/general/page.tsx",
+    "feature": "legacy-settings",
+    "ticket": "legacy-settings/LEGACY-SETTINGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/setting/table",
+    "page": "app/(dashboard)/setting/table/page.tsx",
+    "feature": "legacy-settings",
+    "ticket": "legacy-settings/LEGACY-SETTINGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/setting/themes",
+    "page": "app/(dashboard)/setting/themes/page.tsx",
+    "feature": "legacy-settings",
+    "ticket": "legacy-settings/LEGACY-SETTINGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/mikrotik-commands",
+    "page": "app/(dashboard)/mikrotik-commands/page.tsx",
+    "feature": "mikrotik-commands",
+    "ticket": "mikrotik-commands/MIKROTIK-COMMANDS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/mikrotik-packages",
+    "page": "app/(dashboard)/mikrotik-packages/page.tsx",
+    "feature": "mikrotik-packages",
+    "ticket": "mikrotik-packages/MIKROTIK-PACKAGES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/mikrotik-sync/import/[id]",
+    "page": "app/(dashboard)/mikrotik-sync/import/[id]/page.tsx",
+    "feature": "mikrotik-sync",
+    "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/mikrotik-sync",
+    "page": "app/(dashboard)/mikrotik-sync/page.tsx",
+    "feature": "mikrotik-sync",
+    "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/my-wallets",
+    "page": "app/(dashboard)/my-wallets/page.tsx",
+    "feature": "my-wallets",
+    "ticket": "my-wallets/MY-WALLETS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/networks",
+    "page": "app/(dashboard)/networks/page.tsx",
+    "feature": "networks",
+    "ticket": "networks/NETWORK-001-network-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/noc",
+    "page": "app/(dashboard)/noc/page.tsx",
+    "feature": "noc",
+    "ticket": "noc/NOC-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/notifications",
+    "page": "app/(dashboard)/notifications/page.tsx",
+    "feature": "notifications",
+    "ticket": "notifications/NOTIFICATIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/offline",
+    "page": "app/offline/page.tsx",
+    "feature": "offline",
+    "ticket": "offline/OFFLINE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/olts",
+    "page": "app/(dashboard)/olts/page.tsx",
+    "feature": "olts",
+    "ticket": "olts/OLTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/olts/view/[id]/monitoring",
+    "page": "app/(dashboard)/olts/view/[id]/monitoring/page.tsx",
+    "feature": "olts",
+    "ticket": "olts/OLTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/olts/view/[id]",
+    "page": "app/(dashboard)/olts/view/[id]/page.tsx",
+    "feature": "olts",
+    "ticket": "olts/OLTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/onus",
+    "page": "app/(dashboard)/onus/page.tsx",
+    "feature": "onus",
+    "ticket": "onus/ONUS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/payment-gateways",
+    "page": "app/(dashboard)/payment-gateways/page.tsx",
+    "feature": "payment-gateways",
+    "ticket": "payment-gateways/PAYMENT-GATEWAYS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/payments",
+    "page": "app/(dashboard)/payments/page.tsx",
+    "feature": "payments",
+    "ticket": "payments/PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/permissions/[id]",
+    "page": "app/(dashboard)/permissions/[id]/page.tsx",
+    "feature": "permissions",
+    "ticket": "permissions/PERMISSIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/permissions",
+    "page": "app/(dashboard)/permissions/page.tsx",
+    "feature": "permissions",
+    "ticket": "permissions/PERMISSIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/dashboard",
+    "page": "app/(client-dashboard)/client/dashboard/page.tsx",
+    "feature": "portal-dashboard",
+    "ticket": "portal-dashboard/PORTAL-DASHBOARD-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/invoices",
+    "page": "app/(client-dashboard)/client/invoices/page.tsx",
+    "feature": "portal-invoices",
+    "ticket": "portal-invoices/PORTAL-INVOICES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/payments",
+    "page": "app/(client-dashboard)/client/payments/page.tsx",
+    "feature": "portal-payments",
+    "ticket": "portal-payments/PORTAL-PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/profile",
+    "page": "app/(client-dashboard)/client/profile/page.tsx",
+    "feature": "portal-profile",
+    "ticket": "portal-profile/PORTAL-PROFILE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/tickets/[id]",
+    "page": "app/(client-dashboard)/client/tickets/[id]/page.tsx",
+    "feature": "portal-tickets",
+    "ticket": "portal-tickets/PORTAL-TICKETS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/tickets",
+    "page": "app/(client-dashboard)/client/tickets/page.tsx",
+    "feature": "portal-tickets",
+    "ticket": "portal-tickets/PORTAL-TICKETS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/client/traffic-report",
+    "page": "app/(client-dashboard)/client/traffic-report/page.tsx",
+    "feature": "portal-traffic-report",
+    "ticket": "portal-traffic-report/PORTAL-TRAFFIC-REPORT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/product-categories",
+    "page": "app/(dashboard)/product-categories/page.tsx",
+    "feature": "product-categories",
+    "ticket": "product-categories/PRODUCT-CATEGORIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products/in/[id]",
+    "page": "app/(dashboard)/products/in/[id]/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products/in",
+    "page": "app/(dashboard)/products/in/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products/out/[id]",
+    "page": "app/(dashboard)/products/out/[id]/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products/out",
+    "page": "app/(dashboard)/products/out/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products",
+    "page": "app/(dashboard)/products/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/products/reports",
+    "page": "app/(dashboard)/products/reports/page.tsx",
+    "feature": "products",
+    "ticket": "products/PRODUCTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/about",
+    "page": "app/(public)/about/page.tsx",
+    "feature": "public-about",
+    "ticket": "public-about/PUBLIC-ABOUT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/demo-request",
+    "page": "app/(public)/demo-request/page.tsx",
+    "feature": "public-demo-request",
+    "ticket": "public-demo-request/PUBLIC-DEMO-REQUEST-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/",
+    "page": "app/(public)/page.tsx",
+    "feature": "public-entry",
+    "ticket": "public-entry/PUBLIC-ENTRY-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/faq",
+    "page": "app/(public)/faq/page.tsx",
+    "feature": "public-faq",
+    "ticket": "public-faq/PUBLIC-FAQ-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/features/[module]",
+    "page": "app/(public)/features/[module]/page.tsx",
+    "feature": "public-features",
+    "ticket": "public-features/PUBLIC-FEATURES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/features",
+    "page": "app/(public)/features/page.tsx",
+    "feature": "public-features",
+    "ticket": "public-features/PUBLIC-FEATURES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/home",
+    "page": "app/(public)/home/page.tsx",
+    "feature": "public-home",
+    "ticket": "public-home/PUBLIC-HOME-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/pay/[key]",
+    "page": "app/(public)/pay/[key]/page.tsx",
+    "feature": "public-payments",
+    "ticket": "public-payments/PUBLIC-PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/pay/bkash-callback",
+    "page": "app/(public)/pay/bkash-callback/page.tsx",
+    "feature": "public-payments",
+    "ticket": "public-payments/PUBLIC-PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/pay",
+    "page": "app/(public)/pay/page.tsx",
+    "feature": "public-payments",
+    "ticket": "public-payments/PUBLIC-PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/pricing",
+    "page": "app/(public)/pricing/page.tsx",
+    "feature": "public-pricing",
+    "ticket": "public-pricing/PUBLIC-PRICING-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/re-sync",
+    "page": "app/(dashboard)/re-sync/page.tsx",
+    "feature": "re-sync",
+    "ticket": "re-sync/RE-SYNC-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/btrc",
+    "page": "app/(dashboard)/reports/btrc/page.tsx",
+    "feature": "reports-btrc",
+    "ticket": "reports-btrc/REPORTS-BTRC-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/expenses",
+    "page": "app/(dashboard)/reports/expenses/page.tsx",
+    "feature": "reports-expenses",
+    "ticket": "reports-expenses/REPORTS-EXPENSES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/funds",
+    "page": "app/(dashboard)/reports/funds/page.tsx",
+    "feature": "reports-funds",
+    "ticket": "reports-funds/REPORTS-FUNDS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports",
+    "page": "app/(dashboard)/reports/page.tsx",
+    "feature": "reports-hub",
+    "ticket": "reports-hub/REPORTS-HUB-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/income-expense",
+    "page": "app/(dashboard)/reports/income-expense/page.tsx",
+    "feature": "reports-income-expense",
+    "ticket": "reports-income-expense/REPORTS-INCOME-EXPENSE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/invoices",
+    "page": "app/(dashboard)/reports/invoices/page.tsx",
+    "feature": "reports-invoices",
+    "ticket": "reports-invoices/REPORTS-INVOICES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/new-clients",
+    "page": "app/(dashboard)/reports/new-clients/page.tsx",
+    "feature": "reports-new-clients",
+    "ticket": "reports-new-clients/REPORTS-NEW-CLIENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/payments",
+    "page": "app/(dashboard)/reports/payments/page.tsx",
+    "feature": "reports-payments",
+    "ticket": "reports-payments/REPORTS-PAYMENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/product-in",
+    "page": "app/(dashboard)/reports/product-in/page.tsx",
+    "feature": "reports-product-in",
+    "ticket": "reports-product-in/REPORTS-PRODUCT-IN-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/product-out",
+    "page": "app/(dashboard)/reports/product-out/page.tsx",
+    "feature": "reports-product-out",
+    "ticket": "reports-product-out/REPORTS-PRODUCT-OUT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reports/reseller-clients",
+    "page": "app/(dashboard)/reports/reseller-clients/page.tsx",
+    "feature": "reports-reseller-clients",
+    "ticket": "reports-reseller-clients/REPORTS-RESELLER-CLIENTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reseller-packages",
+    "page": "app/(dashboard)/reseller-packages/page.tsx",
+    "feature": "reseller-packages",
+    "ticket": "reseller-packages/RESELLER-PACKAGES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/reseller-profile/[id]",
+    "page": "app/(dashboard)/reseller-profile/[id]/page.tsx",
+    "feature": "reseller-profile",
+    "ticket": "reseller-profile/RESELLER-PROFILE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/resellers/create",
+    "page": "app/(dashboard)/resellers/create/page.tsx",
+    "feature": "resellers",
+    "ticket": "resellers/RESELLER-001-reseller-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/resellers/edit/[id]",
+    "page": "app/(dashboard)/resellers/edit/[id]/page.tsx",
+    "feature": "resellers",
+    "ticket": "resellers/RESELLER-001-reseller-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/resellers",
+    "page": "app/(dashboard)/resellers/page.tsx",
+    "feature": "resellers",
+    "ticket": "resellers/RESELLER-001-reseller-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/resellers/view/[id]",
+    "page": "app/(dashboard)/resellers/view/[id]/page.tsx",
+    "feature": "resellers",
+    "ticket": "resellers/RESELLER-001-reseller-management.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/roles",
+    "page": "app/(dashboard)/roles/page.tsx",
+    "feature": "roles",
+    "ticket": "roles/ROLES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/salaries/create",
+    "page": "app/(dashboard)/salaries/create/page.tsx",
+    "feature": "salaries",
+    "ticket": "salaries/SALARIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/salaries/edit/[id]",
+    "page": "app/(dashboard)/salaries/edit/[id]/page.tsx",
+    "feature": "salaries",
+    "ticket": "salaries/SALARIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/salaries",
+    "page": "app/(dashboard)/salaries/page.tsx",
+    "feature": "salaries",
+    "ticket": "salaries/SALARIES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/dashboard",
+    "page": "app/(dashboard)/settings/dashboard/page.tsx",
+    "feature": "settings-dashboard",
+    "ticket": "settings-dashboard/SETTINGS-DASHBOARD-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings",
+    "page": "app/(dashboard)/settings/page.tsx",
+    "feature": "settings-entry",
+    "ticket": "settings-entry/SETTINGS-ENTRY-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/general",
+    "page": "app/(dashboard)/settings/general/page.tsx",
+    "feature": "settings-general",
+    "ticket": "settings-general/SETTINGS-GENERAL-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/invoice-print",
+    "page": "app/(dashboard)/settings/invoice-print/page.tsx",
+    "feature": "settings-invoice-print",
+    "ticket": "settings-invoice-print/SETTINGS-INVOICE-PRINT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/map",
+    "page": "app/(dashboard)/settings/map/page.tsx",
+    "feature": "settings-map",
+    "ticket": "settings-map/SETTINGS-MAP-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/monitoring",
+    "page": "app/(dashboard)/settings/monitoring/page.tsx",
+    "feature": "settings-monitoring",
+    "ticket": "settings-monitoring/SETTINGS-MONITORING-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/notifications",
+    "page": "app/(dashboard)/settings/notifications/page.tsx",
+    "feature": "settings-notifications",
+    "ticket": "settings-notifications/SETTINGS-NOTIFICATIONS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/olt",
+    "page": "app/(dashboard)/settings/olt/page.tsx",
+    "feature": "settings-olt",
+    "ticket": "settings-olt/SETTINGS-OLT-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/settings/sms",
+    "page": "app/(dashboard)/settings/sms/page.tsx",
+    "feature": "settings-sms",
+    "ticket": "settings-sms/SETTINGS-SMS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/sms-send",
+    "page": "app/(dashboard)/sms-send/page.tsx",
+    "feature": "sms-send",
+    "ticket": "sms-send/SMS-SEND-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/sms-templates",
+    "page": "app/(dashboard)/sms-templates/page.tsx",
+    "feature": "sms-templates",
+    "ticket": "sms-templates/SMS-TEMPLATES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/staff-profile",
+    "page": "app/(dashboard)/staff-profile/page.tsx",
+    "feature": "staff-profile",
+    "ticket": "staff-profile/STAFF-PROFILE-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/staffs/create",
+    "page": "app/(dashboard)/staffs/create/page.tsx",
+    "feature": "staffs",
+    "ticket": "staffs/STAFFS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/staffs/edit/[id]",
+    "page": "app/(dashboard)/staffs/edit/[id]/page.tsx",
+    "feature": "staffs",
+    "ticket": "staffs/STAFFS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/staffs",
+    "page": "app/(dashboard)/staffs/page.tsx",
+    "feature": "staffs",
+    "ticket": "staffs/STAFFS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/sub-zones",
+    "page": "app/(dashboard)/sub-zones/page.tsx",
+    "feature": "sub-zones",
+    "ticket": "sub-zones/SUB-ZONES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/subjects",
+    "page": "app/(dashboard)/subjects/page.tsx",
+    "feature": "subjects",
+    "ticket": "subjects/SUBJECTS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/subscription",
+    "page": "app/(dashboard)/subscription/page.tsx",
+    "feature": "subscription",
+    "ticket": "subscription/SUBSCRIPTION-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/subscription-features",
+    "page": "app/(dashboard)/subscription-features/page.tsx",
+    "feature": "subscription-features",
+    "ticket": "subscription-features/SUBSCRIPTION-FEATURES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/subscription-plans",
+    "page": "app/(dashboard)/subscription-plans/page.tsx",
+    "feature": "subscription-plans",
+    "ticket": "subscription-plans/SUBSCRIPTION-PLANS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tickets",
+    "page": "app/(dashboard)/tickets/page.tsx",
+    "feature": "support-tickets",
+    "ticket": "support-tickets/SUPPORT-001-support-tickets.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tickets/view/[id]",
+    "page": "app/(dashboard)/tickets/view/[id]/page.tsx",
+    "feature": "support-tickets",
+    "ticket": "support-tickets/SUPPORT-001-support-tickets.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tables",
+    "page": "app/(dashboard)/tables/page.tsx",
+    "feature": "tables",
+    "ticket": "tables/TABLES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tags",
+    "page": "app/(dashboard)/tags/page.tsx",
+    "feature": "tags",
+    "ticket": "tags/TAGS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/telegram",
+    "page": "app/(dashboard)/telegram/page.tsx",
+    "feature": "telegram",
+    "ticket": "telegram/TELEGRAM-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tj-box-maps",
+    "page": "app/(dashboard)/tj-box-maps/page.tsx",
+    "feature": "tj-box-maps",
+    "ticket": "tj-box-maps/TJ-BOX-MAPS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/tj-boxes",
+    "page": "app/(dashboard)/tj-boxes/page.tsx",
+    "feature": "tj-boxes",
+    "ticket": "tj-boxes/TJ-BOXES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/unit-types",
+    "page": "app/(dashboard)/unit-types/page.tsx",
+    "feature": "unit-types",
+    "ticket": "unit-types/UNIT-TYPES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/users",
+    "page": "app/(dashboard)/users/page.tsx",
+    "feature": "users",
+    "ticket": "users/USERS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/vendors",
+    "page": "app/(dashboard)/vendors/page.tsx",
+    "feature": "vendors",
+    "ticket": "vendors/VENDORS-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/zones",
+    "page": "app/(dashboard)/zones/page.tsx",
+    "feature": "zones",
+    "ticket": "zones/ZONES-001.md",
+    "status": "draft",
+    "scenario_ids": []
+  }
+]
