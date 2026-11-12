@@ -1453,6 +1453,18 @@
             "label": "Discount",
             "placeholder": "0.00"
         },
+        "sms_status": {
+            "label": "SMS",
+            "unknown": "SMS status unknown",
+            "success": "SMS sent",
+            "failed": "SMS failed",
+            "sent_at": "Sent at",
+            "failed_at": "Failed at",
+            "reason": "Reason",
+            "no_record": "No SMS record for this month",
+            "invoice_due": "Invoice Due",
+            "invoice_due_reminder": "Invoice Due Reminder"
+        },
         "payment_date": {
             "label": "Payment Date",
             "placeholder": "Select payment date",

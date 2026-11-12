@@ -1,6 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 
-export const authUsername = process.env.E2E_AUTH_USERNAME ?? "kamol";
+export const authUsername = process.env.E2E_AUTH_USERNAME ?? "vp";
 export const authPassword = process.env.E2E_AUTH_PASSWORD ?? "12345678";
 
 export async function loginAsAdmin(page: Page): Promise<void> {
