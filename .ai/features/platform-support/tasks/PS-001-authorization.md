@@ -1,6 +1,6 @@
 # PS-001 — Authorization and always-available support
 
-Status: not started
+Status: reviewable
 Repository: isp-backend; shadcn-client only for typed effective capability/settings output when necessary.
 Depends on: product and authorization contracts reviewed.
 
@@ -32,4 +32,22 @@ Pest coverage with tenant A/B, same-company company/reseller actors, company-1 o
 
 ## Implementation record
 
-Changed files: pending. Commands/results: pending. Acceptance evidence: pending. Remaining blockers: pending.
+Changed files: isp-backend authorization catalog, resolver, ownership policy, inbox grant, requester and platform middleware, named routes, subscription exception, feature and permission seeders, `update:permission` list, settings and permission-catalog guards, and `docs/architecture/multi-tenancy.md` §§6 and 8.1. Tests: `tests/Feature/PlatformSupportAuthorizationTest.php`. No shadcn-client application code. No ticket, client-portal, or migration files.
+
+Commands/results:
+
+- `scripts/ai/backend-test tests/Feature/PlatformSupportAuthorizationTest.php tests/Feature/CheckSubscriptionMiddlewareTest.php tests/Feature/RolePermissionControllerTest.php` — 41 passed (281 assertions).
+- `scripts/ai/lint` on the changed PHP files — Pint passed.
+- PHPStan level 5 on the new authorization code, seeders, subscription service, permission controllers, bootstrap, and routes — no errors. `UserController.php` still has the same four pre-existing errors as `HEAD` (`syncRoles`, company model type on `filterRolePermissions` and `summary`, and `resolveUser`). Those lines were not introduced here.
+- `scripts/ai/status` and `scripts/ai/diff` inspected. Unrelated working-tree files were not present.
+
+Acceptance evidence: `tests/Feature/PlatformSupportAuthorizationTest.php`.
+
+- PS-001-A: role-less owner with no Staff, reseller user, anonymous 401, Client token 403, inactive Staff `account_locked`.
+- PS-001-B: no subscription, plan without support, and expired plan keep own-support writes. `tickets.access` still returns 402 when support is absent or expired. `invoices.create` and `duplicate.username` still return 402 after expiry. Unknown `platform-support.not-a-route` is not exempt.
+- PS-001-C: parent, child, and sibling reseller threads are hidden. A reseller with `company.access` is denied that route and scope. Team reply and manage do nothing without visibility. Moving `reseller_id` drops the old thread.
+- PS-001-D: ordinary company-1 user and a Super Admin outside company 1 receive 403 on admin routes. Company-1 Super Admin receives every admin capability. A company-1 agent with only `platform-support-admin.reply` is denied access and assign. Inbox open writes an activity row and leaves the tenant id in place. A tenant open throws.
+- PS-001-E: tenant editors, a tenant Super Admin, and a platform Super Admin writing a tenant role cannot add `platform-support-admin.access`. Optional `company.access` can be added without a plan. Feature sync rejects both admin and optional names. Revoking `company.access` changes the next route and `get.user.settings`. The settings envelope stays `settings`, `profile`, `permissions`, `subscription`.
+- PS-001-F: a real impersonation token loses admin routes and admin names, keeps baseline access, and the settings JSON does not contain the bearer token. All 30 catalog names are registered. `tickets.access` still uses `permissions` and not the new middleware.
+
+Remaining blockers: summary, read, upload, and attachment routes still return 204 and no record. Core thread routes now return the PS-002 payloads, so 204 is no longer the gate for those actions. Summary counts are not implemented. `User.status = 0` without an inactive Staff row is still not a global lock. Assignment rejects that user; other routes do not. `permissions.add` still does not prove an arbitrary role belongs to the caller; platform-admin names are rejected unless the actor is a company-1 Super Admin and the role is company 1. Do not run `update:permission` or seeders against MySQL without approval. No package install, migration, or push was performed.

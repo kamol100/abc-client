@@ -1,6 +1,6 @@
 # Platform Help and Support — implementation specification
 
-Status: ready for sequential implementation; no task has been implemented by this specification work.
+Status: PS-001 and PS-002 are reviewable in isp-backend. PS-003 onward are not started.
 Version: 1.0 · 13 November 2026
 
 This folder is the implementation source of truth for the new platform-support feature. It supersedes alternatives in `.ai/support-architecture.md`. The existing `tickets` / `ticket_messages` system is preserved for tenants and their customers. Do not extend it to implement this feature.

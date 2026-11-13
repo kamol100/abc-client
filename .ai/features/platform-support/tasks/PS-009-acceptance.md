@@ -45,6 +45,19 @@ Use a disposable local/test dataset and fake external delivery adapters. Never u
 
 Every task has evidence for all its acceptance IDs, full supported feature content coverage is recorded, no unresolved cross-tenant/image authorization defect remains, and limitations/blockers are explicit. If video URLs are absent, text/FAQ functionality and embedding capability can pass while catalog entries remain not_configured; do not claim real videos were published. If optional release scope is partial, clearly say which tasks/content batches are incomplete. Update reports in both changed repositories; no automatic deploy.
 
+## MySQL concurrency plan from PS-002
+
+Status of this task stays not started. Do not run this plan against the application MySQL or any live tenant database.
+
+Use a disposable MySQL database created for the test run. Two concurrent transactions, then assert:
+
+- Two chat starts for the same company, reseller, and requester leave one open chat. The unique `active_chat_key` is the backstop. The second caller receives the existing chat with `resumed: true` and does not store the supplied body.
+- Two conversions of that chat with different `client_request_id` values leave one issue. `source_chat_id` is unique. The loser is 409 `platform_support.already_converted`.
+- Two replies on one thread receive contiguous sequences. `unique(thread_id, sequence)` rejects a duplicate. The parent row lock is what should serialize allocation; SQLite did not prove that lock.
+- The same `client_request_id` and payload from two overlapping requests leaves one receipt and one message.
+
+SQLite Pest already proves the unique constraints and the 409 mapping. Record the disposable database name, the two session timestamps, and the row counts. Do not copy tenant data into that database.
+
 ## Implementation record
 
 Changed files: pending. Commands/results: pending. PS-E01–17 evidence: pending. Remaining blockers/release decisions: pending.
