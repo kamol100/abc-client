@@ -31,6 +31,7 @@ describe("admin menu order", () => {
       "/clients",
       "#",
       "/platform-support",
+      "/platform-support-admin",
       "#",
       "#",
       "/resellers",
@@ -64,6 +65,8 @@ describe("admin menu order", () => {
       "/tags",
       "/platform-support?kind=issue",
       "/platform-support?kind=chat",
+      "/platform-support-admin?kind=issue",
+      "/platform-support-admin?kind=chat",
       "/invoices",
       "/payments",
       "/invoice-types",
@@ -255,5 +258,19 @@ describe("admin menu feature locks", () => {
     ]);
     expect(group(items, 38).disabled).toBe(false);
     expect(urls(items)).not.toContain("/tickets");
+    expect(urls(items)).not.toContain("/platform-support-admin?kind=issue");
+  });
+
+  it("shows the platform inbox only with the admin access permission", () => {
+    const hidden = selectMenuItems(menu, access(["platform-support.access", "platform-support-admin.reply"]));
+    expect(urls(hidden)).not.toContain("/platform-support-admin?kind=issue");
+
+    const visible = selectMenuItems(menu, access(["platform-support-admin.access"]));
+    expect(urls(visible)).toEqual([
+      "/platform-support-admin?kind=issue",
+      "/platform-support-admin?kind=chat",
+      "/subscription",
+    ]);
+    expect(group(visible, 39).disabled).toBe(false);
   });
 });

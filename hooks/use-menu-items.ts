@@ -11,6 +11,7 @@ import {
   FileText,
   Headset,
   History,
+  Inbox,
   Landmark,
   LayoutDashboard,
   LifeBuoy,
@@ -126,6 +127,17 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       items: [
         { title: t("menu.platform_support.issues"), url: "/platform-support?kind=issue", permission: "platform-support.access" },
         { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
+      ],
+    },
+    {
+      id: 39,
+      title: t("menu.platform_support_inbox.title"),
+      url: "/platform-support-admin",
+      icon: Inbox,
+      permissions: ["platform-support-admin.access"],
+      items: [
+        { title: t("menu.platform_support_inbox.issues"), url: "/platform-support-admin?kind=issue", permission: "platform-support-admin.access" },
+        { title: t("menu.platform_support_inbox.chats"), url: "/platform-support-admin?kind=chat", permission: "platform-support-admin.access" },
       ],
     },
     {

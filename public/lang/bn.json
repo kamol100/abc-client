@@ -5045,6 +5045,11 @@
             "issues": "ইস্যু",
             "chats": "চ্যাট"
         },
+        "platform_support_inbox": {
+            "title": "সাপোর্ট ইনবক্স",
+            "issues": "ইস্যু",
+            "chats": "চ্যাট"
+        },
         "resellers": {
             "title": "রিসেলার"
         },
@@ -9462,6 +9467,35 @@
             "ready": "প্রস্তুত",
             "failed": "ব্যর্থ"
         },
+        "inbox": {
+            "title": "সাপোর্ট ইনবক্স",
+            "company": "কোম্পানি",
+            "domain": "ডোমেইন",
+            "reseller": "রিসেলার",
+            "assignee": "অ্যাসাইনি",
+            "ownership": "অনুরোধের মালিক",
+            "unassigned_agent": "অ্যাসাইন করা হয়নি",
+            "pending": "ইনবক্স লোড হচ্ছে",
+            "refreshing": "রিফ্রেশ হচ্ছে",
+            "refreshed": "শেষ রিফ্রেশ {{time}}",
+            "periodic": "আপডেট পরের রিফ্রেশে দেখা যাবে।",
+            "stale": "শেষ রিফ্রেশ ব্যর্থ হয়েছে। এই ইনবক্স পুরোনো হতে পারে।",
+            "unread_messages": "{{count}} অপঠিত বার্তা",
+            "unread_threads": "{{count}} অপঠিত অনুরোধ",
+            "unassigned_count": "{{count}} অ্যাসাইন করা হয়নি",
+            "quick": {
+                "unread": "অপঠিত",
+                "unassigned": "অ্যাসাইন করা হয়নি"
+            },
+            "filters": {
+                "search": "বিষয় খুঁজুন",
+                "company": "কোম্পানি আইডেন্টিফায়ার",
+                "reseller": "রিসেলার আইডেন্টিফায়ার",
+                "requester": "অনুরোধকারী আইডেন্টিফায়ার",
+                "assignee": "অ্যাসাইনি",
+                "any_assignee": "যেকোনো অ্যাসাইনি"
+            }
+        },
         "errors": {
             "generic": "অনুরোধটি সম্পন্ন করা যায়নি।",
             "image_invalid": "JPEG, PNG, বা WebP ছবি ব্যবহার করুন।",
@@ -9488,7 +9522,8 @@
             "already_converted": "এই চ্যাট ইতিমধ্যে একটি ইস্যু।",
             "empty_chat": "ইস্যু তৈরির আগে একটি বার্তা পাঠান।",
             "active_chat": "একটি খোলা চ্যাট আগে থেকেই আছে।",
-            "history_retained": "কথোপকথনের ইতিহাস রাখা হয়েছে।"
+            "history_retained": "কথোপকথনের ইতিহাস রাখা হয়েছে।",
+            "ineligible_assignee": "এই এজেন্টকে অ্যাসাইন করা যায় না।"
         }
     }
 }

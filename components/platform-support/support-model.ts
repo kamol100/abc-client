@@ -194,6 +194,13 @@ export function supportOwnsThread(thread: Pick<SupportThread, "requester">, acto
     return Boolean(actorUuid) && thread.requester.uuid === actorUuid;
 }
 
+export function supportHistoryUrl(audience: "requester" | "platform", threadId: string): string | null {
+    const id = supportThreadId(threadId);
+    if (!id) return null;
+    const root = audience === "platform" ? "platform-support-admin" : "platform-support";
+    return `/${root}/threads/${id}/messages?limit=50`;
+}
+
 export function supportReplyUrl(threadUuid: string, owns: boolean): string {
     const id = supportThreadId(threadUuid);
     if (!id) return "";
@@ -418,7 +425,7 @@ export function readSequenceForVisible(
     return latest > current ? latest : null;
 }
 
-const POLL_MS = { thread: 5000, list: 15000, summary: 30000 } as const;
+const POLL_MS = { thread: 5000, list: 15000, summary: 30000, inbox: 10000 } as const;
 
 export function supportPollInterval(input: {
     surface: keyof typeof POLL_MS;

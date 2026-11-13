@@ -36,6 +36,7 @@ import {
     resumedChatNeedsMessage,
     submissionAmbiguous,
     supportConflict,
+    supportHistoryUrl,
     type DraftImage,
     type DraftSubmit,
 } from "@/components/platform-support/support-model";
@@ -304,6 +305,8 @@ export function SupportComposer({
     threadId,
     draftId,
     version = 1,
+    audience = "requester",
+    allowImages = true,
     onAcknowledged,
     onConflict,
     onReconciled,
@@ -313,6 +316,8 @@ export function SupportComposer({
     threadId?: string;
     draftId?: string;
     version?: number;
+    audience?: SupportImageAudience;
+    allowImages?: boolean;
     onAcknowledged?: (response: Record<string, unknown> | undefined) => void;
     onConflict?: () => void;
     onReconciled?: (messages: ReturnType<typeof parseMessageWindow>) => void;
@@ -342,9 +347,10 @@ export function SupportComposer({
         const body = String(values.body ?? values.subject ?? "");
         const tokens = readyTokens(imagesRef.current);
         const decision = submitAttempt(pendingRef.current, `${body}\n${tokens.join("\n")}`, tokens, crypto.randomUUID());
-        if (decision.reconcileFirst && pendingRef.current && threadId) {
+        const reconcileUrl = threadId ? supportHistoryUrl(audience, threadId) : null;
+        if (decision.reconcileFirst && pendingRef.current && reconcileUrl) {
             const previousId = pendingRef.current.clientRequestId;
-            const page = await useFetch({ url: `/platform-support/threads/${threadId}/messages?limit=50` });
+            const page = await useFetch({ url: reconcileUrl });
             const window = parseMessageWindow(page?.data);
             if (!page?.success || !window) {
                 setNotice("platform_support.composer.ambiguous");
@@ -441,11 +447,11 @@ export function SupportComposer({
                         {fields.map((field) => (
                             <div key={field.name}>{renderField(field)}</div>
                         ))}
-                        {mode !== "convert" && (
+                        {mode !== "convert" && allowImages && (
                             <SupportImageDraft
                                 images={images}
                                 onChange={setImages}
-                                audience="requester"
+                                audience={audience}
                                 draftId={mode === "issue" ? draft : undefined}
                                 threadId={mode === "message" ? threadId : undefined}
                             />

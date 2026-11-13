@@ -1,3 +1,20 @@
+## PS-006 platform inbox — 2026-11-13
+
+Added the app-tenant support inbox at `/platform-support-admin` and `/platform-support-admin/threads/{uuid}`. The nav item is gated by `platform-support-admin.access` only. Issues and chats are separate tabs. Unread and unassigned are explicit views. Company, reseller, and requester filters send uuids to the admin list. The assignee dropdown is requested only when the user has both `platform-support-admin.assign` and `platform-support-admin.assignees`.
+
+The thread keeps the company name, domain, reseller, requester, and role above the reply box. Reply, upload, status, assignment, and conversion each require the named permission and the per-record ability. Images and source-chat history use the platform routes. A 403 removes the cached inbox rows. The list and summary poll every 10 seconds while the inbox is visible, and the open thread polls every 5 seconds. Hidden, offline, and failed requests stop or show a stale state. The list does not reorder the current page while a control in it has focus.
+
+Focused tests cover the menu gate, identity fields, role controls, cache keys, poll interval, stale empty list, and reply dedupe. They do not prove a live cross-tenant or cross-role API check. No browser session was run. PS-007 was not started.
+
+### Checks
+
+- `npx vitest run tests/unit/platform-support tests/unit/menu/menu-items.test.ts` — 7 files, 58 passed.
+- `scripts/ai/typecheck` — exited 0.
+- `scripts/ai/frontend-check` — typecheck exited 0. Full Vitest then failed 19 tests in maps, client dashboard, reseller-client, column visibility, date-picker, and pay files. Those files were not part of this change. 663 tests passed.
+- `scripts/ai/status` and `git diff --stat` after the edits. The working tree contains only this task.
+
+No dependency install, browser session, or push. PS-004 and PS-005 were uncommitted at the start and are now in `503b007`. They are not part of this diff.
+
 ## PS-005 requester UI — 2026-11-13
 
 Added the staff Help launcher and the requester issue/chat screens. The launcher is mounted once in the staff layout, uses `platform-support.access`, and offers Report an issue, Chat with support, and My requests. It does not require `tickets.access`, `notifications.access`, or the paid support feature, and it does not link to a Help Centre route. Lists, thread history, image staging, and lifecycle actions use the PS-002–PS-004 routes and the per-record abilities. Colleague replies go to `team-messages`. Colleague status changes go to `team-status`. Tokens and drafts stay in component memory.

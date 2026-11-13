@@ -284,10 +284,11 @@ describe("platform support composer state", () => {
 
 describe("platform support translations", () => {
     it("keeps the English and Bangla support keys aligned", () => {
-        const english = JSON.parse(readFileSync("public/lang/en.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown } };
-        const bangla = JSON.parse(readFileSync("public/lang/bn.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown } };
+        const english = JSON.parse(readFileSync("public/lang/en.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown; platform_support_inbox: unknown } };
+        const bangla = JSON.parse(readFileSync("public/lang/bn.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown; platform_support_inbox: unknown } };
         expect(leafKeys(english.platform_support)).toEqual(leafKeys(bangla.platform_support));
         expect(leafKeys(english.menu.platform_support)).toEqual(leafKeys(bangla.menu.platform_support));
+        expect(leafKeys(english.menu.platform_support_inbox)).toEqual(leafKeys(bangla.menu.platform_support_inbox));
     });
 });
 

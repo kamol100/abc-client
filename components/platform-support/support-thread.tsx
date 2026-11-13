@@ -491,7 +491,15 @@ export default function SupportThreadView({
     );
 }
 
-function MessageList({ messages, ready = true }: { messages: SupportHistory["messages"]; ready?: boolean }) {
+export function MessageList({
+    messages,
+    ready = true,
+    audience = "requester",
+}: {
+    messages: SupportHistory["messages"];
+    ready?: boolean;
+    audience?: "requester" | "platform";
+}) {
     const { t } = useTranslation();
     if (!ready) return null;
     if (messages.length === 0) return <p className="text-sm text-muted-foreground">{t("platform_support.empty_messages")}</p>;
@@ -513,7 +521,7 @@ function MessageList({ messages, ready = true }: { messages: SupportHistory["mes
                         {message.created_at ? ` · ${supportTime(message.created_at)}` : ""}
                     </p>
                     <SupportText value={message.body} />
-                    <SupportAttachmentGallery attachments={message.attachments} audience="requester" />
+                    <SupportAttachmentGallery attachments={message.attachments} audience={audience} />
                 </li>
             ))}
         </ol>

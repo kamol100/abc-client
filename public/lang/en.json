@@ -5045,6 +5045,11 @@
             "issues": "Issues",
             "chats": "Chats"
         },
+        "platform_support_inbox": {
+            "title": "Support inbox",
+            "issues": "Issues",
+            "chats": "Chats"
+        },
         "resellers": {
             "title": "Resellers"
         },
@@ -9462,6 +9467,35 @@
             "ready": "Ready",
             "failed": "Failed"
         },
+        "inbox": {
+            "title": "Support inbox",
+            "company": "Company",
+            "domain": "Domain",
+            "reseller": "Reseller",
+            "assignee": "Assignee",
+            "ownership": "Request owner",
+            "unassigned_agent": "Unassigned",
+            "pending": "Loading the inbox",
+            "refreshing": "Refreshing",
+            "refreshed": "Last refresh {{time}}",
+            "periodic": "Updates appear on the next refresh.",
+            "stale": "The latest refresh failed. This inbox may be out of date.",
+            "unread_messages": "{{count}} unread messages",
+            "unread_threads": "{{count}} unread requests",
+            "unassigned_count": "{{count}} unassigned",
+            "quick": {
+                "unread": "Unread",
+                "unassigned": "Unassigned"
+            },
+            "filters": {
+                "search": "Search subject",
+                "company": "Company identifier",
+                "reseller": "Reseller identifier",
+                "requester": "Requester identifier",
+                "assignee": "Assignee",
+                "any_assignee": "Any assignee"
+            }
+        },
         "errors": {
             "generic": "The request could not be completed.",
             "image_invalid": "Use a JPEG, PNG, or WebP image.",
@@ -9488,7 +9522,8 @@
             "already_converted": "This chat is already an issue.",
             "empty_chat": "Send a message before creating an issue.",
             "active_chat": "An open chat already exists.",
-            "history_retained": "The conversation history was kept."
+            "history_retained": "The conversation history was kept.",
+            "ineligible_assignee": "That agent cannot be assigned."
         }
     }
 }
