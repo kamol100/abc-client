@@ -1,3 +1,20 @@
+## PS-007 documentation engine — 2026-11-13
+
+Added a file-based help library under `content/help` and server routes at `/api/help/articles/{id}`, `/api/help/search`, and `/api/help/media/{articleId}/{file}`. Twelve published articles exist in English and Bangla: getting started, contact, report an issue, chat, images, convert chat, clients overview, add client, invoices overview, and three short FAQs. Chat, images, and conversion are separate articles because their permissions differ. No Help Centre page was added.
+
+A staff response is authorized from the existing `/user-settings` envelope. Baseline support articles need no feature permission. Feature articles follow the menu lock: a feature hides content only when the subscription state is `expired` and the feature is disabled. An expired read-only feature hides write tutorials and keeps the overview. Client and anonymous principals get 401. A forbidden or missing article is 404 and the body does not include its title. Search returns at most eight snippets from titles, summaries, keywords, and body, and a query longer than 80 characters is 400 without echoing the query. Responses use `private, no-store`.
+
+Markdown is rendered with markdown-it 15.0.3, HTML and linkify disabled, and a link check that allows only http(s), mailto, `/help/` paths, and local media. `npm install markdown-it@15.0.3 server-only@0.0.1` was run. The permission snapshot has 395 names generated from the sibling seeder and `PlatformSupportPermissions`. `node scripts/check-help-content.mjs` reports `help content ok (12 articles)` and prints a Node module-type warning. No video id was added. isp-backend was not edited. PS-008 was not started.
+
+### Checks
+
+- `npx vitest run tests/unit/help` — 3 files, 17 passed.
+- `scripts/ai/typecheck` — exited 0.
+- `scripts/ai/frontend-check` — typecheck exited 0. Full Vitest then failed 19 tests in maps, reseller-client, client dashboard, column visibility, date-picker, and pay files. Those files were not part of this change. 680 tests passed.
+- `scripts/ai/status` and `scripts/ai/diff` after the edits. The working tree contains only this task, including the report update. Branch `master` is ahead of `origin/master` by 1. Nothing was committed or pushed.
+
+No production `next build` and no browser session. The unit tests cover the routes, renderer, locale pair, and permission gates. They do not prove the compiled client bundle or a signed-in page.
+
 ## PS-006 platform inbox — 2026-11-13
 
 Added the app-tenant support inbox at `/platform-support-admin` and `/platform-support-admin/threads/{uuid}`. The nav item is gated by `platform-support-admin.access` only. Issues and chats are separate tabs. Unread and unassigned are explicit views. Company, reseller, and requester filters send uuids to the admin list. The assignee dropdown is requested only when the user has both `platform-support-admin.assign` and `platform-support-admin.assignees`.

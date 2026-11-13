@@ -1,6 +1,6 @@
 # PS-007 — File-based bilingual documentation engine
 
-Status: not started
+Status: reviewable
 Repository: shadcn-client; minimal backend effective-capability integration only if required.
 Depends on: PS-001 complete; execute after PS-006 for the requested sequence.
 
@@ -51,4 +51,23 @@ Vitest policy/search/locale/path/renderer tests, validator check and frontend-ch
 
 ## Implementation record
 
-Changed files: pending. Commands/results: pending. Acceptance evidence: pending. Remaining blockers: pending.
+Changed files: `content/help/` (catalog, permission snapshot, English/Bangla articles, README), `lib/help/` (authorization, catalog matching, content loader, Markdown render, search, validator, settings actor, HTTP delivery), `app/api/help/` article, search, and media routes, `scripts/check-help-content.mjs`, `scripts/export-help-permission-catalog.mjs`, `types/server-only.d.ts`, `tests/unit/help/`, `package.json`, `package-lock.json`, `tsconfig.json`, `vitest.config.ts`. No isp-backend files. No Help Centre page. That stays in PS-008.
+
+Commands/results:
+
+- `npm install markdown-it@15.0.3 server-only@0.0.1` — completed. `package.json` and `package-lock.json` gained only those two packages and markdown-it's dependencies.
+- `node scripts/export-help-permission-catalog.mjs` — wrote 395 permission names from the sibling PermissionSeeder and PlatformSupportPermissions sources.
+- `node scripts/check-help-content.mjs` — `help content ok (12 articles)`. Node prints a module-type warning because the checker imports TypeScript and this package is not `"type": "module"`. The exit code is 0.
+- `npx vitest run tests/unit/help` — 3 files, 17 passed.
+- `scripts/ai/typecheck` — exited 0.
+- `scripts/ai/frontend-check` — typecheck exited 0. Full Vitest then failed 19 tests in maps, reseller-client, client dashboard, column visibility, date-picker, and pay files. Those files were not part of this change. 680 tests passed.
+- `scripts/ai/status` and `scripts/ai/diff` inspected after the edits.
+
+Acceptance evidence:
+
+- PS-007-A: `tests/unit/help/delivery.test.ts` requests the article and search routes. A staff actor without `clients.create` gets 404 and the body does not contain the create-article title or "Network Package". Search for that phrase returns no snippet. Related links on the contact article omit "Report an issue" until `platform-support.create` is present. The renderer test escapes `<script>`, drops `javascript:`, `data:`, and `file:` URLs, and rewrites a local image to `/api/help/media/...`. Media for an unauthorized actor is 404 with `nosniff` and `private, no-store`. A source scan rejects `use client` imports of `@/lib/help` and `@/content/help`. `lib/help/content.ts` and `lib/help/actor.ts` import `server-only` and the settings fetch uses `cache: "no-store"`. A production `next build` and a browser session were not run, so the compiled client chunk and a live page were not inspected.
+- PS-007-B: the validator test fails duplicate ids, a missing Bangla front matter, a stale `translated_from_revision`, an unknown permission, an unsafe video id, a `javascript:` URL, a missing related id, and a `../` route. The published tree passes. Concurrent English and Bangla requests for `clients.create` return "Add a client" and "ক্লায়েন্ট যোগ করা". A draft with `developmentEnglishFallback` serves English in development and is hidden when drafts are off. A published article does not fall back. Help code does not call `changeLanguage`.
+- PS-007-C: `canReadHelpArticle` reads the actor's permissions, `subscription.state`, `disabled_features`, and `read_only_features`. An expired disabled `clients` feature hides the client guides even if the permission is still present. An active subscription does not. An expired read-only `billing` feature keeps the invoice overview and hides a write tutorial. No database write and no content row were added. Permission changes are evaluated per request. A Markdown edit still needs the documented content check and an application release to reach production.
+- PS-007-D: the 12 published articles were written from the current client form, client table, invoice table, subscription page, and platform-support composer. They do not describe bill calculation or the client activation bill. The renderer and path resolver reject raw HTML, unsafe URLs, bad locales, and `../` paths. No YouTube id was added. `video_status` is `not_configured`. No screenshot was placed under `public/`.
+
+Remaining blockers: there is no Help Centre page yet, so these routes are the delivery API for PS-008. The production client bundle was not built. No browser session was signed in. The permission snapshot can drift until someone runs `node scripts/export-help-permission-catalog.mjs` and reviews it. The checker prints a Node module-type warning. Videos remain unset until a reviewed id is supplied. PS-008 was not started.
