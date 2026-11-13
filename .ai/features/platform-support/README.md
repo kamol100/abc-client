@@ -1,6 +1,6 @@
 # Platform Help and Support — implementation specification
 
-Status: PS-001, PS-002, and PS-003 are reviewable. PS-004 onward are not started.
+Status: PS-001 through PS-005 are reviewable. PS-006 onward are not started.
 Version: 1.0 · 13 November 2026
 
 This folder is the implementation source of truth for the new platform-support feature. It supersedes alternatives in `.ai/support-architecture.md`. The existing `tickets` / `ticket_messages` system is preserved for tenants and their customers. Do not extend it to implement this feature.

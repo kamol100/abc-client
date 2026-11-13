@@ -8,6 +8,7 @@ import { PropsWithChildren } from "react";
 import { useFetch } from "../actions";
 import { redirect } from "next/navigation";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { SupportRuntime } from "@/components/platform-support/support-launcher";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const res = await useFetch({ url: "/user-settings" });
@@ -21,7 +22,9 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
           <SidebarInset>
             <PageContainer>
               <TooltipProvider>
-                {children}
+                <SupportRuntime>
+                  {children}
+                </SupportRuntime>
               </TooltipProvider>
             </PageContainer>
           </SidebarInset>

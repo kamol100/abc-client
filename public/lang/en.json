@@ -5040,6 +5040,11 @@
                 "title": "Tags"
             }
         },
+        "platform_support": {
+            "title": "Platform Support",
+            "issues": "Issues",
+            "chats": "Chats"
+        },
         "resellers": {
             "title": "Resellers"
         },
@@ -7938,7 +7943,12 @@
             "network": "Network",
             "client": "Client",
             "support": "Support",
-            "invoice": "Invoice"
+            "invoice": "Invoice",
+            "platform_support": "Platform support"
+        },
+        "statuses": {
+            "waiting_for_requester": "Waiting for requester",
+            "converted": "Converted"
         },
         "changes": {
             "details": "details",
@@ -8045,6 +8055,36 @@
             "sms_not_sent": {
                 "title": "Reminder not sent",
                 "message": "Invoice {{invoice_no}} for {{client_name}} could not be sent because the client has no phone number."
+            },
+            "platform_support_issue_created": {
+                "title": "Support issue opened",
+                "platform": "{{company_name}}: {{requester_name}} opened {{reference}}",
+                "tenant": "{{requester_name}} opened {{reference}}"
+            },
+            "platform_support_chat_started": {
+                "title": "Support chat started",
+                "platform": "{{company_name}}: {{requester_name}} started {{reference}}",
+                "tenant": "{{requester_name}} started {{reference}}"
+            },
+            "platform_support_message_received": {
+                "title": "Support reply",
+                "platform": "{{company_name}}: new reply on {{reference}}",
+                "tenant": "New reply on {{reference}}"
+            },
+            "platform_support_assignment_changed": {
+                "title": "Support assignment changed",
+                "platform": "Assignment for {{reference}} was updated",
+                "tenant": "Assignment for {{reference}} was updated"
+            },
+            "platform_support_status_changed": {
+                "title": "Support status changed",
+                "platform": "{{reference}} is now {{status}}",
+                "tenant": "{{reference}} is now {{status}}"
+            },
+            "platform_support_chat_converted": {
+                "title": "Support chat converted",
+                "platform": "{{company_name}}: {{reference}} is now an issue",
+                "tenant": "{{reference}} is now an issue"
             }
         }
     },
@@ -9293,7 +9333,137 @@
         }
     },
     "platform_support": {
+        "title": "Platform Support",
+        "issues": "Issues",
+        "chats": "Chats",
+        "reference": "Reference",
+        "requester": "Requester",
+        "unread": "Unread",
+        "last_activity": "Last activity",
+        "loading": "Loading support requests",
+        "load_failed": "Support requests could not be loaded.",
+        "retry": "Try again",
+        "empty_messages": "No messages yet.",
+        "read_only": "You can read this request. Sending and managing are not available.",
+        "resolve": "Resolve",
+        "reopen": "Reopen",
+        "close": "Close chat",
+        "convert": "Create issue from chat",
+        "update_status": "Update status",
+        "linked_issue": "Linked issue",
+        "linked_chat": "Linked chat",
+        "linked_history": "Linked chat history",
+        "load_older": "Load older messages",
+        "new_messages": "New messages",
+        "launcher": {
+            "title": "Help",
+            "label": "Help and support, {{count}} unread"
+        },
+        "actions": {
+            "report_issue": "Report an issue",
+            "chat": "Chat with support",
+            "my_requests": "My requests"
+        },
+        "scopes": {
+            "label": "Request scope",
+            "own": "Mine",
+            "reseller": "Reseller",
+            "company": "Company"
+        },
+        "kinds": {
+            "label": "Issues and chats"
+        },
+        "filters": {
+            "status": "Status",
+            "priority": "Priority",
+            "category": "Category",
+            "reference": "Reference",
+            "subject": "Subject",
+            "reseller": "Reseller"
+        },
+        "subject": {
+            "label": "Subject",
+            "placeholder": "What do you need help with?",
+            "errors": {
+                "required": "Subject is required",
+                "invalid": "Enter a subject",
+                "min": "Use at least 3 characters",
+                "max": "Use at most 200 characters"
+            }
+        },
+        "category": {
+            "label": "Category",
+            "errors": {
+                "required": "Category is required",
+                "invalid": "Choose a category"
+            }
+        },
+        "priority": {
+            "label": "Priority",
+            "errors": {
+                "required": "Priority is required",
+                "invalid": "Choose a priority"
+            }
+        },
+        "message": {
+            "label": "Message",
+            "placeholder": "Write a message",
+            "errors": {
+                "required": "Add a message or at least one image",
+                "max": "Use at most 10,000 characters"
+            }
+        },
+        "categories": {
+            "general": "General",
+            "account": "Account",
+            "billing": "Billing",
+            "technical": "Technical",
+            "bug": "Bug",
+            "other": "Other"
+        },
+        "priorities": {
+            "low": "Low",
+            "normal": "Normal",
+            "high": "High"
+        },
+        "statuses": {
+            "open": "Open",
+            "in_progress": "In progress",
+            "waiting_for_requester": "Waiting for requester",
+            "resolved": "Resolved",
+            "closed": "Closed",
+            "converted": "Converted"
+        },
+        "author": {
+            "you": "You",
+            "platform": "Platform support"
+        },
+        "chat": {
+            "untitled": "Chat with support",
+            "resumed": "Your open chat is open again.",
+            "resumed_unsent": "This chat was already open. The message was not sent yet."
+        },
+        "composer": {
+            "send": "Send",
+            "sent": "Sent",
+            "wait_for_uploads": "Wait until the images finish uploading.",
+            "ambiguous": "The previous attempt may have been saved. It was checked against the server before this one was sent.",
+            "already_sent": "The previous attempt is already in the conversation. This edited message uses a new request."
+        },
+        "images": {
+            "add": "Add images",
+            "limit": "JPEG, PNG, or WebP. Up to 5 images, 5 MB each.",
+            "preview": "Image preview",
+            "download": "Download image",
+            "remove": "Remove image",
+            "retry": "Retry upload",
+            "pending": "Pending",
+            "uploading": "Uploading",
+            "ready": "Ready",
+            "failed": "Failed"
+        },
         "errors": {
+            "generic": "The request could not be completed.",
             "image_invalid": "Use a JPEG, PNG, or WebP image.",
             "image_too_large": "Each image must be 5 MB or smaller.",
             "image_dimensions": "This image is too large to process.",
@@ -9304,7 +9474,21 @@
             "attachment_consumed": "An image was already sent.",
             "duplicate_attachment": "The same image was selected more than once.",
             "too_many_attachments": "A message can include up to five images.",
-            "draft_required": "Upload the images again before sending."
+            "draft_required": "Upload the images again before sending.",
+            "rate_limited": "Too many requests. Try again in a moment.",
+            "forbidden": "You no longer have access to this request.",
+            "not_found": "This request is not available.",
+            "version_conflict": "This request changed. The latest status is shown. Review it before trying again.",
+            "idempotency_conflict": "This send does not match the previous attempt. Review the conversation before sending again.",
+            "sequence_conflict": "The conversation changed. Review the latest messages.",
+            "invalid": "Check the message and try again.",
+            "prohibited_field": "That field cannot be sent.",
+            "invalid_transition": "That status change is not available.",
+            "closed": "This request is closed. Reopen it before sending.",
+            "already_converted": "This chat is already an issue.",
+            "empty_chat": "Send a message before creating an issue.",
+            "active_chat": "An open chat already exists.",
+            "history_retained": "The conversation history was kept."
         }
     }
 }

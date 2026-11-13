@@ -1,3 +1,32 @@
+## PS-005 requester UI — 2026-11-13
+
+Added the staff Help launcher and the requester issue/chat screens. The launcher is mounted once in the staff layout, uses `platform-support.access`, and offers Report an issue, Chat with support, and My requests. It does not require `tickets.access`, `notifications.access`, or the paid support feature, and it does not link to a Help Centre route. Lists, thread history, image staging, and lifecycle actions use the PS-002–PS-004 routes and the per-record abilities. Colleague replies go to `team-messages`. Colleague status changes go to `team-status`. Tokens and drafts stay in component memory.
+
+Focused tests cover scope selection, reply routing, the 105-message merge, polling stop conditions, retry ids, image limits, escaped text, the single launcher, and English/Bangla key parity. They do not prove a live cross-tenant API check. No browser session was run. `useFetch` still does not expose `Retry-After`, and the PHP upload limits from PS-003 are unchanged. PS-006 was not started.
+
+### Checks
+
+- `scripts/ai/typecheck` — exited 0.
+- `npx vitest run tests/unit/platform-support tests/unit/menu/menu-items.test.ts` — 6 files, 44 passed.
+- `scripts/ai/frontend-check` — typecheck exited 0. Full Vitest then failed 19 tests in date-picker, pay, client-dashboard, reseller-client, column-visibility, and maps files. Those files were not part of this change.
+- `scripts/ai/status` and `scripts/ai/diff` inspected after the edits.
+
+Unrelated uncommitted PS-004 files were left in place: `02-data-and-api.md`, `tasks/PS-004-notifications.md`, the notification catalog/column/list, and `tests/unit/notifications/notification-catalog.test.ts`. No dependency install, browser session, or push.
+
+## PS-004 notifications — 2026-11-13
+
+Added the platform-support notification catalog: category `platform_support`, six events, English and Bangla title plus platform/tenant message keys, status labels for `waiting_for_requester` and `converted`, and `platform_support.errors.rate_limited`. Href resolution uses the audience and kind already on the row and does not append a query string. The planned routes are `/platform-support-admin/threads/{uuid}`, `/platform-support/chats/{uuid}`, and `/platform-support/issues/{uuid}`. Those pages are not in this task. The bell still requires `notifications.access`. The settings list now includes the new category because it reads the catalog.
+
+The API behavior, Pest evidence, and queue-worker prerequisite are in the sibling `.ai/report.md` and in `tasks/PS-004-notifications.md`. PS-005 was not started.
+
+### Checks
+
+- `npx vitest run tests/unit/notifications/notification-catalog.test.ts tests/unit/notifications/notification-bell.test.tsx` — 2 files, 11 passed.
+- `scripts/ai/typecheck` — exited 0.
+- `scripts/ai/status` and `scripts/ai/diff` inspected after the edits.
+
+No browser session, dependency install, or push. The notification bell and settings screens were not opened. The thread pages these links target do not exist yet.
+
 ## PS-003 image transport — 2026-11-13
 
 Added the same-origin upload, delete, and image routes for requester and platform support. The browser posts `FormData` to a fixed path and never receives the Sanctum bearer. The route handler checks `Origin` against `Host` and `X-Requested-With` on POST and DELETE, stops a body over 6 MiB, and forwards only the session bearer, `Accept`, `Content-Type`, and `X-Requested-With`. Image responses are `private, no-store` and `nosniff`. Error codes map to `platform_support.errors` in English and Bangla. `next.config.ts` was not given a larger server-action body limit. There is no composer or preview screen. That stays in PS-005 and PS-006.

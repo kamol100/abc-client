@@ -118,6 +118,17 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       ],
     },
     {
+      id: 38,
+      title: t("menu.platform_support.title"),
+      url: "/platform-support",
+      icon: Headset,
+      permissions: ["platform-support.access"],
+      items: [
+        { title: t("menu.platform_support.issues"), url: "/platform-support?kind=issue", permission: "platform-support.access" },
+        { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
+      ],
+    },
+    {
       id: 9,
       title: t("menu.invoice.title"),
       url: "#",

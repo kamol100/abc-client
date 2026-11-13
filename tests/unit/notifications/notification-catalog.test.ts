@@ -40,6 +40,18 @@ describe("notification catalog", () => {
         expect(resolveNotificationHref({ type: "onu", uuid: null })).toBe("/onus");
         expect(resolveNotificationHref(null)).toBeNull();
         expect(resolveNotificationHref({ type: "unknown", uuid: "x" })).toBeNull();
+        expect(
+            resolveNotificationHref(
+                { type: "platform_support_thread", uuid: "thread-1" },
+                { audience: "platform", kind: "issue", subject: "Router?token=secret" }
+            )
+        ).toBe("/platform-support-admin/threads/thread-1");
+        expect(
+            resolveNotificationHref({ type: "platform_support_thread", uuid: "thread-1" }, { kind: "chat" })
+        ).toBe("/platform-support/chats/thread-1");
+        expect(resolveNotificationHref({ type: "platform_support_thread", uuid: "thread-1" }, { kind: "issue" })).toBe(
+            "/platform-support/issues/thread-1"
+        );
     });
 
     it("treats a missing preference as enabled", () => {

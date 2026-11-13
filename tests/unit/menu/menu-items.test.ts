@@ -30,6 +30,7 @@ describe("admin menu order", () => {
       "/dashboard",
       "/clients",
       "#",
+      "/platform-support",
       "#",
       "#",
       "/resellers",
@@ -61,6 +62,8 @@ describe("admin menu order", () => {
       "/tickets",
       "/subjects",
       "/tags",
+      "/platform-support?kind=issue",
+      "/platform-support?kind=chat",
       "/invoices",
       "/payments",
       "/invoice-types",
@@ -72,8 +75,6 @@ describe("admin menu order", () => {
       "/reports/reseller-clients",
       "/networks",
       "/noc",
-      "/import-client",
-      "/re-sync",
       "/mikrotik-sync",
       "/mikrotik-commands",
       "/mikrotik-packages",
@@ -204,8 +205,6 @@ describe("admin menu feature locks", () => {
     expect(network.disabled).toBe(true);
     expect(network.items?.map((sub) => sub.url)).toEqual([
       "/networks",
-      "/import-client",
-      "/re-sync",
       "/mikrotik-sync",
       "/mikrotik-commands",
       "/devices",
@@ -244,5 +243,17 @@ describe("admin menu feature locks", () => {
       "/communication-gateways",
     ]);
     expect(communication.items?.every((sub) => sub.disabled)).toBe(true);
+  });
+
+  it("shows platform support without tickets, notifications, or the paid support feature", () => {
+    const items = selectMenuItems(menu, access(["platform-support.access"]));
+
+    expect(urls(items)).toEqual([
+      "/platform-support?kind=issue",
+      "/platform-support?kind=chat",
+      "/subscription",
+    ]);
+    expect(group(items, 38).disabled).toBe(false);
+    expect(urls(items)).not.toContain("/tickets");
   });
 });

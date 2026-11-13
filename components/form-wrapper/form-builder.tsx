@@ -248,6 +248,10 @@ export type FormBuilderProps = {
   fullPage?: boolean;
   extraPayload?: Record<string, unknown>;
   transformPayload?: (values: FieldValues) => FieldValues;
+  preparePayload?: (values: FieldValues) => Promise<FieldValues | false> | FieldValues | false;
+  resetOnSuccess?: boolean;
+  skipInvalidate?: boolean;
+  onSubmitError?: (error: unknown, payload: FieldValues) => void;
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
 };
 
@@ -330,6 +334,10 @@ const FormBuilder = ({
   fullPage = false,
   extraPayload,
   transformPayload,
+  preparePayload,
+  resetOnSuccess,
+  skipInvalidate,
+  onSubmitError,
   children,
 }: FormBuilderProps) => {
   const [saveOnChange, setSaveOnChange] = useState(false);
@@ -532,6 +540,10 @@ const FormBuilder = ({
       transformToFormValues={transformCallback}
       extraPayload={extraPayload}
       transformPayload={transformPayload}
+      preparePayload={preparePayload}
+      resetOnSuccess={resetOnSuccess}
+      skipInvalidate={skipInvalidate}
+      onSubmitError={onSubmitError}
       grids={grids}
       fullPage={fullPage}
     >

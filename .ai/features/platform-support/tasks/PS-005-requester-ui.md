@@ -1,6 +1,6 @@
 # PS-005 — Tenant and reseller support UI
 
-Status: not started
+Status: reviewable
 Repository: shadcn-client
 Depends on: PS-001–004 complete, verified API resources available.
 
@@ -43,4 +43,41 @@ Focused Vitest tests for scope UI, cache merge/cursors, retry state, visibility 
 
 ## Implementation record
 
-Changed files: pending. Commands/results: pending. Acceptance evidence: pending. Remaining blockers: pending.
+Changed files:
+
+- `app/(dashboard)/layout.tsx` mounts one `SupportRuntime` in the staff layout.
+- `app/(dashboard)/platform-support/page.tsx`, `issues/[id]/page.tsx`, `chats/[id]/page.tsx`.
+- `components/platform-support/support-model.ts`, `support-form-schema.ts`, `support-column.tsx`, `support-composer.tsx`, `support-home.tsx`, `support-thread.tsx`, `support-launcher.tsx`.
+- `components/form-wrapper/form-wrapper.tsx` and `form-builder.tsx`: optional `preparePayload`, `resetOnSuccess`, `skipInvalidate`, and `onSubmitError`. Defaults keep the previous submit behavior.
+- `hooks/use-api-query.ts` throws `ApiRequestError` from `lib/api/api-request-error.ts` so a support failure keeps its status and `platform_support.*` code. The message is unchanged.
+- `hooks/use-menu-items.ts` adds an independent Platform Support item gated by `platform-support.access`, with no paid `support` feature lock.
+- `public/lang/en.json` and `public/lang/bn.json`.
+- `tests/unit/platform-support/support-model.test.ts`, `support-launcher.test.tsx`, `support-composer.test.tsx`.
+- `tests/unit/menu/menu-items.test.ts` expects the new links. It also drops `/import-client` and `/re-sync` from two assertions because those menu entries were already commented out before this task.
+- `.ai/features/platform-support/README.md` status line.
+
+Commands/results:
+
+- `scripts/ai/status` before editing. The tree already had uncommitted PS-004 files. Those were left in place.
+- `scripts/ai/typecheck` exited 0.
+- `npx vitest run tests/unit/platform-support tests/unit/menu/menu-items.test.ts` — 6 files, 44 passed.
+- `scripts/ai/frontend-check` — typecheck exited 0. The full Vitest run then failed 19 tests in 9 files: date-picker, filter date range, pay content, client dashboard info, reseller-client filter/table, column visibility, and an empty maps suite. Those files were not part of this change. The same suites were already failing in the PS-003 record.
+- `scripts/ai/status` and `scripts/ai/diff` inspected after editing.
+
+Acceptance evidence:
+
+- PS-005-A: the launcher test renders one Help button with only `platform-support.access`, and hides it when that permission is absent even if `tickets.access` and `notifications.access` are present. The panel links are Report an issue, Chat with support, and My requests. The menu test shows the new item while the paid support feature is not required. `SupportRuntime` is mounted once in the staff layout. No browser session confirmed a single button on a real page.
+- PS-005-B: scope helpers hide company scope for a reseller, omit a reseller filter from own and reseller lists, send colleague replies to `team-messages`, and send colleague resolve/reopen to `team-status`. Read-only abilities produce no send or manage actions. A 403/404 `ApiRequestError` is treated as access denial and the thread view clears history. This does not prove the API enforces it.
+- PS-005-C: image selection keeps a valid file when another file is too large, the wrong type, or over the five-image cap. One failed upload leaves the ready token. A retry reuses the request id. An edited ambiguous attempt gets a new id and asks for a history check first. A resumed chat with an unsent body is not treated as sent. Message text renders as text, including a `<b>` string. English and Bangla `platform_support` keys match. Mobile, both themes, and a real upload were not exercised.
+- PS-005-D: a 105-message drain stays ordered and deduped, and the cursor stops at 105. An older page does not move the forward cursor. An empty poll does not replace history. Polling returns false when the tab is hidden, offline, signed out, or the record is inaccessible, and it backs off. The visible-read helper ignores a newer off-screen message. Scroll restoration is implemented and was not measured in a browser.
+- PS-005-E: acknowledging a message merges by uuid and does not advance the poll cursor past unseen replies. A 409 sets the version-conflict notice and refetches the thread. `preparePayload` can return false, which leaves the form values in place. Linked chat messages stay in a separate read-only section. No live 409 or conversion was sent.
+
+Remaining blockers:
+
+- No browser session, so the staff layout, mobile drawer, light/dark theme, focus restoration, and scroll position were not clicked through. Those belong in PS-009.
+- `useFetch` returns JSON only, so a 429 `Retry-After` header is not available. Backoff uses the failed attempt count.
+- A real 5 MiB upload still depends on the PHP limits recorded in PS-003. This task did not change them.
+- No live API call. Unit tests do not prove tenant isolation.
+- PS-006 was not started. The launcher does not link to a Help Centre route.
+
+Unrelated working-tree files left untouched: `.ai/features/platform-support/02-data-and-api.md`, `tasks/PS-004-notifications.md`, `components/notifications/notification-catalog.ts`, `notification-column.tsx`, `notification-list.tsx`, and `tests/unit/notifications/notification-catalog.test.ts`. `en.json`, `bn.json`, and `.ai/report.md` already contained the PS-004 edits and now also contain this task.

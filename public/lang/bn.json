@@ -5040,6 +5040,11 @@
                 "title": "ট্যাগ"
             }
         },
+        "platform_support": {
+            "title": "প্ল্যাটফর্ম সাপোর্ট",
+            "issues": "ইস্যু",
+            "chats": "চ্যাট"
+        },
         "resellers": {
             "title": "রিসেলার"
         },
@@ -7938,7 +7943,12 @@
             "network": "নেটওয়ার্ক",
             "client": "ক্লায়েন্ট",
             "support": "সাপোর্ট",
-            "invoice": "ইনভয়েস"
+            "invoice": "ইনভয়েস",
+            "platform_support": "প্ল্যাটফর্ম সাপোর্ট"
+        },
+        "statuses": {
+            "waiting_for_requester": "অনুরোধকারীর জন্য অপেক্ষা",
+            "converted": "রূপান্তরিত"
         },
         "changes": {
             "details": "বিবরণ",
@@ -8045,6 +8055,36 @@
             "sms_not_sent": {
                 "title": "রিমাইন্ডার পাঠানো যায়নি",
                 "message": "{{client_name}}-এর ফোন নম্বর নেই, তাই ইনভয়েস {{invoice_no}}-এর রিমাইন্ডার পাঠানো যায়নি।"
+            },
+            "platform_support_issue_created": {
+                "title": "সাপোর্ট ইস্যু খোলা হয়েছে",
+                "platform": "{{company_name}}: {{requester_name}} {{reference}} খুলেছেন",
+                "tenant": "{{requester_name}} {{reference}} খুলেছেন"
+            },
+            "platform_support_chat_started": {
+                "title": "সাপোর্ট চ্যাট শুরু",
+                "platform": "{{company_name}}: {{requester_name}} {{reference}} শুরু করেছেন",
+                "tenant": "{{requester_name}} {{reference}} শুরু করেছেন"
+            },
+            "platform_support_message_received": {
+                "title": "সাপোর্ট উত্তর",
+                "platform": "{{company_name}}: {{reference}}-এ নতুন উত্তর",
+                "tenant": "{{reference}}-এ নতুন উত্তর"
+            },
+            "platform_support_assignment_changed": {
+                "title": "সাপোর্ট অ্যাসাইনমেন্ট বদলেছে",
+                "platform": "{{reference}}-এর অ্যাসাইনমেন্ট আপডেট হয়েছে",
+                "tenant": "{{reference}}-এর অ্যাসাইনমেন্ট আপডেট হয়েছে"
+            },
+            "platform_support_status_changed": {
+                "title": "সাপোর্ট স্ট্যাটাস বদলেছে",
+                "platform": "{{reference}} এখন {{status}}",
+                "tenant": "{{reference}} এখন {{status}}"
+            },
+            "platform_support_chat_converted": {
+                "title": "সাপোর্ট চ্যাট ইস্যু হয়েছে",
+                "platform": "{{company_name}}: {{reference}} এখন একটি ইস্যু",
+                "tenant": "{{reference}} এখন একটি ইস্যু"
             }
         }
     },
@@ -9293,7 +9333,137 @@
         }
     },
     "platform_support": {
+        "title": "প্ল্যাটফর্ম সাপোর্ট",
+        "issues": "ইস্যু",
+        "chats": "চ্যাট",
+        "reference": "রেফারেন্স",
+        "requester": "অনুরোধকারী",
+        "unread": "অপঠিত",
+        "last_activity": "শেষ কার্যকলাপ",
+        "loading": "সাপোর্ট অনুরোধ লোড হচ্ছে",
+        "load_failed": "সাপোর্ট অনুরোধ লোড করা যায়নি।",
+        "retry": "আবার চেষ্টা করুন",
+        "empty_messages": "এখনো কোনো বার্তা নেই।",
+        "read_only": "আপনি এই অনুরোধ পড়তে পারেন। পাঠানো বা পরিচালনার অনুমতি নেই।",
+        "resolve": "সমাধান করুন",
+        "reopen": "আবার খুলুন",
+        "close": "চ্যাট বন্ধ করুন",
+        "convert": "চ্যাট থেকে ইস্যু তৈরি করুন",
+        "update_status": "স্ট্যাটাস আপডেট করুন",
+        "linked_issue": "সংযুক্ত ইস্যু",
+        "linked_chat": "সংযুক্ত চ্যাট",
+        "linked_history": "সংযুক্ত চ্যাটের ইতিহাস",
+        "load_older": "আগের বার্তা দেখুন",
+        "new_messages": "নতুন বার্তা",
+        "launcher": {
+            "title": "হেল্প",
+            "label": "হেল্প ও সাপোর্ট, {{count}} অপঠিত"
+        },
+        "actions": {
+            "report_issue": "একটি ইস্যু জানান",
+            "chat": "সাপোর্টের সাথে চ্যাট",
+            "my_requests": "আমার অনুরোধ"
+        },
+        "scopes": {
+            "label": "অনুরোধের পরিসর",
+            "own": "আমার",
+            "reseller": "রিসেলার",
+            "company": "কোম্পানি"
+        },
+        "kinds": {
+            "label": "ইস্যু ও চ্যাট"
+        },
+        "filters": {
+            "status": "স্ট্যাটাস",
+            "priority": "প্রায়োরিটি",
+            "category": "ক্যাটাগরি",
+            "reference": "রেফারেন্স",
+            "subject": "সাবজেক্ট",
+            "reseller": "রিসেলার"
+        },
+        "subject": {
+            "label": "সাবজেক্ট",
+            "placeholder": "কোন বিষয়ে সাহায্য দরকার?",
+            "errors": {
+                "required": "সাবজেক্ট আবশ্যক",
+                "invalid": "একটি সাবজেক্ট লিখুন",
+                "min": "কমপক্ষে ৩ অক্ষর ব্যবহার করুন",
+                "max": "সর্বোচ্চ ২০০ অক্ষর ব্যবহার করুন"
+            }
+        },
+        "category": {
+            "label": "ক্যাটাগরি",
+            "errors": {
+                "required": "ক্যাটাগরি আবশ্যক",
+                "invalid": "একটি ক্যাটাগরি বেছে নিন"
+            }
+        },
+        "priority": {
+            "label": "প্রায়োরিটি",
+            "errors": {
+                "required": "প্রায়োরিটি আবশ্যক",
+                "invalid": "একটি প্রায়োরিটি বেছে নিন"
+            }
+        },
+        "message": {
+            "label": "বার্তা",
+            "placeholder": "একটি বার্তা লিখুন",
+            "errors": {
+                "required": "একটি বার্তা বা অন্তত একটি ছবি যোগ করুন",
+                "max": "সর্বোচ্চ ১০,০০০ অক্ষর ব্যবহার করুন"
+            }
+        },
+        "categories": {
+            "general": "সাধারণ",
+            "account": "অ্যাকাউন্ট",
+            "billing": "বিলিং",
+            "technical": "টেকনিক্যাল",
+            "bug": "বাগ",
+            "other": "অন্যান্য"
+        },
+        "priorities": {
+            "low": "কম",
+            "normal": "সাধারণ",
+            "high": "উচ্চ"
+        },
+        "statuses": {
+            "open": "খোলা",
+            "in_progress": "চলমান",
+            "waiting_for_requester": "অনুরোধকারীর অপেক্ষায়",
+            "resolved": "সমাধান হয়েছে",
+            "closed": "বন্ধ",
+            "converted": "ইস্যুতে রূপান্তরিত"
+        },
+        "author": {
+            "you": "আপনি",
+            "platform": "প্ল্যাটফর্ম সাপোর্ট"
+        },
+        "chat": {
+            "untitled": "সাপোর্টের সাথে চ্যাট",
+            "resumed": "আপনার খোলা চ্যাট আবার খোলা হয়েছে।",
+            "resumed_unsent": "এই চ্যাট আগে থেকেই খোলা ছিল। বার্তাটি এখনো পাঠানো হয়নি।"
+        },
+        "composer": {
+            "send": "পাঠান",
+            "sent": "পাঠানো হয়েছে",
+            "wait_for_uploads": "ছবি আপলোড শেষ হওয়া পর্যন্ত অপেক্ষা করুন।",
+            "ambiguous": "আগের চেষ্টাটি সেভ হয়ে থাকতে পারে। এটি পাঠানোর আগে সার্ভারের ইতিহাসের সাথে মিলিয়ে দেখা হয়েছে।",
+            "already_sent": "আগের চেষ্টাটি কথোপকথনে আছে। এই সম্পাদিত বার্তা নতুন অনুরোধ ব্যবহার করে।"
+        },
+        "images": {
+            "add": "ছবি যোগ করুন",
+            "limit": "JPEG, PNG, বা WebP। সর্বোচ্চ ৫টি ছবি, প্রতিটি ৫ এমবি।",
+            "preview": "ছবির প্রিভিউ",
+            "download": "ছবি ডাউনলোড করুন",
+            "remove": "ছবি সরান",
+            "retry": "আপলোড আবার চেষ্টা করুন",
+            "pending": "অপেক্ষমাণ",
+            "uploading": "আপলোড হচ্ছে",
+            "ready": "প্রস্তুত",
+            "failed": "ব্যর্থ"
+        },
         "errors": {
+            "generic": "অনুরোধটি সম্পন্ন করা যায়নি।",
             "image_invalid": "JPEG, PNG, বা WebP ছবি ব্যবহার করুন।",
             "image_too_large": "প্রতিটি ছবি সর্বোচ্চ ৫ এমবি হতে পারে।",
             "image_dimensions": "এই ছবিটি প্রক্রিয়া করার জন্য অনেক বড়।",
@@ -9304,7 +9474,21 @@
             "attachment_consumed": "একটি ছবি ইতিমধ্যে পাঠানো হয়েছে।",
             "duplicate_attachment": "একই ছবি একাধিকবার বেছে নেওয়া হয়েছে।",
             "too_many_attachments": "একটি বার্তায় সর্বোচ্চ পাঁচটি ছবি যোগ করা যায়।",
-            "draft_required": "পাঠানোর আগে ছবিগুলো আবার আপলোড করুন।"
+            "draft_required": "পাঠানোর আগে ছবিগুলো আবার আপলোড করুন।",
+            "rate_limited": "অনেক বেশি অনুরোধ। একটু পরে আবার চেষ্টা করুন।",
+            "forbidden": "এই অনুরোধ দেখার অনুমতি আর নেই।",
+            "not_found": "এই অনুরোধটি পাওয়া যাচ্ছে না।",
+            "version_conflict": "এই অনুরোধটি বদলেছে। সর্বশেষ স্ট্যাটাস দেখানো হয়েছে। আবার চেষ্টার আগে দেখে নিন।",
+            "idempotency_conflict": "এই পাঠানো আগের চেষ্টার সাথে মিলছে না। আবার পাঠানোর আগে কথোপকথন দেখে নিন।",
+            "sequence_conflict": "কথোপকথন বদলেছে। সর্বশেষ বার্তা দেখে নিন।",
+            "invalid": "বার্তাটি যাচাই করে আবার চেষ্টা করুন।",
+            "prohibited_field": "এই ঘরটি পাঠানো যাবে না।",
+            "invalid_transition": "এই স্ট্যাটাস পরিবর্তন করা যাবে না।",
+            "closed": "এই অনুরোধ বন্ধ। পাঠানোর আগে আবার খুলুন।",
+            "already_converted": "এই চ্যাট ইতিমধ্যে একটি ইস্যু।",
+            "empty_chat": "ইস্যু তৈরির আগে একটি বার্তা পাঠান।",
+            "active_chat": "একটি খোলা চ্যাট আগে থেকেই আছে।",
+            "history_retained": "কথোপকথনের ইতিহাস রাখা হয়েছে।"
         }
     }
 }

@@ -86,6 +86,13 @@ type FormWrapperProps = {
     ) => Record<string, unknown>;
     extraPayload?: Record<string, unknown>;
     transformPayload?: (values: FieldValues) => FieldValues;
+    /** Runs after Zod validation and before the request. Return false to keep the draft and skip the request. */
+    preparePayload?: (values: FieldValues) => Promise<FieldValues | false> | FieldValues | false;
+    /** Keep the entered values after a successful response. Defaults to resetting the form. */
+    resetOnSuccess?: boolean;
+    /** Skip the string query-key invalidation. Callers update the precise cache themselves. */
+    skipInvalidate?: boolean;
+    onSubmitError?: (error: unknown, payload: FieldValues) => void;
     grids?: number;
     fullPage?: boolean;
 };
@@ -113,6 +120,10 @@ export default function FormWrapper({
     transformToFormValues,
     extraPayload,
     transformPayload,
+    preparePayload,
+    resetOnSuccess = true,
+    skipInvalidate = false,
+    onSubmitError,
     grids = 1,
     fullPage = false,
 }: FormWrapperProps) {
@@ -246,10 +257,10 @@ export default function FormWrapper({
     >({
         url: apiRoute,
         method: mutationMethod as "POST" | "PUT" | "DELETE",
-        invalidateKeys: queryKey,
+        invalidateKeys: skipInvalidate ? undefined : queryKey,
         successMessage,
         onSuccess: (responseData) => {
-            reset();
+            if (resetOnSuccess) reset();
             if (!successMessage && responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
@@ -263,14 +274,17 @@ export default function FormWrapper({
             Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
                 if (visible.has(field)) setError(field, { type: "server", message });
             });
+            onSubmitError?.(error, lastPayloadRef.current);
         },
     });
 
     const onSubmit = async (formValues: FieldValues) => {
         if (!api) return;
+        const prepared = preparePayload ? await preparePayload(formValues) : formValues;
+        if (prepared === false) return;
         const transformedValues = transformPayload
-            ? transformPayload(formValues)
-            : formValues;
+            ? transformPayload(prepared)
+            : prepared;
         const mergedPayload =
             extraPayload && Object.keys(extraPayload).length > 0
                 ? ({ ...transformedValues, ...extraPayload } as FieldValues)

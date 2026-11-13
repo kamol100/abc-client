@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
-import { LifeBuoy, Network, Receipt, Users } from "lucide-react";
+import { LifeBuoy, MessagesSquare, Network, Receipt, Users } from "lucide-react";
 
-export const NOTIFICATION_CATEGORIES = ["network", "client", "support", "invoice"] as const;
+export const NOTIFICATION_CATEGORIES = ["network", "client", "support", "invoice", "platform_support"] as const;
 
 export type NotificationCategory = (typeof NOTIFICATION_CATEGORIES)[number];
 
@@ -28,6 +28,12 @@ export const NOTIFICATION_EVENTS = [
     { value: "invoices_generated", category: "invoice" },
     { value: "invoice_overdue", category: "invoice" },
     { value: "sms_not_sent", category: "invoice" },
+    { value: "platform_support_issue_created", category: "platform_support" },
+    { value: "platform_support_chat_started", category: "platform_support" },
+    { value: "platform_support_message_received", category: "platform_support" },
+    { value: "platform_support_assignment_changed", category: "platform_support" },
+    { value: "platform_support_status_changed", category: "platform_support" },
+    { value: "platform_support_chat_converted", category: "platform_support" },
 ] as const;
 
 export type NotificationEventValue = (typeof NOTIFICATION_EVENTS)[number]["value"];
@@ -39,7 +45,17 @@ const CATEGORY_ICONS: Record<NotificationCategory, LucideIcon> = {
     client: Users,
     support: LifeBuoy,
     invoice: Receipt,
+    platform_support: MessagesSquare,
 };
+
+const PLATFORM_SUPPORT_EVENTS = new Set<string>([
+    "platform_support_issue_created",
+    "platform_support_chat_started",
+    "platform_support_message_received",
+    "platform_support_assignment_changed",
+    "platform_support_status_changed",
+    "platform_support_chat_converted",
+]);
 
 export interface NotificationSubject {
     type: string;
@@ -89,6 +105,13 @@ export function notificationTitleKey(event: string): string {
 }
 
 export function notificationMessageKeys(event: string): string[] {
+    if (PLATFORM_SUPPORT_EVENTS.has(event)) {
+        return [
+            `notifications.events.${event}.platform`,
+            `notifications.events.${event}.tenant`,
+        ];
+    }
+
     if (event === "invoice_paid" || event === "invoice_partially_paid") {
         return [
             ...PAYMENT_SOURCES.map((source) => `notifications.events.${event}.${source}`),
@@ -111,6 +134,8 @@ const STATUS_LABEL_KEYS: Record<string, string> = {
     los: "onu.status.los",
     dying_gasp: "onu.status.dying_gasp",
     unknown: "onu.status.unknown",
+    waiting_for_requester: "notifications.statuses.waiting_for_requester",
+    converted: "notifications.statuses.converted",
     up: "monitoring.state.up",
     down: "monitoring.state.down",
 };
@@ -166,10 +191,19 @@ export function notificationInterpolation(
     return values;
 }
 
-export function resolveNotificationHref(subject: NotificationSubject | null | undefined): string | null {
+export function resolveNotificationHref(
+    subject: NotificationSubject | null | undefined,
+    data?: NotificationRow["data"]
+): string | null {
     if (!subject?.type) return null;
     if (subject.type === "onu") return "/onus";
     if (!subject.uuid) return null;
+
+    if (subject.type === "platform_support_thread") {
+        if (data?.audience === "platform") return `/platform-support-admin/threads/${subject.uuid}`;
+        if (data?.kind === "chat") return `/platform-support/chats/${subject.uuid}`;
+        return `/platform-support/issues/${subject.uuid}`;
+    }
 
     switch (subject.type) {
         case "client":
