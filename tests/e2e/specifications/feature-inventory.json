@@ -310,6 +310,17 @@
     "last_run": null
   },
   {
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "stage": "acceptance-not-release-ready",
+    "specs": [
+      "tests/e2e/platform-support/access.spec.ts",
+      "tests/e2e/platform-support/help.spec.ts",
+      "tests/e2e/platform-support/transport.spec.ts"
+    ],
+    "last_run": null
+  },
+  {
     "feature": "portal-dashboard",
     "ticket": "portal-dashboard/PORTAL-DASHBOARD-001.md",
     "stage": "source-inventoried-draft",

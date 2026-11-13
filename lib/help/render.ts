@@ -1,4 +1,5 @@
 import MarkdownIt from "markdown-it";
+import { helpHeadingId } from "@/lib/help/headings";
 
 const MEDIA = /^media\/([a-z0-9][a-z0-9._-]{0,80}\.(?:png|jpe?g|webp|gif))$/;
 const UNSAFE_HTML = /<\s*script\b|javascript\s*:|data\s*:|vbscript\s*:|file\s*:|\son[a-z]+\s*=/i;
@@ -53,6 +54,16 @@ function createParser() {
     if (!file || !/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(articleId)) return alt;
     return `<img src="/api/help/media/${articleId}/${file}" alt="${alt}" />`;
   };
+  parser.renderer.rules.heading_open = (tokens, index, _options, env) => {
+    const token = tokens[index];
+    const tag = token?.tag ?? "p";
+    if (tag !== "h2" && tag !== "h3") return `<${tag}>`;
+    const inline = tokens[index + 1];
+    const text = String(inline?.content ?? "").replace(/[*_`]/g, "").trim();
+    const counts = env?.headingCounts instanceof Map ? env.headingCounts : new Map<string, number>();
+    if (env && !(env.headingCounts instanceof Map)) env.headingCounts = counts;
+    return `<${tag} id="${escapeHelpText(helpHeadingId(text, counts))}">`;
+  };
   return parser;
 }
 
@@ -73,7 +84,7 @@ export function renderHelpMarkdown(markdown: string, articleId: string, allowedS
     }
     return label;
   });
-  const html = parser.render(linked, { articleId });
+  const html = parser.render(linked, { articleId, headingCounts: new Map<string, number>() });
   if (UNSAFE_HTML.test(html)) {
     throw new Error("help render rejected unsafe html");
   }

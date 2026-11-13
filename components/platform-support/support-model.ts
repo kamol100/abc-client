@@ -11,6 +11,7 @@ export const SUPPORT_CHAT_STATUSES = ["open", "closed", "converted"] as const;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const CONTEXT_PATH = /^\/[A-Za-z0-9/._~-]*$/;
+const ARTICLE_ID = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const IMAGE_EXTENSIONS: Record<string, string> = {
     jpg: "image/jpeg",
@@ -142,10 +143,38 @@ export function supportThreadId(value: string | null | undefined): string | null
     return value && UUID.test(value) ? value : null;
 }
 
+/** UUID v4 for draft and request ids. Available on plain HTTP. */
+export function supportRequestId(): string {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
 export function supportContextPath(pathname: string): string | null {
     const path = pathname.split("?")[0]?.split("#")[0] ?? "";
     if (!CONTEXT_PATH.test(path) || path.length > 200) return null;
     return path;
+}
+
+export function supportArticleId(value: string | null | undefined): string | null {
+    if (!value) return null;
+    const id = value.split("?")[0]?.split("#")[0] ?? "";
+    return ARTICLE_ID.test(id) ? id : null;
+}
+
+export function supportSubmissionContext(input: {
+    includePage: boolean;
+    path: string | null;
+    articleId?: string | null;
+}): { path: string; article_id?: string } | null {
+    if (!input.includePage) return null;
+    const path = input.path ? supportContextPath(input.path) : null;
+    if (!path) return null;
+    const articleId = path.startsWith("/help/") ? supportArticleId(input.articleId) : null;
+    return articleId ? { path, article_id: articleId } : { path };
 }
 
 export function supportScopes(input: {
@@ -619,8 +648,9 @@ export function issueCreatePayload(input: {
     clientRequestId: string;
     draftId: string;
     path: string | null;
+    includePage: boolean;
+    articleId?: string | null;
 }): Record<string, unknown> {
-    const safe = input.path ? supportContextPath(input.path) : null;
     return withoutOwnership({
         kind: "issue",
         subject: input.subject.trim(),
@@ -630,7 +660,7 @@ export function issueCreatePayload(input: {
         attachment_tokens: [...input.tokens],
         client_request_id: input.clientRequestId,
         draft_id: input.draftId,
-        context: safe ? { path: safe } : null,
+        context: supportSubmissionContext(input),
     });
 }
 
@@ -646,12 +676,16 @@ export function messagePayload(input: {
     });
 }
 
-export function chatStartPayload(clientRequestId: string, path: string | null): Record<string, unknown> {
-    const safe = path ? supportContextPath(path) : null;
+export function chatStartPayload(
+    clientRequestId: string,
+    path: string | null,
+    includePage = false,
+    articleId: string | null = null,
+): Record<string, unknown> {
     return withoutOwnership({
         kind: "chat",
         client_request_id: clientRequestId,
-        context: safe ? { path: safe } : null,
+        context: supportSubmissionContext({ includePage, path, articleId }),
     });
 }
 

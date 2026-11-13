@@ -1,7 +1,7 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { validateHelpTree } from "../lib/help/validate.ts";
+import { validateHelpCoverage, validateHelpTree } from "../lib/help/validate.ts";
 
 const args = process.argv.slice(2);
 
@@ -26,6 +26,16 @@ const errors = validateHelpTree({
   root,
   permissions: new Set(names),
 });
+const coveragePath = path.join(root, "coverage.json");
+if (existsSync(coveragePath)) {
+  const coverageRaw = readFileSync(coveragePath, "utf8");
+  errors.push(...validateHelpCoverage({
+    coverage: JSON.parse(coverageRaw),
+    articles: catalog.HELP_ARTICLES,
+    permissions: new Set(names),
+    raw: coverageRaw,
+  }));
+}
 
 if (errors.length > 0) {
   for (const error of errors) console.error(error);

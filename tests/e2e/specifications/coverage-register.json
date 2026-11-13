@@ -15280,6 +15280,227 @@
       "status": "draft",
       "test_refs": [],
       "last_run": null
+    },
+    {
+      "id": "PS-E01",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Tenant owner and reseller staff open separate issues and chats. The platform inbox shows the reference, requester, and source tenant. Customer tickets stay separate.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/access.spec.ts",
+          "title": "PS-E01 launcher opens requester routes and keeps customer tickets separate"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E02",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "A user with no role and an owner without a staff record can send. Anonymous, client, and locked principals are denied. Baseline support does not require tickets, notifications, or the paid support feature.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/access.spec.ts",
+          "title": "PS-E02 anonymous help and support routes require staff login"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E03",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "An own-only user cannot read a colleague request. A reseller reader sees that reseller only. A company reader sees that company only. Team reply or manage does not grant visibility by itself.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E04",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Tenant B cannot read tenant A by UUID, detail, message, image, cursor, or filter, in either direction. Prohibited ownership fields are ignored. A scope move drops access and leaves the historical row in place.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E05",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "A platform administrator can see permitted inbox rows and source identity. Ordinary company-1 staff and a non-platform Super Admin are denied. A read-only agent cannot send, upload, or manage. Impersonation does not keep platform powers.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E06",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Text, image-only, and five-image messages work from both sides. The 5 MiB boundary is accepted and unsafe images are rejected. A copied image URL still requires the current session. There is no public image path.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/access.spec.ts",
+          "title": "PS-E06 an anonymous upload is rejected before a support row exists"
+        },
+        {
+          "path": "tests/e2e/platform-support/transport.spec.ts",
+          "title": "PS-E06 a disposable browser send stores one synthetic image through the app proxy"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E07",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Staging, draft binding, expiry, partial upload failure, and send rollback leave no partial message. A lost success response creates one message, one attachment set, and one notification per recipient.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E08",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Two chat starts leave one active chat. Two conversions leave one issue. Source history stays authorized separately. The converted chat is read-only.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E09",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Resolve, reopen, closed, waiting, and reply transitions match the contract. A stale expected version returns 409. Assignment accepts only an eligible platform agent.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E10",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "An active chat catches up, including a delta over 100 messages. A hidden, offline, or closed panel stops polling. A 429 backs off. There is no socket and no background five-second loop.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E11",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Unread cursors stay independent. Own messages are excluded. Read marks only visible messages. Summary and list filters agree with detail permissions.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E12",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Under a healthy clock, network, and running worker, the measured poll intervals match the contract. A failed worker or network is not called delivered.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "blocked",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E13",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "A transaction or job retry does not duplicate notifications. The worker switches company context. Muting the bell does not remove thread unread. No SMS, email, Telegram, or legacy ticket event is produced.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
+    },
+    {
+      "id": "PS-E14",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Permitted English and Bangla articles, FAQs, and the honest video state render. A language switch keeps the article. Forbidden and invalid content stays hidden.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/help.spec.ts",
+          "title": "PS-E14 published help renders, switches language, and hides an unknown slug"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E15",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Contextual help matches the verified inventory. Privileged guides require the action permission. Platform guides stay hidden from tenant users. Page context omits the query string and form values.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/help.spec.ts",
+          "title": "PS-E15 tenant help hides the platform guide and page context stays off"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E16",
+      "feature": "platform-support",
+      "priority": "P1",
+      "description": "Mobile, desktop, keyboard, the image viewer, scroll position, errors, English and Bangla, dark and light, and logout or impersonation cache reset work. A failed refetch is not an empty inbox.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [
+        {
+          "path": "tests/e2e/platform-support/access.spec.ts",
+          "title": "PS-E16 logout and mobile help do not keep the staff page"
+        }
+      ],
+      "last_run": null
+    },
+    {
+      "id": "PS-E17",
+      "feature": "platform-support",
+      "priority": "P0",
+      "description": "Legacy ticket and customer behavior, notification routes, and private profile images stay unchanged. General subscription restrictions stay intact.",
+      "ticket": "platform-support/PS-009-acceptance.md",
+      "review": "pending",
+      "status": "draft",
+      "test_refs": [],
+      "last_run": null
     }
   ]
 }

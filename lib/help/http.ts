@@ -1,10 +1,13 @@
 import { readFileSync } from "node:fs";
 import type { HelpArticlePolicy, HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle, type HelpActor } from "@/lib/help/authorization";
-import { indexHelpArticles } from "@/lib/help/catalog";
+import { indexHelpArticles, normalizeHelpPath } from "@/lib/help/catalog";
+import { readableHelpForRoute } from "@/lib/help/context";
 import { loadHelpDocument, resolveHelpMedia, type HelpLibrary } from "@/lib/help/content";
+import { helpHeadings, type HelpHeading } from "@/lib/help/headings";
 import { renderHelpMarkdown } from "@/lib/help/render";
 import { HELP_QUERY_MAX, searchHelpDocuments, visibleHelpDocuments } from "@/lib/help/search";
+import { helpVideoEmbed } from "@/lib/help/video";
 
 const PRIVATE_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
@@ -58,12 +61,59 @@ function allowedSlugs(library: HelpLibrary, actor: HelpActor): Map<string, strin
   return slugs;
 }
 
-function articlePayload(
+export interface HelpVideoView {
+  id: string;
+  spoken_locale: HelpLocale;
+  src: string;
+}
+
+export interface HelpArticleView {
+  id: string;
+  slug: string;
+  kind: HelpArticlePolicy["kind"];
+  locale: HelpLocale;
+  requested_locale: HelpLocale;
+  fallback: boolean;
+  title: string;
+  summary: string;
+  html: string;
+  headings: HelpHeading[];
+  video: HelpVideoView | null;
+  video_status: "configured" | "not_configured";
+  related: {
+    id: string;
+    slug: string;
+    kind: HelpArticlePolicy["kind"];
+    title: string;
+    summary: string;
+  }[];
+  feature_href: string | null;
+}
+
+export interface HelpCard {
+  id: string;
+  slug: string;
+  kind: HelpArticlePolicy["kind"];
+  title: string;
+  summary: string;
+  video_status: "configured" | "not_configured";
+}
+
+function videoView(article: HelpArticlePolicy, locale: HelpLocale): Pick<HelpArticleView, "video" | "video_status"> {
+  const own = article.videos?.[locale];
+  const otherLocale: HelpLocale = locale === "bn" ? "en" : "bn";
+  const spoken = own ? locale : otherLocale;
+  const embed = helpVideoEmbed(own ?? article.videos?.[otherLocale]);
+  if (!embed) return { video: null, video_status: "not_configured" };
+  return { video: { id: embed.id, spoken_locale: spoken, src: embed.src }, video_status: "configured" };
+}
+
+export function helpArticleView(
   library: HelpLibrary,
   actor: HelpActor,
   article: HelpArticlePolicy,
   locale: HelpLocale,
-) {
+): HelpArticleView | null {
   const document = loadHelpDocument(library, article, locale);
   if (!document) return null;
   const slugs = allowedSlugs(library, actor);
@@ -86,7 +136,7 @@ function articlePayload(
       summary: relatedDocument.summary,
     }];
   });
-  const video = article.videos?.[document.locale];
+  const feature = article.routePatterns.find((pattern) => !pattern.includes(":"));
   return {
     id: article.id,
     slug: article.slug,
@@ -97,9 +147,29 @@ function articlePayload(
     title: document.title,
     summary: document.summary,
     html,
-    video: video ? { id: video } : null,
-    video_status: video ? "configured" : "not_configured",
+    headings: helpHeadings(document.body),
+    ...videoView(article, document.locale),
     related,
+    feature_href: feature ?? null,
+  };
+}
+
+function helpCard(
+  library: HelpLibrary,
+  actor: HelpActor,
+  article: HelpArticlePolicy,
+  locale: HelpLocale,
+): HelpCard | null {
+  if (!canReadHelpArticle(actor, article, { allowDrafts: library.allowDrafts })) return null;
+  const document = loadHelpDocument(library, article, locale);
+  if (!document) return null;
+  return {
+    id: article.id,
+    slug: article.slug,
+    kind: article.kind,
+    title: document.title,
+    summary: document.summary,
+    video_status: videoView(article, document.locale).video_status,
   };
 }
 
@@ -109,7 +179,7 @@ export async function helpArticleResponse(request: Request, id: string, deps: He
   if (locale === "invalid" || !/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(id)) return hidden();
   const article = indexHelpArticles(deps.library.articles).byId.get(id);
   if (!article || !canReadHelpArticle(deps.actor, article, { allowDrafts: deps.library.allowDrafts })) return hidden();
-  const data = articlePayload(deps.library, deps.actor, article, locale);
+  const data = helpArticleView(deps.library, deps.actor, article, locale);
   if (!data) return hidden();
   return json({ success: true, data }, 200);
 }
@@ -124,6 +194,34 @@ export async function helpSearchResponse(request: Request, deps: HelpRequestDeps
   const documents = visibleHelpDocuments(deps.library, deps.actor, locale);
   const results = searchHelpDocuments(documents, query, params.get("route"));
   return json({ success: true, data: { results } }, 200);
+}
+
+export async function helpContextResponse(request: Request, deps: HelpRequestDeps): Promise<Response> {
+  if (deps.actor.principal !== "staff") return json({ success: false, code: "unauthenticated" }, 401);
+  const locale = localeOrDefault(request);
+  if (locale === "invalid") return hidden();
+  const route = new URL(request.url).searchParams.get("route") ?? "/";
+  const path = normalizeHelpPath(route);
+  const selection = readableHelpForRoute(
+    deps.actor,
+    deps.library.articles,
+    path ?? "/",
+    { allowDrafts: deps.library.allowDrafts },
+  );
+  const cards = (articles: readonly HelpArticlePolicy[]) => articles.flatMap((article) => {
+    const card = helpCard(deps.library, deps.actor, article, locale);
+    return card ? [card] : [];
+  });
+  return json({
+    success: true,
+    data: {
+      matched: selection.matched,
+      path,
+      page: cards(selection.page),
+      related: cards(selection.related),
+      general: cards(selection.general),
+    },
+  }, 200);
 }
 
 export async function helpMediaResponse(

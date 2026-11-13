@@ -1,0 +1,2907 @@
+{
+  "video_procedure": "Add a reviewed video by setting videos.en or videos.bn on the article policy to an 11 character YouTube id. Do not paste an iframe into Markdown. Set that route's video_status to configured and record who reviewed the spoken language. Run node scripts/check-help-content.mjs. A Bangla article shows an English-only video with a spoken-language caption. Leave video_status not_configured until a real reviewed id exists. Do not invent an id.",
+  "inventory": [
+    "/activity-logs",
+    "/agent-transactions",
+    "/agents",
+    "/archived-clients",
+    "/client-maps",
+    "/client-packages",
+    "/client-packages/view/:id",
+    "/client-wallets",
+    "/clients",
+    "/clients/create",
+    "/clients/edit/:id",
+    "/clients/view/:id",
+    "/communication-gateways",
+    "/communication-logs",
+    "/communication-queue",
+    "/companies",
+    "/company-profile/:id",
+    "/company-subscriptions",
+    "/dashboard",
+    "/demo-requests",
+    "/device-types",
+    "/devices",
+    "/expense-types",
+    "/expenses",
+    "/fund-transactions",
+    "/funds",
+    "/help",
+    "/help/*",
+    "/histories",
+    "/import-client",
+    "/import-client/import/:id",
+    "/invoice-types",
+    "/invoices",
+    "/invoices/client/:id",
+    "/invoices/create",
+    "/invoices/edit/:id",
+    "/mikrotik-commands",
+    "/mikrotik-packages",
+    "/mikrotik-sync",
+    "/mikrotik-sync/import/:id",
+    "/my-wallets",
+    "/networks",
+    "/noc",
+    "/notifications",
+    "/olts",
+    "/olts/view/:id",
+    "/olts/view/:id/monitoring",
+    "/onus",
+    "/payment-gateways",
+    "/payments",
+    "/permissions",
+    "/permissions/:id",
+    "/platform-support",
+    "/platform-support-admin",
+    "/platform-support-admin/threads/:id",
+    "/platform-support/chats/:id",
+    "/platform-support/issues/:id",
+    "/product-categories",
+    "/products",
+    "/products/in",
+    "/products/in/:id",
+    "/products/out",
+    "/products/out/:id",
+    "/products/reports",
+    "/re-sync",
+    "/reports",
+    "/reports/btrc",
+    "/reports/expenses",
+    "/reports/funds",
+    "/reports/income-expense",
+    "/reports/invoices",
+    "/reports/new-clients",
+    "/reports/payments",
+    "/reports/product-in",
+    "/reports/product-out",
+    "/reports/reseller-clients",
+    "/reseller-packages",
+    "/reseller-profile/:id",
+    "/resellers",
+    "/resellers/create",
+    "/resellers/edit/:id",
+    "/resellers/view/:id",
+    "/roles",
+    "/salaries",
+    "/salaries/create",
+    "/salaries/edit/:id",
+    "/setting/dashboard",
+    "/setting/general",
+    "/setting/table",
+    "/setting/themes",
+    "/settings",
+    "/settings/dashboard",
+    "/settings/general",
+    "/settings/invoice-print",
+    "/settings/map",
+    "/settings/monitoring",
+    "/settings/notifications",
+    "/settings/olt",
+    "/settings/sms",
+    "/sms-send",
+    "/sms-templates",
+    "/staff-profile",
+    "/staffs",
+    "/staffs/create",
+    "/staffs/edit/:id",
+    "/sub-zones",
+    "/subjects",
+    "/subscription",
+    "/subscription-features",
+    "/subscription-plans",
+    "/tables",
+    "/tags",
+    "/telegram",
+    "/tickets",
+    "/tickets/view/:id",
+    "/tj-box-maps",
+    "/tj-boxes",
+    "/unit-types",
+    "/users",
+    "/vendors",
+    "/zones"
+  ],
+  "entries": [
+    {
+      "route": "/dashboard",
+      "permission": null,
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "support.getting-started",
+        "dashboard.overview"
+      ],
+      "faq_ids": [
+        "dashboard.overview.faq"
+      ],
+      "revisions": {
+        "support.getting-started": {
+          "en": "2",
+          "bn": "2"
+        },
+        "dashboard.overview": {
+          "en": "1",
+          "bn": "1"
+        },
+        "dashboard.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Getting started and the dashboard overview both match this path."
+    },
+    {
+      "route": "/subscription",
+      "permission": null,
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "support.getting-started"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "support.getting-started": {
+          "en": "2",
+          "bn": "2"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Company subscription page. Reseller menu hides it. The article already says that."
+    },
+    {
+      "route": "/help",
+      "permission": null,
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "support.getting-started"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "support.getting-started": {
+          "en": "2",
+          "bn": "2"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Help Centre index."
+    },
+    {
+      "route": "/platform-support",
+      "permission": "platform-support.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "support.create-issue"
+      ],
+      "faq_ids": [
+        "support.faq.contact"
+      ],
+      "revisions": {
+        "support.create-issue": {
+          "en": "1",
+          "bn": "1"
+        },
+        "support.faq.contact": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Existing create-issue article. Contact FAQ is general, not this route."
+    },
+    {
+      "route": "/platform-support/chats/:id",
+      "permission": "platform-support.reply",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "support.chat",
+        "support.images",
+        "support.convert-chat"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "support.chat": {
+          "en": "1",
+          "bn": "1"
+        },
+        "support.images": {
+          "en": "1",
+          "bn": "1"
+        },
+        "support.convert-chat": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Chat, images, and convert stay separate because their permissions differ."
+    },
+    {
+      "route": "/platform-support/issues/:id",
+      "permission": "platform-support.upload",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "support.images"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "support.images": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Issue thread images article."
+    },
+    {
+      "route": "/clients",
+      "permission": "clients.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.overview"
+      ],
+      "faq_ids": [
+        "clients.faq.create"
+      ],
+      "revisions": {
+        "clients.overview": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.faq.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Existing clients overview. The create FAQ stays on the create permission."
+    },
+    {
+      "route": "/clients/view/:id",
+      "permission": "clients.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.overview"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "clients.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Client view uses the overview article."
+    },
+    {
+      "route": "/clients/create",
+      "permission": "clients.create",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.create"
+      ],
+      "faq_ids": [
+        "clients.faq.create"
+      ],
+      "revisions": {
+        "clients.create": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.faq.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Existing add-client article."
+    },
+    {
+      "route": "/invoices",
+      "permission": "invoices.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "invoices.overview"
+      ],
+      "faq_ids": [
+        "invoices.faq.list"
+      ],
+      "revisions": {
+        "invoices.overview": {
+          "en": "1",
+          "bn": "1"
+        },
+        "invoices.faq.list": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Existing invoice list article."
+    },
+    {
+      "route": "/invoices/client/:id",
+      "permission": "invoices.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "invoices.overview"
+      ],
+      "faq_ids": [],
+      "revisions": {
+        "invoices.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Client invoice list uses the overview article."
+    },
+    {
+      "route": "/dashboard",
+      "permission": "dashboard.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "dashboard.overview"
+      ],
+      "faq_ids": [
+        "dashboard.overview.faq"
+      ],
+      "revisions": {
+        "dashboard.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "dashboard.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/clients/edit/:id",
+      "permission": "clients.edit",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.edit"
+      ],
+      "faq_ids": [
+        "clients.edit.faq"
+      ],
+      "revisions": {
+        "clients.edit.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.edit": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/archived-clients",
+      "permission": "archived-clients.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.archive",
+        "clients.restore",
+        "clients.archive-delete"
+      ],
+      "faq_ids": [
+        "clients.archive.faq",
+        "clients.restore.faq",
+        "clients.archive-delete.faq"
+      ],
+      "revisions": {
+        "clients.archive.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.archive": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.restore.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.restore": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.archive-delete.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.archive-delete": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/client-maps",
+      "permission": "clients.map",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "clients.maps"
+      ],
+      "faq_ids": [
+        "clients.maps.faq"
+      ],
+      "revisions": {
+        "clients.maps.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "clients.maps": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/zones",
+      "permission": "zones.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "zones.overview",
+        "zones.create"
+      ],
+      "faq_ids": [
+        "zones.overview.faq",
+        "zones.create.faq"
+      ],
+      "revisions": {
+        "zones.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "zones.overview": {
+          "en": "1",
+          "bn": "1"
+        },
+        "zones.create.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "zones.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/sub-zones",
+      "permission": "sub-zones.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "sub-zones.overview"
+      ],
+      "faq_ids": [
+        "sub-zones.overview.faq"
+      ],
+      "revisions": {
+        "sub-zones.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "sub-zones.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/payments",
+      "permission": "payments.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "payments.overview"
+      ],
+      "faq_ids": [
+        "payments.overview.faq"
+      ],
+      "revisions": {
+        "payments.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "payments.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/invoice-types",
+      "permission": "invoice-types.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "invoice-types.overview"
+      ],
+      "faq_ids": [
+        "invoice-types.overview.faq"
+      ],
+      "revisions": {
+        "invoice-types.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "invoice-types.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/invoices/create",
+      "permission": "invoices.create",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "invoices.create"
+      ],
+      "faq_ids": [
+        "invoices.create.faq"
+      ],
+      "revisions": {
+        "invoices.create.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "invoices.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/invoices/edit/:id",
+      "permission": "invoices.edit",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "invoices.edit"
+      ],
+      "faq_ids": [
+        "invoices.edit.faq"
+      ],
+      "revisions": {
+        "invoices.edit.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "invoices.edit": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 1. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/expenses",
+      "permission": "expenses.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "expenses.overview",
+        "expenses.approve"
+      ],
+      "faq_ids": [
+        "expenses.overview.faq",
+        "expenses.approve.faq"
+      ],
+      "revisions": {
+        "expenses.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "expenses.overview": {
+          "en": "1",
+          "bn": "1"
+        },
+        "expenses.approve.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "expenses.approve": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/expense-types",
+      "permission": "expense-types.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "expense-types.overview"
+      ],
+      "faq_ids": [
+        "expense-types.overview.faq"
+      ],
+      "revisions": {
+        "expense-types.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "expense-types.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/funds",
+      "permission": "funds.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "funds.overview"
+      ],
+      "faq_ids": [
+        "funds.overview.faq"
+      ],
+      "revisions": {
+        "funds.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "funds.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/fund-transactions",
+      "permission": "fund-transactions.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "fund-transactions.overview"
+      ],
+      "faq_ids": [
+        "fund-transactions.overview.faq"
+      ],
+      "revisions": {
+        "fund-transactions.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "fund-transactions.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/my-wallets",
+      "permission": "wallets.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "wallets.mine"
+      ],
+      "faq_ids": [
+        "wallets.mine.faq"
+      ],
+      "revisions": {
+        "wallets.mine.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "wallets.mine": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/client-wallets",
+      "permission": "wallets.client",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "wallets.client"
+      ],
+      "faq_ids": [
+        "wallets.client.faq"
+      ],
+      "revisions": {
+        "wallets.client.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "wallets.client": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/resellers",
+      "permission": "resellers.access",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "resellers.overview"
+      ],
+      "faq_ids": [
+        "resellers.overview.faq"
+      ],
+      "revisions": {
+        "resellers.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "resellers.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/resellers/view/:id",
+      "permission": "resellers.access",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "resellers.overview"
+      ],
+      "faq_ids": [
+        "resellers.overview.faq"
+      ],
+      "revisions": {
+        "resellers.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "resellers.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/resellers/create",
+      "permission": "resellers.create",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "resellers.create"
+      ],
+      "faq_ids": [
+        "resellers.create.faq"
+      ],
+      "revisions": {
+        "resellers.create.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "resellers.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/resellers/edit/:id",
+      "permission": "resellers.edit",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "resellers.edit"
+      ],
+      "faq_ids": [
+        "resellers.edit.faq"
+      ],
+      "revisions": {
+        "resellers.edit.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "resellers.edit": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/agents",
+      "permission": "agents.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "agents.overview"
+      ],
+      "faq_ids": [
+        "agents.overview.faq"
+      ],
+      "revisions": {
+        "agents.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "agents.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/agent-transactions",
+      "permission": "agent-transactions.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "agent-transactions.overview"
+      ],
+      "faq_ids": [
+        "agent-transactions.overview.faq"
+      ],
+      "revisions": {
+        "agent-transactions.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "agent-transactions.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/client-packages",
+      "permission": "packages.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "packages.client"
+      ],
+      "faq_ids": [
+        "packages.client.faq"
+      ],
+      "revisions": {
+        "packages.client.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "packages.client": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/client-packages/view/:id",
+      "permission": "packages.access",
+      "entitlement": "clients",
+      "audience": "staff",
+      "article_ids": [
+        "packages.client"
+      ],
+      "faq_ids": [
+        "packages.client.faq"
+      ],
+      "revisions": {
+        "packages.client.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "packages.client": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reseller-packages",
+      "permission": "resellers.access",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "packages.reseller"
+      ],
+      "faq_ids": [
+        "packages.reseller.faq"
+      ],
+      "revisions": {
+        "packages.reseller.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "packages.reseller": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/reseller-clients",
+      "permission": "resellers.clients.report",
+      "entitlement": "resellers",
+      "audience": "staff",
+      "article_ids": [
+        "resellers.report"
+      ],
+      "faq_ids": [
+        "resellers.report.faq"
+      ],
+      "revisions": {
+        "resellers.report.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "resellers.report": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 2. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/networks",
+      "permission": "networks.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "networks.overview"
+      ],
+      "faq_ids": [
+        "networks.overview.faq"
+      ],
+      "revisions": {
+        "networks.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "networks.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/mikrotik-packages",
+      "permission": "mikrotik-packages.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "mikrotik.packages"
+      ],
+      "faq_ids": [
+        "mikrotik.packages.faq"
+      ],
+      "revisions": {
+        "mikrotik.packages.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "mikrotik.packages": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/mikrotik-sync",
+      "permission": "mikrotik-sync.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "mikrotik.sync"
+      ],
+      "faq_ids": [
+        "mikrotik.sync.faq"
+      ],
+      "revisions": {
+        "mikrotik.sync.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "mikrotik.sync": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/mikrotik-sync/import/:id",
+      "permission": "mikrotik-sync.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "mikrotik.sync"
+      ],
+      "faq_ids": [
+        "mikrotik.sync.faq"
+      ],
+      "revisions": {
+        "mikrotik.sync.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "mikrotik.sync": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/mikrotik-commands",
+      "permission": "mikrotik-command.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "mikrotik.commands"
+      ],
+      "faq_ids": [
+        "mikrotik.commands.faq"
+      ],
+      "revisions": {
+        "mikrotik.commands.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "mikrotik.commands": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/devices",
+      "permission": "devices.access",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "devices.overview"
+      ],
+      "faq_ids": [
+        "devices.overview.faq"
+      ],
+      "revisions": {
+        "devices.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "devices.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/device-types",
+      "permission": "device-types.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "device-types.overview"
+      ],
+      "faq_ids": [
+        "device-types.overview.faq"
+      ],
+      "revisions": {
+        "device-types.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "device-types.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/olts",
+      "permission": "olts.access",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "olts.overview"
+      ],
+      "faq_ids": [
+        "olts.overview.faq"
+      ],
+      "revisions": {
+        "olts.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "olts.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/olts/view/:id",
+      "permission": "olts.show",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "olts.view",
+        "olts.test"
+      ],
+      "faq_ids": [
+        "olts.view.faq",
+        "olts.test.faq"
+      ],
+      "revisions": {
+        "olts.view.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "olts.view": {
+          "en": "1",
+          "bn": "1"
+        },
+        "olts.test.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "olts.test": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/olts/view/:id/monitoring",
+      "permission": "devices.monitoring",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "olts.monitoring"
+      ],
+      "faq_ids": [
+        "olts.monitoring.faq"
+      ],
+      "revisions": {
+        "olts.monitoring.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "olts.monitoring": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/onus",
+      "permission": "onus.access",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "onus.overview"
+      ],
+      "faq_ids": [
+        "onus.overview.faq"
+      ],
+      "revisions": {
+        "onus.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "onus.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/noc",
+      "permission": "monitoring.summary",
+      "entitlement": "olts",
+      "audience": "staff",
+      "article_ids": [
+        "noc.overview"
+      ],
+      "faq_ids": [
+        "noc.overview.faq"
+      ],
+      "revisions": {
+        "noc.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "noc.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/tj-boxes",
+      "permission": "tj-boxes.access",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "tj-boxes.overview"
+      ],
+      "faq_ids": [
+        "tj-boxes.overview.faq"
+      ],
+      "revisions": {
+        "tj-boxes.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "tj-boxes.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/tj-box-maps",
+      "permission": "tj-boxes.map",
+      "entitlement": "network",
+      "audience": "staff",
+      "article_ids": [
+        "tj-boxes.map"
+      ],
+      "faq_ids": [
+        "tj-boxes.map.faq"
+      ],
+      "revisions": {
+        "tj-boxes.map.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "tj-boxes.map": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 3. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/tickets",
+      "permission": "tickets.access",
+      "entitlement": "support",
+      "audience": "staff",
+      "article_ids": [
+        "tickets.overview"
+      ],
+      "faq_ids": [
+        "tickets.overview.faq"
+      ],
+      "revisions": {
+        "tickets.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "tickets.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/tickets/view/:id",
+      "permission": "tickets.access",
+      "entitlement": "support",
+      "audience": "staff",
+      "article_ids": [
+        "tickets.overview"
+      ],
+      "faq_ids": [
+        "tickets.overview.faq"
+      ],
+      "revisions": {
+        "tickets.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "tickets.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/subjects",
+      "permission": "subjects.access",
+      "entitlement": "support",
+      "audience": "staff",
+      "article_ids": [
+        "subjects.overview"
+      ],
+      "faq_ids": [
+        "subjects.overview.faq"
+      ],
+      "revisions": {
+        "subjects.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "subjects.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/tags",
+      "permission": "tags.access",
+      "entitlement": "support",
+      "audience": "staff",
+      "article_ids": [
+        "tags.overview"
+      ],
+      "faq_ids": [
+        "tags.overview.faq"
+      ],
+      "revisions": {
+        "tags.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "tags.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/sms-send",
+      "permission": "sms-send.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "sms.send"
+      ],
+      "faq_ids": [
+        "sms.send.faq"
+      ],
+      "revisions": {
+        "sms.send.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "sms.send": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/sms-templates",
+      "permission": "sms-templates.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "sms.templates"
+      ],
+      "faq_ids": [
+        "sms.templates.faq"
+      ],
+      "revisions": {
+        "sms.templates.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "sms.templates": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/telegram",
+      "permission": "telegram.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "telegram.overview"
+      ],
+      "faq_ids": [
+        "telegram.overview.faq"
+      ],
+      "revisions": {
+        "telegram.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "telegram.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/communication-queue",
+      "permission": "communication-queue.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "communication.queue"
+      ],
+      "faq_ids": [
+        "communication.queue.faq"
+      ],
+      "revisions": {
+        "communication.queue.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "communication.queue": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/communication-logs",
+      "permission": "communication-logs.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "communication.logs"
+      ],
+      "faq_ids": [
+        "communication.logs.faq"
+      ],
+      "revisions": {
+        "communication.logs.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "communication.logs": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/communication-gateways",
+      "permission": "communication-gateways.access",
+      "entitlement": "sms",
+      "audience": "staff",
+      "article_ids": [
+        "communication.gateways"
+      ],
+      "faq_ids": [
+        "communication.gateways.faq"
+      ],
+      "revisions": {
+        "communication.gateways.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "communication.gateways": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products",
+      "permission": "products.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.overview"
+      ],
+      "faq_ids": [
+        "products.overview.faq"
+      ],
+      "revisions": {
+        "products.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products/in",
+      "permission": "products-in.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.in"
+      ],
+      "faq_ids": [
+        "products.in.faq"
+      ],
+      "revisions": {
+        "products.in.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.in": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products/in/:id",
+      "permission": "products-in.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.in"
+      ],
+      "faq_ids": [
+        "products.in.faq"
+      ],
+      "revisions": {
+        "products.in.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.in": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products/out",
+      "permission": "products-out.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.out"
+      ],
+      "faq_ids": [
+        "products.out.faq"
+      ],
+      "revisions": {
+        "products.out.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.out": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products/out/:id",
+      "permission": "products-out.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.out"
+      ],
+      "faq_ids": [
+        "products.out.faq"
+      ],
+      "revisions": {
+        "products.out.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.out": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/products/reports",
+      "permission": "products-in.report",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.reports"
+      ],
+      "faq_ids": [
+        "products.reports.faq"
+      ],
+      "revisions": {
+        "products.reports.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.reports": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/product-in",
+      "permission": "products-in.report",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.reports"
+      ],
+      "faq_ids": [
+        "products.reports.faq"
+      ],
+      "revisions": {
+        "products.reports.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.reports": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/product-out",
+      "permission": "products-in.report",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "products.reports"
+      ],
+      "faq_ids": [
+        "products.reports.faq"
+      ],
+      "revisions": {
+        "products.reports.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "products.reports": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/product-categories",
+      "permission": "product-categories.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "product-categories.overview"
+      ],
+      "faq_ids": [
+        "product-categories.overview.faq"
+      ],
+      "revisions": {
+        "product-categories.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "product-categories.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/unit-types",
+      "permission": "unit-types.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "unit-types.overview"
+      ],
+      "faq_ids": [
+        "unit-types.overview.faq"
+      ],
+      "revisions": {
+        "unit-types.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "unit-types.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/vendors",
+      "permission": "vendors.access",
+      "entitlement": "inventory",
+      "audience": "staff",
+      "article_ids": [
+        "vendors.overview"
+      ],
+      "faq_ids": [
+        "vendors.overview.faq"
+      ],
+      "revisions": {
+        "vendors.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "vendors.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/staffs",
+      "permission": "staffs.access",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "staffs.overview"
+      ],
+      "faq_ids": [
+        "staffs.overview.faq"
+      ],
+      "revisions": {
+        "staffs.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "staffs.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/staffs/create",
+      "permission": "staffs.create",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "staffs.create"
+      ],
+      "faq_ids": [
+        "staffs.create.faq"
+      ],
+      "revisions": {
+        "staffs.create.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "staffs.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/staffs/edit/:id",
+      "permission": "staffs.edit",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "staffs.edit"
+      ],
+      "faq_ids": [
+        "staffs.edit.faq"
+      ],
+      "revisions": {
+        "staffs.edit.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "staffs.edit": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/salaries",
+      "permission": "salaries.access",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "salaries.overview"
+      ],
+      "faq_ids": [
+        "salaries.overview.faq"
+      ],
+      "revisions": {
+        "salaries.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "salaries.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/salaries/create",
+      "permission": "salaries.create",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "salaries.create"
+      ],
+      "faq_ids": [
+        "salaries.create.faq"
+      ],
+      "revisions": {
+        "salaries.create.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "salaries.create": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/salaries/edit/:id",
+      "permission": "salaries.edit",
+      "entitlement": "hr",
+      "audience": "staff",
+      "article_ids": [
+        "salaries.edit"
+      ],
+      "faq_ids": [
+        "salaries.edit.faq"
+      ],
+      "revisions": {
+        "salaries.edit.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "salaries.edit": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/roles",
+      "permission": "roles.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "roles.overview"
+      ],
+      "faq_ids": [
+        "roles.overview.faq"
+      ],
+      "revisions": {
+        "roles.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "roles.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/permissions",
+      "permission": "permissions.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "permissions.overview"
+      ],
+      "faq_ids": [
+        "permissions.overview.faq"
+      ],
+      "revisions": {
+        "permissions.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "permissions.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/permissions/:id",
+      "permission": "permissions.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "permissions.overview"
+      ],
+      "faq_ids": [
+        "permissions.overview.faq"
+      ],
+      "revisions": {
+        "permissions.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "permissions.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/notifications",
+      "permission": "notifications.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "notifications.page"
+      ],
+      "faq_ids": [
+        "notifications.page.faq"
+      ],
+      "revisions": {
+        "notifications.page.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "notifications.page": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/general",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/dashboard",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/sms",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/map",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/monitoring",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/olt",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/notifications",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/settings/invoice-print",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "settings.overview"
+      ],
+      "faq_ids": [
+        "settings.overview.faq"
+      ],
+      "revisions": {
+        "settings.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "settings.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports",
+      "permission": "reports.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "reports.overview"
+      ],
+      "faq_ids": [
+        "reports.overview.faq"
+      ],
+      "revisions": {
+        "reports.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/income-expense",
+      "permission": "reports.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "reports.overview"
+      ],
+      "faq_ids": [
+        "reports.overview.faq"
+      ],
+      "revisions": {
+        "reports.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/new-clients",
+      "permission": "reports.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "reports.overview"
+      ],
+      "faq_ids": [
+        "reports.overview.faq"
+      ],
+      "revisions": {
+        "reports.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/btrc",
+      "permission": "reports.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "reports.overview"
+      ],
+      "faq_ids": [
+        "reports.overview.faq"
+      ],
+      "revisions": {
+        "reports.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/funds",
+      "permission": "funds.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "reports.funds"
+      ],
+      "faq_ids": [
+        "reports.funds.faq"
+      ],
+      "revisions": {
+        "reports.funds.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.funds": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/invoices",
+      "permission": "invoices.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "reports.invoices"
+      ],
+      "faq_ids": [
+        "reports.invoices.faq"
+      ],
+      "revisions": {
+        "reports.invoices.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.invoices": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/payments",
+      "permission": "payments.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "reports.payments"
+      ],
+      "faq_ids": [
+        "reports.payments.faq"
+      ],
+      "revisions": {
+        "reports.payments.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.payments": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reports/expenses",
+      "permission": "expenses.access",
+      "entitlement": "finance",
+      "audience": "staff",
+      "article_ids": [
+        "reports.expenses"
+      ],
+      "faq_ids": [
+        "reports.expenses.faq"
+      ],
+      "revisions": {
+        "reports.expenses.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "reports.expenses": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/histories",
+      "permission": "histories.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "histories.overview"
+      ],
+      "faq_ids": [
+        "histories.overview.faq"
+      ],
+      "revisions": {
+        "histories.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "histories.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/payment-gateways",
+      "permission": "payment-gateways.access",
+      "entitlement": "billing",
+      "audience": "staff",
+      "article_ids": [
+        "payment-gateways.overview"
+      ],
+      "faq_ids": [
+        "payment-gateways.overview.faq"
+      ],
+      "revisions": {
+        "payment-gateways.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "payment-gateways.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/staff-profile",
+      "permission": null,
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "staff.profile"
+      ],
+      "faq_ids": [
+        "staff.profile.faq"
+      ],
+      "revisions": {
+        "staff.profile.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "staff.profile": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/company-profile/:id",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "company.profile"
+      ],
+      "faq_ids": [
+        "company.profile.faq"
+      ],
+      "revisions": {
+        "company.profile.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "company.profile": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/reseller-profile/:id",
+      "permission": "company-settings.access",
+      "entitlement": "core",
+      "audience": "staff",
+      "article_ids": [
+        "company.profile"
+      ],
+      "faq_ids": [
+        "company.profile.faq"
+      ],
+      "revisions": {
+        "company.profile.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "company.profile": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 5. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/companies",
+      "permission": "companies.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "companies.overview"
+      ],
+      "faq_ids": [
+        "companies.overview.faq"
+      ],
+      "revisions": {
+        "companies.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "companies.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/users",
+      "permission": "users.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "users.overview"
+      ],
+      "faq_ids": [
+        "users.overview.faq"
+      ],
+      "revisions": {
+        "users.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "users.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/subscription-plans",
+      "permission": "subscription-plans.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "subscription-plans.overview"
+      ],
+      "faq_ids": [
+        "subscription-plans.overview.faq"
+      ],
+      "revisions": {
+        "subscription-plans.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "subscription-plans.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/subscription-features",
+      "permission": "features.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "subscription-features.overview"
+      ],
+      "faq_ids": [
+        "subscription-features.overview.faq"
+      ],
+      "revisions": {
+        "subscription-features.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "subscription-features.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/company-subscriptions",
+      "permission": "company-subscriptions.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "company-subscriptions.overview"
+      ],
+      "faq_ids": [
+        "company-subscriptions.overview.faq"
+      ],
+      "revisions": {
+        "company-subscriptions.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "company-subscriptions.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/demo-requests",
+      "permission": "demo-requests.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "demo-requests.overview"
+      ],
+      "faq_ids": [
+        "demo-requests.overview.faq"
+      ],
+      "revisions": {
+        "demo-requests.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "demo-requests.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/activity-logs",
+      "permission": "activity-logs.access",
+      "entitlement": null,
+      "audience": "staff",
+      "article_ids": [
+        "activity-logs.overview"
+      ],
+      "faq_ids": [
+        "activity-logs.overview.faq"
+      ],
+      "revisions": {
+        "activity-logs.overview.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "activity-logs.overview": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/platform-support-admin",
+      "permission": "platform-support-admin.access",
+      "entitlement": null,
+      "audience": "platform",
+      "article_ids": [
+        "platform.inbox"
+      ],
+      "faq_ids": [
+        "platform.inbox.faq"
+      ],
+      "revisions": {
+        "platform.inbox.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "platform.inbox": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    },
+    {
+      "route": "/platform-support-admin/threads/:id",
+      "permission": "platform-support-admin.show",
+      "entitlement": null,
+      "audience": "platform",
+      "article_ids": [
+        "platform.thread"
+      ],
+      "faq_ids": [
+        "platform.thread.faq"
+      ],
+      "revisions": {
+        "platform.thread.faq": {
+          "en": "1",
+          "bn": "1"
+        },
+        "platform.thread": {
+          "en": "1",
+          "bn": "1"
+        }
+      },
+      "video_status": "not_configured",
+      "review": "Batch 6. Source-checked against the current menu, page, and permission snapshot."
+    }
+  ],
+  "excluded": [
+    {
+      "route": "/help/*",
+      "reason": "The catch-all renders one published article. Each article is authorized by its own policy. It is not a separate feature."
+    },
+    {
+      "route": "/import-client",
+      "reason": "Commented out of the staff menu in hooks/use-menu-items.ts. The current sync screen is /mikrotik-sync."
+    },
+    {
+      "route": "/import-client/import/:id",
+      "reason": "Legacy import detail. The menu item is commented out and the current flow is MikroTik sync."
+    },
+    {
+      "route": "/re-sync",
+      "reason": "Commented out of the staff menu. Replaced by /mikrotik-sync."
+    },
+    {
+      "route": "/tables",
+      "reason": "Developer placeholder table with sample columns. It is not linked from the staff menu."
+    },
+    {
+      "route": "/setting/general",
+      "reason": "Placeholder page that returns the text Setting. Staff settings live under /settings."
+    },
+    {
+      "route": "/setting/dashboard",
+      "reason": "Legacy settings path. The menu points at /settings/dashboard."
+    },
+    {
+      "route": "/setting/table",
+      "reason": "Legacy settings path. It is not a current settings section."
+    },
+    {
+      "route": "/setting/themes",
+      "reason": "Theme lab page. It is not a tenant settings section in the menu."
+    }
+  ]
+}

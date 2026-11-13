@@ -1,6 +1,6 @@
 # PS-009 — Integrated acceptance and release readiness
 
-Status: not started
+Status: reviewable, not release-ready
 Repositories: shadcn-client and isp-backend
 Depends on: PS-001–008 complete, or explicitly label any limited release partial.
 
@@ -60,4 +60,14 @@ SQLite Pest already proves the unique constraints and the 409 mapping. Record th
 
 ## Implementation record
 
-Changed files: pending. Commands/results: pending. PS-E01–17 evidence: pending. Remaining blockers/release decisions: pending.
+Status: reviewable, not release-ready. No scenario is marked fully passed. Evidence: [PS-009.json](../evidence/PS-009.json) and [readiness.md](../evidence/readiness.md), recorded 2026-11-13T13:27:53Z.
+
+SQLite Pest: the new acceptance test plus the four existing platform-support files, 35 passed, 791 assertions. Pint passed on the new test. MySQL locking was not run.
+
+Browser on CP: 6 chromium checks passed. The isolated image-send test failed before any request because no disposable fixture was supplied. Anonymous upload was 403 and an anonymous unknown attachment was 401, both `private, no-store`, with no bearer token.
+
+Help content validator: 184 articles. Focused Vitest: 90 passed, then the launcher file 2 passed. `scripts/ai/frontend-check` typecheck completed and Vitest failed the same 19 unrelated tests. 689 passed.
+
+PS-E12 is not run. Videos remain `not_configured`. The mobile drawer ignores a close in the first 400ms so the opening press does not dismiss it. Escape closing that drawer was not claimed.
+
+Changed files: pending in the repository reports. No deploy and no push.

@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type PropsWithChildren } from "react";
-import Link from "next/link";
 import { Headset } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { HelpLauncherPanel } from "@/components/help/help-launcher-panel";
 import MyButton from "@/components/my-button";
 import { MyDrawer } from "@/components/my-drawer";
+import { SupportWidgetState } from "@/components/platform-support/support-widget";
 import {
     supportAccessDenied,
     supportPollInterval,
@@ -51,28 +52,9 @@ function usePresenceState(): SupportPresence {
     return { documentVisible, online };
 }
 
-function SupportPanelLinks({ onNavigate }: { onNavigate: () => void }) {
-    const { t } = useTranslation();
-    const links = [
-        { href: "/platform-support?kind=issue&compose=issue", label: "platform_support.actions.report_issue", testId: "platform-support-report" },
-        { href: "/platform-support?kind=chat&compose=chat", label: "platform_support.actions.chat", testId: "platform-support-chat" },
-        { href: "/platform-support", label: "platform_support.actions.my_requests", testId: "platform-support-requests" },
-    ];
-    return (
-        <div className="flex flex-col gap-2" data-testid="platform-support-panel">
-            {links.map((link) => (
-                <Link
-                    key={link.testId}
-                    href={link.href}
-                    data-testid={link.testId}
-                    onClick={onNavigate}
-                    className="rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground hover:bg-muted"
-                >
-                    {t(link.label)}
-                </Link>
-            ))}
-        </div>
-    );
+function focusable(container: HTMLElement): HTMLElement[] {
+    return [...container.querySelectorAll<HTMLElement>("a, button, input, textarea, select, [tabindex]:not([tabindex='-1'])")]
+        .filter((node) => !node.hasAttribute("disabled"));
 }
 
 function SupportLauncher() {
@@ -85,6 +67,7 @@ function SupportLauncher() {
     const [open, setOpen] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const openedAt = useRef(0);
     const allowed = hasPermission("platform-support.access");
     const identity = profile?.id ?? "";
 
@@ -112,9 +95,7 @@ function SupportLauncher() {
         if (supportAccessDenied(summary.error)) setBlocked(true);
     }, [summary.error]);
 
-    if (!allowed) return null;
-
-    const unread = blocked ? 0 : summary.data?.data?.unread_messages ?? 0;
+    const unread = !allowed || blocked ? 0 : summary.data?.data?.unread_messages ?? 0;
     const close = () => {
         setOpen(false);
         buttonRef.current?.focus();
@@ -132,7 +113,12 @@ function SupportLauncher() {
                 aria-haspopup="dialog"
                 aria-label={label}
                 className="fixed bottom-4 right-4 z-40"
-                onClick={() => setOpen((current) => !current)}
+                onClick={() => {
+                setOpen((current) => {
+                    if (!current) openedAt.current = Date.now();
+                    return !current;
+                });
+            }}
             >
                 <Headset className="h-4 w-4" />
                 <span>{t("platform_support.launcher.title")}</span>
@@ -143,20 +129,48 @@ function SupportLauncher() {
                 )}
             </MyButton>
             {ready && open && mobile && (
-                <MyDrawer open={open} onOpenChange={(next) => (next ? setOpen(true) : close())} side="bottom" title="platform_support.title">
-                    <SupportPanelLinks onNavigate={close} />
+                <MyDrawer
+                    open={open}
+                    onOpenChange={(next) => {
+                        if (!next && Date.now() - openedAt.current < 400) return;
+                        if (next) setOpen(true);
+                        else close();
+                    }}
+                    side="bottom"
+                    size="lg"
+                    title="help.title"
+                >
+                    <HelpLauncherPanel support={allowed} onNavigate={close} />
                 </MyDrawer>
             )}
             {ready && open && !mobile && (
                 <div
                     role="dialog"
-                    aria-label={t("platform_support.title")}
-                    className={cn("fixed bottom-20 right-4 z-40 w-80 rounded-lg border border-border bg-background p-4 shadow-lg")}
+                    aria-modal="true"
+                    aria-label={t("help.title")}
+                    className={cn("fixed bottom-20 right-4 z-40 w-96 max-w-[calc(100vw-2rem)] rounded-lg border border-border bg-background p-4 shadow-lg")}
                     onKeyDown={(event) => {
-                        if (event.key === "Escape") close();
+                        if (event.key === "Escape") {
+                            event.preventDefault();
+                            close();
+                            return;
+                        }
+                        if (event.key !== "Tab") return;
+                        const container = event.currentTarget;
+                        const nodes = focusable(container);
+                        if (nodes.length === 0) return;
+                        const first = nodes[0];
+                        const last = nodes[nodes.length - 1];
+                        if (event.shiftKey && document.activeElement === first) {
+                            event.preventDefault();
+                            last?.focus();
+                        } else if (!event.shiftKey && document.activeElement === last) {
+                            event.preventDefault();
+                            first?.focus();
+                        }
                     }}
                 >
-                    <SupportPanelLinks onNavigate={close} />
+                    <HelpLauncherPanel support={allowed} onNavigate={close} />
                 </div>
             )}
         </>
@@ -167,8 +181,10 @@ export function SupportRuntime({ children }: PropsWithChildren) {
     const presence = usePresenceState();
     return (
         <SupportPresenceContext.Provider value={presence}>
-            {children}
-            <SupportLauncher />
+            <SupportWidgetState>
+                {children}
+                <SupportLauncher />
+            </SupportWidgetState>
         </SupportPresenceContext.Provider>
     );
 }

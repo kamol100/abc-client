@@ -37,9 +37,18 @@ vi.mock("@/hooks/use-mobile", () => ({
     useIsMobile: () => false,
 }));
 
+vi.mock("next/navigation", () => ({
+    usePathname: () => "/clients",
+    useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }),
+}));
+
 describe("platform support launcher", () => {
     beforeEach(() => {
         access.names = ["platform-support.access"];
+        vi.stubGlobal("fetch", vi.fn(async () => ({
+            ok: true,
+            json: async () => ({ data: { matched: false, page: [], related: [], general: [] } }),
+        })));
     });
 
     it("opens one help button without tickets or notification access", async () => {
@@ -52,12 +61,17 @@ describe("platform support launcher", () => {
         expect(screen.getByTestId("platform-support-report")).toHaveAttribute("href", "/platform-support?kind=issue&compose=issue");
         expect(screen.getByTestId("platform-support-chat")).toHaveAttribute("href", "/platform-support?kind=chat&compose=chat");
         expect(screen.getByTestId("platform-support-requests")).toHaveAttribute("href", "/platform-support");
-        expect(screen.queryByRole("link", { name: /documentation|help centre|help center/i })).not.toBeInTheDocument();
+        expect(screen.getByTestId("help-centre-link")).toHaveAttribute("href", "/help");
     });
 
-    it("stays hidden without platform-support.access", () => {
+    it("keeps Help available when platform support is not granted", async () => {
+        const user = userEvent.setup();
         access.names = ["tickets.access", "notifications.access"];
         render(<SupportRuntime><div>Staff page</div></SupportRuntime>);
-        expect(screen.queryByTestId("platform-support-launcher")).not.toBeInTheDocument();
+        expect(screen.getByTestId("platform-support-launcher")).toBeInTheDocument();
+        await user.click(screen.getByTestId("platform-support-launcher"));
+        expect(screen.getByTestId("help-centre-link")).toHaveAttribute("href", "/help");
+        expect(screen.queryByTestId("platform-support-report")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("platform-support-chat")).not.toBeInTheDocument();
     });
 });

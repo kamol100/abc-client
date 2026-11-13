@@ -7,10 +7,10 @@ keywords:
   - subscription
   - account
 language: en
-translated_from_revision: "1"
+translated_from_revision: "2"
 ---
 
-When your account can contact platform support, a **Help** button stays at the bottom right of the staff dashboard. It opens **Report an issue**, **Chat with support**, and **My requests**. If that button is not shown, this account does not have that access.
+A **Help** button stays at the bottom right of the staff dashboard. It opens guides for the current page, search, FAQs, and videos when one is configured. When the account can contact platform support, it also opens **Report an issue**, **Chat with support**, and **My requests**. **Include this page** is off until you turn it on. It sends the path of the page you checked, without the query string, hash, or form values.
 
 The Help button reaches the platform team. **Support Tickets** in the menu is separate. It is for tickets with your own customers. You do not need Support Tickets to contact the platform team.
 

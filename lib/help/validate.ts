@@ -145,3 +145,115 @@ export function validateHelpTree(input: {
   }
   return errors;
 }
+
+const COVERAGE_ROUTE = /^\/[a-z0-9*:][a-z0-9_*:/-]*$/;
+
+export function validateHelpCoverage(input: {
+  coverage: unknown;
+  articles: readonly HelpArticlePolicy[];
+  permissions: ReadonlySet<string>;
+  raw: string;
+}): string[] {
+  const errors: string[] = [];
+  if (/https?:\/\/|youtu\.be/i.test(input.raw)) errors.push("coverage contains a video URL");
+  if (!input.coverage || typeof input.coverage !== "object") return ["coverage is not an object"];
+  const coverage = input.coverage as {
+    video_procedure?: unknown;
+    inventory?: unknown;
+    entries?: unknown;
+    excluded?: unknown;
+  };
+  if (typeof coverage.video_procedure !== "string" || coverage.video_procedure.trim().length < 40) {
+    errors.push("coverage is missing the video procedure");
+  }
+  if (!Array.isArray(coverage.entries) || !Array.isArray(coverage.excluded) || !Array.isArray(coverage.inventory)) {
+    return [...errors, "coverage entries, excluded, or inventory is missing"];
+  }
+  const byId = new Map(input.articles.map((article) => [article.id, article]));
+  const covered = new Set<string>();
+  for (const entry of coverage.entries) {
+    if (!entry || typeof entry !== "object") {
+      errors.push("coverage entry is not an object");
+      continue;
+    }
+    const row = entry as {
+      route?: unknown;
+      permission?: unknown;
+      entitlement?: unknown;
+      audience?: unknown;
+      article_ids?: unknown;
+      faq_ids?: unknown;
+      revisions?: unknown;
+      video_status?: unknown;
+      review?: unknown;
+    };
+    if (typeof row.route !== "string" || !COVERAGE_ROUTE.test(row.route)) {
+      errors.push(`coverage route is invalid: ${String(row.route)}`);
+      continue;
+    }
+    covered.add(row.route);
+    if (row.permission !== null && (typeof row.permission !== "string" || !input.permissions.has(row.permission))) {
+      errors.push(`${row.route} permission is unknown`);
+    }
+    if (row.audience !== "staff" && row.audience !== "platform") errors.push(`${row.route} audience is invalid`);
+    if (row.video_status !== "not_configured" && row.video_status !== "configured") {
+      errors.push(`${row.route} video status is invalid`);
+    }
+    if (typeof row.review !== "string" || row.review.trim() === "") errors.push(`${row.route} review is missing`);
+    const ids = Array.isArray(row.article_ids) ? row.article_ids : [];
+    const faqs = Array.isArray(row.faq_ids) ? row.faq_ids : [];
+    if (ids.length === 0) errors.push(`${row.route} has no articles`);
+    for (const id of [...ids, ...faqs]) {
+      if (typeof id !== "string") {
+        errors.push(`${row.route} has a bad article id`);
+        continue;
+      }
+      const article = byId.get(id);
+      if (!article || article.publication !== "published") {
+        errors.push(`${row.route} article ${id} is missing or unpublished`);
+        continue;
+      }
+      if (row.audience === "platform" && article.audience !== "platform") {
+        errors.push(`${row.route} lists a non-platform article ${id}`);
+      }
+      const revisions = row.revisions && typeof row.revisions === "object"
+        ? (row.revisions as Record<string, { en?: string; bn?: string }>)[id]
+        : undefined;
+      if (!revisions || revisions.en !== article.sourceRevision || revisions.bn !== article.sourceRevision) {
+        errors.push(`${row.route} revision for ${id} does not match ${article.sourceRevision}`);
+      }
+      if (row.video_status === "configured") {
+        const videos = article.videos ?? {};
+        if (!videos.en && !videos.bn) errors.push(`${row.route} is configured without a video id`);
+      } else if (article.videos && (article.videos.en || article.videos.bn)) {
+        errors.push(`${row.route} hides a configured video`);
+      }
+    }
+    for (const id of faqs) {
+      const article = typeof id === "string" ? byId.get(id) : undefined;
+      if (article && article.kind !== "faq") errors.push(`${row.route} faq ${String(id)} is not a faq`);
+    }
+  }
+  for (const item of coverage.excluded) {
+    if (!item || typeof item !== "object") {
+      errors.push("coverage exclusion is not an object");
+      continue;
+    }
+    const row = item as { route?: unknown; reason?: unknown };
+    if (typeof row.route !== "string" || typeof row.reason !== "string" || row.reason.trim().length < 12) {
+      errors.push(`coverage exclusion is incomplete: ${String(row.route)}`);
+      continue;
+    }
+    covered.add(row.route);
+  }
+  for (const route of coverage.inventory) {
+    if (typeof route !== "string" || !covered.has(route)) errors.push(`inventory route is not covered: ${String(route)}`);
+  }
+  for (const article of input.articles) {
+    if (article.publication !== "published") continue;
+    for (const pattern of article.routePatterns) {
+      if (!covered.has(pattern)) errors.push(`${article.id} route ${pattern} is missing from coverage`);
+    }
+  }
+  return errors;
+}

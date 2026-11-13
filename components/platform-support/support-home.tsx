@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { DataTable } from "@/components/data-table/data-table";
@@ -10,11 +10,12 @@ import { supportFilterSchema } from "@/components/platform-support/support-form-
 import { SupportComposer } from "@/components/platform-support/support-composer";
 import { SupportRetry } from "@/components/platform-support/support-thread";
 import { useSupportPresence } from "@/components/platform-support/support-launcher";
+import { IncludePageControl, useSupportWidget } from "@/components/platform-support/support-widget";
 import {
     chatStartPayload,
     parseSupportThread,
+    supportRequestId,
     supportAccessDenied,
-    supportContextPath,
     supportListParams,
     supportListUrl,
     supportPollInterval,
@@ -45,7 +46,7 @@ export default function SupportHome({
 }) {
     const { t } = useTranslation();
     const router = useRouter();
-    const pathname = usePathname();
+    const widget = useSupportWidget();
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
     const { documentVisible, online } = useSupportPresence();
@@ -99,8 +100,13 @@ export default function SupportHome({
     useEffect(() => {
         if (compose !== "chat" || started.current || !identity) return;
         started.current = true;
-        startChat.mutate(chatStartPayload(crypto.randomUUID(), supportContextPath(pathname)));
-    }, [compose, identity, pathname, startChat]);
+        startChat.mutate(chatStartPayload(
+            supportRequestId(),
+            widget.contextPath,
+            widget.includePage,
+            widget.articleId,
+        ));
+    }, [compose, identity, startChat, widget.articleId, widget.contextPath, widget.includePage]);
 
     useEffect(() => {
         if (supportAccessDenied(list.error)) setBlocked(true);
@@ -149,6 +155,7 @@ export default function SupportHome({
                     </button>
                 ))}
             </div>
+            {compose === "chat" && <IncludePageControl />}
             {creating && kind === "issue" && (
                 <SupportComposer
                     mode="issue"
@@ -162,7 +169,12 @@ export default function SupportHome({
             {compose === "chat" && startChat.isError && (
                 <SupportRetry messageKey="platform_support.load_failed" onRetry={() => {
                     started.current = false;
-                    startChat.mutate(chatStartPayload(crypto.randomUUID(), supportContextPath(pathname)));
+                    startChat.mutate(chatStartPayload(
+                        supportRequestId(),
+                        widget.contextPath,
+                        widget.includePage,
+                        widget.articleId,
+                    ));
                 }} />
             )}
             {list.isError && !blocked && (

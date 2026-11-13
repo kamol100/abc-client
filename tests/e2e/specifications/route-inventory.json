@@ -1016,6 +1016,62 @@
     "scenario_ids": []
   },
   {
+    "route": "/help",
+    "page": "app/(dashboard)/help/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/help/[...slug]",
+    "page": "app/(dashboard)/help/[...slug]/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/platform-support",
+    "page": "app/(dashboard)/platform-support/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/platform-support/issues/[id]",
+    "page": "app/(dashboard)/platform-support/issues/[id]/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/platform-support/chats/[id]",
+    "page": "app/(dashboard)/platform-support/chats/[id]/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/platform-support-admin",
+    "page": "app/(dashboard)/platform-support-admin/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
+    "route": "/platform-support-admin/threads/[id]",
+    "page": "app/(dashboard)/platform-support-admin/threads/[id]/page.tsx",
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "status": "draft",
+    "scenario_ids": []
+  },
+  {
     "route": "/tickets",
     "page": "app/(dashboard)/tickets/page.tsx",
     "feature": "support-tickets",

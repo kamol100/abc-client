@@ -1,0 +1,62 @@
+{
+  "task": "PS-009",
+  "recorded_at": "2026-11-13T13:27:53Z",
+  "release_ready": false,
+  "environment": {
+    "backend_tests": "SQLite :memory: through scripts/ai/backend-test. This does not prove MySQL row locks.",
+    "browser": "CP host from the ignored tenant env. Sessions stayed in memory. Artifact directory /tmp/isp-platform-support. No customer image or ticket body was stored.",
+    "mysql_concurrency": "not started. The disposable MySQL plan was not run."
+  },
+  "commands": [
+    {
+      "command": "scripts/ai/backend-test tests/Feature/PlatformSupportAcceptanceTest.php tests/Feature/PlatformSupportAuthorizationTest.php tests/Feature/PlatformSupportCoreTest.php tests/Feature/PlatformSupportImageTest.php tests/Feature/PlatformSupportNotificationTest.php",
+      "result": "35 passed, 791 assertions",
+      "timestamp": "2026-11-13T13:16:00Z"
+    },
+    {
+      "command": "scripts/ai/lint tests/Feature/PlatformSupportAcceptanceTest.php",
+      "result": "pint passed"
+    },
+    {
+      "command": "node scripts/check-help-content.mjs",
+      "result": "help content ok (184 articles), with the existing Node module-type warning"
+    },
+    {
+      "command": "npx vitest run tests/unit/help tests/unit/platform-support tests/unit/notifications/notification-catalog.test.ts tests/unit/menu/menu-items.test.ts",
+      "result": "12 files, 90 passed"
+    },
+    {
+      "command": "npx vitest run tests/unit/platform-support/support-launcher.test.tsx",
+      "result": "2 passed",
+      "timestamp": "2026-11-13T13:27:54Z"
+    },
+    {
+      "command": "scripts/ai/frontend-check",
+      "result": "typecheck completed and Vitest then failed 19 unrelated tests. 689 passed. The failures are in maps, reseller-client, client dashboard, column visibility, date-picker, and pay."
+    },
+    {
+      "command": "playwright test --config=playwright.platform-support.config.ts",
+      "result": "chromium 6 passed. isolated 1 failed before any request because no disposable fixture was supplied.",
+      "timestamp": "2026-11-13T13:26:00Z"
+    }
+  ],
+  "scenarios": {
+    "PS-E01": "partial. SQLite HTTP test created an owner issue from /clients and a reseller chat from /dashboard, showed both with reference, requester, and company in the platform inbox, and left the tickets table count unchanged. Browser test opened My requests and the legacy tickets list on CP. Browser routes other than the launcher were not used to create requests.",
+    "PS-E02": "partial. Existing authorization Pest covers no-role, no-staff, reseller, anonymous, client, locked, unpaid, and expired. Browser test proved anonymous /help, /platform-support, and /platform-support-admin return to the CP login. Client and locked were not repeated in a browser.",
+    "PS-E03": "partial. The new HTTP test denied parent, sibling, and child reseller readers and a team reply/manage user without a visibility grant. Removing a permission and the next-request hide remain in the earlier authorization and image Pest files. No browser colleague persona was available.",
+    "PS-E04": "partial. The HTTP test denied tenant A and tenant B in both directions, rejected prohibited ownership fields, and kept the original reseller_id after the requester moved. Image, cursor, and filter denial for a known foreign UUID were not all repeated in this test.",
+    "PS-E05": "partial. Company-1 Super Admin saw both tenants. Ordinary company-1 staff and a non-platform Super Admin received 403. Read-only agent and impersonation remain in the earlier Pest files. No browser impersonation session was run.",
+    "PS-E06": "partial. Image Pest covers the 5 MiB boundary, five images, and unsafe files on SQLite. Anonymous browser POST /api/platform-support/uploads returned 403 private, no-store, with no token. Anonymous GET of an unknown attachment returned 401 private, no-store, with no bearer. The signed-in browser send did not run: the isolated test stopped before login because no disposable database fixture was supplied.",
+    "PS-E07": "partial. Image Pest covers replay, rollback, and prune on SQLite. Browser staging and a lost HTTP response were not run.",
+    "PS-E08": "partial. Core Pest proves one open chat, one conversion, and the unique constraints on SQLite. MySQL locking was not run. Two concurrent sessions were not executed.",
+    "PS-E09": "partial. Core Pest covers transitions, stale version 409, and eligible assignment. Not repeated in the browser.",
+    "PS-E10": "partial. Core Pest drains a long delta. Frontend unit tests cover poll stop conditions. No socket was added. A live hidden-panel poll and 429 backoff were not measured in the browser.",
+    "PS-E11": "partial. Notification Pest covers independent cursors and own-message exclusion. Browser summary and list agreement was not checked.",
+    "PS-E12": "not run. No worker, clock, or network measurement was taken. Delivery is not claimed.",
+    "PS-E13": "partial. Notification Pest covers retry, company context, muted bell, and no ticket, SMS, email, or Telegram event. The acceptance HTTP test also saw no new telegram_notifications row and no ticket_% notification. A separate queue worker process was not running.",
+    "PS-E14": "partial. Browser on CP opened Getting started, switched to Bangla and back on the same URL, showed FAQs, showed the honest empty video state, rejected an 81-character search without echoing it as a title, and returned 404 for an unknown slug. Dangerous Markdown and RSC output remain unit-tested. The catalog has no configured video.",
+    "PS-E15": "partial. CP, which does not have platform-support-admin.access, received 404 for /help/platform/inbox. Include this page was unchecked and the path was absent. Full inventory click-through and a configured video were not run. Video status remains not_configured.",
+    "PS-E16": "partial. Mobile 390px opened the help panel. Logout returned /help to the CP login. Desktop launcher, English/Bangla article, and light theme were exercised. Dark theme, image viewer, scroll position, keyboard-only desktop, and impersonation cache reset were not run. Escape did not unmount the mobile panel in an earlier attempt and was not claimed.",
+    "PS-E17": "partial. The acceptance HTTP test left the tickets count and telegram count unchanged. The CP browser still opened /tickets and tickets returned 200. No legacy route, schema, or permission name was edited. A dedicated legacy regression suite was not re-run."
+  }
+}

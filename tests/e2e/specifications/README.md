@@ -110,6 +110,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [subscription](subscription/SUBSCRIPTION-001.md) — source-inventoried-draft
 - [subscription-features](subscription-features/SUBSCRIPTION-FEATURES-001.md) — source-inventoried-draft
 - [subscription-plans](subscription-plans/SUBSCRIPTION-PLANS-001.md) — source-inventoried-draft
+- [platform-support](platform-support/PS-009-acceptance.md) — acceptance recorded, not release-ready
 - [support-tickets](support-tickets/SUPPORT-001-support-tickets.md) — detailed-draft
 - [tables](tables/TABLES-001.md) — source-inventoried-draft
 - [tags](tags/TAGS-001.md) — source-inventoried-draft

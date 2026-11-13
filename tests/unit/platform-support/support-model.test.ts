@@ -7,6 +7,7 @@ import {
     drainMessagePages,
     emptyHistory,
     issueCreatePayload,
+    supportSubmissionContext,
     markUploadResult,
     mergeMessagePage,
     payloadOmitsOwnership,
@@ -23,6 +24,7 @@ import {
     supportPollInterval,
     supportQueryKey,
     supportReplyUrl,
+    supportRequestId,
     supportScopes,
     type DraftImage,
     type MessageWindow,
@@ -113,6 +115,7 @@ describe("platform support scope", () => {
             clientRequestId: "33333333-3333-4333-8333-333333333333",
             draftId: "44444444-4444-4444-8444-444444444444",
             path: "/clients?token=secret",
+            includePage: true,
         });
         expect(payloadOmitsOwnership(created)).toBe(true);
         expect(created.context).toEqual({ path: "/clients" });
@@ -125,7 +128,30 @@ describe("platform support scope", () => {
             clientRequestId: "33333333-3333-4333-8333-333333333333",
             draftId: "44444444-4444-4444-8444-444444444444",
             path: "https://evil.example/clients",
+            includePage: true,
         }).context).toBeNull();
+        expect(issueCreatePayload({
+            subject: "Router",
+            category: "technical",
+            priority: "normal",
+            body: "Help",
+            tokens: [],
+            clientRequestId: "33333333-3333-4333-8333-333333333333",
+            draftId: "44444444-4444-4444-8444-444444444444",
+            path: "/clients?phone=01700000000",
+            includePage: false,
+            articleId: "clients.create?phone=01700000000",
+        }).context).toBeNull();
+        expect(supportSubmissionContext({
+            includePage: true,
+            path: "/help/clients/create?phone=01700000000#secret",
+            articleId: "clients.create?phone=01700000000",
+        })).toEqual({ path: "/help/clients/create", article_id: "clients.create" });
+        expect(supportSubmissionContext({
+            includePage: true,
+            path: "/clients/create?phone=01700000000",
+            articleId: "clients.create",
+        })).toEqual({ path: "/clients/create" });
         expect(payloadOmitsOwnership(chatStartPayload("33333333-3333-4333-8333-333333333333", "/clients"))).toBe(true);
     });
 
@@ -279,6 +305,22 @@ describe("platform support composer state", () => {
         const denied = new ApiRequestError("Insufficient permission.", 403, "platform_support.forbidden");
         expect(supportActions(thread({ abilities: { ...thread().abilities, can_reply: false, can_resolve: false } }), true).send).toBe(false);
         expect(denied.status).toBe(403);
+    });
+});
+
+describe("support request ids", () => {
+    it("returns a uuid when randomUUID is missing", () => {
+        const cryptoWithOptionalUuid = crypto as Crypto & { randomUUID?: () => string };
+        const original = cryptoWithOptionalUuid.randomUUID;
+        cryptoWithOptionalUuid.randomUUID = undefined;
+        try {
+            const first = supportRequestId();
+            const second = supportRequestId();
+            expect(first).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+            expect(second).not.toBe(first);
+        } finally {
+            cryptoWithOptionalUuid.randomUUID = original;
+        }
     });
 });
 

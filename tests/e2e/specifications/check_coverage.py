@@ -27,7 +27,7 @@ def main():
     documented = set()
     for feature in features:
         documented.update(re.findall(
-            r"^- ((?:FT\d+-\d+)|(?:(?:CL|DB|ST|IV|EX|RS|NW)-[A-Z]\d+)) \[",
+            r"^- ((?:FT\d+-\d+)|(?:(?:CL|DB|ST|IV|EX|RS|NW)-[A-Z]\d+)|(?:PS-E\d+)) \[",
             (BASE / feature["ticket"]).read_text(), re.M,
         ))
     assert documented == set(ids), "Ticket scenarios and register differ"

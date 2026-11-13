@@ -1,3 +1,33 @@
+## Platform support composer id — 2026-11-13
+
+`crypto.randomUUID` is missing on `http://mk.isp.test`, so the issue composer crashed while creating its draft id. Draft, request, and chat ids now come from `supportRequestId()`, which uses `crypto.getRandomValues`. The model test covers a missing `randomUUID`. On the open MK session, `/platform-support?kind=issue&compose=issue` rendered the subject, message, and image fields with no runtime error. `typeof crypto.randomUUID` was still `undefined` on that page.
+
+## PS-009 acceptance — 2026-11-13
+
+PS-009 is reviewable and not release-ready. No PS-E scenario is marked fully passed. Evidence is in `.ai/features/platform-support/evidence/`.
+
+Added `playwright.platform-support.config.ts`, `npm run test:e2e:platform-support`, and the platform-support spec workspace. The root runner discovers the config. The legacy config still lists only its 11 root specs. On CP, 6 chromium checks passed: anonymous login walls, the launcher and legacy tickets list, anonymous upload 403 and attachment 401 with `private, no-store` and no bearer, logout back to login, mobile help panel, English/Bangla article, empty videos, and the hidden platform guide. The isolated image-send test failed before any request because no disposable database fixture was supplied. `npm run test:e2e` will fail that project until the fixture exists.
+
+The mobile drawer ignores a close in the first 400ms so the opening press does not dismiss the sheet. Help content check: 184 articles. Focused Vitest: 90 passed, plus 2 launcher tests. `scripts/ai/frontend-check` typecheck completed. Full Vitest then failed the same 19 unrelated tests in maps, reseller-client, client dashboard, column visibility, date-picker, and pay. 689 passed.
+
+PS-E12 was not measured. Videos remain `not_configured`. MySQL locking was not run. No deploy or push. The sibling backend report covers the new Pest file.
+
+## PS-008 Help Centre — 2026-11-13
+
+Added the staff Help Centre at `/help` and `/help/[...slug]`, and connected it to the existing Help launcher. The launcher stays in the dashboard layout. Every signed-in staff user can open Help. Report an issue, Chat, and My requests still require `platform-support.access`. Context suggestions come from `GET /api/help/context`, which reuses the PS-007 actor and article policy. It is staff-only and `private, no-store`. No Laravel documentation endpoint was added.
+
+The library is now 184 published English/Bangla articles. `content/help/coverage.json` maps 121 dashboard routes: 113 covered and 9 excluded. All six coverage batches are in that file. Video status is `not_configured` everywhere. A fixture test builds a `youtube-nocookie` embed without autoplay; no real video id is in the catalog. Include this page is off by default, strips the query and hash, and adds an article id only for `/help/...`.
+
+`node scripts/check-help-content.mjs` printed `help content ok (184 articles)` and the existing Node module-type warning. `scripts/ai/typecheck` exited 0. `scripts/ai/frontend-check` then failed the same 19 Vitest tests in maps, reseller-client, client dashboard, column visibility, date-picker, and pay. 689 tests passed. Those files were not part of this change. Focused help and launcher tests passed. No signed-in browser session was run. Bangla text was written in this change and was not independently reviewed. isp-backend was not edited. PS-009 was not started.
+
+### Checks
+
+- `node scripts/check-help-content.mjs` — exit 0, 184 articles.
+- `npx vitest run tests/unit/help tests/unit/platform-support/support-model.test.ts tests/unit/platform-support/support-launcher.test.tsx` — 6 files, 44 passed, before the last context assertion. That assertion is in the full run below.
+- `scripts/ai/typecheck` — exit 0.
+- `scripts/ai/frontend-check` — typecheck exit 0. Full Vitest failed 19 unrelated tests. 689 passed.
+- `scripts/ai/status` and `scripts/ai/diff` after the code edit. Tracked diff was 18 files, +4083/−73, and 4606 lines. Final status, including this report, is 21 modified files and 140 untracked paths. Branch `master` tracks `origin/master` and was not committed or pushed.
+
 ## PS-007 documentation engine — 2026-11-13
 
 Added a file-based help library under `content/help` and server routes at `/api/help/articles/{id}`, `/api/help/search`, and `/api/help/media/{articleId}/{file}`. Twelve published articles exist in English and Bangla: getting started, contact, report an issue, chat, images, convert chat, clients overview, add client, invoices overview, and three short FAQs. Chat, images, and conversion are separate articles because their permissions differ. No Help Centre page was added.

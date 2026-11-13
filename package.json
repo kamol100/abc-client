@@ -19,7 +19,8 @@
     "test:e2e:legacy": "playwright test --config=playwright.config.ts",
     "test:e2e:invoices": "playwright test --config=playwright.invoices.config.ts",
     "test:e2e:resellers": "playwright test --config=playwright.resellers.config.ts",
-    "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium"
+    "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium",
+    "test:e2e:platform-support": "playwright test --config=playwright.platform-support.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

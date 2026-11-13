@@ -3,8 +3,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { usePathname } from "next/navigation";
 import { ImagePlus, X } from "lucide-react";
+import { IncludePageControl, useSupportWidget } from "@/components/platform-support/support-widget";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import MyButton from "@/components/my-button";
@@ -28,7 +28,7 @@ import {
     readyTokens,
     releasePreviewUrls,
     submitAttempt,
-    supportContextPath,
+    supportRequestId,
     supportErrorKey,
     supportErrorParts,
     priorRequestDelivered,
@@ -140,7 +140,7 @@ export function SupportImageDraft({
         const selected = [...(list ?? [])];
         if (selected.length === 0 || disabled) return;
         const incoming = selected.map((file) => ({
-            localId: crypto.randomUUID(),
+            localId: supportRequestId(),
             name: file.name,
             size: file.size,
             type: file.type,
@@ -323,10 +323,10 @@ export function SupportComposer({
     onReconciled?: (messages: ReturnType<typeof parseMessageWindow>) => void;
 }) {
     const { t } = useTranslation();
-    const pathname = usePathname();
+    const widget = useSupportWidget();
     const [images, setImages] = useState<DraftImage[]>([]);
     const [notice, setNotice] = useState<string | null>(null);
-    const [draft] = useState(() => draftId ?? crypto.randomUUID());
+    const [draft] = useState(() => draftId ?? supportRequestId());
     const pendingRef = useRef<DraftSubmit | null>(null);
     const imagesRef = useRef(images);
     imagesRef.current = images;
@@ -346,7 +346,7 @@ export function SupportComposer({
         }
         const body = String(values.body ?? values.subject ?? "");
         const tokens = readyTokens(imagesRef.current);
-        const decision = submitAttempt(pendingRef.current, `${body}\n${tokens.join("\n")}`, tokens, crypto.randomUUID());
+        const decision = submitAttempt(pendingRef.current, `${body}\n${tokens.join("\n")}`, tokens, supportRequestId());
         const reconcileUrl = threadId ? supportHistoryUrl(audience, threadId) : null;
         if (decision.reconcileFirst && pendingRef.current && reconcileUrl) {
             const previousId = pendingRef.current.clientRequestId;
@@ -371,7 +371,7 @@ export function SupportComposer({
 
     const transformPayload = (values: FieldValues) => {
         const pending = pendingRef.current;
-        const requestId = pending?.clientRequestId ?? crypto.randomUUID();
+        const requestId = pending?.clientRequestId ?? supportRequestId();
         const tokens = pending?.tokens ?? readyTokens(imagesRef.current);
         const body = String(values.body ?? "");
         if (mode === "issue") {
@@ -383,7 +383,9 @@ export function SupportComposer({
                 tokens,
                 clientRequestId: requestId,
                 draftId: draft,
-                path: supportContextPath(pathname),
+                path: widget.contextPath,
+                includePage: widget.includePage,
+                articleId: widget.articleId,
             });
         }
         if (mode === "convert") {
@@ -405,6 +407,7 @@ export function SupportComposer({
                     {t(notice)}
                 </p>
             )}
+            {mode === "issue" && <IncludePageControl />}
             <FormBuilder
                 formSchema={fields}
                 schema={schema}

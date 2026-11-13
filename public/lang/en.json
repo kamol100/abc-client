@@ -9525,5 +9525,42 @@
             "history_retained": "The conversation history was kept.",
             "ineligible_assignee": "That agent cannot be assigned."
         }
+    },
+    "help": {
+        "title": "Help",
+        "description": "Guides, FAQs, and videos for the screens you can open.",
+        "search_label": "Search help",
+        "search_placeholder": "Search guides",
+        "search_submit": "Search",
+        "open_centre": "Open Help Centre",
+        "guide_link": "Open the guide for this form",
+        "related": "Related guides",
+        "on_this_page": "On this page",
+        "back_to_feature": "Back to this feature",
+        "breadcrumb": "Help",
+        "language": "Article language",
+        "language_en": "English",
+        "language_bn": "বাংলা",
+        "loading": "Loading help",
+        "error": "Help could not be loaded.",
+        "retry": "Try again",
+        "empty_page": "No guide is published for this page. General support is listed here.",
+        "empty_search": "No matching guides.",
+        "empty_videos": "No video is configured.",
+        "include_page": "Include this page",
+        "include_page_hint": "Sends the page path only. Query strings, hashes, and form values are left out.",
+        "tabs": {
+            "label": "Help topics",
+            "page": "This page",
+            "guides": "Guides",
+            "faqs": "FAQs",
+            "videos": "Videos"
+        },
+        "video": {
+            "spoken_en": "Spoken language: English",
+            "spoken_bn": "Spoken language: Bangla",
+            "open": "Open the video",
+            "unavailable": "This video could not be played."
+        }
     }
 }
