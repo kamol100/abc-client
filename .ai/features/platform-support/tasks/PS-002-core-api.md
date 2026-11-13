@@ -65,7 +65,7 @@ Acceptance evidence is `tests/Feature/PlatformSupportCoreTest.php` unless noted.
 
 Remaining blockers:
 
-- Attachments, read cursors, summaries, notifications, and rate limits stay with PS-003 and PS-004. Upload and read routes are still 204. `can_upload` can be true while upload does nothing.
+- Read cursors, summaries, notifications, and rate limits stay with PS-004. Summary and read routes are still 204. PS-003 replaced the upload and attachment 204 stubs.
 - SQLite does not prove InnoDB lock behavior. The disposable MySQL plan is in PS-009 and was not executed.
 - `User.status = 0` is rejected for assignment and is still not a global lock.
 - Company purge deletes that tenant's support rows so the existing user delete can proceed. Reseller purge leaves the thread and its `reseller_id` after the reseller row is gone. Ordinary user and company deletes throw `platform_support.history_retained`.

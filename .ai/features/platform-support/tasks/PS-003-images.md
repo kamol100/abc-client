@@ -1,6 +1,6 @@
 # PS-003 — Private images for issues and chat
 
-Status: not started
+Status: reviewable
 Repositories: isp-backend; shadcn-client for upload/image transport adapters.
 Depends on: PS-002 complete.
 
@@ -33,4 +33,44 @@ Pest fake disk + real decoder fixtures for validation/security, route-handler tr
 
 ## Implementation record
 
-Changed files: pending. Commands/results: pending. Acceptance evidence: pending. Remaining blockers: pending.
+Status is reviewable. Composer, preview, and inbox screens stay in PS-005 and PS-006. No browser session was used.
+
+Changed files, isp-backend:
+
+- New: `database/migrations/2026_11_13_160000_create_platform_support_attachments.php`, `app/Models/PlatformSupportAttachment.php`, `app/Services/PlatformSupport/PlatformSupportImages.php`, `app/Http/Requests/PlatformSupport/StorePlatformSupportUploadRequest.php`, `app/Http/Controllers/V1/Admin/PlatformSupportUploadController.php`, `app/Jobs/PrunePlatformSupportUploadsJob.php`, `tests/Feature/PlatformSupportImageTest.php`.
+- Integration: `PlatformSupportException`, `PlatformSupportRequest`, `StorePlatformSupportThreadRequest`, `StorePlatformSupportMessageRequest`, `PlatformSupportLifecycle`, `PlatformSupportMessage`, `PlatformSupportMessageResource`, `PlatformSupportMessageWindow`, `PlatformSupportIdentity`, `routes/api.php`, `bootstrap/app.php`.
+- Not changed: `PrivateImageStorage` (2 MB), `php.ini`, nginx, and any MySQL database.
+
+Changed files, shadcn-client:
+
+- `lib/platform-support/attachment-transport.ts`, `lib/platform-support/attachment-proxy.ts`.
+- Route handlers under `app/api/platform-support/` and `app/api/platform-support-admin/` for upload, upload delete, and attachment.
+- `tests/unit/platform-support/attachment-transport.test.ts`, `tests/unit/platform-support/attachment-proxy.test.ts`.
+- `platform_support.errors` in `public/lang/en.json` and `public/lang/bn.json`.
+- Spec: this task, `02-data-and-api.md`, `README.md`, and the PS-002 remaining-blocker sentence. `next.config.ts` was not given a server-action body limit.
+
+Commands and results, 2026-11-13. Pest used SQLite `:memory:` and `Storage::fake('local')`.
+
+- `scripts/ai/backend-test tests/Feature/PlatformSupportImageTest.php tests/Feature/PlatformSupportCoreTest.php tests/Feature/PlatformSupportAuthorizationTest.php` — 26 passed, 523 assertions.
+- `scripts/ai/lint` on the changed PHP files — Pint passed. Pint reordered imports in `bootstrap/app.php` and the image test.
+- `scripts/ai/analyse` on the changed application files (controller, requests, services, models, resource, job, `routes/api.php`, `bootstrap/app.php`) — no errors. The migration and Pest file were Pint-checked and were not passed to PHPStan.
+- `scripts/ai/frontend-check` — typecheck passed, then the full Vitest run failed in suites this task did not edit (date picker, menu, maps, pay, client dashboard, reseller client table, column visibility). Those failures were not investigated.
+- `npx vitest run tests/unit/platform-support/attachment-transport.test.ts tests/unit/platform-support/attachment-proxy.test.ts` — 2 files, 10 tests passed.
+- `php -r` on this CLI: `memory_limit=128M`, `upload_max_filesize=2M`, `post_max_size=8M`, GD JPEG/PNG/WebP present. No production setting was changed.
+- `scripts/ai/status` and `scripts/ai/diff` inspected after the edits. No MySQL migrate, package install, or push.
+
+Acceptance evidence is `tests/Feature/PlatformSupportImageTest.php` for the API and the two Vitest files for the proxy, unless noted.
+
+- PS-003-A: an image-only issue stores one JPEG attachment and an image-only chat stores PNG and WebP. A JPEG padded to exactly 5,242,880 bytes is accepted and stored smaller after re-encode. One more input byte is 422 `image_too_large`. `CONTENT_LENGTH` over 6 MiB is 413 `request_too_large`. A 12001-pixel PNG header is 422 `image_dimensions` before decode. GIF, SVG, PDF, a JPEG name with SVG bytes, a corrupt PNG, and an 8×8 header are 422. Six tokens create no message; five attach. A re-encoded file that itself exceeds 5 MiB is rejected in `PlatformSupportImages`; no fixture forced that branch.
+- PS-003-B: a sibling reseller, another company, the wrong draft, and a draft token used as a reply token are 404 and leave `message_id` null. An expired thread token is 422 `attachment_expired` and stays unattached. A platform upload's `company_id` is the target thread's company, the audience is `platform`, and the landlord tenant is still 1. A company reader can GET the sent image and the message metadata, and POST to the colleague thread is 403 `forbidden`. The reader can stage and preview their own draft. The owner receives 404 for that staged draft.
+- PS-003-C: upload and message JSON omit the storage key and the raw token. The file is on the `local` disk, not `public`. Preview is `image/jpeg`, `private, no-store`, and `nosniff`, and the stored bytes do not contain the JPEG comment. After `company.access` is revoked, the reader GET and the message list are 404. A platform user with show, messages, and attachment, and without upload, can GET the image and receives 403 on upload. An anonymous GET is 401. Another company GET is 404. The same URL is used before and after those denials. No public symlink or thumbnail route was added.
+- PS-003-D: the same reply request returns one message and five attachments. A batch with one unknown token is 422 `attachment_invalid`, adds no message, and leaves the valid token unattached. A closed thread reply is 409 and leaves the new token unattached. Delete removes the row and the file. A `creating` failure removes the file that was written. The prune job, after the tenant is removed, deletes an expired unattached file and keeps an attached file whose `expires_at` is in the past, then `Landlord::hasTenant('company_id')` is false.
+- PS-003-E: the browser client posts `FormData` to a fixed same-origin path, sends `X-Requested-With`, and does not set `Authorization`. The proxy rejects a mismatched `Origin` with 403 before `fetch`, rejects a declared body over 6 MiB with 413, and returns upstream 401, 403, 404, 413, 422, and 429 with `Retry-After` and without `Set-Cookie`. Image bytes are streamed `private, no-store` and `nosniff`. A non-UUID never calls upstream. The admin delete path is fixed. No session returns 401. The request-limit prerequisite is in the transport comment and in `02-data-and-api.md`. `PrivateImageStorage::maxKilobytes()` is still 2048.
+
+Remaining blockers:
+
+- Summary and read routes are still 204. That is PS-004. Do not start it from this task.
+- This CLI cannot accept a real 5 MiB multipart upload until `upload_max_filesize` is at least 6M. `post_max_size` is already 8M. `memory_limit` is 128M and needs to be at least 512M before a large decode. The web server body limit was not measured. Changing those requires approval.
+- SQLite and `Storage::fake` do not prove MySQL row locks or a real disk failure after the process dies. The disposable MySQL plan stays in PS-009.
+- The attachment migration has run only inside SQLite tests. Applying it to a non-test database needs approval.
+- There is no composer or `<img>` screen yet, so the proxy was not verified in a browser. The full frontend Vitest suite was not green.

@@ -9291,5 +9291,20 @@
                 "invoice": "নভেম্বরের ইনভয়েস"
             }
         }
+    },
+    "platform_support": {
+        "errors": {
+            "image_invalid": "JPEG, PNG, বা WebP ছবি ব্যবহার করুন।",
+            "image_too_large": "প্রতিটি ছবি সর্বোচ্চ ৫ এমবি হতে পারে।",
+            "image_dimensions": "এই ছবিটি প্রক্রিয়া করার জন্য অনেক বড়।",
+            "image_encoder_unavailable": "এই ছবিটি প্রস্তুত করা যায়নি। অন্য একটি ফাইল চেষ্টা করুন।",
+            "request_too_large": "আপলোড ৬ এমবির চেয়ে বড়।",
+            "attachment_invalid": "একটি ছবি নেই বা আর পাওয়া যাচ্ছে না।",
+            "attachment_expired": "একটি ছবির মেয়াদ শেষ। আবার আপলোড করুন।",
+            "attachment_consumed": "একটি ছবি ইতিমধ্যে পাঠানো হয়েছে।",
+            "duplicate_attachment": "একই ছবি একাধিকবার বেছে নেওয়া হয়েছে।",
+            "too_many_attachments": "একটি বার্তায় সর্বোচ্চ পাঁচটি ছবি যোগ করা যায়।",
+            "draft_required": "পাঠানোর আগে ছবিগুলো আবার আপলোড করুন।"
+        }
     }
 }

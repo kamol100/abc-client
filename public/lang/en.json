@@ -9291,5 +9291,20 @@
             },
             "sample_alt": "The customer's My Info card: account, connection and ONU status, expiry and package"
         }
+    },
+    "platform_support": {
+        "errors": {
+            "image_invalid": "Use a JPEG, PNG, or WebP image.",
+            "image_too_large": "Each image must be 5 MB or smaller.",
+            "image_dimensions": "This image is too large to process.",
+            "image_encoder_unavailable": "This image could not be prepared. Try another file.",
+            "request_too_large": "The upload is larger than 6 MB.",
+            "attachment_invalid": "An image is missing or no longer available.",
+            "attachment_expired": "An image expired. Upload it again.",
+            "attachment_consumed": "An image was already sent.",
+            "duplicate_attachment": "The same image was selected more than once.",
+            "too_many_attachments": "A message can include up to five images.",
+            "draft_required": "Upload the images again before sending."
+        }
     }
 }
