@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const access = vi.hoisted(() => ({ names: ["platform-support.access"] }));
+const access = vi.hoisted(() => ({ names: ["platform-support.access", "platform-support.create"] }));
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
@@ -44,7 +44,10 @@ vi.mock("next/navigation", () => ({
 
 describe("platform support launcher", () => {
     beforeEach(() => {
-        access.names = ["platform-support.access"];
+        vi.stubGlobal("matchMedia", vi.fn(() => ({
+            matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(),
+        })));
+        access.names = ["platform-support.access", "platform-support.create"];
         vi.stubGlobal("fetch", vi.fn(async () => ({
             ok: true,
             json: async () => ({ data: { matched: false, page: [], related: [], general: [] } }),
@@ -62,6 +65,16 @@ describe("platform support launcher", () => {
         expect(screen.getByTestId("platform-support-chat")).toHaveAttribute("href", "/platform-support?kind=chat&compose=chat");
         expect(screen.getByTestId("platform-support-requests")).toHaveAttribute("href", "/platform-support");
         expect(screen.getByTestId("help-centre-link")).toHaveAttribute("href", "/help");
+    });
+
+    it("keeps requests available without showing actions that create a conversation", async () => {
+        access.names = ["platform-support.access"];
+        const user = userEvent.setup();
+        render(<SupportRuntime><div>Staff page</div></SupportRuntime>);
+        await user.click(screen.getByTestId("platform-support-launcher"));
+        expect(screen.getByTestId("platform-support-requests")).toBeInTheDocument();
+        expect(screen.queryByTestId("platform-support-report")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("platform-support-chat")).not.toBeInTheDocument();
     });
 
     it("keeps Help available when platform support is not granted", async () => {

@@ -279,11 +279,13 @@ export function SupportAttachmentGallery({
                             showFooter={false}
                             size="xl"
                             trigger={(
-                                <button type="button" className="overflow-hidden rounded-md border border-border">
+                                <MyButton type="button" unstyled aria-label={t("platform_support.images.preview") + ": " + attachment.filename}
+                                    className="h-auto max-w-full flex-col items-start gap-0 overflow-hidden rounded-lg border border-border bg-card text-start hover:border-primary/40">
                                     {/* Authenticated same-origin image. */}
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={path} alt={attachment.filename} className="h-20 w-20 object-cover" />
-                                </button>
+                                    <img src={path} alt={attachment.filename} className="h-24 w-36 max-w-full object-cover sm:h-28 sm:w-44" />
+                                    <span className="block max-w-36 truncate px-2 py-1.5 text-xs font-normal text-muted-foreground sm:max-w-44">{attachment.filename}</span>
+                                </MyButton>
                             )}
                         >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -307,6 +309,8 @@ export function SupportComposer({
     version = 1,
     audience = "requester",
     allowImages = true,
+    embedded = false,
+    sendOnEnter = false,
     onAcknowledged,
     onConflict,
     onReconciled,
@@ -318,6 +322,8 @@ export function SupportComposer({
     version?: number;
     audience?: SupportImageAudience;
     allowImages?: boolean;
+    embedded?: boolean;
+    sendOnEnter?: boolean;
     onAcknowledged?: (response: Record<string, unknown> | undefined) => void;
     onConflict?: () => void;
     onReconciled?: (messages: ReturnType<typeof parseMessageWindow>) => void;
@@ -328,6 +334,7 @@ export function SupportComposer({
     const [notice, setNotice] = useState<string | null>(null);
     const [draft] = useState(() => draftId ?? supportRequestId());
     const pendingRef = useRef<DraftSubmit | null>(null);
+    const sendingRef = useRef(false);
     const imagesRef = useRef(images);
     imagesRef.current = images;
     const versionRef = useRef(version);
@@ -416,12 +423,25 @@ export function SupportComposer({
                 mode="create"
                 skipInvalidate
                 resetOnSuccess={mode !== "issue"}
-                submitTitle="platform_support.composer.send"
+                actionButtonClass={cn("justify-end", embedded && "static mt-2 border-0 bg-transparent pt-0 [&>button:first-of-type]:hidden")}
+                submitTitle={mode === "issue" ? "platform_support.actions.report_issue" : mode === "convert" ? "platform_support.convert" : "platform_support.composer.send"}
                 successMessage={mode === "convert" ? undefined : "platform_support.composer.sent"}
                 data={mode === "message" ? { attachment_count: 0 } : { priority: "normal", category: "general", attachment_count: 0 }}
-                preparePayload={preparePayload}
+                preparePayload={async (values) => {
+                    if (!sendOnEnter) return preparePayload(values);
+                    if (sendingRef.current) return false;
+                    sendingRef.current = true;
+                    let prepared: FieldValues | false = false;
+                    try {
+                        prepared = await preparePayload(values);
+                        return prepared;
+                    } finally {
+                        if (prepared === false) sendingRef.current = false;
+                    }
+                }}
                 transformPayload={transformPayload}
                 onSubmitError={(error) => {
+                    sendingRef.current = false;
                     if (pendingRef.current && submissionAmbiguous(error)) {
                         pendingRef.current = { ...pendingRef.current, ambiguous: true };
                     }
@@ -435,6 +455,7 @@ export function SupportComposer({
                         : supportErrorKey(supportErrorParts(error).code));
                 }}
                 onSuccess={(response, payload) => {
+                    sendingRef.current = false;
                     if (response && payload && resumedChatNeedsMessage(response, payload)) {
                         setNotice("platform_support.chat.resumed_unsent");
                         return;
@@ -446,18 +467,35 @@ export function SupportComposer({
                 }}
             >
                 {(renderField) => (
-                    <div className="grid gap-4">
+                    <div className={cn("grid min-w-0 gap-3", mode !== "message" && "sm:grid-cols-2")}>
                         {fields.map((field) => (
-                            <div key={field.name}>{renderField(field)}</div>
+                            <div
+                                key={field.name}
+                                className={cn("min-w-0", (field.name === "subject" || field.name === "body") && "sm:col-span-2")}
+                                onKeyDown={sendOnEnter && field.name === "body" ? (event) => {
+                                    if (
+                                        event.defaultPrevented || event.key !== "Enter" || event.shiftKey
+                                        || event.altKey || event.ctrlKey || event.metaKey
+                                        || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229
+                                        || !(event.target instanceof HTMLTextAreaElement)
+                                    ) return;
+                                    event.preventDefault();
+                                    if (!event.repeat && !sendingRef.current) {
+                                        event.target.form?.querySelector<HTMLButtonElement>('button[type="submit"]')?.click();
+                                    }
+                                } : undefined}
+                            >
+                                {renderField(field)}
+                            </div>
                         ))}
                         {mode !== "convert" && allowImages && (
-                            <SupportImageDraft
+                            <div className="min-w-0 sm:col-span-2"><SupportImageDraft
                                 images={images}
                                 onChange={setImages}
                                 audience={audience}
                                 draftId={mode === "issue" ? draft : undefined}
                                 threadId={mode === "message" ? threadId : undefined}
-                            />
+                            /></div>
                         )}
                     </div>
                 )}

@@ -1,7 +1,7 @@
 # Platform Help and Support — implementation specification
 
-Status: PS-001 through PS-009 are reviewable. PS-009 is not release-ready.
-Version: 1.0 · 13 November 2026
+Status: PS-001 through PS-009 are reviewable. PS-009 is not release-ready. PS-010 is implemented and ready for design review, with full acceptance open.
+Version: 1.3 · 13 November 2026
 
 This folder is the implementation source of truth for the new platform-support feature. It supersedes alternatives in `.ai/support-architecture.md`. The existing `tickets` / `ticket_messages` system is preserved for tenants and their customers. Do not extend it to implement this feature.
 
@@ -29,6 +29,9 @@ All models, routes, permission names and paths described as proposed are new con
 - [PS-007 — bilingual Markdown and content authorization](tasks/PS-007-documentation.md)
 - [PS-008 — contextual Help Centre, FAQ, video and search UI](tasks/PS-008-help-centre.md)
 - [PS-009 — end-to-end acceptance and release readiness](tasks/PS-009-acceptance.md)
+- [PS-010 — redesign using the HTML reference and current app conventions](tasks/PS-010-visual-redesign.md)
+
+PS-010 is the current follow-up for the pre-production feature. The redesign applies the HTML reference within the application's sidebar, menu, theme, and shared component conventions. See the [implementation and review evidence](evidence/PS-010/README.md) for the checks performed and the remaining acceptance work.
 
 Implement one task at a time, in this order. Dependencies must pass their acceptance criteria before downstream work uses their contracts. Do not mark an upstream task complete with production placeholders, fabricated endpoints, always-true permissions or mocked authorization. Each task starts as **not started**; change its status only with evidence in its Implementation record. Automated tests may of course use controlled fixtures/fakes.
 
@@ -36,7 +39,7 @@ Implement one task at a time, in this order. Dependencies must pass their accept
 
 Read both relevant AGENTS.md files and task workflows. Before changes, inspect `scripts/ai/status` in each repository being edited. Read canonical `isp-backend/docs/architecture/multi-tenancy.md`, the frontend architecture rule, and nearest source twins. Follow existing layers and wrappers. No edits to legacy ticket product code, subscriber pages or shadcn primitives are authorized by these specs.
 
-Keep public API envelopes compatible. Every new endpoint needs server authorization; permissions in the UI only control presentation. New dependencies, package installs, production settings, migrations against non-test databases, deploy and git push still require the applicable human approval. Writing this spec does not authorize those operations. Ordinary implementation, local checks and SQLite test migrations proceed under repository rules.
+Keep the standard API envelope and unrelated consumers compatible. PS-010 explicitly permits coordinated changes to pre-production platform-support APIs with all affected consumers/tests/docs updated; no extra scope approval is required solely for those necessary changes. Every new or changed endpoint needs server authorization; permissions in the UI only control presentation. New dependencies, package installs, production settings, migrations against non-test databases, deploy and git push still require the applicable human approval. Writing this spec does not authorize those operations. Ordinary implementation, local checks and SQLite test migrations proceed under repository rules.
 
 Maintain English/Bangla UI keys and update content editions together. Use MyButton, MyDrawer/MyDialog, Card, DataTable, FormBuilder/AccordionFormBuilder, useApiQuery and useApiMutation. Extend project components minimally if they cannot handle image attachments; do not silently add another form framework.
 

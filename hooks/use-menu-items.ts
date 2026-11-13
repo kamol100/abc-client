@@ -119,17 +119,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       ],
     },
     {
-      id: 38,
-      title: t("menu.platform_support.title"),
-      url: "/platform-support",
-      icon: Headset,
-      permissions: ["platform-support.access"],
-      items: [
-        { title: t("menu.platform_support.issues"), url: "/platform-support?kind=issue", permission: "platform-support.access" },
-        { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
-      ],
-    },
-    {
       id: 39,
       title: t("menu.platform_support_inbox.title"),
       url: "/platform-support-admin",
@@ -412,6 +401,18 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.subscription.companies"), url: "/company-subscriptions", permission: "company-subscriptions.access" },
         { title: t("menu.subscription.plans"), url: "/subscription-plans", permission: "subscription-plans.access" },
         { title: t("menu.subscription.features"), url: "/subscription-features", permission: "features.access" },
+      ],
+    },
+    {
+      id: 38,
+      title: t("menu.platform_support.title"),
+      url: "/platform-support",
+      icon: Headset,
+      permissions: ["platform-support.access"],
+      items: [
+        { title: t("menu.platform_support.issues"), url: "/platform-support?kind=issue", permission: "platform-support.access" },
+        { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
+        { title: t("help.title"), url: "/help", permission: "platform-support.access" },
       ],
     },
     {

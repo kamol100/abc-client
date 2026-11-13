@@ -70,6 +70,23 @@ export interface SupportAttachment {
     height: number;
 }
 
+/** Summary values are counts from the authorized API, never derived from a page of threads. */
+export function parseSupportSummary(value: unknown) {
+    if (!value || typeof value !== "object") return null;
+    const row = value as Record<string, unknown>;
+    const count = (key: string) => {
+        const value = row[key];
+        return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : undefined;
+    };
+    return {
+        open_issues: count("open_issues"),
+        open_chats: count("open_chats"),
+        unread_threads: count("unread_threads"),
+        unread_messages: count("unread_messages"),
+        unassigned_threads: count("unassigned_threads"),
+    };
+}
+
 export interface SupportMessage {
     uuid: string;
     sequence: number;

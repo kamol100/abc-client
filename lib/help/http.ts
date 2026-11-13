@@ -1,3 +1,5 @@
+import { helpTopicFor } from "@/lib/help/topics";
+import type { HelpTopic } from "@/types/help-topic";
 import { readFileSync } from "node:fs";
 import type { HelpArticlePolicy, HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle, type HelpActor } from "@/lib/help/authorization";
@@ -91,6 +93,7 @@ export interface HelpArticleView {
 }
 
 export interface HelpCard {
+  topic: HelpTopic;
   id: string;
   slug: string;
   kind: HelpArticlePolicy["kind"];
@@ -165,6 +168,7 @@ function helpCard(
   if (!document) return null;
   return {
     id: article.id,
+    topic: helpTopicFor(article),
     slug: article.slug,
     kind: article.kind,
     title: document.title,

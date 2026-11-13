@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { FilePlus2, Headset, Link2, UserRound } from "lucide-react";
+import { MyDialog } from "@/components/my-dialog";
+import { SupportBadge, SupportDetail, SupportDetailPanel, SupportHeading, SupportIcon, supportPageClass } from "@/components/platform-support/support-ui";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
@@ -319,131 +322,16 @@ export default function SupportThreadView({
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <Card className="space-y-3 p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                        <p className="text-xs text-muted-foreground">{thread?.reference}</p>
-                        <h1 className="text-xl font-semibold text-foreground">
-                            {thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.title"))}
-                        </h1>
-                    </div>
-                    {thread && (
-                        <p className="text-sm text-muted-foreground">
-                            {t(`platform_support.statuses.${thread.status}`, { defaultValue: thread.status })}
-                            {" · "}
-                            {t(`platform_support.priorities.${thread.priority ?? "normal"}`, { defaultValue: thread.priority ?? "" })}
-                        </p>
-                    )}
-                </div>
-                <p className="text-sm text-foreground">
-                    {t("platform_support.requester")}: {thread?.requester.name ?? ""}
-                </p>
-                {thread?.linked_issue_uuid && (
-                    <Link className="text-sm text-foreground underline" href={`/platform-support/issues/${thread.linked_issue_uuid}`}>
-                        {t("platform_support.linked_issue")}
-                    </Link>
-                )}
-                {thread?.source_chat_uuid && (
-                    <Link className="text-sm text-foreground underline" href={`/platform-support/chats/${thread.source_chat_uuid}`}>
-                        {t("platform_support.linked_chat")}
-                    </Link>
-                )}
-                {notice && <p role="status" className="text-sm text-foreground">{t(notice)}</p>}
-                {actions && !actions.readOnly && (
-                    <div className="flex flex-wrap gap-2">
-                        {actions.resolve && (
-                            <MyButton type="button" variant="outline" onClick={() => runLifecycle("resolve")}>
-                                {t(thread?.kind === "chat" ? "platform_support.close" : "platform_support.resolve")}
-                            </MyButton>
-                        )}
-                        {actions.reopen && (
-                            <MyButton type="button" variant="outline" onClick={() => runLifecycle("reopen")}>
-                                {t("platform_support.reopen")}
-                            </MyButton>
-                        )}
-                        {actions.manage && thread && (
-                            <>
-                                <label className="sr-only" htmlFor="support-status">{t("platform_support.filters.status")}</label>
-                                <select
-                                    id="support-status"
-                                    className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
-                                    value={statusChoice}
-                                    onChange={(event) => setStatusChoice(event.target.value)}
-                                >
-                                    {supportManageStatuses(thread.kind).map((status) => (
-                                        <option key={status} value={status}>
-                                            {t(`platform_support.statuses.${status}`)}
-                                        </option>
-                                    ))}
-                                </select>
-                                <MyButton type="button" variant="outline" onClick={() => runLifecycle("status", statusChoice)}>
-                                    {t("platform_support.update_status")}
-                                </MyButton>
-                            </>
-                        )}
-                    </div>
-                )}
-                {actions?.readOnly && <p className="text-sm text-muted-foreground">{t("platform_support.read_only")}</p>}
-            </Card>
-
-            {sourceId && sourceHistory.messages.length > 0 && (
-                <Card className="space-y-3 p-4">
-                    <h2 className="text-sm font-semibold text-foreground">{t("platform_support.linked_history")}</h2>
-                    <MessageList messages={sourceHistory.messages} />
-                </Card>
-            )}
-
-            <Card className="flex min-h-80 flex-col p-4">
-                {history.hasOlder && (
-                    <MyButton
-                        type="button"
-                        variant="ghost"
-                        onClick={() => {
-                            const box = listRef.current;
-                            if (box) prependRef.current = { height: box.scrollHeight, top: box.scrollTop };
-                            const oldest = history.messages[0]?.sequence;
-                            if (oldest) setBefore(oldest);
-                        }}
-                    >
-                        {t("platform_support.load_older")}
-                    </MyButton>
-                )}
-                {messageQuery.isLoading && <p className="text-sm text-muted-foreground">{t("platform_support.loading")}</p>}
-                {messageQuery.isError && !blocked && (
-                    <SupportRetry messageKey="platform_support.load_failed" onRetry={() => void messageQuery.refetch()} />
-                )}
-                <div
-                    ref={listRef}
-                    className="flex max-h-[32rem] flex-1 flex-col gap-3 overflow-y-auto"
-                    onScroll={(event) => {
-                        const box = event.currentTarget;
-                        const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 48;
-                        atBottomRef.current = atBottom;
-                        if (atBottom) setUnseen(false);
-                    }}
-                >
-                    <MessageList messages={history.messages} ready={history.bootstrapped} />
-                </div>
-                {unseen && (
-                    <MyButton
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                            const box = listRef.current;
-                            if (!box) return;
-                            box.scrollTop = box.scrollHeight;
-                            setUnseen(false);
-                        }}
-                    >
-                        {t("platform_support.new_messages")}
-                    </MyButton>
-                )}
-            </Card>
-
-            {actions?.convert && thread && (
-                <Card className="p-4">
-                    <h2 className="mb-3 text-sm font-semibold text-foreground">{t("platform_support.convert")}</h2>
+        <div className={supportPageClass}>
+            <SupportHeading
+                back={{ href: "/platform-support", label: t("platform_support.title") }}
+                reference={thread?.reference}
+                title={thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.title"))}
+                action={thread && <><SupportBadge type="status" value={thread.status} />{actions?.convert && thread && <MyDialog size="xl" title="platform_support.convert"
+                    description="platform_support.redesign.convert_intro" showFooter={false}
+                    trigger={<MyButton type="button" variant="outline">
+                        <FilePlus2 className="size-4" aria-hidden />{t("platform_support.convert")}
+                    </MyButton>}>
                     <SupportComposer
                         mode="convert"
                         api={`platform-support/threads/${thread.uuid}/convert`}
@@ -458,35 +346,155 @@ export default function SupportThreadView({
                             if (issue) router.push(`/platform-support/issues/${issue.uuid}`);
                         }}
                     />
-                </Card>
-            )}
+                </MyDialog>}</>}
+            />
+            <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,25%)]">
+                <div className="min-w-0 space-y-4">
+                    <Card className="flex min-w-0 flex-col overflow-hidden shadow-none">
+                        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-6">
+                            <div className="flex items-center gap-3">
+                                <SupportIcon icon={Headset} />
+                                <div><h2 className="text-sm font-semibold">{t("platform_support.redesign.conversation")}</h2>
+                                    <p className="text-xs text-muted-foreground">{t("platform_support.redesign.conversation_intro")}</p></div>
+                            </div>
+                            {threadQuery.isError && thread && <p className="text-xs text-muted-foreground" role="status">{t("platform_support.inbox.stale")}</p>}
+                        </header>
+                        <div className="flex flex-wrap gap-2 px-4 pt-2 empty:hidden sm:px-6">
+                            {thread?.linked_issue_uuid && <MyButton asChild variant="outline"><Link href={`/platform-support/issues/${thread.linked_issue_uuid}`}><Link2 className="size-4" aria-hidden />{t("platform_support.linked_issue")}</Link></MyButton>}
+                            {thread?.source_chat_uuid && <MyButton asChild variant="outline"><Link href={`/platform-support/chats/${thread.source_chat_uuid}`}><Link2 className="size-4" aria-hidden />{t("platform_support.linked_chat")}</Link></MyButton>}
+                        </div>
+                        {notice && <p role="status" className="mx-4 mt-3 rounded-md border border-border bg-muted p-3 text-sm">{t(notice)}</p>}
+                        {sourceId && sourceHistory.messages.length > 0 && (
+                            <details className="mx-4 mt-3 rounded-lg border border-border bg-muted/30 p-3 sm:mx-6">
+                                <summary className="cursor-pointer text-sm font-medium">{t("platform_support.linked_history")}</summary>
+                                <div className="mt-3 max-h-72 overflow-y-auto">
+                                    <MessageList messages={sourceHistory.messages} />
+                                </div>
+                            </details>
+                        )}
+                        {history.hasOlder && (
+                            <MyButton
+                                type="button"
+                                variant="ghost"
+                                className="mx-4 mt-2 self-center"
+                                onClick={() => {
+                                    const box = listRef.current;
+                                    if (box) prependRef.current = { height: box.scrollHeight, top: box.scrollTop };
+                                    const oldest = history.messages[0]?.sequence;
+                                    if (oldest) setBefore(oldest);
+                                }}
+                            >
+                                {t("platform_support.load_older")}
+                            </MyButton>
+                        )}
+                        {messageQuery.isLoading && <p className="p-4 text-sm text-muted-foreground">{t("platform_support.loading")}</p>}
+                        {messageQuery.isError && !blocked && (
+                            <SupportRetry messageKey="platform_support.load_failed" onRetry={() => void messageQuery.refetch()} />
+                        )}
+                        <div
+                            ref={listRef}
+                            className="flex min-h-48 max-h-[min(32rem,55dvh)] flex-col gap-3 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6"
+                            onScroll={(event) => {
+                                const box = event.currentTarget;
+                                const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 48;
+                                atBottomRef.current = atBottom;
+                                if (atBottom) setUnseen(false);
+                            }}
+                        >
+                            <MessageList messages={history.messages} ready={history.bootstrapped} />
+                        </div>
+                        {unseen && (
+                            <MyButton
+                                type="button"
+                                variant="outline"
+                                className="mx-4 mb-3 self-center"
+                                onClick={() => {
+                                    const box = listRef.current;
+                                    if (!box) return;
+                                    box.scrollTop = box.scrollHeight;
+                                    setUnseen(false);
+                                }}
+                            >
+                                {t("platform_support.new_messages")}
+                            </MyButton>
+                        )}
+                    {actions?.send && thread && (
+                        <div className="border-t border-border bg-muted/20 p-4 sm:px-6">
+                            <SupportComposer
+                                mode="message"
+                                embedded
+                                sendOnEnter={thread.kind === "chat"}
+                                allowImages={actions.upload}
+                                api={supportReplyUrl(thread.uuid, owns)}
+                                threadId={thread.uuid}
+                                onConflict={() => void threadQuery.refetch()}
+                                onReconciled={(window) => {
+                                    if (!window) return;
+                                    setHistory((current) => mergeMessagePage(current, window, "newer"));
+                                }}
+                                onAcknowledged={(response) => {
+                                    const message = parseSupportMessage(response);
+                                    if (!message) return;
+                                    setHistory((current) => acknowledgeMessage(current, message));
+                                    void threadQuery.refetch();
+                                    void queryClient.invalidateQueries({
+                                        queryKey: supportQueryKey({ identity, scope, resource: "summary" }),
+                                    });
+                                    void queryClient.invalidateQueries({
+                                        queryKey: supportQueryKey({ identity, scope, resource: "threads" }),
+                                    });
+                                }}
+                            />
+                        </div>
+                    )}
+                    </Card>
+                </div>
+                <SupportDetailPanel>
 
-            {actions?.send && thread && (
-                <Card className="p-4">
-                    <SupportComposer
-                        mode="message"
-                        api={supportReplyUrl(thread.uuid, owns)}
-                        threadId={thread.uuid}
-                        onConflict={() => void threadQuery.refetch()}
-                        onReconciled={(window) => {
-                            if (!window) return;
-                            setHistory((current) => mergeMessagePage(current, window, "newer"));
-                        }}
-                        onAcknowledged={(response) => {
-                            const message = parseSupportMessage(response);
-                            if (!message) return;
-                            setHistory((current) => acknowledgeMessage(current, message));
-                            void threadQuery.refetch();
-                            void queryClient.invalidateQueries({
-                                queryKey: supportQueryKey({ identity, scope, resource: "summary" }),
-                            });
-                            void queryClient.invalidateQueries({
-                                queryKey: supportQueryKey({ identity, scope, resource: "threads" }),
-                            });
-                        }}
-                    />
-                </Card>
-            )}
+                    <SupportDetail label={t("platform_support.requester")}>{thread?.requester.name ?? "—"}</SupportDetail>
+                    {thread?.reseller?.name && <SupportDetail label={t("platform_support.inbox.reseller")}>{thread.reseller.name}</SupportDetail>}
+                    <SupportDetail label={t("platform_support.inbox.assignee")}>{thread?.assigned_agent?.name ?? t("platform_support.inbox.unassigned_agent")}</SupportDetail>
+                    {thread?.priority && <SupportDetail label={t("platform_support.filters.priority")}><SupportBadge type="priority" value={thread.priority} /></SupportDetail>}
+                    {thread?.category && <SupportDetail label={t("platform_support.filters.category")}>{t(`platform_support.categories.${thread.category}`, { defaultValue: thread.category })}</SupportDetail>}
+                    {thread?.last_activity_at && <SupportDetail label={t("platform_support.last_activity")}>{supportTime(thread.last_activity_at)}</SupportDetail>}
+                    {thread?.context?.path && <SupportDetail label={t("platform_support.redesign.page_context")}><span className="font-mono text-xs">{thread.context.path}</span></SupportDetail>}
+                    {actions && !actions.readOnly && (
+                        <div className="flex flex-wrap gap-2 border-t border-border pt-3">
+                            {actions.resolve && (
+                                <MyButton type="button" variant="outline" onClick={() => runLifecycle("resolve")}>
+                                    {t(thread?.kind === "chat" ? "platform_support.close" : "platform_support.resolve")}
+                                </MyButton>
+                            )}
+                            {actions.reopen && (
+                                <MyButton type="button" variant="outline" onClick={() => runLifecycle("reopen")}>
+                                    {t("platform_support.reopen")}
+                                </MyButton>
+                            )}
+                            {actions.manage && thread && (
+                                <>
+                                    <label className="sr-only" htmlFor="support-status">{t("platform_support.filters.status")}</label>
+                                    <select
+                                        id="support-status"
+                                        className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                                        value={statusChoice}
+                                        onChange={(event) => setStatusChoice(event.target.value)}
+                                    >
+                                        {supportManageStatuses(thread.kind).map((status) => (
+                                            <option key={status} value={status}>
+                                                {t(`platform_support.statuses.${status}`)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <MyButton type="button" variant="outline" onClick={() => runLifecycle("status", statusChoice)}>
+                                        {t("platform_support.update_status")}
+                                    </MyButton>
+                                </>
+                            )}
+                        </div>
+                    )}
+                    {actions?.readOnly && <p className="text-sm text-muted-foreground">{t("platform_support.read_only")}</p>}
+                </SupportDetailPanel>
+            </div>
         </div>
     );
 }
@@ -502,28 +510,31 @@ export function MessageList({
 }) {
     const { t } = useTranslation();
     if (!ready) return null;
-    if (messages.length === 0) return <p className="text-sm text-muted-foreground">{t("platform_support.empty_messages")}</p>;
+    if (messages.length === 0) return <p className="py-8 text-center text-sm text-muted-foreground">{t("platform_support.empty_messages")}</p>;
     return (
-        <ol className="flex flex-col gap-3">
-            {messages.map((message) => (
-                <li
-                    key={message.uuid}
-                    data-message-id={message.uuid}
-                    className={cn(
-                        "max-w-xl rounded-md border border-border px-3 py-2",
-                        message.author.side === "platform" ? "bg-muted" : "bg-background",
-                        message.author.is_self && "self-end",
-                    )}
-                >
-                    <p className="text-xs text-muted-foreground">
-                        {message.author.is_self ? t("platform_support.author.you") : message.author.name}
-                        {message.author.side === "platform" ? ` · ${t("platform_support.author.platform")}` : ""}
-                        {message.created_at ? ` · ${supportTime(message.created_at)}` : ""}
-                    </p>
-                    <SupportText value={message.body} />
-                    <SupportAttachmentGallery attachments={message.attachments} audience={audience} />
-                </li>
-            ))}
+        <ol className="flex min-w-0 flex-col gap-5">
+            {messages.map((message) => {
+                const own = message.author.is_self;
+                const agent = message.author.side === "platform";
+                const label = own ? t("platform_support.author.you") : message.author.name || (agent ? t("platform_support.author.platform") : t("platform_support.requester"));
+                const Icon = agent ? Headset : UserRound;
+                return <li key={message.uuid} data-message-id={message.uuid}
+                    className={cn("flex w-fit min-w-0 max-w-full items-start gap-2.5 sm:max-w-[88%]", own && "flex-row-reverse self-end")}>
+                    <SupportIcon icon={Icon} className={cn("size-7 rounded-full [&>svg]:size-3.5", !agent && "bg-muted text-muted-foreground")} />
+                    <div className="min-w-0">
+                        <p className={cn("mb-1.5 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground", own && "justify-end")}>
+                            <span className="break-words font-medium text-foreground">{label}</span>
+                            {agent && <span>{t("platform_support.author.platform")}</span>}
+                            {message.created_at && <time dateTime={message.created_at}>{supportTime(message.created_at)}</time>}
+                        </p>
+                        <div className={cn("min-w-0 space-y-2 rounded-xl border border-border bg-muted/45 px-3.5 py-2.5",
+                            own ? "rounded-se-sm border-primary/15 bg-primary/[0.06]" : "rounded-ss-sm")}>
+                            <SupportText value={message.body} />
+                            <SupportAttachmentGallery attachments={message.attachments} audience={audience} />
+                        </div>
+                    </div>
+                </li>;
+            })}
         </ol>
     );
 }

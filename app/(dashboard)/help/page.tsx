@@ -17,5 +17,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HelpPage() {
   const page = await loadHelpIndex();
   if (!page) notFound();
-  return <HelpCentre cards={page.cards} />;
+  return <HelpCentre cards={page.cards} locale={page.locale} />;
 }

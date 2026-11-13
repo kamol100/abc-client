@@ -1,4 +1,5 @@
 import "server-only";
+import { helpTopicFor } from "@/lib/help/topics";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import type { HelpLocale } from "@/content/help/catalog";
@@ -34,6 +35,7 @@ export const loadHelpIndex = cache(async (): Promise<HelpIndexPage | null> => {
     const video = helpVideoEmbed(article.videos?.[document.locale] ?? article.videos?.[alternate]);
     return [{
       id: article.id,
+      topic: helpTopicFor(article),
       slug: article.slug,
       kind: article.kind,
       title: document.title,

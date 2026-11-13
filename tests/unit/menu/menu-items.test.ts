@@ -65,6 +65,7 @@ describe("admin menu order", () => {
       "/tags",
       "/platform-support?kind=issue",
       "/platform-support?kind=chat",
+      "/help",
       "/platform-support-admin?kind=issue",
       "/platform-support-admin?kind=chat",
       "/invoices",
@@ -254,6 +255,7 @@ describe("admin menu feature locks", () => {
     expect(urls(items)).toEqual([
       "/platform-support?kind=issue",
       "/platform-support?kind=chat",
+      "/help",
       "/subscription",
     ]);
     expect(group(items, 38).disabled).toBe(false);

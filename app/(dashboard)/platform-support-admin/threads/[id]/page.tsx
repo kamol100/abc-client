@@ -8,7 +8,7 @@ type Props = {
 
 export default async function PlatformSupportInboxThreadPage({ params }: Props) {
     const { id } = await params;
-    return <InboxThread threadId={id} />;
+    return <InboxThread key={id} threadId={id} />;
 }
 
 export const metadata: Metadata = {

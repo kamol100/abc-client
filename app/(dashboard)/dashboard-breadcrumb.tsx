@@ -20,6 +20,9 @@ import { useTranslation } from "react-i18next";
 const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/": "menu.dashboard.title",
   "/dashboard": "menu.dashboard.title",
+  "/help": "help.title",
+  "/platform-support": "menu.platform_support.title",
+  "/platform-support-admin": "menu.platform_support_inbox.title",
   "/clients": "menu.clients.title",
   "/reports": "menu.reports.title",
   "/reports/income-expense": "menu.reports.income_expense.title",
@@ -103,6 +106,9 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
  * ROUTE_TO_MENU_KEY match is found. Use for routes with [id] or other params.
  */
 const DYNAMIC_ROUTE_PATTERNS: { pattern: RegExp; key: string }[] = [
+  { pattern: /^\/help\//, key: "help.title" },
+  { pattern: /^\/platform-support\/(issues|chats)\//, key: "menu.platform_support.title" },
+  { pattern: /^\/platform-support-admin\/threads\//, key: "menu.platform_support_inbox.title" },
   { pattern: /^\/clients\/edit\/[^/]+$/, key: "client.edit_title" },
   { pattern: /^\/clients\/view\/[^/]+$/, key: "client.view_title" },
   { pattern: /^\/resellers\/edit\/[^/]+$/, key: "reseller.edit_title" },

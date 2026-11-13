@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format, isValid, parseISO } from "date-fns";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { SupportBadge, SupportViewLink } from "@/components/platform-support/support-ui";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import type { SupportThread } from "@/components/platform-support/support-model";
 
@@ -22,16 +23,10 @@ function SubjectCell({ thread }: { thread: SupportThread }) {
     const { t } = useTranslation();
     const label = thread.subject?.trim() || (thread.kind === "chat" ? t("platform_support.chat.untitled") : thread.reference ?? "");
     return (
-        <Link href={threadHref(thread)} className="font-medium text-foreground underline-offset-4 hover:underline">
+        <Link href={threadHref(thread)} className="block min-w-32 max-w-xs whitespace-normal break-words font-semibold leading-snug text-foreground underline-offset-4 hover:underline">
             {label}
         </Link>
     );
-}
-
-function LabelCell({ prefix, value }: { prefix: string; value: string | null }) {
-    const { t } = useTranslation();
-    if (!value) return null;
-    return <span>{t(`${prefix}.${value}`, { defaultValue: value })}</span>;
 }
 
 export const supportColumns: ColumnDef<SupportThread>[] = [
@@ -39,7 +34,7 @@ export const supportColumns: ColumnDef<SupportThread>[] = [
         accessorKey: "reference",
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.reference" />,
         cell: ({ row }) => (
-            <Link href={threadHref(row.original)} className="text-foreground">
+            <Link href={threadHref(row.original)} className="whitespace-nowrap font-mono text-xs font-medium text-muted-foreground hover:text-foreground">
                 {row.original.reference ?? ""}
             </Link>
         ),
@@ -60,19 +55,19 @@ export const supportColumns: ColumnDef<SupportThread>[] = [
     {
         accessorKey: "status",
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.filters.status" />,
-        cell: ({ row }) => <LabelCell prefix="platform_support.statuses" value={row.original.status} />,
+        cell: ({ row }) => <SupportBadge type="status" value={row.original.status} />,
         enableSorting: false,
     },
     {
         accessorKey: "priority",
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.filters.priority" />,
-        cell: ({ row }) => <LabelCell prefix="platform_support.priorities" value={row.original.priority} />,
+        cell: ({ row }) => <SupportBadge type="priority" value={row.original.priority} />,
         enableSorting: false,
     },
     {
         accessorKey: "unread_count",
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.unread" />,
-        cell: ({ row }) => <span>{row.original.unread_count > 0 ? row.original.unread_count : ""}</span>,
+        cell: ({ row }) => row.original.unread_count > 0 ? <span className="inline-flex min-w-5 justify-center rounded-full bg-primary/10 px-1.5 text-xs font-medium tabular-nums text-primary">{row.original.unread_count}</span> : null,
         enableSorting: false,
     },
     {
@@ -80,5 +75,12 @@ export const supportColumns: ColumnDef<SupportThread>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.last_activity" />,
         cell: ({ row }) => <span>{supportTime(row.original.last_activity_at)}</span>,
         enableSorting: false,
+    },
+    {
+        id: "actions",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="common.actions" />,
+        cell: ({ row }) => <SupportViewLink href={threadHref(row.original)} />,
+        enableSorting: false,
+        enableHiding: false,
     },
 ];

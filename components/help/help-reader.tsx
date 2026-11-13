@@ -1,12 +1,17 @@
 "use client";
 
+import { ArrowLeft, ArrowRight, BookOpen, List, MessageCircle } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { HelpArticleMarker } from "@/components/platform-support/support-widget";
 import { useLanguage } from "@/hooks/use-language";
 import { cn } from "@/lib/utils";
+import Card from "@/components/card";
+import MyButton from "@/components/my-button";
+import { HelpCardLink } from "@/components/help/help-centre";
+import { SupportIcon, supportPageClass } from "@/components/platform-support/support-ui";
+import { usePermissions } from "@/context/app-provider";
 
 interface HelpHeadingView {
   id: string;
@@ -97,85 +102,74 @@ export function HelpReader({
   const { t } = useTranslation();
   const { language, setLanguage } = useLanguage();
   const router = useRouter();
+  const { hasPermission } = usePermissions();
 
   return (
-    <article className="mx-auto grid w-full max-w-5xl gap-6 lg:grid-cols-[16rem_minmax(0,1fr)]">
+    <div className={supportPageClass}>
       <HelpArticleMarker articleId={articleId} />
-      <aside className="flex flex-col gap-4">
-        <nav aria-label={t("help.breadcrumb")} className="text-sm text-muted-foreground">
-          <Link href="/help" className="text-foreground underline-offset-4 hover:underline">{t("help.title")}</Link>
-        </nav>
-        {headings.length > 0 && (
-          <nav aria-label={t("help.on_this_page")} className="flex flex-col gap-2">
-            <h2 className="text-sm font-medium text-foreground">{t("help.on_this_page")}</h2>
-            {headings.map((heading) => (
-              <a
-                key={heading.id}
-                href={`#${heading.id}`}
-                className={cn(
-                  "text-sm text-foreground underline-offset-4 hover:underline",
-                  heading.level === 3 && "ps-3",
-                )}
-              >
-                {heading.text}
-              </a>
-            ))}
-          </nav>
-        )}
-      </aside>
-      <div className="flex min-w-0 flex-col gap-4">
-        <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">{title}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{summary}</p>
-          </div>
-          <div className="flex gap-2" role="group" aria-label={t("help.language")}>
-            {(["en", "bn"] as const).map((item) => (
-              <button
-                key={item}
-                type="button"
-                aria-pressed={language === item}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-sm",
-                  language === item ? "bg-primary text-primary-foreground" : "bg-muted text-foreground",
-                )}
-                onClick={() => {
-                  setLanguage(item);
-                  router.refresh();
-                }}
-              >
-                {t(item === "en" ? "help.language_en" : "help.language_bn")}
-              </button>
-            ))}
-          </div>
-        </header>
-        <HelpVideo video={video} title={title} />
-        <div
-          className="space-y-3 text-sm text-foreground [&_a]:underline [&_h2]:mt-6 [&_h2]:text-base [&_h2]:font-semibold [&_h3]:mt-4 [&_h3]:font-medium [&_ol]:list-decimal [&_ol]:ps-5 [&_ul]:list-disc [&_ul]:ps-5"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-        {featureHref && (
-          <p>
-            <Link href={featureHref} className="text-sm text-foreground underline-offset-4 hover:underline">
-              {t("help.back_to_feature")}
-            </Link>
-          </p>
-        )}
-        {related.length > 0 && (
-          <section className="flex flex-col gap-2" aria-label={t("help.related")}>
-            <h2 className="text-sm font-medium text-foreground">{t("help.related")}</h2>
-            {related.map((item) => (
-              <Link
-                key={item.id}
-                href={`/help/${item.slug}`}
-                className="text-sm text-foreground underline-offset-4 hover:underline"
-              >
-                {item.title}
-              </Link>
-            ))}
-          </section>
-        )}
+      <nav aria-label={t("help.breadcrumb")}>
+        <MyButton url="/help" variant="ghost" className="-ms-2 text-muted-foreground">
+          <ArrowLeft className="size-4" aria-hidden />{t("help.open_centre")}
+        </MyButton>
+      </nav>
+      <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(12rem,24%)]">
+        <article className="min-w-0">
+          <Card className="overflow-hidden shadow-none">
+            <header className="space-y-3 border-b border-border bg-muted/25 p-5 sm:p-8">
+              <SupportIcon icon={BookOpen} />
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0 flex-1 basis-56">
+                  <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
+                  <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{summary}</p>
+                </div>
+                <div className="flex flex-wrap gap-1 rounded-lg border border-border bg-background p-1" role="group" aria-label={t("help.language")}>
+                  {(["en", "bn"] as const).map((item) => <MyButton key={item} type="button"
+                    variant={language === item ? "secondary" : "ghost"} aria-pressed={language === item}
+                    onClick={() => { setLanguage(item); router.refresh(); }}>
+                    {t(item === "en" ? "help.language_en" : "help.language_bn")}
+                  </MyButton>)}
+                </div>
+              </div>
+            </header>
+            <div className="space-y-5 p-5 sm:p-8">
+              {headings.length > 0 && <details className="rounded-lg border border-border bg-muted/30 p-3 lg:hidden">
+                <summary className="cursor-pointer text-sm font-semibold">{t("help.on_this_page")}</summary>
+                <ArticleContents headings={headings} />
+              </details>}
+              <HelpVideo key={video?.src} video={video} title={title} />
+              <div
+                className="max-w-prose space-y-4 break-words text-sm leading-7 text-foreground [&_a]:text-primary [&_a]:underline [&_code]:break-all [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_h2]:scroll-mt-6 [&_h2]:mt-7 [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:scroll-mt-6 [&_h3]:mt-5 [&_h3]:font-semibold [&_img]:max-w-full [&_img]:rounded-md [&_li]:pl-1 [&_ol]:list-decimal [&_ol]:ps-5 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-muted [&_pre]:p-3 [&_ul]:list-disc [&_ul]:ps-5"
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+              <footer className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
+                {featureHref && <MyButton url={featureHref} variant="outline">{t("help.back_to_feature")}<ArrowRight aria-hidden className="size-4" /></MyButton>}
+                {hasPermission("platform-support.create") && <MyButton url="/platform-support?kind=chat&compose=chat" variant="ghost">
+                  <MessageCircle aria-hidden className="size-4" />{t("platform_support.actions.chat")}
+                </MyButton>}
+              </footer>
+            </div>
+          </Card>
+        </article>
+        <aside className="min-w-0 space-y-4">
+          {headings.length > 0 && <Card className="hidden p-4 shadow-none lg:block">
+            <h2 className="flex items-center gap-2 text-sm font-semibold"><List className="size-4 text-muted-foreground" aria-hidden />{t("help.on_this_page")}</h2>
+            <ArticleContents headings={headings} />
+          </Card>}
+          {related.length > 0 && <Card className="divide-y divide-border p-1 shadow-none">
+            <h2 className="px-3 py-3 text-sm font-semibold">{t("help.related")}</h2>
+            {related.map((item) => <HelpCardLink key={item.id} card={{ ...item, kind: "guide" }} />)}
+          </Card>}
+        </aside>
       </div>
-    </article>
+    </div>
   );
+}
+
+function ArticleContents({ headings }: { headings: HelpHeadingView[] }) {
+  const { t } = useTranslation();
+  return <nav aria-label={t("help.on_this_page")} className="mt-2 flex flex-col gap-1">
+    {headings.map((heading) => <a key={heading.id} href={`#${heading.id}`}
+      className={cn("rounded-md px-2 py-1.5 text-sm leading-snug text-muted-foreground hover:bg-muted hover:text-foreground",
+        heading.level === 3 && "ms-3 border-s border-border")}>{heading.text}</a>)}
+  </nav>;
 }

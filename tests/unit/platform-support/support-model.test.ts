@@ -24,6 +24,7 @@ import {
     supportPollInterval,
     supportQueryKey,
     supportReplyUrl,
+    parseSupportSummary,
     supportRequestId,
     supportScopes,
     type DraftImage,
@@ -308,9 +309,21 @@ describe("platform support composer state", () => {
     });
 });
 
+describe("support summary cards", () => {
+    it("keeps authorized zero counts and omits unavailable or invalid metrics", () => {
+        expect(parseSupportSummary({ open_issues: 0, open_chats: 2, unread_messages: -1, unread_threads: "5" })).toEqual({
+            open_issues: 0,
+            open_chats: 2,
+            unread_threads: undefined,
+            unread_messages: undefined,
+            unassigned_threads: undefined,
+        });
+    });
+});
+
 describe("support request ids", () => {
     it("returns a uuid when randomUUID is missing", () => {
-        const cryptoWithOptionalUuid = crypto as Crypto & { randomUUID?: () => string };
+        const cryptoWithOptionalUuid: { randomUUID?: Crypto["randomUUID"] } = crypto;
         const original = cryptoWithOptionalUuid.randomUUID;
         cryptoWithOptionalUuid.randomUUID = undefined;
         try {

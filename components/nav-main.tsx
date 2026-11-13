@@ -2,7 +2,7 @@
 
 import { ChevronRight, Lock } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import {
   Collapsible,
@@ -35,9 +35,20 @@ export function isMenuPathActive(pathname: string, url: string, siblingUrls: str
   });
 }
 
+export function supportMenuLocation(pathname: string, kind: string | null): string {
+  if (pathname.startsWith("/platform-support/issues/")) return "/platform-support?kind=issue";
+  if (pathname.startsWith("/platform-support/chats/")) return "/platform-support?kind=chat";
+  if (pathname === "/platform-support" || pathname === "/platform-support-admin") {
+    return `${pathname}?kind=${kind === "chat" ? "chat" : "issue"}`;
+  }
+  return pathname;
+}
+
 export function NavMain({ items }: { items: NavMenuItem[] }) {
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
+  const kind = useSearchParams()?.get("kind") ?? null;
+  const location = supportMenuLocation(pathname, kind);
   const { t } = useTranslation();
   return (
     <SidebarGroup>
@@ -48,14 +59,15 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
             <Collapsible
               key={item.id}
               asChild
-              defaultOpen={item.items.some((sub) =>
-                isMenuPathActive(pathname, sub.url, item.items?.map((entry) => entry.url) ?? [])
+              defaultOpen={(item.url === "/platform-support-admin" && pathname.startsWith("/platform-support-admin/threads/")) || item.items.some((sub) =>
+                isMenuPathActive(location, sub.url, item.items?.map((entry) => entry.url) ?? [])
               )}
               className="group/collapsible"
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton tooltip={item.title}
+                    isActive={(item.url === "/platform-support" || item.url === "/platform-support-admin") && (pathname === item.url || pathname.startsWith(`${item.url}/`))}>
                     {item.icon && (
                       <div>
                         <item.icon size={20} />
@@ -70,7 +82,7 @@ export function NavMain({ items }: { items: NavMenuItem[] }) {
                   <SidebarMenuSub>
                     {item.items.map((subItem) => {
                       const siblingUrls = item.items?.map((entry) => entry.url) ?? [];
-                      const active = isMenuPathActive(pathname, subItem.url, siblingUrls);
+                      const active = isMenuPathActive(location, subItem.url, siblingUrls);
                       return (
                       <SidebarMenuSubItem
                         key={subItem.url}

@@ -9338,6 +9338,24 @@
         }
     },
     "platform_support": {
+        "redesign": {
+            "requests_intro": "Track issues and continue conversations with the platform team.",
+            "inbox_intro": "Review and respond to tenant and reseller requests.",
+            "issue_intro": "Tell us what happened. Add screenshots if they help explain the issue.",
+            "convert_intro": "Create an issue and keep the original conversation linked.",
+            "details": "Conversation details",
+            "conversation": "Conversation",
+            "conversation_intro": "Messages and attachments for this request.",
+            "page_context": "Page context",
+            "refresh": "Refresh",
+            "metrics": {
+                "open_issues": "Open issues",
+                "open_chats": "Open chats",
+                "unread_threads": "Unread conversations",
+                "unread_messages": "Unread messages",
+                "unassigned_threads": "Unassigned requests"
+            }
+        },
         "title": "Platform Support",
         "issues": "Issues",
         "chats": "Chats",
@@ -9527,6 +9545,33 @@
         }
     },
     "help": {
+        "redesign": {
+            "subtitle": "Guides and answers for your workspace.",
+            "eyebrow": "Knowledge base",
+            "hero_title": "What can we help you with?",
+            "hero_body": "Find a guide, look up an answer, or get help from the platform team.",
+            "browse": "Browse by topic",
+            "available": "Guides available to your role",
+            "results": "Search results",
+            "clear": "Back to topics",
+            "guide_count_one": "{{count}} guide",
+            "guide_count_other": "{{count}} guides",
+            "read_guide": "Read the full answer",
+            "featured": "Start here",
+            "contact_title": "Need a hand?",
+            "contact_body": "Chat with the platform team or report an issue to track the conversation.",
+            "drawer_intro": "Find help for the page you’re on, or contact the platform team.",
+            "topics": {
+                "getting_started": "Getting started",
+                "clients": "Clients and connections",
+                "billing": "Billing and finance",
+                "network": "Network and devices",
+                "resellers": "Resellers and agents",
+                "operations": "Daily operations",
+                "settings": "Workspace and team settings",
+                "platform": "Platform administration"
+            }
+        },
         "title": "Help",
         "description": "Guides, FAQs, and videos for the screens you can open.",
         "search_label": "Search help",

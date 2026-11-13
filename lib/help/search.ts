@@ -1,3 +1,5 @@
+import { helpTopicFor } from "@/lib/help/topics";
+import type { HelpTopic } from "@/types/help-topic";
 import type { HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle, type HelpActor } from "@/lib/help/authorization";
 import { matchingHelpArticles, normalizeHelpPath } from "@/lib/help/catalog";
@@ -9,6 +11,7 @@ export const HELP_RESULT_MAX = 8;
 const SNIPPET = 160;
 
 export interface HelpSearchHit {
+  topic: HelpTopic;
   id: string;
   slug: string;
   kind: HelpDocument["article"]["kind"];
@@ -88,6 +91,7 @@ export function searchHelpDocuments(
       const source = titleMatch ? document.summary : `${document.title} ${document.text}`;
       return {
         id: document.article.id,
+        topic: helpTopicFor(document.article),
         slug: document.article.slug,
         kind: document.article.kind,
         locale: document.locale,

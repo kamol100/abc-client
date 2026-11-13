@@ -1,3 +1,58 @@
+## Platform support chat header — 2026-11-13
+
+Removed the transient Refreshing label from the platform inbox chat conversation header. Background polling and stale warnings still work through the existing query logic. The issue header and inbox list keep their refresh indicators. This is a display-only change with no API or authorization changes.
+
+- Typecheck and all 49 focused platform-support tests passed. Full Vitest reported 693 passes and the same 21 failures as the preceding run.
+- Reviewed `scripts/ai/diff`, `scripts/ai/status`, and the CRLF-aware diff check. Preserved the existing PS-010, eye-action, and Enter-shortcut changes.
+
+## Platform support chat Enter shortcut — 2026-11-13
+
+Enter sends from the requester and platform inbox chat composers through the existing Send button and form validation. Shift+Enter inserts a newline, and Enter during keyboard input composition can still confirm the text. The composer suppresses repeated submissions while preparing or sending a chat message. Issue replies keep their multiline keyboard behavior. The shortcut uses the same authenticated endpoints, request IDs, attachment checks, and tenant scope as the Send button.
+
+- `npm test -- tests/unit/platform-support` passed all 49 tests, including blank input, repeated Enter, Shift+Enter, IME composition, and issue reply behavior.
+- `scripts/ai/frontend-check` passed typecheck. Full Vitest reported 693 passes and the same 21 failures as the preceding eye-action run.
+- Reviewed `scripts/ai/diff`, `scripts/ai/status`, and the CRLF-aware diff check. Preserved the earlier PS-010 and eye-action work. No live message was sent.
+
+## Platform support row view action — 2026-11-13
+
+Added a keyboard-accessible eye link to the Actions column on both Issues and Chats in My requests and the platform inbox. The link uses the same detail URL as the subject and reference. It reuses the existing English and Bangla View and Actions labels. The change adds no API calls, data scope inputs, or authorization changes.
+
+- Focused platform-support Vitest run passed all 47 tests.
+- `scripts/ai/frontend-check` passed typecheck. Full Vitest reported 691 passes and 21 failures. The previous 19 unrelated failures reproduced, and two sidebar order assertions fail against the existing uncommitted menu ordering. The eye action does not change the menu.
+- Reviewed `scripts/ai/diff` and `scripts/ai/status`. Left the earlier PS-010 work in place, including the navigation, Help content, translations, and review evidence.
+
+## PS-010 platform support redesign — 2026-11-13
+
+Implemented all six redesign stages. The Help Centre now has authorized topics, search, featured guides, FAQs, videos, and contact actions. The requester list, issue dialog, issue/chat conversation and conversion, platform inbox and details, contextual Help drawer, and guide reader follow the current application shell, theme, and shared components. The platform inbox identifies the company and requester beside the conversation. The redesign uses the existing scoped summary and mutation contracts. No backend files or legacy customer ticket files changed.
+
+- `npm run help:check` — passed, 184 articles.
+- `npm test -- tests/unit/help tests/unit/platform-support tests/unit/menu` — passed, 90 tests across 12 files.
+- `scripts/ai/frontend-check` — typecheck passed. Full Vitest reported 693 passes and 19 existing unrelated failures in maps, reseller-client, client dashboard, column visibility, date pickers, and pay.
+- `scripts/ai/diff`, `scripts/ai/status`, and `git -c core.whitespace=cr-at-eol diff --check` — reviewed the final working tree and preserved the existing CRLF convention in MyDrawer.
+- Live Chrome checks covered all redesigned surfaces across selected desktop and 390 × 844 mobile states. Screenshots, adaptations, and remaining checks are in [PS-010 evidence](features/platform-support/evidence/PS-010/README.md).
+
+Ready for design review. The full viewport, language, theme, and persona matrix remains open. Browser writes such as sends, uploads, conversion completion, and assignment were not exercised with the existing sessions. PS-009 remains reviewable and not release-ready. The README, ticket, and report edits already in progress at the start were preserved and extended. No install, push, or deployment was performed.
+
+## PS-010 scope/design clarification — 2026-11-13
+
+Updated PS-010 and feature README v1.2 to reflect the user's explicit pre-production authorization: necessary coordinated frontend/backend/API/resource/service/model/schema changes are included, without another scope approval solely to support the redesign. Removed frontend-only/frozen API restrictions and the requirement to request separate scope for real summary metrics. Added consumer/type/test/documentation coordination, backend verification and preserved security/data-integrity expectations. Repository approval rules for installs, production settings, non-test data operations, push/deploy remain applicable; no implementation or database operation performed.
+
+Clarified design precedence: current app design philosophy and shared navigation/component/theme conventions take precedence over literal HTML reproduction. Sidebar grouping/icons/sizing/active/collapsed states must follow the current app menu; green palette and exact prototype dimensions are optional inspiration. Replaced pixel-similarity acceptance with app-native coherence, updated six-stage instructions/acceptance/review evidence and the implementation prompt. Original customer tickets and file-based documentation remain preserved. Status stays not started; inherited PS-009 blockers unchanged.
+
+Verification: local document checks passed for links, six stages, 12 acceptance IDs, pending status, whitespace and removal of contradictory backend/design restrictions. Inspected scripts/ai/diff/status and git diff --check. Documentation-only update; no application tests or backend writes. Preserved existing uncommitted ticket/README/report work and prior history.
+
+## PS-010 platform-support visual redesign ticket — 2026-11-13
+
+Created `.ai/features/platform-support/tasks/PS-010-visual-redesign.md` and registered it in the feature README (v1.1). Ticket consolidates the user-approved HTML visual reference and redesign advice into six sequential stages: Help Centre/shared presentation, requester list/issue creation, issue/chat conversations, platform inbox/detail, Help drawer/article reader, and integrated visual/regression review. Includes source mapping, current design gaps, React/Tailwind/project-wrapper constraints, preserved production behavior, authorized topic grouping/real metrics guidance, 12 acceptance IDs and a desktop/mobile/language/theme evidence matrix. Existing app shell/customer tickets and functional transports/models remain in scope for preservation. Prior PS-009 reviewable/not-release-ready status is retained; PS-010 and all stages are not started.
+
+Verification: local Python checks passed for Markdown links, six ordered stages, 12 unique acceptance IDs, status, README indexing and primary source paths. Ran git diff --check and scripts/ai/diff/status. Documentation only: no feature implementation, application tests, backend modifications, screenshots, deployment or push. Preserved the preexisting redesign-advice report update and all earlier report history. Implementation evidence is deliberately pending; the proposed PS-010 evidence folder will be created during implementation.
+
+## Platform-support redesign advice — 2026-11-13
+
+Inspected the implemented platform-support branch, Help Centre/launcher/reader, requester home/thread/composer, platform inbox components, existing source models/transports and unit-test inventory against design/platform-support/. Recommended a staged presentation refactor using the HTML/CSS as the visual reference while retaining current API hooks, permission checks, private image transport, polling/read cursors, request idempotency, real content and app shell. Suggested screen-by-screen visual checkpoints, Tailwind/theme-token translation, reusable display components and focused regression checks. Identified HelpCardView lacks category/topic metadata, so topic grouping may need a small server-authorized view-model addition; summary cards must use actual available API data, never demo counts. Do not port prototype role switch/sample records/in-memory logic or global CSS selectors.
+
+Advice only: no application or backend code changed; no application tests or browser verification executed. Working tree was clean at task start. Updated this report and inspected scripts/ai/diff/status as required. Existing implementation acceptance limitations in prior entries were not reverified or represented as resolved.
+
 ## Platform support composer id — 2026-11-13
 
 `crypto.randomUUID` is missing on `http://mk.isp.test`, so the issue composer crashed while creating its draft id. Draft, request, and chat ids now come from `supportRequestId()`, which uses `crypto.getRandomValues`. The model test covers a missing `randomUUID`. On the open MK session, `/platform-support?kind=issue&compose=issue` rendered the subject, message, and image fields with no runtime error. `typeof crypto.randomUUID` was still `undefined` on that page.

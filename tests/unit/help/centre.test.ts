@@ -30,9 +30,9 @@ describe("help route context", () => {
       new Request("http://help.local/api/help/context?route=/clients/create"),
       { actor: staff(["clients.create"]), library },
     );
-    const body = await response.json() as { data: { matched: boolean; page: { id: string }[] } };
+    const body = await response.json() as { data: { matched: boolean; page: { id: string; topic: string }[] } };
     expect(body.data.matched).toBe(true);
-    expect(body.data.page.map((card) => card.id)).toContain("clients.create");
+    expect(body.data.page).toContainEqual(expect.objectContaining({ id: "clients.create", topic: "clients" }));
   });
 
   it("keeps a forbidden action guide out of the page and falls back to general help", async () => {
@@ -55,6 +55,7 @@ describe("help route context", () => {
     ]);
     expect(text).not.toContain("Add a client");
     expect(text).not.toContain("01700000000");
+    expect(text).not.toContain('"topic":"clients"');
   });
 
   it("returns general help for an unmapped route and hides platform titles", async () => {

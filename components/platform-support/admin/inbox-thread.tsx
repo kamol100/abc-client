@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { FilePlus2, Headset, Link2 } from "lucide-react";
+import { MyDialog } from "@/components/my-dialog";
+import { SupportBadge, SupportDetail, SupportDetailPanel, SupportHeading, SupportIcon, supportPageClass } from "@/components/platform-support/support-ui";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
@@ -309,158 +312,16 @@ export default function InboxThread({ threadId }: { threadId: string }) {
     const linkedChat = adminThreadHref(thread?.source_chat_uuid ?? null);
 
     return (
-        <div className="flex flex-col gap-4" data-testid="platform-inbox-thread">
-            <Card className="space-y-3 p-4">
-                <Link href="/platform-support-admin" className="text-sm text-foreground underline-offset-4 hover:underline">
-                    {t("platform_support.inbox.title")}
-                </Link>
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                        <p className="text-xs text-muted-foreground">{thread?.reference}</p>
-                        <h1 className="text-xl font-semibold text-foreground">
-                            {thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.inbox.title"))}
-                        </h1>
-                    </div>
-                    {thread && (
-                        <p className="text-sm text-muted-foreground">
-                            {t(`platform_support.statuses.${thread.status}`, { defaultValue: thread.status })}
-                            {" · "}
-                            {t(`platform_support.priorities.${thread.priority ?? "normal"}`, { defaultValue: thread.priority ?? "" })}
-                        </p>
-                    )}
-                </div>
-                <div data-testid="platform-inbox-owner" className="space-y-1 text-sm text-foreground">
-                    <p>{t("platform_support.inbox.ownership")}</p>
-                    <p>{thread?.company?.name ?? ""}{thread?.company?.domain ? ` · ${thread.company.domain}` : ""}</p>
-                    {thread?.reseller?.name ? <p>{t("platform_support.inbox.reseller")}: {thread.reseller.name}</p> : null}
-                    <p>
-                        {t("platform_support.requester")}: {thread?.requester.name ?? ""}
-                        {thread?.requester_role ? ` · ${thread.requester_role}` : ""}
-                    </p>
-                    <p>{t("platform_support.inbox.assignee")}: {thread?.assigned_agent?.name ?? t("platform_support.inbox.unassigned_agent")}</p>
-                    <p className="text-muted-foreground">{threadTime(thread?.last_activity_at ?? null)}</p>
-                </div>
-                {linkedIssue && (
-                    <Link className="text-sm text-foreground underline" href={linkedIssue}>
-                        {t("platform_support.linked_issue")}
-                    </Link>
-                )}
-                {linkedChat && (
-                    <Link className="text-sm text-foreground underline" href={linkedChat}>
-                        {t("platform_support.linked_chat")}
-                    </Link>
-                )}
-                {notice && <p role="status" className="text-sm text-foreground">{t(notice)}</p>}
-                {threadQuery.isFetching && <p className="text-xs text-muted-foreground">{t("platform_support.inbox.refreshing")}</p>}
-                {threadQuery.isError && thread && <p role="status" className="text-sm text-foreground">{t("platform_support.inbox.stale")}</p>}
-                {controls && !controls.readOnly && thread && (
-                    <div className="flex flex-wrap items-center gap-2">
-                        {controls.transition && (
-                            <>
-                                <label className="sr-only" htmlFor="platform-inbox-status">{t("platform_support.filters.status")}</label>
-                                <select
-                                    id="platform-inbox-status"
-                                    className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
-                                    value={statusChoice}
-                                    onChange={(event) => setStatusChoice(event.target.value)}
-                                >
-                                    {supportManageStatuses(thread.kind).map((status) => (
-                                        <option key={status} value={status}>{t(`platform_support.statuses.${status}`)}</option>
-                                    ))}
-                                </select>
-                                <MyButton
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => changeStatus.mutate(platformStatusBody(thread.version, statusChoice) as { expected_version: number; status: string })}
-                                >
-                                    {t("platform_support.update_status")}
-                                </MyButton>
-                            </>
-                        )}
-                        {controls.assign && (
-                            <div
-                                onFocus={() => {
-                                    setAssignFocus(true);
-                                    setAssignChoice(thread.assigned_agent?.uuid ?? "");
-                                }}
-                                onBlur={() => setAssignFocus(false)}
-                            >
-                                <InboxAssigneeSelect
-                                    id="platform-inbox-assignee"
-                                    mode="assign"
-                                    enabled
-                                    value={assigneeValue}
-                                    onChange={(value) => {
-                                        setAssignChoice(value);
-                                        assign.mutate(platformAssignBody(thread.version, value || null) as { expected_version: number; assignee_uuid: string | null });
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </div>
-                )}
-                {controls?.readOnly && <p data-testid="platform-inbox-readonly" className="text-sm text-muted-foreground">{t("platform_support.read_only")}</p>}
-            </Card>
-
-            {sourceId && sourceHistory.messages.length > 0 && (
-                <Card className="space-y-3 p-4">
-                    <h2 className="text-sm font-semibold text-foreground">{t("platform_support.linked_history")}</h2>
-                    <MessageList messages={sourceHistory.messages} audience="platform" />
-                </Card>
-            )}
-
-            <Card className="flex min-h-80 flex-col p-4">
-                {history.hasOlder && (
-                    <MyButton
-                        type="button"
-                        variant="ghost"
-                        onClick={() => {
-                            const box = listRef.current;
-                            if (box) prependRef.current = { height: box.scrollHeight, top: box.scrollTop };
-                            const oldest = history.messages[0]?.sequence;
-                            if (oldest) setBefore(oldest);
-                        }}
-                    >
-                        {t("platform_support.load_older")}
-                    </MyButton>
-                )}
-                {messageQuery.isLoading && !history.bootstrapped && <p className="text-sm text-muted-foreground">{t("platform_support.loading")}</p>}
-                {messageQuery.isError && !blocked && (
-                    history.bootstrapped
-                        ? <p role="status">{t("platform_support.inbox.stale")}</p>
-                        : <SupportRetry messageKey="platform_support.inbox.stale" onRetry={() => void messageQuery.refetch()} />
-                )}
-                <div
-                    ref={listRef}
-                    className="flex max-h-[32rem] flex-1 flex-col gap-3 overflow-y-auto"
-                    onScroll={(event) => {
-                        const box = event.currentTarget;
-                        const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 48;
-                        atBottomRef.current = atBottom;
-                        if (atBottom) setUnseen(false);
-                    }}
-                >
-                    <MessageList messages={history.messages} ready={history.bootstrapped} audience="platform" />
-                </div>
-                {unseen && (
-                    <MyButton
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                            const box = listRef.current;
-                            if (!box) return;
-                            box.scrollTop = box.scrollHeight;
-                            setUnseen(false);
-                        }}
-                    >
-                        {t("platform_support.new_messages")}
-                    </MyButton>
-                )}
-            </Card>
-
-            {controls?.convert && thread && (
-                <Card className="p-4" data-testid="platform-inbox-convert">
-                    <h2 className="mb-3 text-sm font-semibold text-foreground">{t("platform_support.convert")}</h2>
+        <div className={supportPageClass} data-testid="platform-inbox-thread">
+            <SupportHeading
+                back={{ href: "/platform-support-admin", label: t("platform_support.inbox.title") }}
+                reference={thread?.reference}
+                title={thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.inbox.title"))}
+                action={thread && <><SupportBadge type="status" value={thread.status} />{controls?.convert && thread && <MyDialog size="xl" title="platform_support.convert"
+                    description="platform_support.redesign.convert_intro" showFooter={false}
+                    trigger={<MyButton type="button" variant="outline" data-testid="platform-inbox-convert">
+                        <FilePlus2 className="size-4" aria-hidden />{t("platform_support.convert")}
+                    </MyButton>}>
                     <SupportComposer
                         mode="convert"
                         audience="platform"
@@ -477,31 +338,168 @@ export default function InboxThread({ threadId }: { threadId: string }) {
                             if (issue) router.push(`/platform-support-admin/threads/${issue.uuid}`);
                         }}
                     />
-                </Card>
-            )}
-
-            {controls?.send && thread && (
-                <Card className="p-4" data-testid="platform-inbox-reply">
-                    <SupportComposer
-                        mode="message"
-                        audience="platform"
-                        allowImages={controls.upload}
-                        api={`platform-support-admin/threads/${thread.uuid}/messages`}
-                        threadId={thread.uuid}
-                        onConflict={() => void threadQuery.refetch()}
-                        onReconciled={(window) => {
-                            if (!window) return;
-                            setHistory((current) => mergeMessagePage(current, window, "newer"));
-                        }}
-                        onAcknowledged={(response) => {
-                            const message = parseSupportMessage(response);
-                            if (message) setHistory((current) => acknowledgeMessage(current, message));
-                            void threadQuery.refetch();
-                            refreshLists();
-                        }}
-                    />
-                </Card>
-            )}
+                </MyDialog>}</>}
+            />
+            <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,25%)]">
+                <div className="min-w-0 space-y-4">
+                    <Card className="flex min-w-0 flex-col overflow-hidden shadow-none">
+                        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-6">
+                            <div className="flex items-center gap-3">
+                                <SupportIcon icon={Headset} />
+                                <div><h2 className="text-sm font-semibold">{t("platform_support.redesign.conversation")}</h2>
+                                    <p className="text-xs text-muted-foreground">{t("platform_support.redesign.conversation_intro")}</p></div>
+                            </div>
+                            {thread?.kind === "issue" && threadQuery.isFetching && <p className="text-xs text-muted-foreground" role="status">{t("platform_support.inbox.refreshing")}</p>}
+                            {threadQuery.isError && thread && <p className="text-xs text-muted-foreground" role="status">{t("platform_support.inbox.stale")}</p>}
+                        </header>
+                        <div className="flex flex-wrap gap-2 px-4 pt-2 empty:hidden sm:px-6">
+                            {linkedIssue && <MyButton asChild variant="outline"><Link href={linkedIssue}><Link2 className="size-4" aria-hidden />{t("platform_support.linked_issue")}</Link></MyButton>}
+                            {linkedChat && <MyButton asChild variant="outline"><Link href={linkedChat}><Link2 className="size-4" aria-hidden />{t("platform_support.linked_chat")}</Link></MyButton>}
+                        </div>
+                        {notice && <p role="status" className="mx-4 mt-3 rounded-md border border-border bg-muted p-3 text-sm">{t(notice)}</p>}
+                        {sourceId && sourceHistory.messages.length > 0 && (
+                            <details className="mx-4 mt-3 rounded-lg border border-border bg-muted/30 p-3 sm:mx-6">
+                                <summary className="cursor-pointer text-sm font-medium">{t("platform_support.linked_history")}</summary>
+                                <div className="mt-3 max-h-72 overflow-y-auto">
+                                    <MessageList messages={sourceHistory.messages} audience="platform" />
+                                </div>
+                            </details>
+                        )}
+                        {history.hasOlder && (
+                            <MyButton
+                                type="button"
+                                variant="ghost"
+                                className="mx-4 mt-2 self-center"
+                                onClick={() => {
+                                    const box = listRef.current;
+                                    if (box) prependRef.current = { height: box.scrollHeight, top: box.scrollTop };
+                                    const oldest = history.messages[0]?.sequence;
+                                    if (oldest) setBefore(oldest);
+                                }}
+                            >
+                                {t("platform_support.load_older")}
+                            </MyButton>
+                        )}
+                        {messageQuery.isLoading && !history.bootstrapped && <p className="p-4 text-sm text-muted-foreground">{t("platform_support.loading")}</p>}
+                        {messageQuery.isError && !blocked && (
+                            history.bootstrapped
+                                ? <p role="status">{t("platform_support.inbox.stale")}</p>
+                                : <SupportRetry messageKey="platform_support.inbox.stale" onRetry={() => void messageQuery.refetch()} />
+                        )}
+                        <div
+                            ref={listRef}
+                            className="flex min-h-48 max-h-[min(32rem,55dvh)] flex-col gap-3 overflow-y-auto overscroll-contain px-4 py-5 sm:px-6"
+                            onScroll={(event) => {
+                                const box = event.currentTarget;
+                                const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 48;
+                                atBottomRef.current = atBottom;
+                                if (atBottom) setUnseen(false);
+                            }}
+                        >
+                            <MessageList messages={history.messages} ready={history.bootstrapped} audience="platform" />
+                        </div>
+                        {unseen && (
+                            <MyButton
+                                type="button"
+                                variant="outline"
+                                className="mx-4 mb-3 self-center"
+                                onClick={() => {
+                                    const box = listRef.current;
+                                    if (!box) return;
+                                    box.scrollTop = box.scrollHeight;
+                                    setUnseen(false);
+                                }}
+                            >
+                                {t("platform_support.new_messages")}
+                            </MyButton>
+                        )}
+                    {controls?.send && thread && (
+                        <div className="border-t border-border bg-muted/20 p-4 sm:px-6" data-testid="platform-inbox-reply">
+                            <SupportComposer
+                                mode="message"
+                                embedded
+                                sendOnEnter={thread.kind === "chat"}
+                                audience="platform"
+                                allowImages={controls.upload}
+                                api={`platform-support-admin/threads/${thread.uuid}/messages`}
+                                threadId={thread.uuid}
+                                onConflict={() => void threadQuery.refetch()}
+                                onReconciled={(window) => {
+                                    if (!window) return;
+                                    setHistory((current) => mergeMessagePage(current, window, "newer"));
+                                }}
+                                onAcknowledged={(response) => {
+                                    const message = parseSupportMessage(response);
+                                    if (message) setHistory((current) => acknowledgeMessage(current, message));
+                                    void threadQuery.refetch();
+                                    refreshLists();
+                                }}
+                            />
+                        </div>
+                    )}
+                    </Card>
+                </div>
+                <SupportDetailPanel testId="platform-inbox-owner">
+                    {thread?.company && <SupportDetail label={t("platform_support.inbox.company")}>
+                        <span className="block font-medium">{thread.company.name}</span>
+                        {thread.company.domain && <span className="block text-xs text-muted-foreground">{thread.company.domain}</span>}
+                    </SupportDetail>}
+                    <SupportDetail label={t("platform_support.requester")}>{thread?.requester.name ?? "—"}{thread?.requester_role ? ` · ${thread.requester_role}` : ""}</SupportDetail>
+                    {thread?.reseller?.name && <SupportDetail label={t("platform_support.inbox.reseller")}>{thread.reseller.name}</SupportDetail>}
+                    <SupportDetail label={t("platform_support.inbox.assignee")}>{thread?.assigned_agent?.name ?? t("platform_support.inbox.unassigned_agent")}</SupportDetail>
+                    {thread?.priority && <SupportDetail label={t("platform_support.filters.priority")}><SupportBadge type="priority" value={thread.priority} /></SupportDetail>}
+                    {thread?.category && <SupportDetail label={t("platform_support.filters.category")}>{t(`platform_support.categories.${thread.category}`, { defaultValue: thread.category })}</SupportDetail>}
+                    {thread?.last_activity_at && <SupportDetail label={t("platform_support.last_activity")}>{threadTime(thread.last_activity_at)}</SupportDetail>}
+                    {thread?.context?.path && <SupportDetail label={t("platform_support.redesign.page_context")}><span className="font-mono text-xs">{thread.context.path}</span></SupportDetail>}
+                    {controls && !controls.readOnly && thread && (
+                        <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+                            {controls.transition && (
+                                <>
+                                    <label className="sr-only" htmlFor="platform-inbox-status">{t("platform_support.filters.status")}</label>
+                                    <select
+                                        id="platform-inbox-status"
+                                        className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                                        value={statusChoice}
+                                        onChange={(event) => setStatusChoice(event.target.value)}
+                                    >
+                                        {supportManageStatuses(thread.kind).map((status) => (
+                                            <option key={status} value={status}>{t(`platform_support.statuses.${status}`)}</option>
+                                        ))}
+                                    </select>
+                                    <MyButton
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => changeStatus.mutate(platformStatusBody(thread.version, statusChoice) as { expected_version: number; status: string })}
+                                    >
+                                        {t("platform_support.update_status")}
+                                    </MyButton>
+                                </>
+                            )}
+                            {controls.assign && (
+                                <div
+                                    onFocus={() => {
+                                        setAssignFocus(true);
+                                        setAssignChoice(thread.assigned_agent?.uuid ?? "");
+                                    }}
+                                    onBlur={() => setAssignFocus(false)}
+                                >
+                                    <InboxAssigneeSelect
+                                        id="platform-inbox-assignee"
+                                        mode="assign"
+                                        enabled
+                                        value={assigneeValue}
+                                        onChange={(value) => {
+                                            setAssignChoice(value);
+                                            assign.mutate(platformAssignBody(thread.version, value || null) as { expected_version: number; assignee_uuid: string | null });
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {controls?.readOnly && <p data-testid="platform-inbox-readonly" className="text-sm text-muted-foreground">{t("platform_support.read_only")}</p>}
+                </SupportDetailPanel>
+            </div>
         </div>
     );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Inbox, RefreshCw } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -11,7 +13,6 @@ import { inboxFilterSchema } from "@/components/platform-support/admin/inbox-fil
 import {
     inboxListState,
     mergeInboxPage,
-    parseInboxSummary,
     parsePlatformThread,
     platformListParams,
     platformQueryKey,
@@ -20,6 +21,7 @@ import {
 import { SupportRetry } from "@/components/platform-support/support-thread";
 import { useSupportPresence } from "@/components/platform-support/support-launcher";
 import {
+    parseSupportSummary,
     supportAccessDenied,
     supportPollInterval,
     supportQueryRetry,
@@ -27,7 +29,7 @@ import {
 } from "@/components/platform-support/support-model";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import useApiQuery, { type ApiResponse, type PaginatedApiResponse } from "@/hooks/use-api-query";
-import { cn } from "@/lib/utils";
+import { SupportHeading, SupportKindTabs, SupportSummary, supportPageClass } from "@/components/platform-support/support-ui";
 import MyButton from "@/components/my-button";
 
 function filterRecord(value: string | null): Record<string, string> {
@@ -38,11 +40,13 @@ function filterRecord(value: string | null): Record<string, string> {
 export default function InboxHome({ initialKind = "issue" }: { initialKind?: string }) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
+    const router = useRouter();
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
     const { documentVisible, online } = useSupportPresence();
     const identity = profile?.id ?? "";
     const [kind, setKind] = useState<SupportKind>(initialKind === "chat" ? "chat" : "issue");
+    useEffect(() => { setKind(initialKind === "chat" ? "chat" : "issue"); }, [initialKind]);
     const [filterValue, setFilter] = useState<string | null>(null);
     const [unreadOnly, setUnreadOnly] = useState(false);
     const [assignee, setAssignee] = useState("");
@@ -72,6 +76,7 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
         queryKey: platformQueryKey({ identity, resource: "threads" }),
         url: "platform-support-admin/threads",
         params,
+        placeholderData: undefined,
         enabled: listEnabled,
         refetchOnWindowFocus: true,
         retry: supportQueryRetry,
@@ -84,12 +89,13 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
             failureCount: query.state.fetchFailureCount,
         }),
     });
+    const { kind: _kind, per_page: _perPage, ...summaryFilters } = params;
     const summary = useApiQuery<ApiResponse<unknown>>({
         queryKey: platformQueryKey({ identity, resource: "summary" }),
         url: "platform-support-admin/summary",
-        params,
+        params: summaryFilters,
         pagination: false,
-        enabled: listEnabled,
+        enabled: listEnabled && hasPermission("platform-support-admin.summary"),
         refetchOnWindowFocus: true,
         retry: supportQueryRetry,
         refetchInterval: (query) => supportPollInterval({
@@ -121,55 +127,28 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
     });
     const displayed = mergeInboxPage(orderRef.current, view.rows, acting);
     orderRef.current = displayed;
-    const counts = denied ? null : parseInboxSummary(summary.data?.data);
+    const counts = denied || summary.isError ? null : parseSupportSummary(summary.data?.data);
     const summaryFailed = Boolean(summary.isError) && !supportAccessDenied(summary.error);
     const refreshed = list.dataUpdatedAt
         ? format(list.dataUpdatedAt, "HH:mm:ss")
         : "";
 
     return (
-        <div className="flex flex-col gap-4" data-testid="platform-inbox">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-                <h1 className="text-xl font-semibold text-foreground">{t("platform_support.inbox.title")}</h1>
-                <div data-testid="platform-inbox-summary" aria-live="polite" className="text-sm text-muted-foreground">
-                    {counts ? (
-                        <p>
-                            {t("platform_support.inbox.unread_messages", { count: counts.unread_messages })}
-                            {" · "}
-                            {t("platform_support.inbox.unread_threads", { count: counts.unread_threads })}
-                            {" · "}
-                            {t("platform_support.inbox.unassigned_count", { count: counts.unassigned_threads })}
-                        </p>
-                    ) : null}
-                    {summaryFailed ? <p role="status">{t("platform_support.inbox.stale")}</p> : null}
-                    {summary.isLoading && !counts ? <p>{t("platform_support.inbox.pending")}</p> : null}
-                </div>
-            </div>
+        <div className={supportPageClass} data-testid="platform-inbox">
+            <SupportHeading title={t("platform_support.inbox.title")} subtitle={t("platform_support.redesign.inbox_intro")} icon={Inbox}
+                action={!denied && <MyButton type="button" variant="outline" loading={list.isFetching}
+                    onClick={() => { void list.refetch(); if (hasPermission("platform-support-admin.summary")) void summary.refetch(); }}>
+                    <RefreshCw className="size-4" aria-hidden />{t("platform_support.redesign.refresh")}
+                </MyButton>} />
+            {!denied && <div data-testid="platform-inbox-summary" className="space-y-2">
+                <SupportSummary counts={counts} loading={summary.isLoading} platform />
+                {summaryFailed && <p role="status" className="text-xs text-muted-foreground">{t("platform_support.inbox.stale")}</p>}
+            </div>}
             <p className="text-xs text-muted-foreground" role="status">
                 {list.isFetching ? t("platform_support.inbox.refreshing") : refreshed ? t("platform_support.inbox.refreshed", { time: refreshed }) : t("platform_support.inbox.pending")}
-                {" "}
-                {t("platform_support.inbox.periodic")}
+                {" "}{t("platform_support.inbox.periodic")}
             </p>
-            <div className="flex flex-wrap gap-2" role="tablist" aria-label={t("platform_support.kinds.label")}>
-                {(["issue", "chat"] as const).map((item) => (
-                    <button
-                        key={item}
-                        type="button"
-                        role="tab"
-                        aria-selected={kind === item}
-                        className={cn(
-                            "rounded-md px-3 py-1.5 text-sm",
-                            kind === item ? "bg-primary text-primary-foreground" : "bg-muted text-foreground",
-                        )}
-                        onClick={() => {
-                            setKind(item);
-                            setFilter(null);
-                        }}
-                    >
-                        {t(item === "issue" ? "platform_support.issues" : "platform_support.chats")}
-                    </button>
-                ))}
-            </div>
+            <SupportKindTabs kind={kind} onChange={(item) => { setKind(item); setFilter(null); router.replace(`/platform-support-admin?kind=${item}`, { scroll: false }); }} />
             <div className="flex flex-wrap items-center gap-2">
                 <MyButton
                     type="button"
@@ -203,7 +182,7 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
                 <SupportRetry messageKey="platform_support.errors.forbidden" onRetry={() => setBlocked(false)} />
             )}
             {signedIn && view.showTable && (
-                <div
+                <div className="min-w-0 rounded-lg border border-border bg-card p-2 sm:p-3"
                     onFocus={() => setActing(true)}
                     onBlur={(event) => {
                         if (!event.currentTarget.contains(event.relatedTarget)) setActing(false);

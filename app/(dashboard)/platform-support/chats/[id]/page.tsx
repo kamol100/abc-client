@@ -11,7 +11,7 @@ export default async function PlatformSupportChatPage({ params, searchParams }: 
     const { id } = await params;
     const { scope } = await searchParams;
     const selected = scope === "reseller" || scope === "company" ? scope : "own";
-    return <SupportThreadView threadId={id} scope={selected} />;
+    return <SupportThreadView key={`${id}:${selected}`} threadId={id} scope={selected} />;
 }
 
 export const metadata: Metadata = {
