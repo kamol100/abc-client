@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+<title id="title">Synthetic invoice example</title><desc id="desc">A fictional invoice screen for design review. All numbers are illustrative.</desc>
+<rect width="640" height="360" fill="#f5f7f6"/><rect x="20" y="20" width="600" height="320" rx="10" fill="#fff" stroke="#e0e6e3"/>
+<rect x="40" y="40" width="30" height="30" rx="7" fill="#267552"/><path d="M49 55h12m-6-6v12" stroke="#fff" stroke-width="2"/>
+<text x="82" y="59" font-family="sans-serif" font-size="15" fill="#242d28" font-weight="600">Sample ISP</text><text x="484" y="59" font-family="sans-serif" font-size="12" fill="#758279">DESIGN SAMPLE</text>
+<path d="M40 86h560" stroke="#e5e9e7"/><text x="42" y="118" font-family="sans-serif" font-size="18" font-weight="600" fill="#27352d">Invoice preview</text><text x="42" y="143" font-family="sans-serif" font-size="12" fill="#7b867f">Sample client · INV-DEMO-001</text>
+<rect x="42" y="163" width="556" height="51" rx="5" fill="#edf5ef"/><text x="55" y="184" font-family="sans-serif" font-size="11" fill="#5b7865">SELECTED PACKAGE</text><text x="55" y="203" font-family="sans-serif" font-size="13" fill="#2d6945">Sample package · 20 Mbps</text>
+<text x="43" y="242" font-family="sans-serif" font-size="11" fill="#859088">Description</text><text x="535" y="242" font-family="sans-serif" font-size="11" fill="#859088">Amount</text><path d="M42 252h556" stroke="#e5e9e7"/>
+<text x="43" y="276" font-family="sans-serif" font-size="12" fill="#46594d">Monthly subscription</text><text x="546" y="276" font-family="sans-serif" font-size="12" fill="#46594d">500.00</text><path d="M42 291h556" stroke="#e5e9e7"/>
+<text x="43" y="318" font-family="sans-serif" font-size="10" fill="#96a198">Fictional data for visual review only</text><text x="482" y="318" font-family="sans-serif" font-size="13" font-weight="600" fill="#267552">Total: 500.00</text>
+</svg>

@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1d2b5-7633-7863-9731-8f0172dd1ad6"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"What would you like me to change or investigate in this project?"}}
+{"type":"turn.completed","usage":{"input_tokens":19723,"cached_input_tokens":8064,"cache_write_input_tokens":0,"output_tokens":17,"reasoning_output_tokens":0}}

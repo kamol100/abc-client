@@ -1,7 +1,5 @@
 # Reseller test workspace
 
-Start with [RESELLER-001](RESELLER-001-reseller-management.md). Investigation complete; draft ready for review; no tests implemented.
+[RESELLER-001](RESELLER-001-reseller-management.md) is partially implemented in `tests/e2e/resellers/`. Use `npm run test:e2e:resellers`. The runner supports CP and MK without localhost login or shared auth files.
 
-Workflow: investigate → specify → review → implement → verify. Future specs under `tests/e2e/resellers/`: `list.spec.ts`, `create-edit.spec.ts`, `packages.spec.ts`, `settings-images.spec.ts`, `recharge.spec.ts`, `impersonation.spec.ts`, `access.spec.ts`, `export-purge.spec.ts`.
-
-These are planned files. Reference scenario IDs in test titles and record evidence per case. Use disposable data for purge/import and separate mutable wallet/package fixtures per worker.
+See [implementation status](IMPLEMENTATION.md) for every parent scenario, [execution evidence](EXECUTION.json) for the CP and MK runs, and [runner guidance](../../resellers/README.md) for what the suite does and does not change. Review remains pending. Username exclusion fails because the API ignores `username`. No successful create, package reassignment, recharge settlement, purge, or import is executed.

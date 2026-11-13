@@ -1,6 +1,6 @@
 # RESELLER-001 — Reseller management and scoped operations
 
-- Status: Draft for human review; all scenarios unimplemented.
+- Status: Partial Playwright coverage on CP/MK. Review remains pending, so these runs are not passing coverage. See [implementation status](IMPLEMENTATION.md) and [execution evidence](EXECUTION.json). Review-blocked scenarios are not implemented. Successful create, package reassignment, recharge settlement, purge, and import are not executed. Username exclusion fails because the reseller filter pipeline ignores `username`.
 - Investigated: 2026-11-12 through static source inspection.
 - Goal: Authorized staff manage the intended reseller account, packages, settings and wallet; switching identity and deleting/exporting data preserve scope and unrelated records.
 - Scope: `/resellers`, `/resellers/create`, `/resellers/edit/[id]`, `/resellers/view/[id]`; linked permissions, settings, private images, wallet recharge and scope switching.

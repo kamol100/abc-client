@@ -522,8 +522,14 @@
   {
     "feature": "resellers",
     "ticket": "resellers/RESELLER-001-reseller-management.md",
-    "stage": "detailed-draft",
-    "specs": [],
+    "stage": "partially-implemented",
+    "specs": [
+      "tests/e2e/resellers/access.spec.ts",
+      "tests/e2e/resellers/actions.spec.ts",
+      "tests/e2e/resellers/detail.spec.ts",
+      "tests/e2e/resellers/forms.spec.ts",
+      "tests/e2e/resellers/list.spec.ts"
+    ],
     "last_run": null
   },
   {

@@ -10431,9 +10431,17 @@
       "description": "Permitted user sees expected reseller identities, user/contact/status, client/package counts and wallet values where displayed; totals/pagination match fixtures.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L01 list identities contact status counts and wallet match the API after reload"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "List identity, contact, status, client counts, wallet text and reload match the API. Package-count assertions against a controlled seed remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-L02",
@@ -10442,9 +10450,41 @@
       "description": "Filter name/username/phone/network/zone/status independently and combined; assert included/excluded identities, then reset restores baseline.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "failing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 name filter includes the selected reseller and reset restores the baseline"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 phone filter matches the API and excludes a non-matching number"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 username filter keeps only matching usernames and an unknown username is empty"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 status filter matches included rows and reload clears it"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 zone filter matches the API page for the selected zone"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 network filter matches the API page for the selected network"
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 combined name and status filters agree with the API"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Name, phone, status, zone, network and combined name+status pass. Username exclusion fails on CP and MK: Reseller Filters.php has no Username filter, so an unknown username keeps the company total (received 1, expected 0).",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-L03",
@@ -10453,9 +10493,17 @@
       "description": "Pagination and page-size changes retain scope; filtering from later page resets to valid results without duplicates/stale empty page.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L03 pagination buttons match the current page bounds"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Previous/next bounds are checked, including page 2 when it exists. CP and MK have one page. Page size is not changed because it persists staff item_per_page. Later-page filter reset remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-L04",
@@ -10464,9 +10512,17 @@
       "description": "Empty/no-match and request failure remain distinguishable and recoverable; optional missing user/wallet/zone does not crash table actions.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L04 an unmatched name is empty and clearing it restores the list"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Unmatched name shows No results, the row menu opens, and clearing the name restores the row. Request-failure recovery remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F01",
@@ -10475,9 +10531,10 @@
       "description": "Create with valid identity/network and approved packages; list/reopened edit/detail preserve company, billing, contacts and selected package relationships under returned UUID.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Successful create assigns packages and provisions a login. Not executed."
     },
     {
       "id": "RS-F02",
@@ -10486,9 +10543,17 @@
       "description": "Missing/short name, missing create credentials, short phone and missing network show approved validation; no reseller/login/staff side effects occur on rejected create.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F02 missing name credentials phone and network stay on the form and create nothing"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Empty name, phone and network show required errors. Username and password required errors appear after the other base fields are valid. Short name and phone show the minimum-length errors. List total stays unchanged.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F03",
@@ -10497,9 +10562,17 @@
       "description": "Duplicate username within company is rejected preserving draft. Company email policy failures display correctly. Cross-company duplicate policy is tested only after approval.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F03 a duplicate company username is rejected and the draft is not created"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Duplicate company username is rejected and the list total stays unchanged. Email-policy and cross-company duplicate cases remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F04",
@@ -10508,9 +10581,10 @@
       "description": "Complete queued provisioning, then log in with newly created reseller in a separate context; correct reseller role/profile/permissions/wallet readiness appears without exposing parent-company data.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked provisioning and reseller login. Not executed."
     },
     {
       "id": "RS-F05",
@@ -10519,9 +10593,17 @@
       "description": "Open edit directly using UUID; saved fields hydrate before changes. Change contact/date/billing fields; reload persists choices, zero values and unrelated fields without resetting to create defaults.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Edit hydrates the saved reseller and cancel leaves the detail unchanged. Saved contact/billing edits were not submitted.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F06",
@@ -10530,9 +10612,17 @@
       "description": "Cancel create/edit produces no new account or persisted changes; server rejection preserves recoverable form and no false success.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F06 cancel create stores no reseller"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Cancel on create stores no reseller. Cancel-edit and server-rejection recovery remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F07",
@@ -10541,9 +10631,17 @@
       "description": "Agent selection requires commission; negative/fractional commission rejected by approved policy; unset agent/null commission and count_commission choices persist correctly after reload.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F07 an agent requires a nonnegative whole-number commission and creates nothing"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Agent commission is required and negative or fractional values stay on the form. Nothing is created. Persisted unset-agent and count_commission choices remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-F08",
@@ -10552,9 +10650,10 @@
       "description": "Billing prepaid/postpaid, auto-recharge, overdue, termination time, serial start and prefix persist within approved boundaries; invalid inputs are rejected server-side without partial account changes.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked billing persistence. Not executed."
     },
     {
       "id": "RS-F09",
@@ -10563,9 +10662,10 @@
       "description": "Rapid duplicate submit creates one intended reseller/login/staff set; injected provisioning failure follows approved rollback and leaves no orphan usable account.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Duplicate submit needs a disposable create. Not executed."
     },
     {
       "id": "RS-P01",
@@ -10574,9 +10674,17 @@
       "description": "Detail opens correct UUID from list, shows profile/status and package assignments; back/edit destinations retain correct reseller identity.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P01 detail opens the selected reseller and edit returns to that UUID"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "View opens the selected reseller profile and package tab. Edit and back links keep that UUID.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-P02",
@@ -10585,9 +10693,10 @@
       "description": "Assign/remove approved company packages, reload and verify ownership/client visibility changes exactly as approved. No foreign package can be assigned by forged ID.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked package assignment. Not executed."
     },
     {
       "id": "RS-P03",
@@ -10596,9 +10705,10 @@
       "description": "Selecting another reseller's assigned package is rejected or transferred only under explicit approved authority, with original reseller/client records reconciled; never silently accept unexpected reassignment.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked package ownership transfer. Not executed."
     },
     {
       "id": "RS-P04",
@@ -10607,9 +10717,17 @@
       "description": "Clients tab requires resellers.client and shows only selected reseller's records/counts across pages. Switching reseller detail must not reuse prior client rows; verify duplicate-route resolution first.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P04 clients tab matches the selected reseller and clears when another reseller opens"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Client tab names match resellers/client/{uuid}. CP and MK each have one reseller, so the second-reseller switch did not run.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-P05",
@@ -10618,9 +10736,17 @@
       "description": "No-package/no-client detail states remain usable; failed client-tab fetch does not hide successfully loaded profile/package data.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P05 package and profile tabs stay usable for the open reseller"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Package tab stays usable and the profile name remains. A failed client-tab fetch was not injected.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-P06",
@@ -10629,9 +10755,10 @@
       "description": "Permission-editor link requires approved combined capabilities and targets correct reseller; updates cannot grant permissions beyond caller's delegated scope. Full editor matrix is a follow-up.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked permission editor. Not executed."
     },
     {
       "id": "RS-S01",
@@ -10640,9 +10767,17 @@
       "description": "Open settings loads selected reseller termination setting; toggle saves immediately and reopen/reload confirms persistence without changing sibling/company default settings.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S01 the reseller termination setting toggles, persists, and restores without changing company scope"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Termination flag toggles, persists, and is restored. Company and sibling flags stay unchanged.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-S02",
@@ -10651,9 +10786,10 @@
       "description": "Slow save blocks repeated toggles; failure restores last synced value and no success; rapid reseller dialog switching never saves to stale UUID.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Stale-UUID and repeated-toggle races were not intercepted. Not executed."
     },
     {
       "id": "RS-S03",
@@ -10662,9 +10798,17 @@
       "description": "Without settings authority, action/API read/write is denied. Forged foreign reseller_uuid cannot expose or overwrite another company's settings.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S03 a foreign reseller UUID cannot be read or written as settings"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Foreign reseller UUID settings read and write are denied and the owner flag stays unchanged. A permission-less persona remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-S04",
@@ -10673,9 +10817,10 @@
       "description": "Upload/replace/remove avatar and each NID image on saved reseller; reload confirms only intended field changes. Standard form payload excludes private image fields.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked image upload. Not executed."
     },
     {
       "id": "RS-S05",
@@ -10684,9 +10829,10 @@
       "description": "Missing image permissions/foreign UUID prevents private image access/mutation; invalid or oversized image content rejects without replacing original. Read actual upload validator limits before specifying boundaries.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Image permission and size limits were not executed."
     },
     {
       "id": "RS-W01",
@@ -10695,9 +10841,17 @@
       "description": "Recharge action appears only with approved capability and wallet; dialog shows selected reseller/current balance; cancel does not change wallet/agent/fund/receipt data.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W01 recharge dialog shows the reseller balance and cancel does not change it"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Dialog shows the reseller and current balance. Cancel leaves the balance unchanged. Capability hiding for a user without recharge permission remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-W02",
@@ -10706,9 +10860,17 @@
       "description": "Nonpositive/invalid amount or missing fund blocks submit; API validation failure preserves input and original balance.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W02 a nonpositive amount and missing fund stay in the dialog and keep the balance"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Amount 0 and -5 and a missing fund stay in the dialog. Balance is unchanged. A server validation failure that preserves typed input remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-W03",
@@ -10717,9 +10879,10 @@
       "description": "Valid recharge produces exact approved wallet/commission/fund/receipt deltas once; reopening reflects persisted balance. Include commission enabled/disabled and no-agent variants as independent cases.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked successful recharge. Not executed."
     },
     {
       "id": "RS-W04",
@@ -10728,9 +10891,10 @@
       "description": "Missing agent or required invoice type rejects with approved atomic rollback across wallet/agent/fund/receipt; no partial success despite error.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked recharge rollback. Not executed."
     },
     {
       "id": "RS-W05",
@@ -10739,9 +10903,17 @@
       "description": "Foreign/invalid fund or client wallet masquerading as reseller wallet is denied with no balances changed. Validate target UUID belongs to allowed reseller scope, not just same company.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not change the balance"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Invalid fund, foreign MK fund and unknown wallet UUID are denied and the balance stays unchanged. Client-wallet UUID masquerade is not available from ClientResource.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-W06",
@@ -10750,9 +10922,10 @@
       "description": "Duplicate click/retry/concurrent recharge follows approved idempotency/transaction policy; independently verify payment/receipt identities and no duplicated credit.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked recharge idempotency. Not executed."
     },
     {
       "id": "RS-A01",
@@ -10761,9 +10934,29 @@
       "description": "Anonymous and subscriber sessions cannot access staff reseller list/create/edit/mutations.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/create redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/view/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Four anonymous staff routes redirect to the same-origin /admin login. Subscriber sessions remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-A02",
@@ -10772,9 +10965,10 @@
       "description": "Access/create/show/edit/delete gates and direct API permissions match approved policy independently; editor-only view-link behavior cannot leak detail if show is denied.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Restricted permission personas are not provisioned. Not executed."
     },
     {
       "id": "RS-A03",
@@ -10783,9 +10977,17 @@
       "description": "Tenant A cannot list/search/view/edit/delete or access images/packages/clients of tenant B by known UUID or forged relation IDs.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A03 another company cannot read or find a known reseller UUID"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "CP and MK deny foreign detail and exclude the foreign name. The browser hides the foreign profile. Delete, update, images, packages and clients were not called.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-A04",
@@ -10794,9 +10996,10 @@
       "description": "Parent reseller can operate only on approved direct descendants; unrelated reseller/deeper descendant cannot be used to expand scope through management/report/recharge/settings APIs.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked reseller hierarchy. Not executed."
     },
     {
       "id": "RS-A05",
@@ -10805,9 +11008,10 @@
       "description": "With impersonate.start and eligible reseller/user UUID, switch enters correct identity and permission scope; leave restores original identity. Back/reload and deferred data never show stale parent/sibling records.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Enter/leave needs a non-admin reseller user. The linked CP user is an Admin, so impersonation is denied. That denial is covered by RS-A06."
     },
     {
       "id": "RS-A06",
@@ -10816,9 +11020,21 @@
       "description": "No impersonation permission, missing linked user, or reseller current scope hides switch as designed; direct forbidden target is denied. Repeated click while switching cannot create stacked unintended sessions.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 switching to an admin-role reseller is denied and the staff list stays in place"
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 a reseller without a linked user does not offer scope switching"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Admin-role switch is denied, the URL stays on the list, and the API identities are unchanged. A linked user shows Switch to reseller when impersonate.start is present. Missing-user and permission-less branches run only when that fixture exists. Stacked-session clicks remain.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-A07",
@@ -10827,9 +11043,10 @@
       "description": "Inactive reseller login/existing session/actions follow approved policy; reactivation restores only intended permissions.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked inactive reseller policy. Not executed."
     },
     {
       "id": "RS-D01",
@@ -10838,9 +11055,17 @@
       "description": "Cancel delete preserves reseller and every linked fixture; failed request reports truthfully without claiming complete purge.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "status": "implemented",
+      "test_refs": [
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-D01 cancel delete keeps the reseller"
+        }
+      ],
+      "last_run": null,
+      "implementation_note": "Cancel delete keeps the reseller. Confirm purge was not used. A failed purge response remains.",
+      "coverage_extent": "partial",
+      "slice_evidence": "tests/e2e/specifications/resellers/EXECUTION.json"
     },
     {
       "id": "RS-D02",
@@ -10849,9 +11074,10 @@
       "description": "Confirm purge on disposable reseller; approved linked records and account access are removed, export created per policy, sibling/foreign sentinel data survives unchanged.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked purge. Not executed."
     },
     {
       "id": "RS-D03",
@@ -10860,9 +11086,10 @@
       "description": "Export listing/import require their exact capabilities and authorized tenant ownership; known foreign filename/path traversal/invalid SQL selection cannot import or reveal data. Test backend isolation independently.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Review-blocked export and import isolation. Not executed."
     },
     {
       "id": "RS-D04",
@@ -10871,9 +11098,10 @@
       "description": "If reachable import UI is confirmed, approved exported fixture restores intended records/links in disposable environment; empty selection/cancel do nothing. Invalid/missing/conflicting export follows approved rollback/error policy with no partial import.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Import dialog is not mounted. Not executed."
     },
     {
       "id": "RS-R01",
@@ -10882,9 +11110,10 @@
       "description": "Delayed/failed list/detail/dropdowns/settings and session expiry have recoverable loading/error/auth states, no false success or stale cross-identity values.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Delayed and failed responses were not injected. Not executed."
     },
     {
       "id": "RS-R02",
@@ -10893,9 +11122,10 @@
       "description": "Representative mobile, keyboard, English/Bangla and light/dark coverage keeps filter/form tabs, settings, actions and recharge controls reachable with clear labels.",
       "ticket": "resellers/RESELLER-001-reseller-management.md",
       "review": "pending",
-      "status": "draft",
+      "status": "blocked",
       "test_refs": [],
-      "last_run": null
+      "last_run": null,
+      "implementation_note": "Presentation matrix was not executed."
     },
     {
       "id": "FT075-01",

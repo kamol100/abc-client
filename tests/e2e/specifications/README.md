@@ -88,7 +88,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [reports-reseller-clients](reports-reseller-clients/REPORTS-RESELLER-CLIENTS-001.md) — source-inventoried-draft
 - [reseller-packages](reseller-packages/RESELLER-PACKAGES-001.md) — source-inventoried-draft
 - [reseller-profile](reseller-profile/RESELLER-PROFILE-001.md) — source-inventoried-draft
-- [resellers](resellers/RESELLER-001-reseller-management.md) — detailed-draft
+- [resellers](resellers/RESELLER-001-reseller-management.md) — partially implemented; see [implementation status](resellers/IMPLEMENTATION.md)
 - [roles](roles/ROLES-001.md) — source-inventoried-draft
 - [salaries](salaries/SALARIES-001.md) — source-inventoried-draft
 - [settings-dashboard](settings-dashboard/SETTINGS-DASHBOARD-001.md) — source-inventoried-draft

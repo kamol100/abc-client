@@ -16,6 +16,7 @@
     "test:e2e:clients:isolated": "playwright test --config=playwright.clients.config.ts --project=clients-isolated",
     "test:e2e:legacy": "playwright test --config=playwright.config.ts",
     "test:e2e:invoices": "playwright test --config=playwright.invoices.config.ts",
+    "test:e2e:resellers": "playwright test --config=playwright.resellers.config.ts",
     "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium"
   },
   "dependencies": {
