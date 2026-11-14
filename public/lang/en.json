@@ -9411,6 +9411,14 @@
         },
         "message": {
             "label": "Message",
+            "formatting": "Formatting",
+            "format": {
+                "bold": "Bold",
+                "italic": "Italic",
+                "strike": "Strikethrough",
+                "bulletList": "Bulleted list",
+                "orderedList": "Numbered list"
+            },
             "placeholder": "Write a message",
             "errors": {
                 "required": "Add a message or at least one image",
@@ -9451,12 +9459,14 @@
         "composer": {
             "send": "Send",
             "sent": "Sent",
+            "fix_image_uploads": "Retry or remove the images that failed to upload.",
             "wait_for_uploads": "Wait until the images finish uploading.",
             "ambiguous": "The previous attempt may have been saved. It was checked against the server before this one was sent.",
             "already_sent": "The previous attempt is already in the conversation. This edited message uses a new request."
         },
         "images": {
             "add": "Add images",
+            "removed_from_message": "Removed from message",
             "limit": "JPEG, PNG, or WebP. Up to 5 images, 5 MB each.",
             "preview": "Image preview",
             "download": "Download image",

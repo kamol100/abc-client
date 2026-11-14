@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { format, isValid, parseISO } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { SupportAttachmentGallery, SupportComposer, SupportText } from "@/components/platform-support/support-composer";
+import { renderSupportRichMessage, supportRichTextClass } from "@/components/platform-support/support-rich-message";
 import {
     acknowledgeMessage,
     emptyHistory,
@@ -518,6 +519,7 @@ export function MessageList({
                 const agent = message.author.side === "platform";
                 const label = own ? t("platform_support.author.you") : message.author.name || (agent ? t("platform_support.author.platform") : t("platform_support.requester"));
                 const Icon = agent ? Headset : UserRound;
+                const rich = renderSupportRichMessage(message.body, message.attachments, audience);
                 return <li key={message.uuid} data-message-id={message.uuid}
                     className={cn("flex w-fit min-w-0 max-w-full items-start gap-2.5 sm:max-w-[88%]", own && "flex-row-reverse self-end")}>
                     <SupportIcon icon={Icon} className={cn("size-7 rounded-full [&>svg]:size-3.5", !agent && "bg-muted text-muted-foreground")} />
@@ -529,8 +531,10 @@ export function MessageList({
                         </p>
                         <div className={cn("min-w-0 space-y-2 rounded-xl border border-border bg-muted/45 px-3.5 py-2.5",
                             own ? "rounded-se-sm border-primary/15 bg-primary/[0.06]" : "rounded-ss-sm")}>
-                            <SupportText value={message.body} />
-                            <SupportAttachmentGallery attachments={message.attachments} audience={audience} />
+                            {rich ? (
+                                <div className={supportRichTextClass} dangerouslySetInnerHTML={{ __html: rich.html }} />
+                            ) : <SupportText value={message.body} />}
+                            <SupportAttachmentGallery attachments={rich?.attachments ?? message.attachments} audience={audience} />
                         </div>
                     </div>
                 </li>;

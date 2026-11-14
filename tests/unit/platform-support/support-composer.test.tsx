@@ -1,8 +1,9 @@
 import { SupportComposer, SupportImageDraft, SupportText } from "@/components/platform-support/support-composer";
 import type { DraftImage } from "@/components/platform-support/support-model";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { describe, expect, it, vi } from "vitest";
 
 const { mutate } = vi.hoisted(() => ({ mutate: vi.fn() }));
@@ -27,7 +28,8 @@ vi.mock("react-i18next", () => ({
 }));
 
 vi.mock("@/lib/platform-support/attachment-transport", () => ({
-    uploadSupportImage: vi.fn(async () => ({ ok: true, status: 200, body: { data: { upload_uuid: "u", upload_token: "t" } } })),
+    SUPPORT_IMAGE_MAX_BYTES: 5 * 1024 * 1024,
+    uploadSupportImage: vi.fn(async () => ({ ok: true, status: 200, body: { data: { upload_uuid: "11111111-1111-4111-8111-111111111111", upload_token: "token" } } })),
     deleteSupportUpload: vi.fn(async () => ({ ok: true, status: 200, body: {} })),
     supportAttachmentPath: () => "/api/platform-support/attachments/u",
     supportImageErrorKey: () => "platform_support.errors.image_invalid",
@@ -79,6 +81,36 @@ describe("platform support composer keyboard", () => {
 });
 
 describe("platform support image composer", () => {
+    it("submits an image-only issue with an inline image and its staged token", async () => {
+        mutate.mockClear();
+        const preview = vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:local-preview");
+        const user = userEvent.setup();
+        try {
+            render(
+                <QueryClientProvider client={new QueryClient()}>
+                    <SupportComposer mode="issue" api="threads" />
+                </QueryClientProvider>,
+            );
+            const editor = await screen.findByRole("textbox", { name: "platform_support.message.label" });
+            const fileInput = screen.getByTestId("support-image-input");
+            const onPickerClick = vi.fn();
+            fileInput.addEventListener("click", onPickerClick);
+            const toolbar = screen.getByRole("group", { name: "platform_support.message.formatting" });
+            await user.click(within(toolbar).getByRole("button", { name: "platform_support.images.add" }));
+            expect(onPickerClick).toHaveBeenCalledOnce();
+            await user.upload(fileInput, new File(["image"], "proof.png", { type: "image/png" }));
+            expect(editor.querySelector("img")).toHaveAttribute("src", "blob:local-preview");
+            await screen.findByTestId("support-image-ready");
+            await user.click(screen.getByRole("button", { name: "platform_support.actions.report_issue" }));
+            await waitFor(() => expect(mutate).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
+                body: "[platform-support:markdown:v1]\n![](support-attachment:11111111-1111-4111-8111-111111111111)",
+                attachment_tokens: ["token"],
+            })));
+        } finally {
+            preview.mockRestore();
+        }
+    });
+
     it("renders message text without interpreting markup", () => {
         const { container } = render(<SupportText value={"<b>hello</b>\nnext"} />);
         expect(container.querySelector("b")).toBeNull();

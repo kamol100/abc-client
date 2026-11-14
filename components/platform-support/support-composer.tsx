@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type Ref } from "react";
 import { FieldValues, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ImagePlus, X } from "lucide-react";
@@ -49,6 +49,9 @@ import {
     type SupportImageAudience,
 } from "@/lib/platform-support/attachment-transport";
 import { cn } from "@/lib/utils";
+import { SupportIssueEditor } from "@/components/platform-support/support-issue-editor";
+import { resolveSupportDraftImages, supportInlineDraftImages } from "@/components/platform-support/support-rich-message";
+import type { Editor } from "@tiptap/react";
 
 const PROGRESS_WIDTH = { 0: "w-0", 50: "w-1/2", 100: "w-full" } as const;
 
@@ -64,6 +67,9 @@ export function SupportImageDraft({
     draftId,
     threadId,
     disabled = false,
+    editor,
+    onSelectFiles,
+    fileInputRef,
 }: {
     images: DraftImage[];
     onChange: (updater: (current: DraftImage[]) => DraftImage[]) => void;
@@ -71,10 +77,16 @@ export function SupportImageDraft({
     draftId?: string;
     threadId?: string;
     disabled?: boolean;
+    editor?: Editor | null;
+    onSelectFiles?: (select: ((files: File[]) => void) | null) => void;
+    fileInputRef?: Ref<HTMLInputElement>;
 }) {
     const { t } = useTranslation();
     const inputId = useId();
-    const { register, setValue } = useFormContext();
+    const { register, setValue, watch } = useFormContext();
+    const body = onSelectFiles ? String(watch("body") ?? "") : "";
+    const visibleImages = onSelectFiles ? supportInlineDraftImages(body, images) : images;
+    const countable = visibleImages.filter((image) => image.status !== "failed").length;
     const files = useRef(new Map<string, File>());
     const previews = useRef(new Map<string, string>());
     const inflight = useRef(new Set<string>());
@@ -87,9 +99,8 @@ export function SupportImageDraft({
     }, [register]);
 
     useEffect(() => {
-        const countable = images.filter((image) => image.status !== "failed").length;
         setValue("attachment_count", countable, { shouldValidate: false });
-    }, [images, setValue]);
+    }, [countable, setValue]);
 
     useEffect(() => {
         const urls = previews.current;
@@ -124,6 +135,12 @@ export function SupportImageDraft({
                         ? { ok: true, uploadUuid: uploaded.uploadUuid, uploadToken: uploaded.uploadToken }
                         : { ok: false, errorKey: supportImageErrorKey(code) },
                 ));
+            }).catch(() => {
+                inflight.current.delete(image.localId);
+                onChangeRef.current((current) => markUploadResult(current, image.localId, {
+                    ok: false,
+                    errorKey: supportImageErrorKey(null),
+                }));
             });
         }
     }, [audience, draftId, images, threadId]);
@@ -136,8 +153,7 @@ export function SupportImageDraft({
         return url;
     };
 
-    const onFiles = (list: FileList | null) => {
-        const selected = [...(list ?? [])];
+    const onFiles = (selected: File[]) => {
         if (selected.length === 0 || disabled) return;
         const incoming = selected.map((file) => ({
             localId: supportRequestId(),
@@ -146,14 +162,22 @@ export function SupportImageDraft({
             type: file.type,
         }));
         const next = addDraftImages(images, incoming);
-        incoming.forEach((file, index) => {
-            if (!next.images.some((image) => image.localId === file.localId)) return;
+        const nodes = incoming.flatMap((file, index) => {
+            if (!next.images.some((image) => image.localId === file.localId)) return [];
             files.current.set(file.localId, selected[index]);
-            rememberPreview(file.localId, selected[index]);
+            const src = rememberPreview(file.localId, selected[index]);
+            return [{ type: "image", attrs: { src, alt: file.name, attachmentId: file.localId } }];
         });
         setRejected(next.errors);
         onChange(() => next.images);
+        if (nodes.length > 0) editor?.chain().focus().insertContent(nodes).run();
     };
+    const onFilesRef = useRef(onFiles);
+    onFilesRef.current = onFiles;
+    useEffect(() => {
+        onSelectFiles?.((files) => onFilesRef.current(files));
+        return () => onSelectFiles?.(null);
+    }, [onSelectFiles]);
 
     const removeImage = async (image: DraftImage) => {
         if (image.uploadUuid) {
@@ -167,6 +191,15 @@ export function SupportImageDraft({
                 )));
                 return;
             }
+        }
+        if (editor) {
+            const transaction = editor.state.tr;
+            editor.state.doc.descendants((node, position) => {
+                if (node.type.name === "image" && node.attrs.attachmentId === image.localId) {
+                    transaction.delete(transaction.mapping.map(position), transaction.mapping.map(position + node.nodeSize));
+                }
+            });
+            if (transaction.docChanged) editor.view.dispatch(transaction.setMeta("addToHistory", false));
         }
         const preview = previews.current.get(image.localId);
         if (preview) {
@@ -188,7 +221,7 @@ export function SupportImageDraft({
     return (
         <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-                <label
+                {!fileInputRef && <label
                     htmlFor={inputId}
                     className={cn(
                         "inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-input bg-background px-3 text-sm text-foreground",
@@ -197,17 +230,19 @@ export function SupportImageDraft({
                 >
                     <ImagePlus className="h-4 w-4" aria-hidden />
                     {t("platform_support.images.add")}
-                </label>
+                </label>}
                 <input
+                    ref={fileInputRef}
                     id={inputId}
                     data-testid="support-image-input"
                     className="sr-only"
+                    hidden={Boolean(fileInputRef)}
                     type="file"
                     accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
                     multiple
                     disabled={disabled}
                     onChange={(event) => {
-                        onFiles(event.target.files);
+                        onFiles(Array.from(event.target.files ?? []));
                         event.target.value = "";
                     }}
                 />
@@ -224,15 +259,17 @@ export function SupportImageDraft({
                     const progress = imageProgress(image.status);
                     return (
                         <li key={image.localId} data-testid={`support-image-${image.status}`} className="space-y-2 rounded-md border border-border p-2">
-                            {preview ? (
+                            {!onSelectFiles && (preview ? (
                                 // Local preview only. Sent images use the authenticated attachment route.
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={preview} alt={image.name} className="h-24 w-full rounded-md object-cover" />
                             ) : (
                                 <div className="flex h-24 items-center justify-center rounded-md bg-muted text-xs text-muted-foreground">{image.name}</div>
-                            )}
+                            ))}
                             <p className="truncate text-xs text-foreground">{image.name}</p>
-                            <p className="text-xs text-muted-foreground">{t(`platform_support.images.${image.status}`)}</p>
+                            <p className="text-xs text-muted-foreground">
+                                {t(`platform_support.images.${visibleImages.includes(image) ? image.status : "removed_from_message"}`)}
+                            </p>
                             <div className="h-1 overflow-hidden rounded-full bg-muted" aria-hidden>
                                 <div className={cn("h-full bg-primary", PROGRESS_WIDTH[progress])} />
                             </div>
@@ -331,6 +368,12 @@ export function SupportComposer({
     const { t } = useTranslation();
     const widget = useSupportWidget();
     const [images, setImages] = useState<DraftImage[]>([]);
+    const [issueEditor, setIssueEditor] = useState<Editor | null>(null);
+    const issueFileInput = useRef<HTMLInputElement>(null);
+    const selectFiles = useRef<((files: File[]) => void) | null>(null);
+    const captureSelectFiles = useCallback((select: ((files: File[]) => void) | null) => {
+        selectFiles.current = select;
+    }, []);
     const [notice, setNotice] = useState<string | null>(null);
     const [draft] = useState(() => draftId ?? supportRequestId());
     const pendingRef = useRef<DraftSubmit | null>(null);
@@ -347,14 +390,20 @@ export function SupportComposer({
             : supportMessageFields();
 
     const preparePayload = async (values: FieldValues) => {
-        if (imagesRef.current.some((image) => image.status === "pending" || image.status === "uploading")) {
+        const issueBody = String(values.body ?? "");
+        const selectedImages = mode === "issue" ? supportInlineDraftImages(issueBody, imagesRef.current) : imagesRef.current;
+        if (mode === "issue" && selectedImages.some((image) => image.status === "failed")) {
+            setNotice("platform_support.composer.fix_image_uploads");
+            return false;
+        }
+        if (selectedImages.some((image) => image.status === "pending" || image.status === "uploading")) {
             setNotice("platform_support.composer.wait_for_uploads");
             return false;
         }
         const body = mode === "convert"
             ? JSON.stringify([values.category, values.priority])
             : String(values.body ?? "");
-        const tokens = readyTokens(imagesRef.current);
+        const tokens = readyTokens(selectedImages);
         const decision = submitAttempt(pendingRef.current, `${body}\n${tokens.join("\n")}`, tokens, supportRequestId());
         const reconcileUrl = threadId ? supportHistoryUrl(audience, threadId) : null;
         if (decision.reconcileFirst && pendingRef.current && reconcileUrl) {
@@ -387,7 +436,7 @@ export function SupportComposer({
             return issueCreatePayload({
                 category: String(values.category ?? ""),
                 priority: String(values.priority ?? "normal"),
-                body,
+                body: resolveSupportDraftImages(body, imagesRef.current),
                 tokens,
                 clientRequestId: requestId,
                 draftId: draft,
@@ -491,7 +540,13 @@ export function SupportComposer({
                                     }
                                 } : undefined}
                             >
-                                {renderField(field)}
+                                {mode === "issue" && field.name === "body" ? (
+                                    <SupportIssueEditor
+                                        onEditor={setIssueEditor}
+                                        onFiles={allowImages ? (files) => selectFiles.current?.(files) : undefined}
+                                        onAddImages={allowImages ? () => issueFileInput.current?.click() : undefined}
+                                    />
+                                ) : renderField(field)}
                             </div>
                         ))}
                         {mode !== "convert" && allowImages && (
@@ -501,6 +556,10 @@ export function SupportComposer({
                                 audience={audience}
                                 draftId={mode === "issue" ? draft : undefined}
                                 threadId={mode === "message" ? threadId : undefined}
+                                disabled={mode === "issue" && !issueEditor}
+                                editor={mode === "issue" ? issueEditor : undefined}
+                                onSelectFiles={mode === "issue" ? captureSelectFiles : undefined}
+                                fileInputRef={mode === "issue" ? issueFileInput : undefined}
                             /></div>
                         )}
                     </div>

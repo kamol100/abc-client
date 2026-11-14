@@ -1,3 +1,15 @@
+## Image button in the issue editor — 2026-11-14
+
+Moved Add images into the Report an issue formatting toolbar. The button opens the existing file picker and inserts the selected image inline. Verified button visibility in local Chrome at desktop and 390-pixel widths. Typecheck and the 52 focused platform support tests passed, including the toolbar button and inline image flow with a mocked upload.
+
+## Rich text for Report an issue — 2026-11-14
+
+The Message field uses Tiptap with bold, italic, strikethrough, and list controls. Add images, paste a screenshot, or drop a file to insert a private inline image. The existing upload and message endpoints accept the rich message as marked Markdown in the body with the existing attachment tokens. Requester and inbox views render the formatting and resolve inline images against the attachments returned for each message. Older plain-text messages retain their display.
+
+Typecheck, 52 focused Vitest tests, 14 backend image and core tests, and help validation passed. The focused tests cover an image-only report payload and reject external image URLs in message rendering. Full Vitest reported 696 passes and the same 21 failures outside platform support as the prior run.
+
+Local Chrome confirmed the editor and formatting at 1920 and 390 pixels. Toggling formatting kept the mobile submit control and page scroll in place. The isolated Playwright transport spec was updated and discovered. Live image submission and slow-network transitions were not exercised because no disposable test database fixture was configured.
+
 ## Remove platform support subjects — 2026-11-14
 
 Removed subject inputs, columns, filters, and thread titles from platform support. The request reference identifies each thread. The frontend matches the subject-free API and chat conversion payload. Preserved the prior layout rule and Mobile app issue category changes.
