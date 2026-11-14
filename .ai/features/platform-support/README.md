@@ -30,6 +30,7 @@ All models, routes, permission names and paths described as proposed are new con
 - [PS-008 — contextual Help Centre, FAQ, video and search UI](tasks/PS-008-help-centre.md)
 - [PS-009 — end-to-end acceptance and release readiness](tasks/PS-009-acceptance.md)
 - [PS-010 — redesign using the HTML reference and current app conventions](tasks/PS-010-visual-redesign.md)
+- [PS-011 — database-backed Help Centre and app-tenant management](tasks/PS-011-dynamic-help.md)
 
 PS-010 is the current follow-up for the pre-production feature. The redesign applies the HTML reference within the application's sidebar, menu, theme, and shared component conventions. See the [implementation and review evidence](evidence/PS-010/README.md) for the checks performed and the remaining acceptance work.
 

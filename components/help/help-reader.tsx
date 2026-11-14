@@ -83,7 +83,7 @@ export function HelpVideo({
 export function HelpReader({
   articleId,
   title,
-  summary,
+  summaryHtml,
   html,
   headings,
   related,
@@ -92,7 +92,7 @@ export function HelpReader({
 }: {
   articleId: string;
   title: string;
-  summary: string;
+  summaryHtml: string;
   html: string;
   headings: HelpHeadingView[];
   related: HelpRelatedView[];
@@ -120,7 +120,8 @@ export function HelpReader({
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1 basis-56">
                   <h1 className="break-words text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
-                  <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">{summary}</p>
+                  <div className="mt-2 max-w-prose break-words text-sm leading-relaxed text-muted-foreground [&_a]:underline [&_ol]:list-decimal [&_ol]:ps-5 [&_pre]:overflow-x-auto [&_ul]:list-disc [&_ul]:ps-5 [&>*+*]:mt-1"
+                    dangerouslySetInnerHTML={{ __html: summaryHtml }} />
                 </div>
                 <div className="flex flex-wrap gap-1 rounded-lg border border-border bg-background p-1" role="group" aria-label={t("help.language")}>
                   {(["en", "bn"] as const).map((item) => <MyButton key={item} type="button"

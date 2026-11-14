@@ -6,7 +6,7 @@ export type HelpAudience = "staff" | "platform";
 
 export type HelpPublication = "published" | "draft";
 
-export type HelpKind = "guide" | "faq";
+export type HelpKind = "guide" | "faq" | "video";
 
 /**
  * Permission rules live here and are shared by every language.
@@ -29,6 +29,7 @@ export interface HelpArticlePolicy {
   developmentEnglishFallback?: boolean;
   videos?: Partial<Record<HelpLocale, string>>;
   file: string;
+  category?: { key: string; label: string };
 }
 
 const revision = "1";

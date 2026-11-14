@@ -1,5 +1,4 @@
-import { loadHelpActor } from "@/lib/help/actor";
-import { projectHelpLibrary } from "@/lib/help/content";
+import { loadDatabaseHelp } from "@/lib/help/database-library";
 import { helpMediaResponse } from "@/lib/help/http";
 
 export async function GET(
@@ -7,8 +6,6 @@ export async function GET(
   context: { params: Promise<{ articleId: string; file: string }> },
 ) {
   const { articleId, file } = await context.params;
-  return helpMediaResponse(articleId, file, {
-    actor: await loadHelpActor(),
-    library: projectHelpLibrary(),
-  });
+  const deps = await loadDatabaseHelp("en");
+  return helpMediaResponse(articleId, file, deps);
 }

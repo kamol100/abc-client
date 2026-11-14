@@ -4,7 +4,7 @@ import type { HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle, type HelpActor } from "@/lib/help/authorization";
 import { matchingHelpArticles, normalizeHelpPath } from "@/lib/help/catalog";
 import { loadHelpDocument, type HelpDocument, type HelpLibrary } from "@/lib/help/content";
-import { escapeHelpText } from "@/lib/help/render";
+import { escapeHelpText, helpSummaryText } from "@/lib/help/render";
 
 export const HELP_QUERY_MAX = 80;
 export const HELP_RESULT_MAX = 8;
@@ -12,6 +12,7 @@ const SNIPPET = 160;
 
 export interface HelpSearchHit {
   topic: HelpTopic;
+  topic_label?: string;
   id: string;
   slug: string;
   kind: HelpDocument["article"]["kind"];
@@ -48,13 +49,14 @@ function snippet(text: string, query: string): string {
 
 function score(document: HelpDocument, query: string, routeIds: ReadonlySet<string>): number {
   const needle = fold(query);
-  const haystack = fold(`${document.title} ${document.summary} ${document.keywords.join(" ")} ${document.text}`);
+  const summary = helpSummaryText(document.summary);
+  const haystack = fold(`${document.title} ${summary} ${document.keywords.join(" ")} ${document.text}`);
   if (!needle || !haystack.includes(needle)) return 0;
   let value = 50;
   if (routeIds.has(document.article.id)) value += 1000;
   if (fold(document.title).includes(needle)) value += 500;
   if (document.keywords.some((keyword) => fold(keyword).includes(needle))) value += 200;
-  if (fold(document.summary).includes(needle)) value += 100;
+  if (fold(summary).includes(needle)) value += 100;
   return value;
 }
 
@@ -88,16 +90,18 @@ export function searchHelpDocuments(
     .slice(0, HELP_RESULT_MAX)
     .map(({ document, rank }) => {
       const titleMatch = fold(document.title).includes(fold(needle));
-      const source = titleMatch ? document.summary : `${document.title} ${document.text}`;
+      const summary = helpSummaryText(document.summary);
+      const source = titleMatch ? summary : `${document.title} ${document.text}`;
       return {
         id: document.article.id,
         topic: helpTopicFor(document.article),
+        topic_label: document.article.category?.label,
         slug: document.article.slug,
         kind: document.article.kind,
         locale: document.locale,
         title: document.title,
-        summary: document.summary,
-        snippet: rank >= 500 && titleMatch ? escapeHelpText(document.summary) : snippet(source, needle),
+        summary,
+        snippet: rank >= 500 && titleMatch ? escapeHelpText(summary) : snippet(source, needle),
       };
     });
 }

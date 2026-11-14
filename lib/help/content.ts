@@ -9,6 +9,7 @@ export interface HelpLibrary {
   root: string;
   articles: readonly HelpArticlePolicy[];
   allowDrafts: boolean;
+  documents?: ReadonlyMap<string, HelpDocument>;
 }
 
 export interface HelpDocument {
@@ -147,6 +148,7 @@ export function loadHelpDocument(
   article: HelpArticlePolicy,
   requestedLocale: HelpLocale,
 ): HelpDocument | null {
+  if (library.documents) return library.documents.get(`${requestedLocale}:${article.id}`) ?? null;
   const primary = readLocale(library, article, requestedLocale);
   if (primary) return primary;
   if (

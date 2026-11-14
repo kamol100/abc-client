@@ -1,16 +1,17 @@
 import "server-only";
+import { helpSummaryText } from "@/lib/help/render";
 import { helpTopicFor } from "@/lib/help/topics";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import type { HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle } from "@/lib/help/authorization";
-import { loadHelpActor } from "@/lib/help/actor";
+import { loadDatabaseHelp } from "@/lib/help/database-library";
 import { indexHelpArticles } from "@/lib/help/catalog";
-import { loadHelpDocument, projectHelpLibrary } from "@/lib/help/content";
+import { loadHelpDocument } from "@/lib/help/content";
 import { helpArticleView, type HelpArticleView, type HelpCard } from "@/lib/help/http";
 import { helpVideoEmbed } from "@/lib/help/video";
 
-const SLUG = /^[a-z0-9]+(?:\/[a-z0-9-]+)*$/;
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/;
 
 export async function helpRequestLocale(): Promise<HelpLocale> {
   const jar = await cookies();
@@ -23,10 +24,9 @@ export interface HelpIndexPage {
 }
 
 export const loadHelpIndex = cache(async (): Promise<HelpIndexPage | null> => {
-  const actor = await loadHelpActor();
-  if (actor.principal !== "staff") return null;
   const locale = await helpRequestLocale();
-  const library = projectHelpLibrary();
+  const { actor, library } = await loadDatabaseHelp(locale);
+  if (actor.principal !== "staff") return null;
   const cards = library.articles.flatMap((article) => {
     if (!canReadHelpArticle(actor, article, { allowDrafts: library.allowDrafts })) return [];
     const document = loadHelpDocument(library, article, locale);
@@ -36,10 +36,11 @@ export const loadHelpIndex = cache(async (): Promise<HelpIndexPage | null> => {
     return [{
       id: article.id,
       topic: helpTopicFor(article),
+      topic_label: article.category?.label,
       slug: article.slug,
       kind: article.kind,
       title: document.title,
-      summary: document.summary,
+      summary: helpSummaryText(document.summary),
       video_status: video ? "configured" as const : "not_configured" as const,
     }];
   });
@@ -48,10 +49,9 @@ export const loadHelpIndex = cache(async (): Promise<HelpIndexPage | null> => {
 
 export const loadHelpArticle = cache(async (slug: string): Promise<HelpArticleView | null> => {
   if (!SLUG.test(slug)) return null;
-  const actor = await loadHelpActor();
-  if (actor.principal !== "staff") return null;
   const locale = await helpRequestLocale();
-  const library = projectHelpLibrary();
+  const { actor, library } = await loadDatabaseHelp(locale);
+  if (actor.principal !== "staff") return null;
   const article = indexHelpArticles(library.articles).bySlug.get(slug);
   if (!article || !canReadHelpArticle(actor, article, { allowDrafts: library.allowDrafts })) return null;
   return helpArticleView(library, actor, article, locale);

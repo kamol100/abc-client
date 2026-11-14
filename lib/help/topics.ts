@@ -12,7 +12,8 @@ const TOPICS: Partial<Record<string, HelpTopic>> = {
     staffs: "settings", staff: "settings", roles: "settings", permissions: "settings", company: "settings",
 };
 
-export function helpTopicFor(article: Pick<HelpArticlePolicy, "id" | "audience">): HelpTopic {
+export function helpTopicFor(article: Pick<HelpArticlePolicy, "id" | "audience" | "category">): HelpTopic {
+    if (article.category) return article.category.key;
     if (article.audience === "platform") return "platform";
     return TOPICS[article.id.split(".")[0]] ?? "operations";
 }

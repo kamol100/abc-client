@@ -6,7 +6,7 @@ import { indexHelpArticles, normalizeHelpPath } from "@/lib/help/catalog";
 import { readableHelpForRoute } from "@/lib/help/context";
 import { loadHelpDocument, readHelpMedia, type HelpLibrary } from "@/lib/help/content";
 import { helpHeadings, type HelpHeading } from "@/lib/help/headings";
-import { renderHelpMarkdown } from "@/lib/help/render";
+import { helpSummaryText, renderHelpMarkdown, renderHelpSummary } from "@/lib/help/render";
 import { HELP_QUERY_MAX, searchHelpDocuments, visibleHelpDocuments } from "@/lib/help/search";
 import { helpVideoEmbed } from "@/lib/help/video";
 
@@ -77,6 +77,7 @@ export interface HelpArticleView {
   fallback: boolean;
   title: string;
   summary: string;
+  summary_html: string;
   html: string;
   headings: HelpHeading[];
   video: HelpVideoView | null;
@@ -93,6 +94,7 @@ export interface HelpArticleView {
 
 export interface HelpCard {
   topic: HelpTopic;
+  topic_label?: string;
   id: string;
   slug: string;
   kind: HelpArticlePolicy["kind"];
@@ -135,7 +137,7 @@ export function helpArticleView(
       slug: relatedArticle.slug,
       kind: relatedArticle.kind,
       title: relatedDocument.title,
-      summary: relatedDocument.summary,
+      summary: helpSummaryText(relatedDocument.summary),
     }];
   });
   const feature = article.routePatterns.find((pattern) => !pattern.includes(":"));
@@ -147,7 +149,8 @@ export function helpArticleView(
     requested_locale: document.requestedLocale,
     fallback: document.fallback,
     title: document.title,
-    summary: document.summary,
+    summary: helpSummaryText(document.summary),
+    summary_html: renderHelpSummary(document.summary, article.id, slugs),
     html,
     headings: helpHeadings(document.body),
     ...videoView(article, document.locale),
@@ -168,10 +171,11 @@ function helpCard(
   return {
     id: article.id,
     topic: helpTopicFor(article),
+    topic_label: article.category?.label,
     slug: article.slug,
     kind: article.kind,
     title: document.title,
-    summary: document.summary,
+    summary: helpSummaryText(document.summary),
     video_status: videoView(article, document.locale).video_status,
   };
 }

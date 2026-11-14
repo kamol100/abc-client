@@ -1,5 +1,6 @@
 {
     "common": {
+        "content_type": "Content type",
         "no_invoice_this_month": "No invoice this month",
         "help": "Help",
         "no_data": "No data",
@@ -9536,6 +9537,41 @@
         }
     },
     "help": {
+        "management": {
+            "heading": "Help management",
+            "articles": "Articles",
+            "categories": "Article Categories",
+            "category": "Category",
+            "kind": "Content type",
+            "status": "Status",
+            "title": "Title",
+            "preview": "Preview",
+            "add_article": "Add article",
+            "edit_article": "Edit article",
+            "add_category": "Add category",
+            "edit_category": "Edit category",
+            "guide": "Guide",
+            "faq": "FAQ",
+            "video": "Video",
+            "draft": "Draft",
+            "published": "Published",
+            "archived": "Archived",
+            "required": "This field is required",
+            "video_required": "Add a video URL",
+            "formatting": "Text formatting",
+            "format_heading": "Heading",
+            "fields": {
+                "name_en": "English name",
+                "name_bn": "Bangla name",
+                "title_en": "English title",
+                "title_bn": "Bangla title",
+                "summary_en": "English summary",
+                "summary_bn": "Bangla summary",
+                "article_en": "English content",
+                "article_bn": "Bangla content",
+                "video_url_en": "Video URL"
+            }
+        },
         "redesign": {
             "subtitle": "Guides and answers for your workspace.",
             "eyebrow": "Knowledge base",

@@ -130,6 +130,17 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       ],
     },
     {
+      id: 40,
+      title: t("help.management.heading"),
+      url: "#",
+      icon: FileText,
+      permissions: ["platform-help-admin.articles.access", "platform-help-admin.categories.access"],
+      items: [
+        { title: t("help.management.articles"), url: "/help-management", permission: "platform-help-admin.articles.access" },
+        { title: t("help.management.categories"), url: "/help-management/categories", permission: "platform-help-admin.categories.access" },
+      ],
+    },
+    {
       id: 9,
       title: t("menu.invoice.title"),
       url: "#",

@@ -1,3 +1,39 @@
+## PS-011 Help management refactor — 2026-11-14
+
+Split the platform Help management submenu into Articles and Article Categories, with independent permission checks and the Invoice and Invoice Type table toolbar and actions. The wider article dialog begins with English and Bangla titles and uses four Tiptap fields for the two summaries and two Markdown bodies. It shows one video URL. Forms do not expose keys or slugs; Laravel generates them on creation and keeps them stable across renames. The reader displays formatted summaries above the body and plain excerpts in cards and search.
+
+Typecheck passed. The focused Help and menu suites passed 47 tests. Full Vitest passed 702 tests and still reported 19 existing failures and one failed suite import outside Help and menu. In the seeded local Chrome session, verified both submenu routes, the two-field category dialog, title-first article form, formatting and stable dialog/editor dimensions at 1280×900 and 390×844, and loading existing Markdown into the edit dialog. Browser submissions and artificial slow-network checks were not run; SQLite covered API persistence. The preceding uncommitted PS-011 work remains in the tree.
+
+## PS-011 dynamic Help implementation — 2026-11-14
+
+Added the platform-only Help management screen with bilingual category and article forms, draft preview, publishing, and archiving. The existing staff UI reads permission-filtered Laravel content and uses the existing Markdown renderer. Retained the static reader for the explicit unseeded response. The target schema and seed have not been applied, so the planned static Markdown cleanup is pending.
+
+Typecheck and 28 Help tests passed. Full Vitest reported 698 passes and the same 21 failures outside Help as before. Laravel reported 14 passing SQLite tests with 2,068 assertions, and Pint and PHPStan passed on the checked files. Chrome showed the app-tenant management shell and the unseeded Help fallback at desktop and 390-pixel widths. Seeded browser flows and slow-network transitions remain unverified.
+
+## Dynamic Help Centre implementation plan — 2026-11-14
+
+Added PS-011 for the Laravel schema and access rules, app-tenant management UI, repeatable seeder, staff reader cutover, and Markdown removal after parity checks. The existing Help validator passed with 184 article keys. The user confirmed that all four platform-only articles should be imported with their existing restrictions.
+
+## Tenant staff help audience — 2026-11-14
+
+Removed the audience column from the proposed help article schema. The library targets tenant staff, with access enforced by the application.
+
+## Video entries in the help schema — 2026-11-14
+
+Added the video kind and optional English and Bangla video URLs to the proposed two-table schema. The proposal includes localized summaries and requires at least one URL for a published video entry. No migration was created or SQL executed.
+
+## Coverage of the two-table help schema — 2026-11-14
+
+Confirmed the proposal represents guide and FAQ bodies, both languages, categories, slugs, and publication state. Reviewed the current consumers for localized summaries, keyword search, videos, related guides, contextual help, permissions, ordering, and translation revisions. Proposed retaining catalog metadata by article key if the immediate goal is database-backed content with current behavior. No application code or database changes.
+
+## Two-table dynamic help schema — 2026-11-14
+
+Revised the proposal to use categories and articles. Each article stores English and Bangla title and Markdown body columns. Removed the requested policy, ordering, and author columns from the proposal. The SQL is for review only.
+
+## Dynamic help database schema review — 2026-11-14
+
+Reviewed the existing help catalog, Markdown translation metadata, access rules, and backend MySQL 8 configuration. Presented a five-table MySQL schema in chat for review, including keys, indexes, permission fields, translation revisions, contextual routes, and related articles. No SQL was executed and no migration was created.
+
 ## Restore dependencies after audit fix --force — 2026-11-14
 
 `npm audit fix --force` moved Zod from 3.25.76 to 4.6.7 and replaced the shadcn CLI 4.23.0 with an empty `shadcn@1.0.0`. The production build then failed TypeScript because the schemas use Zod 3 (`required_error`, `invalid_type_error`, and single-argument `z.record`). Restored `package.json` and `package-lock.json`, then reinstalled with `npm ci`. Zod is 3.25.76 and shadcn is 4.23.0 again.
@@ -395,3 +431,10 @@ components/login/login-form.tsx, playwright.config.ts, playwright/.auth/user.jso
 Reviewed the platform-support README, nine task specifications, frontend feature workflow and architecture rule to answer how to instruct Cursor. The specification already requires PS-001 through PS-009 sequentially, with upstream acceptance evidence before downstream implementation. Recommended opening both sibling repositories, planning the current task against actual source, implementing one task per checkpoint and recording tests/blockers before advancing. PS-008 retains its six sequential content batches. No feature implementation or task-status changes performed.
 
 Verification: ran scripts/ai/status before the report addition, and scripts/ai/diff plus scripts/ai/status afterwards. Application tests were not run for guidance/report-only work. Existing report entries preserved. Unrelated package.json, e2e guidance/register/inventory/reseller files, platform-support specifications/design, reseller suite/config and Codex logs were left untouched. No backend edits, dependency installations, commit, push or deployment.
+
+
+## Dynamic help database proposal — 2026-11-14
+
+Inspected the filesystem-backed help catalog, Markdown loader, authorization, topics, help centre and Laravel API routes/models. Proposed a platform-managed shared knowledge base in the existing Laravel database: help_categories, help_articles, help_article_translations, help_article_routes and help_article_relations, with media and revision tables as follow-ups. Preserve stable article keys/slugs, English/Bangla content, guide/FAQ kind, permission all/any rules, subscription feature rules and page context matching. Suggested database-backed Markdown with an admin editor and draft/preview/publish workflow. No migrations, endpoints or application behavior implemented.
+
+Verification: read-only source inspection; scripts/ai/status showed a clean starting tree. Tests not run for design advice/report-only work. Only this report was edited; no unrelated starting changes found. Frontend diff/status reviewed after the addition.

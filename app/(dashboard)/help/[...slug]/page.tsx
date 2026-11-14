@@ -38,7 +38,7 @@ export default async function HelpArticlePage({
     <HelpReader
       articleId={article.id}
       title={article.title}
-      summary={article.summary}
+      summaryHtml={article.summary_html}
       html={article.html}
       headings={article.headings}
       related={article.related}

@@ -100,3 +100,17 @@ export function helpPlainText(markdown: string): string {
     .replace(/\s+/g, " ")
     .trim();
 }
+
+export function renderHelpSummary(markdown: string, articleId: string, allowedSlugs: ReadonlyMap<string, string>): string {
+  try {
+    return renderHelpMarkdown(markdown, articleId, allowedSlugs);
+  } catch {
+    return escapeHelpText(helpSummaryText(markdown));
+  }
+}
+
+export function helpSummaryText(markdown: string): string {
+  return parser.parse(markdown, {}).flatMap((token) => (token.children ?? [token])
+    .map((inline) => /^(text|image|code_inline|code_block|fence)$/.test(inline.type) ? inline.content : inline.type.endsWith("break") ? " " : "")
+    .join("")).filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+}

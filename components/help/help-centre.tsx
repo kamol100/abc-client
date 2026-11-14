@@ -15,7 +15,8 @@ export interface HelpCardView {
   id: string;
   slug: string;
   topic: HelpTopic;
-  kind: "guide" | "faq";
+  topic_label?: string;
+  kind: "guide" | "faq" | "video";
   title: string;
   summary: string;
   video_status?: "configured" | "not_configured";
@@ -100,9 +101,11 @@ export function HelpCentre({ cards, locale }: { cards: HelpCardView[]; locale: "
   };
 
   const guides = cards.filter((card) => card.kind === "guide");
-  const grouped = Object.entries(topics).flatMap(([id, Icon]) => {
+  const topicIds = new Set([...Object.keys(topics), ...guides.map((card) => card.topic)]);
+  const grouped = [...topicIds].flatMap((id) => {
     const group = guides.filter((card) => card.topic === id);
-    return group.length ? [{ id: id as HelpTopic, Icon, count: group.length }] : [];
+    const Icon = Object.hasOwn(topics, id) ? topics[id as keyof typeof topics] : BookOpen;
+    return group.length ? [{ id, Icon, count: group.length, label: group[0].topic_label ?? t(`help.redesign.topics.${id}`) }] : [];
   });
   const visible = results ?? cards.filter((card) => {
     if (tab === "faqs") return card.kind === "faq";
@@ -152,7 +155,7 @@ export function HelpCentre({ cards, locale }: { cards: HelpCardView[]; locale: "
       <section ref={browseRef} tabIndex={-1} aria-busy={pending} className="space-y-3 outline-none">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-sm font-semibold">{results !== null || pending ? t("help.redesign.results") : topic
-            ? t(`help.redesign.topics.${topic}`) : browse ? t("help.redesign.browse") : t(`help.tabs.${tab}`)}</h2>
+            ? grouped.find((group) => group.id === topic)?.label : browse ? t("help.redesign.browse") : t(`help.tabs.${tab}`)}</h2>
           {(topic || results !== null || pending) && <MyButton type="button" variant="ghost" onClick={() => { clearSearch(); setTopic(null); }}>
             {t("help.redesign.clear")}
           </MyButton>}
@@ -163,12 +166,12 @@ export function HelpCentre({ cards, locale }: { cards: HelpCardView[]; locale: "
             {t("help.error")}<MyButton type="button" variant="outline" onClick={() => void search()}>{t("help.retry")}</MyButton>
           </Card>
           : browse && grouped.length > 0 ? <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {grouped.map(({ id, Icon, count }) => <MyButton key={id} type="button" unstyled
+            {grouped.map(({ id, Icon, count, label }) => <MyButton key={id} type="button" unstyled
               className="group h-auto w-full justify-start whitespace-normal rounded-lg border border-border bg-card p-4 text-start shadow-none hover:border-primary/40 hover:bg-muted/40"
               onClick={() => { setTopic(id); browseRef.current?.focus(); }}>
               <SupportIcon icon={Icon} />
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold">{t(`help.redesign.topics.${id}`)}</span>
+                <span className="block text-sm font-semibold">{label}</span>
                 <span className="mt-1 block text-xs font-normal text-muted-foreground">{t("help.redesign.guide_count", { count })}</span>
               </span>
               <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />

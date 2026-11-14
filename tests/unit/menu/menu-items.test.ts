@@ -30,8 +30,8 @@ describe("admin menu order", () => {
       "/dashboard",
       "/clients",
       "#",
-      "/platform-support",
       "/platform-support-admin",
+      "#",
       "#",
       "#",
       "/resellers",
@@ -55,6 +55,7 @@ describe("admin menu order", () => {
       "/demo-requests",
       "/archived-clients",
       "#",
+      "/platform-support",
       "#",
     ]);
     expect(urls(items)).toEqual([
@@ -63,11 +64,10 @@ describe("admin menu order", () => {
       "/tickets",
       "/subjects",
       "/tags",
-      "/platform-support?kind=issue",
-      "/platform-support?kind=chat",
-      "/help",
       "/platform-support-admin?kind=issue",
       "/platform-support-admin?kind=chat",
+      "/help-management",
+      "/help-management/categories",
       "/invoices",
       "/payments",
       "/invoice-types",
@@ -132,6 +132,9 @@ describe("admin menu order", () => {
       "/company-subscriptions",
       "/subscription-plans",
       "/subscription-features",
+      "/platform-support?kind=issue",
+      "/platform-support?kind=chat",
+      "/help",
       "/settings/general",
       "/settings/dashboard",
       "/settings/sms",
@@ -146,6 +149,14 @@ describe("admin menu order", () => {
 });
 
 describe("admin menu permissions", () => {
+  it("shows only the Help management pages the user can access", () => {
+    const articles = selectMenuItems(menu, access(["platform-help-admin.articles.access"]));
+    const categories = selectMenuItems(menu, access(["platform-help-admin.categories.access"]));
+    expect(group(articles, 40).items?.map((item) => item.url)).toEqual(["/help-management"]);
+    expect(group(categories, 40).items?.map((item) => item.url)).toEqual(["/help-management/categories"]);
+    expect(selectMenuItems(menu, access(["platform-support.access"])).some((item) => item.id === 40)).toBe(false);
+  });
+
   it("shows a network child only for its own permission", () => {
     const items = selectMenuItems(menu, access(["networks.access", "mikrotik-packages.access"]));
 
@@ -253,10 +264,10 @@ describe("admin menu feature locks", () => {
     const items = selectMenuItems(menu, access(["platform-support.access"]));
 
     expect(urls(items)).toEqual([
+      "/subscription",
       "/platform-support?kind=issue",
       "/platform-support?kind=chat",
       "/help",
-      "/subscription",
     ]);
     expect(group(items, 38).disabled).toBe(false);
     expect(urls(items)).not.toContain("/tickets");

@@ -1,10 +1,16 @@
-import { loadHelpActor } from "@/lib/help/actor";
-import { projectHelpLibrary } from "@/lib/help/content";
-import { helpContextResponse } from "@/lib/help/http";
+import { loadDatabaseHelp } from "@/lib/help/database-library";
+import { helpContextResponse, requestedHelpLocale } from "@/lib/help/http";
 
 export async function GET(request: Request) {
-  return helpContextResponse(request, {
-    actor: await loadHelpActor(),
-    library: projectHelpLibrary(),
-  });
+  const locale = requestedHelpLocale(request);
+  if (locale === "invalid") return Response.json({ success: false, code: "not_found" }, { status: 404 });
+  try {
+    const deps = await loadDatabaseHelp(locale ?? "en");
+    return helpContextResponse(request, deps);
+  } catch {
+    return Response.json({ success: false, code: "unavailable" }, {
+      status: 503,
+      headers: { "Cache-Control": "private, no-store" },
+    });
+  }
 }
