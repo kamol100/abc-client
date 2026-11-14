@@ -5,7 +5,7 @@ keywords:
   - জোন
   - প্রশ্ন
 language: bn
-translated_from_revision: "1"
+translated_from_revision: "1" 
 ---
 
 জোন টেবিল ফর্মটি সবসময় পায়। সার্ভার তবু zones.create চায়। অ্যাড দেখা মানে সেভ হবে না।
