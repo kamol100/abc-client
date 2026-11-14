@@ -82,14 +82,6 @@ export default function SupportHome({
         enabled: Boolean(identity) && !blocked,
         refetchOnWindowFocus: true,
         retry: supportQueryRetry,
-        refetchInterval: (query) => supportPollInterval({
-            surface: "list",
-            documentVisible,
-            online,
-            signedIn: Boolean(identity),
-            accessible: !blocked && !supportAccessDenied(query.state.error),
-            failureCount: query.state.fetchFailureCount,
-        }),
     });
 
     const { kind: _kind, per_page: _perPage, ...summaryFilters } = params;

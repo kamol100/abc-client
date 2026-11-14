@@ -1,3 +1,7 @@
+## Platform support list polling — 2026-11-14
+
+Removed the 15-second refetch interval from the requester Issues and Chats list in `components/platform-support/support-home.tsx`. The list still refetches when the window regains focus, when filters or kind change, and when the user retries a failed load. Summary counts on the same page still poll every 30 seconds. Open threads, the platform inbox, and the launcher are unchanged.
+
 ## Platform support chat header — 2026-11-13
 
 Removed the transient Refreshing label from the platform inbox chat conversation header. Background polling and stale warnings still work through the existing query logic. The issue header and inbox list keep their refresh indicators. This is a display-only change with no API or authorization changes.
