@@ -1,3 +1,13 @@
+## Receipt line index type — 2026-11-14
+
+Annotated both receipt line callbacks. The grouped rows now use a `ReceiptItem` type, so `line` is no longer implicit `any`, and `lineIndex` is `number`. The Zod passthrough invoice line was preventing the editor from typing that `.map` callback. The receipt file has no diagnostics. The receipt unit tests passed (5), and typecheck passed.
+
+## Basic receipt PPPoE username — 2026-11-14
+
+The basic invoice receipt now prints each client's `pppoe_username` under the client name and above the existing id and phone line. The advanced receipt already showed that username as a labeled row.
+
+The invoice receipt and print-settings unit tests passed (7). Typecheck passed. Opening `/settings/invoice-print` redirected to the staff login, so the live preview was not checked in the browser. The basic-receipt unit test renders `kamal01` with the client name and phone line.
+
 ## PS-011 Help management refactor — 2026-11-14
 
 Split the platform Help management submenu into Articles and Article Categories, with independent permission checks and the Invoice and Invoice Type table toolbar and actions. The wider article dialog begins with English and Bangla titles and uses four Tiptap fields for the two summaries and two Markdown bodies. It shows one video URL. Forms do not expose keys or slugs; Laravel generates them on creation and keeps them stable across renames. The reader displays formatted summaries above the body and plain excerpts in cards and search.

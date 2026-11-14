@@ -11,13 +11,21 @@ import {
     receiptLineHeight,
     type InvoicePrintSettings,
 } from "@/components/invoices/invoice-print-config";
-import { InvoiceDetail } from "@/components/invoices/invoice-type";
+import { InvoiceDetail, type InvoiceLine } from "@/components/invoices/invoice-type";
 
 type InvoiceReceiptProps = {
     invoices: InvoiceDetail[];
     className?: string;
     printSettings?: InvoicePrintSettings;
     printedAt?: Date;
+};
+
+type ReceiptItem = {
+    key: string;
+    description: string;
+    quantity: number;
+    unitPrice: number;
+    amount: number;
 };
 
 const getSettingString = (
@@ -118,6 +126,7 @@ const BasicInvoiceReceipt = ({
     companySupportPhone,
     stamp,
     clientNames,
+    clientPppoeUsernames,
     clientContacts,
     totalBill,
     paidAndDiscount,
@@ -133,6 +142,7 @@ const BasicInvoiceReceipt = ({
     companySupportPhone: string | null;
     stamp: string;
     clientNames: string[];
+    clientPppoeUsernames: string[];
     clientContacts: string[];
     totalBill: number;
     paidAndDiscount: number;
@@ -193,8 +203,8 @@ const BasicInvoiceReceipt = ({
                         <p className="break-words" style={clientStyle}>
                             {clientNames.length > 0 ? clientNames.join(", ") : "—"}
                         </p>
-                        {clientContacts.map((contact) => (
-                            <p key={contact} className="mt-[0.35em] break-words" style={contactStyle}>{contact}</p>
+                        {clientPppoeUsernames.map((username) => (
+                            <p key={`pppoe-${username}`} className="mt-[0.35em] break-words" style={contactStyle}>{username}</p>
                         ))}
                     </div>
                 </div>
@@ -340,7 +350,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
             safeInvoices.map((invoice, invoiceIndex) => {
                 const invoiceLabel =
                     invoice.trackID || (invoice.id ? `#${invoice.id}` : `#${invoiceIndex + 1}`);
-                const lines = (invoice.lines ?? []).map((line, lineIndex) => {
+                const lines: ReceiptItem[] = (invoice.lines ?? []).map((line: InvoiceLine, lineIndex: number) => {
                     const quantity = Math.max(1, toNumber(line.quantity || 1));
                     const unitPrice = toNumber(line.amount);
                     const amount =
@@ -434,6 +444,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                 companySupportPhone={companySupportPhone}
                 stamp={basicStamp}
                 clientNames={clientNames}
+                clientPppoeUsernames={clientPppoeUsernames}
                 clientContacts={clientContacts}
                 totalBill={totals.subTotal}
                 paidAndDiscount={totals.amountPaid + totals.totalDiscount}
@@ -548,7 +559,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                             />
                         )}
                         {group.lines.length > 0 ? (
-                            group.lines.map((line, lineIndex) => (
+                            group.lines.map((line: ReceiptItem, lineIndex: number) => (
                                 <div
                                     key={line.key}
                                     className={cn(

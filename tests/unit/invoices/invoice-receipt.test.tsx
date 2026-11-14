@@ -172,7 +172,8 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.getByText("Dhaka")).toHaveStyle({ fontSize: "19px", fontWeight: "400", lineHeight: "23px" });
         expect(screen.getByText("INV-12 / October-1, 2025 3:22pm")).toBeInTheDocument();
         expect(screen.getByText("Kamal")).toBeInTheDocument();
-        expect(screen.getByText("99@01700000000")).toBeInTheDocument();
+        expect(screen.getByText("kamal01")).toBeInTheDocument();
+        expect(screen.queryByText("99@01700000000")).not.toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.total_bill")).toBeInTheDocument();
         expect(screen.getByText("800.00")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.paid_and_discount")).toHaveStyle({ fontWeight: "700" });
@@ -183,7 +184,6 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.getByText("invoice.receipt.thank_you")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.help - 09666777888")).toBeInTheDocument();
         expect(screen.queryByText("22222222222")).not.toBeInTheDocument();
-        expect(screen.queryByText("kamal01")).not.toBeInTheDocument();
         expect(screen.queryByText("INV-12: Monthly package 1x800")).not.toBeInTheDocument();
         expect(screen.queryByText("invoice.receipt.item")).not.toBeInTheDocument();
 
