@@ -1,3 +1,9 @@
+## Restore dependencies after audit fix --force — 2026-11-14
+
+`npm audit fix --force` moved Zod from 3.25.76 to 4.6.7 and replaced the shadcn CLI 4.23.0 with an empty `shadcn@1.0.0`. The production build then failed TypeScript because the schemas use Zod 3 (`required_error`, `invalid_type_error`, and single-argument `z.record`). Restored `package.json` and `package-lock.json`, then reinstalled with `npm ci`. Zod is 3.25.76 and shadcn is 4.23.0 again.
+
+`npm run build` completed successfully. The install still reports 13 audit findings. `npm audit fix` without `--force` was left unapplied. This dependency restore did not change UI, so no browser check was required.
+
 ## Image button in the issue editor — 2026-11-14
 
 Moved Add images into the Report an issue formatting toolbar. The button opens the existing file picker and inserts the selected image inline. Verified button visibility in local Chrome at desktop and 390-pixel widths. Typecheck and the 52 focused platform support tests passed, including the toolbar button and inline image flow with a mocked upload.
@@ -247,6 +253,7 @@ Inspected scripts/ai/diff and scripts/ai/status; checked new prototype assets se
 Added a partial reseller Playwright suite: `playwright.resellers.config.ts`, `npm run test:e2e:resellers`, and `tests/e2e/resellers/` (list, forms, detail, access, actions). The all-suite runner discovers the config. Login stays on CP and MK tenant hosts. No successful create, package reassignment, recharge settlement, purge, or import is submitted. Settings are toggled and restored. Invalid recharge calls are denied and the balance is read again.
 
 Final verification:
+
 - CP: `PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-cp npm run test:e2e:resellers` — 30 passed, 1 failed, 0 skipped (59.4s).
 - MK: `PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_TENANT=mk E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-mk npm run test:e2e:resellers` — 30 passed, 1 failed, 0 skipped (59.7s).
 - The failure on both tenants is `RS-L02 username filter keeps only matching usernames and an unknown username is empty`. An unknown username returned total 1. `app/Services/Filters/Resellers/Filters.php` has no Username filter, so the query is ignored. The assertion stays at total 0.
@@ -284,6 +291,7 @@ Partially implemented the invoice specification with 36 nonmutating Playwright c
 Coverage includes list/date/client/type/status/amount/reload, track/status/type/client/zone/creator/combined filters, actual pagination boundaries, UUID client history, no-match recovery, anonymous routes, selected bidirectional foreign UUID detail/search denial, invalid form recovery/defaults/cancel, unsaved lines/quantity totals, paid/partial field requirements, due edit hydration/cancel, oversized multibyte note rejection, document identity/lines/note/total, instrumented browser print/cleanup, delete cancellation and payment-dialog identities/select-all totals/cancel. No valid invoice create/update/delete/payment/discount, fund change or customer notification was submitted.
 
 Final verification executed:
+
 - E2E_INVOICE_ARTIFACT_DIR=/tmp/isp-invoices-cp npm run test:e2e:invoices: 36 passed, zero failed/skipped (about 1.3 minutes).
 - E2E_TENANT=mk E2E_INVOICE_ARTIFACT_DIR=/tmp/isp-invoices-mk npm run test:e2e:invoices: 36 passed, zero failed/skipped (about 1.4 minutes).
 - scripts/ai/typecheck: passed.
@@ -313,6 +321,7 @@ User clarified npm run test:e2e must run all tests, including clients. This supe
 Added scripts/run-e2e.mjs, which discovers root-level playwright*.config.ts files, runs every suite sequentially with its own config/auth/report settings, continues after suite failure and exits nonzero if any suite fails. Standard test:e2e and test:e2e:ui use this runner; UI windows open sequentially. Focused suite scripts remain available. The legacy config now collects root-level specs only, preventing duplicate collection of client and support-ticket directories. Preserved existing legacy port/baseURL edits and new support-ticket work. Updated client README, agent instructions and initial guidelines. All client projects, including four guarded mutations, are included; absent fixtures fail explicitly.
 
 Verification executed:
+
 - npm run test:e2e -- --list: passed; collected 54 tests across three configs: clients 32 (28 nonmutating + four isolated), legacy 11, support tickets 11. No overlapping spec files.
 - npm run test:e2e -- --list --grep '^E2E_RUNNER_NO_MATCH_SENTINEL$': intentionally returned exit 1 after all three suites reported no matching tests; proves continuation and aggregate failure without browser/database actions.
 - node --check scripts/run-e2e.mjs: passed.
@@ -380,7 +389,6 @@ Tenant A/B read denial was verified for selected known clients; this does not pr
 ## Existing changes left untouched
 
 components/login/login-form.tsx, playwright.config.ts, playwright/.auth/user.json, tests/e2e/auth-integration.spec.ts, tests/e2e/helpers/auth.ts and untracked opencode.json. Existing feature workspaces preserved except CLIENT-001 status/register links and suite guidance. Updated this report as required.
-
 
 ## Cursor platform-support execution guidance — 2026-11-13
 
