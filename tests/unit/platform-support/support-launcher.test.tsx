@@ -1,4 +1,4 @@
-import { SupportRuntime } from "@/components/platform-support/support-launcher";
+import { SupportLauncher, SupportRuntime } from "@/components/platform-support/support-launcher";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -56,7 +56,7 @@ describe("platform support launcher", () => {
 
     it("opens one help button without tickets or notification access", async () => {
         const user = userEvent.setup();
-        render(<SupportRuntime><div>Staff page</div></SupportRuntime>);
+        render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);
 
         expect(screen.getAllByTestId("platform-support-launcher")).toHaveLength(1);
         await user.click(screen.getByTestId("platform-support-launcher"));
@@ -70,7 +70,7 @@ describe("platform support launcher", () => {
     it("keeps requests available without showing actions that create a conversation", async () => {
         access.names = ["platform-support.access"];
         const user = userEvent.setup();
-        render(<SupportRuntime><div>Staff page</div></SupportRuntime>);
+        render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);
         await user.click(screen.getByTestId("platform-support-launcher"));
         expect(screen.getByTestId("platform-support-requests")).toBeInTheDocument();
         expect(screen.queryByTestId("platform-support-report")).not.toBeInTheDocument();
@@ -80,7 +80,7 @@ describe("platform support launcher", () => {
     it("keeps Help available when platform support is not granted", async () => {
         const user = userEvent.setup();
         access.names = ["tickets.access", "notifications.access"];
-        render(<SupportRuntime><div>Staff page</div></SupportRuntime>);
+        render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);
         expect(screen.getByTestId("platform-support-launcher")).toBeInTheDocument();
         await user.click(screen.getByTestId("platform-support-launcher"));
         expect(screen.getByTestId("help-centre-link")).toHaveAttribute("href", "/help");

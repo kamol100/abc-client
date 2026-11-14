@@ -20,13 +20,13 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <PageContainer>
-              <TooltipProvider>
-                <SupportRuntime>
+            <SupportRuntime>
+              <PageContainer>
+                <TooltipProvider>
                   {children}
-                </SupportRuntime>
-              </TooltipProvider>
-            </PageContainer>
+                </TooltipProvider>
+              </PageContainer>
+            </SupportRuntime>
           </SidebarInset>
         </SidebarProvider>
       </TableLayoutProvider>

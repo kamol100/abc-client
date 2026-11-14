@@ -1,6 +1,7 @@
 "use client";
 
 import { MyButton } from "@/components/my-button";
+import { MyDialog } from "@/components/my-dialog";
 import { ThemeSettingsPanel } from "@/components/settings/themes";
 import {
   Popover,
@@ -32,5 +33,26 @@ export default function ThemeCustomize() {
         <ThemeSettingsPanel variant="popover" />
       </PopoverContent>
     </Popover>
+  );
+}
+
+export function ThemeSettingsDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  return (
+    <MyDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="theme_customizer.menu"
+      description="theme_customizer.description"
+      showFooter={false}
+      size="md"
+    >
+      <ThemeSettingsPanel variant="popover" />
+    </MyDialog>
   );
 }

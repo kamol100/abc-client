@@ -5617,6 +5617,7 @@
         "title": "Theme Customizer",
         "description": "Customize your theme.",
         "aria_label": "Customize theme",
+        "menu": "Theme settings",
         "preset": {
             "label": "Preset",
             "default": "Default",

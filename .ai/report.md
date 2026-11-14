@@ -1,3 +1,10 @@
+## Help launcher and theme menu — 2026-11-14
+
+The Help control is an icon button in the dashboard top navbar, in line with the other header buttons. The floating corner button is gone. On screens below the `md` breakpoint the header theme button is hidden. Company and reseller profile menus open Theme settings on both mobile and desktop, after Settings.
+
+- `npx vitest run tests/unit/platform-support/support-launcher.test.tsx` passed, 3 tests.
+- On the logged-in dashboard the Help control is an icon in the top navbar, beside the other header buttons, and the corner button is gone. The theme icon stays in the desktop header. Automated clicks did not open the drawer or the profile menu.
+
 ## Platform support chat header and Enter — 2026-11-14
 
 The inbox status line no longer switches to "Refreshing" while a poll is in flight, so the chat list header stays on the last refresh time. The conversation header does not show that label. Enter in a chat composer submits through the form's submit button; Shift+Enter still inserts a newline.

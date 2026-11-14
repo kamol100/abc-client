@@ -51,7 +51,7 @@ function usePresenceState(): SupportPresence {
     return { documentVisible, online };
 }
 
-function SupportLauncher() {
+export function SupportLauncher() {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
@@ -90,35 +90,33 @@ function SupportLauncher() {
     const label = t("platform_support.launcher.label", { count: unread });
 
     return (
-        <div className="fixed bottom-[calc(var(--mobile-nav-height,0px)+1rem)] right-4 z-40 !flex-none !overflow-visible md:bottom-5 sm:right-5">
-            <MyDrawer
-                open={open}
-                autoFocus
-                onOpenChange={(next) => {
-                    if (!next && mobile && Date.now() - openedAt.current < 400) return;
-                    if (next) { openedAt.current = Date.now(); setOpen(true); }
-                    else close();
-                }}
-                side={mobile ? "bottom" : "right"}
-                size={mobile ? "lg" : "md"}
-                title="help.title"
-                description="help.redesign.drawer_intro"
-                className={mobile ? "h-[85dvh] max-h-[85dvh]" : "w-full max-w-[min(100vw,28rem)]"}
-                footer={allowed && <HelpLauncherActions onNavigate={close} />}
-                trigger={<MyButton
-                    type="button" variant="default" data-testid="platform-support-launcher"
-                    aria-expanded={open} aria-haspopup="dialog" aria-label={label}
-                    className="h-11 min-w-[6rem] gap-2 rounded-lg px-3.5 shadow-md">
-                    <Headset className="size-4 shrink-0" aria-hidden />
-                    <span>{t("platform_support.launcher.title")}</span>
-                    {unread > 0 && <span aria-hidden className="rounded-full bg-primary-foreground px-1.5 text-xs text-primary">
-                        {unread > 99 ? "99+" : unread}
-                    </span>}
-                </MyButton>}
-            >
-                <HelpLauncherPanel onNavigate={close} />
-            </MyDrawer>
-        </div>
+        <MyDrawer
+            open={open}
+            autoFocus
+            onOpenChange={(next) => {
+                if (!next && Date.now() - openedAt.current < 400) return;
+                if (next) { openedAt.current = Date.now(); setOpen(true); }
+                else close();
+            }}
+            side={mobile ? "bottom" : "right"}
+            size={mobile ? "lg" : "md"}
+            title="help.title"
+            description="help.redesign.drawer_intro"
+            className={mobile ? "h-[85dvh] max-h-[85dvh]" : "w-full max-w-[min(100vw,28rem)]"}
+            footer={allowed && <HelpLauncherActions onNavigate={close} />}
+            trigger={<MyButton
+                type="button" variant="outline" size="icon" icon={false}
+                data-testid="platform-support-launcher"
+                aria-expanded={open} aria-haspopup="dialog" aria-label={label}
+                className="relative">
+                <Headset className="size-4" aria-hidden />
+                {unread > 0 && <span aria-hidden className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+                    {unread > 99 ? "99+" : unread}
+                </span>}
+            </MyButton>}
+        >
+            <HelpLauncherPanel onNavigate={close} />
+        </MyDrawer>
     );
 }
 
@@ -128,7 +126,6 @@ export function SupportRuntime({ children }: PropsWithChildren) {
         <SupportPresenceContext.Provider value={presence}>
             <SupportWidgetState>
                 {children}
-                <SupportLauncher />
             </SupportWidgetState>
         </SupportPresenceContext.Provider>
     );
