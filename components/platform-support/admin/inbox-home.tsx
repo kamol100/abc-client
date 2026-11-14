@@ -145,7 +145,7 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
                 {summaryFailed && <p role="status" className="text-xs text-muted-foreground">{t("platform_support.inbox.stale")}</p>}
             </div>}
             <p className="text-xs text-muted-foreground" role="status">
-                {list.isFetching ? t("platform_support.inbox.refreshing") : refreshed ? t("platform_support.inbox.refreshed", { time: refreshed }) : t("platform_support.inbox.pending")}
+                {refreshed ? t("platform_support.inbox.refreshed", { time: refreshed }) : t("platform_support.inbox.pending")}
                 {" "}{t("platform_support.inbox.periodic")}
             </p>
             <SupportKindTabs kind={kind} onChange={(item) => { setKind(item); setFilter(null); router.replace(`/platform-support-admin?kind=${item}`, { scroll: false }); }} />

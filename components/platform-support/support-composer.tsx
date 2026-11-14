@@ -480,8 +480,14 @@ export function SupportComposer({
                                         || !(event.target instanceof HTMLTextAreaElement)
                                     ) return;
                                     event.preventDefault();
-                                    if (!event.repeat && !sendingRef.current) {
-                                        event.target.form?.querySelector<HTMLButtonElement>('button[type="submit"]')?.click();
+                                    if (event.repeat || sendingRef.current) return;
+                                    const form = event.target.form;
+                                    const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+                                    if (form && typeof form.requestSubmit === "function") {
+                                        if (submit) form.requestSubmit(submit);
+                                        else form.requestSubmit();
+                                    } else {
+                                        submit?.click();
                                     }
                                 } : undefined}
                             >

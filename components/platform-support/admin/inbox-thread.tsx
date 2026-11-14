@@ -349,7 +349,6 @@ export default function InboxThread({ threadId }: { threadId: string }) {
                                 <div><h2 className="text-sm font-semibold">{t("platform_support.redesign.conversation")}</h2>
                                     <p className="text-xs text-muted-foreground">{t("platform_support.redesign.conversation_intro")}</p></div>
                             </div>
-                            {thread?.kind === "issue" && threadQuery.isFetching && <p className="text-xs text-muted-foreground" role="status">{t("platform_support.inbox.refreshing")}</p>}
                             {threadQuery.isError && thread && <p className="text-xs text-muted-foreground" role="status">{t("platform_support.inbox.stale")}</p>}
                         </header>
                         <div className="flex flex-wrap gap-2 px-4 pt-2 empty:hidden sm:px-6">

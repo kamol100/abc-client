@@ -1,3 +1,17 @@
+## Platform support chat header and Enter — 2026-11-14
+
+The inbox status line no longer switches to "Refreshing" while a poll is in flight, so the chat list header stays on the last refresh time. The conversation header does not show that label. Enter in a chat composer submits through the form's submit button; Shift+Enter still inserts a newline.
+
+- `npx vitest run tests/unit/platform-support/support-composer.test.tsx` passed, 4 tests.
+- A logged-in browser session was not opened.
+
+## Remove PWA — 2026-11-14
+
+Removed the service worker, web app manifest, install prompt, offline page, PWA icons, and the auth guard that treated a standalone window as an installed app. The root layout no longer advertises a manifest or mobile-web-app mode. Impersonation and tenant switches still reload the page; they no longer message a service worker. `/offline` and `/api/manifest` are no longer public routes. English and Bangla install-prompt strings are gone. A one-time client effect unregisters any service worker already installed in the browser and deletes its caches. Playwright configs still block service workers during browser tests.
+
+- `npx vitest run tests/unit/resellers/reseller-switch-scope.test.tsx tests/unit/auth/password-reset.test.tsx` passed, 18 tests.
+- JSON for both language files and the e2e inventories parsed. A browser session was not opened, so an already-installed worker was not unregistered live.
+
 ## Help content filesystem trace — 2026-11-14
 
 Help article and media reads now go through `path.join(process.cwd(), "content/help", relative)` after the existing root check. Turbopack can limit the server trace to `content/help` instead of the whole project. Temporary test libraries still read their own root, marked `turbopackIgnore`, so fixture directories stay outside the deployment trace. Path traversal checks are unchanged.

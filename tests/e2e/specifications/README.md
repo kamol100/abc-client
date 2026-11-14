@@ -52,7 +52,6 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [networks](networks/NETWORK-001-network-management.md) — detailed-draft
 - [noc](noc/NOC-001.md) — source-inventoried-draft
 - [notifications](notifications/NOTIFICATIONS-001.md) — source-inventoried-draft
-- [offline](offline/OFFLINE-001.md) — source-inventoried-draft
 - [olts](olts/OLTS-001.md) — source-inventoried-draft
 - [onus](onus/ONUS-001.md) — source-inventoried-draft
 - [payment-gateways](payment-gateways/PAYMENT-GATEWAYS-001.md) — source-inventoried-draft

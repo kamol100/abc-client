@@ -408,14 +408,6 @@
     "scenario_ids": []
   },
   {
-    "route": "/offline",
-    "page": "app/offline/page.tsx",
-    "feature": "offline",
-    "ticket": "offline/OFFLINE-001.md",
-    "status": "draft",
-    "scenario_ids": []
-  },
-  {
     "route": "/olts",
     "page": "app/(dashboard)/olts/page.tsx",
     "feature": "olts",

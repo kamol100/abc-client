@@ -49,10 +49,6 @@ vi.mock("@/app/actions", () => ({
     useFetch: (...args: unknown[]) => state.fetch(...args),
 }));
 
-vi.mock("@/lib/pwa-utils", () => ({
-    clearServiceWorkerCaches: vi.fn(),
-}));
-
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: (permission: string) => state.permissions.includes(permission),

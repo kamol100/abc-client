@@ -7,7 +7,7 @@ import { LANGUAGE_COOKIE } from "@/lib/i18n/languages";
 
 const authSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
-const SYSTEM_PREFIXES = ["/api/", "/_next/", "/offline", "/static/"];
+const SYSTEM_PREFIXES = ["/api/", "/_next/", "/static/"];
 
 function isSystemRoute(pathname: string) {
   return SYSTEM_PREFIXES.some((prefix) => pathname.startsWith(prefix));

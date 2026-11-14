@@ -39,7 +39,7 @@ The supplied accounts are baseline local logins, not proof they represent every 
 3. Assert eventual dashboard destination on the SAME origin, an authenticated page landmark and expected profile/tenant/permissions. Redirect to /admin, missing permission/profile, failed callback, or a cookie alone cannot satisfy success.
 4. Fail with sanitized environment/login evidence on failure. Do not catch and navigate manually to dashboard to mask failed login, accept /admin as success, retry on a different host, or continue as another account.
 5. Keep storage state separate by tenant/persona/worker as needed; never share cookies between CP, MK and APP. Generate states at runtime in an ignored location; current tracked/dirty playwright/.auth/user.json is not a safe universal fixture. Preserve it and remediate tracking separately.
-6. After logout/impersonation leave/switch, verify identity and permissions plus cache isolation. Clear/rebuild browser/query/service-worker state according to real app flow, and assert previous protected data does not reappear through back/reload.
+6. After logout/impersonation leave/switch, verify identity and permissions plus cache isolation. Clear/rebuild browser and query state according to the real app flow, and assert previous protected data does not reappear through back/reload.
 
 ## Test-writing requirements
 

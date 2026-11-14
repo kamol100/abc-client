@@ -268,13 +268,6 @@
     "last_run": null
   },
   {
-    "feature": "offline",
-    "ticket": "offline/OFFLINE-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
-  },
-  {
     "feature": "olts",
     "ticket": "olts/OLTS-001.md",
     "stage": "source-inventoried-draft",
