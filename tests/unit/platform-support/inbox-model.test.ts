@@ -47,7 +47,6 @@ function row(overrides: Record<string, unknown> = {}): Record<string, unknown> {
         uuid: "11111111-1111-4111-8111-111111111111",
         reference: "PS-I-9",
         kind: "issue",
-        subject: "No signal",
         category: "technical",
         priority: "high",
         status: "open",
@@ -93,7 +92,6 @@ describe("platform inbox identity", () => {
             company: "1",
             reseller: "north",
             requester: REQUESTER,
-            subject: "signal",
             sort: "name",
             company_id: "1",
         }, { unread: true, unassigned: true });
@@ -102,7 +100,6 @@ describe("platform inbox identity", () => {
             kind: "issue",
             per_page: "40",
             requester: REQUESTER,
-            subject: "signal",
             assignee: "unassigned",
             unread_only: "1",
         });

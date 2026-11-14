@@ -19,11 +19,6 @@ const priority = z.enum(SUPPORT_PRIORITIES, {
     invalid_type_error: "platform_support.priority.errors.invalid",
 });
 
-const subject = z.string({
-    required_error: "platform_support.subject.errors.required",
-    invalid_type_error: "platform_support.subject.errors.invalid",
-}).trim().min(3, "platform_support.subject.errors.min").max(200, "platform_support.subject.errors.max");
-
 const body = z.string().max(10000, "platform_support.message.errors.max").optional();
 
 function needsMessage(value: { body?: string; attachment_count?: number }, context: z.RefinementCtx) {
@@ -38,7 +33,6 @@ function needsMessage(value: { body?: string; attachment_count?: number }, conte
 }
 
 export const SupportIssueSchema = z.object({
-    subject,
     category,
     priority,
     body,
@@ -51,7 +45,6 @@ export const SupportMessageSchema = z.object({
 }).superRefine(needsMessage);
 
 export const SupportConvertSchema = z.object({
-    subject,
     category,
     priority,
 });
@@ -68,12 +61,6 @@ function choice(name: string, placeholder: string, values: readonly string[], pr
 
 export function supportIssueFields(): FormFieldConfig[] {
     return [
-        {
-            type: "text",
-            name: "subject",
-            placeholder: "platform_support.subject.placeholder",
-            label: { labelText: "platform_support.subject.label", mandatory: true },
-        },
         choice("category", "platform_support.category.label", SUPPORT_CATEGORIES, "platform_support.categories"),
         {
             type: "dropdown",
@@ -122,12 +109,6 @@ export function supportFilterSchema(scope: SupportScope, kind: SupportKind): Fie
             type: "text",
             name: "reference",
             placeholder: "platform_support.filters.reference",
-            watchForFilter: true,
-        },
-        {
-            type: "text",
-            name: "subject",
-            placeholder: "platform_support.filters.subject",
             watchForFilter: true,
         },
     ];

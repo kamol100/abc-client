@@ -58,19 +58,6 @@ export const inboxColumns: ColumnDef<PlatformThread>[] = [
         enableSorting: false,
     },
     {
-        accessorKey: "subject",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.subject.label" />,
-        cell: ({ row }) => {
-            const label = row.original.subject?.trim() || row.original.reference || "";
-            return (
-                <Link href={threadHref(row.original)} className="block min-w-32 max-w-xs whitespace-normal break-words font-semibold leading-snug text-foreground underline-offset-4 hover:underline">
-                    {label}
-                </Link>
-            );
-        },
-        enableSorting: false,
-    },
-    {
         accessorKey: "status",
         header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.filters.status" />,
         cell: ({ row }) => <SupportBadge type="status" value={row.original.status} />,

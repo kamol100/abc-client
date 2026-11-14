@@ -30,12 +30,6 @@ export function inboxFilterSchema(kind: SupportKind): FieldConfig[] {
         },
         {
             type: "text",
-            name: "subject",
-            placeholder: "platform_support.inbox.filters.search",
-            watchForFilter: true,
-        },
-        {
-            type: "text",
             name: "company",
             placeholder: "platform_support.inbox.filters.company",
             watchForFilter: true,

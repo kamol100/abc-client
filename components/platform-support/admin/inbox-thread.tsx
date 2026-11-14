@@ -316,7 +316,7 @@ export default function InboxThread({ threadId }: { threadId: string }) {
             <SupportHeading
                 back={{ href: "/platform-support-admin", label: t("platform_support.inbox.title") }}
                 reference={thread?.reference}
-                title={thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.inbox.title"))}
+                title={thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.inbox.title")}
                 action={thread && <><SupportBadge type="status" value={thread.status} />{controls?.convert && thread && <MyDialog size="xl" title="platform_support.convert"
                     description="platform_support.redesign.convert_intro" showFooter={false}
                     trigger={<MyButton type="button" variant="outline" data-testid="platform-inbox-convert">

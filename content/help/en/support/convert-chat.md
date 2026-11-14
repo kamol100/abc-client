@@ -14,8 +14,7 @@ translated_from_revision: "1"
 1. Open the chat.
 2. Send a message first. An empty chat cannot become an issue. The screen says to send a message before creating an issue.
 3. Under **Create issue from chat**, enter:
-   - **Subject** — 3 to 200 characters.
-   - **Category** — General, Account, Billing, Technical, Bug, or Other.
+   - **Category** — General, Account, Billing, Technical, Bug, Mobile app issue, or Other.
    - **Priority** — Low, Normal, or High.
 4. Submit the form. There is no new message box on this form. The chat messages stay with the request. When the chat is converted, the issue page opens.
 

@@ -351,7 +351,9 @@ export function SupportComposer({
             setNotice("platform_support.composer.wait_for_uploads");
             return false;
         }
-        const body = String(values.body ?? values.subject ?? "");
+        const body = mode === "convert"
+            ? JSON.stringify([values.category, values.priority])
+            : String(values.body ?? "");
         const tokens = readyTokens(imagesRef.current);
         const decision = submitAttempt(pendingRef.current, `${body}\n${tokens.join("\n")}`, tokens, supportRequestId());
         const reconcileUrl = threadId ? supportHistoryUrl(audience, threadId) : null;
@@ -383,7 +385,6 @@ export function SupportComposer({
         const body = String(values.body ?? "");
         if (mode === "issue") {
             return issueCreatePayload({
-                subject: String(values.subject ?? ""),
                 category: String(values.category ?? ""),
                 priority: String(values.priority ?? "normal"),
                 body,
@@ -397,7 +398,6 @@ export function SupportComposer({
         }
         if (mode === "convert") {
             return convertPayload({
-                subject: String(values.subject ?? ""),
                 category: String(values.category ?? ""),
                 priority: String(values.priority ?? "normal"),
                 expectedVersion: versionRef.current,
@@ -471,7 +471,7 @@ export function SupportComposer({
                         {fields.map((field) => (
                             <div
                                 key={field.name}
-                                className={cn("min-w-0", (field.name === "subject" || field.name === "body") && "sm:col-span-2")}
+                                className={cn("min-w-0", field.name === "body" && "sm:col-span-2")}
                                 onKeyDown={sendOnEnter && field.name === "body" ? (event) => {
                                     if (
                                         event.defaultPrevented || event.key !== "Enter" || event.shiftKey

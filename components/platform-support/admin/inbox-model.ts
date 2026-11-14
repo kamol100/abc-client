@@ -68,7 +68,7 @@ export function platformListParams(
 ): Record<string, string> {
     const params: Record<string, string> = { kind, per_page: "40" };
     const statuses = kind === "chat" ? SUPPORT_CHAT_STATUSES : SUPPORT_ISSUE_STATUSES;
-    for (const key of ["priority", "category", "reference", "subject"] as const) {
+    for (const key of ["priority", "category", "reference"] as const) {
         const value = filter[key]?.trim();
         if (value) params[key] = value;
     }

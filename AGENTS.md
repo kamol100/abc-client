@@ -25,6 +25,7 @@ Load context in this order:
 - Reuse `FormBuilder`, `AccordionFormBuilder`, `DataTable`, `useApiQuery`, `useApiMutation`, `MyButton`, `MyDialog`, `MyDrawer`, `Card`, `FormTrigger`, and `DeleteModal` before adding a component.
 - Do not edit shadcn primitives in `components/ui/` unless the task explicitly says to. Do not install another UI kit.
 - Preserve existing behavior while changing UI. Support light and dark themes with Tailwind tokens (`hsl(var(--…))`) and `cn()` from `@/lib/utils`. No inline styles.
+- **UI layout stability is mandatory.** Every UI addition or design change must prevent unintended layout shifts and scroll jumps during loading, updates, and interactions. Follow the implementation and browser verification rules in [UI-update.mdc](.cursor/rules/UI-update.mdc).
 - User-facing strings go through `react-i18next`. Add the same keys to `public/lang/en.json` and `public/lang/bn.json`. Form labels are translation keys.
 - Imports use the `@/` alias, including same-directory imports.
 - Permission checks use `usePermissions().hasPermission("route.name")`. The string must match the backend route name.

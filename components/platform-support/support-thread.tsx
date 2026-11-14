@@ -326,7 +326,7 @@ export default function SupportThreadView({
             <SupportHeading
                 back={{ href: "/platform-support", label: t("platform_support.title") }}
                 reference={thread?.reference}
-                title={thread?.subject?.trim() || (thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.title"))}
+                title={thread?.kind === "chat" ? t("platform_support.chat.untitled") : t("platform_support.title")}
                 action={thread && <><SupportBadge type="status" value={thread.status} />{actions?.convert && thread && <MyDialog size="xl" title="platform_support.convert"
                     description="platform_support.redesign.convert_intro" showFooter={false}
                     trigger={<MyButton type="button" variant="outline">

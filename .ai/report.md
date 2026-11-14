@@ -1,3 +1,23 @@
+## Remove platform support subjects — 2026-11-14
+
+Removed subject inputs, columns, filters, and thread titles from platform support. The request reference identifies each thread. The frontend matches the subject-free API and chat conversion payload. Preserved the prior layout rule and Mobile app issue category changes.
+
+Local Chrome showed the issue detail and subject-free requester list at desktop width, and the same list columns at 390 pixels. Inbox, live conversion, and slow-network transitions were not exercised. Typecheck, 49 focused platform-support tests, and help content validation passed. Full Vitest reported 693 passes and the same 21 failures outside platform support as the prior run.
+
+## Report an issue fields — 2026-11-14
+
+Removed Subject from the report form, frontend validation, create payload, and backend issue creation. Added Mobile app issue to the shared categories and English and Bangla help. Existing subjects and chat conversion are supported by the current schema. The create API ignores subject values from older clients and preserves retries for previously filed reports.
+
+- Local Chrome confirmed the Subject field was absent at 1920 and 390 pixels. Selecting Mobile app issue left the form controls and page scroll at the same positions. Cancel dismissed the dialog. Live submission and slow-network transitions were not exercised. The updated Playwright transport test was discovered, and running it requires a disposable database fixture.
+- Frontend typecheck, 49 focused Vitest tests, and help validation passed. Full Vitest reported 693 passes and 21 failures outside the platform-support tests. The backend platform-support suite passed 35 tests with 797 assertions.
+- Preserved the earlier uncommitted layout stability rule in `AGENTS.md`, `.cursor/rules/UI-update.mdc`, and this report.
+
+## Mandatory UI layout stability rule — 2026-11-14
+
+Added the layout stability requirement to `AGENTS.md` and documented implementation and browser verification in the existing always-applied UI rule. The rule covers stable dimensions for late-loading content, steady controls during transient states, and scroll position during updates and overlay interactions.
+
+Reviewed the rule and working-tree diff and ran `git diff --check`. This documentation change did not require application tests.
+
 ## Help launcher and theme menu — 2026-11-14
 
 The Help control is an icon button in the dashboard top navbar, in line with the other header buttons. The floating corner button is gone. On screens below the `md` breakpoint the header theme button is hidden. Company and reseller profile menus open Theme settings on both mobile and desktop, after Settings.

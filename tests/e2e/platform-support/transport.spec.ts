@@ -23,12 +23,15 @@ test("PS-E06 a disposable browser send stores one synthetic image through the ap
     });
     try {
       const page = await context.newPage();
-      const subject = `Disposable ${fixture.disposableDatabase} ${randomUUID().slice(0, 8)}`;
       await page.goto("/platform-support?kind=issue&compose=issue");
-      await page.getByPlaceholder("What do you need help with?").fill(subject);
-      await chooseDropdown(page, "category", "Technical");
+      const dialog = page.getByRole("dialog", { name: "Report an issue" });
+      await expect(dialog).toBeVisible();
+      await expect(dialog.locator("[name=subject]")).toHaveCount(0);
+      await chooseDropdown(page, "category", "Mobile app issue");
       await chooseDropdown(page, "priority", "Normal");
-      await page.getByPlaceholder("Write a message").fill("Synthetic image only.");
+      await page.getByPlaceholder("Write a message").fill(
+        `Disposable ${fixture.disposableDatabase} ${randomUUID().slice(0, 8)}`,
+      );
       const uploaded = page.waitForResponse((response) => (
         response.url().includes("/api/platform-support/uploads") && response.request().method() === "POST"
       ));
@@ -40,7 +43,7 @@ test("PS-E06 a disposable browser send stores one synthetic image through the ap
       const upload = await uploaded;
       expect(upload.ok()).toBe(true);
       await expect(page.getByTestId("support-image-ready")).toBeVisible();
-      await page.getByRole("button", { name: "Send", exact: true }).click();
+      await dialog.getByRole("button", { name: /^report an issue$/i }).click();
       await expect(page).toHaveURL(/\/platform-support\/issues\/[0-9a-f-]{36}$/i);
       const image = page.locator("img[src*='/api/platform-support/attachments/']");
       await expect(image).toBeVisible();

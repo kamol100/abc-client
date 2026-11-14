@@ -64,7 +64,6 @@ function thread(overrides: Partial<SupportThread> = {}): SupportThread {
         uuid: "11111111-1111-4111-8111-111111111111",
         reference: "PS-I-1",
         kind: "issue",
-        subject: "Router",
         category: "technical",
         priority: "normal",
         status: "open",
@@ -108,8 +107,7 @@ describe("platform support scope", () => {
         expect(supportReplyUrl(thread().uuid, true)).toContain("/messages");
         expect(supportReplyUrl(thread().uuid, false)).toContain("/team-messages");
         const created = issueCreatePayload({
-            subject: "Router",
-            category: "technical",
+            category: "mobile_app_issue",
             priority: "normal",
             body: "Help",
             tokens: [],
@@ -119,9 +117,10 @@ describe("platform support scope", () => {
             includePage: true,
         });
         expect(payloadOmitsOwnership(created)).toBe(true);
+        expect(created).toMatchObject({ kind: "issue", category: "mobile_app_issue" });
+        expect(created).not.toHaveProperty("subject");
         expect(created.context).toEqual({ path: "/clients" });
         expect(issueCreatePayload({
-            subject: "Router",
             category: "technical",
             priority: "normal",
             body: "Help",
@@ -132,7 +131,6 @@ describe("platform support scope", () => {
             includePage: true,
         }).context).toBeNull();
         expect(issueCreatePayload({
-            subject: "Router",
             category: "technical",
             priority: "normal",
             body: "Help",

@@ -4,7 +4,7 @@ import { SUPPORT_IMAGE_MAX_BYTES } from "@/lib/platform-support/attachment-trans
 export const SUPPORT_MAX_IMAGES = 5;
 export const SUPPORT_AUDIENCE = "requester" as const;
 
-export const SUPPORT_CATEGORIES = ["general", "account", "billing", "technical", "bug", "other"] as const;
+export const SUPPORT_CATEGORIES = ["general", "account", "billing", "technical", "bug", "mobile_app_issue", "other"] as const;
 export const SUPPORT_PRIORITIES = ["low", "normal", "high"] as const;
 export const SUPPORT_ISSUE_STATUSES = ["open", "in_progress", "waiting_for_requester", "resolved", "closed"] as const;
 export const SUPPORT_CHAT_STATUSES = ["open", "closed", "converted"] as const;
@@ -45,7 +45,6 @@ export interface SupportThread {
     uuid: string;
     reference: string | null;
     kind: SupportKind;
-    subject: string | null;
     category: string | null;
     priority: string | null;
     status: string;
@@ -226,7 +225,7 @@ export function supportListParams(
     filter: Record<string, string>,
 ): Record<string, string> {
     const params: Record<string, string> = { kind, per_page: "40" };
-    for (const key of ["status", "priority", "category", "reference", "subject"] as const) {
+    for (const key of ["status", "priority", "category", "reference"] as const) {
         const value = filter[key]?.trim();
         if (value) params[key] = value;
     }
@@ -345,7 +344,6 @@ export function parseSupportThread(value: unknown): SupportThread | null {
         uuid: row.uuid,
         reference: typeof row.reference === "string" ? row.reference : null,
         kind: row.kind,
-        subject: typeof row.subject === "string" ? row.subject : null,
         category: typeof row.category === "string" ? row.category : null,
         priority: typeof row.priority === "string" ? row.priority : null,
         status: typeof row.status === "string" ? row.status : "open",
@@ -657,7 +655,6 @@ export function resumedChatNeedsMessage(
 const OWNED_FIELDS = ["company_id", "reseller_id", "requester_user_id", "author_user_id", "author_side"] as const;
 
 export function issueCreatePayload(input: {
-    subject: string;
     category: string;
     priority: string;
     body: string;
@@ -670,7 +667,6 @@ export function issueCreatePayload(input: {
 }): Record<string, unknown> {
     return withoutOwnership({
         kind: "issue",
-        subject: input.subject.trim(),
         category: input.category,
         priority: input.priority || "normal",
         body: input.body.trim() || null,
@@ -707,14 +703,12 @@ export function chatStartPayload(
 }
 
 export function convertPayload(input: {
-    subject: string;
     category: string;
     priority: string;
     expectedVersion: number;
     clientRequestId: string;
 }): Record<string, unknown> {
     return withoutOwnership({
-        subject: input.subject.trim(),
         category: input.category,
         priority: input.priority,
         expected_version: input.expectedVersion,

@@ -9393,18 +9393,7 @@
             "priority": "Priority",
             "category": "Category",
             "reference": "Reference",
-            "subject": "Subject",
             "reseller": "Reseller"
-        },
-        "subject": {
-            "label": "Subject",
-            "placeholder": "What do you need help with?",
-            "errors": {
-                "required": "Subject is required",
-                "invalid": "Enter a subject",
-                "min": "Use at least 3 characters",
-                "max": "Use at most 200 characters"
-            }
         },
         "category": {
             "label": "Category",
@@ -9434,6 +9423,7 @@
             "billing": "Billing",
             "technical": "Technical",
             "bug": "Bug",
+            "mobile_app_issue": "Mobile app issue",
             "other": "Other"
         },
         "priorities": {
@@ -9498,7 +9488,6 @@
                 "unassigned": "Unassigned"
             },
             "filters": {
-                "search": "Search subject",
                 "company": "Company identifier",
                 "reseller": "Reseller identifier",
                 "requester": "Requester identifier",

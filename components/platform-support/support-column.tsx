@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { format, isValid, parseISO } from "date-fns";
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
 import { SupportBadge, SupportViewLink } from "@/components/platform-support/support-ui";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import type { SupportThread } from "@/components/platform-support/support-model";
@@ -19,16 +18,6 @@ function threadHref(thread: SupportThread): string {
     return `/platform-support/${section}/${thread.uuid}`;
 }
 
-function SubjectCell({ thread }: { thread: SupportThread }) {
-    const { t } = useTranslation();
-    const label = thread.subject?.trim() || (thread.kind === "chat" ? t("platform_support.chat.untitled") : thread.reference ?? "");
-    return (
-        <Link href={threadHref(thread)} className="block min-w-32 max-w-xs whitespace-normal break-words font-semibold leading-snug text-foreground underline-offset-4 hover:underline">
-            {label}
-        </Link>
-    );
-}
-
 export const supportColumns: ColumnDef<SupportThread>[] = [
     {
         accessorKey: "reference",
@@ -38,12 +27,6 @@ export const supportColumns: ColumnDef<SupportThread>[] = [
                 {row.original.reference ?? ""}
             </Link>
         ),
-        enableSorting: false,
-    },
-    {
-        accessorKey: "subject",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="platform_support.subject.label" />,
-        cell: ({ row }) => <SubjectCell thread={row.original} />,
         enableSorting: false,
     },
     {

@@ -1,7 +1,7 @@
 ---
+description: Mandatory frontend styling and layout stability rules for UI additions and design changes.
 alwaysApply: true
 ---
-description: Rules for styling - use Tailwind CSS only, no inline styles, use CSS variables for colors, monochromic design pattern, and button icon spacing guidelines.
 author: Kamol
 
 Always consider theming when updating UI components and mobile first approach.
@@ -26,3 +26,10 @@ Ensure all changes fully support existing themes (e.g., light mode, dark mode) b
 - DO NOT add `mr-2` or similar margin classes to icons inside buttons
 - Button component has built-in spacing between icon and text
 - Let the Button component handle spacing automatically
+
+## Layout stability (mandatory)
+
+- Every UI addition or design change must keep unaffected content and controls in place through initial render, hydration, loading, background refreshes, and interactions. Preserve the user's scroll position when they stay in the same view, including when opening or closing dialogs and drawers.
+- Reserve space for late-loading media, fonts, data, and controls. Use intrinsic image dimensions or an aspect ratio, and match skeletons to the expected content layout at each breakpoint. Keep previously loaded content visible during background refreshes of the same view when it remains valid.
+- Keep transient states from moving nearby content. For example, give a button's pending indicator a stable slot so it keeps the same width, and give inline status or validation text room where it would otherwise move nearby actions. For decorative motion, prefer `transform` and `opacity` over animating layout dimensions.
+- Before marking the UI change complete, verify the affected flow in a browser at mobile and desktop widths. Exercise the relevant loading and interaction transitions, including a slow load or refresh when the UI depends on asynchronous data. Fix any unintended movement introduced by the change and record what was verified and any checks you could not run in `.ai/report.md`.
