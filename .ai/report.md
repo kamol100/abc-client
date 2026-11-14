@@ -1,3 +1,15 @@
+## Invoice print key line type — 2026-11-14
+
+Annotated the print-cache line callback as `InvoiceLine`. Zod's passthrough line schema was leaving that `.map` parameter as implicit `any` in the editor. Typecheck passed, and the print dialog unit tests passed (13).
+
+## Faster invoice receipt print — 2026-11-14
+
+The print button waited on the main thread before it could show a spinner. Each click rasterized the header, the item header, and the summary just to measure them, then rasterized the page again at twice the print-head resolution. On a phone that work blocked the button for long enough that the spinner itself showed up late.
+
+A normal receipt is now captured once, at the printer's 384-dot width. The preview starts that work while it is on screen. If it is finished, Print downloads immediately. If the user taps first, the spinner paints before the capture starts. Fonts that are already loaded are not waited on.
+
+Typecheck passed. The invoice print and receipt unit tests passed (18). On vp.isp.test as the existing vp session, a basic receipt that was already prepared closed the dialog in 169ms on desktop and 174ms at a 390-pixel width, with no spinner. Clicking Print the moment the preview appeared showed the spinner in 8ms and finished in about 500ms in both widths. The Print button stayed 83×34 and did not move when the spinner replaced the icon. A real phone CPU and a physical 58mm printer were not used.
+
 ## Receipt line index type — 2026-11-14
 
 Annotated both receipt line callbacks. The grouped rows now use a `ReceiptItem` type, so `line` is no longer implicit `any`, and `lineIndex` is `number`. The Zod passthrough invoice line was preventing the editor from typing that `.map` callback. The receipt file has no diagnostics. The receipt unit tests passed (5), and typecheck passed.

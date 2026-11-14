@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { createThermalPdf, thermalPageHeightDots } from "@/components/invoices/invoice-print-dialog";
+import { createThermalPdf, paginateReceiptRows, thermalPageHeightDots } from "@/components/invoices/invoice-print-dialog";
 
 vi.mock("@/app/actions", () => ({ useFetch: vi.fn() }));
 
@@ -17,6 +17,28 @@ describe("thermalPageHeightDots", () => {
     it("keeps tall receipts at their own height", () => {
         expect(thermalPageHeightDots(505)).toBe(505);
         expect(thermalPageHeightDots(2240)).toBe(2240);
+    });
+});
+
+describe("paginateReceiptRows", () => {
+    it("keeps a short receipt on one page", () => {
+        expect(paginateReceiptRows([8, 8], 30, 20)).toEqual([[0, 1]]);
+    });
+
+    it("moves a row that does not fit onto the next page", () => {
+        expect(paginateReceiptRows([10, 10, 10, 10], 30, 20)).toEqual([[0, 1, 2], [3]]);
+    });
+
+    it("gives the summary its own page when the last rows leave no room", () => {
+        expect(paginateReceiptRows([25], 30, 10)).toEqual([[0], []]);
+    });
+
+    it("still prints the header and summary when there are no rows", () => {
+        expect(paginateReceiptRows([], 30, 10)).toEqual([[]]);
+    });
+
+    it("rejects a summary taller than the printable page", () => {
+        expect(() => paginateReceiptRows([10], 30, 0)).toThrow(/summary is taller/);
     });
 });
 
