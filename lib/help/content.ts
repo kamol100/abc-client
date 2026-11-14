@@ -62,26 +62,68 @@ export function resolveHelpMedia(root: string, articleId: string, file: string):
   return target;
 }
 
-function readLocale(library: HelpLibrary, article: HelpArticlePolicy, locale: HelpLocale): HelpDocument | null {
-  const file = resolveHelpFile(library.root, locale, article.file);
-  if (!file) return null;
-  let mtimeMs = 0;
+function isProjectHelpRoot(root: string): boolean {
+  return path.resolve(root) === path.resolve(process.cwd(), "content/help");
+}
+
+function relativeInside(root: string, absolute: string): string | null {
+  const relative = path.relative(path.resolve(root), absolute);
+  if (!relative || path.isAbsolute(relative)) return null;
+  if (relative.split(/[\\/]/).some((part) => part === ".." || part === "")) return null;
+  return relative;
+}
+
+function helpMtime(root: string, relative: string): number | null {
   try {
-    mtimeMs = statSync(file).mtimeMs;
+    if (isProjectHelpRoot(root)) {
+      return statSync(path.join(process.cwd(), "content/help", relative)).mtimeMs;
+    }
+    return statSync(/*turbopackIgnore: true*/ path.resolve(root, relative)).mtimeMs;
   } catch {
     return null;
   }
+}
+
+function readHelpText(root: string, relative: string): string | null {
+  try {
+    if (isProjectHelpRoot(root)) {
+      return readFileSync(path.join(process.cwd(), "content/help", relative), "utf8");
+    }
+    return readFileSync(/*turbopackIgnore: true*/ path.resolve(root, relative), "utf8");
+  } catch {
+    return null;
+  }
+}
+
+export function readHelpMedia(root: string, articleId: string, file: string): Buffer | null {
+  const absolute = resolveHelpMedia(root, articleId, file);
+  if (!absolute) return null;
+  const relative = relativeInside(root, absolute);
+  if (!relative) return null;
+  try {
+    if (isProjectHelpRoot(root)) {
+      return readFileSync(path.join(process.cwd(), "content/help", relative));
+    }
+    return readFileSync(/*turbopackIgnore: true*/ path.resolve(root, relative));
+  } catch {
+    return null;
+  }
+}
+
+function readLocale(library: HelpLibrary, article: HelpArticlePolicy, locale: HelpLocale): HelpDocument | null {
+  const absolute = resolveHelpFile(library.root, locale, article.file);
+  if (!absolute) return null;
+  const relative = relativeInside(library.root, absolute);
+  if (!relative) return null;
+  const mtimeMs = helpMtime(library.root, relative);
+  if (mtimeMs === null) return null;
   const key = `${library.root}\n${locale}\n${article.id}\n${article.sourceRevision}`;
   const cached = cache.get(key);
   if (cached && cached.revision === article.sourceRevision && cached.mtimeMs === mtimeMs) {
     return cached.document;
   }
-  let source = "";
-  try {
-    source = readFileSync(file, "utf8");
-  } catch {
-    return null;
-  }
+  const source = readHelpText(library.root, relative);
+  if (source === null) return null;
   const parsed = parseHelpFrontMatter(source);
   if ("error" in parsed) return null;
   if (parsed.language !== locale || parsed.translatedFromRevision !== article.sourceRevision) return null;

@@ -1,11 +1,10 @@
 import { helpTopicFor } from "@/lib/help/topics";
 import type { HelpTopic } from "@/types/help-topic";
-import { readFileSync } from "node:fs";
 import type { HelpArticlePolicy, HelpLocale } from "@/content/help/catalog";
 import { canReadHelpArticle, type HelpActor } from "@/lib/help/authorization";
 import { indexHelpArticles, normalizeHelpPath } from "@/lib/help/catalog";
 import { readableHelpForRoute } from "@/lib/help/context";
-import { loadHelpDocument, resolveHelpMedia, type HelpLibrary } from "@/lib/help/content";
+import { loadHelpDocument, readHelpMedia, type HelpLibrary } from "@/lib/help/content";
 import { helpHeadings, type HelpHeading } from "@/lib/help/headings";
 import { renderHelpMarkdown } from "@/lib/help/render";
 import { HELP_QUERY_MAX, searchHelpDocuments, visibleHelpDocuments } from "@/lib/help/search";
@@ -236,14 +235,8 @@ export async function helpMediaResponse(
   if (deps.actor.principal !== "staff") return json({ success: false, code: "unauthenticated" }, 401);
   const article = indexHelpArticles(deps.library.articles).byId.get(articleId);
   if (!article || !canReadHelpArticle(deps.actor, article, { allowDrafts: deps.library.allowDrafts })) return hidden();
-  const media = resolveHelpMedia(deps.library.root, articleId, file);
-  if (!media) return hidden();
-  let bytes: Buffer;
-  try {
-    bytes = readFileSync(media);
-  } catch {
-    return hidden();
-  }
+  const bytes = readHelpMedia(deps.library.root, articleId, file);
+  if (!bytes) return hidden();
   const extension = file.split(".").pop()?.toLowerCase() ?? "";
   const type = MEDIA_TYPES[extension];
   if (!type) return hidden();

@@ -1,3 +1,10 @@
+## Help content filesystem trace — 2026-11-14
+
+Help article and media reads now go through `path.join(process.cwd(), "content/help", relative)` after the existing root check. Turbopack can limit the server trace to `content/help` instead of the whole project. Temporary test libraries still read their own root, marked `turbopackIgnore`, so fixture directories stay outside the deployment trace. Path traversal checks are unchanged.
+
+- `npx vitest run tests/unit/help` passed, 26 tests.
+- `npx next build` completed with exit code 0 and did not print the dynamic filesystem tracing warning.
+
 ## Platform support list polling — 2026-11-14
 
 Removed the 15-second refetch interval from the requester Issues and Chats list in `components/platform-support/support-home.tsx`. The list still refetches when the window regains focus, when filters or kind change, and when the user retries a failed load. Summary counts on the same page still poll every 30 seconds. Open threads, the platform inbox, and the launcher are unchanged.
