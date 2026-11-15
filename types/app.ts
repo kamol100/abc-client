@@ -34,6 +34,7 @@ export interface Company {
   logo?: string;
   favicon?: string;
   domain?: string;
+  platform?: boolean;
 }
 
 export interface ProfileReseller {

@@ -4,20 +4,9 @@ export const ResellerFilterSchema = (): FieldConfig[] => {
     return [
         {
             type: "text",
-            name: "name",
-            placeholder: "reseller.name.placeholder",
-            watchForFilter: true,
-        },
-        {
-            type: "text",
-            name: "username",
-            placeholder: "reseller.username.placeholder",
-            watchForFilter: true,
-        },
-        {
-            type: "text",
-            name: "phone",
-            placeholder: "reseller.phone.placeholder",
+            name: "any",
+            placeholder: "reseller.any_search.placeholder",
+            permission: true,
             watchForFilter: true,
         },
         {

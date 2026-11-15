@@ -3911,6 +3911,10 @@
                 "sl": "SL"
             }
         },
+        "any_search": {
+            "label": "Any",
+            "placeholder": "Search by name, username, phone, or email"
+        },
         "name": {
             "label": "Name",
             "placeholder": "Enter reseller name",
@@ -4119,6 +4123,14 @@
         "notifications": {
             "title": "Notifications",
             "description": "Choose which events send a message to this channel.",
+            "tenant": {
+                "title": "Tenant",
+                "description": "Choose which events in this company send a message to this channel."
+            },
+            "administration": {
+                "title": "Administration",
+                "description": "Choose which platform support events from every tenant send a message to this channel."
+            },
             "groups": {
                 "client": "Client",
                 "fund_transaction": "Fund transaction",
@@ -4128,7 +4140,8 @@
                 "network": "Network",
                 "package": "Package",
                 "vendor": "Vendor",
-                "onu": "ONU"
+                "onu": "ONU",
+                "platform_support": "Platform support"
             },
             "actions": {
                 "create": "Create",

@@ -1,3 +1,15 @@
+## Telegram platform support events — 2026-11-15
+
+The Telegram channel form now has two notification sections. Tenant includes the existing events plus Platform support Create and Update, and it is shown for every company that can open the form. Administration is a second Platform support Create and Update group. It renders only when the session profile says `company.platform`, which the API sets for company 1.
+
+The section helper unit test passed (2). Typecheck passed. On app.isp.test, signed in as kamol, Add Telegram showed Tenant and Administration, including Platform support Create and Update in both. At a 390-pixel width the groups stack in one column and Cancel and Save stay at the bottom of the dialog. A non-platform company was not opened in the browser; the helper test covers that hide. An existing hydration notice from the dashboard was already present before this screen.
+
+## Reseller any search — 2026-11-15
+
+The reseller list filter is now one search box, matching the client list. It sends `any` and the placeholder says it matches name, username, phone, or email. Network, zone, and status stay as they were. English and Bangla strings were added.
+
+The filter schema unit test passed. The full Vitest run reported 708 passes and 19 failures; those failures are outside this change and match the existing suite. On vp.isp.test as the existing VP session, opening the filter showed one search field plus network, zone, and status. Searching the reseller username kept that row, a phone number kept it, and an unmatched term showed “No results” with a result count of 0. At a 390-pixel width the same fields open in the bottom filter drawer. The search field is 156px wide in the desktop four-column row, so the placeholder is clipped there; in the drawer it is 313px. An existing hydration notice from `app/layout.tsx` was already on the page.
+
 ## Invoice print key line type — 2026-11-14
 
 Annotated the print-cache line callback as `InvoiceLine`. Zod's passthrough line schema was leaving that `.map` parameter as implicit `any` in the editor. Typecheck passed, and the print dialog unit tests passed (13).

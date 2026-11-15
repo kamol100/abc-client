@@ -97,7 +97,59 @@ export const TELEGRAM_NOTIFICATION_GROUPS: TelegramNotificationGroup[] = [
       { key: "telegram_onu_low_power", label: "telegram.notifications.actions.low_power" },
     ],
   },
+  {
+    title: "telegram.notifications.groups.platform_support",
+    options: [
+      { key: "telegram_platform_support_create", label: "telegram.notifications.actions.create" },
+      { key: "telegram_platform_support_update", label: "telegram.notifications.actions.update" },
+    ],
+  },
 ];
+
+export const TELEGRAM_ADMINISTRATION_NOTIFICATION_GROUPS: TelegramNotificationGroup[] = [
+  {
+    title: "telegram.notifications.groups.platform_support",
+    options: [
+      {
+        key: "telegram_platform_support_admin_create",
+        label: "telegram.notifications.actions.create",
+      },
+      {
+        key: "telegram_platform_support_admin_update",
+        label: "telegram.notifications.actions.update",
+      },
+    ],
+  },
+];
+
+export type TelegramNotificationSection = {
+  id: "tenant" | "administration";
+  title: string;
+  description: string;
+  groups: TelegramNotificationGroup[];
+};
+
+export function telegramNotificationSections(platform: boolean): TelegramNotificationSection[] {
+  const sections: TelegramNotificationSection[] = [
+    {
+      id: "tenant",
+      title: "telegram.notifications.tenant.title",
+      description: "telegram.notifications.tenant.description",
+      groups: TELEGRAM_NOTIFICATION_GROUPS,
+    },
+  ];
+
+  if (platform) {
+    sections.push({
+      id: "administration",
+      title: "telegram.notifications.administration.title",
+      description: "telegram.notifications.administration.description",
+      groups: TELEGRAM_ADMINISTRATION_NOTIFICATION_GROUPS,
+    });
+  }
+
+  return sections;
+}
 
 export function TelegramFormFieldSchema(): FieldConfig[] {
   const statusOptions = TELEGRAM_STATUS.map((status) => ({

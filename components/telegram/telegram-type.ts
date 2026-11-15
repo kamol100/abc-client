@@ -29,6 +29,10 @@ export const TELEGRAM_EVENT_KEYS = [
   "telegram_vendor_update",
   "telegram_vendor_delete",
   "telegram_onu_low_power",
+  "telegram_platform_support_create",
+  "telegram_platform_support_update",
+  "telegram_platform_support_admin_create",
+  "telegram_platform_support_admin_update",
 ] as const;
 
 export type TelegramEventKey = (typeof TELEGRAM_EVENT_KEYS)[number];
