@@ -9,6 +9,7 @@ import { InvoiceDueItem } from "@/components/clients/client-type";
 
 const session = vi.hoisted(() => ({
     roles: ["Staff"] as unknown,
+    canChangeFund: false,
     staff: { fund: { id: 4, name: "cash" } } as {
         fund?: { id?: unknown; name?: string } | null;
     } | null,
@@ -24,7 +25,8 @@ vi.mock("react-i18next", () => ({
 
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
-        hasPermission: () => false,
+        hasPermission: (name: string) =>
+            name === "invoices.change-fund" && session.canChangeFund,
     }),
     useSetting: (key: string) => (key === "roles" ? session.roles : undefined),
     useProfile: () => ({
@@ -148,6 +150,7 @@ describe("BulkInvoicePayDialog fund selection", () => {
     beforeEach(() => {
         mutate.mockReset();
         session.roles = ["Staff"];
+        session.canChangeFund = false;
         session.staff = { fund: { id: 4, name: "cash" } };
     });
 
@@ -178,6 +181,44 @@ describe("BulkInvoicePayDialog fund selection", () => {
         );
         expect(submitButton()).toBeDisabled();
         expect(mutate).not.toHaveBeenCalled();
+    });
+
+    it("lets a staff member with invoices.change-fund choose another fund", async () => {
+        const user = userEvent.setup();
+        session.canChangeFund = true;
+        renderDialog();
+
+        await waitFor(() => expect(fundSelect()).toHaveValue("4"));
+        expect(fundSelect()).toBeEnabled();
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+
+        await user.selectOptions(fundSelect(), "9");
+        await user.click(submitButton());
+
+        await waitFor(() => expect(mutate).toHaveBeenCalledTimes(1));
+        expect(mutate).toHaveBeenCalledWith(
+            expect.objectContaining({ fund_id: 9 }),
+        );
+    });
+
+    it("lets a staff member with invoices.change-fund pay when no fund is assigned", async () => {
+        const user = userEvent.setup();
+        session.canChangeFund = true;
+        session.staff = { fund: null };
+        renderDialog();
+
+        expect(fundSelect()).toBeEnabled();
+        expect(fundSelect()).toHaveValue("");
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+        expect(submitButton()).toBeEnabled();
+
+        await user.selectOptions(fundSelect(), "9");
+        await user.click(submitButton());
+
+        await waitFor(() => expect(mutate).toHaveBeenCalledTimes(1));
+        expect(mutate).toHaveBeenCalledWith(
+            expect.objectContaining({ fund_id: 9 }),
+        );
     });
 
     it("lets an admin change the preselected fund and submit another fund", async () => {

@@ -52,6 +52,36 @@ describe("paymentFundAccess", () => {
         });
     });
 
+    it("lets a non-admin with invoices.change-fund choose any fund", () => {
+        expect(
+            paymentFundAccess({
+                roles: ["Staff"],
+                staff: { fund: { id: 4, name: "cash" } },
+                canChangeFund: true,
+            }),
+        ).toEqual({
+            canChooseFund: true,
+            assignedFundId: 4,
+            lockFund: false,
+            blockSubmit: false,
+            showUnassignedWarning: false,
+        });
+
+        expect(
+            paymentFundAccess({
+                roles: ["Manager"],
+                staff: { fund: null },
+                canChangeFund: true,
+            }),
+        ).toMatchObject({
+            canChooseFund: true,
+            assignedFundId: null,
+            lockFund: false,
+            blockSubmit: false,
+            showUnassignedWarning: false,
+        });
+    });
+
     it("lets an admin choose a fund with or without a personal assignment", () => {
         expect(
             paymentFundAccess({

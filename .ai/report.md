@@ -1,3 +1,9 @@
+## Invoice fund change permission — 2026-11-15
+
+Staff with `invoices.change-fund` can change the fund on bulk invoice pay. The field still starts on their assigned fund when they have one. Admin and Super Admin can still choose any fund. Other staff stay locked to their assigned fund, and payment stays blocked when they have none.
+
+The dialog unit tests passed (7), including the new permission cases. The fund-access unit tests passed (8). Typecheck passed. The full Vitest run still has 19 failures in unrelated files. On vp.isp.test, signed in as vp, Pay for vp0006 opened with fund 14 enabled. At a 390-pixel width the dialog was 390 pixels wide and Pay Now stayed available. That account can already change the fund, so the new permission was not exercised on a live staff role. The permission appears in role screens after `update:permission`, and a role still has to be granted it.
+
 ## Payment list scoped by payments.view.all — 2026-11-15
 
 Staff without `payments.view.all` now request `/payments` with their own `staff_id`, and the Collect By filter stays visible but disabled. Desktop and the mobile filter drawer share that field, so the same disabled state applies in both. Staff with that permission keep the dropdown and are not forced onto their own id. The session staff id is a uuid, while `collect_by` is the numeric staff id, so the existing `staff_id` filter now accepts either. A uuid that matches no staff returns no rows.

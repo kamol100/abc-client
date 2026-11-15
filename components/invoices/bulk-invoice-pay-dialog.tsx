@@ -47,8 +47,9 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
     const roles = useSetting("roles");
+    const canChangeFund = hasPermission("invoices.change-fund");
     const { assignedFundId, lockFund, blockSubmit, showUnassignedWarning } =
-        paymentFundAccess({ roles, staff: profile.staff });
+        paymentFundAccess({ roles, staff: profile.staff, canChangeFund });
     const canDiscount = hasPermission("invoices.apply-discount");
     const canChangePaymentDate = hasPermission("invoices.change-payment-date");
     const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
