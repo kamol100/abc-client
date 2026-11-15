@@ -1,3 +1,11 @@
+## Staff invoice collection card — 2026-11-15
+
+The collection card stayed hidden for staff `vps` (`vp` on `vp.isp.test`) because the dashboard only requested `/dashboard-staff-invoice-collection` when the user also had `dashboard-card.invoice`. That Staff role can pay invoices and has a staff profile, but it does not have the invoice dashboard card permission, so the request never ran and the card treated the totals as zero.
+
+The request now runs for any signed-in user with a staff profile. The card still appears only when today, this month, or last month is greater than 0. The endpoint already returns only that staff member's own paid and partial invoice payments. For this account those payments are dated 2026-11-03 and sum to 6200 this month.
+
+The new visibility unit tests passed (3), and the existing collection card tests passed (2). Typecheck passed. This browser had no `vp` session, so the live dashboard was not opened. Left the unrelated untracked `tests/unit/data-table/toolbar-filter-action.test.tsx` untouched.
+
 ## MikroTik sync import during filter — 2026-11-15
 
 Opening the MikroTik Sync filter removed the bulk Import button. The table toolbar only rendered that action while the filter panel was closed, so selecting clients after a filter left Import unmounted behind the filter fields.
