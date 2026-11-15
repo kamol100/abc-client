@@ -6,7 +6,6 @@ import { Metadata } from "next";
 export default async function ClientCreate() {
     return (
         <>
-            <HelpGuideLink href="/help/clients/create" permission="clients.create" />
             <ClientForm mode="create" method="POST" />
         </>
     );

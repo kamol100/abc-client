@@ -1,3 +1,11 @@
+## MikroTik sync import during filter — 2026-11-15
+
+Opening the MikroTik Sync filter removed the bulk Import button. The table toolbar only rendered that action while the filter panel was closed, so selecting clients after a filter left Import unmounted behind the filter fields.
+
+While the filter is open, that action now stays in the filter button row, beside Reset and Filter, and outside the filter fields. With the filter closed it stays in its previous toolbar place.
+
+The new toolbar unit test passed (1). The related filter unit tests passed (14). Typecheck passed. On vp.isp.test, searching `testuser` and selecting a row showed Import on the first filter row, and a hit test landed on the button. At a 390-pixel width the filter opens in the bottom drawer; Import stays in the toolbar and is covered only while that drawer is open. An existing hydration notice from `app/layout.tsx` was already on the page. Left the unrelated change in `app/(dashboard)/clients/create/page.tsx` untouched.
+
 ## Telegram platform support events — 2026-11-15
 
 The Telegram channel form now has two notification sections. Tenant includes the existing events plus Platform support Create and Update, and it is shown for every company that can open the form. Administration is a second Platform support Create and Update group. It renders only when the session profile says `company.platform`, which the API sets for company 1.
