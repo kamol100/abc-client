@@ -9,10 +9,10 @@ import { DataTable } from "@/components/data-table/data-table";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DisplayCount from "@/components/display-count";
-import { PaymentColumns } from "./payment-column";
-import { PaymentRow } from "./payment-type";
-import PaymentFilterSchema from "./payment-filter-schema";
-import { TakaIcon } from "../icons";
+import { usePermissions, useProfile } from "@/context/app-provider";
+import { PaymentColumns } from "@/components/payments/payment-column";
+import { PaymentRow } from "@/components/payments/payment-type";
+import PaymentFilterSchema, { paymentListParams } from "@/components/payments/payment-filter-schema";
 
 type PaymentListPayload = {
     data: PaymentRow[];
@@ -33,12 +33,12 @@ const PaymentTable: FC<PaymentTableProps> = ({
     tableToolBar = true
 }) => {
     const [filter, setFilter] = useState<string | null>(filterValue ?? null);
+    const { hasPermission } = usePermissions();
+    const { profile } = useProfile();
+    const canViewAllPayments = hasPermission("payments.view.all");
     const params = useMemo(
-        () =>
-            filter
-                ? Object.fromEntries(new URLSearchParams(filter))
-                : undefined,
-        [filter],
+        () => paymentListParams(filter, canViewAllPayments, profile.staff?.id),
+        [canViewAllPayments, filter, profile.staff?.id],
     );
 
     const { data, isLoading, isFetching, setCurrentPage } =
@@ -82,7 +82,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 toolbar={tableToolBar}
                 columns={PaymentColumns}
                 toggleColumns
-                toolbarOptions={{ filter: PaymentFilterSchema() }}
+                toolbarOptions={{ filter: PaymentFilterSchema(canViewAllPayments) }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}

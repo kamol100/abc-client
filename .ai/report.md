@@ -1,3 +1,13 @@
+## Payment list scoped by payments.view.all — 2026-11-15
+
+Staff without `payments.view.all` now request `/payments` with their own `staff_id`, and the Collect By filter stays visible but disabled. Desktop and the mobile filter drawer share that field, so the same disabled state applies in both. Staff with that permission keep the dropdown and are not forced onto their own id. The session staff id is a uuid, while `collect_by` is the numeric staff id, so the existing `staff_id` filter now accepts either. A uuid that matches no staff returns no rows.
+
+Signed in as `vp` on vp.isp.test. That account has `payments.view.all`, so Payments showed 10 rows (7,580) collected by vp and vps, and Collect By stayed in the filter on desktop and in the mobile filter drawer. The restricted path was not available on this login. Unit tests cover hiding the field and forcing `staff_id`.
+
+The payments API still returns every collection when `staff_id` is omitted. The screen adds the filter; it is not an authorization check.
+
+Frontend typecheck passed. Payment list unit tests passed (3). Backend collector filter tests passed (2). Pint and PHPStan passed on `StaffId.php`. Left the unrelated untracked `tests/unit/dashboard/dashboard-staff-collection-visibility.test.tsx` and `tests/unit/data-table/toolbar-filter-action.test.tsx` untouched.
+
 ## Staff invoice collection card — 2026-11-15
 
 The collection card stayed hidden for staff `vps` (`vp` on `vp.isp.test`) because the dashboard only requested `/dashboard-staff-invoice-collection` when the user also had `dashboard-card.invoice`. That Staff role can pay invoices and has a staff profile, but it does not have the invoice dashboard card permission, so the request never ran and the card treated the totals as zero.
