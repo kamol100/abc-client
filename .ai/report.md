@@ -1,3 +1,11 @@
+## Pay dialog stays open after a discount — 2026-11-15
+
+Applying a discount from Pay Invoices was closing that dialog. The discount request refreshed the invoice list immediately, and closing the nested discount dialog also dismissed the pay dialog. The pay dialog now ignores that dismiss, keeps its own invoice amounts, and refreshes the lists only when it is closed or the payment is submitted.
+
+The row discount, total discount, and amount due update from the applied amount, including any line discount. On vp.isp.test, signed in as vp, Pay for Sadia Islam INV11 stayed open after a ৳1 discount. The row and totals changed from ৳0 discount and ৳900 due to ৳1 discount and ৳899 due. Cancel then closed it. The same amounts stayed visible at a 390-pixel width. That ৳1 discount is saved on INV11. Payment was not submitted.
+
+The bulk-pay dialog unit tests passed (8). Typecheck passed. Full Vitest was not used as the result; it still fails in unrelated files.
+
 ## Invoice fund change permission — 2026-11-15
 
 Staff with `invoices.change-fund` can change the fund on bulk invoice pay. The field still starts on their assigned fund when they have one. Admin and Super Admin can still choose any fund. Other staff stay locked to their assigned fund, and payment stays blocked when they have none.

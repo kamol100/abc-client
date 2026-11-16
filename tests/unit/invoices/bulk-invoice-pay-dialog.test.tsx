@@ -10,9 +10,14 @@ import { InvoiceDueItem } from "@/components/clients/client-type";
 const session = vi.hoisted(() => ({
     roles: ["Staff"] as unknown,
     canChangeFund: false,
+    canDiscount: false,
     staff: { fund: { id: 4, name: "cash" } } as {
         fund?: { id?: unknown; name?: string } | null;
     } | null,
+}));
+
+const discountHarness = vi.hoisted(() => ({
+    enabled: false,
 }));
 
 const mutate = vi.hoisted(() => vi.fn());
@@ -25,8 +30,11 @@ vi.mock("react-i18next", () => ({
 
 vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
-        hasPermission: (name: string) =>
-            name === "invoices.change-fund" && session.canChangeFund,
+        hasPermission: (name: string) => {
+            if (name === "invoices.change-fund") return session.canChangeFund;
+            if (name === "invoices.apply-discount") return session.canDiscount;
+            return false;
+        },
     }),
     useSetting: (key: string) => (key === "roles" ? session.roles : undefined),
     useProfile: () => ({
@@ -51,7 +59,25 @@ vi.mock("@/components/invoices/invoice-print-dialog", () => ({
 }));
 
 vi.mock("@/components/invoices/invoice-discount-dialog", () => ({
-    default: () => null,
+    default: ({
+        onUpdated,
+        onOpenChange,
+    }: {
+        onUpdated?: (amount: number) => void;
+        onOpenChange?: (open: boolean) => void;
+    }) =>
+        discountHarness.enabled ? (
+            <button
+                type="button"
+                onClick={() => {
+                    onOpenChange?.(true);
+                    onUpdated?.(10);
+                    onOpenChange?.(false);
+                }}
+            >
+                apply-discount
+            </button>
+        ) : null,
 }));
 
 vi.mock("@/components/my-dialog", () => ({
@@ -59,16 +85,21 @@ vi.mock("@/components/my-dialog", () => ({
         children,
         footer,
         open,
+        onOpenChange,
     }: {
         children: ReactNode;
         open?: boolean;
+        onOpenChange?: (open: boolean) => void;
         footer?: (props: { close: () => void; loading: boolean }) => React.ReactNode;
     }) =>
         open ? (
             <div>
+                <button type="button" onClick={() => onOpenChange?.(false)}>
+                    force-close
+                </button>
                 {children}
                 {typeof footer === "function"
-                    ? footer({ close: () => undefined, loading: false })
+                    ? footer({ close: () => onOpenChange?.(false), loading: false })
                     : footer}
             </div>
         ) : null,
@@ -126,7 +157,12 @@ const invoiceDue = [
     },
 ] as InvoiceDueItem[];
 
-const renderDialog = () => {
+const renderDialog = (
+    props?: Partial<{
+        invoiceDue: InvoiceDueItem[];
+        onOpenChange: (open: boolean) => void;
+    }>,
+) => {
     const client = new QueryClient({
         defaultOptions: { queries: { retry: false } },
     });
@@ -134,9 +170,9 @@ const renderDialog = () => {
     return render(
         <QueryClientProvider client={client}>
             <BulkInvoicePayDialog
-                invoiceDue={invoiceDue}
+                invoiceDue={props?.invoiceDue ?? invoiceDue}
                 open
-                onOpenChange={() => undefined}
+                onOpenChange={props?.onOpenChange ?? (() => undefined)}
             />
         </QueryClientProvider>,
     );
@@ -151,6 +187,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         mutate.mockReset();
         session.roles = ["Staff"];
         session.canChangeFund = false;
+        session.canDiscount = false;
+        discountHarness.enabled = false;
         session.staff = { fund: { id: 4, name: "cash" } };
     });
 
@@ -269,5 +307,53 @@ describe("BulkInvoicePayDialog fund selection", () => {
         expect(screen.queryByRole("alert")).not.toBeInTheDocument();
         expect(submitButton()).toBeDisabled();
         expect(mutate).not.toHaveBeenCalled();
+    });
+});
+
+describe("BulkInvoicePayDialog discount", () => {
+    beforeEach(() => {
+        mutate.mockReset();
+        session.roles = ["Staff"];
+        session.canChangeFund = false;
+        session.canDiscount = true;
+        discountHarness.enabled = true;
+        session.staff = { fund: { id: 4, name: "cash" } };
+    });
+
+    it("keeps the pay dialog open and recalculates the discount and due", async () => {
+        const user = userEvent.setup();
+        const onOpenChange = vi.fn();
+        renderDialog({
+            onOpenChange,
+            invoiceDue: [
+                {
+                    uuid: "inv-1",
+                    trackID: "INV-1",
+                    total_amount: 100,
+                    after_discount_amount: 80,
+                    discount: 0,
+                    line_total_discount: 20,
+                    amount_paid: 0,
+                },
+            ] as InvoiceDueItem[],
+        });
+
+        expect(screen.getByText(/invoice\.bulk_pay\.row\.discount/)).toHaveTextContent("৳20");
+        expect(screen.getAllByText("৳80").length).toBeGreaterThan(0);
+
+        await user.click(screen.getByRole("button", { name: "apply-discount" }));
+
+        expect(screen.getByText(/invoice\.bulk_pay\.row\.discount/)).toHaveTextContent("৳30");
+        expect(screen.getAllByText("৳70").length).toBeGreaterThan(0);
+        expect(screen.queryByText("৳80")).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "invoice.bulk_pay.submit" })).toBeInTheDocument();
+        expect(onOpenChange).not.toHaveBeenCalled();
+
+        await user.click(screen.getByRole("button", { name: "force-close" }));
+        expect(onOpenChange).not.toHaveBeenCalled();
+
+        await new Promise((resolve) => setTimeout(resolve, 350));
+        await user.click(screen.getByRole("button", { name: "force-close" }));
+        expect(onOpenChange).toHaveBeenCalledWith(false);
     });
 });

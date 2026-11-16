@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import RadioField from "@/components/form/radio-field";
 import TextareaField from "@/components/form/textarea-field";
 import InputField from "@/components/form/input-field";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { formatMoney, toApiDateString } from "@/lib/helper/helper";
+import { formatMoney, toApiDateString, toNumber } from "@/lib/helper/helper";
 import { InvoiceDueItem } from "@/components/clients/client-type";
 import {
     BulkInvoicePayFormInput,
@@ -31,6 +31,23 @@ import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
 import { paymentFundAccess } from "@/components/invoices/payment-fund-access";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
+
+const DISCOUNT_CLOSE_GUARD_MS = 300;
+
+function applyInvoiceDiscount(item: InvoiceDueItem, amount: number): InvoiceDueItem {
+    const discount = toNumber(item.discount) + amount;
+    const lineDiscount = toNumber(item.line_total_discount);
+    const afterDiscount = Math.max(
+        toNumber(item.total_amount) - discount - lineDiscount,
+        0,
+    );
+
+    return {
+        ...item,
+        discount,
+        after_discount_amount: afterDiscount,
+    };
+}
 
 interface BulkInvoicePayDialogProps {
     invoiceDue: InvoiceDueItem[];
@@ -52,7 +69,12 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         paymentFundAccess({ roles, staff: profile.staff, canChangeFund });
     const canDiscount = hasPermission("invoices.apply-discount");
     const canChangePaymentDate = hasPermission("invoices.change-payment-date");
-    const allUuids = useMemo(() => invoiceDue.map((i) => i.uuid), [invoiceDue]);
+    const [invoices, setInvoices] = useState(invoiceDue);
+    const discountLock = useRef(false);
+    const discountApplied = useRef(false);
+    const discountLockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const wasOpen = useRef(false);
+    const allUuids = useMemo(() => invoices.map((item) => item.uuid), [invoices]);
     const [selectedIds, setSelectedIds] = useState<string[]>(allUuids);
     const [paidInvoices, setPaidInvoices] = useState<InvoiceDetail[]>([]);
     const [printOpen, setPrintOpen] = useState(false);
@@ -72,6 +94,18 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
 
     const { handleSubmit, watch, setValue, setError } = form;
     const status = watch("status");
+
+    useEffect(() => {
+        if (open && !wasOpen.current) {
+            setInvoices(invoiceDue);
+            discountApplied.current = false;
+        }
+        wasOpen.current = open;
+    }, [open, invoiceDue]);
+
+    useEffect(() => () => {
+        if (discountLockTimer.current != null) clearTimeout(discountLockTimer.current);
+    }, []);
 
     useEffect(() => {
         if (open) {
@@ -107,7 +141,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     );
 
     const totals = useMemo(() => {
-        const selected = invoiceDue.filter((i) => selectedIds.includes(i.uuid));
+        const selected = invoices.filter((item) => selectedIds.includes(item.uuid));
         return {
             amount: selected.reduce((sum, i) => sum + i.total_amount, 0),
             discount: selected.reduce(
@@ -120,7 +154,31 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                 0,
             ),
         };
-    }, [invoiceDue, selectedIds]);
+    }, [invoices, selectedIds]);
+
+    const handleDiscountOpenChange = useCallback((next: boolean) => {
+        if (discountLockTimer.current != null) {
+            clearTimeout(discountLockTimer.current);
+            discountLockTimer.current = null;
+        }
+        if (next) {
+            discountLock.current = true;
+            return;
+        }
+        discountLockTimer.current = setTimeout(() => {
+            discountLock.current = false;
+            discountLockTimer.current = null;
+        }, DISCOUNT_CLOSE_GUARD_MS);
+    }, []);
+
+    const handleDiscountApplied = useCallback((uuid: string, amount: number) => {
+        discountApplied.current = true;
+        setInvoices((current) =>
+            current.map((item) =>
+                item.uuid === uuid ? applyInvoiceDiscount(item, amount) : item,
+            ),
+        );
+    }, []);
 
     const queryClient = useQueryClient();
     // Refetching while the host table shows its loading skeleton would unmount this
@@ -128,6 +186,18 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     const refreshLists = useCallback(() => {
         ["clients", "invoices"].forEach((key) => queryClient.invalidateQueries({ queryKey: [key] }));
     }, [queryClient]);
+
+    const handleOpenChange = useCallback(
+        (next: boolean) => {
+            if (!next && discountLock.current) return;
+            if (!next && discountApplied.current) {
+                discountApplied.current = false;
+                refreshLists();
+            }
+            onOpenChange(next);
+        },
+        [onOpenChange, refreshLists],
+    );
 
     const { mutate: submitBulkPay, isPending } = useApiMutation<
         unknown,
@@ -137,11 +207,12 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         method: "POST",
         successMessage: "invoice.bulk_pay.success",
         onSuccess: (response) => {
-            const invoices = toPaidInvoices(response);
-            setPaidInvoices(invoices);
-            setPrintOpen(invoices.length > 0);
+            const paid = toPaidInvoices(response);
+            setPaidInvoices(paid);
+            setPrintOpen(paid.length > 0);
+            discountApplied.current = false;
             onOpenChange(false);
-            if (invoices.length === 0) refreshLists();
+            if (paid.length === 0) refreshLists();
         },
     });
 
@@ -174,13 +245,13 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         submitBulkPay({ ...data, fund_id: fundId });
     };
 
-    const hasInvoices = invoiceDue.length > 0;
+    const hasInvoices = invoices.length > 0;
 
     return (
         <>
             <MyDialog
                 open={open}
-                onOpenChange={onOpenChange}
+                onOpenChange={handleOpenChange}
                 title="invoice.bulk_pay.title"
                 size="xl"
                 loading={isPending}
@@ -240,7 +311,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                     </span>
                                 </div>
                                 <div className="max-h-48 overflow-y-auto divide-y">
-                                    {invoiceDue.map((item) => {
+                                    {invoices.map((item) => {
                                         const due =
                                             item.after_discount_amount -
                                             item.amount_paid;
@@ -313,6 +384,14 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                                             after_discount_amount:
                                                                 item.after_discount_amount,
                                                         }}
+                                                        suspendListRefresh
+                                                        onOpenChange={handleDiscountOpenChange}
+                                                        onUpdated={(amount) =>
+                                                            handleDiscountApplied(
+                                                                item.uuid,
+                                                                amount,
+                                                            )
+                                                        }
                                                         trigger={
                                                             <MyButton
                                                                 type="button"
