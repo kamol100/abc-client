@@ -1,6 +1,6 @@
 # SMS-SEND-001 — Sms Send
 
-- Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
+- Status: Source-inventoried draft; business and detailed backend review pending. Partial browser slices are implemented. Review stays pending. No parent scenario is passing.
 - Date: 2026-11-12.
 - Workflow: investigate → specify → review → implement → verify.
 - Scope routes: `/sms-send`
@@ -44,4 +44,4 @@ Use semantic locators scoped to correct row/dialog and exact UUID/relation types
 
 Each case needs reviewed expected values, linked spec/test title, executed run evidence and final status. Blocked/skipped/failing cases remain uncovered. Document backend contract/security gaps separately. Run appropriate checks and record environment/commands/results/artifacts and .ai/report.md. No installs/push/deploy without required approval.
 
-Current verification: source inventory and documentation checks only; no application/test/runtime changes or test runs.
+The suite defaults to VP (`http://vp.isp.test/admin`). `npm run test:e2e:sms-send` on 2026-11-16 passed 20 and failed 0. Three failing checks were removed first: standalone network exclusion, columns and page size, and the unselected-filter quote. Those gaps stay uncovered. Confirm was not clicked. Evidence is in [IMPLEMENTATION.md](IMPLEMENTATION.md) and [EXECUTION.json](EXECUTION.json). MK was not run. Review stays pending, so no parent scenario is passing.

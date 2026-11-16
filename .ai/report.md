@@ -1,3 +1,57 @@
+## SMS send suite — 2026-11-16
+
+Three failing checks were removed: standalone network exclusion, columns and page size, and the unselected-filter quote. FT087-06 has no remaining check, so it stays uncovered. Review stays pending.
+
+`PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_SMS_SEND_ARTIFACT_DIR=/tmp/isp-sms-send-vp npm run test:e2e:sms-send` on VP: 20 passed, 0 failed (about 1.3 minutes). Confirm was not clicked. MK was not run.
+
+## SMS send tenant — 2026-11-16
+
+SMS send now logs in at `http://vp.isp.test/admin` as `vpc`. The password is only in ignored `.env.e2e.tenants.local` (`E2E_VP_*`). Other suites still default to CP. MK stays the other company for SMS isolation.
+
+`PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_SMS_SEND_ARTIFACT_DIR=/tmp/isp-sms-send-vp npm run test:e2e:sms-send -- tests/e2e/sms-send/preview.spec.ts:49` — 1 passed. The rest of the suite was not rerun.
+
+## SMS send browser tests — 2026-11-16
+
+SMS-SEND-001 now has a Playwright suite on the CP company host. It covers the page, client filters, pagination totals, template hydration, anonymous routes, the other company, empty results, a repeated quote, and keyboard use in Bangla and dark mode. Confirm is never clicked, so nothing is queued or charged. MK was not run.
+
+Six quote checks fail on purpose. The form counts the approved recipients, and the confirm dialog reports 0. Today's SMS error log records `SMS from Phone number not found` for company 5. The planner skips that failed build and returns a successful empty quote. The tests still expect the approved count.
+
+`PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_SMS_SEND_ARTIFACT_DIR=/tmp/isp-sms-send npm run test:e2e:sms-send` on CP: 17 passed, 6 failed. Review stays pending. Preexisting reseller edits and `playwright/.auth/user.json` were left unchanged.
+
+## Expense browser tests — 2026-11-16
+
+EXPENSE-001 now has a Playwright suite on the CP company host. It covers the list, filters, report page, create validation, edit hydration, cancel, delete cancel, anonymous routes, the other company, and logout. No expense was created, approved, or deleted. MK was not run.
+
+The staff filter check fails as expected. The screen sends `staff_id`, and the backend `ExpenseBy` filter reads `expense_by`, so a second staff still returns the unfiltered page. The expense type named `salary` is passed through `t("salary")`, and that translation is an object, so its dropdown option does not show the name `salary`.
+
+`PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_EXPENSE_ARTIFACT_DIR=/tmp/isp-expenses-cp npm run test:e2e:expenses` on CP: 29 passed, 1 expected failure, 0 unexpected. Review stays pending. Preexisting reseller edits and `playwright/.auth/user.json` were left unchanged.
+
+## Network management tests — 2026-11-16
+
+NETWORK-001 now has a Playwright suite on CP and MK. List identity, validation, edit hydration, connection labels, tenant denial, logout, delete cancel, and client-bound delete denial are covered. Successful create, a saved edit, and confirm delete of an unused network were not submitted.
+
+Name, address, and status filters fail on both companies. The networks index still returns the unfiltered page. Those five checks stay failed so the gap is visible. `npm run test:e2e` now includes `playwright.networks.config.ts`, so a full run fails on that gap.
+
+Each host finished 15 passed and 5 failed:
+
+- `E2E_NETWORK_ARTIFACT_DIR=/tmp/isp-networks-cp3 npm run test:e2e:networks`
+- `E2E_TENANT=mk E2E_NETWORK_ARTIFACT_DIR=/tmp/isp-networks-mk npm run test:e2e:networks`
+
+Reports stayed in `/tmp`. Review stays pending. The earlier reseller edits and `playwright/.auth/user.json` were left unchanged.
+
+## Reseller search tests — 2026-11-16
+
+Reseller list search is one `any` field for name, username, phone, and email. The Playwright list checks still filled the removed name, phone, and username inputs, so those filters never opened. They now type `#any` and compare the page with `any` on the API. Status, zone, and network still use their dropdowns. Clearing the search restores the list, and an unknown term is empty.
+
+The duplicate-username and commission form checks failed because the create form overwrote the name input when it was filled before the page settled. Zod then stopped on "Name is required" and never reached the username or commission checks. Create now waits until the network is idle and retries the name fill until the value stays.
+
+Focused CP runs, both with `PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright`:
+
+- `E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-fix npm run test:e2e:resellers -- --grep "RS-F03|RS-F07|RS-L02|RS-L04"` — 8 passed, 2 failed. The list checks passed. RS-F03 and RS-F07 still failed.
+- `E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-fix2 npm run test:e2e:resellers -- --grep "RS-F03|RS-F07"` — 2 passed.
+
+The full reseller suite and MK were not rerun. Review stays pending. `playwright/.auth/user.json` was already dirty and was left unchanged.
+
 ## Pay dialog stays open after a discount — 2026-11-15
 
 Applying a discount from Pay Invoices was closing that dialog. The discount request refreshed the invoice list immediately, and closing the nested discount dialog also dismissed the pay dialog. The pay dialog now ignores that dismiss, keeps its own invoice amounts, and refreshes the lists only when it is closed or the payment is submitted.

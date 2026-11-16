@@ -12,6 +12,7 @@ These hosts were explicitly supplied by the user for local testing:
 
 - Company CP: http://cp.isp.test/admin; username cp; variable prefix E2E_CP.
 - Company MK: http://mk.isp.test/admin; username mk; variable prefix E2E_MK.
+- Company VP, SMS send only: http://vp.isp.test/admin; username vpc; variable prefix E2E_VP. Other suites stay on CP and MK.
 - Administration APP: http://app.isp.test/admin; username kamol; variable prefix E2E_APP.
 
 Passwords are stored in the ignored root file `.env.e2e.tenants.local` supplied for this workspace. Use `<PREFIX>_BASE_URL`, `<PREFIX>_USERNAME`, `<PREFIX>_PASSWORD`. Never put passwords in tickets, committed config/tests, logs or screenshots. CI uses equivalent injected secrets and registered test origins; do not assume local hostnames exist in CI.

@@ -2,14 +2,14 @@
 
 This is a partial implementation. Passing slices never mark a whole parent scenario passing. Review stays pending. No successful reseller create, package reassignment, wallet settlement, purge, or import is executed.
 
-31 checks in five spec files use `playwright.resellers.config.ts`. Final runs: CP 30 passed and 1 failed; MK 30 passed and 1 failed. The failure is the same on both tenants: an unknown username does not narrow the list. Exact commands, titles, and source hashes are in [execution evidence](EXECUTION.json).
+31 checks in five spec files use `playwright.resellers.config.ts`. The list search is one `any` field for name, username, phone, and email. A focused CP run of the previously failing list and form checks passed on 2026-11-16. Exact commands for the earlier full runs remain in [execution evidence](EXECUTION.json). That file was not regenerated for the focused run.
 
 ## Every parent scenario
 
 - **RS-L01**: Implemented slice — List identity, contact, status, client counts, wallet text, and reload match the API. Controlled package-count assertions remain.
-- **RS-L02**: Failing slice — Name, phone, status, zone, network, and combined name plus status match the API and restore. Username exclusion fails. `app/Services/Filters/Resellers/Filters.php` has no Username filter, so `username` is ignored and an unknown value keeps the company total.
+- **RS-L02**: Implemented slice — Name, username, and phone use the `any` search. Status, zone, and network stay on their dropdowns. Combined name plus status matches the API. Clearing the search or reloading restores the list. An unknown term is empty.
 - **RS-L03**: Implemented slice — Previous and next buttons match the current page. CP and MK have one page, so page 2 did not run. Page size is not changed because it persists the staff preference. Later-page filter reset remains.
-- **RS-L04**: Implemented slice — An unmatched name shows `No results`, the row menu opens, and clearing the name restores the row. Request-failure recovery remains.
+- **RS-L04**: Implemented slice — An unmatched `any` search shows `No results`, the row menu opens, and clearing the search restores the row. Request-failure recovery remains.
 - **RS-F01**: Blocked — A successful create assigns packages and provisions a login. Not executed.
 - **RS-F02**: Implemented slice — Empty name, phone, and network show required errors. Username and password required errors appear after the other base fields are valid. Short name and phone show the minimum-length errors. The list total stays unchanged.
 - **RS-F03**: Implemented slice — A duplicate company username is rejected and the draft is not created. Email policy and cross-company duplicates remain.
@@ -53,7 +53,7 @@ This is a partial implementation. Passing slices never mark a whole parent scena
 ## Findings and limits
 
 - Reseller public identity is the UUID in `id`. The list resource includes user, wallet UUID and balance, zone, client counts, prefix, and status. Network is loaded on detail, not on the index.
-- The username field is sent by the filter form and ignored by the backend pipeline. The failing test keeps the spec expectation that an unknown username returns no rows.
+- Reseller search is one `any` query for name, username, phone, and email. The separate name, phone, and email query params remain on the API. Create waits until the form is idle before typing, because an early fill of the name input is overwritten.
 - Username and password required messages appear only after name, phone, and network are valid, because Zod skips `superRefine` while the object is invalid.
 - The only linked reseller user has the Admin role. Impersonation returns "Cannot impersonate an Admin or Super Admin." The Next.js dev overlay then hides the page from the accessibility tree; the test removes that overlay before checking the row.
 - `ResellerImportDialog` is imported by the table and never rendered. No import button was added.

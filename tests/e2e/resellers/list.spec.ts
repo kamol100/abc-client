@@ -3,13 +3,17 @@ import {
   chooseOption,
   expect,
   expectResellerRows,
+  matchesAny,
   openFilters,
   resellerDetail,
   resellers,
   resellerRow,
   sample,
+  searchResellers,
   test,
+  type Reseller,
 } from "@/tests/e2e/resellers/fixtures";
+import type { Session } from "@/tests/e2e/clients/fixtures";
 
 test("RS-L01 list identities contact status counts and wallet match the API after reload", async ({ page, staff }) => {
   const listed = await resellers(staff);
@@ -24,16 +28,22 @@ test("RS-L01 list identities contact status counts and wallet match the API afte
   await expectResellerRows(page, reloaded.data);
 });
 
+async function expectAnyPage(staff: Session, rows: Reseller[], term: string) {
+  for (const row of rows) {
+    if (matchesAny(row, term)) continue;
+    expect(matchesAny(await resellerDetail(staff, row.id), term)).toBe(true);
+  }
+}
+
 test("RS-L02 name filter includes the selected reseller and reset restores the baseline", async ({ page, staff }) => {
   const reseller = await sample(staff);
-  const expected = await resellers(staff, `name=${encodeURIComponent(reseller.name)}`);
+  const expected = await resellers(staff, `any=${encodeURIComponent(reseller.name)}`);
   expect(expected.data.some((row) => row.id === reseller.id)).toBe(true);
-  expect(expected.data.every((row) => row.name.toLowerCase().includes(reseller.name.toLowerCase()))).toBe(true);
+  await expectAnyPage(staff, expected.data, reseller.name);
   await page.goto("/resellers");
-  await openFilters(page);
-  await page.locator("#name").fill(reseller.name);
+  await searchResellers(page, reseller.name);
   await expectResellerRows(page, expected.data);
-  await page.locator("#name").fill("");
+  await page.locator("#any").fill("");
   await expectResellerRows(page, (await resellers(staff)).data);
 });
 
@@ -41,34 +51,41 @@ test("RS-L02 phone filter matches the API and excludes a non-matching number", a
   const listed = await resellers(staff);
   const reseller = listed.data.find((row) => (row.phone ?? "").length >= 3);
   if (!reseller?.phone) throw new Error("Phone filter needs a reseller phone of at least 3 characters.");
-  const expected = await resellers(staff, `phone=${encodeURIComponent(reseller.phone)}`);
-  expect(expected.data.every((row) => (row.phone ?? "").includes(reseller.phone ?? ""))).toBe(true);
+  const expected = await resellers(staff, `any=${encodeURIComponent(reseller.phone)}`);
+  expect(expected.data.some((row) => row.id === reseller.id)).toBe(true);
+  await expectAnyPage(staff, expected.data, reseller.phone);
   await page.goto("/resellers");
-  await openFilters(page);
-  await page.locator("#phone").fill(reseller.phone);
+  await searchResellers(page, reseller.phone);
   await expectResellerRows(page, expected.data);
   const absent = `000${randomUUID().replace(/\D/g, "").slice(0, 8)}`;
-  await page.locator("#phone").fill(absent);
-  const none = await resellers(staff, `phone=${encodeURIComponent(absent)}`);
+  await page.locator("#any").fill(absent);
+  const none = await resellers(staff, `any=${encodeURIComponent(absent)}`);
   expect(none.pagination.total).toBe(0);
   await expectResellerRows(page, none.data);
 });
 
 test("RS-L02 username filter keeps only matching usernames and an unknown username is empty", async ({ page, staff }) => {
   const listed = await resellers(staff);
-  const reseller = listed.data.find((row) => (row.user?.username ?? "").length >= 3);
-  if (!reseller?.user?.username) throw new Error("Username filter needs a linked reseller username of at least 3 characters.");
-  const username = reseller.user.username;
-  const expected = await resellers(staff, `username=${encodeURIComponent(username)}`);
-  expect(expected.data.some((row) => row.id === reseller.id)).toBe(true);
-  expect(expected.data.every((row) => (row.user?.username ?? "").toLowerCase().includes(username.toLowerCase()))).toBe(true);
+  let username = "";
+  let resellerId = "";
+  for (const row of listed.data) {
+    const detail = await resellerDetail(staff, row.id);
+    const value = (detail.username ?? row.user?.username ?? "").trim();
+    if (value.length < 3) continue;
+    username = value;
+    resellerId = row.id;
+    break;
+  }
+  if (!username) throw new Error("Username filter needs a reseller username of at least 3 characters.");
+  const expected = await resellers(staff, `any=${encodeURIComponent(username)}`);
+  expect(expected.data.some((row) => row.id === resellerId)).toBe(true);
+  await expectAnyPage(staff, expected.data, username);
   await page.goto("/resellers");
-  await openFilters(page);
-  await page.locator("#username").fill(username);
+  await searchResellers(page, username);
   await expectResellerRows(page, expected.data);
   const absent = `nouser${randomUUID().replace(/-/g, "").slice(0, 10)}`;
-  await page.locator("#username").fill(absent);
-  const none = await resellers(staff, `username=${encodeURIComponent(absent)}`);
+  await page.locator("#any").fill(absent);
+  const none = await resellers(staff, `any=${encodeURIComponent(absent)}`);
   expect(none.pagination.total).toBe(0);
   await expectResellerRows(page, none.data);
 });
@@ -123,11 +140,13 @@ test("RS-L02 network filter matches the API page for the selected network", asyn
 test("RS-L02 combined name and status filters agree with the API", async ({ page, staff }) => {
   const reseller = await sample(staff);
   const status = Number(reseller.status ?? 0) === 1 ? 1 : 0;
-  const expected = await resellers(staff, `name=${encodeURIComponent(reseller.name)}&status=${status}`);
+  const expected = await resellers(staff, `any=${encodeURIComponent(reseller.name)}&status=${status}`);
   expect(expected.data.some((row) => row.id === reseller.id)).toBe(true);
+  await expectAnyPage(staff, expected.data, reseller.name);
+  expect(expected.data.every((row) => Number(row.status ?? 0) === status)).toBe(true);
   await page.goto("/resellers");
   await openFilters(page);
-  await page.locator("#name").fill(reseller.name);
+  await page.locator("#any").fill(reseller.name);
   await chooseOption(page, "status", status === 1 ? "Active" : "Inactive", false);
   await expectResellerRows(page, expected.data);
   await page.goto("/resellers");
@@ -161,12 +180,12 @@ test("RS-L04 an unmatched name is empty and clearing it restores the list", asyn
   await page.keyboard.press("Escape");
   await openFilters(page);
   const unmatched = `E2E-NO-RESELLER-${randomUUID()}`;
-  await page.locator("#name").fill(unmatched);
-  const none = await resellers(staff, `name=${encodeURIComponent(unmatched)}`);
+  await page.locator("#any").fill(unmatched);
+  const none = await resellers(staff, `any=${encodeURIComponent(unmatched)}`);
   expect(none.pagination.total).toBe(0);
   await expect(page.getByText("No results", { exact: true })).toBeVisible();
   await expect(page.getByText(reseller.name, { exact: true })).toHaveCount(0);
-  await page.locator("#name").fill("");
+  await page.locator("#any").fill("");
   await expect(resellerRow(page, reseller)).toBeVisible();
   await expect(page.getByText("No results", { exact: true })).toHaveCount(0);
 });

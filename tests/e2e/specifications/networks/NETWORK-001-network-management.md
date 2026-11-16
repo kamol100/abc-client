@@ -1,6 +1,6 @@
 # NETWORK-001 — Network configuration and connection status
 
-- Status: Draft for review; all scenarios unimplemented.
+- Status: Partial Playwright coverage on CP and MK. Review remains pending, so these runs are not passing coverage. See [implementation status](IMPLEMENTATION.md). Five filter checks fail because the list endpoint ignores name, address, and status. Create, saved edit, and confirm delete were not executed.
 - Investigated: 2026-11-12 through static source inspection.
 - Goal: Authorized staff manage the intended router configuration, distinguish configured activity from connectivity, and preserve tenant/dependency boundaries without unintended router operations or credential disclosure.
 - Scope: `/networks`, create/edit dialogs, row connection/status display, filters/pagination/actions, network dropdown and package integration at representative client/reseller entry points.
@@ -113,4 +113,4 @@ Use semantic labels/scoped row/dialog locators, unique run/worker/test fixtures,
 
 Every scenario must link to an executable spec or reviewed blocker/deferral. Verify saved config through reload/fresh reads, job/router fake side effects through deterministic evidence, and unchanged dependent records. Record commands/environment/pass-fail-skip counts and sanitized traces. Run required checks when implementing and update .ai/report.md. Installs/push/deploy require approval.
 
-Current verification: documentation-only task; no application/config/data changes and no browser/unit/type/backend tests executed. Static inspection does not establish effective backend authorization or tenant isolation.
+Current verification: CP and MK Playwright runs on 2026-11-16, each 15 passed and 5 failed. The failures are NW-L02 and NW-L04 because `NetworksController::index` does not apply name, address, or status filters. Commands and limits are in [IMPLEMENTATION.md](IMPLEMENTATION.md). Review remains pending.

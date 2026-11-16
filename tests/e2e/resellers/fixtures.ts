@@ -14,6 +14,7 @@ const ResellerSchema = z.object({
   name: z.string(),
   phone: z.string().nullable().optional(),
   email: z.string().nullable().optional(),
+  username: z.string().nullable().optional(),
   prefix: z.string().nullable().optional(),
   status: z.coerce.number().optional(),
   company: z.string().nullable().optional(),
@@ -116,12 +117,23 @@ export async function expectResellerRows(page: Page, rows: Reseller[]) {
   }
 }
 
+export function matchesAny(row: Reseller, term: string): boolean {
+  const needle = term.toLowerCase();
+  return [row.name, row.username, row.user?.username, row.phone, row.email]
+    .some((value) => (value ?? "").toLowerCase().includes(needle));
+}
+
 export async function openFilters(page: Page) {
-  const name = page.locator("#name");
-  if (!(await name.isVisible())) {
+  const search = page.locator("#any");
+  if (!(await search.isVisible())) {
     await page.getByRole("button").filter({ has: page.locator("svg.lucide-funnel") }).click();
   }
-  await expect(name).toBeVisible();
+  await expect(search).toBeVisible();
+}
+
+export async function searchResellers(page: Page, value: string) {
+  await openFilters(page);
+  await page.locator("#any").fill(value);
 }
 
 export async function chooseOption(page: Page, field: string, label: string, searchable = true) {

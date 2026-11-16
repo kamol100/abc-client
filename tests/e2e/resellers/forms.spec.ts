@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import type { Page } from "@playwright/test";
 import {
   chooseOption,
   choices,
@@ -13,10 +14,21 @@ import {
 
 const TAKEN = "The username has already been taken within this company.";
 
-async function openCreate(page: import("@playwright/test").Page) {
+async function openCreate(page: Page) {
   await page.goto("/resellers/create");
+  // Create mounts dropdowns and defaults after the inputs appear. Typing before that
+  // is overwritten by the controlled name field.
+  await page.waitForLoadState("networkidle");
   await expect(page.locator("#name")).toBeVisible();
   await expect(page.locator("#username")).toBeVisible();
+}
+
+async function fillInput(page: Page, selector: string, value: string) {
+  const input = page.locator(selector);
+  await expect(async () => {
+    await input.fill(value);
+    await expect(input).toHaveValue(value, { timeout: 500 });
+  }).toPass();
 }
 
 test("RS-F02 missing name credentials phone and network stay on the form and create nothing", async ({ page, staff }) => {
@@ -59,7 +71,7 @@ test("RS-F03 a duplicate company username is rejected and the draft is not creat
   const name = `E2E RS ${randomUUID()}`;
   const before = await resellers(staff);
   await openCreate(page);
-  await page.locator("#name").fill(name);
+  await fillInput(page, "#name", name);
   await page.locator("#username").fill(username);
   await page.locator("#password").fill(`e2e-${randomUUID()}`);
   await page.locator("#phone").fill("01712345678");
@@ -68,7 +80,7 @@ test("RS-F03 a duplicate company username is rejected and the draft is not creat
   await expect(page.getByText(TAKEN, { exact: true })).toBeVisible();
   await expect(page).toHaveURL(/\/resellers\/create$/);
   await expect(page.locator("#name")).toHaveValue(name);
-  const after = await resellers(staff, `name=${encodeURIComponent(name)}`);
+  const after = await resellers(staff, `any=${encodeURIComponent(name)}`);
   expect(after.pagination.total).toBe(0);
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
@@ -101,11 +113,11 @@ test("RS-F06 cancel create stores no reseller", async ({ page, staff }) => {
   const before = await resellers(staff);
   const name = `E2E RS ${randomUUID()}`;
   await openCreate(page);
-  await page.locator("#name").fill(name);
+  await fillInput(page, "#name", name);
   await page.locator("#phone").fill("01712345679");
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(page).toHaveURL(/\/resellers$/);
-  expect((await resellers(staff, `name=${encodeURIComponent(name)}`)).pagination.total).toBe(0);
+  expect((await resellers(staff, `any=${encodeURIComponent(name)}`)).pagination.total).toBe(0);
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
 
@@ -116,7 +128,7 @@ test("RS-F07 an agent requires a nonnegative whole-number commission and creates
   const name = `E2E RS ${randomUUID()}`;
   const before = await resellers(staff);
   await openCreate(page);
-  await page.locator("#name").fill(name);
+  await fillInput(page, "#name", name);
   await page.locator("#username").fill(`e2ers${randomUUID().replace(/-/g, "").slice(0, 12)}`);
   await page.locator("#password").fill(`e2e-${randomUUID()}`);
   await page.locator("#phone").fill("01712345670");
@@ -136,6 +148,6 @@ test("RS-F07 an agent requires a nonnegative whole-number commission and creates
   await expect(page.getByText("Commission must be a whole number", { exact: true })).toBeVisible();
   await expect(page).toHaveURL(/\/resellers\/create$/);
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
-  expect((await resellers(staff, `name=${encodeURIComponent(name)}`)).pagination.total).toBe(0);
+  expect((await resellers(staff, `any=${encodeURIComponent(name)}`)).pagination.total).toBe(0);
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
