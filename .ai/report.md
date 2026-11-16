@@ -1,3 +1,11 @@
+## Staff browser tests — 2026-11-16
+
+STAFFS-001 now has a Playwright suite on the CP company host. It covers the list, create and edit, validation, impersonation, anonymous routes, the other company, and logout. Disposable staff are created and deleted. Existing staff are not locked, reset, or deleted. The page size is only displayed.
+
+Lock and password reset are refused on CP. Both `PUT /staffs/{id}/status` and `PUT /staffs/{id}/password` return HTTP 402 `feature_not_in_plan`. The disposable account stays active, and the original password still works. The own-account lock message was not reached because the plan refuses the request first. MK was not run as its own suite.
+
+`PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_STAFF_ARTIFACT_DIR=/tmp/isp-staffs-cp10 npm run test:e2e:staffs` on CP: 28 passed, 1 failed. The failure was the mobile, Bangla, and dark-mode check after a reload left the table headers unnamed. That check passed on rerun in 3.9 seconds. A later full run (`/tmp/isp-staffs-cp11`) was 26 passed and 3 failed when the login page did not render and a create did not finish. Those three passed on the next targeted run. A sweep found no leftover `e2e` staff. Review stays pending.
+
 ## SMS send suite — 2026-11-16
 
 Three failing checks were removed: standalone network exclusion, columns and page size, and the unselected-filter quote. FT087-06 has no remaining check, so it stays uncovered. Review stays pending.

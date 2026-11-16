@@ -1,6 +1,6 @@
 # STAFFS-001 — Staffs
 
-- Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
+- Status: Implemented slices on CP; business review pending. Passing slices do not mark a parent scenario passing. See [IMPLEMENTATION.md](IMPLEMENTATION.md) and [EXECUTION.json](EXECUTION.json).
 - Date: 2026-11-12.
 - Workflow: investigate → specify → review → implement → verify.
 - Scope routes: `/staffs/create`, `/staffs/edit/[id]`, `/staffs`

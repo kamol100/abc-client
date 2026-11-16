@@ -22,7 +22,10 @@ export async function authenticate(browser: Browser, tenant: TenantName) {
   const context = await browser.newContext({ baseURL: credentials.baseURL, locale: "en-US", serviceWorkers: "block" });
   try {
     const page = await context.newPage();
-    await page.goto("/admin");
+    await page.goto("/admin", { timeout: 30_000 });
+    if (await page.getByRole("heading", { name: "502 Bad Gateway" }).isVisible().catch(() => false)) {
+      await page.reload({ timeout: 30_000 });
+    }
     await page.locator("#username").fill(credentials.username);
     await page.locator("#password").fill(credentials.password);
     await page.getByRole("button", { name: /^login$/i }).click();

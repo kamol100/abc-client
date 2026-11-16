@@ -13344,8 +13344,14 @@
       "description": "Lock/unlock a staff account; fresh login and existing-session behavior follow approved access policy.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "CP lock is HTTP 402 feature_not_in_plan. The account stays active and can log in. The own-account message and unlock were not reached.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-01 locking is refused because the plan omits staff status, and login stays available"},
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-01 locking the signed-in account is refused and the status stays active"}
+      ],
       "last_run": null
     },
     {
@@ -13355,8 +13361,14 @@
       "description": "Reset password with correct permission; old credentials cease to work under approved session policy, unrelated account unaffected.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Short passwords stay in the dialog. A valid reset is HTTP 402 feature_not_in_plan, and the original password still works.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-02 a short password is rejected and cancel leaves the password working"},
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-02 a valid reset is refused because the plan omits it, and the original password still works"}
+      ],
       "last_run": null
     },
     {
@@ -13366,8 +13378,14 @@
       "description": "Assigned zones and payroll defaults persist; staff impersonation enters/leaves correct identity with no stale tenant data.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Zones and salary lines hydrate. Impersonation enter and leave works for a non-admin disposable staff member. salary_day and salary_generation_type are not in the resource.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-03 saved zones and salary lines hydrate on edit and cancel keeps them"},
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-03 impersonation enters the staff identity and leave returns the actor"}
+      ],
       "last_run": null
     },
     {
@@ -13377,8 +13395,15 @@
       "description": "Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "List, create, and edit routes show the saved identity and survive reload.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 staff list shows the API rows and reload keeps them"},
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 create route shows the staff form and reload keeps it"},
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 edit route hydrates the staff name and reload keeps it"}
+      ],
       "last_run": null
     },
     {
@@ -13388,8 +13413,15 @@
       "description": "Pagination/page size and permitted column visibility work on known data; summary totals represent approved full filter scope, not just visible rows. Do not invent controls absent from this screen.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Page 1, the full total, and designation visibility are checked. Page size is displayed and not changed. The list has no search.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 page one disables previous and the title uses the full total"},
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 the page size control shows the saved preference"},
+        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 the designation column can be hidden and shown again"}
+      ],
       "last_run": null
     },
     {
@@ -13399,8 +13431,15 @@
       "description": "For each actually exposed create/edit/save form: valid payload persists after fresh read/reload; edit hydrates saved relations before changing them, cancel leaves saved state unchanged.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Cancel, edit hydration, and a valid create plus designation edit are checked.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 cancel on create stores nothing"},
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 edit hydrates the saved staff and cancel leaves it unchanged"},
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 a valid staff persists and the edited designation survives reload"}
+      ],
       "last_run": null
     },
     {
@@ -13410,8 +13449,15 @@
       "description": "Required/invalid/boundary input stays recoverable with approved field errors; server rejection and delayed save produce no false success or duplicate persisted mutation. Use exact feature fields/constraints from reviewed schemas.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Empty name, short phone, a 256-character username, and a duplicate username stay on the form.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a missing name and a short phone stay on the form"},
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a 256 character username is rejected and creates nothing"},
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a duplicate username is rejected and does not create a second staff"}
+      ],
       "last_run": null
     },
     {
@@ -13421,8 +13467,16 @@
       "description": "For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Anonymous routes and API calls are denied. A persona without staffs.edit is not provisioned.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs redirects to the same-host staff login"},
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs/create redirects to the same-host staff login"},
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"},
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous staff reads and writes return 401"}
+      ],
       "last_run": null
     },
     {
@@ -13432,8 +13486,14 @@
       "description": "Known foreign tenant/owner identifiers cannot expose or mutate protected data or relations; identity switch/back/reload cannot restore previous user data. Public-host data is isolated by approved host rules.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Foreign read, status, and update are denied. Delete and password reset were not sent to a real foreign staff. Logout stays on the login form.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-09 another company cannot read or change a known staff"},
+        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-09 logout back and reload do not restore the staff list"}
+      ],
       "last_run": null
     },
     {
@@ -13443,8 +13503,13 @@
       "description": "Controlled delay/failure/empty response has distinct truthful loading/error/no-data state; retry recovers and stale earlier responses cannot replace latest selection.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "The loaded list shows rows. A delayed or failed list was not injected.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/presentation.spec.ts", "title": "FT090-10 the staff list shows rows instead of a request failure"}
+      ],
       "last_run": null
     },
     {
@@ -13454,8 +13519,15 @@
       "description": "Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Invalid double save, sign-out during create, and cancel delete leave the records unchanged.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-11 two saves of an invalid staff form create nothing"},
+        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-11 leaving create during entry does not store the draft"},
+        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-11 cancel delete leaves the staff in place"}
+      ],
       "last_run": null
     },
     {
@@ -13465,8 +13537,13 @@
       "description": "Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.",
       "ticket": "staffs/STAFFS-001.md",
       "review": "pending",
-      "status": "draft",
-      "test_refs": [],
+      "status": "implemented",
+      "coverage_extent": "partial",
+      "implementation_note": "Mobile, Bangla, dark mode, and keyboard Cancel are checked. The full-suite attempt failed once on an unhydrated table and passed on rerun.",
+      "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
+      "test_refs": [
+        {"path": "tests/e2e/staffs/presentation.spec.ts", "title": "FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable"}
+      ],
       "last_run": null
     },
     {

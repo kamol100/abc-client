@@ -22,6 +22,7 @@
     "test:e2e:networks": "playwright test --config=playwright.networks.config.ts",
     "test:e2e:sms-send": "playwright test --config=playwright.sms-send.config.ts",
     "test:e2e:expenses": "playwright test --config=playwright.expenses.config.ts",
+    "test:e2e:staffs": "playwright test --config=playwright.staffs.config.ts",
     "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium",
     "test:e2e:platform-support": "playwright test --config=playwright.platform-support.config.ts"
   },
