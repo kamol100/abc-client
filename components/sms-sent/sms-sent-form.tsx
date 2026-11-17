@@ -462,7 +462,12 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {!isSingleClientMode && (
             <div>
-              <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
+              <div className="flex gap-2">
+                <h1 className="text-xl font-semibold md:text-xl">{t("sms_sent.title")}:&nbsp;</h1>
+                <div className={cn(isSingleClientMode ? "ml-auto" : undefined, "text-sm text-muted-foreground mt-1")}>
+                  <SmsPerUnitCost />
+                </div>
+              </div>
               <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
             </div>
           )}
@@ -471,8 +476,8 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
               <SmsSendModeSelector value={sendMode} onChange={setSendMode} />
             </div>
           </div>
-          <div className={isSingleClientMode ? "ml-auto" : undefined}>
-            <SmsPerUnitCost />
+          <div>
+            gateway config
           </div>
         </div>
       </div>
