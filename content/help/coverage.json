@@ -13,7 +13,6 @@
     "/clients/create",
     "/clients/edit/:id",
     "/clients/view/:id",
-    "/communication-gateways",
     "/communication-logs",
     "/communication-queue",
     "/companies",
@@ -1586,30 +1585,6 @@
           "bn": "1"
         },
         "communication.logs": {
-          "en": "1",
-          "bn": "1"
-        }
-      },
-      "video_status": "not_configured",
-      "review": "Batch 4. Source-checked against the current menu, page, and permission snapshot."
-    },
-    {
-      "route": "/communication-gateways",
-      "permission": "communication-gateways.access",
-      "entitlement": "sms",
-      "audience": "staff",
-      "article_ids": [
-        "communication.gateways"
-      ],
-      "faq_ids": [
-        "communication.gateways.faq"
-      ],
-      "revisions": {
-        "communication.gateways.faq": {
-          "en": "1",
-          "bn": "1"
-        },
-        "communication.gateways": {
           "en": "1",
           "bn": "1"
         }

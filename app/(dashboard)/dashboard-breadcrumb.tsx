@@ -54,7 +54,6 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/subjects": "menu.support_tickets.subjects.title",
   "/tags": "menu.support_tickets.tags.title",
   "/resellers": "menu.resellers.title",
-  "/communication-gateways": "menu.communication.gateways.title",
   "/communication-queue": "menu.communication.queue.title",
   "/communication-logs": "menu.communication.logs.title",
   "/sms-send": "menu.sms.send.title",

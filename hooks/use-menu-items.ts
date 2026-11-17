@@ -242,7 +242,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         "telegram.access",
         "communication-queue.access",
         "communication-logs.access",
-        "communication-gateways.access",
       ],
       feature: "sms",
       items: [
@@ -251,7 +250,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.communication.telegram.title"), url: "/telegram", permission: "telegram.access" },
         { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
         { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
-        { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
       ],
     },
     {

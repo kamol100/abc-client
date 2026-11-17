@@ -32,7 +32,6 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `/client/tickets`
 - `/client/traffic-report`
 - `/clients`
-- `/communication-gateways`
 - `/communication-logs`
 - `/communication-queue`
 - `/companies`
@@ -263,11 +262,13 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - GET `/sms-templates/{smsTemplate}` → `sms-templates.show`; `SmsTemplateController::show`; `../isp-backend/routes/api.php:398`
 - PUT `/sms-templates/{smsTemplate}` → `sms-templates.edit`; `SmsTemplateController::update`; `../isp-backend/routes/api.php:399`
 - DELETE `/sms-templates/{smsTemplate}` → `sms-templates.delete`; `SmsTemplateController::destroy`; `../isp-backend/routes/api.php:400`
-- GET `/communication-gateways` → `communication-gateways.access`; `CommunicationGatewayController::index`; `../isp-backend/routes/api.php:403`
-- POST `/communication-gateways` → `communication-gateways.create`; `CommunicationGatewayController::store`; `../isp-backend/routes/api.php:404`
-- GET `/communication-gateways/{communicationGateway}` → `communication-gateways.show`; `CommunicationGatewayController::show`; `../isp-backend/routes/api.php:405`
-- PUT `/communication-gateways/{communicationGateway}` → `communication-gateways.edit`; `CommunicationGatewayController::update`; `../isp-backend/routes/api.php:406`
-- DELETE `/communication-gateways/{communicationGateway}` → `communication-gateways.delete`; `CommunicationGatewayController::destroy`; `../isp-backend/routes/api.php:407`
+- GET `/sms-gateway` → `sms-gateway.access`; `SmsGatewayController::show`
+- POST `/sms-gateway` → `sms-gateway.create`; `SmsGatewayController::store`
+- PUT `/sms-gateway` → `sms-gateway.edit`; `SmsGatewayController::update`
+- POST `/sms-gateway/switch` → `sms-gateway.switch`; `SmsGatewayController::switchProvider`
+- GET `/sms-gateway/balance` → `sms-balance.check`; `SmsGatewayController::balance`
+- GET `/sms-gateway/platform` → `sms-gateway.platform`; `SmsGatewayController::platform`
+- PUT `/sms-gateway/platform` → `sms-gateway.platform.edit`; `SmsGatewayController::updatePlatform`
 - GET `/telegram` → `telegram.access`; `TelegramController::index`; `../isp-backend/routes/api.php:409`
 - POST `/telegram` → `telegram.create`; `TelegramController::store`; `../isp-backend/routes/api.php:410`
 - GET `/telegram/{telegram}` → `telegram.show`; `TelegramController::show`; `../isp-backend/routes/api.php:411`

@@ -19,6 +19,10 @@ vi.mock("react-toastify", () => ({
   toast: { success: vi.fn(), error: vi.fn() },
 }));
 
+vi.mock("@/context/app-provider", () => ({
+  usePermissions: () => ({ hasPermission: () => false }),
+}));
+
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
@@ -52,6 +56,23 @@ vi.mocked(useFetch).mockImplementation(async ({ url }: FetchArgs) => {
     });
   }
   if (url.startsWith("/sms-rate")) return { success: true, data: { rate: 1 } };
+  if (url.startsWith("/sms-gateway")) {
+    return {
+      success: true,
+      data: {
+        configured: true,
+        provider: "isptik",
+        status: "active",
+        name: null,
+        masked_send_url: null,
+        masked_balance_url: null,
+        rate: 1,
+        billing_mode: "wallet",
+        platform_rate: 1,
+        wallet_required: true,
+      },
+    };
+  }
   if (url === "/dropdown-sms-templates") {
     return {
       success: true,

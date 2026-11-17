@@ -1,6 +1,8 @@
 "use client";
 
 import MyButton from "@/components/my-button";
+import { useSmsGatewayStatus } from "@/components/sms-sent/sms-gateway";
+import { isSmsSendingSetting, smsSettingsLocked } from "@/components/sms-sent/sms-gateway-status";
 import Switch from "@/components/form/switch";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -99,6 +101,8 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
     hideHeader = false,
 }) => {
     const { t } = useTranslation();
+    const gateway = useSmsGatewayStatus(section === "sms");
+    const lockSmsSending = section === "sms" && (gateway.isLoading || smsSettingsLocked(gateway.status));
     const [editingField, setEditingField] = useState<SettingsFieldKey | null>(null);
     const { getValues, setValue, reset, trigger } = useFormContext<SettingsFormInput>();
 
@@ -166,6 +170,26 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                     </p>
                 </div>
             )}
+
+            {section === "sms" ? (
+                <div className="min-h-16">
+                    {!gateway.isLoading && smsSettingsLocked(gateway.status) ? (
+                        <div className="flex flex-col gap-3 rounded-md border p-3 sm:flex-row sm:items-center sm:justify-between">
+                            <p className="text-sm text-muted-foreground">
+                                {t("sms_sent.gateway.settings_notice")}
+                            </p>
+                            <MyButton
+                                action="edit"
+                                type="button"
+                                url="/sms-send"
+                                title={t("sms_sent.gateway.configure")}
+                            >
+                                {t("sms_sent.gateway.configure")}
+                            </MyButton>
+                        </div>
+                    ) : null}
+                </div>
+            ) : null}
 
             <div className="space-y-3">
                 {section === "dashboard" && sectionFields.length === 0 ? (
@@ -237,7 +261,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                                 <Switch
                                                     name={fieldKey}
                                                     className="justify-end"
-                                                    disabled={isPending}
+                                                    disabled={isPending || (lockSmsSending && isSmsSendingSetting(fieldKey))}
                                                     onValueChange={(checked) =>
                                                         void onImmediateFieldChange(fieldKey, checked)
                                                     }

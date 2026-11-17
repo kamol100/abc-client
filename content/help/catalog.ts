@@ -2329,48 +2329,6 @@ const HELP_FEATURE_ARTICLES: readonly HelpArticlePolicy[] = [
     "feature": "sms"
   },
   {
-    "id": "communication.gateways",
-    "slug": "communication/gateways",
-    "kind": "guide",
-    "audience": "staff",
-    "requiredAll": [
-      "communication-gateways.access"
-    ],
-    "requiredAny": [],
-    "baseline": false,
-    "routePatterns": [
-      "/communication-gateways"
-    ],
-    "relatedIds": [
-      "communication.gateways.faq"
-    ],
-    "sortOrder": 1200,
-    "sourceRevision": "1",
-    "publication": "published",
-    "file": "communication/gateways.md",
-    "feature": "sms"
-  },
-  {
-    "id": "communication.gateways.faq",
-    "slug": "communication/gateways-faq",
-    "kind": "faq",
-    "audience": "staff",
-    "requiredAll": [
-      "communication-gateways.access"
-    ],
-    "requiredAny": [],
-    "baseline": false,
-    "routePatterns": [],
-    "relatedIds": [
-      "communication.gateways"
-    ],
-    "sortOrder": 1210,
-    "sourceRevision": "1",
-    "publication": "published",
-    "file": "communication/gateways-faq.md",
-    "feature": "sms"
-  },
-  {
     "id": "products.overview",
     "slug": "products/overview",
     "kind": "guide",

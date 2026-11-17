@@ -98,7 +98,6 @@ describe("admin menu order", () => {
       "/telegram",
       "/communication-queue",
       "/communication-logs",
-      "/communication-gateways",
       "/funds",
       "/fund-transactions",
       "/my-wallets",
@@ -255,7 +254,6 @@ describe("admin menu feature locks", () => {
       "/telegram",
       "/communication-queue",
       "/communication-logs",
-      "/communication-gateways",
     ]);
     expect(communication.items?.every((sub) => sub.disabled)).toBe(true);
   });

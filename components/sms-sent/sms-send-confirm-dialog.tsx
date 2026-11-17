@@ -17,6 +17,7 @@ import {
   SmsSendQuote,
   SmsSentPayload,
   canConfirmSmsSend,
+  smsQuoteUsesWallet,
 } from "@/components/sms-sent/sms-sent-type";
 import { cn } from "@/lib/utils";
 
@@ -120,7 +121,8 @@ function ScheduleNotice({
 
 function QuoteSummary({ quote, isTestMode }: { quote: SmsSendQuote; isTestMode: boolean }) {
   const { t } = useTranslation();
-  const showRemaining = !isTestMode && quote.sufficient && quote.remaining_balance !== null;
+  const usesWallet = smsQuoteUsesWallet(quote);
+  const showRemaining = usesWallet && !isTestMode && quote.sufficient && quote.remaining_balance !== null;
 
   return (
     <dl className="divide-y rounded-md border px-3">
@@ -130,7 +132,7 @@ function QuoteSummary({ quote, isTestMode }: { quote: SmsSendQuote; isTestMode: 
       <QuoteRow label={t("sms_sent.sms_count.label")}>
         <DisplayCount amount={quote.total_units} />
       </QuoteRow>
-      <QuoteRow label={t("sms_sent.total_cost.label")}>
+      <QuoteRow label={t(usesWallet ? "sms_sent.total_cost.label" : "sms_sent.confirm.provider_cost")}>
         <span className="inline-flex items-center gap-2">
           <Money amount={quote.total_cost} className={cn(isTestMode && "line-through opacity-70")} />
           {isTestMode && (
@@ -140,9 +142,11 @@ function QuoteSummary({ quote, isTestMode }: { quote: SmsSendQuote; isTestMode: 
           )}
         </span>
       </QuoteRow>
-      <QuoteRow label={t("sms_sent.confirm.wallet_balance")}>
-        {quote.balance === null ? "—" : <Money amount={quote.balance} />}
-      </QuoteRow>
+      {usesWallet ? (
+        <QuoteRow label={t("sms_sent.confirm.wallet_balance")}>
+          {quote.balance === null ? "—" : <Money amount={quote.balance} />}
+        </QuoteRow>
+      ) : null}
       {showRemaining && (
         <QuoteRow label={t("sms_sent.confirm.remaining_balance")}>
           <Money amount={quote.remaining_balance ?? 0} className="text-primary" />
@@ -180,7 +184,7 @@ export function SmsSendConfirmDialog({
   }, [payload, loadQuote, resetQuote]);
 
   const scheduledAt = quote?.scheduled_at ?? null;
-  const isInsufficient = !!quote && !isTestMode && !quote.sufficient;
+  const isInsufficient = !!quote && !isTestMode && smsQuoteUsesWallet(quote) && !quote.sufficient;
   const canConfirm = !!quote && !isQuoteLoading && !isSubmitting && canConfirmSmsSend(quote, mode);
   const ModeIcon = isTestMode ? FlaskConical : Send;
 

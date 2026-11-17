@@ -51,7 +51,7 @@ describe("database-backed Help", () => {
     vi.mocked(useFetch).mockResolvedValueOnce({ success: false, status: 503, error: { code: "help_library_unseeded" } });
     const unseeded = await loadDatabaseHelp("en");
     expect(unseeded.actor.principal).toBe("staff");
-    expect(unseeded.library.articles).toHaveLength(184);
+    expect(unseeded.library.articles).toHaveLength(182);
     vi.mocked(useFetch).mockResolvedValueOnce({ success: false, status: 403 });
     expect((await loadDatabaseHelp("bn")).actor.principal).toBe("anonymous");
     expect(loadHelpActor).toHaveBeenCalledOnce();

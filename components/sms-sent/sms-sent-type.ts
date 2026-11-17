@@ -139,13 +139,21 @@ export const SmsSendQuoteSchema = z.object({
   sufficient: z.boolean(),
   scheduled_at: z.string().nullable(),
   timezone: z.string(),
+  billing_mode: z.enum(["wallet", "provider"]).optional(),
+  provider: z.string().nullable().optional(),
 });
 
 export type SmsSendQuote = z.infer<typeof SmsSendQuoteSchema>;
 
-/** Test sends are never charged, so only live sends need enough wallet balance. */
+/** Test sends and private gateways are not limited by the ISP wallet. */
 export function canConfirmSmsSend(quote: SmsSendQuote, mode: SmsSendMode): boolean {
-  return quote.recipients > 0 && (mode === "test" || quote.sufficient);
+  if (quote.recipients <= 0) return false;
+  if (mode === "test" || quote.billing_mode === "provider") return true;
+  return quote.sufficient;
+}
+
+export function smsQuoteUsesWallet(quote: SmsSendQuote): boolean {
+  return quote.billing_mode !== "provider";
 }
 
 export function buildSmsSentClientParams(

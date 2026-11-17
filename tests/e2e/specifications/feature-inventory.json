@@ -73,13 +73,6 @@
     "last_run": null
   },
   {
-    "feature": "communication-gateways",
-    "ticket": "communication-gateways/COMMUNICATION-GATEWAYS-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
-  },
-  {
     "feature": "communication-logs",
     "ticket": "communication-logs/COMMUNICATION-LOGS-001.md",
     "stage": "source-inventoried-draft",

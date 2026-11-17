@@ -136,14 +136,6 @@
     "scenario_ids": []
   },
   {
-    "route": "/communication-gateways",
-    "page": "app/(dashboard)/communication-gateways/page.tsx",
-    "feature": "communication-gateways",
-    "ticket": "communication-gateways/COMMUNICATION-GATEWAYS-001.md",
-    "status": "draft",
-    "scenario_ids": []
-  },
-  {
     "route": "/communication-logs",
     "page": "app/(dashboard)/communication-logs/page.tsx",
     "feature": "communication-logs",

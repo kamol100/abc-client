@@ -25,7 +25,6 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [client-packages](client-packages/CLIENT-PACKAGES-001.md) — source-inventoried-draft
 - [client-wallets](client-wallets/CLIENT-WALLETS-001.md) — source-inventoried-draft
 - [clients](clients/CLIENT-001-client-management.md) — partially implemented; see clients/IMPLEMENTATION.md
-- [communication-gateways](communication-gateways/COMMUNICATION-GATEWAYS-001.md) — source-inventoried-draft
 - [communication-logs](communication-logs/COMMUNICATION-LOGS-001.md) — source-inventoried-draft
 - [communication-queue](communication-queue/COMMUNICATION-QUEUE-001.md) — source-inventoried-draft
 - [companies](companies/COMPANIES-001.md) — source-inventoried-draft

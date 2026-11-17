@@ -19,6 +19,8 @@ import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-sche
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
 import SmsSendConfirmDialog from "@/components/sms-sent/sms-send-confirm-dialog";
+import { SmsGatewayButton, useSmsGatewayStatus } from "@/components/sms-sent/sms-gateway";
+import { isSmsGatewayActive } from "@/components/sms-sent/sms-gateway-status";
 import {
   SmsSendMode,
   SmsTemplateSummary,
@@ -63,15 +65,11 @@ type SmsSentFormSingleClientProps = {
 type SmsSentFormProps = SmsSentFormPageProps | SmsSentFormSingleClientProps;
 
 function useSmsRate() {
-  const { data, isLoading, isError } = useApiQuery<ApiResponse<{ rate: number }>>({
-    queryKey: ["sms-rate"],
-    url: "sms-rate",
-    pagination: false,
-  });
-  const parsedRate = Number(data?.data?.rate);
+  const { status, isLoading, isError } = useSmsGatewayStatus();
+  const parsedRate = Number(status?.rate);
   const rate = Number.isFinite(parsedRate) ? parsedRate : 0;
 
-  return { rate, isLoading, isError };
+  return { rate, isLoading, isError, isActive: isSmsGatewayActive(status) };
 }
 
 function SmsMoneyValue({
@@ -131,16 +129,20 @@ const SMS_SEND_MODES = [
 export function SmsSendModeSelector({
   value,
   onChange,
+  disabled = false,
 }: {
   value: SmsSendMode;
   onChange: (mode: SmsSendMode) => void;
+  disabled?: boolean;
 }) {
   const { t } = useTranslation();
 
   return (
     <RadioGroup
       value={value}
+      disabled={disabled}
       onValueChange={(next) => {
+        if (disabled) return;
         if (next === "live" || next === "test") onChange(next);
       }}
       aria-label={t("sms_sent.mode.label")}
@@ -243,7 +245,8 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const isSingleClientMode = mode === "singleClient";
   const [sendMode, setSendMode] = useState<SmsSendMode>("live");
   const isTestMode = sendMode === "test";
-  const { rate, isLoading: isRateLoading, isError: isRateError } = useSmsRate();
+  const { rate, isLoading: isRateLoading, isError: isRateError, isActive } = useSmsRate();
+  const sendLocked = isRateLoading || !isActive;
 
   const sendForm = useForm<SmsSentFormInput>({
     resolver: zodResolver(SmsSentFormSchema),
@@ -413,6 +416,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   };
 
   const onSubmit = (values: SmsSentFormInput) => {
+    if (sendLocked) return;
     const normalizedForm = SmsSentFormSchema.parse(values);
 
     if (isCustomOtherSmsTemplate(templateType) && !normalizedForm.phone?.trim()) {
@@ -462,9 +466,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {!isSingleClientMode && (
             <div>
-              <div className="flex gap-2">
-                <h1 className="text-xl font-semibold md:text-xl">{t("sms_sent.title")}:&nbsp;</h1>
-                <div className={cn(isSingleClientMode ? "ml-auto" : undefined, "text-sm text-muted-foreground mt-1")}>
+              <div className="flex items-baseline gap-2">
+                <h1 className="text-xl font-semibold">{t("sms_sent.title")}</h1>
+                <span aria-hidden="true" className="text-xl font-semibold">:</span>
+                <div className={cn(isSingleClientMode ? "ml-auto" : undefined, "text-sm text-muted-foreground")}>
                   <SmsPerUnitCost />
                 </div>
               </div>
@@ -473,12 +478,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
             <div className="flex min-w-0 flex-col gap-2">
-              <SmsSendModeSelector value={sendMode} onChange={setSendMode} />
+              <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
             </div>
           </div>
-          <div>
-            gateway config
-          </div>
+          <SmsGatewayButton />
         </div>
       </div>
       <Form {...sendForm}>
@@ -559,6 +562,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                       variant="default"
                       size="default"
                       loading={isPending}
+                      disabled={sendLocked}
                       title={sendLabel}
                     >
                       <Send className="size-4" />
