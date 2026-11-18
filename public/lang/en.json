@@ -4189,6 +4189,7 @@
                 "package": "Package",
                 "vendor": "Vendor",
                 "onu": "ONU",
+                "olt": "OLT",
                 "platform_support": "Platform support"
             },
             "actions": {
@@ -4197,7 +4198,9 @@
                 "delete": "Delete",
                 "auto_generate": "Auto generate",
                 "paid": "Paid",
-                "low_power": "Low optical power"
+                "low_power": "Low optical power",
+                "port_down": "PON port down",
+                "port_up": "PON port up"
             }
         }
     },

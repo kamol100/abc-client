@@ -10,6 +10,14 @@ The gateway status button fills its reserved width and uses `justify-end`, so th
 
 On `http://vp.isp.test/sms-send`, the loaded button’s computed `justify-content` was `flex-end` and the check icon sat inset from the left padding. Live, Test, and settings stayed on the row below.
 
+## Telegram alert when a PON port goes down — 2026-11-18
+
+The Telegram channel form has a new OLT group with one option, PON port down (`telegram_olt_port_down`), in English and Bangla. In `isp-backend`, each OLT poll compares PON port oper states with the previous poll. Ports that went from up to down queue one message per OLT to the subscribed channels, listing each port and its ONU count. A port first seen down, a port that stays down, and an unreachable OLT send nothing. A second option, PON port up (`telegram_olt_port_up`), sends the same kind of message when a port goes from down to up.
+
+`npx vitest run tests/unit/telegram tests/unit/i18n`: 4 passed. The full Vitest run reported 20 failures and typecheck 51 errors, all outside Telegram; `node_modules` is missing `markdown-it` and `@tiptap/*`. The new backend Pest test `tests/Feature/Olt/OltPortAlertJobTest.php` was not run: this machine has PHP 8.3 and the backend requires 8.4. `php -l` and Pint passed on the changed PHP files. The form was not opened in a browser.
+
+Both repos are on branch `feat/olt-port-down-telegram`, uncommitted. Untracked `docs/` in both repos was left alone.
+
 ## Private SMS balance on the send page — 2026-11-18
 
 The Send SMS header shows “Provider balance” only when the account gateway is private, a balance URL is saved, and `sms-gateway/balance` returns response code 202 with a numeric amount. Any other provider, a missing URL, or an unusable response leaves that line out. The gateway dialog uses the same lookup.

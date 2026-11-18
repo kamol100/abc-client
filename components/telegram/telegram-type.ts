@@ -29,6 +29,8 @@ export const TELEGRAM_EVENT_KEYS = [
   "telegram_vendor_update",
   "telegram_vendor_delete",
   "telegram_onu_low_power",
+  "telegram_olt_port_down",
+  "telegram_olt_port_up",
   "telegram_platform_support_create",
   "telegram_platform_support_update",
   "telegram_platform_support_admin_create",
