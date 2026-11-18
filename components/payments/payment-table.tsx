@@ -6,6 +6,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DisplayCount from "@/components/display-count";
@@ -82,6 +83,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 toolbar={tableToolBar}
                 columns={PaymentColumns}
                 toggleColumns
+                toolbarBeforeViewOptions={<PrefixSettingsButton field="pid_prefix" />}
                 toolbarOptions={{ filter: PaymentFilterSchema(canViewAllPayments) }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}

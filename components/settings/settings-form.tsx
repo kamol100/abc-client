@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import {
     buildSettingsFieldConfigs,
     filterSettingsFieldsByPermission,
+    selectSettingsFields,
     SETTINGS_SECTION_SCHEMA,
     type SettingsFieldSchema,
     type SettingsSectionKey,
@@ -36,6 +37,8 @@ type SettingsFormProps = {
     section: SettingsSectionKey;
     /** Full width, without the section heading. Use inside a dialog that already shows the title. */
     embedded?: boolean;
+    /** Limits the dialog to these fields from the section, in this order. */
+    fields?: readonly SettingsFieldKey[];
 };
 
 type CommitFieldHandler = (
@@ -308,14 +311,20 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
     );
 };
 
-const SettingsForm: FC<SettingsFormProps> = ({ section, embedded = false }) => {
+const SettingsForm: FC<SettingsFormProps> = ({ section, embedded = false, fields }) => {
     const { t } = useTranslation();
     const { settings, updateSettings } = useSettings();
     const { hasPermission } = usePermissions();
     const sectionConfig = SETTINGS_SECTION_SCHEMA[section];
+    const fieldList = fields?.join("\0") ?? "";
     const sectionFields = useMemo(
-        () => filterSettingsFieldsByPermission(sectionConfig.fields, hasPermission),
-        [hasPermission, sectionConfig.fields],
+        () => filterSettingsFieldsByPermission(
+            fieldList
+                ? selectSettingsFields(section, fieldList.split("\0") as SettingsFieldKey[])
+                : sectionConfig.fields,
+            hasPermission,
+        ),
+        [fieldList, hasPermission, section, sectionConfig.fields],
     );
     const formSchema = useMemo(
         () => buildSettingsFieldConfigs(sectionFields),

@@ -198,6 +198,20 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
     },
 };
 
+export function selectSettingsFields(
+    section: SettingsSectionKey,
+    keys: readonly SettingsFieldKey[],
+): SettingsFieldSchema[] {
+    const fieldsByKey = new Map(
+        SETTINGS_SECTION_SCHEMA[section].fields.map((field) => [field.key, field]),
+    );
+
+    return keys.flatMap((key) => {
+        const field = fieldsByKey.get(key);
+        return field ? [field] : [];
+    });
+}
+
 export function filterSettingsFieldsByPermission(
     fields: SettingsFieldSchema[],
     hasPermission: (permission: string) => boolean,

@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
 import MyButton from "@/components/my-button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePermissions } from "@/context/app-provider";
@@ -95,6 +96,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 columns={columns}
                 toolbarOptions={toolbarOptions}
                 toggleColumns={true}
+                toolbarBeforeViewOptions={<PrefixSettingsButton field="invoice_prefix" />}
                 toolbar={tableToolBar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}

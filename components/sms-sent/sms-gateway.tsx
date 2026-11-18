@@ -3,7 +3,6 @@
 import InputField from "@/components/form/input-field";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
-import SettingsForm from "@/components/settings/settings-form";
 import {
   formatProviderBalance,
   hasPrivateBalanceUrl,
@@ -25,7 +24,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { serverFieldErrors } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleCheck, Settings, TriangleAlert } from "lucide-react";
+import { CircleCheck, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -101,39 +100,6 @@ function gatewayErrorCode(error: unknown): string | null {
   if (!error || typeof error !== "object" || !("error" in error)) return null;
   const code = (error as GatewayError).error?.code;
   return typeof code === "string" ? code : null;
-}
-
-export function SmsSettingsButton() {
-  const { t } = useTranslation();
-  const { hasPermission } = usePermissions();
-  const [open, setOpen] = useState(false);
-
-  if (!hasPermission("company-settings.access")) return null;
-
-  return (
-    <>
-      <MyButton
-        type="button"
-        size="icon"
-        variant="outline"
-        className="h-9 w-9 shrink-0"
-        tooltip="settings.sections.sms.title"
-        aria-label={t("settings.sections.sms.title")}
-        onClick={() => setOpen(true)}
-      >
-        <Settings className="h-4 w-4" />
-      </MyButton>
-      <MyDialog
-        open={open}
-        onOpenChange={setOpen}
-        size="2xl"
-        title="settings.sections.sms.title"
-        description="settings.sections.sms.description"
-      >
-        <SettingsForm section="sms" embedded />
-      </MyDialog>
-    </>
-  );
 }
 
 export function SmsGatewayButton() {

@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
 import { TicketColumns } from "./ticket-column";
 import { TicketRow } from "./ticket-type";
 import { useTranslation } from "react-i18next";
@@ -53,6 +54,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
             columns={TicketColumns}
             toolbarOptions={toolbarOptions}
             toggleColumns={true}
+            toolbarBeforeViewOptions={<PrefixSettingsButton field="ticket_code_prefix" />}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

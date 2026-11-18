@@ -1415,6 +1415,10 @@
         }
     },
     "client": {
+        "settings": {
+            "title": "Client Settings",
+            "description": "Payment deadline, auto inactive, and whether client pages open in a new tab."
+        },
         "any_search": {
             "label": "Any",
             "placeholder": "Search by name, phone, or PPPoE ID"
@@ -5369,7 +5373,8 @@
             "updated": "Setting updated successfully"
         },
         "common": {
-            "not_set": "Not set"
+            "not_set": "Not set",
+            "prefix_description": "Used at the start of new IDs."
         },
         "sections": {
             "olt": {

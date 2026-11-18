@@ -1,3 +1,35 @@
+## OLT settings on the OLT list — 2026-11-18
+
+The OLT list has the settings icon immediately before View. It opens the same OLT polling settings as `/settings/olt`: automatic poll interval and the low ONU optical-power threshold. The button stays hidden without `company-settings.access`.
+
+On `http://vp.isp.test/olts`, signed in as vp, the dialog showed those two fields and nothing else. At a 390-pixel width the icon was 36×36, still to the left of View, and the dialog filled the width without overflowing. No setting was changed. Dark mode was not checked.
+
+`scripts/ai/typecheck` passed.
+
+## Prefix settings on list pages — 2026-11-18
+
+Invoices, payments, expenses, products, and support tickets each have the settings icon immediately before View. The dialog shows only that list’s prefix from General settings: invoice prefix, payment ID prefix, expense ID prefix, product ID prefix, or ticket ID prefix. The button stays hidden without `company-settings.access`. Invoice, payment, and expense reports use the same tables, so the icon is there too. Client detail tabs hide the toolbar, so they do not show it.
+
+On vp.isp.test, signed in as vp, each dialog opened with only its prefix field. The icons were 36×36 and sat to the left of View. At a 390-pixel width on tickets, the icon stayed inside the toolbar and the dialog filled the width without overflowing. No prefix was changed. Dark mode was not checked. An existing hydration notice from `app/layout.tsx` was already on the tickets page.
+
+`scripts/ai/typecheck` passed. `tests/unit/settings/client-settings-fields.test.ts` passed (6).
+
+## Client settings button on the client list — 2026-11-18
+
+The client list has a settings icon immediately before View. It opens the five client fields from General settings: payment deadline, auto inactive on invoice due, auto inactive time, and the two new-tab switches. Prefix fields stay on the settings page. The button stays hidden without `company-settings.access`.
+
+On `http://vp.isp.test/clients`, signed in as vp, the icon was 36×36 and sat to the left of View. The dialog showed those five fields and no prefix. At a 390-pixel width the icon stayed inside the toolbar, still before View, and the dialog filled the width without overflowing. The page did not scroll. No setting was changed. Dark mode was not checked; the button and dialog use the same theme classes as the other settings buttons.
+
+`scripts/ai/typecheck` passed. `tests/unit/settings/client-settings-fields.test.ts` passed. The reseller client table suite still has its two existing filter failures (`billing_type` is now in the filter list). Those failures were already present.
+
+## Shared settings section button — 2026-11-18
+
+Send SMS and Telegram now open company settings through `SettingsSectionButton`. It stays hidden without `company-settings.access`, and the dialog title and form come from the settings section. SMS keeps the 36×36 icon button. Telegram keeps the wider toolbar button.
+
+On `http://vp.isp.test/sms-send`, signed in as vp, SMS Settings opened the SMS switches and closed again. On `/telegram`, Telegram Settings opened the bot token field. At a 390-pixel width both buttons stayed inside the page (SMS 36×36, Telegram 50×36) and both dialogs filled the width without overflowing. Dark mode was not checked; the button and dialog use the same theme classes as before.
+
+`scripts/ai/typecheck` passed. `scripts/ai/test` reported 726 passed and 19 failed in date picker, pay, reseller client, column visibility, maps, and client dashboard files. Those failures are outside this change.
+
 ## Client switch on the client view — 2026-11-18
 
 The client details header has a switch icon immediately after Edit. It uses the same dialog as the row menu: name, PPPoE ID, phone, and the reseller list. Switch stays off until a reseller is chosen. Company staff with `clients.switch.reseller` see it. Reseller logins do not.

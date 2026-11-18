@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useProductColumns } from "@/components/products/product-column";
 import ProductFilterSchema from "@/components/products/product-filter-schema";
@@ -41,6 +42,7 @@ const ProductTable: FC = () => {
             columns={columns}
             setFilter={setFilter}
             toggleColumns={true}
+            toolbarBeforeViewOptions={<PrefixSettingsButton field="product_code_prefix" />}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}

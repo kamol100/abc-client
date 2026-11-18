@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
 import ExpenseFilterSchema from "@/components/expenses/expense-filter-schema";
 import ExpenseForm from "@/components/expenses/expense-form";
 import { ExpenseColumns } from "@/components/expenses/expense-column";
@@ -58,6 +59,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
                 columns={ExpenseColumns}
                 toolbarOptions={toolbarOptions}
                 toggleColumns
+                toolbarBeforeViewOptions={<PrefixSettingsButton field="expense_id_prefix" />}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
