@@ -17,6 +17,7 @@ import { usePermissions, useProfile, useSettings } from "@/context/app-provider"
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Row } from "@tanstack/react-table";
 import {
+    ArrowRightLeft,
     CloudUpload,
     CreditCard,
     Edit,
@@ -39,6 +40,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import LazyBulkInvoicePayDialog from "@/components/invoices/lazy-bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
+import ClientSwitchDialog from "@/components/clients/client-switch-dialog";
 import ClientLockDialog, { useCanLockClients } from "@/components/clients/client-lock-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import ClientSmsDialog from "@/components/clients/client-sms";
@@ -72,7 +74,9 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
     const [lockOpen, setLockOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
+    const [switchOpen, setSwitchOpen] = useState(false);
     const canAddMap = hasPermission("clients.map.add");
+    const canSwitchClient = hasPermission("clients.switch.reseller") && !isResellerUser;
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [mikrotikDelete, setMikrotikDelete] = useState(false);
 
@@ -211,6 +215,15 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                         {t("client.actions.add_map")}
                     </DropdownMenuItem>
                 )}
+                {canSwitchClient && (
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onSelect={() => setSwitchOpen(true)}
+                    >
+                        <ArrowRightLeft className="mr-2 h-4 w-4" />
+                        {t("client.actions.client_switch")}
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 {hasPermission("clients.delete") && (
                     <DropdownMenuItem
@@ -305,6 +318,14 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     clientId={clientId}
                     open={mapOpen}
                     onOpenChange={setMapOpen}
+                />
+            )}
+
+            {canSwitchClient && (
+                <ClientSwitchDialog
+                    client={client}
+                    open={switchOpen}
+                    onOpenChange={setSwitchOpen}
                 />
             )}
 

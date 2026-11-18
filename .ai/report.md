@@ -1,3 +1,21 @@
+## Client switch to a reseller — 2026-11-18
+
+Company staff with `clients.switch.reseller` get a Client switch item after Add Map. The dialog shows the client name, PPPoE ID, and phone, plus the company reseller list. Switch stays disabled until a reseller is selected, then `POST /clients/{uuid}/switch-reseller` moves that client onto the reseller. Reseller staff do not see the item.
+
+The live menu on `http://vp.isp.test/clients` (signed in as vp) still goes from Add Map to Delete. The new permission is not on that account yet, so the dialog could not be opened in the browser. Dark mode and a narrow viewport were not checked; the dialog uses the same tokens and size as Change Package.
+
+`npx vitest run tests/unit/clients/client-switch-dialog.test.tsx`: 1 passed.
+
+Unrelated working tree left as found: `components/data-table/data-table-row-actions.tsx`.
+
+The menu appears after `php artisan update:permission` in `isp-backend`, which grants `clients.switch.reseller` to company Admin roles. That command was not run against MySQL.
+
+## Client row actions menu scrolls inside the viewport — 2026-11-18
+
+The client row menu is the shared row-actions dropdown. When the list is taller than the space above or below the button, the menu stays inside the viewport and the items scroll. The page behind it does not scroll with the menu.
+
+On `http://vp.isp.test/clients`, signed in as vp, a short desktop window opened the first row downward. The menu was 270px tall inside a 520px window, the item list was 401px, and scrolling revealed Delete. A row near the bottom opened upward, stayed 8px off the top edge, and still scrolled. At 390×560 the same first-row menu stayed inside the screen and scrolled. Dark mode was not checked; no colors changed. Reseller and archived-client row menus use the same dropdown, so they scroll the same way.
+
 ## Gateway status button hugs its label — 2026-11-18
 
 The status button is only as wide as its icon and label. The extra space before the check icon is gone. The header still keeps the button on the right.

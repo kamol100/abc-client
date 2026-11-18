@@ -32,7 +32,11 @@ export function DataTableRowActions<TData>({
             <span className="sr-only">Open menu</span>
           </MyButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent
+          align="end"
+          collisionPadding={8}
+          className="max-h-[var(--radix-dropdown-menu-content-available-height)] overflow-y-auto overscroll-contain"
+        >
           {children}
         </DropdownMenuContent>
       </DropdownMenu>

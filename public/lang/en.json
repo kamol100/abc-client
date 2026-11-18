@@ -1632,7 +1632,19 @@
             "lock": "Lock Client",
             "unlock": "Unlock Client",
             "add_map": "Add Map",
+            "client_switch": "Client switch",
             "delete": "Delete"
+        },
+        "switch_reseller": {
+            "title": "Client switch",
+            "description": "Move this client to the selected reseller account.",
+            "submit": "Switch",
+            "success": "Client moved to the reseller",
+            "failed": "Could not switch the client",
+            "reseller": {
+                "label": "Reseller",
+                "placeholder": "Select a reseller"
+            }
         },
         "map": {
             "title": "Add Map",
