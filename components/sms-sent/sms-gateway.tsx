@@ -3,10 +3,15 @@
 import InputField from "@/components/form/input-field";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
+import SettingsForm from "@/components/settings/settings-form";
 import {
+  formatProviderBalance,
+  hasPrivateBalanceUrl,
   isSmsGatewayActive,
+  readProviderBalance,
   type SmsGatewayProvider,
   type SmsGatewayStatus,
+  type SmsProviderBalancePayload,
 } from "@/components/sms-sent/sms-gateway-status";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -20,7 +25,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { serverFieldErrors } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleCheck, TriangleAlert } from "lucide-react";
+import { CircleCheck, Settings, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -55,22 +60,6 @@ type GatewayError = {
   errors?: Record<string, string[]>;
 };
 
-type GatewayBalance = {
-  available?: boolean;
-  response_code?: number | string | null;
-  balance?: number | string | null;
-};
-
-function readProviderBalance(payload: GatewayBalance | undefined): number | null {
-  if (!payload) return null;
-  const code = payload.response_code;
-  if (code !== 202 && code !== "202") return null;
-  const balance = payload.balance;
-  if (typeof balance === "number" && Number.isFinite(balance)) return balance;
-  if (typeof balance === "string" && /^-?\d+(\.\d+)?$/.test(balance.trim())) return Number(balance);
-  return null;
-}
-
 const INVALIDATE = "sms-gateway,sms-rate,sms-gateway-balance,sms-gateway-platform,settings";
 
 export function useSmsGatewayStatus(enabled = true) {
@@ -88,10 +77,60 @@ export function useSmsGatewayStatus(enabled = true) {
   };
 }
 
+export function useSmsProviderBalance(enabled = true) {
+  const { status } = useSmsGatewayStatus();
+  const canRead = enabled && hasPrivateBalanceUrl(status);
+  const query = useApiQuery<ApiResponse<SmsProviderBalancePayload>>({
+    queryKey: ["sms-gateway-balance"],
+    url: "sms-gateway/balance",
+    pagination: false,
+    enabled: canRead,
+    retry: false,
+  });
+  const amount = readProviderBalance(query.data?.data);
+
+  return {
+    amount,
+    text: amount === null ? null : formatProviderBalance(amount),
+  };
+}
+
 function gatewayErrorCode(error: unknown): string | null {
   if (!error || typeof error !== "object" || !("error" in error)) return null;
   const code = (error as GatewayError).error?.code;
   return typeof code === "string" ? code : null;
+}
+
+export function SmsSettingsButton() {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const [open, setOpen] = useState(false);
+
+  if (!hasPermission("company-settings.access")) return null;
+
+  return (
+    <>
+      <MyButton
+        type="button"
+        size="default"
+        variant="outline"
+        tooltip="settings.sections.sms.title"
+        aria-label={t("settings.sections.sms.title")}
+        onClick={() => setOpen(true)}
+      >
+        <Settings className="h-4 w-4" />
+      </MyButton>
+      <MyDialog
+        open={open}
+        onOpenChange={setOpen}
+        size="2xl"
+        title="settings.sections.sms.title"
+        description="settings.sections.sms.description"
+      >
+        <SettingsForm section="sms" embedded />
+      </MyDialog>
+    </>
+  );
 }
 
 export function SmsGatewayButton() {
@@ -167,18 +206,7 @@ function SmsGatewayDialog({
   });
   const provider = useWatch({ control: form.control, name: "provider" });
   const providerChanged = configured && provider !== status?.provider;
-  const balanceEnabled = open && privateConfigured && Boolean(status?.balance_url);
-  const balanceQuery = useApiQuery<ApiResponse<GatewayBalance>>({
-    queryKey: ["sms-gateway-balance"],
-    url: "sms-gateway/balance",
-    pagination: false,
-    enabled: balanceEnabled,
-    retry: false,
-  });
-  const balanceAmount = readProviderBalance(balanceQuery.data?.data);
-  const balanceText = balanceAmount === null
-    ? null
-    : new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(balanceAmount);
+  const { text: balanceText } = useSmsProviderBalance(open && privateConfigured);
   const canSave = !configured
     ? hasPermission("sms-gateway.create")
     : providerChanged

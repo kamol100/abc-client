@@ -41,3 +41,28 @@ export function isSmsGatewayActive(status: SmsGatewayStatus | null | undefined):
 export function smsSettingsLocked(status: SmsGatewayStatus | null | undefined): boolean {
   return !isSmsGatewayActive(status);
 }
+
+export type SmsProviderBalancePayload = {
+  available?: boolean;
+  response_code?: number | string | null;
+  balance?: number | string | null;
+};
+
+export function hasPrivateBalanceUrl(status: SmsGatewayStatus | null | undefined): boolean {
+  return status?.provider === "private" && Boolean(status.balance_url?.trim());
+}
+
+/** A provider balance is usable only for response code 202 and a numeric amount. */
+export function readProviderBalance(payload: SmsProviderBalancePayload | undefined): number | null {
+  if (!payload) return null;
+  const code = payload.response_code;
+  if (code !== 202 && code !== "202") return null;
+  const balance = payload.balance;
+  if (typeof balance === "number" && Number.isFinite(balance)) return balance;
+  if (typeof balance === "string" && /^-?\d+(\.\d+)?$/.test(balance.trim())) return Number(balance);
+  return null;
+}
+
+export function formatProviderBalance(amount: number): string {
+  return new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(amount);
+}

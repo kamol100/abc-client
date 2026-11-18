@@ -9,7 +9,7 @@ import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-typ
 import SelectDropdown from "@/components/select-dropdown";
 import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { Loader2 } from "lucide-react";
+import { Loader2, TriangleAlert } from "lucide-react";
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -171,23 +171,21 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                 </div>
             )}
 
-            {section === "sms" ? (
-                <div className="min-h-16">
-                    {!gateway.isLoading && smsSettingsLocked(gateway.status) ? (
-                        <div className="flex flex-col gap-3 rounded-md border p-3 sm:flex-row sm:items-center sm:justify-between">
-                            <p className="text-sm text-muted-foreground">
-                                {t("sms_sent.gateway.settings_notice")}
-                            </p>
-                            <MyButton
-                                action="edit"
-                                type="button"
-                                url="/sms-send"
-                                title={t("sms_sent.gateway.configure")}
-                            >
-                                {t("sms_sent.gateway.configure")}
-                            </MyButton>
-                        </div>
-                    ) : null}
+            {section === "sms" && !gateway.isLoading && smsSettingsLocked(gateway.status) ? (
+                <div className="flex flex-col gap-3 rounded-md border border-yellow-600/40 p-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                        {t("sms_sent.gateway.settings_notice")}
+                    </p>
+                    <MyButton
+                        action="edit"
+                        type="button"
+                        url="/sms-send"
+                        title={t("sms_sent.gateway.configure")}
+                        className="border-yellow-600/40 text-yellow-700 hover:bg-yellow-600/10 hover:text-yellow-700 dark:border-yellow-400/40 dark:text-yellow-400 dark:hover:bg-yellow-400/10 dark:hover:text-yellow-400"
+                    >
+                        <TriangleAlert className="size-4" aria-hidden />
+                        {t("sms_sent.gateway.configure")}
+                    </MyButton>
                 </div>
             ) : null}
 

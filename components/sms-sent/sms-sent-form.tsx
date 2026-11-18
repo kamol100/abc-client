@@ -19,7 +19,7 @@ import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-sche
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
 import SmsSendConfirmDialog from "@/components/sms-sent/sms-send-confirm-dialog";
-import { SmsGatewayButton, useSmsGatewayStatus } from "@/components/sms-sent/sms-gateway";
+import { SmsGatewayButton, SmsSettingsButton, useSmsGatewayStatus, useSmsProviderBalance } from "@/components/sms-sent/sms-gateway";
 import { isSmsGatewayActive } from "@/components/sms-sent/sms-gateway-status";
 import {
   SmsSendMode,
@@ -116,6 +116,19 @@ function SmsPerUnitCost() {
       </span>
       <SmsMoneyValue amount={rate} isLoading={isLoading} isError={isError} />
     </div>
+  );
+}
+
+function SmsProviderBalance() {
+  const { t } = useTranslation();
+  const { text } = useSmsProviderBalance();
+  if (!text) return null;
+
+  return (
+    <p className="whitespace-nowrap text-sm text-muted-foreground">
+      {t("sms_sent.gateway.balance")}:{" "}
+      <span className="font-medium tabular-nums text-foreground">{text}</span>
+    </p>
   );
 }
 
@@ -485,6 +498,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                   {t("sms_sent.gateway_label")} <span className="text-foreground">{gatewayName}</span>
                 </p>
               ) : null}
+              <SmsProviderBalance />
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
@@ -492,7 +506,11 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
               <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
             </div>
           </div>
-          <SmsGatewayButton />
+          <div className="flex flex-wrap items-center gap-2">
+            {isSingleClientMode ? <SmsProviderBalance /> : null}
+            <SmsSettingsButton />
+            <SmsGatewayButton />
+          </div>
         </div>
       </div>
       <Form {...sendForm}>

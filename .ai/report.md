@@ -1,3 +1,17 @@
+## Private SMS balance on the send page — 2026-11-18
+
+The Send SMS header shows “Provider balance” only when the account gateway is private, a balance URL is saved, and `sms-gateway/balance` returns response code 202 with a numeric amount. Any other provider, a missing URL, or an unusable response leaves that line out. The gateway dialog uses the same lookup.
+
+On `http://vp.isp.test/sms-send`, signed in as vp, the private gateway “My gateway” showed “Provider balance: 1,093.25” under the gateway name. At a 390-pixel width the same line stayed under the gateway name and the mode controls stacked below it. ISPTIK and a failed balance lookup were not available on this account.
+
+`npx vitest run tests/unit/sms-sent/sms-gateway-status.test.ts`: 3 passed.
+
+## SMS settings gateway warning color — 2026-11-18
+
+On `/settings/sms`, the unconfigured-gateway notice and its Configure button use the same yellow warning treatment as the send-page gateway button. The message is yellow, and the button shows a triangle warning icon in that color. The notice still renders only when the gateway is missing or inactive.
+
+On `http://vp.isp.test/settings/sms`, signed in as vp, the gateway is already active, so the notice was not on the page and the SMS switches stayed enabled. The yellow warning state was not visible on this account. A separate mobile pass of that warning was not run.
+
 ## Private gateway balance on the hint — 2026-11-18
 
 The private gateway hint shows the provider balance only when the saved balance URL returns `response_code` 202 and a numeric `balance`. That value is shown to two decimals. Any other response leaves the hint without a balance line. Gateway viewers can call the balance lookup with `sms-gateway.access`. The separate balance box inside the edit form is removed.
