@@ -98,6 +98,13 @@ export const TELEGRAM_NOTIFICATION_GROUPS: TelegramNotificationGroup[] = [
     ],
   },
   {
+    title: "telegram.notifications.groups.olt",
+    options: [
+      { key: "telegram_olt_port_down", label: "telegram.notifications.actions.port_down" },
+      { key: "telegram_olt_port_up", label: "telegram.notifications.actions.port_up" },
+    ],
+  },
+  {
     title: "telegram.notifications.groups.platform_support",
     options: [
       { key: "telegram_platform_support_create", label: "telegram.notifications.actions.create" },
