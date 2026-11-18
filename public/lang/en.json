@@ -2300,6 +2300,7 @@
     "sms_sent": {
         "title": "Send SMS",
         "description": "Send single and bulk SMS.",
+        "gateway_label": "SMS gateway:",
         "phone_number": {
             "label": "Phone Number",
             "placeholder": "Enter phone number",
@@ -2401,6 +2402,9 @@
             "isptik": "Use ISPTIK gateway",
             "isptik_hint": "Platform rate {{rate}} per SMS. Live messages use your wallet.",
             "private": "Use own private gateway",
+            "private_hint": "Your rate {{rate}} per SMS. Live messages do not use your wallet.",
+            "balance_inline": "Balance {{balance}}.",
+            "edit": "Edit gateway",
             "active": "Active",
             "name": "Gateway name",
             "send_url": "Send URL",
@@ -2414,6 +2418,7 @@
             "balance": "Provider balance",
             "balance_unavailable": "Balance unavailable",
             "save": "Save gateway",
+            "update": "Update gateway",
             "switch": "Switch gateway",
             "activated": "Gateway activated",
             "inactive_saved": "Gateway inactive",

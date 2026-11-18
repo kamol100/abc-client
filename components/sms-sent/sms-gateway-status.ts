@@ -19,6 +19,8 @@ export type SmsGatewayStatus = {
   provider: SmsGatewayProvider | null;
   status: "active" | "inactive" | null;
   name: string | null;
+  send_url?: string | null;
+  balance_url?: string | null;
   masked_send_url: string | null;
   masked_balance_url: string | null;
   rate: number | null;

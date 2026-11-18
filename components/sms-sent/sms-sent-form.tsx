@@ -65,11 +65,17 @@ type SmsSentFormSingleClientProps = {
 type SmsSentFormProps = SmsSentFormPageProps | SmsSentFormSingleClientProps;
 
 function useSmsRate() {
+  const { t } = useTranslation();
   const { status, isLoading, isError } = useSmsGatewayStatus();
   const parsedRate = Number(status?.rate);
   const rate = Number.isFinite(parsedRate) ? parsedRate : 0;
+  const gatewayName = !status?.configured
+    ? null
+    : status.provider === "private"
+      ? status.name?.trim() || t("sms_sent.gateway.private")
+      : t("sms_sent.gateway.isptik");
 
-  return { rate, isLoading, isError, isActive: isSmsGatewayActive(status) };
+  return { rate, isLoading, isError, isActive: isSmsGatewayActive(status), gatewayName };
 }
 
 function SmsMoneyValue({
@@ -245,7 +251,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const isSingleClientMode = mode === "singleClient";
   const [sendMode, setSendMode] = useState<SmsSendMode>("live");
   const isTestMode = sendMode === "test";
-  const { rate, isLoading: isRateLoading, isError: isRateError, isActive } = useSmsRate();
+  const { rate, isLoading: isRateLoading, isError: isRateError, isActive, gatewayName } = useSmsRate();
   const sendLocked = isRateLoading || !isActive;
 
   const sendForm = useForm<SmsSentFormInput>({
@@ -474,6 +480,11 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+              {gatewayName ? (
+                <p className="text-sm text-muted-foreground">
+                  {t("sms_sent.gateway_label")} <span className="text-foreground">{gatewayName}</span>
+                </p>
+              ) : null}
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">

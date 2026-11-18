@@ -1,3 +1,9 @@
+## Private gateway balance on the hint — 2026-11-18
+
+The private gateway hint shows the provider balance only when the saved balance URL returns `response_code` 202 and a numeric `balance`. That value is shown to two decimals. Any other response leaves the hint without a balance line. Gateway viewers can call the balance lookup with `sms-gateway.access`. The separate balance box inside the edit form is removed.
+
+The dialog was not opened in a browser. A direct lookup of the saved private balance URL from the app container returned `response_code` 202 and balance 1095.35.
+
 ## SMS gateway refactor — 2026-11-17
 
 Send SMS now requires an active account gateway. The page shows “Gateway not configured!” until one is saved. ISPTIK and private are chosen in that dialog. Private quotes hide the wallet balance. SMS settings stay locked until the gateway is active, and the voice reminder controls stay usable. The shared communication-gateway screen, menu entry, help articles, and e2e inventory are removed. The page heading name is “Send SMS”; the colon sits outside the heading.

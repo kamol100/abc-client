@@ -55,6 +55,22 @@ type GatewayError = {
   errors?: Record<string, string[]>;
 };
 
+type GatewayBalance = {
+  available?: boolean;
+  response_code?: number | string | null;
+  balance?: number | string | null;
+};
+
+function readProviderBalance(payload: GatewayBalance | undefined): number | null {
+  if (!payload) return null;
+  const code = payload.response_code;
+  if (code !== 202 && code !== "202") return null;
+  const balance = payload.balance;
+  if (typeof balance === "number" && Number.isFinite(balance)) return balance;
+  if (typeof balance === "string" && /^-?\d+(\.\d+)?$/.test(balance.trim())) return Number(balance);
+  return null;
+}
+
 const INVALIDATE = "sms-gateway,sms-rate,sms-gateway-balance,sms-gateway-platform,settings";
 
 export function useSmsGatewayStatus(enabled = true) {
@@ -131,7 +147,9 @@ function SmsGatewayDialog({
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [conflict, setConflict] = useState<string | null>(null);
+  const [editingPrivate, setEditingPrivate] = useState(false);
   const configured = status?.configured === true;
+  const privateConfigured = configured && status?.provider === "private";
   const form = useForm<GatewayFormValues>({
     resolver: zodResolver(GatewayFormSchema),
     values: {
@@ -139,8 +157,8 @@ function SmsGatewayDialog({
       active: status?.status !== "inactive",
       privateStatus: status?.provider === "private" && status.status === "inactive" ? "inactive" : "active",
       name: status?.provider === "private" ? status.name ?? "" : "",
-      send_url: "",
-      balance_url: "",
+      send_url: status?.provider === "private" ? status.send_url ?? "" : "",
+      balance_url: status?.provider === "private" ? status.balance_url ?? "" : "",
       rates_per_unit:
         status?.provider === "private" && status.rate !== null && status.rate !== undefined
           ? String(status.rate)
@@ -149,6 +167,18 @@ function SmsGatewayDialog({
   });
   const provider = useWatch({ control: form.control, name: "provider" });
   const providerChanged = configured && provider !== status?.provider;
+  const balanceEnabled = open && privateConfigured && Boolean(status?.balance_url);
+  const balanceQuery = useApiQuery<ApiResponse<GatewayBalance>>({
+    queryKey: ["sms-gateway-balance"],
+    url: "sms-gateway/balance",
+    pagination: false,
+    enabled: balanceEnabled,
+    retry: false,
+  });
+  const balanceAmount = readProviderBalance(balanceQuery.data?.data);
+  const balanceText = balanceAmount === null
+    ? null
+    : new Intl.NumberFormat("en", { maximumFractionDigits: 2 }).format(balanceAmount);
   const canSave = !configured
     ? hasPermission("sms-gateway.create")
     : providerChanged
@@ -165,6 +195,7 @@ function SmsGatewayDialog({
       toast.success(
         t(saved.status === "active" ? "sms_sent.gateway.activated" : "sms_sent.gateway.inactive_saved")
       );
+      setEditingPrivate(false);
       onOpenChange(false);
     },
     onError: (error) => {
@@ -217,13 +248,18 @@ function SmsGatewayDialog({
     save.mutate(payload);
   };
 
+  const showPrivateForm = provider === "private" && (!privateConfigured || editingPrivate);
+
   return (
     <MyDialog
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={(next) => {
+        if (!next) setEditingPrivate(false);
+        onOpenChange(next);
+      }}
       title="sms_sent.gateway.title"
       description="sms_sent.gateway.description"
-      size="lg"
+      size="2xl"
       loading={save.isPending}
       showFooter={false}
     >
@@ -241,54 +277,93 @@ function SmsGatewayDialog({
                     className="grid gap-3"
                   >
                     <div className="rounded-md border p-3">
-                      <div className="flex items-start gap-3">
-                        <RadioGroupItem value="isptik" id="sms-gateway-isptik" className="mt-0.5" />
-                        <div className="min-w-0 flex-1 space-y-1">
-                          <div className="flex items-center justify-between gap-3">
-                            <Label htmlFor="sms-gateway-isptik" className="font-medium">
-                              {t("sms_sent.gateway.isptik")}
-                            </Label>
-                            <FormField
-                              control={form.control}
-                              name="active"
-                              render={({ field }) => (
-                                <FormItem className="flex shrink-0 items-center gap-2 space-y-0">
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value}
-                                      onCheckedChange={(checked) => field.onChange(checked === true)}
-                                    />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">{t("sms_sent.gateway.active")}</FormLabel>
-                                </FormItem>
-                              )}
-                            />
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {t("sms_sent.gateway.isptik_hint", {
-                              rate: status?.platform_rate ?? "—",
-                            })}
-                          </p>
-                        </div>
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value="isptik" id="sms-gateway-isptik" className="shrink-0" />
+                        <Label htmlFor="sms-gateway-isptik" className="min-w-0 flex-1 truncate font-medium leading-none">
+                          {t("sms_sent.gateway.isptik")}
+                        </Label>
+                        <FormField
+                          control={form.control}
+                          name="active"
+                          render={({ field }) => (
+                            <FormItem className="flex shrink-0 items-center gap-2 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={(checked) => field.onChange(checked === true)}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal leading-none">{t("sms_sent.gateway.active")}</FormLabel>
+                            </FormItem>
+                          )}
+                        />
                       </div>
+                      <p className="mt-1 pl-7 text-sm text-muted-foreground">
+                        {t("sms_sent.gateway.isptik_hint", {
+                          rate: status?.platform_rate ?? "—",
+                        })}
+                      </p>
                     </div>
-                    <Label className="flex items-start gap-3 rounded-md border p-3 font-normal">
-                      <RadioGroupItem value="private" />
-                      <span className="font-medium">{t("sms_sent.gateway.private")}</span>
-                    </Label>
+                    <div className="rounded-md border p-3">
+                      <div className="flex items-center gap-3">
+                        <RadioGroupItem value="private" id="sms-gateway-private" className="shrink-0" />
+                        <Label htmlFor="sms-gateway-private" className="min-w-0 flex-1 truncate font-medium leading-none">
+                          {privateConfigured ? status?.name || t("sms_sent.gateway.private") : t("sms_sent.gateway.private")}
+                        </Label>
+                        {privateConfigured ? (
+                          <FormField
+                            control={form.control}
+                            name="privateStatus"
+                            render={({ field }) => (
+                              <FormItem className="flex shrink-0 items-center gap-2 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value === "active"}
+                                    disabled={!hasPermission("sms-gateway.edit") || save.isPending}
+                                    onCheckedChange={(checked) => field.onChange(checked === true ? "active" : "inactive")}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal leading-none">
+                                  {t(field.value === "active" ? "sms_sent.gateway.status_active" : "sms_sent.gateway.status_inactive")}
+                                </FormLabel>
+                              </FormItem>
+                            )}
+                          />
+                        ) : null}
+                        {privateConfigured ? (
+                          <MyButton
+                            type="button"
+                            action="edit"
+                            size="icon"
+                            variant="outline"
+                            className="shrink-0"
+                            aria-label={t("sms_sent.gateway.edit")}
+                            onClick={() => setEditingPrivate(true)}
+                          />
+                        ) : null}
+                      </div>
+                      <p className="mt-1 min-h-10 pl-7 text-sm text-muted-foreground">
+                        {t("sms_sent.gateway.private_hint", {
+                          rate: privateConfigured && status?.rate != null ? status.rate : "—",
+                        })}
+                        {balanceText ? (
+                          <>
+                            {" "}
+                            <span className="tabular-nums text-foreground">
+                              {t("sms_sent.gateway.balance_inline", { balance: balanceText })}
+                            </span>
+                          </>
+                        ) : null}
+                      </p>
+                    </div>
                   </RadioGroup>
                 </FormControl>
               </FormItem>
             )}
           />
 
-          {provider === "private" ? (
+          {showPrivateForm ? (
             <div className="space-y-3">
-              {status?.provider === "private" && status.masked_send_url ? (
-                <p className="text-sm text-muted-foreground break-all">
-                  {t("sms_sent.gateway.saved_url")}: {status.masked_send_url}
-                </p>
-              ) : null}
               <InputField name="name" label={{ labelText: "sms_sent.gateway.name", mandatory: true }} placeholder="sms_sent.gateway.name" />
               <InputField name="send_url" label={{ labelText: "sms_sent.gateway.send_url", mandatory: true }} placeholder="sms_sent.gateway.send_url_placeholder" />
               <InputField name="balance_url" label={{ labelText: "sms_sent.gateway.balance_url" }} placeholder="sms_sent.gateway.balance_url" />
@@ -317,7 +392,6 @@ function SmsGatewayDialog({
                   </FormItem>
                 )}
               />
-              {configured && status?.provider === "private" ? <PrivateBalance /> : null}
             </div>
           ) : null}
 
@@ -329,38 +403,27 @@ function SmsGatewayDialog({
             <div className="min-h-10" />
           )}
 
-          <div className="flex justify-end">
-            <MyButton action="save" type="submit" loading={save.isPending} disabled={!canSave}>
-              {providerChanged ? t("sms_sent.gateway.switch") : t("sms_sent.gateway.save")}
-            </MyButton>
-          </div>
+          {showPrivateForm || provider !== "private" || privateConfigured ? (
+            <div className="flex justify-end">
+              <MyButton
+                type="submit"
+                action={providerChanged ? "move" : "save"}
+                title={
+                  providerChanged
+                    ? "sms_sent.gateway.switch"
+                    : privateConfigured
+                      ? "sms_sent.gateway.update"
+                      : "sms_sent.gateway.save"
+                }
+                loading={save.isPending}
+                disabled={!canSave}
+              />
+            </div>
+          ) : null}
         </form>
       </Form>
       {hasPermission("sms-gateway.platform") ? <PlatformSource /> : null}
     </MyDialog>
-  );
-}
-
-function PrivateBalance() {
-  const { t } = useTranslation();
-  const { data, isLoading, isError } = useApiQuery<ApiResponse<{ available: boolean; balance: number | null }>>({
-    queryKey: ["sms-gateway-balance"],
-    url: "sms-gateway/balance",
-    pagination: false,
-  });
-  const available = data?.data?.available === true && typeof data.data.balance === "number";
-
-  return (
-    <div className="flex min-h-9 items-center justify-between gap-3 rounded-md border px-3">
-      <span className="text-sm text-muted-foreground">{t("sms_sent.gateway.balance")}</span>
-      {isLoading ? (
-        <Skeleton className="h-5 w-16" />
-      ) : (
-        <span className="text-sm font-medium tabular-nums">
-          {available && !isError ? data?.data.balance : t("sms_sent.gateway.balance_unavailable")}
-        </span>
-      )}
-    </div>
   );
 }
 
@@ -407,9 +470,7 @@ function PlatformSource() {
         <InputField name="rates_per_unit" label={{ labelText: "sms_sent.gateway.rate" }} placeholder="0.35" />
         {canEdit ? (
           <div className="flex justify-end">
-            <MyButton action="save" type="submit" loading={save.isPending}>
-              {t("sms_sent.gateway.platform_save")}
-            </MyButton>
+            <MyButton action="save" type="submit" title="sms_sent.gateway.platform_save" loading={save.isPending} />
           </div>
         ) : null}
       </form>
