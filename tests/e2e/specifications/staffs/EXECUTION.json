@@ -1,0 +1,52 @@
+{
+  "ticket": "STAFFS-001",
+  "scope": "Partial slices on CP. Review stays pending, so no parent scenario is passing. Lock and password reset are refused by the plan and do not change accounts. MK is the other company in the isolation check only.",
+  "source_state": {
+    "head": "a05c38bad0cb7fc0c5cd1bd22ef4339f6e9db3bd",
+    "sha256": {
+      "playwright.staffs.config.ts": "1ed730c3acd1047da2143287e85729b8c32cc6345329212969bd1e8d48951d52",
+      "tests/e2e/staffs/fixtures.ts": "b2a53b9d71c9ecd270af63a31476fb70284cc62298f7609beae165ed0fecabc8",
+      "tests/e2e/staffs/access.spec.ts": "a254e6dc00482d09803e1eb557992cccd330cab209a7b5b8f6ec0ccb4a851a5c",
+      "tests/e2e/staffs/account.spec.ts": "e80976375ec670d05f1f88e64ab7b3baf6450f3998301125be1d9c5368310809",
+      "tests/e2e/staffs/forms.spec.ts": "42ea9735614bc8da558be1bb56a2d2f16fc5c6177173f956509f569849e97ab9",
+      "tests/e2e/staffs/list.spec.ts": "936306f66ddc1dc42d7b76fffad0de06bbea2a60b4ece6babb6d1491246c0eb0",
+      "tests/e2e/staffs/presentation.spec.ts": "e0bd19b00135062971b8c10d559ad337f0038385c1563dd52a8c8678e3836496",
+      "tests/e2e/clients/fixtures.ts": "e9e7e80355aa011f120c1eb3dfcf95fa9c2e239399d245f4d71f8057a1bcb572"
+    }
+  },
+  "runs": [
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_STAFF_ARTIFACT_DIR=/tmp/isp-staffs-cp10 npm run test:e2e:staffs",
+      "passed": 28,
+      "failed": 1,
+      "failed_titles": [
+        "FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable"
+      ],
+      "report": "/tmp/isp-staffs-cp10/results.json"
+    },
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_STAFF_ARTIFACT_DIR=/tmp/isp-staffs-cp11 npm run test:e2e:staffs",
+      "passed": 26,
+      "failed": 3,
+      "failed_titles": [
+        "FT090-08 anonymous /staffs redirects to the same-host staff login",
+        "FT090-08 anonymous /staffs/create redirects to the same-host staff login",
+        "FT090-06 a valid staff persists and the edited designation survives reload"
+      ],
+      "report": "/tmp/isp-staffs-cp11/results.json",
+      "note": "The login page did not render, and the create did not finish. The same three checks passed on the next targeted run. A sweep found no leftover e2e staff."
+    },
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_STAFF_ARTIFACT_DIR=/tmp/isp-staffs-cp13 npm run test:e2e:staffs -- tests/e2e/staffs/presentation.spec.ts -g mobile width",
+      "passed": 1,
+      "failed": 0,
+      "report": "/tmp/isp-staffs-cp13/results.json"
+    }
+  ]
+}

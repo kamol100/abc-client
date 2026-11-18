@@ -18,6 +18,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": projectRoot,
+      "server-only": path.resolve(projectRoot, "tests/unit/help/server-only-stub.ts"),
     },
   },
 });

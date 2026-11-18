@@ -127,7 +127,7 @@ function NotificationItem({
 }) {
     const { t, i18n } = useTranslation();
     const Icon = notificationCategoryIcon(item.category);
-    const href = resolveNotificationHref(item.subject);
+    const href = resolveNotificationHref(item.subject, item.data);
     const values = notificationInterpolation(item.data, (key) => t(key));
     const unread = item.read_at === null;
     const title = t(item.title_key, values);

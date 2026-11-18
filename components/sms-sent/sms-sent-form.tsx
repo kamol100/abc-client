@@ -19,6 +19,8 @@ import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-sche
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
 import SmsSendConfirmDialog from "@/components/sms-sent/sms-send-confirm-dialog";
+import { SmsGatewayButton, SmsSettingsButton, useSmsGatewayStatus, useSmsProviderBalance } from "@/components/sms-sent/sms-gateway";
+import { isSmsGatewayActive } from "@/components/sms-sent/sms-gateway-status";
 import {
   SmsSendMode,
   SmsTemplateSummary,
@@ -63,15 +65,17 @@ type SmsSentFormSingleClientProps = {
 type SmsSentFormProps = SmsSentFormPageProps | SmsSentFormSingleClientProps;
 
 function useSmsRate() {
-  const { data, isLoading, isError } = useApiQuery<ApiResponse<{ rate: number }>>({
-    queryKey: ["sms-rate"],
-    url: "sms-rate",
-    pagination: false,
-  });
-  const parsedRate = Number(data?.data?.rate);
+  const { t } = useTranslation();
+  const { status, isLoading, isError } = useSmsGatewayStatus();
+  const parsedRate = Number(status?.rate);
   const rate = Number.isFinite(parsedRate) ? parsedRate : 0;
+  const gatewayName = !status?.configured
+    ? null
+    : status.provider === "private"
+      ? status.name?.trim() || t("sms_sent.gateway.private")
+      : t("sms_sent.gateway.isptik");
 
-  return { rate, isLoading, isError };
+  return { rate, isLoading, isError, isActive: isSmsGatewayActive(status), gatewayName };
 }
 
 function SmsMoneyValue({
@@ -115,6 +119,19 @@ function SmsPerUnitCost() {
   );
 }
 
+function SmsProviderBalance() {
+  const { t } = useTranslation();
+  const { text } = useSmsProviderBalance();
+  if (!text) return null;
+
+  return (
+    <p className="whitespace-nowrap text-sm text-muted-foreground">
+      {t("sms_sent.gateway.balance")}:{" "}
+      <span className="font-medium tabular-nums text-foreground">{text}</span>
+    </p>
+  );
+}
+
 const SMS_SEND_MODES = [
   {
     value: "live",
@@ -131,16 +148,20 @@ const SMS_SEND_MODES = [
 export function SmsSendModeSelector({
   value,
   onChange,
+  disabled = false,
 }: {
   value: SmsSendMode;
   onChange: (mode: SmsSendMode) => void;
+  disabled?: boolean;
 }) {
   const { t } = useTranslation();
 
   return (
     <RadioGroup
       value={value}
+      disabled={disabled}
       onValueChange={(next) => {
+        if (disabled) return;
         if (next === "live" || next === "test") onChange(next);
       }}
       aria-label={t("sms_sent.mode.label")}
@@ -243,7 +264,8 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const isSingleClientMode = mode === "singleClient";
   const [sendMode, setSendMode] = useState<SmsSendMode>("live");
   const isTestMode = sendMode === "test";
-  const { rate, isLoading: isRateLoading, isError: isRateError } = useSmsRate();
+  const { rate, isLoading: isRateLoading, isError: isRateError, isActive, gatewayName } = useSmsRate();
+  const sendLocked = isRateLoading || !isActive;
 
   const sendForm = useForm<SmsSentFormInput>({
     resolver: zodResolver(SmsSentFormSchema),
@@ -413,6 +435,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   };
 
   const onSubmit = (values: SmsSentFormInput) => {
+    if (sendLocked) return;
     const normalizedForm = SmsSentFormSchema.parse(values);
 
     if (isCustomOtherSmsTemplate(templateType) && !normalizedForm.phone?.trim()) {
@@ -462,17 +485,31 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           {!isSingleClientMode && (
             <div>
-              <h1 className="text-xl font-semibold md:text-2xl">{t("sms_sent.title")}</h1>
+              <div className="flex items-baseline gap-2">
+                <h1 className="text-xl font-semibold">{t("sms_sent.title")}</h1>
+                <span aria-hidden="true" className="text-xl font-semibold">:</span>
+                <div className={cn(isSingleClientMode ? "ml-auto" : undefined, "text-sm text-muted-foreground")}>
+                  <SmsPerUnitCost />
+                </div>
+              </div>
               <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+              {gatewayName ? (
+                <p className="text-sm text-muted-foreground">
+                  {t("sms_sent.gateway_label")} <span className="text-foreground">{gatewayName}</span>
+                </p>
+              ) : null}
+              <SmsProviderBalance />
             </div>
           )}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
             <div className="flex min-w-0 flex-col gap-2">
-              <SmsSendModeSelector value={sendMode} onChange={setSendMode} />
+              <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
             </div>
           </div>
-          <div className={isSingleClientMode ? "ml-auto" : undefined}>
-            <SmsPerUnitCost />
+          <div className="flex flex-wrap items-center gap-2">
+            {isSingleClientMode ? <SmsProviderBalance /> : null}
+            <SmsSettingsButton />
+            <SmsGatewayButton />
           </div>
         </div>
       </div>
@@ -554,6 +591,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
                       variant="default"
                       size="default"
                       loading={isPending}
+                      disabled={sendLocked}
                       title={sendLabel}
                     >
                       <Send className="size-4" />

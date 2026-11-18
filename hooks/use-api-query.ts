@@ -1,7 +1,8 @@
 "use client";
 
 import { useFetch } from "@/app/actions";
-import { objectToQueryString, parseApiError, subscriptionDenialCode } from "@/lib/helper/helper";
+import { apiRequestError } from "@/lib/api/api-request-error";
+import { objectToQueryString, subscriptionDenialCode } from "@/lib/helper/helper";
 import {
   keepPreviousData,
   QueryKey,
@@ -79,7 +80,7 @@ export default function useApiQuery<TData = unknown>({
         if (subscriptionDenialCode(response)) {
           void queryClient.invalidateQueries({ queryKey: ["settings"] });
         }
-        throw new Error(parseApiError(response) || "Request failed");
+        throw apiRequestError(response);
       }
       return response as TData;
     },

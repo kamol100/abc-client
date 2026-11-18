@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import html2canvas from "html2canvas";
@@ -9,6 +9,7 @@ import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetch } from "@/app/actions";
+import { useSettings } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { parseApiError } from "@/lib/helper/helper";
 import { Loader2, Printer } from "lucide-react";
@@ -19,7 +20,7 @@ import {
     receiptLineHeight,
     type InvoicePrintSettings,
 } from "@/components/invoices/invoice-print-config";
-import { InvoiceDetail } from "@/components/invoices/invoice-type";
+import { InvoiceDetail, type InvoiceLine } from "@/components/invoices/invoice-type";
 import { usePathname } from "next/navigation";
 
 /** GOOJPRT PT-210: 58mm roll, 48mm print head, 203 dpi, 384 dots. */
@@ -31,6 +32,10 @@ const RECEIPT_MIN_PAGE_HEIGHT_MM = 60;
 const RECEIPT_MIN_PAGE_DOTS = Math.ceil((RECEIPT_MIN_PAGE_HEIGHT_MM * PT210_PAGE_DOTS) / PT210_PRINT_WIDTH_MM);
 const PAGE_CAPACITY_BUFFER_MM = 2;
 const INK_THRESHOLD = 168;
+/** Staging is already 384px wide — one CSS pixel per print-head dot — so a higher scale only adds delay. */
+const THERMAL_CAPTURE_SCALE = 1;
+const PREPARE_DELAY_MS = 250;
+const RECEIPT_FONT_WAIT_MS = 400;
 
 const canvasHeightToMm = (canvas: HTMLCanvasElement, widthMm: number) =>
     (canvas.height * widthMm) / Math.max(canvas.width, 1);
@@ -129,14 +134,6 @@ const forceThermalInk = (root: HTMLElement, typography: ReceiptTypography | null
     root.querySelectorAll<HTMLElement>("*").forEach((node) => paint(node, false));
 };
 
-const toCanvas = async (element: HTMLElement) =>
-    html2canvas(element, {
-        scale: 1,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-    });
-
 const flattenToInk = (source: HTMLCanvasElement) => {
     const targetWidth = PT210_PAGE_DOTS;
     const targetHeight = Math.max(
@@ -188,7 +185,7 @@ const padThermalCanvasToPortrait = (source: HTMLCanvasElement) => {
 
 const toThermalCanvas = async (element: HTMLElement, typography: ReceiptTypography | null) => {
     const source = await html2canvas(element, {
-        scale: 2,
+        scale: THERMAL_CAPTURE_SCALE,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
@@ -217,6 +214,14 @@ export const createThermalPdf = (pageFormat: [number, number], title: string) =>
     return pdf;
 };
 
+const receiptDateStamp = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear().toString().slice(-2);
+    return `${day}-${month}-${year}`;
+};
+
 const receiptPdfName = (invoices: InvoiceDetail[], stamped: string) => {
     const firstInvoice = invoices[0];
     const clientName = firstInvoice?.client?.name?.replace(/\s+/g, "-").toLowerCase() ?? "client";
@@ -235,6 +240,253 @@ const cloneForPdf = (element: HTMLElement) => {
     return clonedElement;
 };
 
+const nextPaint = () =>
+    new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => resolve());
+        });
+    });
+
+const yieldToMain = () =>
+    new Promise<void>((resolve) => {
+        window.setTimeout(resolve, 0);
+    });
+
+const waitForReceiptFonts = () => {
+    if (!document.fonts || document.fonts.status === "loaded") return Promise.resolve();
+    return Promise.race([
+        document.fonts.ready.then(() => undefined),
+        new Promise<void>((resolve) => {
+            window.setTimeout(resolve, RECEIPT_FONT_WAIT_MS);
+        }),
+    ]);
+};
+
+const pxToMm = (px: number, widthPx: number) =>
+    (px * PT210_PRINT_WIDTH_MM) / Math.max(widthPx, 1);
+
+const companySettingKey = (settings: Record<string, unknown>) =>
+    ["company", "company_address", "address", "company_phone", "phone", "support_phone"]
+        .map((key) => {
+            const value = settings[key];
+            return typeof value === "string" ? value.trim() : "";
+        })
+        .join("|");
+
+const invoicePrintKey = (
+    invoiceList: InvoiceDetail[],
+    printSettings: InvoicePrintSettings | null,
+    language: string,
+    settings: Record<string, unknown>,
+) => {
+    if (!printSettings || invoiceList.length === 0) return "";
+    return JSON.stringify({
+        language,
+        company: companySettingKey(settings),
+        printSettings,
+        invoices: invoiceList.map((invoice) => ({
+            id: invoice.uuid ?? invoice.id ?? null,
+            trackID: invoice.trackID ?? null,
+            total_amount: invoice.total_amount ?? null,
+            total_discount: invoice.total_discount ?? null,
+            discount: invoice.discount ?? null,
+            line_total_discount: invoice.line_total_discount ?? null,
+            after_discount_amount: invoice.after_discount_amount ?? null,
+            amount_paid: invoice.amount_paid ?? null,
+            amount_due: invoice.amount_due ?? null,
+            client: invoice.client
+                ? {
+                    sid: invoice.client.sid ?? null,
+                    name: invoice.client.name ?? null,
+                    phone: invoice.client.phone ?? null,
+                    pppoe_username: invoice.client.pppoe_username ?? null,
+                }
+                : null,
+            lines: (invoice.lines ?? []).map((line: InvoiceLine) => ({
+                uuid: line.uuid ?? null,
+                description: line.description,
+                quantity: line.quantity,
+                amount: line.amount,
+                total_amount: line.total_amount,
+                discount: line.discount,
+            })),
+        })),
+    });
+};
+
+export const paginateReceiptRows = (
+    rowHeightsMm: number[],
+    maxRowsPerPageMm: number,
+    maxRowsWithSummaryMm: number,
+): number[][] => {
+    if (maxRowsWithSummaryMm <= 0) {
+        throw new Error("Invoice summary is taller than printable page height.");
+    }
+
+    const pages: number[][] = [];
+    let currentPageRows: number[] = [];
+    let currentRowsHeightMm = 0;
+
+    rowHeightsMm.forEach((rowHeightMm, index) => {
+        const safeRowHeightMm = Math.max(rowHeightMm, 0.5);
+        if (currentPageRows.length > 0 && currentRowsHeightMm + safeRowHeightMm > maxRowsPerPageMm) {
+            pages.push(currentPageRows);
+            currentPageRows = [index];
+            currentRowsHeightMm = safeRowHeightMm;
+            return;
+        }
+        currentPageRows.push(index);
+        currentRowsHeightMm += safeRowHeightMm;
+    });
+
+    if (currentPageRows.length > 0 || pages.length === 0) {
+        pages.push(currentPageRows);
+    }
+
+    const lastPageRows = pages[pages.length - 1] ?? [];
+    const lastPageRowsHeightMm = lastPageRows.reduce(
+        (total, rowIndex) => total + (rowHeightsMm[rowIndex] ?? 0),
+        0,
+    );
+    if (lastPageRowsHeightMm > maxRowsWithSummaryMm) {
+        pages.push([]);
+    }
+
+    return pages;
+};
+
+const createReceiptPdf = async (
+    receiptElement: HTMLElement,
+    title: string,
+    isCancelled: () => boolean,
+): Promise<jsPDF | null> => {
+    const receiptRoot = receiptElement.querySelector<HTMLElement>("[data-receipt-root]") ?? receiptElement;
+    const receiptHeader = receiptElement.querySelector<HTMLElement>("[data-receipt-header]");
+    const receiptItemsHead = receiptElement.querySelector<HTMLElement>("[data-receipt-items-head]");
+    const receiptItemsBody = receiptElement.querySelector<HTMLElement>("[data-receipt-items-body]");
+    const receiptSummary = receiptElement.querySelector<HTMLElement>("[data-receipt-summary]");
+    const receiptRows = Array.from(receiptElement.querySelectorAll<HTMLElement>("[data-receipt-item-row]"));
+
+    if (!receiptItemsBody || !receiptSummary || isCancelled()) return null;
+
+    await waitForReceiptFonts();
+    await yieldToMain();
+    if (isCancelled()) return null;
+
+    const typography = typographyFromReceipt(receiptRoot);
+    const paddingX = paddingXFromReceipt(receiptRoot);
+    const stagingContainer = document.createElement("div");
+    stagingContainer.style.position = "fixed";
+    stagingContainer.style.left = "-99999px";
+    stagingContainer.style.top = "0";
+    stagingContainer.style.width = `${PT210_PAGE_DOTS}px`;
+    stagingContainer.style.pointerEvents = "none";
+    stagingContainer.style.background = "#ffffff";
+    document.body.appendChild(stagingContainer);
+
+    try {
+        const buildPage = (rowIndexes: number[], includeSummary: boolean) => {
+            const pageContainer = document.createElement("div");
+            paintThermalSurface(pageContainer, typography, paddingX);
+            if (receiptHeader) pageContainer.appendChild(cloneForPdf(receiptHeader));
+            if (receiptItemsHead) pageContainer.appendChild(cloneForPdf(receiptItemsHead));
+
+            const pageRowsContainer = cloneForPdf(receiptItemsBody);
+            pageRowsContainer.innerHTML = "";
+            rowIndexes.forEach((rowIndex) => {
+                const sourceRow = receiptRows[rowIndex];
+                if (sourceRow) pageRowsContainer.appendChild(cloneForPdf(sourceRow));
+            });
+            pageContainer.appendChild(pageRowsContainer);
+            if (includeSummary) pageContainer.appendChild(cloneForPdf(receiptSummary));
+            forceThermalInk(pageContainer, typography);
+            return pageContainer;
+        };
+
+        const fullPage = buildPage(receiptRows.map((_, index) => index), true);
+        stagingContainer.appendChild(fullPage);
+        const widthPx = fullPage.getBoundingClientRect().width;
+        const contentHeightMm = widthPx > 0 ? pxToMm(fullPage.scrollHeight, widthPx) : 0;
+        const pages: HTMLElement[] = [];
+
+        if (widthPx <= 0 || contentHeightMm <= RECEIPT_MAX_PAGE_HEIGHT_MM) {
+            pages.push(fullPage);
+        } else {
+            const headerHeightMm = pxToMm(
+                fullPage.querySelector<HTMLElement>("[data-receipt-header]")?.getBoundingClientRect().height ?? 0,
+                widthPx,
+            );
+            const itemsHeadHeightMm = pxToMm(
+                fullPage.querySelector<HTMLElement>("[data-receipt-items-head]")?.getBoundingClientRect().height ?? 0,
+                widthPx,
+            );
+            const summaryHeightMm = pxToMm(
+                fullPage.querySelector<HTMLElement>("[data-receipt-summary]")?.getBoundingClientRect().height ?? 0,
+                widthPx,
+            );
+            const rowHeightsMm = Array.from(
+                fullPage.querySelectorAll<HTMLElement>("[data-receipt-item-row]"),
+            ).map((row) => pxToMm(row.getBoundingClientRect().height, widthPx));
+
+            fullPage.remove();
+            const maxRowsPerPageMm = Math.max(
+                RECEIPT_MAX_PAGE_HEIGHT_MM - headerHeightMm - itemsHeadHeightMm - PAGE_CAPACITY_BUFFER_MM,
+                10,
+            );
+            paginateReceiptRows(
+                rowHeightsMm,
+                maxRowsPerPageMm,
+                maxRowsPerPageMm - summaryHeightMm,
+            ).forEach((rowIndexes, pageIndex, pageIndexes) => {
+                pages.push(buildPage(rowIndexes, pageIndex === pageIndexes.length - 1));
+            });
+        }
+
+        let pdf: jsPDF | null = null;
+        for (let pageIndex = 0; pageIndex < pages.length; pageIndex += 1) {
+            if (isCancelled()) return null;
+            if (pageIndex > 0) await yieldToMain();
+            const pageContainer = pages[pageIndex];
+            if (!pageContainer) continue;
+            if (!pageContainer.isConnected) stagingContainer.appendChild(pageContainer);
+
+            const pageCanvas = padThermalCanvasToPortrait(await toThermalCanvas(pageContainer, typography));
+            pageContainer.remove();
+            if (isCancelled()) return null;
+
+            const pageImageHeightMm = canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM);
+            const pageFormat: [number, number] = [PT210_PRINT_WIDTH_MM, pageImageHeightMm];
+            if (!pdf) {
+                pdf = createThermalPdf(pageFormat, title);
+            } else {
+                pdf.addPage(pageFormat, "p");
+            }
+            pdf.addImage(
+                pageCanvas.toDataURL("image/png"),
+                "PNG",
+                0,
+                0,
+                PT210_PRINT_WIDTH_MM,
+                pageImageHeightMm,
+                undefined,
+                "NONE",
+            );
+        }
+
+        return isCancelled() ? null : pdf;
+    } finally {
+        stagingContainer.remove();
+    }
+};
+
+type PreparedPdf = {
+    key: string;
+    title: string;
+    settled: boolean;
+    cancelled: boolean;
+    promise: Promise<jsPDF | null>;
+};
+
 type InvoicePrintDialogProps = {
     invoices?: InvoiceDetail[];
     invoiceIds?: Array<number | null | undefined>;
@@ -248,12 +500,19 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
     open,
     onOpenChange,
 }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { settings } = useSettings();
     const pathname = usePathname();
     const settingsUrl = pathname === "/client" || pathname.startsWith("/client/")
         ? "client-invoice-print-settings"
         : "invoice-print-settings";
     const receiptRef = useRef<HTMLDivElement | null>(null);
+    const preparedPdfRef = useRef<PreparedPdf | null>(null);
+    const savingRef = useRef(false);
+    const savedRef = useRef(false);
+    const openRef = useRef(open);
+    const startPrepareRef = useRef<() => PreparedPdf | null>(() => null);
+    openRef.current = open;
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
     const normalizedProvidedInvoices = useMemo(
         () => providedInvoices.filter((invoice): invoice is InvoiceDetail => Boolean(invoice)),
@@ -326,177 +585,113 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
         return parsed.success ? parsed.data : null;
     }, [printSettingsResponse]);
 
-    const dateFormat = () => {
-        const date = new Date();
-        const day = date.getDate();
-        const month = date.toLocaleString("en-US", { month: "long" });
-        const year = date.getFullYear().toString().slice(-2);
-        return `${day}-${month}-${year}`;
-    };
+    const prepareKey = useMemo(
+        () => invoicePrintKey(invoices, printSettings, i18n.language, settings),
+        [i18n.language, invoices, printSettings, settings],
+    );
 
-    const handleGeneratePDF = async () => {
-        if (invoices.length === 0 || !receiptRef.current) return;
-
+    const startPrepare = (): PreparedPdf | null => {
         const receiptElement = receiptRef.current;
-        const receiptRoot = receiptElement.querySelector<HTMLElement>("[data-receipt-root]") ?? receiptElement;
-        const receiptHeader = receiptElement.querySelector<HTMLElement>("[data-receipt-header]");
-        const receiptItemsHead = receiptElement.querySelector<HTMLElement>("[data-receipt-items-head]");
-        const receiptItemsBody = receiptElement.querySelector<HTMLElement>("[data-receipt-items-body]");
-        const receiptSummary = receiptElement.querySelector<HTMLElement>("[data-receipt-summary]");
-        const receiptRows = Array.from(
-            receiptElement.querySelectorAll<HTMLElement>("[data-receipt-item-row]"),
+        if (!openRef.current || !receiptElement || prepareKey === "") return null;
+
+        const existing = preparedPdfRef.current;
+        if (existing && existing.key === prepareKey && !existing.cancelled) return existing;
+
+        const task: PreparedPdf = {
+            key: prepareKey,
+            title: receiptPdfName(invoices, receiptDateStamp()),
+            settled: false,
+            cancelled: false,
+            promise: Promise.resolve(null),
+        };
+        task.promise = createReceiptPdf(receiptElement, task.title, () => task.cancelled).then(
+            (pdf) => {
+                task.settled = true;
+                if (!pdf || task.cancelled) {
+                    if (preparedPdfRef.current === task) preparedPdfRef.current = null;
+                    return null;
+                }
+                return pdf;
+            },
+            (error: unknown) => {
+                console.error(error);
+                task.settled = true;
+                if (preparedPdfRef.current === task) preparedPdfRef.current = null;
+                return null;
+            },
         );
+        preparedPdfRef.current = task;
+        return task;
+    };
+    startPrepareRef.current = startPrepare;
 
-        if (!receiptItemsBody || !receiptSummary) return;
+    useEffect(() => {
+        if (!open || prepareKey === "") {
+            const current = preparedPdfRef.current;
+            if (current && !savedRef.current) {
+                current.cancelled = true;
+                preparedPdfRef.current = null;
+            }
+            if (!open) {
+                savingRef.current = false;
+                savedRef.current = false;
+                setIsGeneratingPdf(false);
+            }
+            return;
+        }
 
-        setIsGeneratingPdf(true);
-        let stagingContainer: HTMLDivElement | null = null;
+        let effectCancelled = false;
+        const timeoutId = window.setTimeout(() => {
+            const start = () => {
+                if (effectCancelled || !receiptRef.current) return;
+                startPrepareRef.current();
+            };
+            if (receiptRef.current) start();
+            else requestAnimationFrame(start);
+        }, PREPARE_DELAY_MS);
+
+        return () => {
+            effectCancelled = true;
+            window.clearTimeout(timeoutId);
+            if (savedRef.current) return;
+            const current = preparedPdfRef.current;
+            if (current?.key === prepareKey) {
+                current.cancelled = true;
+                preparedPdfRef.current = null;
+            }
+        };
+    }, [open, prepareKey]);
+
+    const handlePrint = async () => {
+        if (savingRef.current || invoices.length === 0 || !receiptRef.current || prepareKey === "") return;
+
+        savingRef.current = true;
+        const existing = preparedPdfRef.current;
+        const ready = existing && existing.key === prepareKey && existing.settled && !existing.cancelled
+            ? existing
+            : null;
+
+        if (!ready) {
+            setIsGeneratingPdf(true);
+            await nextPaint();
+        }
+
+        let saved = false;
         try {
-            await document.fonts.ready;
-            const typography = typographyFromReceipt(receiptRoot);
-            const paddingX = paddingXFromReceipt(receiptRoot);
-            const pageContentWidthMm = PT210_PRINT_WIDTH_MM;
-            const pageContentHeightMm = RECEIPT_MAX_PAGE_HEIGHT_MM;
-            const pdfName = receiptPdfName(invoices, dateFormat());
-
-            stagingContainer = document.createElement("div");
-            stagingContainer.style.position = "fixed";
-            stagingContainer.style.left = "-99999px";
-            stagingContainer.style.top = "0";
-            stagingContainer.style.width = `${PT210_PAGE_DOTS}px`;
-            stagingContainer.style.pointerEvents = "none";
-            stagingContainer.style.background = "#ffffff";
-            document.body.appendChild(stagingContainer);
-
-            const headerProbe = receiptHeader ? cloneForPdf(receiptHeader) : null;
-            const itemsHeadProbe = receiptItemsHead ? cloneForPdf(receiptItemsHead) : null;
-            const summaryProbe = cloneForPdf(receiptSummary);
-
-            if (headerProbe) stagingContainer.appendChild(headerProbe);
-            if (itemsHeadProbe) stagingContainer.appendChild(itemsHeadProbe);
-            stagingContainer.appendChild(summaryProbe);
-
-            const [headerCanvas, itemsHeadCanvas, summaryCanvas] = await Promise.all([
-                headerProbe ? toCanvas(headerProbe) : Promise.resolve(null),
-                itemsHeadProbe ? toCanvas(itemsHeadProbe) : Promise.resolve(null),
-                toCanvas(summaryProbe),
-            ]);
-
-            const headerHeightMm = headerCanvas ? canvasHeightToMm(headerCanvas, pageContentWidthMm) : 0;
-            const itemsHeadHeightMm = itemsHeadCanvas ? canvasHeightToMm(itemsHeadCanvas, pageContentWidthMm) : 0;
-            const summaryHeightMm = canvasHeightToMm(summaryCanvas, pageContentWidthMm);
-
-            stagingContainer.innerHTML = "";
-
-            const rowContainerWidthPx =
-                receiptItemsBody.getBoundingClientRect().width ||
-                receiptElement.getBoundingClientRect().width ||
-                1;
-            const rowHeightsMm = receiptRows.map((row) => (
-                (row.getBoundingClientRect().height * pageContentWidthMm) / rowContainerWidthPx
-            ));
-
-            const maxRowsPerPageMm = Math.max(
-                pageContentHeightMm - headerHeightMm - itemsHeadHeightMm - PAGE_CAPACITY_BUFFER_MM,
-                10,
-            );
-            const maxRowsWithSummaryMm = maxRowsPerPageMm - summaryHeightMm;
-
-            if (maxRowsWithSummaryMm <= 0) {
-                throw new Error("Invoice summary is taller than printable page height.");
-            }
-
-            const paginatedRowIndexes: number[][] = [];
-            let currentPageRows: number[] = [];
-            let currentRowsHeightMm = 0;
-
-            rowHeightsMm.forEach((rowHeightMm, index) => {
-                const safeRowHeightMm = Math.max(rowHeightMm, 0.5);
-                if (
-                    currentPageRows.length > 0 &&
-                    currentRowsHeightMm + safeRowHeightMm > maxRowsPerPageMm
-                ) {
-                    paginatedRowIndexes.push(currentPageRows);
-                    currentPageRows = [index];
-                    currentRowsHeightMm = safeRowHeightMm;
-                    return;
-                }
-                currentPageRows.push(index);
-                currentRowsHeightMm += safeRowHeightMm;
-            });
-
-            if (currentPageRows.length > 0 || paginatedRowIndexes.length === 0) {
-                paginatedRowIndexes.push(currentPageRows);
-            }
-
-            const lastPageRows = paginatedRowIndexes[paginatedRowIndexes.length - 1] ?? [];
-            const lastPageRowsHeightMm = lastPageRows.reduce(
-                (acc, rowIndex) => acc + (rowHeightsMm[rowIndex] ?? 0),
-                0,
-            );
-            if (lastPageRowsHeightMm > maxRowsWithSummaryMm) {
-                paginatedRowIndexes.push([]);
-            }
-
-            let pdf: jsPDF | null = null;
-
-            for (let pageIndex = 0; pageIndex < paginatedRowIndexes.length; pageIndex++) {
-
-                const pageRows = paginatedRowIndexes[pageIndex] ?? [];
-                const includeSummary = pageIndex === paginatedRowIndexes.length - 1;
-
-                const pageContainer = document.createElement("div");
-                paintThermalSurface(pageContainer, typography, paddingX);
-                if (receiptHeader) pageContainer.appendChild(cloneForPdf(receiptHeader));
-                if (receiptItemsHead) pageContainer.appendChild(cloneForPdf(receiptItemsHead));
-
-                const pageRowsContainer = cloneForPdf(receiptItemsBody);
-                pageRowsContainer.innerHTML = "";
-                pageRows.forEach((rowIndex) => {
-                    const sourceRow = receiptRows[rowIndex];
-                    if (sourceRow) {
-                        pageRowsContainer.appendChild(cloneForPdf(sourceRow));
-                    }
-                });
-                pageContainer.appendChild(pageRowsContainer);
-
-                if (includeSummary) {
-                    pageContainer.appendChild(cloneForPdf(receiptSummary));
-                }
-
-                stagingContainer.appendChild(pageContainer);
-                const pageCanvas = padThermalCanvasToPortrait(await toThermalCanvas(pageContainer, typography));
-                stagingContainer.removeChild(pageContainer);
-
-                const pageImageHeightMm = canvasHeightToMm(pageCanvas, PT210_PRINT_WIDTH_MM);
-                const pageFormat: [number, number] = [PT210_PRINT_WIDTH_MM, pageImageHeightMm];
-                if (!pdf) {
-                    pdf = createThermalPdf(pageFormat, pdfName);
-                } else {
-                    pdf.addPage(pageFormat, "p");
-                }
-
-                pdf.addImage(
-                    pageCanvas.toDataURL("image/png"),
-                    "PNG",
-                    0,
-                    0,
-                    PT210_PRINT_WIDTH_MM,
-                    pageImageHeightMm,
-                    undefined,
-                    "NONE",
-                );
-            }
-
-            if (!pdf) return;
-
-            pdf.save(`${pdfName}.pdf`);
+            const task = ready ?? startPrepare();
+            const pdf = await task?.promise;
+            if (!task || !pdf || task.cancelled || !openRef.current) return;
+            pdf.save(`${task.title}.pdf`);
+            saved = true;
+            savedRef.current = true;
             onOpenChange(false);
         } catch (error) {
             console.error(error);
         } finally {
-            stagingContainer?.remove();
-            setIsGeneratingPdf(false);
+            if (!saved) {
+                savingRef.current = false;
+                setIsGeneratingPdf(false);
+            }
         }
     };
 
@@ -519,8 +714,9 @@ const InvoicePrintDialog: FC<InvoicePrintDialogProps> = ({
                         <MyButton
                             variant="default"
                             size="default"
-                            onClick={handleGeneratePDF}
+                            onClick={handlePrint}
                             disabled={invoices.length === 0 || isGeneratingPdf || !printSettings}
+                            aria-busy={isGeneratingPdf}
                             title={t("invoice.print.print_button")}
                         >
                             {isGeneratingPdf ? (

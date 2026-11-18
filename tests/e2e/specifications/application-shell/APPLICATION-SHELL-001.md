@@ -23,7 +23,7 @@ For money/stock/subscription/permissions/identity changes, approve independently
 ## Feature-specific acceptance scenarios
 
 - FT004-01 [P0, pending review]: Menu visibility and deep links match permissions across staff/subscriber/platform/reseller personas.
-- FT004-02 [P0, pending review]: Enter/leave impersonation and account/tenant switch refresh permissions, host-scoped session and query/service-worker caches; no previous identity data remains.
+- FT004-02 [P0, pending review]: Enter/leave impersonation and account/tenant switch refresh permissions and host-scoped session and query caches; no previous identity data remains.
 - FT004-03 [P0, pending review]: Theme/language/density preference survives intended scope without overriding another user/tenant settings.
 - FT004-04 [P1, pending review]: Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.
 - FT004-05 [P0, pending review]: For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.

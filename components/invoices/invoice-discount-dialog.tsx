@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode, useCallback, useMemo, useState } from "react";
+import { FC, ReactNode, useCallback, useMemo, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -30,13 +30,18 @@ type InvoiceDiscountTarget = {
 type InvoiceDiscountDialogProps = {
     invoice: InvoiceDiscountTarget;
     trigger?: ReactNode;
-    onUpdated?: () => void;
+    onUpdated?: (amount: number) => void;
+    onOpenChange?: (open: boolean) => void;
+    /** Keep surrounding dialogs mounted. The caller refreshes lists on close. */
+    suspendListRefresh?: boolean;
 };
 
 const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
     invoice,
     trigger,
     onUpdated,
+    onOpenChange,
+    suspendListRefresh = false,
 }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
@@ -47,6 +52,16 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
         },
     });
     const { handleSubmit, setError, reset } = form;
+    const appliedAmount = useRef(0);
+
+    const closeDialog = useCallback(
+        (next = false) => {
+            setOpen(next);
+            onOpenChange?.(next);
+            if (!next) reset({ discount_amount: 0 });
+        },
+        [onOpenChange, reset],
+    );
 
     const currentDiscount = useMemo(
         () => toNumber(invoice.discount) + toNumber(invoice.line_total_discount),
@@ -63,17 +78,17 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
     >({
         url: `invoice-discount/${invoice.uuid}`,
         method: "PUT",
-        invalidateKeys: "clients,invoices",
+        invalidateKeys: suspendListRefresh ? undefined : "clients,invoices",
         successMessage: "invoice.discount_dialog.success",
         onSuccess: () => {
-            onUpdated?.();
-            setOpen(false);
-            reset({ discount_amount: 0 });
+            onUpdated?.(appliedAmount.current);
+            closeDialog(false);
         },
     });
 
     const onSubmit = async (values: InvoiceDiscountInput) => {
-        if (toNumber(values.discount_amount) > maxDiscount) {
+        const amount = toNumber(values.discount_amount);
+        if (amount > maxDiscount) {
             setError("discount_amount", {
                 message: t("invoice.discount_dialog.discount_amount.errors.max", {
                     amount: formatMoney(maxDiscount),
@@ -81,6 +96,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
             });
             return;
         }
+        appliedAmount.current = amount;
         await applyDiscount(values);
     };
 
@@ -103,7 +119,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
     return (
         <MyDialog
             open={open}
-            onOpenChange={setOpen}
+            onOpenChange={closeDialog}
             title="invoice.discount_dialog.title"
             size="md"
             loading={isPending}
@@ -125,10 +141,8 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                         action="cancel"
                         variant="outline"
                         size="default"
-                        onClick={() => {
-                            close();
-                            reset({ discount_amount: 0 });
-                        }}
+                        type="button"
+                        onClick={close}
                         disabled={loading}
                         title={t("common.cancel")}
                     />
@@ -136,6 +150,7 @@ const InvoiceDiscountDialog: FC<InvoiceDiscountDialogProps> = ({
                         action="save"
                         variant="default"
                         size="default"
+                        type="button"
                         onClick={handleSubmit(onSubmit)}
                         loading={loading}
                         title={t("invoice.discount_dialog.submit")}

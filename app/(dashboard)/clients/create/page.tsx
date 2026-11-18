@@ -1,9 +1,14 @@
 import ClientForm from "@/components/clients/client-form";
+import { HelpGuideLink } from "@/components/help/help-centre";
 import { t } from "@/lib/i18n/server";
 import { Metadata } from "next";
 
 export default async function ClientCreate() {
-    return <ClientForm mode="create" method="POST" />;
+    return (
+        <>
+            <ClientForm mode="create" method="POST" />
+        </>
+    );
 }
 
 export const metadata: Metadata = {

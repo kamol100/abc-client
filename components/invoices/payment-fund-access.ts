@@ -15,15 +15,8 @@ export interface PaymentFundAccess {
     showUnassignedWarning: boolean;
 }
 
-export function resolveAssignedFundId(
-    fund: PaymentFundStaff["fund"],
-): number | null {
-    if (
-        fund == null ||
-        fund.id == null ||
-        fund.id === "" ||
-        typeof fund.id === "boolean"
-    ) {
+export function resolveAssignedFundId(fund: PaymentFundStaff["fund"]): number | null {
+    if (fund == null || fund.id == null || fund.id === "" || typeof fund.id === "boolean") {
         return null;
     }
 
@@ -33,18 +26,20 @@ export function resolveAssignedFundId(
 }
 
 /**
- * Admin and Super Admin may choose any fund. Everyone else is limited to the
- * fund assigned to their staff record in the current user profile.
+ * Admin, Super Admin, and anyone with invoices.change-fund may choose any
+ * fund. Everyone else is limited to the fund assigned to their staff record.
  */
 export function paymentFundAccess(input: {
     roles: unknown;
     staff: PaymentFundStaff | null | undefined;
+    canChangeFund?: boolean;
 }): PaymentFundAccess {
     const roles = Array.isArray(input.roles) ? input.roles : null;
     const canChooseFund =
-        roles?.some((role: unknown) =>
+        input.canChangeFund === true ||
+        (roles?.some((role: unknown) =>
             FUND_ADMIN_ROLES.some((adminRole) => adminRole === role),
-        ) ?? false;
+        ) ?? false);
     const fundFieldKnown = input.staff == null || Object.hasOwn(input.staff, "fund");
     const assignedFundId = fundFieldKnown
         ? resolveAssignedFundId(input.staff?.fund)

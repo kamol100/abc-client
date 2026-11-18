@@ -12,7 +12,6 @@ import {
   useProfile,
   useSettings,
 } from "@/context/app-provider";
-import { clearServiceWorkerCaches } from "@/lib/pwa-utils";
 import type { AppData, ImpersonationResponse } from "@/types/app";
 
 export type ImpersonationKind = "company" | "reseller" | "staff";
@@ -119,7 +118,6 @@ export function useStartImpersonation() {
         await refreshAppData(result.token);
       }
 
-      clearServiceWorkerCaches();
       window.location.assign("/");
       return true;
     } catch (error: unknown) {

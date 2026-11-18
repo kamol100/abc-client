@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { z } from "zod";
 
 // Read only the keys needed by this suite; never log environment values or tokens.
-const keys = /^(E2E_(CP|MK|APP)_(BASE_URL|USERNAME|PASSWORD)|NEXTAPI_URL)$/;
+const keys = /^(E2E_(CP|MK|VP|APP)_(BASE_URL|USERNAME|PASSWORD)|NEXTAPI_URL)$/;
 for (const file of [".env.e2e.tenants.local", ".env.e2e", ".env.local", ".env"]) {
   if (!existsSync(file)) continue;
   for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
@@ -13,7 +13,7 @@ for (const file of [".env.e2e.tenants.local", ".env.e2e", ".env.local", ".env"])
   }
 }
 
-export type TenantName = "cp" | "mk";
+export type TenantName = "cp" | "mk" | "vp";
 export function tenantCredentials(tenant: TenantName) {
   const prefix = `E2E_${tenant.toUpperCase()}`;
   const value = (suffix: string) => {

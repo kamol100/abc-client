@@ -1,10 +1,11 @@
 "use client";
 
-import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, UserRound } from "lucide-react";
+import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, SlidersHorizontal, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChangePasswordDialog } from "@/components/profiles/change-password-dialog";
+import { ThemeSettingsDialog } from "@/components/theme-customizer";
 import {
   getProfileInitials,
   runAdminProfileLogout,
@@ -32,6 +33,7 @@ export function ResellerProfile({ profile, reseller }: ResellerProfileProps) {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
   const displayName = reseller.name || profile.name || "";
   const subtitle =
     reseller.email ||
@@ -114,6 +116,13 @@ export function ResellerProfile({ profile, reseller }: ResellerProfileProps) {
           )}
           <DropdownMenuItem
             className="cursor-pointer"
+            onSelect={() => setThemeOpen(true)}
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {t("theme_customizer.menu")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
             onSelect={() => setChangePasswordOpen(true)}
           >
             <LockIcon className="h-4 w-4" />
@@ -136,6 +145,7 @@ export function ResellerProfile({ profile, reseller }: ResellerProfileProps) {
         onOpenChange={setChangePasswordOpen}
         variant="reseller"
       />
+      <ThemeSettingsDialog open={themeOpen} onOpenChange={setThemeOpen} />
     </>
   );
 }

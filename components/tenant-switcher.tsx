@@ -24,7 +24,6 @@ import {
   useSettings,
   useImpersonation,
 } from "@/context/app-provider";
-import { clearServiceWorkerCaches } from "@/lib/pwa-utils";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useStartImpersonation } from "@/hooks/use-start-impersonation";
 import { useFetch } from "@/app/actions";
@@ -159,7 +158,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       });
 
       await refreshAppData(newToken ?? undefined);
-      clearServiceWorkerCaches();
       window.location.assign("/");
     } catch (error: unknown) {
       console.error("Leave impersonation failed:", error);
@@ -204,7 +202,6 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
       });
 
       await refreshAppData(originalToken ?? undefined);
-      clearServiceWorkerCaches();
       window.location.reload();
     } catch (error: unknown) {
       console.error("Leave all impersonation failed:", error);

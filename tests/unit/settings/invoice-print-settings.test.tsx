@@ -99,7 +99,7 @@ describe("Invoice print settings page", () => {
         expect(screen.getByRole("switch", { name: "settings.invoice_print.flags.show_thank_you" })).toBeChecked();
         expect(screen.getByLabelText("settings.invoice_print.font_size")).toBeInTheDocument();
         expect(basicReceipt()).toHaveTextContent("VP Net");
-        expect(basicReceipt()).toHaveTextContent("670@01711000000");
+        expect(basicReceipt()).toHaveTextContent("mahi");
         expect(basicReceipt()).toHaveTextContent("800.00");
         expect(basicReceipt()).toHaveTextContent("Eight Hundred");
         expect(basicReceipt()).toHaveStyle({ fontSize: "28px", fontWeight: "700" });

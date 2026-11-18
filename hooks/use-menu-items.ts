@@ -11,6 +11,7 @@ import {
   FileText,
   Headset,
   History,
+  Inbox,
   Landmark,
   LayoutDashboard,
   LifeBuoy,
@@ -118,6 +119,28 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       ],
     },
     {
+      id: 39,
+      title: t("menu.platform_support_inbox.title"),
+      url: "/platform-support-admin",
+      icon: Inbox,
+      permissions: ["platform-support-admin.access"],
+      items: [
+        { title: t("menu.platform_support_inbox.issues"), url: "/platform-support-admin?kind=issue", permission: "platform-support-admin.access" },
+        { title: t("menu.platform_support_inbox.chats"), url: "/platform-support-admin?kind=chat", permission: "platform-support-admin.access" },
+      ],
+    },
+    {
+      id: 40,
+      title: t("help.management.heading"),
+      url: "#",
+      icon: FileText,
+      permissions: ["platform-help-admin.articles.access", "platform-help-admin.categories.access"],
+      items: [
+        { title: t("help.management.articles"), url: "/help-management", permission: "platform-help-admin.articles.access" },
+        { title: t("help.management.categories"), url: "/help-management/categories", permission: "platform-help-admin.categories.access" },
+      ],
+    },
+    {
       id: 9,
       title: t("menu.invoice.title"),
       url: "#",
@@ -219,7 +242,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         "telegram.access",
         "communication-queue.access",
         "communication-logs.access",
-        "communication-gateways.access",
       ],
       feature: "sms",
       items: [
@@ -228,7 +250,6 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.communication.telegram.title"), url: "/telegram", permission: "telegram.access" },
         { title: t("menu.communication.queue.title"), url: "/communication-queue", permission: "communication-queue.access" },
         { title: t("menu.communication.logs.title"), url: "/communication-logs", permission: "communication-logs.access" },
-        { title: t("menu.communication.gateways.title"), url: "/communication-gateways", permission: "communication-gateways.access" },
       ],
     },
     {
@@ -389,6 +410,18 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.subscription.companies"), url: "/company-subscriptions", permission: "company-subscriptions.access" },
         { title: t("menu.subscription.plans"), url: "/subscription-plans", permission: "subscription-plans.access" },
         { title: t("menu.subscription.features"), url: "/subscription-features", permission: "features.access" },
+      ],
+    },
+    {
+      id: 38,
+      title: t("menu.platform_support.title"),
+      url: "/platform-support",
+      icon: Headset,
+      permissions: ["platform-support.access"],
+      items: [
+        { title: t("menu.platform_support.issues"), url: "/platform-support?kind=issue", permission: "platform-support.access" },
+        { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
+        { title: t("help.title"), url: "/help", permission: "platform-support.access" },
       ],
     },
     {

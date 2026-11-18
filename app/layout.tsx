@@ -1,6 +1,5 @@
+import { UninstallServiceWorker } from "@/components/uninstall-service-worker";
 import { Toaster } from "@/components/ui/toaster";
-import PWAAuthGuard from "@/components/pwa/pwa-auth-guard";
-import ServiceWorkerRegistration from "@/components/pwa/service-worker-registration";
 import AuthProvider from "@/context/AuthProvider";
 import I18nProvider from "@/context/I18nProvider";
 import TanstackProvider from "@/context/tanstack-provider";
@@ -74,19 +73,10 @@ export async function generateMetadata(): Promise<Metadata> {
       default: settings?.name ?? "ISP Management",
     },
     description: settings?.address ?? "Total ISP management company",
-    manifest: "/api/manifest",
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon.ico",
       apple: "/apple-touch-icon.png",
-    },
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: "default",
-      title: settings?.name ?? "ISP Management",
-    },
-    other: {
-      "mobile-web-app-capable": "yes",
     },
   };
 }
@@ -150,8 +140,7 @@ export default async function RootLayout({
           enableSystem
         >
           <AuthProvider>
-            <ServiceWorkerRegistration />
-            <PWAAuthGuard />
+            <UninstallServiceWorker />
             <Toaster />
             <I18nProvider initialLanguage={language}>
               <ThemeSettingsProvider

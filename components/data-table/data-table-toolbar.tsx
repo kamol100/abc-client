@@ -258,6 +258,7 @@ export function DataTableToolbar<TData>({
                 searchButton
                 setShowFilter={setShowFilter}
                 resultCount={resultCount}
+                endAction={showFilter ? toolbarBeforeViewOptions : undefined}
               />
             )
           )}

@@ -5,6 +5,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import ThemeCustomize from "@/components/theme-customizer";
 import { Profile } from "@/components/profiles/profile";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { SupportLauncher } from "@/components/platform-support/support-launcher";
 import { WalletBalanceButton } from "@/components/wallets/my-wallet";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@radix-ui/react-separator";
@@ -23,9 +24,12 @@ export const TopNavbar: FC = () => {
         {hasPermission("notifications.access") && (
           <NotificationBell />
         )}
+        <SupportLauncher />
         <WalletBalanceButton />
         <LanguageSwitcher />
-        <ThemeCustomize />
+        <div className="hidden md:block">
+          <ThemeCustomize />
+        </div>
         <Profile />
       </div>
     </header>

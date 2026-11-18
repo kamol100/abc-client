@@ -1,6 +1,21 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-export const PaymentFilterSchema = (): FieldConfig[] => {
+export function paymentListParams(
+    filter: string | null,
+    canViewAllPayments: boolean,
+    ownStaffId?: string | number | null,
+): Record<string, string> | undefined {
+    const params = filter ? Object.fromEntries(new URLSearchParams(filter)) : {};
+
+    if (!canViewAllPayments) {
+        const staffId = ownStaffId == null ? "" : String(ownStaffId).trim();
+        params.staff_id = staffId === "" ? "0" : staffId;
+    }
+
+    return Object.keys(params).length > 0 ? params : undefined;
+}
+
+export const PaymentFilterSchema = (canViewAllPayments: boolean): FieldConfig[] => {
     return [
         {
             type: "dateRange",
@@ -19,6 +34,7 @@ export const PaymentFilterSchema = (): FieldConfig[] => {
             placeholder: "payment.collect_by.label",
             api: "/dropdown-staffs",
             valueMapping: { idKey: "id", labelKey: "name" },
+            isDisabled: !canViewAllPayments,
         },
         {
             type: "dropdown",

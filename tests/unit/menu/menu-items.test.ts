@@ -30,6 +30,8 @@ describe("admin menu order", () => {
       "/dashboard",
       "/clients",
       "#",
+      "/platform-support-admin",
+      "#",
       "#",
       "#",
       "/resellers",
@@ -53,6 +55,7 @@ describe("admin menu order", () => {
       "/demo-requests",
       "/archived-clients",
       "#",
+      "/platform-support",
       "#",
     ]);
     expect(urls(items)).toEqual([
@@ -61,6 +64,10 @@ describe("admin menu order", () => {
       "/tickets",
       "/subjects",
       "/tags",
+      "/platform-support-admin?kind=issue",
+      "/platform-support-admin?kind=chat",
+      "/help-management",
+      "/help-management/categories",
       "/invoices",
       "/payments",
       "/invoice-types",
@@ -72,8 +79,6 @@ describe("admin menu order", () => {
       "/reports/reseller-clients",
       "/networks",
       "/noc",
-      "/import-client",
-      "/re-sync",
       "/mikrotik-sync",
       "/mikrotik-commands",
       "/mikrotik-packages",
@@ -93,7 +98,6 @@ describe("admin menu order", () => {
       "/telegram",
       "/communication-queue",
       "/communication-logs",
-      "/communication-gateways",
       "/funds",
       "/fund-transactions",
       "/my-wallets",
@@ -127,6 +131,9 @@ describe("admin menu order", () => {
       "/company-subscriptions",
       "/subscription-plans",
       "/subscription-features",
+      "/platform-support?kind=issue",
+      "/platform-support?kind=chat",
+      "/help",
       "/settings/general",
       "/settings/dashboard",
       "/settings/sms",
@@ -141,6 +148,14 @@ describe("admin menu order", () => {
 });
 
 describe("admin menu permissions", () => {
+  it("shows only the Help management pages the user can access", () => {
+    const articles = selectMenuItems(menu, access(["platform-help-admin.articles.access"]));
+    const categories = selectMenuItems(menu, access(["platform-help-admin.categories.access"]));
+    expect(group(articles, 40).items?.map((item) => item.url)).toEqual(["/help-management"]);
+    expect(group(categories, 40).items?.map((item) => item.url)).toEqual(["/help-management/categories"]);
+    expect(selectMenuItems(menu, access(["platform-support.access"])).some((item) => item.id === 40)).toBe(false);
+  });
+
   it("shows a network child only for its own permission", () => {
     const items = selectMenuItems(menu, access(["networks.access", "mikrotik-packages.access"]));
 
@@ -204,8 +219,6 @@ describe("admin menu feature locks", () => {
     expect(network.disabled).toBe(true);
     expect(network.items?.map((sub) => sub.url)).toEqual([
       "/networks",
-      "/import-client",
-      "/re-sync",
       "/mikrotik-sync",
       "/mikrotik-commands",
       "/devices",
@@ -241,8 +254,34 @@ describe("admin menu feature locks", () => {
       "/telegram",
       "/communication-queue",
       "/communication-logs",
-      "/communication-gateways",
     ]);
     expect(communication.items?.every((sub) => sub.disabled)).toBe(true);
+  });
+
+  it("shows platform support without tickets, notifications, or the paid support feature", () => {
+    const items = selectMenuItems(menu, access(["platform-support.access"]));
+
+    expect(urls(items)).toEqual([
+      "/subscription",
+      "/platform-support?kind=issue",
+      "/platform-support?kind=chat",
+      "/help",
+    ]);
+    expect(group(items, 38).disabled).toBe(false);
+    expect(urls(items)).not.toContain("/tickets");
+    expect(urls(items)).not.toContain("/platform-support-admin?kind=issue");
+  });
+
+  it("shows the platform inbox only with the admin access permission", () => {
+    const hidden = selectMenuItems(menu, access(["platform-support.access", "platform-support-admin.reply"]));
+    expect(urls(hidden)).not.toContain("/platform-support-admin?kind=issue");
+
+    const visible = selectMenuItems(menu, access(["platform-support-admin.access"]));
+    expect(urls(visible)).toEqual([
+      "/platform-support-admin?kind=issue",
+      "/platform-support-admin?kind=chat",
+      "/subscription",
+    ]);
+    expect(group(visible, 39).disabled).toBe(false);
   });
 });

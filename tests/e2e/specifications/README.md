@@ -25,7 +25,6 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [client-packages](client-packages/CLIENT-PACKAGES-001.md) — source-inventoried-draft
 - [client-wallets](client-wallets/CLIENT-WALLETS-001.md) — source-inventoried-draft
 - [clients](clients/CLIENT-001-client-management.md) — partially implemented; see clients/IMPLEMENTATION.md
-- [communication-gateways](communication-gateways/COMMUNICATION-GATEWAYS-001.md) — source-inventoried-draft
 - [communication-logs](communication-logs/COMMUNICATION-LOGS-001.md) — source-inventoried-draft
 - [communication-queue](communication-queue/COMMUNICATION-QUEUE-001.md) — source-inventoried-draft
 - [companies](companies/COMPANIES-001.md) — source-inventoried-draft
@@ -52,7 +51,6 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [networks](networks/NETWORK-001-network-management.md) — detailed-draft
 - [noc](noc/NOC-001.md) — source-inventoried-draft
 - [notifications](notifications/NOTIFICATIONS-001.md) — source-inventoried-draft
-- [offline](offline/OFFLINE-001.md) — source-inventoried-draft
 - [olts](olts/OLTS-001.md) — source-inventoried-draft
 - [onus](onus/ONUS-001.md) — source-inventoried-draft
 - [payment-gateways](payment-gateways/PAYMENT-GATEWAYS-001.md) — source-inventoried-draft
@@ -88,7 +86,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [reports-reseller-clients](reports-reseller-clients/REPORTS-RESELLER-CLIENTS-001.md) — source-inventoried-draft
 - [reseller-packages](reseller-packages/RESELLER-PACKAGES-001.md) — source-inventoried-draft
 - [reseller-profile](reseller-profile/RESELLER-PROFILE-001.md) — source-inventoried-draft
-- [resellers](resellers/RESELLER-001-reseller-management.md) — detailed-draft
+- [resellers](resellers/RESELLER-001-reseller-management.md) — partially implemented; see [implementation status](resellers/IMPLEMENTATION.md)
 - [roles](roles/ROLES-001.md) — source-inventoried-draft
 - [salaries](salaries/SALARIES-001.md) — source-inventoried-draft
 - [settings-dashboard](settings-dashboard/SETTINGS-DASHBOARD-001.md) — source-inventoried-draft
@@ -110,6 +108,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [subscription](subscription/SUBSCRIPTION-001.md) — source-inventoried-draft
 - [subscription-features](subscription-features/SUBSCRIPTION-FEATURES-001.md) — source-inventoried-draft
 - [subscription-plans](subscription-plans/SUBSCRIPTION-PLANS-001.md) — source-inventoried-draft
+- [platform-support](platform-support/PS-009-acceptance.md) — acceptance recorded, not release-ready
 - [support-tickets](support-tickets/SUPPORT-001-support-tickets.md) — detailed-draft
 - [tables](tables/TABLES-001.md) — source-inventoried-draft
 - [tags](tags/TAGS-001.md) — source-inventoried-draft

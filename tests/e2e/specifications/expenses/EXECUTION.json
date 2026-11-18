@@ -1,0 +1,234 @@
+{
+  "ticket": "EXPENSE-001",
+  "scope": "Partial nonmutating slices on CP. The staff filter assertion fails as expected. No parent scenario is passing.",
+  "source_state": {
+    "head": "0a1277b8003c0fe780fb0c4f086b35f1dcfef155"
+  },
+  "runs": [
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "persona": "cp",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_EXPENSE_ARTIFACT_DIR=/tmp/isp-expenses-cp npm run test:e2e:expenses",
+      "timestamp": "2026-11-16T05:45:09.818Z",
+      "duration_ms": 61281,
+      "expected": 30,
+      "unexpected": 0,
+      "skipped": 0,
+      "report": "/tmp/isp-expenses-cp/results.json",
+      "report_sha256": "90394f70ce268c0d912828684b1a3a9f4460429561957c74bb9c13092965cbbe",
+      "tests": [
+        {
+          "path": "tests/e2e/expenses/access.spec.ts",
+          "title": "EX-A01 anonymous /expenses redirects to the same-host staff login",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/access.spec.ts",
+          "title": "EX-A01 anonymous /reports/expenses redirects to the same-host staff login",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/access.spec.ts",
+          "title": "EX-A03 another company cannot read or find a known expense UUID",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/access.spec.ts",
+          "title": "EX-A05 logout back and reload do not restore the expense list",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/actions.spec.ts",
+          "title": "EX-D01 cancel delete keeps the expense, its fund balance, and fund transactions",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F02 missing amount staff and type and an amount below 1 stay on the form",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F03 create starts on today's date and cancel stores nothing",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F04 edit hydrates the saved expense and cancel leaves it unchanged",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F05 list and edit render empty relations without null or undefined markers",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F06 a voucher over 255 and a note over 1000 are rejected and create nothing",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-F07 canceling an edited draft preserves the saved expense",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/forms.spec.ts",
+          "title": "EX-U03 an admin can open the fund choices and cancel stores nothing",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L01 list identity date voucher relations amount status and report figures match the API",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L02 expense ID search includes the selected row and clearing restores the list",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L02 voucher search matches the API and an unknown voucher is empty",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L02 amount search matches the API and an unknown amount is empty",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 status filters stay inside the unfiltered total",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 status approved matches the API page and reload clears it",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 status pending matches the API page and reload clears it",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 status declined matches the API page and reload clears it",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 staff filter matches the API and a second staff does not reuse those rows",
+          "expectedStatus": "failed",
+          "result": "failed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 zone filter matches the API and a second zone does not reuse those rows",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 fund filter matches the API and a second fund does not reuse those rows",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 expense type filter matches the API and a second type does not reuse those rows",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 expense date range matches the API and reload clears it",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L03 combined expense ID and status filters agree with the API",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L04 pagination buttons match the current page and a later filter returns the matching rows",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L05 a status filter updates both report figures to the filtered API values",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L06 an unmatched search is empty and clearing it restores the known expense",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        },
+        {
+          "path": "tests/e2e/expenses/list.spec.ts",
+          "title": "EX-L07 the expense report has the report title, no create action, and the same rows and figures",
+          "expectedStatus": "passed",
+          "result": "passed",
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

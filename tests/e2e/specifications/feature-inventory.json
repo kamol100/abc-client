@@ -73,13 +73,6 @@
     "last_run": null
   },
   {
-    "feature": "communication-gateways",
-    "ticket": "communication-gateways/COMMUNICATION-GATEWAYS-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
-  },
-  {
     "feature": "communication-logs",
     "ticket": "communication-logs/COMMUNICATION-LOGS-001.md",
     "stage": "source-inventoried-draft",
@@ -268,13 +261,6 @@
     "last_run": null
   },
   {
-    "feature": "offline",
-    "ticket": "offline/OFFLINE-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
-  },
-  {
     "feature": "olts",
     "ticket": "olts/OLTS-001.md",
     "stage": "source-inventoried-draft",
@@ -307,6 +293,17 @@
     "ticket": "permissions/PERMISSIONS-001.md",
     "stage": "source-inventoried-draft",
     "specs": [],
+    "last_run": null
+  },
+  {
+    "feature": "platform-support",
+    "ticket": "platform-support/PS-009-acceptance.md",
+    "stage": "acceptance-not-release-ready",
+    "specs": [
+      "tests/e2e/platform-support/access.spec.ts",
+      "tests/e2e/platform-support/help.spec.ts",
+      "tests/e2e/platform-support/transport.spec.ts"
+    ],
     "last_run": null
   },
   {
@@ -522,8 +519,14 @@
   {
     "feature": "resellers",
     "ticket": "resellers/RESELLER-001-reseller-management.md",
-    "stage": "detailed-draft",
-    "specs": [],
+    "stage": "partially-implemented",
+    "specs": [
+      "tests/e2e/resellers/access.spec.ts",
+      "tests/e2e/resellers/actions.spec.ts",
+      "tests/e2e/resellers/detail.spec.ts",
+      "tests/e2e/resellers/forms.spec.ts",
+      "tests/e2e/resellers/list.spec.ts"
+    ],
     "last_run": null
   },
   {

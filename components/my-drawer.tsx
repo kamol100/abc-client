@@ -164,6 +164,7 @@ export interface MyDrawerProps {
   className?: string;
   showHandle?: boolean;
   showCloseButton?: boolean;
+  autoFocus?: boolean;
 }
 
 export function MyDrawer({
@@ -179,10 +180,11 @@ export function MyDrawer({
   className,
   showHandle,
   showCloseButton = true,
+  autoFocus,
 }: MyDrawerProps) {
   const { t } = useTranslation();
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} direction={side}>
+    <Drawer open={open} onOpenChange={onOpenChange} direction={side} autoFocus={autoFocus}>
       {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent
         side={side}

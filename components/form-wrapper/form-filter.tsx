@@ -4,7 +4,7 @@ import { Form } from "@/components/ui/form";
 import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
-import { useState, useMemo } from "react";
+import { useState, useMemo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import DisplayCount from "@/components/display-count";
 import MyButton from "@/components/my-button";
@@ -40,6 +40,8 @@ type FormFilterProps = {
   filterRows?: number;
   /** Matching row count. Shown at the start of the open filter row. */
   resultCount?: number;
+  /** Stays in the filter action row while the fields are open. */
+  endAction?: ReactNode;
 };
 
 function FilterTextField({
@@ -127,6 +129,7 @@ const FormFilter = ({
   formHook,
   filterRows,
   resultCount,
+  endAction,
 }: FormFilterProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(forceOpen);
@@ -233,7 +236,7 @@ const FormFilter = ({
     >
       {fieldsOpen && (
         <div className={cn(
-          "flex w-full min-w-0 gap-2",
+          "flex min-w-0 flex-1 gap-2",
           rowCount != null ? "items-start" : "items-center",
         )}>
           {hasResultCount(resultCount) && (
@@ -251,8 +254,11 @@ const FormFilter = ({
           </div>
         </div>
       )}
-      <div>
-        <div className="flex justify-between flex-row-reverse md:flex-row lg:flex-row gap-2">
+      <div className="shrink-0 self-start">
+        <div
+          className="flex flex-row-reverse justify-between gap-2 md:flex-row lg:flex-row"
+          data-filter-actions
+        >
           {showSearchButton && (
             <MyButton
               action="search"
@@ -275,6 +281,7 @@ const FormFilter = ({
             onClick={handleToggle}
             className={hideTrigger ? "hidden" : ""}
           />
+          {endAction}
         </div>
       </div>
 

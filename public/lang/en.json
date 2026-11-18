@@ -1,5 +1,6 @@
 {
     "common": {
+        "content_type": "Content type",
         "no_invoice_this_month": "No invoice this month",
         "help": "Help",
         "no_data": "No data",
@@ -2299,6 +2300,7 @@
     "sms_sent": {
         "title": "Send SMS",
         "description": "Send single and bulk SMS.",
+        "gateway_label": "SMS gateway:",
         "phone_number": {
             "label": "Phone Number",
             "placeholder": "Enter phone number",
@@ -2388,6 +2390,50 @@
                 "send_now": "Send immediately",
                 "scheduled_hint": "SMS will be sent automatically at {{time}}.",
                 "immediate_hint": "SMS will be sent right after you confirm."
+            },
+            "provider_cost": "Estimated provider cost"
+        },
+        "gateway": {
+            "title": "SMS gateway",
+            "description": "Choose ISPTIK or your own private gateway. New messages are accepted only while the gateway is active.",
+            "not_configured": "Gateway not configured!",
+            "configured": "Gateway configured & active",
+            "inactive": "Gateway configured & inactive",
+            "isptik": "Use ISPTIK gateway",
+            "isptik_hint": "Platform rate {{rate}} per SMS. Live messages use your wallet.",
+            "private": "Use own private gateway",
+            "private_hint": "Your rate {{rate}} per SMS. Live messages do not use your wallet.",
+            "balance_inline": "Balance {{balance}}.",
+            "edit": "Edit gateway",
+            "active": "Active",
+            "name": "Gateway name",
+            "send_url": "Send URL",
+            "send_url_placeholder": "https://sms.example/send?api_key=&type=&from=",
+            "balance_url": "Balance URL",
+            "rate": "Per SMS rate",
+            "status": "Status",
+            "status_active": "Active",
+            "status_inactive": "Inactive",
+            "saved_url": "Saved send URL",
+            "balance": "Provider balance",
+            "balance_unavailable": "Balance unavailable",
+            "save": "Save gateway",
+            "update": "Update gateway",
+            "switch": "Switch gateway",
+            "activated": "Gateway activated",
+            "inactive_saved": "Gateway inactive",
+            "pending": "You cannot switch gateways until pending SMS messages are dispatched or removed from the queue.",
+            "settings_notice": "SMS gateway is not configured yet",
+            "configure": "Configure SMS gateway",
+            "platform_title": "ISPTIK source",
+            "platform_hint": "Platform administrators edit the shared ISPTIK rate and send URL here. Activated accounts pick up the change without switching again.",
+            "platform_save": "Save ISPTIK source",
+            "platform_saved": "ISPTIK source updated",
+            "errors": {
+                "name": "Gateway name is required",
+                "send_url": "Send URL is required",
+                "balance_url": "Balance URL is required",
+                "rate": "Enter a rate with up to 2 decimal places"
             }
         }
     },
@@ -3910,6 +3956,10 @@
                 "sl": "SL"
             }
         },
+        "any_search": {
+            "label": "Any",
+            "placeholder": "Search by name, username, phone, or email"
+        },
         "name": {
             "label": "Name",
             "placeholder": "Enter reseller name",
@@ -4118,6 +4168,14 @@
         "notifications": {
             "title": "Notifications",
             "description": "Choose which events send a message to this channel.",
+            "tenant": {
+                "title": "Tenant",
+                "description": "Choose which events in this company send a message to this channel."
+            },
+            "administration": {
+                "title": "Administration",
+                "description": "Choose which platform support events from every tenant send a message to this channel."
+            },
             "groups": {
                 "client": "Client",
                 "fund_transaction": "Fund transaction",
@@ -4127,7 +4185,8 @@
                 "network": "Network",
                 "package": "Package",
                 "vendor": "Vendor",
-                "onu": "ONU"
+                "onu": "ONU",
+                "platform_support": "Platform support"
             },
             "actions": {
                 "create": "Create",
@@ -5040,6 +5099,16 @@
                 "title": "Tags"
             }
         },
+        "platform_support": {
+            "title": "Platform Support",
+            "issues": "Issues",
+            "chats": "Chats"
+        },
+        "platform_support_inbox": {
+            "title": "Support inbox",
+            "issues": "Issues",
+            "chats": "Chats"
+        },
         "resellers": {
             "title": "Resellers"
         },
@@ -5607,6 +5676,7 @@
         "title": "Theme Customizer",
         "description": "Customize your theme.",
         "aria_label": "Customize theme",
+        "menu": "Theme settings",
         "preset": {
             "label": "Preset",
             "default": "Default",
@@ -5697,15 +5767,6 @@
             "left": "Left",
             "right": "Right"
         }
-    },
-    "pwa_install_prompt": {
-        "title": "Install this app",
-        "description": "Install for a better experience with offline support",
-        "install": "Install",
-        "later": "Later",
-        "dismiss_aria_label": "Dismiss install prompt",
-        "ios_instruction_start": "Tap the share button",
-        "ios_instruction_end": "and then \"Add to Home Screen\""
     },
     "user_profile": {
         "aria_label": "User menu",
@@ -7938,7 +7999,12 @@
             "network": "Network",
             "client": "Client",
             "support": "Support",
-            "invoice": "Invoice"
+            "invoice": "Invoice",
+            "platform_support": "Platform support"
+        },
+        "statuses": {
+            "waiting_for_requester": "Waiting for requester",
+            "converted": "Converted"
         },
         "changes": {
             "details": "details",
@@ -8045,6 +8111,36 @@
             "sms_not_sent": {
                 "title": "Reminder not sent",
                 "message": "Invoice {{invoice_no}} for {{client_name}} could not be sent because the client has no phone number."
+            },
+            "platform_support_issue_created": {
+                "title": "Support issue opened",
+                "platform": "{{company_name}}: {{requester_name}} opened {{reference}}",
+                "tenant": "{{requester_name}} opened {{reference}}"
+            },
+            "platform_support_chat_started": {
+                "title": "Support chat started",
+                "platform": "{{company_name}}: {{requester_name}} started {{reference}}",
+                "tenant": "{{requester_name}} started {{reference}}"
+            },
+            "platform_support_message_received": {
+                "title": "Support reply",
+                "platform": "{{company_name}}: new reply on {{reference}}",
+                "tenant": "New reply on {{reference}}"
+            },
+            "platform_support_assignment_changed": {
+                "title": "Support assignment changed",
+                "platform": "Assignment for {{reference}} was updated",
+                "tenant": "Assignment for {{reference}} was updated"
+            },
+            "platform_support_status_changed": {
+                "title": "Support status changed",
+                "platform": "{{reference}} is now {{status}}",
+                "tenant": "{{reference}} is now {{status}}"
+            },
+            "platform_support_chat_converted": {
+                "title": "Support chat converted",
+                "platform": "{{company_name}}: {{reference}} is now an issue",
+                "tenant": "{{reference}} is now an issue"
             }
         }
     },
@@ -9290,6 +9386,311 @@
                 "invoice": "November invoice"
             },
             "sample_alt": "The customer's My Info card: account, connection and ONU status, expiry and package"
+        }
+    },
+    "platform_support": {
+        "redesign": {
+            "requests_intro": "Track issues and continue conversations with the platform team.",
+            "inbox_intro": "Review and respond to tenant and reseller requests.",
+            "issue_intro": "Tell us what happened. Add screenshots if they help explain the issue.",
+            "convert_intro": "Create an issue and keep the original conversation linked.",
+            "details": "Conversation details",
+            "conversation": "Conversation",
+            "conversation_intro": "Messages and attachments for this request.",
+            "page_context": "Page context",
+            "refresh": "Refresh",
+            "metrics": {
+                "open_issues": "Open issues",
+                "open_chats": "Open chats",
+                "unread_threads": "Unread conversations",
+                "unread_messages": "Unread messages",
+                "unassigned_threads": "Unassigned requests"
+            }
+        },
+        "title": "Platform Support",
+        "issues": "Issues",
+        "chats": "Chats",
+        "reference": "Reference",
+        "requester": "Requester",
+        "unread": "Unread",
+        "last_activity": "Last activity",
+        "loading": "Loading support requests",
+        "load_failed": "Support requests could not be loaded.",
+        "retry": "Try again",
+        "empty_messages": "No messages yet.",
+        "read_only": "You can read this request. Sending and managing are not available.",
+        "resolve": "Resolve",
+        "reopen": "Reopen",
+        "close": "Close chat",
+        "convert": "Create issue from chat",
+        "update_status": "Update status",
+        "linked_issue": "Linked issue",
+        "linked_chat": "Linked chat",
+        "linked_history": "Linked chat history",
+        "load_older": "Load older messages",
+        "new_messages": "New messages",
+        "launcher": {
+            "title": "Help",
+            "label": "Help and support, {{count}} unread"
+        },
+        "actions": {
+            "report_issue": "Report an issue",
+            "chat": "Chat with support",
+            "my_requests": "My requests"
+        },
+        "scopes": {
+            "label": "Request scope",
+            "own": "Mine",
+            "reseller": "Reseller",
+            "company": "Company"
+        },
+        "kinds": {
+            "label": "Issues and chats"
+        },
+        "filters": {
+            "status": "Status",
+            "priority": "Priority",
+            "category": "Category",
+            "reference": "Reference",
+            "reseller": "Reseller"
+        },
+        "category": {
+            "label": "Category",
+            "errors": {
+                "required": "Category is required",
+                "invalid": "Choose a category"
+            }
+        },
+        "priority": {
+            "label": "Priority",
+            "errors": {
+                "required": "Priority is required",
+                "invalid": "Choose a priority"
+            }
+        },
+        "message": {
+            "label": "Message",
+            "formatting": "Formatting",
+            "format": {
+                "bold": "Bold",
+                "italic": "Italic",
+                "strike": "Strikethrough",
+                "bulletList": "Bulleted list",
+                "orderedList": "Numbered list"
+            },
+            "placeholder": "Write a message",
+            "errors": {
+                "required": "Add a message or at least one image",
+                "max": "Use at most 10,000 characters"
+            }
+        },
+        "categories": {
+            "general": "General",
+            "account": "Account",
+            "billing": "Billing",
+            "technical": "Technical",
+            "bug": "Bug",
+            "mobile_app_issue": "Mobile app issue",
+            "other": "Other"
+        },
+        "priorities": {
+            "low": "Low",
+            "normal": "Normal",
+            "high": "High"
+        },
+        "statuses": {
+            "open": "Open",
+            "in_progress": "In progress",
+            "waiting_for_requester": "Waiting for requester",
+            "resolved": "Resolved",
+            "closed": "Closed",
+            "converted": "Converted"
+        },
+        "author": {
+            "you": "You",
+            "platform": "Platform support"
+        },
+        "chat": {
+            "untitled": "Chat with support",
+            "resumed": "Your open chat is open again.",
+            "resumed_unsent": "This chat was already open. The message was not sent yet."
+        },
+        "composer": {
+            "send": "Send",
+            "sent": "Sent",
+            "fix_image_uploads": "Retry or remove the images that failed to upload.",
+            "wait_for_uploads": "Wait until the images finish uploading.",
+            "ambiguous": "The previous attempt may have been saved. It was checked against the server before this one was sent.",
+            "already_sent": "The previous attempt is already in the conversation. This edited message uses a new request."
+        },
+        "images": {
+            "add": "Add images",
+            "removed_from_message": "Removed from message",
+            "limit": "JPEG, PNG, or WebP. Up to 5 images, 5 MB each.",
+            "preview": "Image preview",
+            "download": "Download image",
+            "remove": "Remove image",
+            "retry": "Retry upload",
+            "pending": "Pending",
+            "uploading": "Uploading",
+            "ready": "Ready",
+            "failed": "Failed"
+        },
+        "inbox": {
+            "title": "Support inbox",
+            "company": "Company",
+            "domain": "Domain",
+            "reseller": "Reseller",
+            "assignee": "Assignee",
+            "ownership": "Request owner",
+            "unassigned_agent": "Unassigned",
+            "pending": "Loading the inbox",
+            "refreshing": "Refreshing",
+            "refreshed": "Last refresh {{time}}",
+            "periodic": "Updates appear on the next refresh.",
+            "stale": "The latest refresh failed. This inbox may be out of date.",
+            "unread_messages": "{{count}} unread messages",
+            "unread_threads": "{{count}} unread requests",
+            "unassigned_count": "{{count}} unassigned",
+            "quick": {
+                "unread": "Unread",
+                "unassigned": "Unassigned"
+            },
+            "filters": {
+                "company": "Company identifier",
+                "reseller": "Reseller identifier",
+                "requester": "Requester identifier",
+                "assignee": "Assignee",
+                "any_assignee": "Any assignee"
+            }
+        },
+        "errors": {
+            "generic": "The request could not be completed.",
+            "image_invalid": "Use a JPEG, PNG, or WebP image.",
+            "image_too_large": "Each image must be 5 MB or smaller.",
+            "image_dimensions": "This image is too large to process.",
+            "image_encoder_unavailable": "This image could not be prepared. Try another file.",
+            "request_too_large": "The upload is larger than 6 MB.",
+            "attachment_invalid": "An image is missing or no longer available.",
+            "attachment_expired": "An image expired. Upload it again.",
+            "attachment_consumed": "An image was already sent.",
+            "duplicate_attachment": "The same image was selected more than once.",
+            "too_many_attachments": "A message can include up to five images.",
+            "draft_required": "Upload the images again before sending.",
+            "rate_limited": "Too many requests. Try again in a moment.",
+            "forbidden": "You no longer have access to this request.",
+            "not_found": "This request is not available.",
+            "version_conflict": "This request changed. The latest status is shown. Review it before trying again.",
+            "idempotency_conflict": "This send does not match the previous attempt. Review the conversation before sending again.",
+            "sequence_conflict": "The conversation changed. Review the latest messages.",
+            "invalid": "Check the message and try again.",
+            "prohibited_field": "That field cannot be sent.",
+            "invalid_transition": "That status change is not available.",
+            "closed": "This request is closed. Reopen it before sending.",
+            "already_converted": "This chat is already an issue.",
+            "empty_chat": "Send a message before creating an issue.",
+            "active_chat": "An open chat already exists.",
+            "history_retained": "The conversation history was kept.",
+            "ineligible_assignee": "That agent cannot be assigned."
+        }
+    },
+    "help": {
+        "management": {
+            "heading": "Help management",
+            "articles": "Articles",
+            "categories": "Article Categories",
+            "category": "Category",
+            "kind": "Content type",
+            "status": "Status",
+            "title": "Title",
+            "preview": "Preview",
+            "add_article": "Add article",
+            "edit_article": "Edit article",
+            "add_category": "Add category",
+            "edit_category": "Edit category",
+            "guide": "Guide",
+            "faq": "FAQ",
+            "video": "Video",
+            "draft": "Draft",
+            "published": "Published",
+            "archived": "Archived",
+            "required": "This field is required",
+            "video_required": "Add a video URL",
+            "formatting": "Text formatting",
+            "format_heading": "Heading",
+            "fields": {
+                "name_en": "English name",
+                "name_bn": "Bangla name",
+                "title_en": "English title",
+                "title_bn": "Bangla title",
+                "summary_en": "English summary",
+                "summary_bn": "Bangla summary",
+                "article_en": "English content",
+                "article_bn": "Bangla content",
+                "video_url_en": "Video URL"
+            }
+        },
+        "redesign": {
+            "subtitle": "Guides and answers for your workspace.",
+            "eyebrow": "Knowledge base",
+            "hero_title": "What can we help you with?",
+            "hero_body": "Find a guide, look up an answer, or get help from the platform team.",
+            "browse": "Browse by topic",
+            "available": "Guides available to your role",
+            "results": "Search results",
+            "clear": "Back to topics",
+            "guide_count_one": "{{count}} guide",
+            "guide_count_other": "{{count}} guides",
+            "read_guide": "Read the full answer",
+            "featured": "Start here",
+            "contact_title": "Need a hand?",
+            "contact_body": "Chat with the platform team or report an issue to track the conversation.",
+            "drawer_intro": "Find help for the page you’re on, or contact the platform team.",
+            "topics": {
+                "getting_started": "Getting started",
+                "clients": "Clients and connections",
+                "billing": "Billing and finance",
+                "network": "Network and devices",
+                "resellers": "Resellers and agents",
+                "operations": "Daily operations",
+                "settings": "Workspace and team settings",
+                "platform": "Platform administration"
+            }
+        },
+        "title": "Help",
+        "description": "Guides, FAQs, and videos for the screens you can open.",
+        "search_label": "Search help",
+        "search_placeholder": "Search guides",
+        "search_submit": "Search",
+        "open_centre": "Open Help Centre",
+        "guide_link": "Open the guide for this form",
+        "related": "Related guides",
+        "on_this_page": "On this page",
+        "back_to_feature": "Back to this feature",
+        "breadcrumb": "Help",
+        "language": "Article language",
+        "language_en": "English",
+        "language_bn": "বাংলা",
+        "loading": "Loading help",
+        "error": "Help could not be loaded.",
+        "retry": "Try again",
+        "empty_page": "No guide is published for this page. General support is listed here.",
+        "empty_search": "No matching guides.",
+        "empty_videos": "No video is configured.",
+        "include_page": "Include this page",
+        "include_page_hint": "Sends the page path only. Query strings, hashes, and form values are left out.",
+        "tabs": {
+            "label": "Help topics",
+            "page": "This page",
+            "guides": "Guides",
+            "faqs": "FAQs",
+            "videos": "Videos"
+        },
+        "video": {
+            "spoken_en": "Spoken language: English",
+            "spoken_bn": "Spoken language: Bangla",
+            "open": "Open the video",
+            "unavailable": "This video could not be played."
         }
     }
 }

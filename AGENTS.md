@@ -25,6 +25,7 @@ Load context in this order:
 - Reuse `FormBuilder`, `AccordionFormBuilder`, `DataTable`, `useApiQuery`, `useApiMutation`, `MyButton`, `MyDialog`, `MyDrawer`, `Card`, `FormTrigger`, and `DeleteModal` before adding a component.
 - Do not edit shadcn primitives in `components/ui/` unless the task explicitly says to. Do not install another UI kit.
 - Preserve existing behavior while changing UI. Support light and dark themes with Tailwind tokens (`hsl(var(--…))`) and `cn()` from `@/lib/utils`. No inline styles.
+- **UI layout stability is mandatory.** Every UI addition or design change must prevent unintended layout shifts and scroll jumps during loading, updates, and interactions. Follow the implementation and browser verification rules in [UI-update.mdc](.cursor/rules/UI-update.mdc).
 - User-facing strings go through `react-i18next`. Add the same keys to `public/lang/en.json` and `public/lang/bn.json`. Form labels are translation keys.
 - Imports use the `@/` alias, including same-directory imports.
 - Permission checks use `usePermissions().hasPermission("route.name")`. The string must match the backend route name.
@@ -60,3 +61,13 @@ Required for `npm install`, new dependencies, production env changes, deploy, an
 ## Finish
 
 End every task with the report in `.ai/report.md`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

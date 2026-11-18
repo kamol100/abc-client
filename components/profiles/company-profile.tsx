@@ -1,11 +1,12 @@
 "use client";
 
-import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, UserRound } from "lucide-react";
+import { FolderOpen, LayoutDashboard, LockIcon, LogOut, Settings, SlidersHorizontal, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import MyTooltip from "@/components/my-tooltip";
 import { ChangePasswordDialog } from "@/components/profiles/change-password-dialog";
+import { ThemeSettingsDialog } from "@/components/theme-customizer";
 import { staffProfileAvatarSrc } from "@/components/profiles/profile-avatar";
 import {
   getProfileInitials,
@@ -45,6 +46,7 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
   const name = profile.name ?? "";
   const email = profile.email ?? "";
   const avatar = staffProfileAvatarSrc(profile.staff);
@@ -118,6 +120,13 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
+            className="cursor-pointer"
+            onSelect={() => setThemeOpen(true)}
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {t("theme_customizer.menu")}
+          </DropdownMenuItem>
+          <DropdownMenuItem
             className="cursor-pointer overflow-hidden"
             onSelect={() => setChangePasswordOpen(true)}
           >
@@ -141,6 +150,7 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
         onOpenChange={setChangePasswordOpen}
         variant="tenant"
       />
+      <ThemeSettingsDialog open={themeOpen} onOpenChange={setThemeOpen} />
     </>
   );
 }

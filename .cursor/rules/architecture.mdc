@@ -16,7 +16,7 @@ Canonical reference (sibling repository, same workspace): `../isp-backend/docs/a
 - `hasPermission("route.name")` only hides UI. Do not add a feature whose backend route lacks its own authorization; report it instead.
 - The token stays server-side (`app/actions.ts` `useFetch`, `lib/api/api.ts`). No `localStorage`, no non-HttpOnly or parent-domain cookies.
 - Server fetches that carry a bearer token must not be shared-cached (`cache: "no-store"` or no `next.revalidate`). Public caches must include the host in the key, as `getCompanyPublicData()` does. No module-level server state holding tenant data.
-- Identity switches (logout, impersonation start/leave, tenant switcher) keep doing a full navigation. If you add an in-place switch, clear the TanStack Query cache. `public/sw.js` must keep never caching `/api/`, `/auth/`, `/dashboard`.
+- Identity switches (logout, impersonation start/leave, tenant switcher) keep doing a full navigation. If you add an in-place switch, clear the TanStack Query cache.
 - `company_id = 1` is the platform tenant. Platform screens (companies, subscriptions, plans, impersonation, tenant wallet recharge) are gated by platform-only permissions from the API, never by checking the company id in the browser.
 
 ## Reporting

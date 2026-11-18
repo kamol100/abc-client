@@ -1,13 +1,15 @@
 "use client";
 
 import MyButton from "@/components/my-button";
+import { useSmsGatewayStatus } from "@/components/sms-sent/sms-gateway";
+import { isSmsSendingSetting, smsSettingsLocked } from "@/components/sms-sent/sms-gateway-status";
 import Switch from "@/components/form/switch";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import SelectDropdown from "@/components/select-dropdown";
 import { usePermissions, useSettings } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { Loader2 } from "lucide-react";
+import { Loader2, TriangleAlert } from "lucide-react";
 import { FC, ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -99,6 +101,8 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
     hideHeader = false,
 }) => {
     const { t } = useTranslation();
+    const gateway = useSmsGatewayStatus(section === "sms");
+    const lockSmsSending = section === "sms" && (gateway.isLoading || smsSettingsLocked(gateway.status));
     const [editingField, setEditingField] = useState<SettingsFieldKey | null>(null);
     const { getValues, setValue, reset, trigger } = useFormContext<SettingsFormInput>();
 
@@ -166,6 +170,24 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                     </p>
                 </div>
             )}
+
+            {section === "sms" && !gateway.isLoading && smsSettingsLocked(gateway.status) ? (
+                <div className="flex flex-col gap-3 rounded-md border border-yellow-600/40 p-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                        {t("sms_sent.gateway.settings_notice")}
+                    </p>
+                    <MyButton
+                        action="edit"
+                        type="button"
+                        url="/sms-send"
+                        title={t("sms_sent.gateway.configure")}
+                        className="border-yellow-600/40 text-yellow-700 hover:bg-yellow-600/10 hover:text-yellow-700 dark:border-yellow-400/40 dark:text-yellow-400 dark:hover:bg-yellow-400/10 dark:hover:text-yellow-400"
+                    >
+                        <TriangleAlert className="size-4" aria-hidden />
+                        {t("sms_sent.gateway.configure")}
+                    </MyButton>
+                </div>
+            ) : null}
 
             <div className="space-y-3">
                 {section === "dashboard" && sectionFields.length === 0 ? (
@@ -237,7 +259,7 @@ const SettingsSectionContent: FC<SectionContentProps> = ({
                                                 <Switch
                                                     name={fieldKey}
                                                     className="justify-end"
-                                                    disabled={isPending}
+                                                    disabled={isPending || (lockSmsSending && isSmsSendingSetting(fieldKey))}
                                                     onValueChange={(checked) =>
                                                         void onImmediateFieldChange(fieldKey, checked)
                                                     }

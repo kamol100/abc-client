@@ -1,0 +1,633 @@
+{
+  "ticket": "RESELLER-001",
+  "scope": "Partial nonmutating slices. Username exclusion fails. No parent scenario is passing.",
+  "source_state": {
+    "head": "8261d5eadd55455a83f6bd10875aede7d3243d9b",
+    "worktree": "Includes preexisting local changes. SHA-256 values below are the files read for this suite.",
+    "sha256": {
+      "playwright.resellers.config.ts": "761493e37817c38ceedefbfcfda4720b35bcf0b97fcc0af16e51cc961c1b746a",
+      "tests/e2e/clients/environment.ts": "19622de4260d920ea326bcca80eb90eb5b571d457ce9afbc215a4d50c2d487f2",
+      "tests/e2e/clients/fixtures.ts": "9e3962d862cd8b5a2b74e90697b36a9137689f14b3ebf4e78483913590558829",
+      "components/resellers/reseller-basic-view.tsx": "da3b3b129b363ae90f3bf6bbcd50b639cc77e0cd202d879eb8e61496bc981592",
+      "components/resellers/reseller-client-column.tsx": "5628d3710d8f029e4b8d488311aafc30c4c9237b3d2b4e583da381f53699717b",
+      "components/resellers/reseller-client-table.tsx": "b7a5171851af16b8e730de56f554c959e0ee0ea9b31743ba822c606ffee0b27c",
+      "components/resellers/reseller-column.tsx": "851e437ac8ef29f59ff2b2fa0f3e9ac89b21e70ab67d3a8a0dd40c3491649afc",
+      "components/resellers/reseller-filter-schema.ts": "aebfdbcb3dc3283bb19fca60768ebe64bf107029a0e99ecb7ea5fe4b0d0c1676",
+      "components/resellers/reseller-form-schema.ts": "8ea909ebedea776511e71469c6eda467517289fa72ab785962e85f761cafcf1e",
+      "components/resellers/reseller-form.tsx": "1e72f8edd4f02f894c05a4f7fec5e67a226a0d7e202f7fd63275c9aa22f4027f",
+      "components/resellers/reseller-image-fields.tsx": "164310c1a95e53837319f840fa10e27a507dd1cb7f1edcda130d8b9be9312c9d",
+      "components/resellers/reseller-import-dialog.tsx": "ec8fe0c5ab70393978bb3fdb40e0de9270da50d145635d09bd4346e2763211dc",
+      "components/resellers/reseller-package-column.tsx": "31521e7caa095bfd1b33d2ed70639e9311c93b7f8a6c6325ce5eb497d2390eca",
+      "components/resellers/reseller-package-table.tsx": "e863210342b599f8c6936897ac912c47722c52e5dd9f3d02e8054e8e86ed146f",
+      "components/resellers/reseller-row-actions.tsx": "b3aa907cc07db3f31efd61b87e48bd85c9bb47c597a68c6a656f4ff63b2008aa",
+      "components/resellers/reseller-settings-dialog.tsx": "920f9a3d14c8a7a024e70ca029221952168fce468d8073d39a6909e26a666463",
+      "components/resellers/reseller-table.tsx": "c533943c100e3cf6264aa8b41e99f58ce01b5eb9ec9f152d57d2eb2fcf4bbda7",
+      "components/resellers/reseller-type.ts": "e5e663871de05f62f8439a6280f54e2d61abe6daf5b4259bd636771a24e6787a",
+      "components/resellers/reseller-view-skeleton.tsx": "ec13d453a052b7135cf5f206e0adc6596686137b63f5858deec48a3d97c7d94f",
+      "components/resellers/reseller-view.tsx": "307247ac1cc1e9565420c6467f00a5f02eb97b467660c6db4c44ef7d5f4d8c98",
+      "components/resellers/reseller-wallet-form-schema.ts": "19869cf696cafa763c3a9435927e0bdbb3a4fdfb279d2347e4dd5cd3f3dc2d84",
+      "components/resellers/reseller-wallet-recharge.tsx": "4e24663f8180eaaebed70f65ee83da0ca061fee39ada7a11cf818e3eb38827ee",
+      "tests/e2e/resellers/access.spec.ts": "66ffebe15015f0b3b6c0f4c7970e09cc0d138ac65653957ab4ea9fb998224d85",
+      "tests/e2e/resellers/actions.spec.ts": "26198e9b4c436e94ac56b7a65ed5493284291afd7541a2c114504d7b63d61407",
+      "tests/e2e/resellers/detail.spec.ts": "58c5b6a950b1da3c20dad15768e62ff0f2ef015defa5f110bbc0408576019a79",
+      "tests/e2e/resellers/fixtures.ts": "7b055e21e8e3f4575210cff1ca5f824ab2e0b1ce7321e06386eaf69679c5858d",
+      "tests/e2e/resellers/forms.spec.ts": "8ecdc550646c2faceff4ebcd8937cbc212b76469c0acd4c5b18bfcd1faa62723",
+      "tests/e2e/resellers/list.spec.ts": "a6deea1910892497b250d7afeca5ee12e1abde58ebc77799fffdf48ddfc596e0"
+    }
+  },
+  "runs": [
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-cp npm run test:e2e:resellers",
+      "timestamp": "2026-11-13T03:55:43.542Z",
+      "duration_ms": 59448,
+      "passed": 30,
+      "failed": 1,
+      "skipped": 0,
+      "report": "/tmp/isp-resellers-cp/results.json",
+      "report_sha256": "abc06ebc8d650403f757c1fa51002d8f019ef10a722dac16f804007a89930fd5",
+      "tests": [
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/create redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/view/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A03 another company cannot read or find a known reseller UUID",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 switching to an admin-role reseller is denied and the staff list stays in place",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 a reseller without a linked user does not offer scope switching",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-D01 cancel delete keeps the reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W01 recharge dialog shows the reseller balance and cancel does not change it",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W02 a nonpositive amount and missing fund stay in the dialog and keep the balance",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not change the balance",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S01 the reseller termination setting toggles, persists, and restores without changing company scope",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S03 a foreign reseller UUID cannot be read or written as settings",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P01 detail opens the selected reseller and edit returns to that UUID",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P04 clients tab matches the selected reseller and clears when another reseller opens",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P05 package and profile tabs stay usable for the open reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F02 missing name credentials phone and network stay on the form and create nothing",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F03 a duplicate company username is rejected and the draft is not created",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F06 cancel create stores no reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F07 an agent requires a nonnegative whole-number commission and creates nothing",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L01 list identities contact status counts and wallet match the API after reload",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 name filter includes the selected reseller and reset restores the baseline",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 phone filter matches the API and excludes a non-matching number",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 username filter keeps only matching usernames and an unknown username is empty",
+          "project": "resellers-chromium",
+          "result": "unexpected",
+          "attempts": [
+            "failed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 status filter matches included rows and reload clears it",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 zone filter matches the API page for the selected zone",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 network filter matches the API page for the selected network",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 combined name and status filters agree with the API",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L03 pagination buttons match the current page bounds",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L04 an unmatched name is empty and clearing it restores the list",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "tenant": "mk",
+      "origin": "http://mk.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_TENANT=mk E2E_RESELLER_ARTIFACT_DIR=/tmp/isp-resellers-mk npm run test:e2e:resellers",
+      "timestamp": "2026-11-13T03:56:49.904Z",
+      "duration_ms": 59707,
+      "passed": 30,
+      "failed": 1,
+      "skipped": 0,
+      "report": "/tmp/isp-resellers-mk/results.json",
+      "report_sha256": "9a1360f77bfb025f78cdfda0dcc516b5975a995ae0eb862495c9a9e4a3db6788",
+      "tests": [
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/create redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A01 anonymous /resellers/view/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A03 another company cannot read or find a known reseller UUID",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 switching to an admin-role reseller is denied and the staff list stays in place",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/access.spec.ts",
+          "title": "RS-A06 a reseller without a linked user does not offer scope switching",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-D01 cancel delete keeps the reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W01 recharge dialog shows the reseller balance and cancel does not change it",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W02 a nonpositive amount and missing fund stay in the dialog and keep the balance",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not change the balance",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S01 the reseller termination setting toggles, persists, and restores without changing company scope",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/actions.spec.ts",
+          "title": "RS-S03 a foreign reseller UUID cannot be read or written as settings",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P01 detail opens the selected reseller and edit returns to that UUID",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P04 clients tab matches the selected reseller and clears when another reseller opens",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/detail.spec.ts",
+          "title": "RS-P05 package and profile tabs stay usable for the open reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F02 missing name credentials phone and network stay on the form and create nothing",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F03 a duplicate company username is rejected and the draft is not created",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F06 cancel create stores no reseller",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/forms.spec.ts",
+          "title": "RS-F07 an agent requires a nonnegative whole-number commission and creates nothing",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L01 list identities contact status counts and wallet match the API after reload",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 name filter includes the selected reseller and reset restores the baseline",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 phone filter matches the API and excludes a non-matching number",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 username filter keeps only matching usernames and an unknown username is empty",
+          "project": "resellers-chromium",
+          "result": "unexpected",
+          "attempts": [
+            "failed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 status filter matches included rows and reload clears it",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 zone filter matches the API page for the selected zone",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 network filter matches the API page for the selected network",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L02 combined name and status filters agree with the API",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L03 pagination buttons match the current page bounds",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        },
+        {
+          "path": "tests/e2e/resellers/list.spec.ts",
+          "title": "RS-L04 an unmatched name is empty and clearing it restores the list",
+          "project": "resellers-chromium",
+          "result": "expected",
+          "attempts": [
+            "passed"
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Username filter is not implemented in app/Services/Filters/Resellers/Filters.php. Unknown username total stayed 1 on CP and MK.",
+    "CP and MK each expose one reseller, so pagination page 2 and the second-reseller client switch did not run.",
+    "No successful create, package reassignment, recharge settlement, purge, or import.",
+    "The linked reseller user is an Admin, so impersonation enter/leave did not run.",
+    "Review remains pending. No parent scenario is marked passing."
+  ]
+}

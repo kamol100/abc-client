@@ -1,6 +1,6 @@
 # EXPENSE-001 — Expense management, approval, and fund integrity
 
-- Status: Draft for review; every scenario remains unimplemented.
+- Status: Partial browser coverage. See [IMPLEMENTATION.md](IMPLEMENTATION.md). Financial approval, confirmed deletion, and restricted personas remain unimplemented.
 - Investigated: 2026-11-12, static source inspection only.
 - Goal: Staff record and manage correctly scoped expenses; approval and changes produce only the intended fund effects, and unrelated financial records remain intact.
 - Scope: `/expenses`, create/edit dialogs, inline status control, deletion, `/reports/expenses`, dashboard expense integration.
@@ -121,4 +121,4 @@ Repair shared auth/validation-submit helpers separately while preserving existin
 
 Every ID links to executable coverage or reviewed blocker/deferral. Verify persistence, exact financial deltas and unchanged unrelated transaction identities with fresh reads. Independent reruns/parallel workers must not share mutable fund fixtures. Report commands/environment, pass/fail/skip counts and artifacts; run appropriate repository checks when implementing; update `.ai/report.md`. No new dependencies/push/deploy without approval.
 
-Current verification: documentation only; no application/test/config/backend data changed, no tests executed. Static frontend/backend inspection does not prove tenant isolation or effective exploitability of suspected gaps.
+Current verification: partial Playwright coverage on CP, recorded in IMPLEMENTATION.md. No expense was created, approved, or deleted. The staff filter assertion fails as expected. MK was not run.

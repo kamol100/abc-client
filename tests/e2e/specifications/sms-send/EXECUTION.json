@@ -1,0 +1,99 @@
+{
+  "ticket": "SMS-SEND-001",
+  "scope": "Partial nonmutating slices on VP. 20 checks passed. Three failing checks were removed and stay uncovered. Confirm is never clicked. Review stays pending, so no parent scenario is passing.",
+  "source_state": {
+    "head": "0a1277b8003c0fe780fb0c4f086b35f1dcfef155",
+    "worktree": "Includes preexisting local changes. SHA-256 values below are the files read for this suite.",
+    "sha256": {
+      "playwright.sms-send.config.ts": "91abff5495fcddbd50f229122b721153bb60ad04cdb33653ed0486f1a438ed23",
+      "tests/e2e/clients/environment.ts": "695c65b680366c953bfd5c4fd8fe12e132862c458ddf47b113d5f6e5290415b4",
+      "tests/e2e/clients/fixtures.ts": "9e3962d862cd8b5a2b74e90697b36a9137689f14b3ebf4e78483913590558829",
+      "tests/e2e/sms-send/fixtures.ts": "671b6967fddc97a290d99decf9c54496d3646380933eb2c9e0fc2328f3fcfd98",
+      "tests/e2e/sms-send/access.spec.ts": "61f72884d45a1f85a0bf0bc042d46ddbf753b23eb415408492ffe81c98fb1f6a",
+      "tests/e2e/sms-send/list.spec.ts": "aa0ad001731e5a8b9f5c21e7ecbe6c24d02f07b3712905a06e568855855b9656",
+      "tests/e2e/sms-send/page.spec.ts": "fcc928d4723c1d06e987cd2dedb9a01d655c21fdeea058141616f0b38c50303e",
+      "tests/e2e/sms-send/presentation.spec.ts": "b93f1aacf8b758a73daff4fcf29429d388e156a36a6885dc735f63de72538c16",
+      "tests/e2e/sms-send/preview.spec.ts": "d4ae3e5ca01cf89d1188770419e1c180f76bacc1b6ccee2ccced4114ab11e5b1",
+      "components/sms-sent/sms-sent-form.tsx": "8bad3d12ef52d74a9be3a159b423bc89d170820e4df0a8beb76156c1c8fbbb41",
+      "components/sms-sent/sms-send-confirm-dialog.tsx": "a8df09233517820f74d4e9101b4ed622a921b30daec6122a594f6e8dac1920e1"
+    }
+  },
+  "runs": [
+    {
+      "tenant": "vp",
+      "origin": "http://vp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_SMS_SEND_ARTIFACT_DIR=/tmp/isp-sms-send-vp npm run test:e2e:sms-send",
+      "timestamp": "2026-11-16T13:41:24.042Z",
+      "duration_ms": 77889,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "report": "/tmp/isp-sms-send-vp/results.json",
+      "report_sha256": "6b9021f463bd443a335cc672b79824a590fe24d185d97dc2f0a522f1e721e726",
+      "removed_before_run": [
+        "FT087-05 network filter matches that network and excludes a client on another network",
+        "FT087-06 visible columns, page size, and total SMS follow the full result",
+        "FT087-02 an unselected filter quotes only the matching recipients"
+      ],
+      "tests": [
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send redirects to the same-host staff login", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send?phone=01700000999 redirects to the same-host staff login", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous SMS endpoints reject the request", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-10 another company cannot see or price a known SMS client", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 search includes the selected client, excludes another, and reset restores the list", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 an unknown search is empty and shows no request error", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 status filter keeps the selected status and hides the other", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 zone filter matches that zone and excludes a client in another zone", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 username, status, and network together match the API and reset clears them", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-11 an empty filter is distinct from a failed request and clears back to data", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/page.spec.ts", "title": "FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 a live preview shows one recipient, the message units, and the wallet price", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 test mode shows the same price as not charged and does not change the wallet", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-02 selected clients are quoted and an unselected client is not added", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 an empty body stays on the form and a one-character body can open the quote", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 a rejected template preview shows the quote error and no success", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-12 opening the quote twice does not change the wallet", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]}
+      ]
+    },
+    {
+      "tenant": "cp",
+      "origin": "http://cp.isp.test",
+      "command": "PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright E2E_SMS_SEND_ARTIFACT_DIR=/tmp/isp-sms-send npm run test:e2e:sms-send",
+      "timestamp": "2026-11-16T05:56:21.461Z",
+      "duration_ms": 133734,
+      "passed": 17,
+      "failed": 6,
+      "skipped": 0,
+      "report": "/tmp/isp-sms-send/results.json",
+      "report_sha256": "35fc9b6b6a39a65986a7ef3bbd534b327054cd78f118d14b86feea5672c35206",
+      "tests": [
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send redirects to the same-host staff login", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send?phone=01700000999 redirects to the same-host staff login", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous SMS endpoints reject the request", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-10 another company cannot see or price a known SMS client", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 search includes the selected client, excludes another, and reset restores the list", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 an unknown search is empty and shows no request error", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 status filter keeps the selected status and hides the other", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 network filter matches that network and excludes a client on another network", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 zone filter matches that zone and excludes a client in another zone", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 username, status, and network together match the API and reset clears them", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-06 visible columns, page size, and total SMS follow the full result", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-11 an empty filter is distinct from a failed request and clears back to data", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/page.spec.ts", "title": "FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 a live preview shows one recipient, the message units, and the wallet price", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 test mode shows the same price as not charged and does not change the wallet", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-02 selected clients are quoted and an unselected client is not added", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-02 an unselected filter quotes only the matching recipients", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 an empty body stays on the form and a one-character body can open the quote", "project": "sms-send-chromium", "result": "unexpected", "attempts": ["failed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 a rejected template preview shows the quote error and no success", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]},
+        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-12 opening the quote twice does not change the wallet", "project": "sms-send-chromium", "result": "expected", "attempts": ["passed"]}
+      ]
+    }
+  ]
+}
