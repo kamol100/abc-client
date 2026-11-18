@@ -1,3 +1,15 @@
+## Gateway status button hugs its label — 2026-11-18
+
+The status button is only as wide as its icon and label. The extra space before the check icon is gone. The header still keeps the button on the right.
+
+On `http://vp.isp.test/sms-send`, the loaded button was 210px wide and the check icon started 13px from the left edge, matching the button padding.
+
+## Gateway status button aligned to the end — 2026-11-18
+
+The gateway status button fills its reserved width and uses `justify-end`, so the icon and label sit on the right edge. The slot width still follows the longest status label, so a shorter label does not shrink the button.
+
+On `http://vp.isp.test/sms-send`, the loaded button’s computed `justify-content` was `flex-end` and the check icon sat inset from the left padding. Live, Test, and settings stayed on the row below.
+
 ## Private SMS balance on the send page — 2026-11-18
 
 The Send SMS header shows “Provider balance” only when the account gateway is private, a balance URL is saved, and `sms-gateway/balance` returns response code 202 with a numeric amount. Any other provider, a missing URL, or an unusable response leaves that line out. The gateway dialog uses the same lookup.

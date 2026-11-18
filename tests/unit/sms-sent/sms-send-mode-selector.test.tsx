@@ -41,8 +41,10 @@ describe("SmsSendModeSelector", () => {
   it("selects live mode by default", () => {
     render(<SmsSendModeSelector value="live" onChange={vi.fn()} />);
 
-    expect(screen.getByRole("radio", { name: /sms_sent.mode.live.title/ })).toBeChecked();
-    expect(screen.getByRole("radio", { name: /sms_sent.mode.test.title/ })).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: "sms_sent.mode.live.title" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "sms_sent.mode.test.title" })).not.toBeChecked();
+    expect(screen.getByText("sms_sent.mode.live.short")).toBeVisible();
+    expect(screen.getByText("sms_sent.mode.test.short")).toBeVisible();
   });
 
   it("selects test mode from a click or the keyboard", async () => {

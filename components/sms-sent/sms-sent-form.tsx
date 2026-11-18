@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FlaskConical, Info, Send } from "lucide-react";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
@@ -82,53 +82,87 @@ function SmsMoneyValue({
   amount,
   isLoading,
   isError,
+  inline = false,
 }: {
   amount: number;
   isLoading: boolean;
   isError: boolean;
+  inline?: boolean;
 }) {
   if (isLoading) {
-    return <Skeleton className="h-6 w-24" />;
+    return <Skeleton className={inline ? "h-4 w-16" : "h-6 w-24"} />;
   }
 
   if (isError) {
-    return <span className="text-sm text-muted-foreground">—</span>;
+    return <span className={inline ? "inline-block w-16 text-sm" : "text-sm text-muted-foreground"}>—</span>;
   }
 
   return (
     <DisplayMoney
       amount={amount}
-      animate
+      animate={!inline}
       formatCurrency
-      className="font-semibold text-primary tabular-nums"
+      className={cn(
+        "font-semibold tabular-nums",
+        inline ? "w-16 text-sm leading-none text-foreground" : "text-primary"
+      )}
     />
   );
 }
 
-function SmsPerUnitCost() {
-  const { t } = useTranslation();
-  const { rate, isLoading, isError } = useSmsRate();
-
-  return (
-    <div className="inline-flex items-center gap-2">
-      <span className="text-sm text-muted-foreground">
-        {t("sms_sent.per_sms_cost.label")}:
-      </span>
-      <SmsMoneyValue amount={rate} isLoading={isLoading} isError={isError} />
-    </div>
-  );
+function HeaderSlot({
+  widthClass,
+  children,
+}: {
+  widthClass: string;
+  children: ReactNode;
+}) {
+  return <span className={cn("inline-flex h-4 items-center", widthClass)}>{children}</span>;
 }
 
-function SmsProviderBalance() {
+function SmsHeaderMeta() {
   const { t } = useTranslation();
-  const { text } = useSmsProviderBalance();
-  if (!text) return null;
+  const { rate, isLoading, isError, gatewayName } = useSmsRate();
+  const balance = useSmsProviderBalance();
+  const showBalance = isLoading || balance.canRead;
+  const balancePending = isLoading || balance.isLoading;
 
   return (
-    <p className="whitespace-nowrap text-sm text-muted-foreground">
-      {t("sms_sent.gateway.balance")}:{" "}
-      <span className="font-medium tabular-nums text-foreground">{text}</span>
-    </p>
+    <div className="mt-1 flex min-h-5 min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground sm:h-5 sm:flex-nowrap sm:whitespace-nowrap">
+      <span className="inline-flex shrink-0 items-center gap-1">
+        <HeaderSlot widthClass="w-16">
+          <SmsMoneyValue amount={rate} isLoading={isLoading} isError={isError} inline />
+        </HeaderSlot>
+        <span>{t("sms_sent.per_sms_cost.label")}</span>
+      </span>
+      {showBalance ? (
+        <span className="inline-flex shrink-0 items-center gap-1">
+          <span aria-hidden="true">·</span>
+          <span>{t("sms_sent.gateway.balance_short")}</span>
+          <HeaderSlot widthClass="w-[5.5rem]">
+            {balancePending || !balance.text ? (
+              balancePending ? (
+                <Skeleton className="h-4 w-[5.5rem]" />
+              ) : (
+                <span className="text-sm text-foreground">—</span>
+              )
+            ) : (
+              <span className="text-sm font-semibold tabular-nums text-foreground">{balance.text}</span>
+            )}
+          </HeaderSlot>
+        </span>
+      ) : null}
+      <span className="inline-flex min-w-0 items-center gap-1">
+        <span className="shrink-0" aria-hidden="true">·</span>
+        <span className="inline-flex h-4 min-w-16 max-w-full items-center">
+          {isLoading ? (
+            <Skeleton className="h-4 w-28 max-w-full" />
+          ) : (
+            <span className="truncate text-sm font-semibold text-foreground">{gatewayName ?? "—"}</span>
+          )}
+        </span>
+      </span>
+    </div>
   );
 }
 
@@ -137,11 +171,13 @@ const SMS_SEND_MODES = [
     value: "live",
     icon: Send,
     title: "sms_sent.mode.live.title",
+    short: "sms_sent.mode.live.short",
   },
   {
     value: "test",
     icon: FlaskConical,
     title: "sms_sent.mode.test.title",
+    short: "sms_sent.mode.test.short",
   },
 ] as const;
 
@@ -165,31 +201,32 @@ export function SmsSendModeSelector({
         if (next === "live" || next === "test") onChange(next);
       }}
       aria-label={t("sms_sent.mode.label")}
-      className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+      className="flex shrink-0 items-center gap-2"
     >
       {SMS_SEND_MODES.map((mode) => {
         const Icon = mode.icon;
+        const selected = value === mode.value;
 
         return (
           <Label
             key={mode.value}
             htmlFor={`sms-send-mode-${mode.value}`}
             className={cn(
-              "flex cursor-pointer items-start gap-3 rounded-lg border p-2.5 font-normal transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
-              value === mode.value
-                ? "border-primary bg-primary/5"
-                : "border-border hover:bg-muted/40"
+              "relative inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-md border px-3 text-sm font-medium leading-none transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
+              selected
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-background text-foreground hover:bg-muted",
+              disabled && "pointer-events-none opacity-50"
             )}
           >
             <RadioGroupItem
               id={`sms-send-mode-${mode.value}`}
               value={mode.value}
-              className=""
+              aria-label={t(mode.title)}
+              className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]"
             />
-            <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-            <span className="space-y-1 mt-0.5">
-              <span className="block text-sm font-medium leading-none">{t(mode.title)}</span>
-            </span>
+            <Icon className="size-3.5 shrink-0" aria-hidden />
+            <span>{t(mode.short)}</span>
           </Label>
         );
       })}
@@ -264,7 +301,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   const isSingleClientMode = mode === "singleClient";
   const [sendMode, setSendMode] = useState<SmsSendMode>("live");
   const isTestMode = sendMode === "test";
-  const { rate, isLoading: isRateLoading, isError: isRateError, isActive, gatewayName } = useSmsRate();
+  const { rate, isLoading: isRateLoading, isError: isRateError, isActive } = useSmsRate();
   const sendLocked = isRateLoading || !isActive;
 
   const sendForm = useForm<SmsSentFormInput>({
@@ -482,34 +519,22 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
   return (
     <div className="space-y-5 pr-3">
       <div className="space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          {!isSingleClientMode && (
-            <div>
-              <div className="flex items-baseline gap-2">
-                <h1 className="text-xl font-semibold">{t("sms_sent.title")}</h1>
-                <span aria-hidden="true" className="text-xl font-semibold">:</span>
-                <div className={cn(isSingleClientMode ? "ml-auto" : undefined, "text-sm text-muted-foreground")}>
-                  <SmsPerUnitCost />
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">{t("sms_sent.description")}</p>
-              {gatewayName ? (
-                <p className="text-sm text-muted-foreground">
-                  {t("sms_sent.gateway_label")} <span className="text-foreground">{gatewayName}</span>
-                </p>
-              ) : null}
-              <SmsProviderBalance />
-            </div>
-          )}
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2">
-            <div className="flex min-w-0 flex-col gap-2">
-              <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
-            </div>
+        <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="min-w-0 overflow-hidden">
+            {!isSingleClientMode && (
+              <>
+                <h1 className="text-xl font-semibold leading-none">{t("sms_sent.title")}</h1>
+                <p className="mt-1 text-sm text-muted-foreground">{t("sms_sent.description")}</p>
+              </>
+            )}
+            <SmsHeaderMeta />
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {isSingleClientMode ? <SmsProviderBalance /> : null}
-            <SmsSettingsButton />
+          <div className="flex flex-col items-end gap-2 justify-self-end">
             <SmsGatewayButton />
+            <div className="flex items-center gap-2">
+              <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
+              <SmsSettingsButton />
+            </div>
           </div>
         </div>
       </div>

@@ -300,7 +300,7 @@ export function dialogMetric(dialog: Locator, label: string) {
 }
 
 export function formMetric(page: Page, label: string) {
-  return page.getByText(`${label}:`, { exact: true }).locator("xpath=..").locator(".sr-only");
+  return page.getByText(label, { exact: true }).locator("xpath=..").locator(".sr-only");
 }
 
 export async function expectDialogQuote(dialog: Locator, quote: {

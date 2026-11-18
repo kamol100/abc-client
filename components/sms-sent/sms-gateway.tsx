@@ -92,6 +92,8 @@ export function useSmsProviderBalance(enabled = true) {
   return {
     amount,
     text: amount === null ? null : formatProviderBalance(amount),
+    canRead,
+    isLoading: canRead && query.isLoading,
   };
 }
 
@@ -112,8 +114,9 @@ export function SmsSettingsButton() {
     <>
       <MyButton
         type="button"
-        size="default"
+        size="icon"
         variant="outline"
+        className="h-9 w-9 shrink-0"
         tooltip="settings.sections.sms.title"
         aria-label={t("settings.sections.sms.title")}
         onClick={() => setOpen(true)}
@@ -138,20 +141,27 @@ export function SmsGatewayButton() {
   const { status, isLoading, isActive } = useSmsGatewayStatus();
   const [open, setOpen] = useState(false);
 
+  const statusLabel = t(
+    !status?.configured
+      ? "sms_sent.gateway.not_configured"
+      : isActive
+        ? "sms_sent.gateway.configured"
+        : "sms_sent.gateway.inactive"
+  );
+
   return (
     <>
       {isLoading ? (
-        <Skeleton className="h-9 w-64" />
+        <Skeleton className="h-9 w-56 rounded-md" />
       ) : (
         <MyButton
           type="button"
-          action="edit"
           variant="outline"
           className={cn(
-            "whitespace-nowrap",
+            "h-9",
             !status?.configured && "border-destructive/40 text-destructive",
-            status?.configured && isActive && "border-green-600/40 text-green-600 dark:border-green-400/40 dark:text-green-400",
-            status?.configured && !isActive && "border-yellow-600/40 text-yellow-700 dark:border-yellow-400/40 dark:text-yellow-400"
+            status?.configured && isActive && "border-success/40 text-success",
+            status?.configured && !isActive && "border-warning/40 text-warning"
           )}
           onClick={() => setOpen(true)}
         >
@@ -160,13 +170,7 @@ export function SmsGatewayButton() {
           ) : (
             <TriangleAlert className="size-4" aria-hidden />
           )}
-          {t(
-            !status?.configured
-              ? "sms_sent.gateway.not_configured"
-              : isActive
-                ? "sms_sent.gateway.configured"
-                : "sms_sent.gateway.inactive"
-          )}
+          {statusLabel}
         </MyButton>
       )}
       <SmsGatewayDialog open={open} onOpenChange={setOpen} status={status} />

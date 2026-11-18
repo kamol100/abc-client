@@ -2356,10 +2356,12 @@
             "label": "Sending mode",
             "live": {
                 "title": "Live Mode",
+                "short": "Live",
                 "description": "Send real SMS through your configured gateway. SMS charges apply."
             },
             "test": {
                 "title": "Test Mode",
+                "short": "Test",
                 "description": "Simulate SMS sending without gateway calls or SMS charges.",
                 "notice": "No real SMS will be sent and no charges apply.",
                 "submit": "Simulate send",
@@ -2399,7 +2401,7 @@
             "not_configured": "Gateway not configured!",
             "configured": "Gateway configured & active",
             "inactive": "Gateway configured & inactive",
-            "isptik": "Use ISPTIK gateway",
+            "isptik": "ISPTIK gateway",
             "isptik_hint": "Platform rate {{rate}} per SMS. Live messages use your wallet.",
             "private": "Use own private gateway",
             "private_hint": "Your rate {{rate}} per SMS. Live messages do not use your wallet.",
@@ -2416,6 +2418,7 @@
             "status_inactive": "Inactive",
             "saved_url": "Saved send URL",
             "balance": "Provider balance",
+            "balance_short": "Balance",
             "balance_unavailable": "Balance unavailable",
             "save": "Save gateway",
             "update": "Update gateway",
