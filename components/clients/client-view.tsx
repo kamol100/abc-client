@@ -13,7 +13,7 @@ import {
     Ticket,
 } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { usePermissions } from "@/context/app-provider";
+import { usePermissions, useProfile } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +25,7 @@ import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import useInView from "@/hooks/use-in-view";
 import BulkInvoicePayDialog from "@/components/invoices/bulk-invoice-pay-dialog";
 import ClientChangePackageDialog from "@/components/clients/client-change-package-dialog";
+import ClientSwitchDialog from "@/components/clients/client-switch-dialog";
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import TicketTable from "@/components/tickets/ticket-table";
 import PaymentTable from "@/components/payments/payment-table";
@@ -54,6 +55,8 @@ function DeferredSection({ children }: { children: ReactNode }) {
 const ClientView: FC<Props> = ({ clientId }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
+    const { profile } = useProfile();
+    const isResellerUser = !!profile?.reseller;
     const canLockClients = useCanLockClients();
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
@@ -62,7 +65,9 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const [ticketOpen, setTicketOpen] = useState(false);
     const [lockOpen, setLockOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
+    const [switchOpen, setSwitchOpen] = useState(false);
     const canAddMap = hasPermission("clients.map.add");
+    const canSwitchClient = hasPermission("clients.switch.reseller") && !isResellerUser;
     const { data, isLoading } = useApiQuery<ApiResponse<ClientRow>>({
         queryKey: ["clients", "detail", clientId],
         url: `clients/${clientId}`,
@@ -110,6 +115,15 @@ const ClientView: FC<Props> = ({ clientId }) => {
                                     url={`/clients/edit/${getClientId(client) ?? clientId}`}
                                     tooltip="client.actions.edit"
                                     aria-label={t("client.actions.edit")}
+                                />
+                            )}
+                            {canSwitchClient && (
+                                <MyButton
+                                    action="move"
+                                    size="icon"
+                                    onClick={() => setSwitchOpen(true)}
+                                    tooltip="client.actions.client_switch"
+                                    aria-label={t("client.actions.client_switch")}
                                 />
                             )}
                             <MyButton
@@ -222,6 +236,13 @@ const ClientView: FC<Props> = ({ clientId }) => {
                         open={changePackageOpen}
                         onOpenChange={setChangePackageOpen}
                     />
+                    {canSwitchClient && (
+                        <ClientSwitchDialog
+                            client={client}
+                            open={switchOpen}
+                            onOpenChange={setSwitchOpen}
+                        />
+                    )}
                     {canAddMap && (
                         <ClientAddMapDialog
                             clientId={getClientId(client) ?? clientId}

@@ -14,6 +14,9 @@ vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: () => true,
     }),
+    useProfile: () => ({
+        profile: {},
+    }),
     useSettings: () => ({
         settings: { roles: ["Admin"] },
     }),
@@ -37,6 +40,10 @@ vi.mock("@/components/clients/client-session-reset-dialog", () => ({
 
 vi.mock("@/components/clients/client-change-package-dialog", () => ({
     default: () => null,
+}));
+
+vi.mock("@/components/clients/client-switch-dialog", () => ({
+    default: ({ open }: { open: boolean }) => (open ? <div>client.switch_reseller.title</div> : null),
 }));
 
 vi.mock("@/components/clients/client-add-map-dialog", () => ({
@@ -111,7 +118,10 @@ describe("ClientView ping button placement", () => {
             </QueryClientProvider>
         );
 
-        const packageButton = await screen.findByRole("button", { name: "client.actions.change_package" });
+        const editButton = await screen.findByRole("link", { name: "client.actions.edit" });
+        const switchButton = screen.getByRole("button", { name: "client.actions.client_switch" });
+        expect(editButton.compareDocumentPosition(switchButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        const packageButton = screen.getByRole("button", { name: "client.actions.change_package" });
         const mapButton = screen.getByRole("button", { name: "client.actions.add_map" });
         const smsButton = screen.getByRole("button", { name: "client.actions.sms" });
         expect(packageButton.compareDocumentPosition(mapButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -140,5 +150,17 @@ describe("ClientView ping button placement", () => {
 
         await user.click(await screen.findByRole("button", { name: "client.actions.lock" }));
         expect(await screen.findByText("client.lock.confirm_lock")).toBeInTheDocument();
+    });
+
+    it("opens the reseller switch dialog from the icon after edit", async () => {
+        const user = userEvent.setup();
+        render(
+            <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+                <ClientView clientId="client-1" />
+            </QueryClientProvider>
+        );
+
+        await user.click(await screen.findByRole("button", { name: "client.actions.client_switch" }));
+        expect(await screen.findByText("client.switch_reseller.title")).toBeInTheDocument();
     });
 });

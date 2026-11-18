@@ -1,3 +1,11 @@
+## Client switch on the client view — 2026-11-18
+
+The client details header has a switch icon immediately after Edit. It uses the same dialog as the row menu: name, PPPoE ID, phone, and the reseller list. Switch stays off until a reseller is chosen. Company staff with `clients.switch.reseller` see it. Reseller logins do not.
+
+On `http://vp.isp.test/clients/view/a32940b3-8cf1-4783-b07a-c5a9382530b3`, signed in as vp, the button sat between Edit and Reset Session. The dialog showed testuser03, PPPoE testuser03, and an empty phone. Switch was disabled, then enabled after choosing vp-reseller. The dialog was cancelled, so the client was not moved. Dark mode and a narrow width were not checked.
+
+`npx vitest run tests/unit/clients/client-view-ping-button.test.tsx`: 3 passed.
+
 ## Client switch to a reseller — 2026-11-18
 
 Company staff with `clients.switch.reseller` get a Client switch item after Add Map. The dialog shows the client name, PPPoE ID, and phone, plus the company reseller list. Switch stays disabled until a reseller is selected, then `POST /clients/{uuid}/switch-reseller` moves that client onto the reseller. Reseller staff do not see the item.
