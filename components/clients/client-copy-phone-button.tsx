@@ -4,34 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Copy } from "lucide-react";
 import { toast } from "react-toastify";
 import { cn } from "@/lib/utils";
-
-type LegacyClipboard = {
-    execCommand(commandId: string): boolean;
-};
-
-function copyWithCommand(value: string): boolean {
-    const field = document.createElement("textarea");
-    field.value = value;
-    field.readOnly = true;
-    field.tabIndex = -1;
-    field.setAttribute("aria-hidden", "true");
-    field.className = "absolute -left-[9999px] top-0";
-    document.body.appendChild(field);
-
-    let copied = false;
-    try {
-        field.focus();
-        field.select();
-        const legacyClipboard = document as unknown as LegacyClipboard;
-        copied = legacyClipboard.execCommand("copy");
-    } catch {
-        copied = false;
-    } finally {
-        field.remove();
-    }
-
-    return copied;
-}
+import { copyWithCommand } from "@/lib/helper/helper";
 
 type Props = {
     phone: string;

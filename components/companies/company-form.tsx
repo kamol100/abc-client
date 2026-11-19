@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import {
@@ -16,6 +16,8 @@ type Props = {
     api?: string;
     method?: "GET" | "POST" | "PUT";
     data?: Partial<CompanyRow> & { id?: number };
+    referral?: { uuid: string; prospectName: string };
+    trigger?: ReactNode;
 };
 
 const CompanyForm: FC<Props> = ({
@@ -23,6 +25,8 @@ const CompanyForm: FC<Props> = ({
     api = "companies",
     method = "POST",
     data = undefined,
+    referral,
+    trigger,
 }) => {
     const schema = mode === "create" ? CompanyCreateFormSchema : CompanyFormSchema;
     const formSchema = CompanyFormFieldSchema(mode);
@@ -31,17 +35,18 @@ const CompanyForm: FC<Props> = ({
         <MyDialog
             size="3xl"
             title={mode === "create" ? "company.create_title" : "company.edit_title"}
-            trigger={<FormTrigger mode={mode} />}
+            trigger={trigger ?? <FormTrigger mode={mode} />}
         >
             <FormBuilder
                 formSchema={formSchema}
                 grids={2}
-                data={data as Record<string, unknown>}
+                data={referral ? { name: referral.prospectName, status: "active" } : data}
                 api={api}
                 mode={mode}
                 schema={schema}
                 method={method}
-                queryKey="companies"
+                extraPayload={referral ? { referral_uuid: referral.uuid } : undefined}
+                queryKey={referral ? "companies,platform-referrals" : "companies"}
             />
         </MyDialog>
     );

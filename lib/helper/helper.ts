@@ -1,6 +1,41 @@
 import { formatDistanceToNow } from "date-fns";
 import { bn, enUS } from "date-fns/locale";
 
+export function copyWithCommand(value: string): boolean {
+    const previousFocus = document.activeElement;
+    const field = document.createElement("textarea");
+    field.value = value;
+    field.readOnly = true;
+    field.tabIndex = -1;
+    field.setAttribute("aria-hidden", "true");
+    field.className = "fixed left-0 top-0 opacity-0 pointer-events-none";
+    document.body.appendChild(field);
+
+    try {
+        field.focus({ preventScroll: true });
+        field.select();
+        return document.execCommand("copy");
+    } catch {
+        return false;
+    } finally {
+        field.remove();
+        if (previousFocus instanceof HTMLElement) previousFocus.focus({ preventScroll: true });
+    }
+}
+
+export async function copyTextToClipboard(value: string): Promise<boolean> {
+    if (window.isSecureContext && navigator.clipboard?.writeText) {
+        try {
+            await navigator.clipboard.writeText(value);
+            return true;
+        } catch {
+            return copyWithCommand(value);
+        }
+    }
+
+    return copyWithCommand(value);
+}
+
 export function groupBy<T>(items: T[], keyGetter: (item: T) => string): Record<string, T[]> {
     const result: Record<string, T[]> = {};
     for (const item of items) {

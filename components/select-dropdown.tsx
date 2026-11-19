@@ -202,7 +202,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     <div className="">
       {label && (
         <div className="mb-2">
-          <Label label={label} />
+          <Label htmlFor={name} label={label} />
         </div>
       )}
 
@@ -224,6 +224,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
 
           return (
             <Select<SelectOption, boolean>
+              inputId={name}
               instanceId={name}
               className={cn("basic-single")}
               classNamePrefix="select"

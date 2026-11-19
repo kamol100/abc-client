@@ -261,7 +261,7 @@ const DatePicker = ({
 
     return (
         <div className={cn("flex flex-col gap-1", className)}>
-            {label && <Label label={label} />}
+            {label && <Label htmlFor={name} label={label} />}
             <Controller
                 name={name}
                 control={control}
@@ -281,6 +281,7 @@ const DatePicker = ({
                             <Popover open={open} onOpenChange={handleOpenChange}>
                                 <PopoverTrigger asChild>
                                     <MyButton
+                                        id={name}
                                         ref={ref}
                                         variant="outline"
                                         size="default"

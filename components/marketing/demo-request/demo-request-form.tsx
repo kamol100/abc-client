@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Form, FormControl, FormField, FormItem, useFormField } from "@/components/ui/form";
 import { buildDemoRequestSchema, type DemoRequestFormValues } from "@/lib/validations/demo-request-schema";
+import { serverFieldErrors } from "@/lib/helper/helper";
 import { postPublicData } from "@/lib/api/api";
 
 // The helper line under each field: always present so the layout does not jump, filled only with an error.
@@ -61,7 +62,7 @@ function TextField({ name, optional, required, multiline, type = "text", inputMo
       name={name}
       render={({ field }) => (
         <FormItem className="mkt-demo-field">
-          <FieldLabel optional={optional}>{t(`demo_request.fields.${name}.label`)}</FieldLabel>
+          <FieldLabel optional={optional}>{t(name === "referral_code" ? "referral.fields.referral_code" : `demo_request.fields.${name}.label`)}</FieldLabel>
           <FormControl>
             {multiline ? (
               <textarea
@@ -110,7 +111,7 @@ const defaultValues: DemoRequestFormValues = {
   terms_accepted: false,
 };
 
-export default function DemoRequestForm() {
+export default function DemoRequestForm({ referralCode = "" }: { referralCode?: string }) {
   const { t, i18n } = useTranslation();
   const [submitSucceeded, setSubmitSucceeded] = useState(false);
   const doneRef = useRef<HTMLHeadingElement>(null);
@@ -118,28 +119,30 @@ export default function DemoRequestForm() {
 
   const form = useForm<DemoRequestFormValues>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: { ...defaultValues, referral_code: referralCode },
     mode: "onTouched",
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (payload: DemoRequestFormValues) => {
+      const { referral_code, ...fields } = payload;
       const res = (await postPublicData("/demo-request", {
-        ...payload,
+        ...fields,
+        ...(referral_code ? { referral_code } : {}),
       })) as DemoRequestApi;
       if (res?.success) return res;
-      throw new Error("demo_request.api.errors.validation");
+      throw new Error(serverFieldErrors(res).referral_code ? "referral.validation.invalid_code" : "demo_request.api.errors.validation");
     },
     onSuccess: () => {
       setSubmitSucceeded(true);
     },
     onError: (e: unknown) => {
       const key = e instanceof Error ? e.message : "common.request_failed";
-      toast.error(
-        t(
-          key.startsWith("demo_request.") || key === "common.request_failed" ? key : "common.request_failed"
-        )
-      );
+      if (key === "referral.validation.invalid_code") {
+        form.setError("referral_code", { type: "server", message: key });
+        return;
+      }
+      toast.error(t(key === "demo_request.api.errors.validation" ? key : "common.request_failed"));
     },
   });
 
@@ -218,6 +221,8 @@ export default function DemoRequestForm() {
             autoComplete="street-address"
             placeholder={t("demo_request.fields.office_address.placeholder")}
           />
+
+          <TextField name="referral_code" optional autoComplete="off" placeholder={t("referral.placeholders.referral_code")} />
 
           <FormField
             control={form.control}

@@ -15874,6 +15874,144 @@
       "status": "draft",
       "test_refs": [],
       "last_run": null
+    },
+    {
+      "id": "RF-008-E01",
+      "feature": "referrals",
+      "priority": "P0",
+      "description": "enrolls all three seller types and verifies each isolated login",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E01 enrolls all three seller types and verifies each isolated login"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
+    },
+    {
+      "id": "RF-008-E02",
+      "feature": "referrals",
+      "priority": "P0",
+      "description": "takes a real demo through Pending, Payable, and Paid",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E02 takes a real demo through Pending, Payable, and Paid"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
+    },
+    {
+      "id": "RF-008-E03",
+      "feature": "referrals",
+      "priority": "P0",
+      "description": "preserves fixed contract terms and excludes rejected referrals",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E03 preserves fixed contract terms and excludes rejected referrals"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
+    },
+    {
+      "id": "RF-008-E04",
+      "feature": "referrals",
+      "priority": "P0",
+      "description": "keeps one earning and transfer across retries and conflicting attempts",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E04 keeps one earning and transfer across retries and conflicting attempts"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
+    },
+    {
+      "id": "RF-008-E05",
+      "feature": "referrals",
+      "priority": "P0",
+      "description": "denies unauthorized routes, data, and actions",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E05 denies unauthorized routes, data, and actions"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
+    },
+    {
+      "id": "RF-008-E06",
+      "feature": "referrals",
+      "priority": "P1",
+      "description": "verifies narrow layouts, keyboard use, Bangla dark mode, and normal demo recovery",
+      "ticket": "referrals/REFERRALS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/referrals/referrals.spec.ts",
+          "title": "RF-008-E06 verifies narrow layouts, keyboard use, Bangla dark mode, and normal demo recovery"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel HTTP applications sharing SQLite :memory: through a loopback broker, scratch Next.js 16 dev server, Chromium, app.isp.test / cp.isp.test / mk.isp.test with an ephemeral port. Generated per-run credentials, queue and external integration fakes.",
+        "command": "RF_E2E_ARTIFACT_DIR=/private/tmp/isp-rf-run11 RF_E2E_CHROMIUM=<installed-chromium-path> npm run test:e2e:referrals",
+        "timestamp": "2026-11-19T01:31:39.644Z",
+        "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
+        "artifact": ".ai/features/referrals/evidence/RF-008.json"
+      }
     }
   ]
 }

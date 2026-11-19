@@ -45,6 +45,7 @@ export const DemoRequestStatusOptions = DEMO_REQUEST_STATUSES.map((value) => ({
 export const DemoRequestRowSchema = z
     .object({
         id: z.coerce.number(),
+    company_id: z.number().nullable().optional(),
         full_name: z.string(),
         isp_name: z.string(),
         email: z.string().nullable().optional(),

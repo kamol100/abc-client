@@ -1,6 +1,7 @@
 "use client";
 
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { MyDialog } from "@/components/my-dialog";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import {
@@ -15,11 +16,12 @@ type Props = {
 };
 
 const DemoRequestStatusForm: FC<Props> = ({ row }) => {
+    const { t } = useTranslation();
     return (
         <MyDialog
             size="3xl"
             title="admin_demo_request.edit_title"
-            trigger={<FormTrigger mode="edit" />}
+            trigger={<FormTrigger mode="edit" aria-label={t("admin_demo_request.edit_title")} />}
         >
             <FormBuilder
                 formSchema={DemoRequestAdminFormFieldSchema()}
@@ -43,7 +45,7 @@ const DemoRequestStatusForm: FC<Props> = ({ row }) => {
                 mode="edit"
                 schema={DemoRequestAdminEditFormSchema}
                 method="PUT"
-                queryKey="demo-requests"
+                queryKey="demo-requests,platform-referrals"
                 hydrateOnEdit="never"
                 successMessage="admin_demo_request.toast.updated"
             />

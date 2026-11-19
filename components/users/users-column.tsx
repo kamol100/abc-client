@@ -1,5 +1,7 @@
 "use client";
 
+import { ReferralEnrollmentForm } from "@/components/referrals/referral-seller-form";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "../data-table/data-table-column-header";
@@ -125,7 +127,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
     ),
     cell: ({ row }) => {
       const data = row.original;
-      const { permissions } = usePermissions();
+      const { permissions, hasPermission } = usePermissions();
       return (
         <div className="flex items-end justify-end gap-2 mr-3">
           <UserForm mode="edit" data={{ id: data.id }} api="/users" method="PUT" />
@@ -136,6 +138,9 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
             buttonText="common.confirm_delete"
           >
           </DeleteModal>
+          {hasPermission("platform-referral-sellers.create") && typeof data.id === "string" && (
+            <ReferralEnrollmentForm userUuid={data.id} />
+          )}
           {permissions?.includes("users.edit") && (
             <>
               <MyButton url={`/permissions/${data?.id}?type=user`}>

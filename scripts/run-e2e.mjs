@@ -23,7 +23,10 @@ let failed = false;
 const results = [];
 for (const config of configs) {
   console.log(`\nRunning Playwright suite: ${config}`);
-  const result = spawnSync(process.execPath, [cli, "test", `--config=${config}`, ...args], {
+  const command = config === "playwright.referrals.config.ts"
+    ? ["scripts/run-referral-e2e.mjs", ...args]
+    : [cli, "test", `--config=${config}`, ...args];
+  const result = spawnSync(process.execPath, command, {
     cwd: root,
     env: process.env,
     stdio: "inherit",

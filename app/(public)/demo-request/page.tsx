@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description: t("demo_request.meta.description"),
 };
 
-export default function DemoRequestRoute() {
-  return <DemoRequestPage />;
+export default async function DemoRequestRoute({ searchParams }: { searchParams: Promise<{ ref?: string | string[] }> }) {
+  const { ref } = await searchParams;
+  return <DemoRequestPage referralCode={typeof ref === "string" ? ref.slice(0, 64) : undefined} />;
 }

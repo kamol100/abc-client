@@ -32,7 +32,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
     const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}>
-            {label && <Label label={label} />}
+            {label && <Label htmlFor={name} label={label} />}
             <Controller
                 name={name}
                 control={control}

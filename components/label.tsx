@@ -10,6 +10,7 @@ import { LabelProps } from "./form-wrapper/form-builder-type";
 type props = {
   label?: LabelProps;
   suffix?: ReactNode;
+  htmlFor?: string;
 };
 const Label = ({
   label = {
@@ -21,12 +22,13 @@ const Label = ({
     tooltipClass: "",
   },
   suffix,
+  htmlFor,
 }: props) => {
   const { t } = useTranslation();
   return (
     <LabelUI
       className={cn("text-sm mb-1 font-medium text-foreground", label?.className)}
-      htmlFor={label?.labelText?.toString()}
+      htmlFor={htmlFor ?? label?.labelText?.toString()}
     >
       <div className={cn("flex gap-2", suffix && "items-center gap-4")}>
         <div className="flex gap-2">

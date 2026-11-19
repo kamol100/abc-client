@@ -9715,5 +9715,121 @@
             "open": "Open the video",
             "unavailable": "This video could not be played."
         }
+    },
+  "referral": {
+    "title": "My referrals",
+    "platform_title": "Referral sales",
+    "intro": "Track referred ISPs and commission payments.",
+    "platform_intro": "Attribute referrals, approve new ISP sales, and record completed transfers.",
+    "sellers": "Referral sellers",
+    "seller": "Seller",
+    "list": "Referred ISPs",
+    "totals": "Commission totals",
+    "share_link": "Referral link",
+    "inactive_code": "This referral code is inactive.",
+    "link_copied": "Referral link copied.",
+    "copy_fallback": "Use the link menu to copy the referral link.",
+    "commission": "Commission",
+    "commission_preview": "Commission to release: {{amount}}",
+    "payout_total": "Payout amount: {{amount}}",
+    "payout_help": "Record a transfer that finance has already completed.",
+    "deactivate_help": "This code will stop accepting new referrals. Existing earnings remain in the history.",
+    "saved": "Referral updated.",
+    "details": "Referral details",
+    "contract_history": "Contract history",
+    "no_contracts": "No contracts yet.",
+    "denied": "You do not have access to this referral page.",
+    "filter_status": "Filter by status",
+    "all_statuses": "All statuses",
+    "tbd": "TBD",
+    "unavailable": "—",
+    "estimated": "Estimated",
+    "placeholders": {
+      "prospect_name": "Enter the prospect ISP name",
+      "estimated_sale_minor": "Enter estimated BDT amount, e.g. 25000.00",
+      "referral_code": "Enter the seller's referral code",
+      "demo_request_id": "Enter an existing demo request ID",
+      "user_uuid": "Enter the seller's admin account UUID",
+      "code": "Choose a unique code, e.g. SELLER-01",
+      "fixed_amount_minor": "Enter fixed BDT commission, e.g. 2500.00",
+      "rate_bps": "Enter commission percentage, e.g. 10.25",
+      "effective_at": "Select when this contract takes effect",
+      "decision_note": "Add an approval note (optional)",
+      "rejection_note": "Explain why this referral is being rejected",
+      "approved_sale_minor": "Enter agreed BDT sale value, e.g. 25000.00",
+      "transfer_reference": "Enter the transaction ID or receipt reference",
+      "paid_at": "Select when the payment was completed"
+    },
+    "select_seller_type": "Select the seller type",
+    "select_method": "Select the payment method",
+    "status": {
+      "pending": "Pending",
+      "payable": "Payable",
+      "paid": "Paid",
+      "rejected": "Rejected"
+    },
+    "seller_type": {
+      "tenant_manager": "Tenant manager",
+      "reseller": "Reseller representative",
+      "independent": "Independent seller"
+    },
+    "terms": {
+      "fixed": "Fixed",
+      "percentage": "Percentage"
+    },
+    "terms_display": {
+      "fixed": "{{value}} fixed",
+      "percentage": "{{value}} of sale"
+    },
+    "actions": {
+      "add": "Add referral",
+      "attribute": "Attribute referral",
+      "copy": "Copy link",
+      "approve": "Approve sale",
+      "reject": "Reject referral",
+      "payout": "Record payout",
+      "enroll": "Enroll seller",
+      "contract": "Add contract",
+      "deactivate": "Deactivate seller",
+      "create_company": "Create company",
+      "retry": "Retry"
+    },
+    "fields": {
+      "prospect_name": "Prospect ISP",
+      "estimated_sale_minor": "Estimated sale value (৳)",
+      "referral_code": "Referral code",
+      "demo_request_id": "Demo request ID",
+      "user_uuid": "Admin account UUID",
+      "seller_type": "Seller type",
+      "code": "Referral code",
+      "commission_type": "Commission terms",
+      "fixed_amount_minor": "Fixed amount (৳)",
+      "rate_bps": "Commission rate (%)",
+      "effective_at": "Effective date",
+      "decision_note": "Decision note",
+      "approved_sale_minor": "Agreed sale value (৳)",
+      "method": "Transfer method",
+      "transfer_reference": "Transfer reference",
+      "paid_at": "Payment date",
+      "status": "Status"
+    },
+    "methods": {
+      "bank": "Bank transfer",
+      "bkash": "bKash",
+      "nagad": "Nagad",
+      "rocket": "Rocket",
+      "cash": "Cash"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "amount": "Enter a positive BDT amount with up to two decimal places.",
+      "rate": "Enter a percentage greater than 0 and up to 100, with up to two decimal places.",
+      "length": "This value is too long.",
+      "code": "Enter a code of up to 32 letters, digits, hyphens or underscores.",
+      "invalid_code": "This referral code is invalid. Check it or clear the field to continue.",
+      "demo_id": "Enter a valid demo request ID.",
+      "user_uuid": "Enter a valid admin account UUID.",
+      "paid_at": "Payment date cannot be in the future."
     }
+  }
 }

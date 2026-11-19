@@ -50,7 +50,7 @@ const InputField: React.FC<InputFieldProps> = ({
     const { t } = useTranslation();
     return (
         <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
-            {label && <Label label={label} suffix={labelSuffix} />}
+            {label && <Label htmlFor={name} label={label} suffix={labelSuffix} />}
             <Controller
                 name={name}
                 control={control}

@@ -1,3 +1,7 @@
+## Readability agent rule — 2026-11-18
+
+Agents now always follow `.cursor/rules/readability.mdc`: prefer a straightforward, named version over clever or complex code. No app behavior changed.
+
 ## OLT settings on the OLT list — 2026-11-18
 
 The OLT list has the settings icon immediately before View. It opens the same OLT polling settings as `/settings/olt`: automatic poll interval and the low ONU optical-power threshold. The button stays hidden without `company-settings.access`.
@@ -770,3 +774,117 @@ Verification: ran scripts/ai/status before the report addition, and scripts/ai/d
 Inspected the filesystem-backed help catalog, Markdown loader, authorization, topics, help centre and Laravel API routes/models. Proposed a platform-managed shared knowledge base in the existing Laravel database: help_categories, help_articles, help_article_translations, help_article_routes and help_article_relations, with media and revision tables as follow-ups. Preserve stable article keys/slugs, English/Bangla content, guide/FAQ kind, permission all/any rules, subscription feature rules and page context matching. Suggested database-backed Markdown with an admin editor and draft/preview/publish workflow. No migrations, endpoints or application behavior implemented.
 
 Verification: read-only source inspection; scripts/ai/status showed a clean starting tree. Tests not run for design advice/report-only work. Only this report was edited; no unrelated starting changes found. Frontend diff/status reviewed after the addition.
+
+## ISP referral program design — 2026-11-18
+
+Reviewed marketing pricing and demo requests, demo approval and company provisioning, subscription invoice settlement, existing agent commissions, and frontend/backend tenant architecture. Demo approval already records the provisioned company. Subscription invoice payments support wallet and bKash. Existing agent commissions are tied to recharge flows.
+
+Each new ISP tenant is one sale. An enrolled seller can be a tenant manager, a reseller representative, or an independent salesperson. Each referral is credited to one seller under their contract. A submitted referral appears in that seller's referral panel with Pending status and the contracted fixed amount or a percentage estimate. Confirm the contract's percentage base and the sale value by final approval, and retain the applied terms for audit. Use the existing demo request and company provisioning flows to capture attribution. Provide a distinct final sale approval action in platform administration because demo approval can provision a company before the sale is final.
+
+Final platform approval makes the commission payable once per new tenant. Record the actual payout and transfer reference before marking it Paid. An invoice payment can support the approval decision if the business requires payment verification. Build seller enrollment and referral capture first, then final sale approval and commission records, then payout recording and seller history. Laravel enforces platform approval permissions and seller ownership.
+
+Design discussion only. No application code changed and tests were not run. The frontend and backend started with clean working trees.
+
+### Interactive HTML demo
+
+Created an inline HTML mockup with a seller referral panel and a platform admin view. It uses sample sellers and tenants, supports referral submission, shows fixed and percentage commission examples, and illustrates Pending, Payable, and Paid. The admin flow previews the commission, rejects duplicate tenant IDs, and records a sample transfer reference. Interactions use local demo state. No application code changed.
+
+Verified HTML script syntax and checked the mockup in Chromium at 1024 px and 320 px. Exercised referral submission, role switching, live commission calculation, duplicate prevention, approval, payout, and status filtering. Moved mobile row actions below customer names and confirmed they were reachable without horizontal scrolling.
+
+### Database design
+
+Proposed five platform-owned Laravel tables for sellers, versioned contracts, referrals, commissions, and payouts. Reuse users, reseller, companies, and demo_requests for identity and onboarding. Each referral retains its contract version. Pending earnings are derived from referral data, final approval atomically creates one commission, and recording a completed payout marks it paid. A unique target tenant identity and unique commission/payout relationships protect against duplicates. All monetary values are BDT, stored as integer poisha. The pilot assumes a full payout per commission and the admin-confirmed sale value as the percentage base.
+
+Reviewed the company purge implementation, which disables foreign key handling. The proposal requires explicit detachment of deleted tenant and user references while retaining commission history and historical tenant identity. Created and type-checked the schema canvas. No migrations were written or run and the backend was left untouched.
+
+### MySQL schema draft
+
+Added `.ai/features/referrals/schema.sql` with the five proposed tables, their foreign keys, unique constraints, basic validation checks, and Laravel transaction rules. The draft targets MySQL 8.0.16+ and assumes positive approved sale and payout amounts. Verified existing referenced key types against the Laravel migrations and ran static schema checks for table order, foreign keys, constraint names, and uniqueness. No SQL was executed against a database. The existing referral report changes were preserved, and no backend code changed.
+
+Removed the currency columns from contracts, commissions, and payouts in the SQL draft and schema canvas. All amounts are implicitly BDT. Confirmed no currency references remain in either design and type-checked the canvas. No database changes were applied.
+
+### Sequential implementation workflow
+
+Added `.ai/features/referrals/README.md` with RF-001 through RF-008 and 37 required test scenarios. The workflow covers migrations and models, seller enrollment, attribution through the demo and assisted paths, final platform approval, payout recording, retention during purge, seller/admin interfaces, and Playwright acceptance. Recorded pilot defaults for paying the enrolled seller, half-up percentage rounding, and public invalid-code handling.
+
+Verified the eight task IDs are ordered, case IDs are unique, and local workflow links resolve. Reviewed diff and status. This was specification work, so no feature tests, application code, or database migrations were run. Left the existing untracked `.cursor/rules/readability.mdc` untouched.
+
+### Referral coding conventions
+
+Added required implementation references to the referral workflow. Frontend tasks follow Zones for CRUD structure and Expenses for filtered lists, using the existing shared components and thin App Router pages. Backend tasks follow Expenses for FormRequests, services, filters, and API Resources/Collections, with referral authorization applied before filtering and totals. Verified the source references, task order and 37 test IDs. Documentation only. The pre-existing `.cursor/rules/readability.mdc` was left untouched.
+
+### Referral implementation and Codex usage planning
+
+Reviewed the eight planned referral tasks and official Codex usage guidance. Recommended Medium for routine work and scoped High reasoning for approval/payout concurrency and tenant-purge review if needed. Suggested measuring allowance use after RF-001 and RF-002 before estimating the remaining work. No account usage was inspected beyond the user's stated percentage. No implementation or feature tests were run.
+
+### RF-001 through RF-003 implementation handoff
+
+Implemented the three backend tasks in the sibling ISP API repository. Updated the referral workflow status and documented the live code paths and payloads for the frontend and RF-004. The schema allows 200 characters for prospect names to match existing demo submissions. The existing untracked readability rule was left untouched. Frontend application code was not changed. The referral panel and public form work remain in RF-007.
+
+### RF-003 through RF-006 handoff
+
+Reverified RF-003 and added the eligibility rule that new demo attribution precedes provisioning. Implemented RF-004 as the prerequisite for payout recording, then implemented RF-005 and RF-006 in the Laravel repository. Updated the workflow status, API payloads and capability names, and recorded the supported payout methods. The backend regression run passed 262 tests. The frontend change is documentation only. Left the existing untracked readability rule untouched. RF-007 is next.
+
+## RF-007 and RF-008 — 19 November 2026
+
+Implemented the seller panel, platform referral sales, and seller management using the existing Zones/Expenses structure, FormBuilder, DataTable, API hooks, permission checks and English/Bangla translations. Added contract history, seller enrollment/deactivation, public/direct/assisted attribution, sale approval/rejection, and completed-payout recording. Money and rates use BDT/percentage inputs converted to integer API units. Reused company provisioning and demo approval forms. Shared labels now identify the actual text, dropdown and date controls.
+
+Added the isolated referral Playwright runner and Laravel fixture. It boots a fresh application per HTTP request while sharing only the run's SQLite in-memory connection, fakes external integrations and uses temporary storage. A scratch Next.js server uses the current source without touching the existing development process or database. Generated credentials remain in the runner. The suite signs in on registered app/cp/mk hosts with separate contexts. Earlier failed runs exposed CSRF initialization, fixture lifecycle and memory issues; the passing run supersedes them.
+
+### Executed checks
+
+- TypeScript passed via scripts/ai/typecheck.
+- Focused Vitest run passed 27 tests across referrals, public demo schema, and menu behavior.
+- scripts/ai/frontend-check completed typecheck and ran all Vitest files. Result was 738 passing and 19 failing tests across nine files. An archive of HEAD produced the same 19 failures, with matching failure headings. Existing failures cover maps, client filters/list/dashboard, column visibility, date pickers and public pay.
+- RF-008-E01 through E06 passed in Chromium against actual Next.js server actions and Laravel routes. Verified Pending to Payable to Paid, contract snapshots, duplicate prevention, separate approver/finance capabilities, cross-seller and unrelated-company denial, same-browser logout/new login, exact authority-free seller payload, error recovery, keyboard behavior and mobile/localized views. Checked scroll stability during dialog interactions and a delayed filter refresh.
+- Backend targeted regression passed 56 tests and 576 assertions. Pint passed for the browser fixture.
+- The global coverage checker stops on three pre-existing unmapped Help Management pages, reproduced against HEAD. Verified the new referral register entries, route mapping, links and exact source hashes independently.
+- Evidence and inspected screenshots are under .ai/features/referrals/evidence. The raw passing browser report is /private/tmp/isp-rf-run11/results.json.
+
+### Scope and remaining verification
+
+All eight referral implementation tasks are complete in the working tree. The browser verification used SQLite and faked external services. The earlier MySQL-specific migration/concurrency coverage gap remains. No live migrations, transfers, permission sync, deployment, commits or pushes were performed. The existing untracked .cursor/rules/readability.mdc and earlier referral work were preserved. Schema migration and permission catalog publication remain release preparation steps.
+
+## Existing local referral showcase — 19 November 2026
+
+Updated referral workflow documentation for the local Laravel seed and existing platform sales staff enrollment. No frontend application source changed this turn.
+
+The sibling backend's ReferralOverviewSeeder ran twice against the existing local app container, adding sales-man, VP owner vpc and vp-reseller profiles, immutable contracts, and 15 labelled demo referrals. Each seller has five examples. The administration overview shows Pending BDT 14,250, Payable BDT 9,000 and Paid BDT 11,500. No money transferred. Existing VP/reseller passwords and all role permission grants are preserved. The Sells man role already had seller-profile management permissions. The existing referral migration was already applied; this task ran no migration or permission sync. Sample tenant identities use example.test domains without login, wallet, subscription or router setup.
+
+Verified the actual app.isp.test/platform-referrals Chrome page displayed seeded rows, commission terms, statuses and those totals. Confirmed the second seed left all five referral tables byte-for-byte identical through a stable JSON SHA-256 fingerprint. Seller-scoped service queries return five rows each. Backend referral regression: 31 tests passed (479 assertions); Pint and PHPStan on the changed backend seeder/service/config passed. No frontend checks were rerun for these documentation-only edits. Earlier browser acceptance evidence was preserved for its recorded revision.
+
+Read status and reviewed diff before/after. Earlier feature changes, .cursor/rules/readability.mdc and unrelated working-tree edits remain intact. Rerun and login details are in ../isp-backend/docs/referral-demo-seeding.md. No packages, resets, commits, pushes or deployments.
+## Referral menu icon — 19 November 2026
+
+Changed only the `/referrals` menu icon from `UserCheck` to Lucide `Handshake`, representing a referral partnership and distinguishing it from Resellers. The existing 20 px icon rendering is preserved.
+
+Verification: `scripts/ai/typecheck` passed. Focused menu Vitest run completed with 14 passing tests and one failure: the existing expected sidebar order places `/referrals` near the top while the current working tree places it near the bottom. This change does not alter menu order. `scripts/ai/test` ignores extra arguments and started the full suite; stopped that run and used `npx vitest run tests/unit/menu/menu-items.test.ts` for the focused check. Browser mobile/desktop checks were not run for this icon substitution. Reviewed status and diff; all earlier referral, demo-request, shared-form, translation, package, e2e, test and report changes, plus the untracked readability rule, were preserved.
+
+
+
+## Referral status dropdown — 19 November 2026
+
+Replaced the native status select in components/referrals/referral-table.tsx with the existing SelectDropdown and a local React Hook Form provider. Watched form state preserves status query filtering; clearing restores all statuses. Kept translated option keys and an accessible hidden label. Reserved a fixed dropdown width so status changes do not resize adjacent controls. The shared dropdown component was not modified.
+
+Verification: scripts/ai/typecheck passed; npx vitest run tests/unit/referrals/referral-form.test.ts passed all six existing tests. Browser discovery failed because the browser access host is unavailable, so desktop/mobile interactions and refresh stability were not verified in a browser. No new endpoints, tenant inputs, permissions, or caching changes. Existing unrelated referral, demo-request, shared-form, menu, translation, package, e2e, test, report and readability-rule work was preserved. Reviewed scripts/ai/diff and scripts/ai/status.
+
+
+## Referral copy-link fix — 19 November 2026
+
+The share-link handler depended entirely on navigator.clipboard.writeText, which is unavailable on the local insecure HTTP site. Extracted the existing client phone-copy fallback into lib/helper/helper.ts and added copyTextToClipboard, which tries the secure Clipboard API and falls back to document copy when unavailable or rejected. Both phone and referral copying reuse the fallback. It removes its temporary textarea, restores focus with preventScroll, and reports actual copy success. The referral still copies the anchor’s absolute URL; failure retains the translated manual-copy instruction.
+
+Verification: scripts/ai/typecheck passed. Focused Vitest run passed 23 tests across referral clipboard, referral form and client phone cells. The five new clipboard regressions cover secure copying, HTTP without the API, permission rejection, refusal and exceptions, including cleanup and focus restoration. Verified the actual HTTP vp.isp.test/referrals page in Chrome through native app access: Copy link displayed Referral link copied, and pasting into the address bar produced http://vp.isp.test/demo-request?ref=DEMO-VP-MANAGER without navigating. No mobile viewport verification was performed. No dependency, backend, tenant, permission or cache changes. Preserved prior unrelated referral, demo-request, form, menu, translation, package, test, e2e, report and readability-rule changes. Reviewed scripts/ai/diff and scripts/ai/status.
+
+
+## Referral primary action colors — 19 November 2026
+
+Set explicit MyButton variant=default for Add Referral, assisted attribution, seller enrollment, new contracts, company creation, approval and payout triggers across referral-form.tsx, referral-seller-form.tsx and referral-column.tsx. These had inherited or explicitly selected the outline style. Shared forms also apply the fix to user enrollment and demo-request attribution entry points. Secondary navigation, copy, details/history, retry, rejection and deactivation retain their existing styles. Shared primitives, dimensions, permissions and behavior are unchanged.
+
+Verification: scripts/ai/typecheck passed; npx vitest run tests/unit/referrals passed all 11 tests. Visually verified the themed primary Add Referral button in Chrome at desktop width and iPhone 16 emulation (393 px). Opened and cancelled the Add Referral dialog and confirmed the underlying layout and page position stayed stable. Restored desktop mode and closed DevTools. Other primary trigger variants were reviewed in source; no submissions, approvals or payouts were performed. No asynchronous loading behavior changed. Reviewed scripts/ai/diff and scripts/ai/status. Preserved all pre-existing referral, clipboard, demo-request, shared-form, menu, translation, package, e2e, test, report and readability-rule work.
+
+
+## Referral form placeholders — 19 November 2026
+
+Added meaningful placeholder keys to every referral text/amount field, decision textarea and date picker. Amount and percentage hints include examples in displayed units. Approval notes describe optional input; rejection notes ask for the required rejection reason. Seller-type and payment-method dropdowns already had appropriate prompts. Commission radio choices use their visible labels. Added all 14 new keys in English and Bangla. The public demo-request referral-code input now uses the same translated prompt. Reviewed company provisioning fields, which already have placeholders. No validation, payload, layout or shared control behavior changed.
+
+Verification: scripts/ai/typecheck passed. Referral unit tests passed 11 tests; demo-request schema tests passed six tests. Statically verified all generated text and explicit date/note placeholder keys exist and are nonempty in both locale files, with matching key sets. In Chrome, reloaded language resources and verified Add Referral placeholders visually at desktop and 393 px mobile width. Opened and cancelled the form, confirmed no placeholder-driven movement, restored desktop mode and closed DevTools. Other referral forms and Bangla placeholders were checked in source rather than individually exercised in the browser. No records submitted. Reviewed scripts/ai/diff and scripts/ai/status; all prior unrelated referral, clipboard, shared-form, demo-request, menu, translation, package, e2e, test, report and readability-rule edits were preserved.

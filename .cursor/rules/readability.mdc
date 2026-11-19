@@ -1,0 +1,27 @@
+---
+description: Prioritize readable code over clever or complex solutions. Applies to every task.
+alwaysApply: true
+author: Kamol
+---
+
+# Readability
+
+Please prioritize readability over clever or complex solutions.
+
+- Write the version a teammate can read without reconstructing a trick.
+- Name the step. Prefer a small function, an early return, and a plain loop or `map` over nested ternaries, dense one-liners, and extra abstraction.
+- Add a helper only when it removes real duplication or names something that is hard to see inline.
+- Keep the public shape small. Do not add a pattern, generic, or layer for a single call site.
+
+```typescript
+// ❌ Hard to scan
+const label = items.filter((i) => i.on).map((i) => i.name).sort().join(", ") || "—";
+
+// ✅ Same result, readable
+const activeNames = items
+  .filter((item) => item.on)
+  .map((item) => item.name)
+  .sort();
+
+const label = activeNames.length > 0 ? activeNames.join(", ") : "—";
+```

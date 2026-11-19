@@ -9,6 +9,7 @@ import {
   CreditCard,
   FileBarChart,
   FileText,
+  Handshake,
   Headset,
   History,
   Inbox,
@@ -116,6 +117,17 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.support_tickets.title"), url: "/tickets", permission: "tickets.access" },
         { title: t("menu.support_tickets.subjects.title"), url: "/subjects", permission: "subjects.access" },
         { title: t("menu.support_tickets.tags.title"), url: "/tags", permission: "tags.access" },
+      ],
+    },
+    {
+      id: 44,
+      title: t("referral.platform_title"),
+      url: "#",
+      icon: CircleDollarSign,
+      permissions: ["platform-referrals.access", "platform-referral-sellers.access"],
+      items: [
+        { title: t("referral.list"), url: "/platform-referrals", permission: "platform-referrals.access" },
+        { title: t("referral.sellers"), url: "/platform-referral-sellers", permission: "platform-referral-sellers.access" },
       ],
     },
     {
@@ -423,6 +435,13 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.platform_support.chats"), url: "/platform-support?kind=chat", permission: "platform-support.access" },
         { title: t("help.title"), url: "/help", permission: "platform-support.access" },
       ],
+    },
+    {
+      id: 43,
+      title: t("referral.title"),
+      url: "/referrals",
+      icon: Handshake,
+      permissions: ["referrals.access"],
     },
     {
       id: 31,

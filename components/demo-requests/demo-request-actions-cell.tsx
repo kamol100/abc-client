@@ -6,6 +6,7 @@ import { DeleteModal } from "@/components/delete-modal";
 import DemoRequestStatusForm from "@/components/demo-requests/demo-request-status-form";
 import { DemoRequestViewDialog } from "@/components/demo-requests/demo-request-view-dialog";
 import type { DemoRequestRow } from "@/components/demo-requests/demo-request-type";
+import { ReferralCaptureForm } from "@/components/referrals/referral-form";
 import MyButton from "@/components/my-button";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -23,7 +24,8 @@ const DemoRequestActionsCell: FC<Props> = ({ row }) => {
     const canDelete = hasPermission("demo-requests.delete");
 
     return (
-        <div className="flex items-end justify-end gap-2 mr-3">
+        <div className="mr-3 flex flex-wrap items-end justify-end gap-2">
+            {hasPermission("platform-referrals.attribute") && row.company_id == null && <ReferralCaptureForm assisted demoId={row.id} />}
             {canEdit && <DemoRequestStatusForm row={row} />}
             {canView && (
                 <>

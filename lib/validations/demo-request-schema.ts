@@ -51,6 +51,9 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
         .string()
         .trim()
         .max(ADDRESS_MAX, err("demo_request.fields.office_address.errors.max")),
+      referral_code: z.string().trim()
+        .refine((value) => value === "" || /^[A-Za-z0-9][A-Za-z0-9_-]{0,31}$/.test(value), err("referral.validation.code"))
+        .optional(),
       terms_accepted: z
         .boolean()
         .refine((v) => v === true, err("demo_request.fields.terms.errors.required")),

@@ -11,7 +11,7 @@ const COVERS = ["subscribers", "mikrotik", "olt", "noc", "sms"] as const;
 // What the code does with a request: saved, then an admin sets its status.
 const STEPS = ["saved", "review"] as const;
 
-export default function DemoRequestPage() {
+export default function DemoRequestPage({ referralCode }: { referralCode?: string }) {
   const { t } = useTranslation();
   const { company } = useCompany();
   const name = company.name || "ISPTik";
@@ -28,7 +28,7 @@ export default function DemoRequestPage() {
 
       <section className="mkt-demo-body">
         <div className="mkt-container mkt-demo-layout">
-          <DemoRequestForm />
+          <DemoRequestForm key={referralCode} referralCode={referralCode} />
 
           <aside className="mkt-demo-aside">
             <div className="mkt-demo-block">

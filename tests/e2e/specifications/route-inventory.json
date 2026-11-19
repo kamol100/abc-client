@@ -1142,5 +1142,35 @@
     "ticket": "zones/ZONES-001.md",
     "status": "draft",
     "scenario_ids": []
+  },
+  {
+    "route": "/referrals",
+    "page": "app/(dashboard)/referrals/page.tsx",
+    "feature": "referrals",
+    "ticket": "referrals/REFERRALS-001.md",
+    "status": "passing",
+    "scenario_ids": [
+      "RF-008-E02"
+    ]
+  },
+  {
+    "route": "/platform-referrals",
+    "page": "app/(dashboard)/platform-referrals/page.tsx",
+    "feature": "referrals",
+    "ticket": "referrals/REFERRALS-001.md",
+    "status": "passing",
+    "scenario_ids": [
+      "RF-008-E02"
+    ]
+  },
+  {
+    "route": "/platform-referral-sellers",
+    "page": "app/(dashboard)/platform-referral-sellers/page.tsx",
+    "feature": "referrals",
+    "ticket": "referrals/REFERRALS-001.md",
+    "status": "passing",
+    "scenario_ids": [
+      "RF-008-E01"
+    ]
   }
 ]
