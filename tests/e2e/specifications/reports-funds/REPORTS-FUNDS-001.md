@@ -1,46 +1,53 @@
 # REPORTS-FUNDS-001 — Reports Funds
 
-- Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
-- Date: 2026-11-12.
-- Workflow: investigate → specify → review → implement → verify.
-- Scope routes: `/reports/funds`
+- Status: reviewed against current source; implementation in `tests/e2e/reports-funds/funds.spec.ts`.
+- Reviewed: 19 November 2026. Scope: `/reports/funds` and its exposed edit/detail dialogs.
+- Source: [reviewed contract](source-evidence.md). Runtime: [isolated runner](../../reports-funds/README.md).
+- Evidence: [execution record](evidence/run.json). No live MySQL, real transfers or external messages.
 
-## Source evidence and investigation limits
+## Fixtures and independent expectations
 
-Pages and nearest feature files were statically inventoried. The evidence file records literal fields, permission checks, API templates and matching backend route declarations. These are observed references, not proof of active UI reachability, effective middleware, valid payloads or approved behavior. Detailed controller/service/validator and business review remains required before implementing ambiguous cases. Do not invent CRUD for read-only screens.
+CP company editor/reader/denied staff, CP reseller, MK company user and platform
+Super Admin are distinct personas. Normal login and middleware remain active.
+CP has twelve company-owned funds: 100.25, 200.50, -50.75, zero and 1 through 8
+BDT. Full report = 286.00. Name alpha = 300.75; account MATCH = 49.50;
+alpha + MATCH = 100.25; Alice staff = 116.25. MK's 9,999, reseller's 777 and
+platform's 333 are excluded from CP company totals. Amounts persist as poisha,
+API/UI values are BDT. Named staff, account numbers and UUIDs are fixture-owned.
 
-- [Source trace](source-evidence.md)
-- Existing unit candidates: None found by feature/path matching; inspect shared coverage.
+## Reviewed scenarios
 
-## Personas, fixtures, and review
+- FT063-01 [P0, approved]: Given all known funds, open the CP report; assert decimal, negative and zero values, full-scope total 286 and exclusion of foreign company/reseller records. A fresh API read must agree with independent expected totals.
+- FT063-02 [P0, approved]: Given populated and valid-empty periods of this current-balance report, assert export/download/print and date controls are absent. There is no exported artifact or date period contract on this screen; no P0 scenario is excluded.
+- FT063-03 [P1, approved]: Open/reload the exact report route and assert named fund, account and staff; open its exposed transaction detail dialog and assert the fixture's empty transaction list, then close without losing the fund.
+- FT063-04 [P1, approved]: Apply name, account and staff independently and name+account together. Check exact totals and both included/excluded fund identities. Reset restores baseline rows.
+- FT063-05 [P1, approved]: Navigate to page 2; total remains 286 across all twelve funds. Change exposed page size from 10 to 25; invalid page resets and all records return. Hide Account Number via the actual column control.
+- FT063-06 [P1, approved]: Edit the owned alpha fund; assert saved account/name/staff hydration. Cancel retains original account. Save changes it, then confirm through a fresh API read; restore the suite-owned value.
+- FT063-07 [P1, approved]: A one-character fund name keeps edit open with the actual field error. API empty required fields returns 422 and preserves balance. The report has no create form. Backend scope validation is also exercised in FT063-09.
+- FT063-08 [P0, approved]: Editor can edit; reader sees report without edit/create and gets 403 on direct update. Denied staff get 403 on direct GET and a visible failure state/no protected rows on the direct report URL. No generic HTTP200/cookie-only login assertion.
+- FT063-09 [P0, approved]: CP cannot read MK/reseller UUIDs; backend also rejects update/delete by these UUIDs. Reject foreign-company staff assignment with 422. Reseller total is 777; platform total is its own 333, not a cross-tenant aggregate. Sign out, sign in as MK on its registered host, reload and assert only MK rows.
+- FT063-10 [P1, approved]: Distinguish valid empty from failed requests. Hold a real server-action read, assert previously loaded rows and table position remain stable, then abort reads. A translated error must appear. Remove fault and use Retry to recover current filtered results with no stale excluded row.
+- FT063-11 [P1, approved]: Rapid beta→alpha searches leave alpha results only; fresh read confirms twelve funds and balance 286. Creation/transfer submission is not offered by this report; no fabricated duplicate payment workflow.
+- FT063-12 [P2, approved]: At 390px use actual filter drawer and keyboard; set the supported dark theme cookie and switch through the real Bangla control. Assert dark rendering and no raw fund translation key; capture and inspect the rendered mobile view. Desktop evidence is captured by FT063-01.
 
-Use dedicated test database/cache/storage/queue, tenant A and B registered hosts, full-feature actor, restricted/read-only actor, reseller/zone actor when applicable, and subscriber owner/non-owner for portal features. Public pages use anonymous contexts. Seed known included/excluded rows, stable identifiers and relation IDs; create test-owned mutation fixtures per worker with failure-safe cleanup.
+## Domain review and limits
 
-Record exact required fields/defaults/validation boundaries and permissions from source trace, then verify them against Laravel requests/resources/services. Decide dependencies, duplicate handling, relation ownership, monetary units, date boundaries and failure recovery. Selectors/API templates are clues, not new endpoint definitions. Cross-tenant direct API enforcement needs backend tests as well.
+No new business accounting rules are invented: this is the existing current
+balance report, with immutable test-owned financial fixtures and metadata-only
+edit. Creation, transfers, deleting active funds, transaction exports and date
+reporting belong to their separate feature tickets. Existing scope/permission
+requirements come from the repository's tenant constitution. No scenario is
+removed from the denominator. These checks establish workflow behavior, not code
+line/branch coverage or production financial reconciliation.
 
-For money/stock/subscription/permissions/identity changes, approve independently calculated expected effects before implementation. Use sandbox/fake router, provider, payment and notification adapters; never send real customer messages or mutate real devices. Coordinate backend/browser Asia/Dhaka time. Generated auth state is secret and stays out of commits/artifacts.
+The tests exposed and fixed foreign staff assignment, invalid page after resizing,
+and missing translated query failure/retry state. Backend FundReportAcceptanceTest
+adds direct checks alongside the existing FundControllerTest. Backend tests only
+use SQLite memory; real MySQL concurrency and other browsers are not established.
 
-## Feature-specific acceptance scenarios
+Some preexisting icon buttons have no accessible name; tests use their specific
+icons scoped to the fund row/toolbar rather than guessing a first button. Naming
+shared controls throughout the application is outside this feature's changes.
 
-- FT063-01 [P0, pending review]: Open funds report with independently calculated fixture totals; dates, scope, status and filters include/exclude known records.
-- FT063-02 [P0, pending review]: Download/export/print only where exposed; artifact content, row count, totals and tenant scope agree with displayed filtered dataset, including empty and boundary periods.
-- FT063-03 [P1, pending review]: Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.
-- FT063-04 [P1, pending review]: Exercise actual filters independently and combined: account_number, name, staff_id. Assert included AND excluded fixture identities; clear restores baseline and pagination resets appropriately.
-- FT063-05 [P1, pending review]: Pagination/page size and permitted column visibility work on known data; summary totals represent approved full filter scope, not just visible rows. Do not invent controls absent from this screen.
-- FT063-06 [P1, pending review]: For each actually exposed create/edit/save form: valid payload persists after fresh read/reload; edit hydrates saved relations before changing them, cancel leaves saved state unchanged.
-- FT063-07 [P1, pending review]: Required/invalid/boundary input stays recoverable with approved field errors; server rejection and delayed save produce no false success or duplicate persisted mutation. Use exact feature fields/constraints from reviewed schemas.
-- FT063-08 [P0, pending review]: For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.
-- FT063-09 [P0, pending review]: Known foreign tenant/owner identifiers cannot expose or mutate protected data or relations; identity switch/back/reload cannot restore previous user data. Public-host data is isolated by approved host rules.
-- FT063-10 [P1, pending review]: Controlled delay/failure/empty response has distinct truthful loading/error/no-data state; retry recovers and stale earlier responses cannot replace latest selection.
-- FT063-11 [P1, pending review]: Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.
-- FT063-12 [P2, pending review]: Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.
-
-## AI implementation handoff / done criteria
-
-Review exact feature fields, source-linked backend contracts and domain decisions first. Split multi-surface/financial cases into independent Given/When/Then tests and expand the coverage register before coding. Do not count generic draft cases as implemented coverage. Shared prerequisites: strict login assertion, validation-safe submit helper, persona sessions, isolated fixture cleanup and controlled integrations. Preserve existing uncommitted work.
-
-Use semantic locators scoped to correct row/dialog and exact UUID/relation types. Next.js server-action outbound calls cannot be intercepted with browser page.route; use real isolated backend or a server-reachable stub. No fixed sleeps, swallowed errors, first-option guesses, unconditional skips, production calculation helpers as expected answers, or weakened assertions to accept defects.
-
-Each case needs reviewed expected values, linked spec/test title, executed run evidence and final status. Blocked/skipped/failing cases remain uncovered. Document backend contract/security gaps separately. Run appropriate checks and record environment/commands/results/artifacts and .ai/report.md. No installs/push/deploy without required approval.
-
-Current verification: source inventory and documentation checks only; no application/test/runtime changes or test runs.
+Final execution counts, exact commands, source hashes and actual scenario status
+are in evidence/run.json and coverage-register.json; failed attempts earn no credit.

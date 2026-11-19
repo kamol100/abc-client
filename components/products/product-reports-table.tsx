@@ -1,5 +1,6 @@
 "use client";
 
+import ProductFeedback, { ProductBackgroundError } from "@/components/products/product-feedback";
 import { FC, ReactNode, useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
@@ -213,10 +214,11 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
     const queryKeyRoot = mode === "in" ? "products-in-reports" : "products-out-reports";
     const endpoint = mode === "in" ? "products-in/reports" : "products-out/reports";
 
-    const { data, isLoading, isFetching, setCurrentPage } =
+    const { data, isLoading, isFetching, isError, refetch, setCurrentPage } =
         useApiQuery<ProductReportsApiResponse>({
             queryKey: [queryKeyRoot],
             url: endpoint,
+            enabled: hasPermission(`products-${mode}.report`),
             params,
         });
 
@@ -251,8 +253,12 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
         />
     );
 
+    if (!hasPermission(`products-${mode}.report`)) return <ProductFeedback denied />;
+    if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
+
     return (
         <div className="space-y-4">
+            <ProductBackgroundError failed={isError} retry={refetch} />
             {(header || isLoading || reports) && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                     {header}

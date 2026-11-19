@@ -206,6 +206,7 @@ export function DataTableToolbar<TData>({
                     action="filter"
                     size="default"
                     variant="outline"
+                    aria-label={t("common.filter")}
                   />
                 }
                 title="common.filter"

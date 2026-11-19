@@ -14,3 +14,6 @@ Applies to all Playwright tests, fixtures, helpers, setup and specifications in 
 - Use approved company A/B fixtures for isolation tests and authorized/unauthorized platform personas separately. Never assume platform cross-tenant access must always fail.
 - Read backend contracts; use semantic locators, independent test data, safe cleanup, controlled external integrations and fresh persistence assertions.
 - Preserve preexisting edits, record actual commands/results, update coverage register only with real evidence, and finish with .ai/report.md.
+
+- Fund report acceptance uses `npm run test:e2e:fund-reports` and `playwright.fund-reports.config.ts`. Its runner starts a disposable SQLite Laravel fixture and scratch Next.js on registered CP/MK/APP hosts. See `tests/e2e/reports-funds/README.md`. Never point this fixture at local MySQL.
+- Product acceptance uses `npm run test:e2e:products` and `playwright.products.config.ts`. The runner starts a scratch Next.js application and a disposable in-memory Laravel fixture on registered CP/MK hosts with generated credentials. It never mutates the existing local stock/funds/database. See `tests/e2e/products/README.md`; its serialized HTTP broker does not prove real MySQL concurrency.

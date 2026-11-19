@@ -65,3 +65,32 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `../isp-backend/app/Http/Resources/FundTransactionResource.php`
 - `../isp-backend/app/Http/Resources/StaffCollection.php`
 - `../isp-backend/app/Http/Resources/StaffResource.php`
+
+
+## Reviewed contract — 19 November 2026
+
+- `/reports/funds` renders FundTable with `showCreateAction=false`. It uses actual
+  GET `/funds` with name/account_number substring and numeric staff_id filters.
+  There are no date, status, export, download or print controls.
+- FundResource exposes public UUID `id`, numeric company/staff IDs, balances in
+  BDT, short name, account number, deletable flag and assigned staff. Model balance
+  storage is integer poisha. Fund Filters sum all filtered rows before pagination.
+- The report inherits company and reseller scopes. Platform Super Admin still sees
+  platform-owned funds through this ordinary tenant endpoint. It is not a platform
+  aggregate report. Route permissions and subscription middleware stay active.
+- Exposed row actions: edit (`funds.edit`), transaction detail
+  (`fund-transactions.show`), deletion only when `funds.delete` and deletable > 0.
+  All test funds have deletable=0. Creation is deliberately absent on this report.
+- Editing hydrates through GET `/funds/{uuid}`, saves PUT to that UUID, and invalidates
+  funds. UI names/short names require two characters. API requires both fields;
+  nullable staff_id must resolve inside the actor's company and reseller scope.
+  Writable company_id/reseller_id are prohibited. These ownership checks were added
+  after the acceptance test reproduced a foreign-staff assignment vulnerability.
+- Page sizes exposed are 5, 10, 25, 50, persisted on the acting staff profile.
+  The report now returns to page 1 when a new page size makes the old page invalid.
+- FundTable now reserves an error-message slot and exposes a translated alert/Retry
+  action for failed reads while retaining previously fetched rows during refresh.
+- Fixture and runtime: `../../reports-funds/README.md`; frontend spec
+  `tests/e2e/reports-funds/funds.spec.ts`; sibling backend
+  `tests/Browser/FundReportFixture.php` and `tests/Feature/FundReportAcceptanceTest.php`.
+  All mutations are isolated test data, not local MySQL or real transfers.

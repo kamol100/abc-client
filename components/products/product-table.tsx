@@ -1,5 +1,7 @@
 "use client";
 
+import { usePermissions } from "@/context/app-provider";
+import ProductFeedback, { ProductBackgroundError } from "@/components/products/product-feedback";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
@@ -12,6 +14,8 @@ import ProductsToolbarActions from "@/components/products/products-toolbar-actio
 
 const ProductTable: FC = () => {
     const { t } = useTranslation();
+    const { hasPermission } = usePermissions();
+    const allowed = hasPermission("products.access");
     const [filterValue, setFilter] = useState<string | null>(null);
     const params = useMemo(
         () =>
@@ -21,10 +25,11 @@ const ProductTable: FC = () => {
         [filterValue],
     );
 
-    const { data, isLoading, isFetching, setCurrentPage } =
+    const { data, isLoading, isFetching, isError, refetch, setCurrentPage } =
         useApiQuery<PaginatedApiResponse<ProductRow>>({
             queryKey: ["products"],
             url: "products",
+            enabled: allowed,
             params,
         });
 
@@ -36,7 +41,12 @@ const ProductTable: FC = () => {
         ? `${t("product.title_plural")} (${pagination.total})`
         : t("product.title_plural");
 
+    if (!allowed) return <ProductFeedback denied />;
+    if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
+
     return (
+        <>
+        <ProductBackgroundError failed={isError} retry={refetch} />
         <DataTable
             data={products}
             columns={columns}
@@ -45,13 +55,14 @@ const ProductTable: FC = () => {
             toolbarBeforeViewOptions={<PrefixSettingsButton field="product_code_prefix" />}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
-            isLoading={isLoading || isFetching}
+            isLoading={isLoading}
             isFetching={isFetching}
             queryKey="products"
             form={ProductsToolbarActions}
             toolbarOptions={{ filter: ProductFilterSchema() }}
             toolbarTitle={toolbarTitle}
         />
+        </>
     );
 };
 

@@ -67,8 +67,8 @@ export const ProductInLineSchema = z
         product_category_id: z.coerce.number().nullable().optional(),
         brand: z.string().max(180).nullable().optional(),
         status: z.enum(PRODUCT_IN_STATUS).default("new"),
-        quantity: z.coerce.number().min(0, {
-            message: "product_in.errors.quantity_min",
+        quantity: z.coerce.number().gt(0, {
+            message: "product_in.errors.quantity_positive",
         }),
         unit_price: z.coerce.number().min(0, {
             message: "product_in.errors.unit_price_min",
@@ -89,7 +89,7 @@ export const ProductInLineSchema = z
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 path: ["quantity"],
-                message: "product_in.errors.quantity_min",
+                message: "product_in.errors.quantity_positive",
             });
         }
 
@@ -107,6 +107,9 @@ export const ProductInLineSchema = z
             return;
         }
 
+        if (new Set(serials).size !== serials.length || !Number.isInteger(toNumber(line.quantity))) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["serial"], message: "product_in.errors.serial_unique" });
+        }
         const hasEmptySerial = serials.some((item) => item.length === 0);
         if (hasEmptySerial) {
             ctx.addIssue({
@@ -132,7 +135,7 @@ const ProductInFormSchemaBase = z.object({
         required_error: "product_in.errors.purchase_by_required",
         invalid_type_error: "product_in.errors.purchase_by_required",
     }).min(1, { message: "product_in.errors.purchase_by_required" }),
-    purchase_date: OptionalDateValueSchema,
+    purchase_date: OptionalDateValueSchema.refine((value): boolean => value !== undefined, { message: "product_in.errors.date_required" }),
     voucher: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
     expense: z

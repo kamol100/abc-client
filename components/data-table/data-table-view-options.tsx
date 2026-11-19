@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import MyButton from "../my-button";
+import MyButton from "@/components/my-button";
 import { useTranslation } from "react-i18next";
 
 interface DataTableViewOptionsProps<TData> {
@@ -25,7 +25,7 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <MyButton action="filter" size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
+        <MyButton action="filter" aria-label={t("common.view")} size={"default"} variant="outline" className="ml-auto lg:flex hover:bg-primary hover:text-primary-foreground">
           <MixerHorizontalIcon className="h-4 w-4" />
           <div className="hidden md:show lg:show">{t("common.view")}</div>
         </MyButton>

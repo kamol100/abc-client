@@ -1,0 +1,612 @@
+{
+  "timestamp": "2026-11-19T11:09:13.335Z",
+  "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+  "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+  "raw_report": "/private/tmp/isp-products-final8/results.json",
+  "stats": {
+    "startTime": "2026-11-19T11:09:13.335Z",
+    "duration": 103488.93299999999,
+    "expected": 50,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "FT051-04-a products route shows tenant-owned stock after reload",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 13358
+        }
+      ]
+    },
+    {
+      "title": "FT051-01-a create serial product through UI and freshly read its attributes",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3145
+        }
+      ]
+    },
+    {
+      "title": "FT051-04-in stock in form and product-specific movement route survive reload",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 7112
+        }
+      ]
+    },
+    {
+      "title": "FT051-04-out stock out form and product-specific movement route survive reload",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 6443
+        }
+      ]
+    },
+    {
+      "title": "FT051-03-a backend rejects negative stock input without persisting a movement",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 58
+        }
+      ]
+    },
+    {
+      "title": "FT051-03-b rejects duplicate serial numbers atomically",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 55
+        }
+      ]
+    },
+    {
+      "title": "FT051-03-c competing stock issues cannot consume more than the remaining quantity",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 102
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader denies product and stock mutations with no new records",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 57
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied denies product and stock mutations with no new records",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 59
+        }
+      ]
+    },
+    {
+      "title": "FT051-10-a foreign UUID reads and deletes are denied on both product movement routes",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 88
+        }
+      ]
+    },
+    {
+      "title": "FT051-10-b foreign category and writable tenant identifiers cannot cross company boundaries",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 25
+        }
+      ]
+    },
+    {
+      "title": "FT051-02-a stock-in and stock-out UI persist exact quantities and expense with no invoice",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 4707
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-a product filters combine and clearing restores the known baseline",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3728
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-product_category_id independently excludes the other fixture",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2709
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-unit_type_id independently excludes the other fixture",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2723
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-has_serial independently excludes the other fixture",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2749
+        }
+      ]
+    },
+    {
+      "title": "FT051-06-a product pagination and column visibility preserve the selected identities",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1984
+        }
+      ]
+    },
+    {
+      "title": "FT051-07-a edit hydrates relations, cancel preserves data, and saved changes survive reload",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3840
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-ui restricted users see no write controls, including direct stock URLs",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 4499
+        }
+      ]
+    },
+    {
+      "title": "FT051-11-a failed list is not empty state and retry restores exact records",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 5011
+        }
+      ]
+    },
+    {
+      "title": "FT051-11-b delayed filter refresh keeps rows and scroll stable then shows latest filter",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3470
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-in-movement report filters reconcile exact scope beyond one page",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3471
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-out-movement report filters reconcile exact scope beyond one page",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3579
+        }
+      ]
+    },
+    {
+      "title": "FT051-03-d issued serials cannot be issued twice and mismatched lots leave stock unchanged",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 134
+        }
+      ]
+    },
+    {
+      "title": "FT051-02-b invoice request preserves the approved base-price minus discount calculation",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 86
+        }
+      ]
+    },
+    {
+      "title": "FT051-03-e failed multi-line stock-out rolls back earlier rows and retains unrelated sentinels",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 85
+        }
+      ]
+    },
+    {
+      "title": "FT051-07-delete product deletion permits unused products and preserves products with stock history",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 99
+        }
+      ]
+    },
+    {
+      "title": "FT051-08-12 delayed save blocks repeat submission and creates one product",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2620
+        }
+      ]
+    },
+    {
+      "title": "FT051-10-12 logout and restricted login on the same host cannot restore write controls",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 5198
+        }
+      ]
+    },
+    {
+      "title": "FT051-13 mobile keyboard English Bangla and light dark keep product forms usable",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2864
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-edit denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 29
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-delete denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-stock-in-read denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-stock-out-read denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-stock-in-report denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 25
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_reader-stock-out-report denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 28
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-edit denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-delete denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-stock-in-read denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 27
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-stock-out-read denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 27
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-stock-in-report denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 26
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-prd_denied-stock-out-report denies the direct API capability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 25
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-anonymous unauthenticated product and movement routes require authentication",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 64
+        }
+      ]
+    },
+    {
+      "title": "FT051-09-out-only report reader opens only the permitted stock-out report",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1642
+        }
+      ]
+    },
+    {
+      "title": "FT051-08-server failed save preserves the draft and retry creates one record",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2617
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-in-dates inclusive local-date boundaries retain exact fixture totals",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 48
+        }
+      ]
+    },
+    {
+      "title": "FT051-05-out-dates inclusive local-date boundaries retain exact fixture totals",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 42
+        }
+      ]
+    },
+    {
+      "title": "FT051-06-size product page size persists and reload returns the exact requested row count",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3165
+        }
+      ]
+    },
+    {
+      "title": "FT051-06-reports full-filter totals remain exact across report pages",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3083
+        }
+      ]
+    },
+    {
+      "title": "FT051-11-background failed background refresh preserves loaded rows and retry recovers",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 7955
+        }
+      ]
+    }
+  ],
+  "source_state": {
+    "frontend_head": "500893174834d9272d2097004162852114c055a1",
+    "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+    "sha256": {
+      "../isp-backend/app/Http/Controllers/V1/Admin/ProductController.php": "38b9d92eefe2ca7ad3772a518fb3d32b78f188e6ef20226af6f3f9b9a4efd8ea",
+      "../isp-backend/app/Http/Controllers/V1/Admin/ProductInController.php": "c66ce7e93ed86f9e1b022bd5ef7fd366caf0980001b05776a664db7d853f4287",
+      "../isp-backend/app/Http/Controllers/V1/Admin/ProductOutController.php": "2c193e3a92d7c929a3b596bd3400cdf6ead93b013735171c0b5f362d3f7022f5",
+      "../isp-backend/app/Http/Requests/ProductOutRequest.php": "0c143cfcb296e6ed89e753650052da335ffede5b043412b242535c973ce2fb39",
+      "../isp-backend/app/Http/Requests/StoreProductInRequest.php": "69d1e1f7875b7da95fc36dc41665865ea67e27fde8d2deae0ed8899f46b1512f",
+      "../isp-backend/app/Http/Requests/StoreProductRequest.php": "6dfc16e3241236c2ec37ee42d1f0ad278554dab30c9a1f813566f32eda84b807",
+      "../isp-backend/app/Http/Requests/UpdateProductRequest.php": "59bc3a658a5d256487705e724ef8d0a88989a6a7523cf46985dbf100d6499a09",
+      "../isp-backend/app/Models/Product.php": "cb8bd7e03798c51893c9952f0283e6e04576b3db9836fbb8c3f82a31c10d61f8",
+      "../isp-backend/app/Models/ProductIn.php": "9391fae9d284e95fda68ae6ca3861ca7d3897fa5cb50fb9ed2ae7c3b16a09149",
+      "../isp-backend/app/Models/ProductOut.php": "74cdf9926176a677de6c48fb0da37f636ea4e5e11ad767eb5d8b1df8cabb504a",
+      "../isp-backend/app/Models/ProductSerial.php": "4cee1ba4ca330551c219f6b452bea59b5aae7cc89d03f617f9e6642b1f823675",
+      "../isp-backend/app/Rules/ProductRelationExists.php": "f64e8838fa575bc60e4abfa07e25d25b22c311430bb157a77391e14defb6d8a5",
+      "../isp-backend/app/Services/Filters/ProductIn/PurchaseDate.php": "57eed75c83d73ec211e6e2074f9c88426a468be39821604cddc8776a349de73c",
+      "../isp-backend/app/Services/Filters/ProductIn/StaffId.php": "ddc4de78ef533bb15a55d42d319543a5beadbb53beae1e28c6991f64c2614cbc",
+      "../isp-backend/app/Services/Filters/ProductOut/OutDate.php": "c29511202097e8cd399989844e87983837f4039263f1a3578c6ed34324c90e32",
+      "../isp-backend/app/Services/Filters/ProductOut/StaffId.php": "b8819cf1bb628cf332f8c46aed5d583a4337cfca57f95f358a1a72c842aae3d7",
+      "../isp-backend/tests/Feature/ProductIntegrityTest.php": "44e43a976ce5b255bfadd886d8a61a0eab6b9193fe808975f191ce9cd6bca737",
+      "components/data-table/data-table-toolbar.tsx": "05d35b01b409f64b239d177b4df778e7d87c08a0f5537fe67851a93887408621",
+      "components/data-table/data-table-view-options.tsx": "75b69b642dd73673538f5b814a9f99b0501caa4f4ea4eb6c3222424c4f2e2ade",
+      "components/form-wrapper/form-builder.tsx": "6bc5a874578e263790cb60743e1ff8cfe7000bec4fe0d0a88cedec9461197984",
+      "components/form-wrapper/form-filter.tsx": "84146a199d576f2d6746dcf7dedecc7020e253837fd90dc7cb69fd88d496e34c",
+      "components/form-wrapper/form-wrapper.tsx": "9147a9312796d0b5704257c5cc475635b0e1e40187a4ae70946f8cb9c634eb56",
+      "components/products/product-column.tsx": "e1383264b539da87a8adaa04a10dc465cec46a579156e600837e4d9d6c04eafe",
+      "components/products/product-feedback.tsx": "01c5a37a2fb0ce1145dc02530fc0ff49ca8490887a266081e349548876b59e97",
+      "components/products/product-filter-schema.ts": "29307fe7a1de9764b84599d5711bef41dab48736a77776b1e1f86e31aff7db27",
+      "components/products/product-form-schema.ts": "3db4baf95212665953af8263b4a7487861b0033c08b6a360315bc030586b2e29",
+      "components/products/product-form.tsx": "6804f56f43a24fae9f7b478fb1e547f3478fc5544f87b8c8a9bc38b2fcea2635",
+      "components/products/product-in-form-schema.ts": "6e0ca90a50a8221c32100e0ede1a10d14cf9f7763a7fc8e33314c3556cf38bbe",
+      "components/products/product-in-form.tsx": "49338027ab2eb2e4f84198eb0f39742db557938daa8f11432146b2fdb04fc9cf",
+      "components/products/product-in-lines-editor.tsx": "b21478019571671edd26edf4fa3c32d1dd9a8287ed928bd1c59c9ba9ba42945d",
+      "components/products/product-in-type.ts": "1d3bb76eb9d26ced0c927c4eaf602e442550eec6213a8e9b6a85e7632a637f1b",
+      "components/products/product-movement-column.tsx": "ac448c258126e41bdc149cc9806246ce20de1d5f7408f7029a01759189d7b656",
+      "components/products/product-movement-filter-schema.ts": "229e5847cdfc62aae578c8ded32145b982894de21294e443c65fab1fb78595ed",
+      "components/products/product-movement-table.tsx": "41188017c91a6f10c38dc0726df19168dc35cb602755331494e533004ab94c46",
+      "components/products/product-movement-type.ts": "0caf04ae5c169b9805529c25e8e0e0ea0ffb5484b7be425f74582ff826250266",
+      "components/products/product-out-form-schema.ts": "f60a9a2d56f9efad0690bbaaf3c917fff81245a55a30e73f66e1c1df92580d9a",
+      "components/products/product-out-form.tsx": "69057846ec3ebec9c4f42cb1d7fd99700d5264fb8548a84dfef6254bd11f071f",
+      "components/products/product-out-lines-editor.tsx": "abe6acd0a46de13f271c87a517fee139eb8e83cf92b34fbce85e008d2d46c5c1",
+      "components/products/product-out-serial-picker.tsx": "11ee65d1d6b31b3591fd9db8c36bc40f437fd04431e72321ca7cb028a5421897",
+      "components/products/product-out-type.ts": "45acb9bdd09a5f8b3a39c7dac4e97b97287e7aa0720473712c3077f56eeaa92a",
+      "components/products/product-reports-filter-schema.ts": "97b449f9f0012cb2213b5506a83654fce0ed0cca12626f5eca6400698a90a456",
+      "components/products/product-reports-summary.tsx": "89b5f6ce0cbe79c0ab1432979d2875dfaa4374e272f8f164d23456448e6fbab3",
+      "components/products/product-reports-table.tsx": "c87601f5741deacd1a3ff1cc4fb29780d9bf53e93d51e286ac68151b3a309f3c",
+      "components/products/product-reports-type.ts": "bd0a896f47b211f3ad65e9c28a5f03809bf47dceb1d232007b5bb03c6170b2fb",
+      "components/products/product-reports-view.tsx": "011023a52e897711eed0015e7144f6c4043efe75021fce1af3c0872403a75911",
+      "components/products/product-serial-dialog.tsx": "c7a3c60ab6c74cd22b88d3e4c01da26c3ef2db0d076e0818ee0c39345d443768",
+      "components/products/product-table.tsx": "b47304654f6ea5cd33274d551baee8baa7840d8b0ebadb34b222a04150d91356",
+      "components/products/product-type.ts": "e99b8b0616f313cc8fead4303fad52c479c9eaa658160b74fa8c65fdeabd5e5c",
+      "components/products/products-toolbar-actions.tsx": "c72b10508115f369ea90881c0b86844c387c75ed635b406f926dc093d2c9780f",
+      "package.json": "4b6ace4ce3626d5a40972be16f10bcfa57924a487c580e7694b96bae87e2701c",
+      "playwright.products.config.ts": "d05b4082674791fd2c4717daef9bbe342cbf9a0f26c5a68e803c8c1879d2db2b",
+      "public/lang/bn.json": "bd8d001166b461228c490d9ccc84b9b768cdd635eeecc867ef3678dfaffef1b5",
+      "public/lang/en.json": "c89000dd646c1ffae74ade8b1d232ccde11e04a5e82d62ed93095ff3fb70f108",
+      "scripts/run-e2e.mjs": "aed319670521be97b3cbefd03c180dcc5c35f8a915950610ea8d6ba4709735a0",
+      "scripts/run-products-e2e.mjs": "d00da8610c10065c98cc28acc5c390dde0d17e30e44a1bff32faa4e7d0866725",
+      "tests/e2e/products/ProductsFixture.php": "2f90a55dab1a5f50ce8775b7e077c66c8329b4afc8458f81737f627fba23a6eb",
+      "tests/e2e/products/README.md": "7946ed36c604fd4a1b9754b5c3f6fa3d1fd7f9a6751369dc705a1f99c896dcf7",
+      "tests/e2e/products/products.spec.ts": "ea11f1c14983e581da8118d3914da3c21d6b6a0ec353ed24bc61e375267d7808",
+      "tests/unit/data-table/mobile-simple-search.test.tsx": "b05564ce273472b02e674c6b3c32330a27a512b69cd1c472dad418ee22828efa",
+      "tests/unit/products/product-in-product-id.test.ts": "f2a000bc61e01bb78ad0aed383838c77e84ebe35e4395fb2c8a03f8f69fa8612",
+      "tests/unit/products/product-validation.test.ts": "38c28728b1837bf80c873fb89debecc47b808d3f671a00ae5f7754e74e07871a"
+    }
+  },
+  "screenshots": {
+    "desktop-products.png": "/private/tmp/isp-products-final8/artifacts/products-FT051-04-a-produc-d0a60-nt-owned-stock-after-reload/desktop-products.png",
+    "mobile-english-light.png": "/private/tmp/isp-products-final8/artifacts/products-FT051-13-mobile-k-aff76-k-keep-product-forms-usable/mobile-english-light.png",
+    "mobile-bangla-dark.png": "/private/tmp/isp-products-final8/artifacts/products-FT051-13-mobile-k-aff76-k-keep-product-forms-usable/mobile-bangla-dark.png"
+  },
+  "visual_review": {
+    "inspected": [
+      "desktop-products.png",
+      "mobile-english-light.png",
+      "mobile-bangla-dark.png"
+    ],
+    "result": "Desktop controls and settled mobile dialogs are readable and usable; dialog backgrounds are opaque, localized placeholders resolve, and primary/cancel controls fit the viewport."
+  },
+  "backend": {
+    "result": "passed",
+    "tests": 70,
+    "assertions": 283,
+    "pint": "passed",
+    "phpstan": "passed on 17 changed files"
+  },
+  "frontend_check": {
+    "typecheck": "passed",
+    "vitest": "749 passed, 20 failed; identical failure headings to clean HEAD (742 passed, 20 failed)",
+    "same_failure_titles": true
+  },
+  "limitations": [
+    "HTTP is serialized by the SQLite fixture; production database row-lock scheduling is not verified.",
+    "Asynchronous invoice enqueue payload and committed stock are verified; invoice-worker delivery/replay is not claimed."
+  ]
+}

@@ -11,7 +11,7 @@ export const ProductCategoryRefSchema = z.object({
 });
 
 export const ProductRowSchema = z.object({
-    id: z.coerce.number(),
+    id: z.string().uuid(),
     product_id: z.coerce.number().nullable().optional(),
     product_code: z.string().nullable().optional(),
     name: z.string(),
@@ -19,7 +19,7 @@ export const ProductRowSchema = z.object({
     vat: z.coerce.number().nullable().optional(),
     unit_type_id: z.coerce.number().nullable().optional(),
     product_category_id: z.coerce.number().nullable().optional(),
-    description: z.string().nullable().optional(),
+    description: z.string().max(255, { message: "product.description.errors.max" }).nullable().optional(),
     stock_in_quantity: z.coerce.number().nullable().optional(),
     stock_out_quantity: z.coerce.number().nullable().optional(),
     stock_in_remaining: z.coerce.number().nullable().optional(),
@@ -34,7 +34,7 @@ export const ProductFormSchema = z.object({
     name: z.string({
         required_error: "product.name.errors.required",
         invalid_type_error: "product.name.errors.invalid",
-    }).min(2, { message: "product.name.errors.min" }),
+    }).trim().min(2, { message: "product.name.errors.min" }).max(255, { message: "product.name.errors.max" }),
     has_serial: z.coerce.number({
         invalid_type_error: "product.has_serial.errors.invalid",
     }).min(0, { message: "product.has_serial.errors.invalid" }).max(1, { message: "product.has_serial.errors.invalid" }).default(0),
@@ -49,7 +49,7 @@ export const ProductFormSchema = z.object({
         required_error: "product.product_category.errors.required",
         invalid_type_error: "product.product_category.errors.required",
     }).min(1, { message: "product.product_category.errors.required" }),
-    description: z.string().nullable().optional().default(""),
+    description: z.string().max(255, { message: "product.description.errors.max" }).nullable().optional().default(""),
 });
 
 export type ProductFormInput = z.input<typeof ProductFormSchema>;

@@ -532,48 +532,64 @@
     "page": "app/(dashboard)/products/in/[id]/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-04-in"
+    ]
   },
   {
     "route": "/products/in",
     "page": "app/(dashboard)/products/in/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-04-in",
+      "FT051-02-a"
+    ]
   },
   {
     "route": "/products/out/[id]",
     "page": "app/(dashboard)/products/out/[id]/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-04-out"
+    ]
   },
   {
     "route": "/products/out",
     "page": "app/(dashboard)/products/out/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-04-out",
+      "FT051-02-a"
+    ]
   },
   {
     "route": "/products",
     "page": "app/(dashboard)/products/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-04-a"
+    ]
   },
   {
     "route": "/products/reports",
     "page": "app/(dashboard)/products/reports/page.tsx",
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT051-05-in-movement",
+      "FT051-05-out-movement",
+      "FT051-06-reports"
+    ]
   },
   {
     "route": "/about",
@@ -692,8 +708,10 @@
     "page": "app/(dashboard)/reports/funds/page.tsx",
     "feature": "reports-funds",
     "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-    "status": "draft",
-    "scenario_ids": []
+    "status": "passing",
+    "scenario_ids": [
+      "FT063-03"
+    ]
   },
   {
     "route": "/reports",

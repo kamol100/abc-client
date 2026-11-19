@@ -244,7 +244,7 @@ describe("mobile simple search", () => {
         accountState.mode = "default";
         const { unmount } = renderTable(true);
         expect(drawer()).toHaveAttribute("data-side", "bottom");
-        expect(screen.queryByRole("button", { name: "common.filter" })).not.toBeInTheDocument();
+        expect(drawer()).toContainElement(screen.getByRole("button", { name: "common.filter" }));
         expect(drawer()).toContainElement(screen.getByPlaceholderText(ANY));
         expect(await screen.findByPlaceholderText("client.network.placeholder")).toBeInTheDocument();
         expect(screen.getByPlaceholderText("client.zone.placeholder")).toBeInTheDocument();
@@ -256,7 +256,7 @@ describe("mobile simple search", () => {
         queryCalls.length = 0;
         const loading = renderTable(true);
         expect(drawer()).toHaveAttribute("data-side", "bottom");
-        expect(screen.queryByRole("button", { name: "common.filter" })).not.toBeInTheDocument();
+        expect(drawer()).toContainElement(screen.getByRole("button", { name: "common.filter" }));
         expect(screen.getAllByPlaceholderText(ANY)).toHaveLength(1);
         expect(drawer()).toContainElement(screen.getByPlaceholderText(ANY));
         loading.unmount();
@@ -264,7 +264,7 @@ describe("mobile simple search", () => {
         accountState.phase = "error";
         const failed = renderTable(true);
         expect(drawer()).toHaveAttribute("data-side", "bottom");
-        expect(screen.queryByRole("button", { name: "common.filter" })).not.toBeInTheDocument();
+        expect(drawer()).toContainElement(screen.getByRole("button", { name: "common.filter" }));
         failed.unmount();
 
         accountState.phase = "success";
@@ -279,7 +279,7 @@ describe("mobile simple search", () => {
         renderTable(false);
         expect(staffAccountQuery()).toMatchObject({ enabled: false });
         expect(drawer()).toHaveAttribute("data-side", "bottom");
-        expect(screen.queryByRole("button", { name: "common.filter" })).not.toBeInTheDocument();
+        expect(drawer()).toContainElement(screen.getByRole("button", { name: "common.filter" }));
     });
 
     it("leaves the desktop filter unchanged when simple search is enabled", async () => {
@@ -290,7 +290,7 @@ describe("mobile simple search", () => {
 
         expect(staffAccountQuery()).toMatchObject({ enabled: false });
         expect(screen.queryByTestId("mobile-filter-drawer")).not.toBeInTheDocument();
-        expect(screen.queryByRole("button", { name: "common.filter" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "common.filter" })).toBeVisible();
         expect(screen.queryByPlaceholderText(ANY)).not.toBeInTheDocument();
 
         const icon = document.querySelector(".lucide-funnel");

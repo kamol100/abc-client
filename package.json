@@ -25,7 +25,9 @@
     "test:e2e:staffs": "playwright test --config=playwright.staffs.config.ts",
     "test:e2e:tickets": "playwright test --config=playwright.support-tickets.config.ts --project=support-tickets-chromium",
     "test:e2e:platform-support": "playwright test --config=playwright.platform-support.config.ts",
-    "test:e2e:referrals": "node scripts/run-referral-e2e.mjs"
+    "test:e2e:referrals": "node scripts/run-referral-e2e.mjs",
+    "test:e2e:fund-reports": "node scripts/run-fund-reports-e2e.mjs",
+    "test:e2e:products": "node scripts/run-products-e2e.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

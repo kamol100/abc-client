@@ -89,14 +89,14 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
             ),
             cell: ({ row }) => {
                 const quantity = Number(row.original.stock_in_quantity ?? 0);
-                return (
+                return hasPermission("products-in.access") ? (
                     <Link
                         href={`/products/in/${row.original.id}`}
-                        className="text-primary !text-blue-500 hover:underline"
+                        className="text-primary hover:underline"
                     >
                         {quantity}
                     </Link>
-                );
+                ) : <span>{quantity}</span>;
             },
             enableSorting: false,
         },
@@ -107,14 +107,14 @@ export function useProductColumns(pagination?: Pagination): ColumnDef<ProductRow
             ),
             cell: ({ row }) => {
                 const quantity = Number(row.original.stock_out_quantity ?? 0);
-                return (
+                return hasPermission("products-out.access") ? (
                     <Link
                         href={`/products/out/${row.original.id}`}
-                        className="text-primary !text-blue-500 hover:underline"
+                        className="text-primary hover:underline"
                     >
                         {quantity}
                     </Link>
-                );
+                ) : <span>{quantity}</span>;
             },
             enableSorting: false,
         },

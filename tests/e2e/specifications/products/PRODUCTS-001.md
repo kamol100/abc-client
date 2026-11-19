@@ -1,47 +1,46 @@
 # PRODUCTS-001 — Products
 
-- Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
-- Date: 2026-11-12.
-- Workflow: investigate → specify → review → implement → verify.
-- Scope routes: `/products/in/[id]`, `/products/in`, `/products/out/[id]`, `/products/out`, `/products`, `/products/reports`
+Status: reviewed and implemented; executed evidence and remaining verification are recorded below. Scope: `/products`, `/products/in`, `/products/out`, `/products/in/[id]`, `/products/out/[id]`, `/products/reports`.
 
-## Source evidence and investigation limits
+Run `npm run test:e2e:products`. Tests: [products.spec.ts](../../products/products.spec.ts). Fixture and runner details: [suite README](../../products/README.md). [Source inventory](source-evidence.md) and [coverage policy](../COVERAGE-POLICY.md) remain applicable.
 
-Pages and nearest feature files were statically inventoried. The evidence file records literal fields, permission checks, API templates and matching backend route declarations. These are observed references, not proof of active UI reachability, effective middleware, valid payloads or approved behavior. Detailed controller/service/validator and business review remains required before implementing ambiguous cases. Do not invent CRUD for read-only screens.
+## Reviewed contracts and decisions
 
-- [Source trace](source-evidence.md)
-- Existing unit candidates: `tests/unit/products/product-in-product-id.test.ts`
+- Products use UUID route keys; stock-entry payloads and dropdowns use numeric database identifiers. The UI hydrates product category/unit relations before editing. Name is trimmed, 2–255 characters; description is at most 255 characters; VAT is nonnegative; category and unit must belong to the authenticated company/reseller scope. Writable company/reseller fields are prohibited. Serial mode comes from the saved product.
+- Stock-in and stock-out quantities must be positive. Serialized quantities must be whole, with an available, distinct serial per item. An incoming serial cannot repeat on the same product. The selected outgoing lot must belong to the selected product. The remaining quantity is checked while the lot is locked; unavailable serials are rejected while locked. A failed later line rolls back all earlier changes in the request.
+- Displayed money and API payloads use BDT major units. Stored prices/expense amounts use integer poisha. Independent examples: three items at BDT 100 cost BDT 300; issuing two at BDT 150 records BDT 300 and leaves one. Snapshot checks expect 30,000 poisha.
+- **User decision, 19 November 2026:** keep the existing invoice calculation. For quantity 2 at BDT 150, VAT 10%, discount BDT 20, the stock line can be BDT 310 while the queued invoice retains base BDT 300 minus BDT 20 = BDT 280. This suite explicitly asserts that existing calculation.
+- **User decision, 19 November 2026:** keep committed stock-out when asynchronous invoice creation fails, allowing queue retry. Do not replace that workflow with synchronous invoice/stock rollback. Synchronous validation/transaction failures still leave no partial stock changes. The suite fakes queue execution and verifies its payload; it does not claim successful invoice delivery or retry.
+- Products with stock or serial history cannot be deleted, matching the existing UI restriction. An unused test-owned product can be deleted. No stock-movement edit flow, print or export control is exposed; none is fabricated.
+- Product filters: search, category, unit, serial flag. Movement/report filters: product where exposed, vendor, entering staff, purchaser/receiver, status and local calendar-date range; client exists on outgoing movement filters/API. `entry_by` resolves the staff selector to the stored entering identity. Same-day date ranges include the whole date. Summaries cover the complete filtered dataset, not one page.
+- CP and MK use registered tenant origins and isolated sessions. Full, read-only, denied and out-report-only actors are separate users with exact grants. Direct API authorization tests supplement hidden controls and URL checks. Reseller relation enforcement has separate backend coverage.
 
-## Personas, fixtures, and review
+## Acceptance groups and executable cases
 
-Use dedicated test database/cache/storage/queue, tenant A and B registered hosts, full-feature actor, restricted/read-only actor, reseller/zone actor when applicable, and subscriber owner/non-owner for portal features. Public pages use anonymous contexts. Seed known included/excluded rows, stable identifiers and relation IDs; create test-owned mutation fixtures per worker with failure-safe cleanup.
+Each test title names its explicit child scenario. The coverage register expands these groups rather than treating one generic case as proof of every variant.
 
-Record exact required fields/defaults/validation boundaries and permissions from source trace, then verify them against Laravel requests/resources/services. Decide dependencies, duplicate handling, relation ownership, monetary units, date boundaries and failure recovery. Selectors/API templates are clues, not new endpoint definitions. Cross-tenant direct API enforcement needs backend tests as well.
+- FT051-01: browser-created serialized product preserves unit, category, VAT and serial mode after fresh API read and reload.
+- FT051-02: browser stock-in/out reconciles quantity, vendor/staff and expense persistence; the separately approved invoice payload retains its exact calculation.
+- FT051-03: negative/zero quantities, duplicate incoming/existing serials, already-issued serials, mismatched lots, remaining-stock limits and multi-line rollback. Concurrent HTTP submissions are checked in the serialized fixture. Real database concurrency remains a separate blocked case.
+- FT051-04: inventory, both create forms, both product-specific movement routes and combined reports expose named fixture content and survive reload.
+- FT051-05: product filters independently and combined, reset/empty states, report filters including entering staff and outgoing client, and inclusive/exclusive date boundaries with exact quantities/prices.
+- FT051-06: known product rows paginate, page changes preserve identities, and permitted column visibility works. Full-filter report totals are checked independently of page contents.
+- FT051-07: edit hydration, cancel, save/reload, unused-product deletion, and protection of stock history.
+- FT051-08: required fields remain recoverable; a controlled save failure preserves the draft and retry creates one record.
+- FT051-09: full/read-only/denied/out-only users, direct reads/reports/mutations, anonymous access, and direct form URLs. No host or company-id privilege shortcuts.
+- FT051-10: known foreign UUID/numeric reads and deletion, forbidden relationship/company fields, reseller boundaries, same-host logout/login and back/reload.
+- FT051-11: truthful failed/empty/loading states, retry and held background requests; loaded rows and scroll remain stable, and the latest filter wins.
+- FT051-12: Enter during a delayed valid save produces one mutation; same-host identity change cannot restore the former user's write controls.
+- FT051-13: mobile keyboard-opened forms, correct focus, English/Bangla placeholders, and light/dark appearance with inspected screenshot evidence.
 
-For money/stock/subscription/permissions/identity changes, approve independently calculated expected effects before implementation. Use sandbox/fake router, provider, payment and notification adapters; never send real customer messages or mutate real devices. Coordinate backend/browser Asia/Dhaka time. Generated auth state is secret and stays out of commits/artifacts.
+## Verification and limits
 
-## Feature-specific acceptance scenarios
+Fresh run details, source hashes, exact test titles and inspected screenshots are in [evidence/run.json](evidence/run.json). The register records the same evidence and the six route mappings. Failed early runs were used to reproduce defects; they are not passing evidence.
 
-- FT051-01 [P1, pending review]: Create stock product with unit/category and serial-tracking mode; save/read preserves attributes.
-- FT051-02 [P1, pending review]: Stock-in/out subroutes reconcile exact quantities, serial availability, vendor/client/staff relationships and optional invoice/expense side effects.
-- FT051-03 [P1, pending review]: Reject duplicate/unavailable serials, negative/insufficient stock and concurrent double issue; failed financial linkage must not leave partial stock changes.
-- FT051-04 [P1, pending review]: Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.
-- FT051-05 [P1, pending review]: Exercise actual filters independently and combined: any, client_id, entry_by, has_serial, product_category_id, product_id, status, unit_type_id, vendor_id. Assert included AND excluded fixture identities; clear restores baseline and pagination resets appropriately.
-- FT051-06 [P1, pending review]: Pagination/page size and permitted column visibility work on known data; summary totals represent approved full filter scope, not just visible rows. Do not invent controls absent from this screen.
-- FT051-07 [P1, pending review]: For each actually exposed create/edit/save form: valid payload persists after fresh read/reload; edit hydrates saved relations before changing them, cancel leaves saved state unchanged.
-- FT051-08 [P1, pending review]: Required/invalid/boundary input stays recoverable with approved field errors; server rejection and delayed save produce no false success or duplicate persisted mutation. Use exact feature fields/constraints from reviewed schemas.
-- FT051-09 [P0, pending review]: For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.
-- FT051-10 [P0, pending review]: Known foreign tenant/owner identifiers cannot expose or mutate protected data or relations; identity switch/back/reload cannot restore previous user data. Public-host data is isolated by approved host rules.
-- FT051-11 [P1, pending review]: Controlled delay/failure/empty response has distinct truthful loading/error/no-data state; retry recovers and stale earlier responses cannot replace latest selection.
-- FT051-12 [P1, pending review]: Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.
-- FT051-13 [P2, pending review]: Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.
+The browser fixture is real Laravel plus Next.js, using SQLite `:memory:` and faked external integrations. The backend mandates SQLite and prohibits MySQL tests. Real MySQL lock scheduling therefore remains unverified and is retained as a blocked scenario rather than excluded. Queue-worker invoice delivery/retry is not claimed by a fake-queue assertion. Global frontend unit failures are compared separately against an archive of HEAD; passing feature checks do not imply the whole repository passes.
 
-## AI implementation handoff / done criteria
+### Latest executed result
 
-Review exact feature fields, source-linked backend contracts and domain decisions first. Split multi-surface/financial cases into independent Given/When/Then tests and expand the coverage register before coding. Do not count generic draft cases as implemented coverage. Shared prerequisites: strict login assertion, validation-safe submit helper, persona sessions, isolated fixture cleanup and controlled integrations. Preserve existing uncommitted work.
+The final source-matched run passed all 50 browser/API acceptance cases with no skips or flaky results. Backend product regressions passed 70 tests and 283 assertions; Pint and PHPStan passed on all 17 changed backend files. Product unit tests passed nine tests. Typecheck passed. The full frontend check ran 769 tests: 749 passed and 20 failed; an isolated archive of HEAD reproduced the same 20 failures and failure headings.
 
-Use semantic locators scoped to correct row/dialog and exact UUID/relation types. Next.js server-action outbound calls cannot be intercepted with browser page.route; use real isolated backend or a server-reachable stub. No fixed sleeps, swallowed errors, first-option guesses, unconditional skips, production calculation helpers as expected answers, or weakened assertions to accept defects.
-
-Each case needs reviewed expected values, linked spec/test title, executed run evidence and final status. Blocked/skipped/failing cases remain uncovered. Document backend contract/security gaps separately. Run appropriate checks and record environment/commands/results/artifacts and .ai/report.md. No installs/push/deploy without required approval.
-
-Current verification: source inventory and documentation checks only; no application/test/runtime changes or test runs.
+The expanded product register records 51 evidence-backed passes (including the separate reseller backend case), one blocked real-database concurrency case, 100% review readiness, 98.08% recorded scenario pass coverage, 96.77% critical coverage, and all six routes executed. The overall release target is **not** marked met because critical database concurrency remains unverified. The global inventory checker separately stops on three existing unmapped Help Management pages, also reproduced against HEAD; product links, hashes, scenario references and route mappings were checked independently.

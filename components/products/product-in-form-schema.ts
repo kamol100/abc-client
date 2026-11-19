@@ -18,6 +18,7 @@ export const ProductInFormFieldSchema = (): FieldConfig[] => {
             name: "purchase_date",
             label: {
                 labelText: "product_in.purchase_date.label",
+                mandatory: true,
             },
             placeholder: "product_in.purchase_date.placeholder",
         },

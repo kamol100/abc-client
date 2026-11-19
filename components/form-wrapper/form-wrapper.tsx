@@ -88,6 +88,8 @@ type FormWrapperProps = {
     transformPayload?: (values: FieldValues) => FieldValues;
     /** Runs after Zod validation and before the request. Return false to keep the draft and skip the request. */
     preparePayload?: (values: FieldValues) => Promise<FieldValues | false> | FieldValues | false;
+    /** Block repeated submits while a mutation is in flight; opt in for transactional forms. */
+    preventDuplicateSubmit?: boolean;
     /** Keep the entered values after a successful response. Defaults to resetting the form. */
     resetOnSuccess?: boolean;
     /** Skip the string query-key invalidation. Callers update the precise cache themselves. */
@@ -121,6 +123,7 @@ export default function FormWrapper({
     extraPayload,
     transformPayload,
     preparePayload,
+    preventDuplicateSubmit = false,
     resetOnSuccess = true,
     skipInvalidate = false,
     onSubmitError,
@@ -134,6 +137,7 @@ export default function FormWrapper({
     const { t } = useTranslation();
     const submitRef = useRef<HTMLInputElement>(null);
     const lastPayloadRef = useRef<FieldValues>({});
+    const submittingRef = useRef(false);
     const submitStartedAtRef = useRef(0);
     const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const mountedRef = useRef(true);
@@ -260,6 +264,7 @@ export default function FormWrapper({
         invalidateKeys: skipInvalidate ? undefined : queryKey,
         successMessage,
         onSuccess: (responseData) => {
+            submittingRef.current = false;
             if (resetOnSuccess) reset();
             if (!successMessage && responseData?.message) {
                 toast.success(t(String(responseData.message)));
@@ -269,6 +274,7 @@ export default function FormWrapper({
         },
         // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
         onError: (error) => {
+            submittingRef.current = false;
             clearSubmitHold();
             const visible = new Set(flattenFields(formSchema).map((field) => field.name));
             Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
@@ -279,31 +285,40 @@ export default function FormWrapper({
     });
 
     const onSubmit = async (formValues: FieldValues) => {
-        if (!api) return;
-        const prepared = preparePayload ? await preparePayload(formValues) : formValues;
-        if (prepared === false) return;
-        const transformedValues = transformPayload
-            ? transformPayload(prepared)
-            : prepared;
-        const mergedPayload =
-            extraPayload && Object.keys(extraPayload).length > 0
-                ? ({ ...transformedValues, ...extraPayload } as FieldValues)
-                : transformedValues;
-        const payload = sanitizeServerActionPayload(mergedPayload);
+        if (!api || (preventDuplicateSubmit && (submittingRef.current || isPending || holdingSubmit))) return;
+        if (preventDuplicateSubmit) submittingRef.current = true;
+        try {
+            const prepared = preparePayload ? await preparePayload(formValues) : formValues;
+            if (prepared === false) {
+                submittingRef.current = false;
+                return;
+            }
+            const transformedValues = transformPayload
+                ? transformPayload(prepared)
+                : prepared;
+            const mergedPayload =
+                extraPayload && Object.keys(extraPayload).length > 0
+                    ? ({ ...transformedValues, ...extraPayload } as FieldValues)
+                    : transformedValues;
+            const payload = sanitizeServerActionPayload(mergedPayload);
 
-        lastPayloadRef.current = payload;
-        if (submitHoldMs && submitHoldMs > 0) {
-            submitStartedAtRef.current = Date.now();
-            setHoldingSubmit(true);
-        }
-        if (isFormData) {
-            const fd = new FormData();
-            Object.entries(payload).forEach(([key, value]) => {
-                fd.append(key, value as string);
-            });
-            submitForm(fd);
-        } else {
-            submitForm(payload);
+            lastPayloadRef.current = payload;
+            if (submitHoldMs && submitHoldMs > 0) {
+                submitStartedAtRef.current = Date.now();
+                setHoldingSubmit(true);
+            }
+            if (isFormData) {
+                const fd = new FormData();
+                Object.entries(payload).forEach(([key, value]) => {
+                    fd.append(key, value as string);
+                });
+                submitForm(fd);
+            } else {
+                submitForm(payload);
+            }
+        } catch (error) {
+            submittingRef.current = false;
+            throw error;
         }
     };
 

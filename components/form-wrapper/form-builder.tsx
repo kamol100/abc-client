@@ -249,6 +249,7 @@ export type FormBuilderProps = {
   extraPayload?: Record<string, unknown>;
   transformPayload?: (values: FieldValues) => FieldValues;
   preparePayload?: (values: FieldValues) => Promise<FieldValues | false> | FieldValues | false;
+  preventDuplicateSubmit?: boolean;
   resetOnSuccess?: boolean;
   skipInvalidate?: boolean;
   onSubmitError?: (error: unknown, payload: FieldValues) => void;
@@ -335,6 +336,7 @@ const FormBuilder = ({
   extraPayload,
   transformPayload,
   preparePayload,
+  preventDuplicateSubmit,
   resetOnSuccess,
   skipInvalidate,
   onSubmitError,
@@ -541,6 +543,7 @@ const FormBuilder = ({
       extraPayload={extraPayload}
       transformPayload={transformPayload}
       preparePayload={preparePayload}
+      preventDuplicateSubmit={preventDuplicateSubmit}
       resetOnSuccess={resetOnSuccess}
       skipInvalidate={skipInvalidate}
       onSubmitError={onSubmitError}

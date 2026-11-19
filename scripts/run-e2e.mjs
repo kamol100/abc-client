@@ -7,6 +7,11 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const require = createRequire(import.meta.url);
 const cli = require.resolve("@playwright/test/cli");
 const args = process.argv.slice(2);
+const fixtureRunners = {
+  "playwright.referrals.config.ts": "scripts/run-referral-e2e.mjs",
+  "playwright.fund-reports.config.ts": "scripts/run-fund-reports-e2e.mjs",
+  "playwright.products.config.ts": "scripts/run-products-e2e.mjs",
+};
 
 // Each feature keeps its own authentication, fixtures and reports. Discover new
 // root-level suite configs automatically so the standard command includes them.
@@ -23,8 +28,9 @@ let failed = false;
 const results = [];
 for (const config of configs) {
   console.log(`\nRunning Playwright suite: ${config}`);
-  const command = config === "playwright.referrals.config.ts"
-    ? ["scripts/run-referral-e2e.mjs", ...args]
+  const fixtureRunner = fixtureRunners[config];
+  const command = fixtureRunner
+    ? [fixtureRunner, ...args]
     : [cli, "test", `--config=${config}`, ...args];
   const result = spawnSync(process.execPath, command, {
     cwd: root,

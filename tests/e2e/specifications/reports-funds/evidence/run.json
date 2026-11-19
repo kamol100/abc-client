@@ -1,0 +1,165 @@
+{
+  "timestamp": "2026-11-19T07:01:01.565Z",
+  "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+  "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+  "raw_report": "/private/tmp/isp-funds-run9/results.json",
+  "stats": {
+    "startTime": "2026-11-19T07:01:01.565Z",
+    "duration": 52946.849,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "FT063-01 exact decimal negative zero and full-scope balances exclude other tenant and reseller",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 13634
+        }
+      ]
+    },
+    {
+      "title": "FT063-02 report exposes no export print or date controls for populated and empty results",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2342
+        }
+      ]
+    },
+    {
+      "title": "FT063-03 funds report identity survives reload with the known account and assigned staff",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2594
+        }
+      ]
+    },
+    {
+      "title": "FT063-04 filters name account staff independently combined and reset",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 4934
+        }
+      ]
+    },
+    {
+      "title": "FT063-05 pagination full-filter totals page size and column visibility",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1987
+        }
+      ]
+    },
+    {
+      "title": "FT063-06 edit hydrates cancel preserves and save persists on a fresh API read",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2570
+        }
+      ]
+    },
+    {
+      "title": "FT063-07 invalid edits stay open and direct server validation preserves the balance",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 1684
+        }
+      ]
+    },
+    {
+      "title": "FT063-08 reader and denied personas enforce actual API permissions",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 5904
+        }
+      ]
+    },
+    {
+      "title": "FT063-09 foreign UUIDs reseller and platform boundaries hold through fresh login",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3367
+        }
+      ]
+    },
+    {
+      "title": "FT063-10 empty and failed requests are distinct with recovery",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 7549
+        }
+      ]
+    },
+    {
+      "title": "FT063-11 rapid report searches offer no creation or duplicate balance effects",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 2285
+        }
+      ]
+    },
+    {
+      "title": "FT063-12 mobile keyboard Bangla and dark theme preserve filter usability",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration_ms": 3729
+        }
+      ]
+    }
+  ],
+  "source_state": {
+    "frontend_head": "500893174834d9272d2097004162852114c055a1",
+    "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+    "sha256": {
+      "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+      "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+      "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+      "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+      "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+      "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+      "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+      "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+      "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+      "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+      "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+      "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+      "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+    }
+  },
+  "backend": {
+    "tests": 28,
+    "assertions": 109,
+    "result": "passed"
+  },
+  "frontend_check": {
+    "typecheck": "passed",
+    "vitest": "742 passed, 20 failed; identical to HEAD baseline",
+    "same_failure_titles": true
+  }
+}

@@ -358,9 +358,23 @@
   {
     "feature": "products",
     "ticket": "products/PRODUCTS-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
+    "stage": "implemented",
+    "specs": [
+      "tests/e2e/products/products.spec.ts"
+    ],
+    "last_run": {
+      "result": "passed",
+      "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+      "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+      "timestamp": "2026-11-19T11:09:13.335Z",
+      "source_state": {
+        "frontend_head": "500893174834d9272d2097004162852114c055a1",
+        "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+        "manifest": "tests/e2e/specifications/products/evidence/run.json",
+        "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+      },
+      "artifact": "tests/e2e/specifications/products/evidence/run.json"
+    }
   },
   {
     "feature": "public-about",

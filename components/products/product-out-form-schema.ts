@@ -7,6 +7,7 @@ export const ProductOutFormFieldSchema = (): FieldConfig[] => {
             name: "out_date",
             label: {
                 labelText: "product_out.out_date.label",
+                mandatory: true,
             },
             placeholder: "product_out.out_date.placeholder",
         },

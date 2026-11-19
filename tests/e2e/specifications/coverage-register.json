@@ -1526,7 +1526,7 @@
       "id": "CL-O03",
       "feature": "clients",
       "priority": "P0",
-      "description": "Submit approved activation amount, deadline 1\u201330, termination date, and required note; exactly one invoice and active status persist. Invalid amount/deadline/blank note keeps dialog open; rapid duplicate submission does not duplicate billing.",
+      "description": "Submit approved activation amount, deadline 1–30, termination date, and required note; exactly one invoice and active status persist. Invalid amount/deadline/blank note keeps dialog open; rapid duplicate submission does not duplicate billing.",
       "ticket": "clients/CLIENT-001-client-management.md",
       "review": "pending",
       "status": "blocked",
@@ -2365,7 +2365,7 @@
       "id": "FT017-01",
       "feature": "cross-feature-journeys",
       "priority": "P1",
-      "description": "Client\u2192invoice\u2192partial/full collection reconciles invoice/client/fund/dashboard and receipt once.",
+      "description": "Client→invoice→partial/full collection reconciles invoice/client/fund/dashboard and receipt once.",
       "ticket": "cross-feature-journeys/CROSS-FEATURE-JOURNEYS-001.md",
       "review": "pending",
       "status": "draft",
@@ -2376,7 +2376,7 @@
       "id": "FT017-02",
       "feature": "cross-feature-journeys",
       "priority": "P0",
-      "description": "Stock purchase\u2192expense approval and stock issue\u2192client invoice reconcile stock/financial records atomically under approved rules.",
+      "description": "Stock purchase→expense approval and stock issue→client invoice reconcile stock/financial records atomically under approved rules.",
       "ticket": "cross-feature-journeys/CROSS-FEATURE-JOURNEYS-001.md",
       "review": "pending",
       "status": "draft",
@@ -2387,7 +2387,7 @@
       "id": "FT017-03",
       "feature": "cross-feature-journeys",
       "priority": "P0",
-      "description": "Salary\u2192expense\u2192fund and reseller recharge\u2192agent commission preserve independent approved amounts and foreign records.",
+      "description": "Salary→expense→fund and reseller recharge→agent commission preserve independent approved amounts and foreign records.",
       "ticket": "cross-feature-journeys/CROSS-FEATURE-JOURNEYS-001.md",
       "review": "pending",
       "status": "draft",
@@ -3702,7 +3702,7 @@
       "id": "EX-S01",
       "feature": "expenses",
       "priority": "P1",
-      "description": "Authorized approver changes pending\u2192approved; status persists after reload and exactly one intended transaction/debit completes after controlled queue processing.",
+      "description": "Authorized approver changes pending→approved; status persists after reload and exactly one intended transaction/debit completes after controlled queue processing.",
       "ticket": "expenses/EXPENSE-001-expense-management.md",
       "review": "pending",
       "status": "blocked",
@@ -3716,7 +3716,7 @@
       "id": "EX-S02",
       "feature": "expenses",
       "priority": "P0",
-      "description": "Approved\u2192pending and approved\u2192canonical-negative follow approved reversal policy; original expense transaction is reconciled once, unrelated transactions untouched.",
+      "description": "Approved→pending and approved→canonical-negative follow approved reversal policy; original expense transaction is reconciled once, unrelated transactions untouched.",
       "ticket": "expenses/EXPENSE-001-expense-management.md",
       "review": "pending",
       "status": "blocked",
@@ -5349,7 +5349,7 @@
       "id": "IV-A09",
       "feature": "invoices",
       "priority": "P1",
-      "description": "Complete client \u2192 due invoice \u2192 payment journey updates client outstanding and approved dashboard metrics. Cross-reference CLIENT-001/DASHBOARD-001 but provision independent fixtures; respect approved invoice-date versus payment-date meaning.",
+      "description": "Complete client → due invoice → payment journey updates client outstanding and approved dashboard metrics. Cross-reference CLIENT-001/DASHBOARD-001 but provision independent fixtures; respect approved invoice-date versus payment-date meaning.",
       "ticket": "invoices/INVOICE-001-invoice-management.md",
       "review": "pending",
       "status": "blocked",
@@ -8076,145 +8076,1442 @@
       "last_run": null
     },
     {
-      "id": "FT051-01",
+      "id": "FT051-04-a",
       "feature": "products",
       "priority": "P1",
-      "description": "Create stock product with unit/category and serial-tracking mode; save/read preserves attributes.",
+      "description": "products route shows tenant-owned stock after reload",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-04-a products route shows tenant-owned stock after reload"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-02",
+      "id": "FT051-01-a",
       "feature": "products",
       "priority": "P1",
-      "description": "Stock-in/out subroutes reconcile exact quantities, serial availability, vendor/client/staff relationships and optional invoice/expense side effects.",
+      "description": "create serial product through UI and freshly read its attributes",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-01-a create serial product through UI and freshly read its attributes"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-03",
+      "id": "FT051-04-in",
       "feature": "products",
       "priority": "P1",
-      "description": "Reject duplicate/unavailable serials, negative/insufficient stock and concurrent double issue; failed financial linkage must not leave partial stock changes.",
+      "description": "stock in form and product-specific movement route survive reload",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-04-in stock in form and product-specific movement route survive reload"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-04",
+      "id": "FT051-04-out",
       "feature": "products",
       "priority": "P1",
-      "description": "Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.",
+      "description": "stock out form and product-specific movement route survive reload",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-04-out stock out form and product-specific movement route survive reload"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-05",
-      "feature": "products",
-      "priority": "P1",
-      "description": "Exercise actual filters independently and combined: any, client_id, entry_by, has_serial, product_category_id, product_id, status, unit_type_id, vendor_id. Assert included AND excluded fixture identities; clear restores baseline and pagination resets appropriately.",
-      "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
-    },
-    {
-      "id": "FT051-06",
-      "feature": "products",
-      "priority": "P1",
-      "description": "Pagination/page size and permitted column visibility work on known data; summary totals represent approved full filter scope, not just visible rows. Do not invent controls absent from this screen.",
-      "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
-    },
-    {
-      "id": "FT051-07",
-      "feature": "products",
-      "priority": "P1",
-      "description": "For each actually exposed create/edit/save form: valid payload persists after fresh read/reload; edit hydrates saved relations before changing them, cancel leaves saved state unchanged.",
-      "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
-    },
-    {
-      "id": "FT051-08",
-      "feature": "products",
-      "priority": "P1",
-      "description": "Required/invalid/boundary input stays recoverable with approved field errors; server rejection and delayed save produce no false success or duplicate persisted mutation. Use exact feature fields/constraints from reviewed schemas.",
-      "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
-    },
-    {
-      "id": "FT051-09",
+      "id": "FT051-03-a",
       "feature": "products",
       "priority": "P0",
-      "description": "For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.",
+      "description": "backend rejects negative stock input without persisting a movement",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-03-a backend rejects negative stock input without persisting a movement"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-10",
+      "id": "FT051-03-b",
       "feature": "products",
       "priority": "P0",
-      "description": "Known foreign tenant/owner identifiers cannot expose or mutate protected data or relations; identity switch/back/reload cannot restore previous user data. Public-host data is isolated by approved host rules.",
+      "description": "rejects duplicate serial numbers atomically",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-03-b rejects duplicate serial numbers atomically"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-11",
+      "id": "FT051-03-c",
       "feature": "products",
-      "priority": "P1",
-      "description": "Controlled delay/failure/empty response has distinct truthful loading/error/no-data state; retry recovers and stale earlier responses cannot replace latest selection.",
+      "priority": "P0",
+      "description": "competing stock issues cannot consume more than the remaining quantity",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-03-c competing stock issues cannot consume more than the remaining quantity"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
-      "id": "FT051-12",
+      "id": "FT051-09-prd_reader",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies product and stock mutations with no new records",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader denies product and stock mutations with no new records"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies product and stock mutations with no new records",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied denies product and stock mutations with no new records"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-10-a",
+      "feature": "products",
+      "priority": "P0",
+      "description": "foreign UUID reads and deletes are denied on both product movement routes",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-10-a foreign UUID reads and deletes are denied on both product movement routes"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-10-b",
+      "feature": "products",
+      "priority": "P0",
+      "description": "foreign category and writable tenant identifiers cannot cross company boundaries",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-10-b foreign category and writable tenant identifiers cannot cross company boundaries"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-02-a",
+      "feature": "products",
+      "priority": "P0",
+      "description": "stock-in and stock-out UI persist exact quantities and expense with no invoice",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-02-a stock-in and stock-out UI persist exact quantities and expense with no invoice"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-a",
       "feature": "products",
       "priority": "P1",
-      "description": "Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.",
+      "description": "product filters combine and clearing restores the known baseline",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-a product filters combine and clearing restores the known baseline"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-product_category_id",
+      "feature": "products",
+      "priority": "P1",
+      "description": "independently excludes the other fixture",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-product_category_id independently excludes the other fixture"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-unit_type_id",
+      "feature": "products",
+      "priority": "P1",
+      "description": "independently excludes the other fixture",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-unit_type_id independently excludes the other fixture"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-has_serial",
+      "feature": "products",
+      "priority": "P1",
+      "description": "independently excludes the other fixture",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-has_serial independently excludes the other fixture"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-06-a",
+      "feature": "products",
+      "priority": "P1",
+      "description": "product pagination and column visibility preserve the selected identities",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-06-a product pagination and column visibility preserve the selected identities"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-07-a",
+      "feature": "products",
+      "priority": "P1",
+      "description": "edit hydrates relations, cancel preserves data, and saved changes survive reload",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-07-a edit hydrates relations, cancel preserves data, and saved changes survive reload"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-ui",
+      "feature": "products",
+      "priority": "P0",
+      "description": "restricted users see no write controls, including direct stock URLs",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-ui restricted users see no write controls, including direct stock URLs"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-11-a",
+      "feature": "products",
+      "priority": "P1",
+      "description": "failed list is not empty state and retry restores exact records",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-11-a failed list is not empty state and retry restores exact records"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-11-b",
+      "feature": "products",
+      "priority": "P1",
+      "description": "delayed filter refresh keeps rows and scroll stable then shows latest filter",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-11-b delayed filter refresh keeps rows and scroll stable then shows latest filter"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-in-movement",
+      "feature": "products",
+      "priority": "P1",
+      "description": "report filters reconcile exact scope beyond one page",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-in-movement report filters reconcile exact scope beyond one page"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-out-movement",
+      "feature": "products",
+      "priority": "P1",
+      "description": "report filters reconcile exact scope beyond one page",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-out-movement report filters reconcile exact scope beyond one page"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-03-d",
+      "feature": "products",
+      "priority": "P0",
+      "description": "issued serials cannot be issued twice and mismatched lots leave stock unchanged",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-03-d issued serials cannot be issued twice and mismatched lots leave stock unchanged"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-02-b",
+      "feature": "products",
+      "priority": "P0",
+      "description": "invoice request preserves the approved base-price minus discount calculation",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-02-b invoice request preserves the approved base-price minus discount calculation"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-03-e",
+      "feature": "products",
+      "priority": "P0",
+      "description": "failed multi-line stock-out rolls back earlier rows and retains unrelated sentinels",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-03-e failed multi-line stock-out rolls back earlier rows and retains unrelated sentinels"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-07-delete",
+      "feature": "products",
+      "priority": "P0",
+      "description": "product deletion permits unused products and preserves products with stock history",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-07-delete product deletion permits unused products and preserves products with stock history"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-08-12",
+      "feature": "products",
+      "priority": "P0",
+      "description": "delayed save blocks repeat submission and creates one product",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-08-12 delayed save blocks repeat submission and creates one product"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-10-12",
+      "feature": "products",
+      "priority": "P0",
+      "description": "logout and restricted login on the same host cannot restore write controls",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-10-12 logout and restricted login on the same host cannot restore write controls"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
     },
     {
       "id": "FT051-13",
       "feature": "products",
       "priority": "P2",
-      "description": "Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.",
+      "description": "mobile keyboard English Bangla and light dark keep product forms usable",
       "ticket": "products/PRODUCTS-001.md",
-      "review": "pending",
-      "status": "draft",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-13 mobile keyboard English Bangla and light dark keep product forms usable"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-edit",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-edit denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-delete",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-delete denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-stock-in-read",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-stock-in-read denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-stock-out-read",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-stock-out-read denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-stock-in-report",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-stock-in-report denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_reader-stock-out-report",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_reader-stock-out-report denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-edit",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-edit denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-delete",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-delete denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-stock-in-read",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-stock-in-read denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-stock-out-read",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-stock-out-read denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-stock-in-report",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-stock-in-report denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-prd_denied-stock-out-report",
+      "feature": "products",
+      "priority": "P0",
+      "description": "denies the direct API capability",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-prd_denied-stock-out-report denies the direct API capability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-anonymous",
+      "feature": "products",
+      "priority": "P0",
+      "description": "unauthenticated product and movement routes require authentication",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-anonymous unauthenticated product and movement routes require authentication"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-09-out-only",
+      "feature": "products",
+      "priority": "P0",
+      "description": "report reader opens only the permitted stock-out report",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-09-out-only report reader opens only the permitted stock-out report"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-08-server",
+      "feature": "products",
+      "priority": "P1",
+      "description": "failed save preserves the draft and retry creates one record",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-08-server failed save preserves the draft and retry creates one record"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-in-dates",
+      "feature": "products",
+      "priority": "P1",
+      "description": "inclusive local-date boundaries retain exact fixture totals",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-in-dates inclusive local-date boundaries retain exact fixture totals"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-05-out-dates",
+      "feature": "products",
+      "priority": "P1",
+      "description": "inclusive local-date boundaries retain exact fixture totals",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-05-out-dates inclusive local-date boundaries retain exact fixture totals"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-06-size",
+      "feature": "products",
+      "priority": "P1",
+      "description": "product page size persists and reload returns the exact requested row count",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-06-size product page size persists and reload returns the exact requested row count"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-06-reports",
+      "feature": "products",
+      "priority": "P1",
+      "description": "full-filter totals remain exact across report pages",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-06-reports full-filter totals remain exact across report pages"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-11-background",
+      "feature": "products",
+      "priority": "P1",
+      "description": "failed background refresh preserves loaded rows and retry recovers",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/products/products.spec.ts",
+          "title": "FT051-11-background failed background refresh preserves loaded rows and retry recovers"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-10-reseller",
+      "feature": "products",
+      "priority": "P0",
+      "description": "Own reseller relations are accepted; sibling reseller relations are rejected.",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "../isp-backend/tests/Feature/ProductIntegrityTest.php",
+          "title": "it FT051-10 accepts own reseller relations and rejects sibling reseller relations"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP browser origin and CP/MK API personas, Chromium, Asia/Dhaka; queue/HTTP/notifications/storage faked",
+        "command": "PRD_E2E_ARTIFACT_DIR=/private/tmp/isp-products-final8 npm run test:e2e:products",
+        "timestamp": "2026-11-19T11:09:13.335Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "manifest": "tests/e2e/specifications/products/evidence/run.json",
+          "manifest_sha256": "99e67b994c7da2d31beeef0617f7f6ee7727ec190a88819dcaf354d15c2ae884"
+        },
+        "artifact": "tests/e2e/specifications/products/evidence/run.json"
+      }
+    },
+    {
+      "id": "FT051-03-db-concurrency",
+      "feature": "products",
+      "priority": "P0",
+      "description": "Independent database connections competing for the same lot/serial cannot double issue.",
+      "ticket": "products/PRODUCTS-001.md",
+      "review": "approved",
+      "status": "blocked",
+      "blocked_reason": "Backend AGENTS.md and .ai/safety.md require SQLite :memory: and forbid MySQL tests. The HTTP fixture serializes requests; its passing competing-request test is not proof of production row-lock scheduling.",
       "test_refs": [],
       "last_run": null
     },
@@ -9335,10 +10632,40 @@
       "priority": "P0",
       "description": "Open funds report with independently calculated fixture totals; dates, scope, status and filters include/exclude known records.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-01 exact decimal negative zero and full-scope balances exclude other tenant and reseller"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-02",
@@ -9346,10 +10673,40 @@
       "priority": "P0",
       "description": "Download/export/print only where exposed; artifact content, row count, totals and tenant scope agree with displayed filtered dataset, including empty and boundary periods.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-02 report exposes no export print or date controls for populated and empty results"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-03",
@@ -9357,10 +10714,40 @@
       "priority": "P1",
       "description": "Open every scoped route as intended actor, assert named feature-specific content and seeded identity/value, then reload; a visible body or HTTP200 alone is insufficient.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-03 funds report identity survives reload with the known account and assigned staff"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-04",
@@ -9368,10 +10755,40 @@
       "priority": "P1",
       "description": "Exercise actual filters independently and combined: account_number, name, staff_id. Assert included AND excluded fixture identities; clear restores baseline and pagination resets appropriately.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-04 filters name account staff independently combined and reset"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-05",
@@ -9379,10 +10796,40 @@
       "priority": "P1",
       "description": "Pagination/page size and permitted column visibility work on known data; summary totals represent approved full filter scope, not just visible rows. Do not invent controls absent from this screen.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-05 pagination full-filter totals page size and column visibility"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-06",
@@ -9390,10 +10837,40 @@
       "priority": "P1",
       "description": "For each actually exposed create/edit/save form: valid payload persists after fresh read/reload; edit hydrates saved relations before changing them, cancel leaves saved state unchanged.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-06 edit hydrates cancel preserves and save persists on a fresh API read"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-07",
@@ -9401,10 +10878,40 @@
       "priority": "P1",
       "description": "Required/invalid/boundary input stays recoverable with approved field errors; server rejection and delayed save produce no false success or duplicate persisted mutation. Use exact feature fields/constraints from reviewed schemas.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-07 invalid edits stay open and direct server validation preserves the balance"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-08",
@@ -9412,10 +10919,40 @@
       "priority": "P0",
       "description": "For each exposed capability, test allowed actor and separately denied actor, including direct URLs/API calls; absent menu/button does not prove backend protection. Public pages must remain available without inventing staff permissions.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-08 reader and denied personas enforce actual API permissions"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-09",
@@ -9423,10 +10960,40 @@
       "priority": "P0",
       "description": "Known foreign tenant/owner identifiers cannot expose or mutate protected data or relations; identity switch/back/reload cannot restore previous user data. Public-host data is isolated by approved host rules.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-09 foreign UUIDs reseller and platform boundaries hold through fresh login"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-10",
@@ -9434,10 +11001,40 @@
       "priority": "P1",
       "description": "Controlled delay/failure/empty response has distinct truthful loading/error/no-data state; retry recovers and stale earlier responses cannot replace latest selection.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-10 empty and failed requests are distinct with recovery"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-11",
@@ -9445,10 +11042,40 @@
       "priority": "P1",
       "description": "Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-11 rapid report searches offer no creation or duplicate balance effects"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT063-12",
@@ -9456,10 +11083,40 @@
       "priority": "P2",
       "description": "Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.",
       "ticket": "reports-funds/REPORTS-FUNDS-001.md",
-      "review": "pending",
-      "status": "draft",
-      "test_refs": [],
-      "last_run": null
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/reports-funds/funds.spec.ts",
+          "title": "FT063-12 mobile keyboard Bangla and dark theme preserve filter usability"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Disposable Laravel SQLite :memory:, scratch Next.js, registered CP/MK/APP origins, Chromium, Asia/Dhaka",
+        "command": "FR_E2E_ARTIFACT_DIR=/private/tmp/isp-funds-run9 FR_E2E_CHROMIUM=<installed Chromium headless shell> npm run test:e2e:fund-reports",
+        "timestamp": "2026-11-19T07:01:01.565Z",
+        "source_state": {
+          "frontend_head": "500893174834d9272d2097004162852114c055a1",
+          "backend_head": "bdfc49ce8437f2a05758a63517bef236c449ecd1",
+          "sha256": {
+            "components/funds/fund-table.tsx": "f54f5592d4231561e08c3aecdcbca3b18172787b5faeeb00eee0486c76cf53ae",
+            "components/funds/fund-column.tsx": "2542fe9dad9592946e10930d6474b4105d9d4acd8e839846e9e4ce6163be5314",
+            "components/funds/fund-filter-schema.ts": "adbd21053679a38fd2ff516072fb41e4d4260479aa1dca962026f03dd4c56e8a",
+            "components/funds/fund-form.tsx": "a339eb195da8aeecbab5b02d535f73842c5906b0185b63c7d0ec2096caaa0fda",
+            "public/lang/en.json": "2c1ff6341c63ca10dc4679ac8c254030b6ed147e52da32a296e84300a7dd66d5",
+            "public/lang/bn.json": "424f244ac3f534628a4b38c64c3692cdb9cd9836b59c8e2b8c21af62c32fc39f",
+            "tests/e2e/reports-funds/funds.spec.ts": "7781caa5650c10024163842c77fb8194dfab8be1beb40c404fe93c338087bf5d",
+            "scripts/run-fund-reports-e2e.mjs": "5af944b149019eb6b890c1ede9c0af8f0ab3eff6c92a869ba5318441e4bb1cda",
+            "playwright.fund-reports.config.ts": "bc1759099fa97aa70393907b7489f509173a3b31bfd80dbe7a5d72bbd5c5b8ca",
+            "../isp-backend/tests/Browser/FundReportFixture.php": "a53f8e1638af83fbc13cf1fea01e850843398707bb8a616a39aaea5f66137a6d",
+            "../isp-backend/tests/Feature/FundReportAcceptanceTest.php": "65a3939cc609fecf40c0e1b971035e9cf2a9960a8eccc0eace394ea628265ff1",
+            "../isp-backend/app/Http/Requests/StoreFundRequest.php": "0d07d1464cffb42ef98a0b1cdc89ed8dcf239c5484fea684301cc399bc3b3bc7",
+            "../isp-backend/app/Http/Requests/UpdateFundRequest.php": "bcbbf67e869b3be89ee2ec43175bf36a79d3b58c19721c977567eead873cd8c2"
+          }
+        },
+        "artifact": "tests/e2e/specifications/reports-funds/evidence/run.json"
+      }
     },
     {
       "id": "FT064-01",
@@ -12780,8 +14437,14 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 a live preview shows one recipient, the message units, and the wallet price"},
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-01 test mode shows the same price as not charged and does not change the wallet"}
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-01 a live preview shows one recipient, the message units, and the wallet price"
+        },
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-01 test mode shows the same price as not charged and does not change the wallet"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12797,7 +14460,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-02 selected clients are quoted and an unselected client is not added"}
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-02 selected clients are quoted and an unselected client is not added"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12813,7 +14479,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed"}
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12829,7 +14498,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/page.spec.ts", "title": "FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload"}
+        {
+          "path": "tests/e2e/sms-send/page.spec.ts",
+          "title": "FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12845,11 +14517,26 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 search includes the selected client, excludes another, and reset restores the list"},
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 an unknown search is empty and shows no request error"},
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 status filter keeps the selected status and hides the other"},
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 zone filter matches that zone and excludes a client in another zone"},
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-05 username, status, and network together match the API and reset clears them"}
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-05 search includes the selected client, excludes another, and reset restores the list"
+        },
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-05 an unknown search is empty and shows no request error"
+        },
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-05 status filter keeps the selected status and hides the other"
+        },
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-05 zone filter matches that zone and excludes a client in another zone"
+        },
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-05 username, status, and network together match the API and reset clears them"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12879,7 +14566,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft"}
+        {
+          "path": "tests/e2e/sms-send/presentation.spec.ts",
+          "title": "FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12895,8 +14585,14 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 an empty body stays on the form and a one-character body can open the quote"},
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-08 a rejected template preview shows the quote error and no success"}
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-08 an empty body stays on the form and a one-character body can open the quote"
+        },
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-08 a rejected template preview shows the quote error and no success"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12912,9 +14608,18 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send redirects to the same-host staff login"},
-        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous /sms-send?phone=01700000999 redirects to the same-host staff login"},
-        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-09 anonymous SMS endpoints reject the request"}
+        {
+          "path": "tests/e2e/sms-send/access.spec.ts",
+          "title": "FT087-09 anonymous /sms-send redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/sms-send/access.spec.ts",
+          "title": "FT087-09 anonymous /sms-send?phone=01700000999 redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/sms-send/access.spec.ts",
+          "title": "FT087-09 anonymous SMS endpoints reject the request"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12930,7 +14635,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/access.spec.ts", "title": "FT087-10 another company cannot see or price a known SMS client"}
+        {
+          "path": "tests/e2e/sms-send/access.spec.ts",
+          "title": "FT087-10 another company cannot see or price a known SMS client"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12946,7 +14654,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/list.spec.ts", "title": "FT087-11 an empty filter is distinct from a failed request and clears back to data"}
+        {
+          "path": "tests/e2e/sms-send/list.spec.ts",
+          "title": "FT087-11 an empty filter is distinct from a failed request and clears back to data"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12962,7 +14673,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/preview.spec.ts", "title": "FT087-12 opening the quote twice does not change the wallet"}
+        {
+          "path": "tests/e2e/sms-send/preview.spec.ts",
+          "title": "FT087-12 opening the quote twice does not change the wallet"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -12978,7 +14692,10 @@
       "review": "pending",
       "status": "implemented",
       "test_refs": [
-        {"path": "tests/e2e/sms-send/presentation.spec.ts", "title": "FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable"}
+        {
+          "path": "tests/e2e/sms-send/presentation.spec.ts",
+          "title": "FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable"
+        }
       ],
       "last_run": null,
       "coverage_extent": "partial",
@@ -13228,8 +14945,14 @@
       "implementation_note": "CP lock is HTTP 402 feature_not_in_plan. The account stays active and can log in. The own-account message and unlock were not reached.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-01 locking is refused because the plan omits staff status, and login stays available"},
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-01 locking the signed-in account is refused and the status stays active"}
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-01 locking is refused because the plan omits staff status, and login stays available"
+        },
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-01 locking the signed-in account is refused and the status stays active"
+        }
       ],
       "last_run": null
     },
@@ -13245,8 +14968,14 @@
       "implementation_note": "Short passwords stay in the dialog. A valid reset is HTTP 402 feature_not_in_plan, and the original password still works.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-02 a short password is rejected and cancel leaves the password working"},
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-02 a valid reset is refused because the plan omits it, and the original password still works"}
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-02 a short password is rejected and cancel leaves the password working"
+        },
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-02 a valid reset is refused because the plan omits it, and the original password still works"
+        }
       ],
       "last_run": null
     },
@@ -13262,8 +14991,14 @@
       "implementation_note": "Zones and salary lines hydrate. Impersonation enter and leave works for a non-admin disposable staff member. salary_day and salary_generation_type are not in the resource.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-03 saved zones and salary lines hydrate on edit and cancel keeps them"},
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-03 impersonation enters the staff identity and leave returns the actor"}
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-03 saved zones and salary lines hydrate on edit and cancel keeps them"
+        },
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-03 impersonation enters the staff identity and leave returns the actor"
+        }
       ],
       "last_run": null
     },
@@ -13279,9 +15014,18 @@
       "implementation_note": "List, create, and edit routes show the saved identity and survive reload.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 staff list shows the API rows and reload keeps them"},
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 create route shows the staff form and reload keeps it"},
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-04 edit route hydrates the staff name and reload keeps it"}
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-04 staff list shows the API rows and reload keeps them"
+        },
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-04 create route shows the staff form and reload keeps it"
+        },
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-04 edit route hydrates the staff name and reload keeps it"
+        }
       ],
       "last_run": null
     },
@@ -13297,9 +15041,18 @@
       "implementation_note": "Page 1, the full total, and designation visibility are checked. Page size is displayed and not changed. The list has no search.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 page one disables previous and the title uses the full total"},
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 the page size control shows the saved preference"},
-        {"path": "tests/e2e/staffs/list.spec.ts", "title": "FT090-05 the designation column can be hidden and shown again"}
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-05 page one disables previous and the title uses the full total"
+        },
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-05 the page size control shows the saved preference"
+        },
+        {
+          "path": "tests/e2e/staffs/list.spec.ts",
+          "title": "FT090-05 the designation column can be hidden and shown again"
+        }
       ],
       "last_run": null
     },
@@ -13315,9 +15068,18 @@
       "implementation_note": "Cancel, edit hydration, and a valid create plus designation edit are checked.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 cancel on create stores nothing"},
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 edit hydrates the saved staff and cancel leaves it unchanged"},
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-06 a valid staff persists and the edited designation survives reload"}
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-06 cancel on create stores nothing"
+        },
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-06 edit hydrates the saved staff and cancel leaves it unchanged"
+        },
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-06 a valid staff persists and the edited designation survives reload"
+        }
       ],
       "last_run": null
     },
@@ -13333,9 +15095,18 @@
       "implementation_note": "Empty name, short phone, a 256-character username, and a duplicate username stay on the form.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a missing name and a short phone stay on the form"},
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a 256 character username is rejected and creates nothing"},
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-07 a duplicate username is rejected and does not create a second staff"}
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-07 a missing name and a short phone stay on the form"
+        },
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-07 a 256 character username is rejected and creates nothing"
+        },
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-07 a duplicate username is rejected and does not create a second staff"
+        }
       ],
       "last_run": null
     },
@@ -13351,10 +15122,22 @@
       "implementation_note": "Anonymous routes and API calls are denied. A persona without staffs.edit is not provisioned.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs redirects to the same-host staff login"},
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs/create redirects to the same-host staff login"},
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous /staffs/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"},
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-08 anonymous staff reads and writes return 401"}
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-08 anonymous /staffs redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-08 anonymous /staffs/create redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-08 anonymous /staffs/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+        },
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-08 anonymous staff reads and writes return 401"
+        }
       ],
       "last_run": null
     },
@@ -13370,8 +15153,14 @@
       "implementation_note": "Foreign read, status, and update are denied. Delete and password reset were not sent to a real foreign staff. Logout stays on the login form.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-09 another company cannot read or change a known staff"},
-        {"path": "tests/e2e/staffs/access.spec.ts", "title": "FT090-09 logout back and reload do not restore the staff list"}
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-09 another company cannot read or change a known staff"
+        },
+        {
+          "path": "tests/e2e/staffs/access.spec.ts",
+          "title": "FT090-09 logout back and reload do not restore the staff list"
+        }
       ],
       "last_run": null
     },
@@ -13387,7 +15176,10 @@
       "implementation_note": "The loaded list shows rows. A delayed or failed list was not injected.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/presentation.spec.ts", "title": "FT090-10 the staff list shows rows instead of a request failure"}
+        {
+          "path": "tests/e2e/staffs/presentation.spec.ts",
+          "title": "FT090-10 the staff list shows rows instead of a request failure"
+        }
       ],
       "last_run": null
     },
@@ -13403,9 +15195,18 @@
       "implementation_note": "Invalid double save, sign-out during create, and cancel delete leave the records unchanged.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-11 two saves of an invalid staff form create nothing"},
-        {"path": "tests/e2e/staffs/forms.spec.ts", "title": "FT090-11 leaving create during entry does not store the draft"},
-        {"path": "tests/e2e/staffs/account.spec.ts", "title": "FT090-11 cancel delete leaves the staff in place"}
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-11 two saves of an invalid staff form create nothing"
+        },
+        {
+          "path": "tests/e2e/staffs/forms.spec.ts",
+          "title": "FT090-11 leaving create during entry does not store the draft"
+        },
+        {
+          "path": "tests/e2e/staffs/account.spec.ts",
+          "title": "FT090-11 cancel delete leaves the staff in place"
+        }
       ],
       "last_run": null
     },
@@ -13421,7 +15222,10 @@
       "implementation_note": "Mobile, Bangla, dark mode, and keyboard Cancel are checked. The full-suite attempt failed once on an unhydrated table and passed on rerun.",
       "slice_evidence": "tests/e2e/specifications/staffs/EXECUTION.json",
       "test_refs": [
-        {"path": "tests/e2e/staffs/presentation.spec.ts", "title": "FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable"}
+        {
+          "path": "tests/e2e/staffs/presentation.spec.ts",
+          "title": "FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable"
+        }
       ],
       "last_run": null
     },

@@ -2827,6 +2827,9 @@
         }
     },
     "product": {
+        "denied": "You do not have permission to open this product page.",
+        "load_error": "Products could not be loaded. Please try again.",
+        "retry": "Retry",
         "title_plural": "Products",
         "create_title": "Add Product",
         "edit_title": "Edit Product",
@@ -2853,7 +2856,8 @@
             "errors": {
                 "required": "Name is required",
                 "invalid": "Name must be a string",
-                "min": "Name must be at least 2 characters"
+                "min": "Name must be at least 2 characters",
+                "max": "Name must be at most 255 characters"
             }
         },
         "has_serial": {
@@ -2887,6 +2891,7 @@
             }
         },
         "description": {
+            "errors": { "max": "Description must be at most 255 characters" },
             "label": "Description",
             "placeholder": "Enter product description"
         }
@@ -3003,6 +3008,9 @@
             "total_amount": "Total Amount"
         },
         "errors": {
+            "date_required": "Select a date.",
+            "quantity_positive": "Quantity must be greater than zero.",
+            "serial_unique": "Use a whole quantity and unique serials.",
             "purchase_by_required": "Purchaser is required",
             "product_required": "Product is required",
             "product_min": "At least one product line is required",
@@ -3085,6 +3093,9 @@
             "total_amount": "Total Amount"
         },
         "errors": {
+            "date_required": "Select a date.",
+            "quantity_positive": "Quantity must be greater than zero.",
+            "serial_unique": "Use a whole quantity and unique serials.",
             "received_by_required": "Receiver is required",
             "product_required": "Product is required",
             "product_in_required": "Product in source is required",
@@ -3482,7 +3493,6 @@
         "edit_title": "Edit demo request",
         "view": "View",
         "view_title": "Demo request details",
-        "load_error": "Could not load this demo request.",
         "delete_confirmation": "Are you sure you want to delete this demo request? This action cannot be undone.",
         "empty_value": "—",
         "toast": {
@@ -3791,6 +3801,8 @@
         }
     },
     "fund": {
+        "load_error": "Unable to load funds. Please retry.",
+        "retry": "Retry",
         "title_plural": "Funds",
         "create_title": "Add Fund",
         "edit_title": "Edit Fund",

@@ -1,17 +1,18 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import { CardContent } from "@/components/ui/card";
 import Card from "@/components/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import FundFilterSchema from "./fund-filter-schema";
-import FundForm from "./fund-form";
-import { getFundColumns } from "./fund-column";
-import { FundReport, FundRow } from "./fund-type";
-import DisplayCount from "../display-count";
+import FundFilterSchema from "@/components/funds/fund-filter-schema";
+import FundForm from "@/components/funds/fund-form";
+import { getFundColumns } from "@/components/funds/fund-column";
+import { FundReport, FundRow } from "@/components/funds/fund-type";
+import DisplayCount from "@/components/display-count";
+import MyButton from "@/components/my-button";
 import { toNumber } from "@/lib/helper/helper";
 
 type FundListPayload = {
@@ -41,7 +42,7 @@ const FundTable: FC<FundTableProps> = ({
     [filterValue]
   );
 
-  const { data, isLoading, isFetching, setCurrentPage } =
+  const { data, isLoading, isFetching, isError, refetch, setCurrentPage } =
     useApiQuery<ApiResponse<FundListPayload>>({
       queryKey: ["funds"],
       url: "funds",
@@ -50,6 +51,12 @@ const FundTable: FC<FundTableProps> = ({
 
   const funds = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
+  useEffect(() => {
+    if (pagination && pagination.current_page > Math.max(1, pagination.total_pages)) {
+      setCurrentPage(1);
+    }
+  }, [pagination, setCurrentPage]);
+
   const totalBalance =
     data?.data?.report?.total_balance ??
     data?.data?.reports?.total_balance ??
@@ -84,6 +91,14 @@ const FundTable: FC<FundTableProps> = ({
         </CardContent>
       </Card>
 
+      <div className="min-h-10">
+        {isError && (
+          <div role="alert" className="flex items-center gap-2 text-destructive">
+            <span>{t("fund.load_error")}</span>
+            <MyButton onClick={() => void refetch()}>{t("fund.retry")}</MyButton>
+          </div>
+        )}
+      </div>
       <DataTable
         data={funds}
         columns={columns}

@@ -1,6 +1,8 @@
 "use client";
 
 import { FC, ReactNode, useMemo } from "react";
+import { usePermissions } from "@/context/app-provider";
+import ProductFeedback from "@/components/products/product-feedback";
 import { useRouter } from "next/navigation";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -135,6 +137,7 @@ const ProductOutFormContent: FC<ProductOutContentProps> = ({
 
 const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data, productId }) => {
     const router = useRouter();
+    const { hasPermission } = usePermissions();
     const formSchema = ProductOutFormFieldSchema();
     const formData = useMemo(() => {
         if (mode === "edit" && data) return data;
@@ -153,9 +156,12 @@ const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data, produc
         };
     }, [data, mode, productId]);
 
+    if (!hasPermission("products-out.create")) return <ProductFeedback denied />;
+
     return (
         <div className="w-full">
             <FormBuilder
+                preventDuplicateSubmit
                 key={mode === "edit" ? "edit" : String(resolveProductInProductId(productId))}
                 formSchema={formSchema}
                 grids={3}

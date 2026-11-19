@@ -188,3 +188,9 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `../isp-backend/app/Http/Resources/UnitTypeResource.php`
 - `../isp-backend/app/Http/Resources/VendorCollection.php`
 - `../isp-backend/app/Http/Resources/VendorResource.php`
+
+## Reviewed implementation — 19 November 2026
+
+The inventory above is historical, not the final contract. `PRODUCTS-001.md` now records the reviewed constraints and explicit user decisions. Current controllers are under `../isp-backend/app/Http/Controllers/V1/Admin/`; `StoreProductRequest`, `UpdateProductRequest`, `StoreProductInRequest`, `ProductOutRequest` and `ProductRelationExists` enforce product/stock input and relation ownership. `ProductIntegrityTest.php` covers the changed stock and tenant rules. Product-in/out `StaffId` filters support the exposed `entry_by` staff field, and their date filters compare calendar dates inclusively.
+
+The product frontend now uses UUID row/form identity, permission-aware forms/list/report states, truthful load failures, stable background refreshes, a report-mode-specific filter lifecycle, and named primary/filter controls. Product forms enable the shared `FormWrapper` guard to prevent repeated valid submissions while a mutation is in flight. Final source hashes and executable titles are recorded in `evidence/run.json` rather than relying on the historical line numbers above.

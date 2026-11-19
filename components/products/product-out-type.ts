@@ -45,8 +45,8 @@ export const ProductOutLineSchema = z
         }).min(1, { message: "product_out.errors.product_required" }),
         productin_id: z.coerce.number().nullable().optional(),
         product_category_id: z.coerce.number().nullable().optional(),
-        quantity: z.coerce.number().min(0, {
-            message: "product_out.errors.quantity_min",
+        quantity: z.coerce.number().gt(0, {
+            message: "product_out.errors.quantity_positive",
         }),
         unit_price: z.coerce.number().min(0, {
             message: "product_out.errors.unit_price_min",
@@ -75,6 +75,9 @@ export const ProductOutLineSchema = z
             });
         }
 
+        if (new Set(line.serial.map(String)).size !== line.serial.length || !Number.isInteger(toNumber(line.quantity))) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["serial"], message: "product_out.errors.serial_unique" });
+        }
         const expectedCount = Math.max(0, Math.trunc(toNumber(line.quantity)));
         const serialCount = (line.serial ?? []).length;
 
@@ -97,7 +100,7 @@ export const ProductOutLineSchema = z
     });
 
 const ProductOutFormSchemaBase = z.object({
-    out_date: OptionalDateValueSchema,
+    out_date: OptionalDateValueSchema.refine((value): boolean => value !== undefined, { message: "product_out.errors.date_required" }),
     received_by: z.coerce.number({
         required_error: "product_out.errors.received_by_required",
         invalid_type_error: "product_out.errors.received_by_required",
