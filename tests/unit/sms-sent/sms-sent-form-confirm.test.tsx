@@ -79,6 +79,7 @@ vi.mocked(useFetch).mockImplementation(async ({ url }: FetchArgs) => {
       data: [
         { id: 1, name: "Invoice due", message: "Due", template_type: "invoice_due" },
         { id: 2, name: "Custom Other", message: "Hello", template_type: "custom_other" },
+        { id: 3, name: "Custom Client", message: "Notice", template_type: "custom_client" },
       ],
     };
   }
@@ -94,17 +95,49 @@ vi.mocked(useFetch).mockImplementation(async ({ url }: FetchArgs) => {
       data: { id: 2, name: "Custom Other", message: "Hello", template_type: "custom_other" },
     };
   }
+  if (url === "/sms-template/3") {
+    return {
+      success: true,
+      data: { id: 3, name: "Custom Client", message: "Notice", template_type: "custom_client" },
+    };
+  }
   return { success: true, data: [] };
 });
 
 const storeCalls = () =>
   vi.mocked(useFetch).mock.calls.filter(([args]) => (args as FetchArgs).url === "/sms-store");
 
+const previewCalls = () =>
+  vi.mocked(useFetch).mock.calls.filter(([args]) => (args as FetchArgs).url === "/sms-store/preview");
+
 const phoneField = () => screen.queryByPlaceholderText("sms_sent.phone_number.placeholder");
 
 const phoneFieldIsHidden = () => phoneField()?.closest("[aria-hidden='true']") != null;
 
 describe("SmsSentForm confirmation", () => {
+  it("hides the gateway and settings actions on the client dialog", async () => {
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <SmsSentForm mode="singleClient" clientId="client-1" phone="01700000000" />
+      </QueryClientProvider>
+    );
+
+    expect(await screen.findByText("sms_sent.gateway.isptik")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "sms_sent.gateway.configured" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "settings.sections.sms.title" })).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "sms_sent.mode.live.title" })).toBeInTheDocument();
+  });
+
+  it("keeps the gateway action on the send page", async () => {
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <SmsSentForm />
+      </QueryClientProvider>
+    );
+
+    expect(await screen.findByRole("button", { name: "sms_sent.gateway.configured" })).toBeInTheDocument();
+  });
+
   it("shows the template hint instead of the phone field until Custom Other is selected", () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
@@ -135,6 +168,35 @@ describe("SmsSentForm confirmation", () => {
 
     await waitFor(() => expect(phoneFieldIsHidden()).toBe(true));
     expect(screen.getByRole("note")).toHaveTextContent("sms_sent.phone_number.hint");
+  });
+
+  it("prices the open client by public id before confirming", async () => {
+    const user = userEvent.setup();
+    const clientId = "a32940b3-8cf1-4783-b07a-c5a9382530b3";
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <SmsSentForm mode="singleClient" clientId={clientId} phone="01700000000" />
+      </QueryClientProvider>
+    );
+
+    await user.click(screen.getByRole("combobox", { hidden: true }));
+    await user.click(await screen.findByText("Custom Client"));
+    await waitFor(() =>
+      expect(screen.getByPlaceholderText("sms_sent.sms_body.placeholder")).toHaveValue("Notice")
+    );
+
+    await user.click(screen.getByRole("button", { name: "sms_sent.send" }));
+    const confirm = await screen.findByRole("button", { name: /sms_sent.confirm.submit/ });
+    await waitFor(() => expect(confirm).toBeEnabled());
+
+    expect(previewCalls().at(-1)?.[0]).toMatchObject({
+      data: {
+        clientIds: [clientId],
+        phone: null,
+        message: "Notice",
+        mode: "live",
+      },
+    });
   });
 
   it("opens the confirmation dialog first and sends once after confirming", async () => {

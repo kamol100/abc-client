@@ -184,6 +184,10 @@ export function SmsSendConfirmDialog({
   }, [payload, loadQuote, resetQuote]);
 
   const scheduledAt = quote?.scheduled_at ?? null;
+  const usesWallet = !quote || smsQuoteUsesWallet(quote);
+  const liveNoticeKey = usesWallet
+    ? "sms_sent.confirm.live_notice"
+    : "sms_sent.confirm.live_notice_private";
   const isInsufficient = !!quote && !isTestMode && smsQuoteUsesWallet(quote) && !quote.sufficient;
   const canConfirm = !!quote && !isQuoteLoading && !isSubmitting && canConfirmSmsSend(quote, mode);
   const ModeIcon = isTestMode ? FlaskConical : Send;
@@ -228,7 +232,7 @@ export function SmsSendConfirmDialog({
                 {t("sms_sent.confirm.test_badge")}
               </p>
             )}
-            <p>{isTestMode ? t("sms_sent.confirm.test_notice") : t("sms_sent.confirm.live_notice")}</p>
+            <p>{isTestMode ? t("sms_sent.confirm.test_notice") : t(liveNoticeKey)}</p>
           </div>
         </div>
 

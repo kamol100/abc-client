@@ -1,3 +1,31 @@
+## Client SMS dialog hides gateway and settings — 2026-11-19
+
+The client SMS dialog no longer shows the gateway button or the SMS settings button. Live and Test stay. The Send SMS page still shows both buttons.
+
+On `http://vp.isp.test/clients/view/a318f128-f222-4fd9-a79f-b310e1f67de7`, signed in as vp, the dialog header was the rate line and Live / Test. No gateway button and no settings icon. At 390px the same two controls were gone and Live / Test stayed on the row under the rate. On `/sms-send` the gateway button and SMS Settings button were still there. Nothing was sent. Dark mode was not switched.
+
+`npx vitest run tests/unit/sms-sent/sms-sent-form-confirm.test.tsx` passed (6).
+
+## Client details SMS confirm — 2026-11-19
+
+The confirm window on a client page stayed disabled because the cost quote came back with no recipient. The page already sends that client's public id. The API treated the id as a numeric key, found nobody, and returned zero recipients and zero cost, so Confirm stayed off for every gateway and both send modes.
+
+The quote now counts that client. A private gateway quote shows the recipient and the cost, hides the wallet balance, and says the wallet is not used. Confirm is enabled in live and test mode. An ISPTik quote shows the tenant manager wallet, the cost, and the remaining balance. Confirm stays off in live mode when that wallet cannot cover the cost. Test mode still allows confirm and marks the cost as not charged. A reseller send uses that reseller's wallet.
+
+On `http://vp.isp.test/clients/view/a318f128-f222-4fd9-a79f-b310e1f67de7`, signed in as vp, the active gateway was ISPTik at BDT 0.50 per SMS. With the Custom Client template in test mode the confirm window showed 1 recipient, 1 SMS, BDT 0.50 marked not charged, and wallet BDT 20.00. Confirm & Simulate was enabled. In live mode it showed the same recipient and cost, wallet BDT 20.00, remaining BDT 19.50, and the wallet-deduction notice. Confirm & Send SMS was enabled. Both windows were cancelled. No SMS was sent. This account's gateway was left on ISPTik, so a private gateway was not opened in the browser. Dark mode and a narrow width were not checked. The dialog layout did not change.
+
+`npx vitest run tests/unit/sms-sent/sms-send-confirm-dialog.test.tsx tests/unit/sms-sent/sms-sent-form-confirm.test.tsx` passed (13). `scripts/ai/test` ignores file arguments and runs the full suite; that run had 20 failures in other files (date picker, reseller client table, pay page, menu, maps). Those were already outside this change.
+
+Left as found: `client-sms.tsx` dialog size (`xl` to `4xl`), the data-table mobile wrap, the products toolbar Product In / Product Out buttons, and the report section below.
+
+## Product In and Product Out on the products toolbar — 2026-11-19
+
+The products list toolbar now has Product In and Product Out immediately before Add. They open `/products/in` and `/products/out` with no product selected, so the line can pick any product. Each button stays hidden without `products-in.create` or `products-out.create`. On a narrow screen the labels hide, the icons stay 36×36, and the products toolbar wraps so the page-size control and prefix button remain on screen. Other tables are unchanged.
+
+On `http://vp.isp.test/products`, signed in as vp, the desktop row was Product In, Product Out, then Add. Product In opened the purchase form with an empty product field. Product Out opened the out form the same way. At 390px the page-size control sat above the icon row, prefix started at 16px, and Add ended at 374px. Nothing was saved. Dark mode was not checked; the buttons use the existing outline and default button styles.
+
+`scripts/ai/typecheck` passed.
+
 ## Readability agent rule — 2026-11-18
 
 Agents now always follow `.cursor/rules/readability.mdc`: prefer a straightforward, named version over clever or complex code. No app behavior changed.

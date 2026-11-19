@@ -59,6 +59,7 @@ const ProductTable: FC = () => {
             isFetching={isFetching}
             queryKey="products"
             form={ProductsToolbarActions}
+            wrapActionsOnMobile
             toolbarOptions={{ filter: ProductFilterSchema() }}
             toolbarTitle={toolbarTitle}
         />

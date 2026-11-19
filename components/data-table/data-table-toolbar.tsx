@@ -44,6 +44,8 @@ interface DataTableToolbarProps<TData> {
   toolbarBeforeForm?: ReactNode;
   /** When true, mobile may replace the filter sheet with the `any` text field. */
   simpleSearch?: boolean;
+  /** Put toolbar actions on the next row below the `md` breakpoint. */
+  wrapActionsOnMobile?: boolean;
   /** Current list total, shown on the open filter row. */
   resultCount?: number;
 }
@@ -62,6 +64,7 @@ export function DataTableToolbar<TData>({
   toolbarBeforeViewOptions,
   toolbarBeforeForm,
   simpleSearch = false,
+  wrapActionsOnMobile = false,
   resultCount,
 }: DataTableToolbarProps<TData>) {
   const FormComponent = form as unknown as React.ComponentType | undefined;
@@ -126,7 +129,10 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex flex-col gap-2">
       <div
-        className={cn(!showFilter && "flex  justify-end")}
+        className={cn(
+          !showFilter && "flex justify-end",
+          !showFilter && wrapActionsOnMobile && "max-md:flex-wrap",
+        )}
       >
         <div className="flex flex-1 flex-wrap items-center gap-x-2 w-full">
           {toolbarTitle && !showFilter && !isMobile && (
@@ -169,7 +175,10 @@ export function DataTableToolbar<TData>({
           )}
         </div>
         <div
-          className={cn(!showFilter ? "flex items-center gap-2 ml-3" : "w-full")}
+          className={cn(
+            !showFilter ? "flex items-center gap-2 ml-3" : "w-full",
+            !showFilter && wrapActionsOnMobile && "max-md:ml-0 max-md:w-full max-md:justify-end",
+          )}
         >
           {!showFilter && toolbarBeforeViewOptions}
           {toggleColumns && !showFilter && <DataTableViewOptions table={table} />}

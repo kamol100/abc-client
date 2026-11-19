@@ -106,6 +106,41 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).toHaveBeenCalledWith({ sendNow: false });
   });
 
+  it("shows a private gateway quote without a wallet balance and allows the send", async () => {
+    mockQuote({
+      billing_mode: "provider",
+      provider: "private",
+      balance: null,
+      remaining_balance: null,
+      sufficient: true,
+      total_cost: 0.7,
+    });
+    const user = userEvent.setup();
+    const { onConfirm } = renderDialog();
+
+    expect(await screen.findByText("sms_sent.confirm.live_notice_private")).toBeInTheDocument();
+    expect(screen.queryByText("sms_sent.confirm.wallet_balance")).not.toBeInTheDocument();
+    expect(screen.queryByText("sms_sent.confirm.remaining_balance")).not.toBeInTheDocument();
+    expect(confirmButton()).toBeEnabled();
+
+    await user.click(confirmButton());
+    expect(onConfirm).toHaveBeenCalledWith({ sendNow: false });
+  });
+
+  it("allows a private gateway test send without a wallet balance", async () => {
+    mockQuote({
+      billing_mode: "provider",
+      balance: null,
+      remaining_balance: null,
+      sufficient: true,
+    });
+    renderDialog({ mode: "test" });
+
+    expect(await screen.findByText("sms_sent.confirm.test_badge")).toBeInTheDocument();
+    expect(screen.queryByText("sms_sent.confirm.wallet_balance")).not.toBeInTheDocument();
+    expect(confirmButton()).toBeEnabled();
+  });
+
   it("blocks a live send when the wallet cannot cover the cost", async () => {
     mockQuote({ balance: 1, remaining_balance: -3, sufficient: false });
     renderDialog();

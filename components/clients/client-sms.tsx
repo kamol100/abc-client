@@ -32,7 +32,7 @@ const ClientSmsDialog: FC<ClientSmsDialogProps> = ({
             onOpenChange={handleOpenChange}
             title="client.sms_dialog.title"
             description="client.sms_dialog.description"
-            size="xl"
+            size="4xl"
             contentClassName="w-[calc(100vw-2rem)] sm:w-full"
         >
             {open && (

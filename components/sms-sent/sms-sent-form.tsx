@@ -531,10 +531,10 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
             <SmsHeaderMeta />
           </div>
           <div className="flex flex-col items-end gap-2 justify-self-end">
-            <SmsGatewayButton />
+            {!isSingleClientMode && <SmsGatewayButton />}
             <div className="flex items-center gap-2">
               <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
-              <SettingsSectionButton section="sms" />
+              {!isSingleClientMode && <SettingsSectionButton section="sms" />}
             </div>
           </div>
         </div>

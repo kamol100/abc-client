@@ -64,6 +64,8 @@ interface DataTableProps<TData, TValue> {
   toolbarBeforeForm?: React.ReactNode;
   /** Mobile client list only. Other tables keep the bottom-sheet filters. */
   simpleSearch?: boolean;
+  /** Put toolbar actions on the next row below the `md` breakpoint. */
+  wrapActionsOnMobile?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -86,6 +88,7 @@ export function DataTable<TData, TValue>({
   toolbarBeforeViewOptions,
   toolbarBeforeForm,
   simpleSearch = false,
+  wrapActionsOnMobile = false,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { t } = useTranslation();
@@ -160,6 +163,7 @@ export function DataTable<TData, TValue>({
             toolbarBeforeViewOptions={toolbarBeforeViewOptions}
             toolbarBeforeForm={toolbarBeforeForm}
             simpleSearch={simpleSearch}
+            wrapActionsOnMobile={wrapActionsOnMobile}
             resultCount={paginationData?.total}
           />
         </div>
