@@ -1,3 +1,31 @@
+## Mobile page-size label — 2026-11-20
+
+On screens below 768px the closed page-size control shows the number only (`10`). The open list still shows `5 / page`, `10 / page`, `25 / page`, and `50 / page`. At 768px and up the closed control still shows `10 / page`.
+
+On `http://vp.isp.test/clients`, signed in as vp, a 390px width showed a `10` button. Opening it listed all four ` / page` options, fully inside the screen. Nothing was selected, so the saved page size stayed 10. At 1280px the footer control showed `10 / page`. Dark mode was not switched. The label uses the same light and dark text color as the rest of the select.
+
+`npx vitest run tests/unit/data-table/change-pagination.test.tsx` passed (1). `scripts/ai/typecheck` passed.
+
+Left as found: `components/clients/client-change-package-dialog.tsx`, `components/nav-user.tsx`, and the lockfile / `package.json` changes.
+
+## Sidebar account menu — 2026-11-20
+
+The sidebar account menu now includes the same entries as the header profile menu: Company Profile, My profile, Settings, Theme settings, and Change Password/Username. Dashboard and Sign out stay. Company Profile and Settings stay hidden without `company-settings.access`. A reseller sees Reseller Profile and the reseller password dialog.
+
+On `http://vp.isp.test/dashboard`, signed in as vp, the sidebar menu listed Dashboard, Company Profile, My profile, Settings, Theme settings, Change Password/Username, and Sign out. Theme settings opened the theme dialog and was closed with Escape. Nothing was saved. Change Password/Username opened the password dialog with Reset Password and Update Username, then Cancel. Nothing was saved. Company Profile opened `/company-profile/a2eee737-527c-4723-93f5-42541c7c3db6`. A 390px check did not open the mobile sidebar; the desktop sidebar menu is the one that was exercised. Dark mode was not switched.
+
+`scripts/ai/typecheck` passed.
+
+Left as found: `components/clients/client-change-package-dialog.tsx`, and the ESLint pin in `package.json` / `package-lock.json`.
+
+## ESLint peer warning on install — 2026-11-20
+
+Production installs warned because the app asked for ESLint 10 while `eslint-config-next@16.4.5` pulls in `eslint-plugin-import@2.32.0`, `eslint-plugin-jsx-a11y@6.10.2`, and `eslint-plugin-react@7.37.5`, which only declare ESLint through 9. ESLint is now `^9.39.5`, the version those plugins accept. `eslint-config-next` still allows it (`>=9`).
+
+`npm install eslint@9.39.5 --save-dev` finished with no `ERESOLVE` warning. `npm ls` shows one ESLint 9.39.5 shared by those plugins. A later `npm install --ignore-scripts --dry-run` printed no peer warning. npm does print that ESLint 9.39.5 is no longer supported upstream. ESLint 10 is the supported line, and these Next plugins do not accept it yet, so 9 is what installs cleanly. `next build` does not run ESLint. The existing ESLint 9 crash in `eslint.config.mjs` (`FlatCompat` + `next/core-web-vitals`) is unchanged.
+
+No browser check. This is a devDependency pin. Left as found: `components/clients/client-change-package-dialog.tsx`.
+
 ## Client SMS dialog hides gateway and settings — 2026-11-19
 
 The client SMS dialog no longer shows the gateway button or the SMS settings button. Live and Test stay. The Send SMS page still shows both buttons.

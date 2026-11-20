@@ -6,10 +6,9 @@ import {
     ClientActivitySchema,
 } from "@/components/clients/client-type";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSidebar } from "@/components/ui/sidebar";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { toNumber } from "@/lib/helper/helper";
 import { Ban, Wifi, WifiOff } from "lucide-react";
@@ -21,56 +20,51 @@ const DEFAULT_ACTIVITY: ClientActivity = {
     disabled: 0,
 };
 
-function ActivityCountSkeleton({ isMobile }: { isMobile: boolean }) {
+interface ActivityItemProps {
+    label: string;
+    icon: ReactNode;
+    value: number;
+    valueClassName?: string;
+    pending: boolean;
+}
+
+function CountValue({
+    amount,
+    className,
+    pending,
+}: {
+    amount: number;
+    className?: string;
+    pending: boolean;
+}) {
     return (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            {isMobile && (
-                <div className="flex items-center gap-1">
-                    <Skeleton className="h-4 w-14" />
-                    <Skeleton className="h-4 w-10" />
-                </div>
+        <span className="inline-flex h-5 items-center justify-center">
+            {pending ? (
+                <Skeleton className="h-4 w-6" />
+            ) : (
+                <DisplayCount
+                    amount={amount}
+                    className={cn("font-semibold tabular-nums", className)}
+                />
             )}
-            {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex items-center gap-1.5">
-                    {isMobile ? (
-                        <Skeleton className="h-4 w-4 shrink-0 rounded-sm" />
-                    ) : (
-                        <Skeleton className="h-4 w-12" />
-                    )}
-                    <Skeleton className="h-4 w-8" />
-                </div>
-            ))}
-        </div>
+        </span>
     );
 }
 
-interface ActivityItemProps {
-    label: string;
-    icon?: React.ReactNode;
-    value: number;
-    valueClassName?: string;
-    showIcon?: boolean;
-}
-
-function ActivityItem({ label, icon, value, valueClassName, showIcon }: ActivityItemProps) {
+function ActivityItem({ label, icon, value, valueClassName, pending }: ActivityItemProps) {
     return (
-        <div className="flex items-center gap-1.5 text-sm" title={label}>
-            {showIcon ? (
-                <span className="inline-flex shrink-0" aria-label={label}>{icon}</span>
-            ) : (
-                <span className="text-muted-foreground">{label}</span>
-            )}
-            <DisplayCount
-                amount={value}
-                className={cn("font-semibold tabular-nums", valueClassName)}
-            />
+        <div className="flex h-5 shrink-0 items-center gap-1.5 text-sm" title={label}>
+            <span className="inline-flex shrink-0 md:hidden" aria-label={label}>
+                {icon}
+            </span>
+            <span className="hidden text-muted-foreground md:inline">{label}</span>
+            <CountValue amount={value} className={valueClassName} pending={pending} />
         </div>
     );
 }
 
 export default function ClientCount() {
     const { t } = useTranslation();
-    const { isMobile } = useSidebar();
 
     const { data, isLoading, isFetching, isError } = useApiQuery<ApiResponse<unknown>>({
         queryKey: ["client-activity"],
@@ -80,56 +74,51 @@ export default function ClientCount() {
 
     const activity = useMemo(() => {
         const parsed = ClientActivitySchema.safeParse(data?.data);
-        return parsed.success ? parsed.data : DEFAULT_ACTIVITY;
+        return parsed.success ? parsed.data : null;
     }, [data?.data]);
 
-    const offlineCount = useMemo(() => {
-        const totalCount = toNumber(activity.total);
-        const onlineCount = toNumber(activity.online);
-        const disabledCount = toNumber(activity.disabled);
+    const pending = (isLoading || isFetching) && !activity;
 
-        return Math.max(0, totalCount - (onlineCount + disabledCount));
-    }, [activity.disabled, activity.online, activity.total]);
+    if (isError && !activity) return null;
 
-    if (isLoading || isFetching) {
-        return <ActivityCountSkeleton isMobile={isMobile} />;
-    }
+    const counts = activity ?? DEFAULT_ACTIVITY;
+    const offlineCount = Math.max(
+        0,
+        toNumber(counts.total) - (toNumber(counts.online) + toNumber(counts.disabled)),
+    );
 
     return (
-        <>
-            {!isError && (
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                    {isMobile && (
-                        <span className="inline-flex items-center gap-1 text-sm">
-                            <span>{t("client.title_plural")}</span>
-                            <span className="inline-flex items-center font-semibold tabular-nums">
-                                (<DisplayCount amount={toNumber(activity.total)} />)
-                            </span>
-                        </span>
-                    )}
-                    <ActivityItem
-                        label={t("client.activity.online")}
-                        icon={<Wifi className="h-4 w-4 theme-tone-success" />}
-                        value={activity.online}
-                        valueClassName="theme-tone-success"
-                        showIcon={isMobile}
-                    />
-                    <ActivityItem
-                        label={t("client.activity.offline")}
-                        icon={<WifiOff className="h-4 w-4 text-destructive" />}
-                        value={offlineCount}
-                        valueClassName="text-destructive"
-                        showIcon={isMobile}
-                    />
-                    <ActivityItem
-                        label={t("client.activity.disabled")}
-                        icon={<Ban className="h-4 w-4 text-muted-foreground" />}
-                        value={activity.disabled}
-                        valueClassName="text-muted-foreground"
-                        showIcon={isMobile}
-                    />
-                </div>
-            )}
-        </>
+        <div
+            data-testid="client-activity"
+            className="flex min-h-5 flex-wrap items-center gap-x-4 gap-y-1"
+        >
+            <span className="inline-flex h-5 shrink-0 items-center gap-1 text-sm md:hidden">
+                <span>{t("client.title_plural")}</span>
+                <span className="inline-flex items-center font-semibold tabular-nums">
+                    (<CountValue amount={toNumber(counts.total)} pending={pending} />)
+                </span>
+            </span>
+            <ActivityItem
+                label={t("client.activity.online")}
+                icon={<Wifi className="h-4 w-4 theme-tone-success" />}
+                value={counts.online}
+                valueClassName="theme-tone-success"
+                pending={pending}
+            />
+            <ActivityItem
+                label={t("client.activity.offline")}
+                icon={<WifiOff className="h-4 w-4 text-destructive" />}
+                value={offlineCount}
+                valueClassName="text-destructive"
+                pending={pending}
+            />
+            <ActivityItem
+                label={t("client.activity.disabled")}
+                icon={<Ban className="h-4 w-4 text-muted-foreground" />}
+                value={counts.disabled}
+                valueClassName="text-muted-foreground"
+                pending={pending}
+            />
+        </div>
     );
 }

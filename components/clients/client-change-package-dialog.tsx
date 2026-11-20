@@ -84,7 +84,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                 </>
             )}
         >
-            <div className="space-y-4">
+            <div className="space-y-4 pb-1">
                 <div className="flex flex-col items-center text-center gap-4">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                         <Package className="h-8 w-8 text-primary" />

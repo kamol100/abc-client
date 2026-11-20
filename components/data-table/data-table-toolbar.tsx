@@ -277,7 +277,7 @@ export function DataTableToolbar<TData>({
         </div>
       </div>
       {isMobile && toolbarInfoComponent && !showFilter && (
-        <div className="flex w-full justify-center">
+        <div className="flex min-h-5 w-full items-center justify-center">
           {toolbarInfoComponent}
         </div>
       )}

@@ -42,18 +42,21 @@ const ChangePagination: FC<Props> = ({ queryKey = "users" }) => {
   };
 
   return (
-    <Select
-      value={pageSize}
-      onValueChange={updateItemPerPage}
-      aria-label="Results per page"
-    >
-      <SelectTrigger id="results-per-page" className="w-fit whitespace-nowrap">
-        <SelectValue placeholder="Select number of results" />
+    <Select value={pageSize} onValueChange={updateItemPerPage}>
+      <SelectTrigger
+        id="results-per-page"
+        aria-label="Results per page"
+        className="w-fit whitespace-nowrap"
+      >
+        <SelectValue placeholder="Select number of results">
+          <span className="md:hidden">{pageSize}</span>
+          <span className="hidden md:inline">{pageSize} / page</span>
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {[5, 10, 25, 50].map((pageSize) => (
-          <SelectItem key={pageSize} value={pageSize.toString()}>
-            {pageSize} / page
+        {[5, 10, 25, 50].map((size) => (
+          <SelectItem key={size} value={size.toString()}>
+            {size} / page
           </SelectItem>
         ))}
       </SelectContent>
