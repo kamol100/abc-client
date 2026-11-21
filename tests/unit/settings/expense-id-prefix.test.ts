@@ -15,6 +15,7 @@ describe("expense id prefix setting", () => {
             "auto_inactive_client_time",
             "client_view_open_on_new_tab",
             "client_edit_open_on_new_tab",
+            "create_invoice_billing_type_auto",
         ]);
         expect(SETTINGS_SECTION_SCHEMA.general.fields[2]).toEqual({
             kind: "text",

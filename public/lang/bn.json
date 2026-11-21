@@ -5526,6 +5526,9 @@
             "client_edit_open_on_new_tab": {
                 "label": "ক্লায়েন্ট এডিট ওপেন নতুন ট্যাবে"
             },
+            "create_invoice_billing_type_auto": {
+                "label": "বিলিং টাইপ অটো হলে ইনভয়েস তৈরি করুন"
+            },
             "invoice_due_reminder_voice_campaign_name": {
                 "label": "ভয়েস ক্যাম্পেইন নেম",
                 "placeholder": "ভয়েস ক্যাম্পেইন নেম দিন"

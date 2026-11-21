@@ -1,3 +1,11 @@
+## Client setting: Create invoice for billing type auto — 2026-11-21
+
+Client Settings (the gear on the clients list) has a new switch, "Create invoice for billing type auto", after "Client edit open on new tab". The setting key is `create_invoice_billing_type_auto` and it defaults to off. It is a company setting in the General section, like the other client switches, so it also shows on the General settings form. Like the other switches it saves on toggle and is stored as `1`/`0`. Nothing reads it yet. The backend saves the `settings` map without a key whitelist, so no API change was needed. Labels are in `en.json` and `bn.json` under `settings.fields`.
+
+On `http://vp.isp.test/clients`, signed in as vpc at 1440px: the switch was off, turning it on showed "Setting updated successfully", and after a reload it was still on. It was then turned off again and confirmed off after another reload, so the tenant is back to its original value. A narrow width and dark mode were not checked; the row reuses the existing settings switch layout.
+
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/settings` passed (18), including the two field-order tests updated for the new key.
+
 ## Create Invoice from the client row menu — 2026-11-21
 
 The client row menu has a new item, Create Invoice, right after Change Package. It opens a dialog with the same form as `/invoices/create` but no client dropdown. The top of the dialog shows the client's name, PPPoE ID, and phone. The item is hidden without `invoices.create` (the `POST /invoices` route name). After a save the dialog closes and the invoice and client lists refresh, so the row's due invoices and Pay action update.

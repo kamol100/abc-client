@@ -133,6 +133,7 @@ export const SETTINGS_SECTION_SCHEMA: Record<SettingsSectionKey, SettingsSection
             { kind: "select", key: "auto_inactive_client_time", options: CLIENT_AUTO_INACTIVE_TIME_OPTIONS },
             { kind: "switch", key: "client_view_open_on_new_tab" },
             { kind: "switch", key: "client_edit_open_on_new_tab" },
+            { kind: "switch", key: "create_invoice_billing_type_auto" },
         ],
     },
     sms: {

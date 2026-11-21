@@ -27,6 +27,7 @@ const CLIENT_SETTINGS_FIELDS = [
     "auto_inactive_client_time",
     "client_view_open_on_new_tab",
     "client_edit_open_on_new_tab",
+    "create_invoice_billing_type_auto",
 ] as const satisfies readonly SettingsFieldKey[];
 
 type ClientTableProps = {

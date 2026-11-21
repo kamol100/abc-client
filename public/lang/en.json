@@ -5526,6 +5526,9 @@
             "client_edit_open_on_new_tab": {
                 "label": "Client edit open on new tab"
             },
+            "create_invoice_billing_type_auto": {
+                "label": "Create invoice for billing type auto"
+            },
             "invoice_due_reminder_voice_campaign_name": {
                 "label": "Voice Campaign Name",
                 "placeholder": "Enter voice campaign name"
