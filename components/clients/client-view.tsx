@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import {
     ArrowLeft,
     CreditCard,
+    FilePlus,
     MapPin,
     MessageSquare,
     Package,
@@ -37,6 +38,7 @@ import type { OnuSummary } from "@/components/onu/onu-type";
 const ClientSmsDialog = dynamic(() => import("@/components/clients/client-sms"), { ssr: false });
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
 const ClientAddMapDialog = dynamic(() => import("@/components/clients/client-add-map-dialog"), { ssr: false });
+const ClientInvoiceCreateDialog = dynamic(() => import("@/components/clients/client-invoice-create-dialog"), { ssr: false });
 
 interface Props {
     clientId: string;
@@ -63,6 +65,8 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
     const [ticketOpen, setTicketOpen] = useState(false);
+    const [createInvoiceOpen, setCreateInvoiceOpen] = useState(false);
+    const canCreateInvoice = hasPermission("invoices.create");
     const [lockOpen, setLockOpen] = useState(false);
     const [mapOpen, setMapOpen] = useState(false);
     const [switchOpen, setSwitchOpen] = useState(false);
@@ -170,6 +174,18 @@ const ClientView: FC<Props> = ({ clientId }) => {
                                     <Ticket className="h-4 w-4" />
                                 </MyButton>
                             )}
+                            {canCreateInvoice && (
+                                <MyButton
+                                    action="edit"
+                                    icon={false}
+                                    size="icon"
+                                    onClick={() => setCreateInvoiceOpen(true)}
+                                    tooltip="client.actions.create_invoice"
+                                    aria-label={t("client.actions.create_invoice")}
+                                >
+                                    <FilePlus className="h-4 w-4" />
+                                </MyButton>
+                            )}
                             {hasPermission("sms-send.access") && client.phone && (
                                 <MyButton
                                     action="edit"
@@ -218,6 +234,13 @@ const ClientView: FC<Props> = ({ clientId }) => {
                         open={ticketOpen}
                         onOpenChange={setTicketOpen}
                     />
+                    {canCreateInvoice && (
+                        <ClientInvoiceCreateDialog
+                            client={client}
+                            open={createInvoiceOpen}
+                            onOpenChange={setCreateInvoiceOpen}
+                        />
+                    )}
 
                     <div className="w-full">
                         <ClientBasicView

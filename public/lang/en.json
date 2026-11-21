@@ -1626,6 +1626,7 @@
             "edit": "Edit",
             "reset_session": "Reset Session",
             "change_package": "Change Package",
+            "create_invoice": "Create Invoice",
             "invoice_history": "Invoice History",
             "pay": "Pay",
             "sms": "Send SMS",
@@ -1689,6 +1690,11 @@
         "ticket_dialog": {
             "title": "Create Ticket: {{name}}",
             "description": "Create a support ticket for this client."
+        },
+        "invoice_dialog": {
+            "title": "Create Invoice",
+            "description": "Create an invoice for this client.",
+            "load_error": "Could not load client details. Close the dialog and try again."
         },
         "delete_mikrotik": "Delete from Mikrotik?",
         "view_title": "Client Details",

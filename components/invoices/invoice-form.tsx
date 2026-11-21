@@ -7,18 +7,25 @@ import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import InvoiceLinesEditor from "@/components/invoices/invoice-lines-editor";
 import InvoiceTotals from "@/components/invoices/invoice-totals";
-import InvoiceFormFieldSchema from "./invoice-form-schema";
-import { InvoiceFormSchema, InvoiceFormState } from "./invoice-type";
+import { cn } from "@/lib/utils";
+import InvoiceFormFieldSchema from "@/components/invoices/invoice-form-schema";
+import { InvoiceFormSchema, InvoiceFormState } from "@/components/invoices/invoice-type";
 
 type InvoiceFormProps = {
     mode?: "create" | "edit";
     data?: Record<string, unknown>;
+    /** Numeric client id. When set, the client dropdown is hidden and the form renders for a dialog. */
+    clientId?: number;
+    onClose?: () => void;
+    onSuccess?: () => void;
 };
 
 type ContentProps = {
     formSchema: FormFieldConfig[];
     renderField: (field: FormFieldConfig) => ReactNode;
     mode: string;
+    hideClient?: boolean;
+    embedded?: boolean;
 };
 
 const defaultLine = {
@@ -48,6 +55,8 @@ const InvoiceFormContent: FC<ContentProps> = ({
     formSchema,
     renderField,
     mode,
+    hideClient = false,
+    embedded = false,
 }) => {
     const { watch, setValue } = useFormContext<InvoiceFormState>();
 
@@ -82,12 +91,17 @@ const InvoiceFormContent: FC<ContentProps> = ({
 
     return (
         <div className="space-y-4">
-            <div className="rounded-md border p-4 sm:p-5 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className={cn("space-y-4", !embedded && "rounded-md border p-4 sm:p-5")}>
+                <div
+                    className={cn(
+                        "grid grid-cols-1 md:grid-cols-2 gap-4",
+                        embedded ? "lg:grid-cols-3" : "xl:grid-cols-3",
+                    )}
+                >
                     {field("create_date")}
                     {field("due_date")}
                     {field("invoice_type_id")}
-                    {field("client_id")}
+                    {!hideClient && field("client_id")}
                     {field("discount")}
                     {field("status")}
                     {status === "partial_paid" && field("partial_amount")}
@@ -101,8 +115,8 @@ const InvoiceFormContent: FC<ContentProps> = ({
 
                 <InvoiceLinesEditor />
 
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-                    <div className="xl:col-span-2">
+                <div className={cn("grid grid-cols-1 gap-4", embedded ? "lg:grid-cols-3" : "xl:grid-cols-3")}>
+                    <div className={embedded ? "lg:col-span-2" : "xl:col-span-2"}>
                         {field("confirmation_sms")}
                         <div className="mt-4">{field("note")}</div>
                     </div>
@@ -116,10 +130,45 @@ const InvoiceFormContent: FC<ContentProps> = ({
 const InvoiceForm: FC<InvoiceFormProps> = ({
     mode = "create",
     data,
+    clientId,
+    onClose,
+    onSuccess,
 }) => {
     const router = useRouter();
     const formSchema = InvoiceFormFieldSchema();
-    const formData = mode === "edit" ? data : defaultValues;
+    const embedded = clientId !== undefined;
+    const formData = useMemo(() => {
+        if (mode === "edit") return data;
+        return embedded ? { ...defaultValues, client_id: clientId } : defaultValues;
+    }, [mode, data, embedded, clientId]);
+
+    if (embedded) {
+        return (
+            <FormBuilder
+                formSchema={formSchema}
+                grids={3}
+                data={formData}
+                api="/invoices"
+                mode={mode}
+                schema={InvoiceFormSchema}
+                method="POST"
+                queryKey="invoices"
+                actionButtonClass="justify-end"
+                onClose={onClose}
+                onSuccess={onSuccess}
+            >
+                {(renderField) => (
+                    <InvoiceFormContent
+                        formSchema={formSchema}
+                        renderField={renderField}
+                        mode={mode}
+                        hideClient
+                        embedded
+                    />
+                )}
+            </FormBuilder>
+        );
+    }
 
     return (
         <div className="w-full xl:w-4/5 mx-auto flex flex-col flex-1 min-h-0">

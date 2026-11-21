@@ -22,6 +22,7 @@ import {
     CreditCard,
     Edit,
     Eye,
+    FilePlus,
     FileText,
     Lock,
     MapPin,
@@ -51,6 +52,7 @@ import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transact
 
 const ClientTicketDialog = dynamic(() => import("@/components/clients/client-ticket"), { ssr: false });
 const ClientAddMapDialog = dynamic(() => import("@/components/clients/client-add-map-dialog"), { ssr: false });
+const ClientInvoiceCreateDialog = dynamic(() => import("@/components/clients/client-invoice-create-dialog"), { ssr: false });
 
 interface ClientRowActionsProps {
     row: Row<ClientRow>;
@@ -69,6 +71,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     const clientId = getClientId(client) ?? "";
     const [resetOpen, setResetOpen] = useState(false);
     const [changePackageOpen, setChangePackageOpen] = useState(false);
+    const [createInvoiceOpen, setCreateInvoiceOpen] = useState(false);
+    const canCreateInvoice = hasPermission("invoices.create");
     const [bulkPayOpen, setBulkPayOpen] = useState(false);
     const [smsOpen, setSmsOpen] = useState(false);
     const [walletRechargeOpen, setWalletRechargeOpen] = useState(false);
@@ -146,6 +150,12 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                     <Package className="mr-2 h-4 w-4" />
                     {t("client.actions.change_package")}
                 </DropdownMenuItem>
+                {canCreateInvoice && (
+                    <DropdownMenuItem className="cursor-pointer" onSelect={() => setCreateInvoiceOpen(true)}>
+                        <FilePlus className="mr-2 h-4 w-4" />
+                        {t("client.actions.create_invoice")}
+                    </DropdownMenuItem>
+                )}
                 {hasPermission("invoices.access") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
                         <Link href={`/invoices/client/${clientId}`}>
@@ -270,6 +280,14 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 open={changePackageOpen}
                 onOpenChange={setChangePackageOpen}
             />
+
+            {canCreateInvoice && (
+                <ClientInvoiceCreateDialog
+                    client={client}
+                    open={createInvoiceOpen}
+                    onOpenChange={setCreateInvoiceOpen}
+                />
+            )}
 
             <LazyBulkInvoicePayDialog
                 invoiceDue={client.invoiceDue ?? []}

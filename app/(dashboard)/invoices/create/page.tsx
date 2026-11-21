@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 export default function InvoiceCreatePage() {
     return (
         <>
-            <HelpGuideLink href="/help/invoices/create" permission="invoices.create" />
             <InvoiceForm />
         </>
     );

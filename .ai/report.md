@@ -1,3 +1,17 @@
+## Create Invoice from the client row menu — 2026-11-21
+
+The client row menu has a new item, Create Invoice, right after Change Package. It opens a dialog with the same form as `/invoices/create` but no client dropdown. The top of the dialog shows the client's name, PPPoE ID, and phone. The item is hidden without `invoices.create` (the `POST /invoices` route name). After a save the dialog closes and the invoice and client lists refresh, so the row's due invoices and Pay action update.
+
+The clients list sends the client uuid as `id`, and `POST /invoices` needs the numeric `client_id`. The dialog gets that number from the existing `GET /dropdown-clients?uuid=`. No backend change. `InvoiceForm` takes an optional `clientId`: when set, the client field is not rendered, `client_id` is filled in, and the form renders inside the dialog. The `/invoices/create` page is unchanged. New keys `client.actions.create_invoice` and `client.invoice_dialog.*` are in `en.json` and `bn.json`.
+
+On `http://vp.isp.test/clients`, signed in as vpc, at 1440px and 390px: the item appears after Change Package. The dialog showed client no-invoice, PPPoE no-invoice, phone 44344334344, and no client select. Saving an empty form kept the dialog open with Invoice type, Description, and Amount errors in reserved space. Page scroll stayed at 0 after closing. With the client lookup held back to force the loading skeleton, the first version of the dialog moved its header about 100px up when the form appeared, because the centered dialog grew. The dialog now has a fixed height (`min(90vh, 56rem)`). With the skeleton and with the form, the dialog and header are at the same position: header y 130 at desktop and 127 at mobile. No invoice was saved. Dark mode was not switched; the new header uses `bg-muted/30` and theme text tokens.
+
+`scripts/ai/typecheck` passed. `scripts/ai/test`: 766 passed, 20 failed in the same files as the 2026-11-19 entry (date picker, reseller client table, pay page, menu, maps). None of them touch the invoice form or client row actions.
+
+The client details page (`components/clients/client-view.tsx`) also has a Create Invoice icon button (file-plus icon, tooltip "Create Invoice") right after Create Ticket. It opens the same dialog, behind the same `invoices.create` permission. On `/clients/view/<uuid>` at 1440px and 390px the toolbar order was Pay, Edit, Client switch, Reset Session, Change Package, Add Map, Create Ticket, Create Invoice, Send SMS, Lock Client. At 390px the icon row wrapped onto two lines with the new button at the end of the first. The dialog showed the client name, PPPoE ID, and phone, with no client select, and Escape closed it. The client details query key starts with `clients`, so a save refreshes this page too. `scripts/ai/typecheck` passed.
+
+Left as found: the `HelpGuideLink` removal in `app/(dashboard)/invoices/create/page.tsx`, which was already uncommitted when this task started.
+
 ## Mobile page-size label — 2026-11-20
 
 On screens below 768px the closed page-size control shows the number only (`10`). The open list still shows `5 / page`, `10 / page`, `25 / page`, and `50 / page`. At 768px and up the closed control still shows `10 / page`.
