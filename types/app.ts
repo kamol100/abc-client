@@ -51,6 +51,7 @@ export interface ProfileReseller {
 
 export interface Profile {
   id: string;
+  referral_seller_type?: "tenant_manager" | "independent" | "reseller" | null;
   username?: string;
   phone?: number | string;
   name: string;

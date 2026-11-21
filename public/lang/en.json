@@ -9730,6 +9730,12 @@
         }
     },
   "referral": {
+    "enrolled": "Enrolled",
+    "enrolled_as": {
+      "tenant_manager": "Enrolled as tenant",
+      "independent": "Enrolled as independent",
+      "reseller": "Enrolled as reseller"
+    },
     "title": "My referrals",
     "platform_title": "Referral sales",
     "intro": "Track referred ISPs and commission payments.",
@@ -9795,6 +9801,7 @@
       "percentage": "{{value}} of sale"
     },
     "actions": {
+      "generate_code": "Generate",
       "add": "Add referral",
       "attribute": "Attribute referral",
       "copy": "Copy link",

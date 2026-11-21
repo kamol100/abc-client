@@ -41,6 +41,8 @@ export const UserRowSchema = UserCoreSchema.extend({
     roles: z.array(RoleSchema).optional(),
     company: CompanySchema.optional(),
     domain: z.string().nullable().optional(),
+    is_referral_seller: z.boolean().optional(),
+    referral_seller_type: z.enum(["tenant_manager", "independent", "reseller"]).nullable().optional(),
     joined_at: z.union([z.string(), z.date()]).optional(),
 }).passthrough();
 

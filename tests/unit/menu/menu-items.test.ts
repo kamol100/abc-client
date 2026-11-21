@@ -290,3 +290,29 @@ describe("admin menu feature locks", () => {
     expect(group(visible, 39).disabled).toBe(false);
   });
 });
+
+describe("independent referral sidebar", () => {
+  it("shows only My referrals even when support and other permissions exist", () => {
+    const items = selectMenuItems(menu, access(true, { isIndependentReferral: true }));
+    expect(urls(items)).toEqual(["/referrals"]);
+  });
+  it("keeps the referral-only account's history accessible when subscription features are locked", () => {
+    const items = selectMenuItems(menu, access(["referrals.access", "platform-support.access"], {
+      isIndependentReferral: true, subscriptionState: "expired", disabledFeatures: ["core"],
+    }));
+    expect(urls(items)).toEqual(["/referrals"]);
+    expect(items[0].disabled).toBe(false);
+  });
+  it("preserves subscription and support for other tenant and reseller sellers", () => {
+    for (const isReseller of [false, true]) {
+      const items = selectMenuItems(menu, access(["referrals.access", "platform-support.access"], { isReseller }));
+      if (isReseller) expect(urls(items)).not.toContain("/subscription");
+      else expect(urls(items)).toContain("/subscription");
+      expect(urls(items)).toContain("/platform-support?kind=issue");
+      expect(urls(items)).toContain("/referrals");
+    }
+  });
+  it("does not invent referral permission from a profile flag", () => {
+    expect(selectMenuItems(menu, access([], { isIndependentReferral: true }))).toEqual([]);
+  });
+});

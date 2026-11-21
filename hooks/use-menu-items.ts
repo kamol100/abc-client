@@ -72,6 +72,7 @@ export interface NavMenuItem {
 export interface MenuAccess {
   hasPermission: (permission: string) => boolean;
   isReseller: boolean;
+  isIndependentReferral?: boolean;
   subscriptionState?: string | null;
   disabledFeatures?: string[];
 }
@@ -511,9 +512,10 @@ function childIsPermitted(access: MenuAccess, sub: MenuSubItemConfig): boolean {
 
 export function selectMenuItems(menuConfig: MenuItemConfig[], access: MenuAccess): NavMenuItem[] {
   return menuConfig.reduce<NavMenuItem[]>((acc, config) => {
+    if (access.isIndependentReferral && config.url !== "/referrals") return acc;
     if (config.hideForReseller && access.isReseller) return acc;
 
-    const parentLocked = childIsLocked(access, config.feature);
+    const parentLocked = !access.isIndependentReferral && childIsLocked(access, config.feature);
     const anyChildLocked = config.items?.some((sub) => childIsLocked(access, sub.feature)) ?? false;
     const hasAccess =
       config.always ||
@@ -560,15 +562,17 @@ export function useMenuItems(): NavMenuItem[] {
   const { subscription } = useSubscription();
   const { profile } = useProfile();
   const isReseller = !!profile?.reseller;
+  const isIndependentReferral = profile?.referral_seller_type === "independent";
 
   return useMemo(
     () =>
       selectMenuItems(buildMenuConfig(t), {
         hasPermission,
         isReseller,
+        isIndependentReferral,
         subscriptionState: subscription?.state,
         disabledFeatures: subscription?.disabled_features,
       }),
-    [t, hasPermission, subscription, isReseller],
+    [t, hasPermission, subscription, isReseller, isIndependentReferral],
   );
 }

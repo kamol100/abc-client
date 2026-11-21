@@ -4,15 +4,15 @@ import { ReferralEnrollmentForm } from "@/components/referrals/referral-seller-f
 
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { DataTableColumnHeader } from "../data-table/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyBadge from "@/components/my-badge";
-import { UserRow } from "./user-type";
-import UserForm from "./user-form";
-import { DeleteModal } from "../delete-modal";
+import { UserRow } from "@/components/users/user-type";
+import UserForm from "@/components/users/user-form";
+import { DeleteModal } from "@/components/delete-modal";
 import { ShieldCheck } from "lucide-react";
 import { usePermissions } from "@/context/app-provider";
 import Link from "next/link";
-import MyButton from "../my-button";
+import MyButton from "@/components/my-button";
 
 function UserStatusCell({ status }: { status: 0 | 1 }) {
   const { t } = useTranslation();
@@ -139,7 +139,7 @@ export const UsersColumns: ColumnDef<UserRow>[] = [
           >
           </DeleteModal>
           {hasPermission("platform-referral-sellers.create") && typeof data.id === "string" && (
-            <ReferralEnrollmentForm userUuid={data.id} />
+            <ReferralEnrollmentForm userUuid={data.id} enrolled={data.is_referral_seller} sellerType={data.referral_seller_type} />
           )}
           {permissions?.includes("users.edit") && (
             <>
