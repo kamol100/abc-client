@@ -5648,9 +5648,6 @@
             "sms_after_auto_invoice_paid_from_wallet": {
                 "label": "SMS After Invoice Paid From Wallet"
             },
-            "sms_after_auto_invoice_generate_reseller": {
-                "label": "SMS After Reseller Auto Invoice Generate"
-            },
             "sms_auto_invoice_due_reminder": {
                 "label": "SMS Auto Invoice Due Reminder"
             },

@@ -70,7 +70,6 @@ export const SETTINGS = {
   sms_after_manual_invoice_generate: toggle(),
   sms_after_auto_invoice_generate_client: toggle(),
   sms_after_auto_invoice_paid_from_wallet: toggle(),
-  sms_after_auto_invoice_generate_reseller: toggle(),
   sms_auto_invoice_schedule: select({ options: SMS_SCHEDULE_OPTIONS }),
 
   // ── SMS: due reminders ─────────────────────────────────────────────

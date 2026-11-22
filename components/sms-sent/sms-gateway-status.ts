@@ -10,7 +10,6 @@ export const SMS_SENDING_SETTING_KEYS = [
   "sms_after_manual_invoice_generate",
   "sms_after_auto_invoice_generate_client",
   "sms_after_auto_invoice_paid_from_wallet",
-  "sms_after_auto_invoice_generate_reseller",
   "sms_auto_invoice_due_reminder",
 ] as const;
 

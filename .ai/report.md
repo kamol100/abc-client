@@ -1362,3 +1362,18 @@ No line-ending changes (41 files checked). Not committed.
   - "Exit Impersonation" returns to the normal account with no errors;
   - `scripts/ai/typecheck` passes.
 - Side effect of testing: the impersonation was started 3 times from fresh browser sessions. Only the last run exited through the UI; the first two sessions were closed while still impersonating.
+
+## Settings: removed "SMS After Reseller Auto Invoice Generate"
+
+- Removed the `sms_after_auto_invoice_generate_reseller` option from the frontend:
+  - the field registry (`settings/registry/fields.ts`);
+  - the SMS section's "invoices" group (`sections.ts`);
+  - the SMS sending lock list (`sms-gateway-status.ts`);
+  - its label in en and bn.
+- Tests updated to match: the expected SMS order in `settings-sections.test.ts`, and the entry in `fixtures/setting-values.json`. That removes one per-key test, so the suite count goes 849 → 848 passed.
+- The backend was changed in the same step (isp-backend): the reseller auto invoice SMS branch, the seeded defaults and the gateway key are removed, so a saved value no longer sends anything.
+- Checked:
+  - browser `/settings/sms` at 1440px: the option is gone; the other 13 settings render in the same order; no page errors;
+  - `scripts/ai/typecheck` passes;
+  - `tests/unit/settings` 79/79;
+  - `scripts/ai/test`: 848 passed, same 20 baseline failures.

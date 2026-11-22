@@ -5648,9 +5648,6 @@
             "sms_after_auto_invoice_paid_from_wallet": {
                 "label": "ওয়ালেট থেকে ইনভয়েস পেইডের পর SMS"
             },
-            "sms_after_auto_invoice_generate_reseller": {
-                "label": "রিসেলার অটো ইনভয়েস জেনারেটের পর SMS"
-            },
             "sms_auto_invoice_due_reminder": {
                 "label": "SMS অটো ইনভয়েস ডিউ রিমাইন্ডার"
             },
