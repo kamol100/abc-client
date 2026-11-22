@@ -63,6 +63,7 @@ export default function DashboardZoneDueSummaryTable({
               title: toolbarTitle,
               features: {
                 columns: true,
+                layoutToggle: false,
                 filter: toolbarOptions,
               },
             }}
