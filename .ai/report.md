@@ -1118,3 +1118,8 @@ No line-ending changes (41 files checked). Not committed.
 - `mikrotik-sync-form.tsx` now exports `MikrotikSyncActionButton({action})`. It is an outline button: icon only below md, icon and label from md up. It opens a `MyDialog` with the action name as title, the old help line as description, and the network select with submit. On success the form resets and the dialog closes. API calls, permissions (`mikrotik-sync.load` and `mikrotik-sync.all-sync`) and toasts are unchanged.
 - `mikrotik-sync-table.tsx`: the form cards are removed, and the buttons are toolbar `end` items with `show: canLoad` / `show: canResolve`. The bulk-import button now reads "Import selected (n)", using a new key `mikrotik_sync.actions.import_selected` in en and bn, so it is not a second "Import". It is icon only on phones.
 - Checked: the table top moved from 551 to 239px on a 390px phone and to 187px on 1440 desktop. The toolbar stays on one row with all buttons 36px tall and there is no horizontal scroll. Selecting rows adds the bulk button on the same row. The All Sync dialog opens, empty submit shows the network error, and the network list opens. I did not submit a real load or sync, because that would call the router. `scripts/ai/typecheck` passes. `scripts/ai/test` shows the same 20 baseline failures.
+
+## Top navbar: notification bell size
+
+- The bell was `size="default"`, 50×36. The other icon buttons (support, theme) are 36×36. Changed it to `size="icon"` in `components/notifications/notification-bell.tsx`. The badge position is unchanged.
+- Checked: Playwright measured the navbar at 1440 and 390px. The bell is now 36×36 at the same y as its neighbours. `scripts/ai/typecheck` passes, and `notification-bell.test.tsx` passes 5/5.

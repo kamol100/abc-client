@@ -45,8 +45,8 @@ function NotificationBellMenu() {
                     variant="outline"
                     aria-label={t("notifications.title")}
                     data-testid="notification-bell"
-                    className="relative"
-                    size="default"
+                    className="relative shrink-0"
+                    size="icon"
                 >
                     <Bell className="size-4" />
                     {badge ? (
