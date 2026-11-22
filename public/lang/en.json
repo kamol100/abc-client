@@ -4352,7 +4352,8 @@
             "label": "Client",
             "status": "Status",
             "address": "Address",
-            "phone": "Phone"
+            "phone": "Phone",
+            "device": "Device"
         },
         "status": {
             "active": "Active",

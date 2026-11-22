@@ -4,11 +4,14 @@ import "leaflet/dist/leaflet.css";
 
 import { cn } from "@/lib/utils";
 import type { LatLngTuple } from "leaflet";
+import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import { CircleMarker, MapContainer, Marker, Polyline, Popup, TileLayer } from "react-leaflet";
 import { useTranslation } from "react-i18next";
 import type { ClientMapClient, ClientMapRow } from "@/components/maps/maps-type";
-import { ensureLeafletDefaultIcon, mapIcons, normalizeStatus, toLatLngTuple } from "@/components/maps/map-utils";
+import { deviceIcon, ensureLeafletDefaultIcon, mapIcons, normalizeStatus, toLatLngTuple } from "@/components/maps/map-utils";
+import { usePermissions, useSettings } from "@/context/app-provider";
+import { readSetting } from "@/components/settings/core/values";
 
 type Props = {
   /** Devices, each with its clients (marker + line from the device). */
@@ -82,18 +85,14 @@ export default function ClientMapsCanvas({
 
             return (
               <Fragment key={`olt-${String(olt.id)}-${oltIndex}`}>
-                <CircleMarker
-                  center={oltLocation}
-                  radius={9}
-                  pathOptions={{ color: oltColor, fillColor: oltColor, fillOpacity: 1 }}
-                >
+                <Marker position={oltLocation} icon={deviceIcon(olt.color)} zIndexOffset={1000}>
                   <Popup>
                     <div className="text-sm">
                       {t("client_map.olt.device")}:{" "}
                       {olt.info?.name ?? t("map_common.not_available")}
                     </div>
                   </Popup>
-                </CircleMarker>
+                </Marker>
 
                 <Polyline
                   positions={[center, oltLocation]}
@@ -108,7 +107,11 @@ export default function ClientMapsCanvas({
                     <Fragment
                       key={`client-${String(olt.id)}-${String(client.id)}-${clientIndex}`}
                     >
-                      <ClientMarker client={client} position={clientLocation} />
+                      <ClientMarker
+                        client={client}
+                        position={clientLocation}
+                        deviceName={olt.info?.name ?? null}
+                      />
 
                       <Polyline
                         positions={[oltLocation, clientLocation]}
@@ -139,9 +142,27 @@ export default function ClientMapsCanvas({
   );
 }
 
-/** One client: active/inactive pin with name, status, address and phone. */
-function ClientMarker({ client, position }: { client: ClientMapClient; position: LatLngTuple }) {
+type ClientMarkerProps = {
+  client: ClientMapClient;
+  position: LatLngTuple;
+  /** Name of the linked device, shown in the popup. */
+  deviceName?: string | null;
+};
+
+/**
+ * One client: active/inactive pin. The popup shows name (a link to the client
+ * view when allowed), status, linked device, address and phone.
+ */
+function ClientMarker({ client, position, deviceName }: ClientMarkerProps) {
   const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const { settings } = useSettings();
+  const name = client.info?.name ?? t("map_common.not_available");
+  const viewHref =
+    client.id !== undefined && client.info?.name && hasPermission("clients.show")
+      ? `/clients/view/${String(client.id)}`
+      : null;
+  const openInNewTab = readSetting("client_view_open_on_new_tab", settings.client_view_open_on_new_tab) === true;
   const status = normalizeStatus(client.info?.status ?? client.status);
   const statusLabelKey =
     status === "active"
@@ -159,11 +180,26 @@ function ClientMarker({ client, position }: { client: ClientMapClient; position:
         <div className="space-y-1 text-sm">
           <div className="font-semibold">
             {t("client_map.client.label")}:{" "}
-            {client.info?.name ?? t("map_common.not_available")}
+            {viewHref ? (
+              <Link
+                href={viewHref}
+                target={openInNewTab ? "_blank" : "_self"}
+                className="!text-primary underline-offset-2 hover:underline"
+              >
+                {name}
+              </Link>
+            ) : (
+              name
+            )}
           </div>
           <div>
             {t("client_map.client.status")}: {t(statusLabelKey)}
           </div>
+          {deviceName ? (
+            <div>
+              {t("client_map.client.device")}: {deviceName}
+            </div>
+          ) : null}
           {client.info?.address ? (
             <div>
               {t("client_map.client.address")}: {client.info.address}

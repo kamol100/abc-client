@@ -1143,3 +1143,12 @@ No line-ending changes (41 files checked). Not committed.
 - Cause: the server render of `/client-maps` and `/tj-box-maps` failed (HTTP 500, `window is not defined`). `client-maps.tsx` and `tj-box-maps-table.tsx` import `map-utils.ts`, which imports Leaflet at the top, and Leaflet reads `window` when it loads. Next then rendered the whole page in the browser, which triggered the script warning.
 - Fix: new `components/maps/map-geo.ts` holds the Leaflet-free helpers (`DEFAULT_MAP_CENTER`, `toLatLngTuple`, `resolveMapCenter`, `normalizeStatus`, `getSettingString`). `map-utils.ts` keeps the Leaflet icons and re-exports those helpers, so the canvases are unchanged. The two pages import from `map-geo.ts`. `app/layout.tsx` is unchanged.
 - Checked: `/client-maps`, `/tj-box-maps`, `/clients` and `/noc` return 200 with no script warning. The client map still shows 6 pins with popups. `scripts/ai/typecheck` passes. `scripts/ai/test`: same 20 baseline failures.
+
+## Client map: device marker, device name in popup, client link
+
+- `map-utils.ts` `deviceIcon(color)`: a Leaflet divIcon with a router symbol on a rounded square in the device's line colour (hex only, cached per colour). The background is set inline inside the Leaflet HTML string, because the colour is per device. It replaces the plain circle for devices. The company marker is unchanged.
+- `client-maps-canvas.tsx` `ClientMarker`:
+  - the name links to `/clients/view/{uuid}` when the user has `clients.show`, and follows `client_view_open_on_new_tab`;
+  - a linked client's popup shows "Device: <name>". New key `client_map.client.device` in en and bn.
+- Checked: `scripts/ai/typecheck` passes. `scripts/ai/test`: 842 passed, same 20 baseline failures. In the browser the popup link has the right `href` and opens the client view.
+- Not checked in the browser yet: the device marker and the device name in the popup. The vp tenant has no devices until the seeder runs.
