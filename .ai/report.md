@@ -1152,3 +1152,13 @@ No line-ending changes (41 files checked). Not committed.
   - a linked client's popup shows "Device: <name>". New key `client_map.client.device` in en and bn.
 - Checked: `scripts/ai/typecheck` passes. `scripts/ai/test`: 842 passed, same 20 baseline failures. In the browser the popup link has the right `href` and opens the client view.
 - Not checked in the browser yet: the device marker and the device name in the popup. The vp tenant has no devices until the seeder runs.
+
+## Map pages fill the screen height
+
+- `/client-maps` and `/tj-box-maps`: the map was a fixed `h-[60vh] min-h-[420px]`. Its wrapper is now `flex min-h-[320px] flex-1 flex-col`, and the map and its loading skeleton use `flex-1 min-h-[320px]`. The filter card is `shrink-0`, so it never gets squashed.
+- Measured (map height, page scroll):
+  - 1440×900: 540 → 726, no scroll.
+  - 1280×720: 546, no scroll.
+  - 390×844: 506 → 605, ending 16px above the mobile bottom nav, no scroll.
+- `scripts/ai/typecheck` passes.
+- Existing, unchanged: on phones the map filter card shows only the Device field, with the rest cut off. The original code does the same.

@@ -17,7 +17,7 @@ type Props = {
 };
 
 const DEFAULT_MAP_CLASS =
-  "h-[60vh] min-h-[420px] w-full rounded-md border border-border";
+  "min-h-[320px] w-full flex-1 rounded-md border border-border";
 
 export default function TjBoxMapsCanvas({ data, center, className }: Props) {
   const { t } = useTranslation();

@@ -18,7 +18,7 @@ const TjBoxMapsCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <Skeleton className="h-[60vh] min-h-[420px] w-full rounded-md border border-border" />
+      <Skeleton className="min-h-[320px] w-full flex-1 rounded-md border border-border" />
     ),
   },
 );
@@ -65,7 +65,7 @@ export default function TjBoxMapsTable() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div className="rounded-md border border-border bg-card p-3">
+      <div className="shrink-0 rounded-md border border-border bg-card p-3">
         <FormFilter
           formSchema={TjBoxMapsFilterSchema()}
           grids={5}
@@ -80,7 +80,7 @@ export default function TjBoxMapsTable() {
           {t("tj_box_map.error.load_failed")}
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative flex min-h-[320px] flex-1 flex-col">
           <TjBoxMapsCanvas data={mapRows} center={center} />
 
           {(isLoading || isFetching) && (
