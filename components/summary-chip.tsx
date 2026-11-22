@@ -14,6 +14,8 @@ type SummaryChipProps = {
   isLoading?: boolean;
   /** Passed to DisplayCount, e.g. "BDT". */
   currency?: string;
+  /** Phones: label above the amount, so two chips fit side by side. */
+  stack?: boolean;
   className?: string;
 };
 
@@ -21,18 +23,23 @@ type SummaryChipProps = {
  * One money total as an h-9 chip, the same style as the navbar wallet balance.
  * The amount box keeps its width while loading, so nothing around it moves.
  */
-export default function SummaryChip({ icon: Icon, label, amount, isLoading, currency, className }: SummaryChipProps) {
+export default function SummaryChip({ icon: Icon, label, amount, isLoading, currency, stack, className }: SummaryChipProps) {
   const { t } = useTranslation();
   return (
     <div
       className={cn(
-        "flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius)] border border-border bg-background px-2.5",
+        "flex shrink-0 rounded-[var(--radius)] border border-border bg-background px-2.5",
+        stack
+          ? "min-w-0 flex-col gap-0.5 py-1.5 sm:h-9 sm:flex-row sm:items-center sm:gap-2 sm:whitespace-nowrap sm:py-0"
+          : "h-9 items-center gap-2 whitespace-nowrap",
         className,
       )}
     >
-      <Icon className="size-4 text-muted-foreground" aria-hidden />
-      <span className="text-xs text-muted-foreground">{t(label)}</span>
-      <span className="inline-flex min-w-16 items-center justify-end text-sm font-semibold">
+      <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+        <Icon className="size-4 shrink-0" aria-hidden />
+        <span className="truncate">{t(label)}</span>
+      </span>
+      <span className={cn("inline-flex h-5 min-w-16 items-center text-sm font-semibold", stack ? "sm:justify-end" : "justify-end")}>
         {isLoading ? (
           <Skeleton className="h-4 w-16" />
         ) : (

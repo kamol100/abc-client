@@ -1314,3 +1314,18 @@ No line-ending changes (41 files checked). Not committed.
 - Checked:
   - browser at 1440px on `/clients`, `/tickets`, `/payments`, `/products`, `/invoices`, `/expenses`, `/telegram` and `/olts`: one gear button with the filter closed, none with it open;
   - `scripts/ai/typecheck` passes.
+
+## Expenses: totals as toolbar chips
+
+- `expense-reports.tsx` rebuilt: Total Expense and Total Pending are two `SummaryChip`s (Receipt and Clock icons), with the same keys and fields as before. `expense-table.tsx` puts them in the toolbar `center` instead of a card above the table, so they stay visible above the open filter.
+- `SummaryChip` gets an optional `stack` prop. On phones, the label sits above the amount so two chips fit side by side; sm and up, it is the normal h-9 chip. Funds and Payments don't use it and are unchanged.
+- Layout:
+  - 1280 to 1920: title, two chips and buttons on one row;
+  - 1024: chips stacked in the centre column;
+  - 390: a 2-column grid under the buttons.
+- Checked:
+  - browser `/expenses` at 1920, 1440, 1280, 1024 and 390: no overflow or sideways scrolling;
+  - with the filter open, the chips stay above the fields and the gear is hidden;
+  - `/funds` and `/payments` look the same;
+  - no nesting or hydration console errors;
+  - `scripts/ai/typecheck` passes.

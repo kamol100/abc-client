@@ -52,13 +52,13 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
 
     return (
         <div className="space-y-4 pl-0.5">
-            <ExpenseReports reports={reports} isLoading={isLoading} />
             <DataTable
                 data={expenses}
                 setFilter={setFilter}
                 columns={ExpenseColumns}
                 toolbar={{
                     title: toolbarTitle,
+                    center: [{ key: "totals", node: <ExpenseReports reports={reports} isLoading={isLoading} /> }],
                     end: [
                         { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="expense_id_prefix" /> },
                     ],

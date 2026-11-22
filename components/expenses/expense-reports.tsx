@@ -1,11 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import Card from "@/components/card";
-import DisplayCount from "@/components/display-count";
+import { Clock, Receipt } from "lucide-react";
+import SummaryChip from "@/components/summary-chip";
 import { toNumber } from "@/lib/helper/helper";
 import { ExpenseReports as ExpenseReportsType } from "@/components/expenses/expense-type";
 
@@ -14,49 +11,26 @@ type Props = {
     isLoading?: boolean;
 };
 
-const ExpenseReports: FC<Props> = ({ reports, isLoading = false }) => {
-    const { t } = useTranslation();
-
-    if (isLoading) {
-        return <Skeleton className="h-20 w-full" />;
-    }
-
-    return (
-        <Card>
-            <CardContent className="p-3 flex justify-between gap-4">
-                <div>
-                    <p className="text-xs text-muted-foreground">
-                        {t("expense.reports.total")}
-                    </p>
-                    <p className="font-semibold">
-                        <DisplayCount
-                            amount={toNumber(reports?.total_amount)}
-                            formatCurrency
-                            currency="BDT"
-                            className="text-xs md:text-md lg:text-md font-semibold"
-                            animate
-                            duration={800}
-                        />
-                    </p>
-                </div>
-                <div className="text-right">
-                    <p className="text-xs text-muted-foreground">
-                        {t("expense.reports.pending")}
-                    </p>
-                    <p className="font-semibold">
-                        <DisplayCount
-                            amount={toNumber(reports?.pending_amount)}
-                            formatCurrency
-                            currency="BDT"
-                            className="text-xs md:text-md lg:text-md font-semibold"
-                            animate
-                            duration={800}
-                        />
-                    </p>
-                </div>
-            </CardContent>
-        </Card>
-    );
-};
+/** Expense totals as chips, for the table toolbar's center. Phones: two side by side. */
+const ExpenseReports: FC<Props> = ({ reports, isLoading = false }) => (
+    <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:justify-center">
+        <SummaryChip
+            icon={Receipt}
+            label="expense.reports.total"
+            amount={toNumber(reports?.total_amount)}
+            isLoading={isLoading}
+            currency="BDT"
+            stack
+        />
+        <SummaryChip
+            icon={Clock}
+            label="expense.reports.pending"
+            amount={toNumber(reports?.pending_amount)}
+            isLoading={isLoading}
+            currency="BDT"
+            stack
+        />
+    </div>
+);
 
 export default ExpenseReports;
