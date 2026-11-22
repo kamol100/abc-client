@@ -7,11 +7,7 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import FormFilter from "@/components/form-wrapper/form-filter";
-import {
-  ClientMapClientSchema,
-  ClientMapListSchema,
-  ClientMapRowSchema,
-} from "@/components/maps/maps-type";
+import { parseClientMapData } from "@/components/maps/client-map-data";
 import ClientMapsFilterSchema from "@/components/maps/client-maps-filter-schema";
 import { getSettingString, resolveMapCenter } from "@/components/maps/map-utils";
 import { cn } from "@/lib/utils";
@@ -26,38 +22,6 @@ const ClientMapsCanvas = dynamic(() => import("@/components/maps/client-maps-can
   },
 );
 
-function extractMapRows(data: unknown): unknown[] {
-  if (Array.isArray(data)) return data;
-  if (!data || typeof data !== "object") return [];
-
-  const nestedRows = (data as { data?: unknown }).data;
-  return Array.isArray(nestedRows) ? nestedRows : [];
-}
-
-function parseClientMapRows(data: unknown): ReturnType<typeof ClientMapListSchema.parse> {
-  const rows = extractMapRows(data);
-
-  return rows.flatMap((row) => {
-    if (!row || typeof row !== "object") return [];
-
-    const rawClients = Array.isArray((row as { client?: unknown }).client)
-      ? (row as { client: unknown[] }).client
-      : [];
-    const normalizedClients = rawClients.flatMap((client) => {
-      const parsedClient = ClientMapClientSchema.safeParse(client);
-      return parsedClient.success ? [parsedClient.data] : [];
-    });
-
-    const normalizedRow = {
-      ...row,
-      client: normalizedClients,
-    };
-
-    const parsedRow = ClientMapRowSchema.safeParse(normalizedRow);
-    return parsedRow.success ? [parsedRow.data] : [];
-  });
-}
-
 export default function ClientMapsTable() {
   const { t } = useTranslation();
   const { settings } = useSettings();
@@ -71,16 +35,14 @@ export default function ClientMapsTable() {
     isLoading,
     isFetching,
     isError,
-  } = useApiQuery<ApiResponse<unknown[]>>({
+  } = useApiQuery<ApiResponse<unknown>>({
     queryKey: ["client-maps"],
     url: "client-maps",
     params,
     pagination: false,
   });
 
-  console.log(data, 'data');
-
-  const mapRows = useMemo(() => parseClientMapRows(data?.data), [data?.data]);
+  const mapData = useMemo(() => parseClientMapData(data?.data), [data?.data]);
   const center = useMemo(() => resolveMapCenter(settings.lat, settings.lon), [settings.lat, settings.lon]);
 
   const companyName = getSettingString(settings, ["company_name", "company", "name"]) ?? t("client_map.company.fallback_name");
@@ -88,7 +50,7 @@ export default function ClientMapsTable() {
     "company_address",
     "address",
   ]);
-  console.log(mapRows, 'mapRows')
+
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="rounded-md border border-border bg-card p-3">
@@ -108,7 +70,8 @@ export default function ClientMapsTable() {
       ) : (
         <div className="relative">
           <ClientMapsCanvas
-            data={mapRows}
+            devices={mapData.devices}
+            clients={mapData.clients}
             center={center}
             companyName={companyName}
             companyAddress={companyAddress}

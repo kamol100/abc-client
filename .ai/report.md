@@ -1123,3 +1123,16 @@ No line-ending changes (41 files checked). Not committed.
 
 - The bell was `size="default"`, 50×36. The other icon buttons (support, theme) are 36×36. Changed it to `size="icon"` in `components/notifications/notification-bell.tsx`. The badge position is unchanged.
 - Checked: Playwright measured the navbar at 1440 and 390px. The bell is now 36×36 at the same y as its neighbours. `scripts/ai/typecheck` passes, and `notification-bell.test.tsx` passes 5/5.
+
+## Client map: show clients without a device
+
+- With the backend change (`isp-backend` `getClientMaps`), the payload is `{ devices, clients }`.
+- New `components/maps/client-map-data.ts` `parseClientMapData()`: it reads the new shape and still accepts the old plain array, and drops invalid rows or clients. It replaces the parser inside `client-maps.tsx`, and the two leftover `console.log` calls are gone.
+- `client-maps-canvas.tsx`: props are now `devices` + `clients`. The client pin and popup moved into `ClientMarker`. A device's clients are drawn as before (pin plus a line to the device). Clients without a device are drawn as a pin only.
+- Checked:
+  - `tests/unit/maps/client-map-data.test.ts`: 4 tests pass.
+  - `scripts/ai/typecheck` passes.
+  - `scripts/ai/test`: 842 passed, same 20 baseline failures (one is the existing empty `tests/unit/maps/client-map-rows.test.ts`).
+  - Browser, vp tenant: 0 → 6 client pins, popup shows name/status/address/phone, no page errors.
+- Existing issue, not from this change: the `/client-maps` and `/tj-box-maps` documents return HTTP 500 in dev but still render. The same happens on the old code.
+- Not verified in the browser: a tenant with devices (vp has none). That path is covered by the backend tests and the parser test.

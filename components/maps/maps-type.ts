@@ -54,6 +54,7 @@ export const ClientMapRowSchema = z
 export const ClientMapListSchema = z.array(ClientMapRowSchema);
 
 export type ClientMapRow = z.infer<typeof ClientMapRowSchema>;
+export type ClientMapClient = z.infer<typeof ClientMapClientSchema>;
 
 const TjBoxInfoSchema = z
   .object({
