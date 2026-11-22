@@ -1189,3 +1189,40 @@ No line-ending changes (41 files checked). Not committed.
     - with the menu open, the element at the map centre belongs to the menu.
   - Desktop at 1440 and 1280: map size is unchanged (726 / 546px), the inline filter works, and no drawer is rendered.
   - `scripts/ai/typecheck` passes. `scripts/ai/test`: same 20 baseline failures.
+
+## MikroTik Sync: sync status filter defaults to "Not imported", with an "All" option
+
+- `mikrotik-sync-filter-schema.ts`:
+  - the sync status dropdown now offers All, Imported and Not imported, and is no longer clearable;
+  - new `MIKROTIK_SYNC_DEFAULT_FILTER = { syncd_status: "null" }`.
+- `mikrotik-sync-table.tsx`: the page's first query is built from that default, and the toolbar gets `filter.defaultValues`, so the filter form opens with "Not imported" selected.
+- Shared filter plumbing (opt-in; tables without `defaultValues` behave as before):
+  - `useFilterForm` takes `defaultValues` (passed to `useForm`) and returns `resetFilter()`. It resets the form and runs the query with the defaults, or an empty query when there are none.
+  - The toolbar, `FormFilter` and `MapFilter` reset buttons now call `resetFilter`.
+  - Closing the desktop filter row resets only when a field differs from its default. Before, it reset when any field had a value.
+  - `DataTableToolbarOptions.defaultValues` is documented in the type.
+- i18n: `mikrotik_sync.filters.syncd_status.options.all` (All / সব).
+- Needs the backend change in isp-backend: before it, `syncd_status=all` matched no rows.
+- Checked:
+  - new `tests/unit/hooks/use-filter-form.test.tsx` (3 tests): defaults, reset to defaults, reset without defaults, and the schema options;
+  - `scripts/ai/typecheck` passes;
+  - `scripts/ai/test`: 849 passed, same 20 baseline failures;
+  - browser, vp at 1440px:
+    - opens with 9 rows and "Not imported" selected;
+    - All → 15;
+    - Imported → 6;
+    - Reset → back to "Not imported" and 9;
+  - browser, 390px: the bottom sheet shows "Not imported" with the options All | Imported | Not imported.
+
+## MikroTik Sync: Import and All Sync after the title
+
+- `mikrotik-sync-table.tsx`: the Import and All Sync buttons moved from the toolbar `end` slot to the front of `start`. On desktop they now sit right after "MikroTik Sync (9)".
+  - The open desktop filter row only carries `end` items, so both buttons stay hidden while it is open. The bulk "Import selected" button stays in `end` and still shows in the row.
+  - On mobile the title is not shown, and start items get their own row under the pagination and icon row.
+- The sync status dropdown is now `isClearable: false`. `SelectDropdown` is clearable by default, so it still showed an ×. "All" covers what clearing would do.
+- Checked:
+  - browser at 1440px: title, Import, All Sync on one line, with View, layout and Filter on the right; both buttons are hidden while the filter row is open;
+  - browser at 390px: both buttons are icon-only in their own row, with no horizontal scroll;
+  - `scripts/ai/typecheck` passes.
+- The load button label (`mikrotik_sync.sync.actions.load`) changed from "Import" to "MikroTik Import" (bn: "মাইক্রোটিক ইমপোর্ট"). The same key is the title of its dialog. Only this button uses the key; `re_sync` has its own.
+- The bulk button label (`mikrotik_sync.actions.import_selected`) changed from "Import selected ({{count}})" to "Client Import ({{count}})" (bn: "ক্লায়েন্ট ইমপোর্ট ({{count}})"). The count is unchanged.

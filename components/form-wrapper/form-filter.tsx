@@ -141,6 +141,7 @@ const FormFilter = ({
     triggerSubmit,
     clearField,
     submitFilter,
+    resetFilter,
   } = formHook || internalHook;
 
   const values = form.watch();
@@ -148,10 +149,7 @@ const FormFilter = ({
     return Object.values(values).some(value => value && value.toString().length > 0);
   }, [values]);
 
-  const handleReset = () => {
-    form.reset();
-    submitFilter({});
-  };
+  const handleReset = resetFilter;
 
   const handleToggle = () => {
     const next = !isOpen;

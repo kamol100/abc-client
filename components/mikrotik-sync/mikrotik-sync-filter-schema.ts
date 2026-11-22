@@ -1,5 +1,8 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
+/** The page opens on clients that are not imported yet. */
+export const MIKROTIK_SYNC_DEFAULT_FILTER = { syncd_status: "null" };
+
 export function MikrotikSyncFilterSchema(): FieldConfig[] {
   return [
     {
@@ -23,8 +26,12 @@ export function MikrotikSyncFilterSchema(): FieldConfig[] {
       type: "dropdown",
       name: "syncd_status",
       placeholder: "mikrotik_sync.filters.syncd_status.placeholder",
-      isClearable: true,
+      isClearable: false,
       options: [
+        {
+          value: "all",
+          label: "mikrotik_sync.filters.syncd_status.options.all",
+        },
         {
           value: "imported",
           label: "mikrotik_sync.filters.syncd_status.options.imported",

@@ -4567,7 +4567,7 @@
                 }
             },
             "actions": {
-                "load": "Import",
+                "load": "MikroTik Import",
                 "all_sync": "All Sync"
             },
             "descriptions": {
@@ -4601,6 +4601,7 @@
             "syncd_status": {
                 "placeholder": "Select sync status",
                 "options": {
+                    "all": "All",
                     "imported": "Imported",
                     "not_imported": "Not Imported"
                 }
@@ -4642,7 +4643,7 @@
         },
         "actions": {
             "import": "Import",
-            "import_selected": "Import selected ({{count}})",
+            "import_selected": "Client Import ({{count}})",
             "individual_sync": "Individual Sync"
         },
         "bulk": {

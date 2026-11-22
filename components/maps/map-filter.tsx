@@ -55,10 +55,7 @@ export default function MapFilter({ formSchema, grids, filterValue, setFilter, t
         filterHook={filterHook}
         setFilter={setFilter}
         isFiltered={Boolean(filterValue)}
-        onReset={() => {
-          filterHook.form.reset();
-          filterHook.submitFilter({});
-        }}
+        onReset={filterHook.resetFilter}
       />
     </div>
   );

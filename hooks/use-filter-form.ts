@@ -72,6 +72,11 @@ type UseFilterFormOptions = {
   setFilter: (query: string) => void;
   watchFields?: string[];
   defaultFilter?: string;
+  /**
+   * Values the form starts with and returns to on reset. The page must start
+   * its query with the same values (see `objectToQueryString`).
+   */
+  defaultValues?: FieldValues;
 };
 
 export function useFilterForm({
@@ -79,8 +84,9 @@ export function useFilterForm({
   setFilter,
   watchFields: watchFieldsProp,
   defaultFilter,
+  defaultValues,
 }: UseFilterFormOptions) {
-  const form = useForm<FieldValues>();
+  const form = useForm<FieldValues>({ defaultValues });
   const { watch, setValue, handleSubmit } = form;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -153,6 +159,12 @@ export function useFilterForm({
     [setValue, handleSubmit],
   );
 
+  /** Back to `defaultValues` (or empty) and run the query again. */
+  const resetFilter = useCallback(() => {
+    form.reset();
+    submitFilterRef.current(defaultValues ?? {});
+  }, [form, defaultValues]);
+
   return {
     form,
     resolvedWatchFields,
@@ -160,5 +172,6 @@ export function useFilterForm({
     triggerSubmit,
     clearField,
     submitFilter,
+    resetFilter,
   };
 }

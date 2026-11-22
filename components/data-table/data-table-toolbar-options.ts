@@ -9,6 +9,11 @@ export type DataTableToolbarOptions = {
      */
     filter_row?: number;
     watchFields?: string[];
+    /**
+     * Filter values the table starts with; reset returns to them.
+     * Start the page's filter state with the same values.
+     */
+    defaultValues?: Record<string, string | number>;
     columns?: string[];
     input_filter?: boolean;
     showFilter?: boolean;

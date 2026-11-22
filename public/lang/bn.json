@@ -4567,7 +4567,7 @@
                 }
             },
             "actions": {
-                "load": "ইমপোর্ট",
+                "load": "মাইক্রোটিক ইমপোর্ট",
                 "all_sync": "অল সিঙ্ক"
             },
             "descriptions": {
@@ -4601,6 +4601,7 @@
             "syncd_status": {
                 "placeholder": "সিঙ্ক স্ট্যাটাস সিলেক্ট করুন",
                 "options": {
+                    "all": "সব",
                     "imported": "ইমপোর্টেড",
                     "not_imported": "নট ইমপোর্টেড"
                 }
@@ -4642,7 +4643,7 @@
         },
         "actions": {
             "import": "ইমপোর্ট",
-            "import_selected": "নির্বাচিত ইমপোর্ট ({{count}})",
+            "import_selected": "ক্লায়েন্ট ইমপোর্ট ({{count}})",
             "individual_sync": "ইনডিভিজুয়াল সিঙ্ক"
         },
         "bulk": {

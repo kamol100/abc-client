@@ -55,20 +55,18 @@ export function DataTableToolbar<TData>({
     formSchema: filter?.filter || [],
     setFilter,
     watchFields: filter?.watchFields,
+    defaultValues: filter?.defaultValues,
   });
   const simple = useMobileSimpleSearch({
     enabled: Boolean(filter?.simpleSearch) && isMobile,
     filter: filter?.filter,
   });
 
-  const resetFilter = () => {
-    filterHook.form.reset();
-    filterHook.submitFilter({});
-  };
+  const resetFilter = filterHook.resetFilter;
 
   // Closing the desktop filter row clears an active filter, as it does today.
   const handleFilterOpenChange = (open: boolean) => {
-    if (!open && hasValues(filterHook.form.getValues())) resetFilter();
+    if (!open && changedFromDefaults(filterHook.form.getValues(), filter?.defaultValues)) resetFilter();
     setFilterOpen(open);
   };
 
@@ -172,6 +170,8 @@ function renderItems(items: ToolbarItem[]): ReactNode {
   return items.map((item) => <Fragment key={item.key}>{item.node}</Fragment>);
 }
 
-function hasValues(values: Record<string, unknown>): boolean {
-  return Object.values(values).some((value) => value != null && String(value).length > 0);
+/** True when any field holds something other than its default (empty when no default). */
+function changedFromDefaults(values: Record<string, unknown>, defaults: Record<string, unknown> = {}): boolean {
+  const text = (value: unknown) => (value == null ? "" : String(value));
+  return Object.keys({ ...defaults, ...values }).some((key) => text(values[key]) !== text(defaults[key]));
 }

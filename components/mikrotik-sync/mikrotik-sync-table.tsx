@@ -13,7 +13,9 @@ import {
   useMikrotikSyncColumns,
 } from "@/components/mikrotik-sync/mikrotik-sync-column";
 import MikrotikSyncBulkDialog from "@/components/mikrotik-sync/mikrotik-sync-bulk-dialog";
-import MikrotikSyncFilterSchema from "@/components/mikrotik-sync/mikrotik-sync-filter-schema";
+import MikrotikSyncFilterSchema, {
+  MIKROTIK_SYNC_DEFAULT_FILTER,
+} from "@/components/mikrotik-sync/mikrotik-sync-filter-schema";
 import MikrotikSyncActionButton from "@/components/mikrotik-sync/mikrotik-sync-form";
 import {
   MikrotikSyncList,
@@ -23,13 +25,15 @@ import MyBadge from "@/components/my-badge";
 import MyButton from "@/components/my-button";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { parseApiError } from "@/lib/helper/helper";
+import { objectToQueryString, parseApiError } from "@/lib/helper/helper";
 
 const MikrotikSyncTable: FC = () => {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const queryClient = useQueryClient();
-  const [filterValue, setFilter] = useState<string | null>(null);
+  const [filterValue, setFilter] = useState<string | null>(() =>
+    objectToQueryString(MIKROTIK_SYNC_DEFAULT_FILTER)
+  );
   const [syncingId, setSyncingId] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const canLoad = hasPermission("mikrotik-sync.load");
@@ -105,6 +109,7 @@ const MikrotikSyncTable: FC = () => {
     () => ({
       filter: MikrotikSyncFilterSchema(),
       filter_row: 2,
+      defaultValues: MIKROTIK_SYNC_DEFAULT_FILTER,
     }),
     [],
   );
@@ -139,7 +144,10 @@ const MikrotikSyncTable: FC = () => {
         columns={columns}
         toolbar={{
           title: toolbarTitle,
-          start: [{ key: "info", node: selectAllActive ? (
+          start: [
+            { key: "load", show: canLoad, node: <MikrotikSyncActionButton action="load" /> },
+            { key: "resolve", show: canResolve, node: <MikrotikSyncActionButton action="resolve" /> },
+            { key: "info", node: selectAllActive ? (
               <MyBadge type="error" variant="soft" size="md" className="shrink-0">
                 {t("mikrotik_sync.messages.select_all_pages", {
                   count: pagination?.total ?? 0,
@@ -147,8 +155,6 @@ const MikrotikSyncTable: FC = () => {
               </MyBadge>
             ) : null, mobile: "row" }],
           end: [
-            { key: "load", show: canLoad, node: <MikrotikSyncActionButton action="load" /> },
-            { key: "resolve", show: canResolve, node: <MikrotikSyncActionButton action="resolve" /> },
             { key: "actions", node: canBulkImport && selectedIds.length > 0 ? (
                 <MikrotikSyncBulkDialog
                   allImport={selectAllActive}
