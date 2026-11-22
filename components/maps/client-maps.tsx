@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import FormFilter from "@/components/form-wrapper/form-filter";
 import { parseClientMapData } from "@/components/maps/client-map-data";
 import ClientMapsFilterSchema from "@/components/maps/client-maps-filter-schema";
-import { getSettingString, resolveMapCenter } from "@/components/maps/map-utils";
+import { getSettingString, resolveMapCenter } from "@/components/maps/map-geo";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 

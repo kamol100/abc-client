@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import FormFilter from "@/components/form-wrapper/form-filter";
 import { TjBoxMapListSchema, TjBoxMapRowSchema } from "@/components/maps/maps-type";
 import TjBoxMapsFilterSchema from "@/components/maps/tj-box-maps-filter-schema";
-import { resolveMapCenter } from "@/components/maps/map-utils";
+import { resolveMapCenter } from "@/components/maps/map-geo";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
@@ -68,7 +68,7 @@ export default function TjBoxMapsTable() {
       <div className="rounded-md border border-border bg-card p-3">
         <FormFilter
           formSchema={TjBoxMapsFilterSchema()}
-          grids={4}
+          grids={5}
           setFilter={setFilter}
           forceOpen
           searchButton

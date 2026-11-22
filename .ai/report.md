@@ -1136,3 +1136,10 @@ No line-ending changes (41 files checked). Not committed.
   - Browser, vp tenant: 0 → 6 client pins, popup shows name/status/address/phone, no page errors.
 - Existing issue, not from this change: the `/client-maps` and `/tj-box-maps` documents return HTTP 500 in dev but still render. The same happens on the old code.
 - Not verified in the browser: a tenant with devices (vp has none). That path is covered by the backend tests and the parser test.
+
+## "Encountered a script tag" warning on map pages
+
+- Symptom: a console error pointing at the theme boot `<script>` in `app/layout.tsx`. React prints it only when the root layout is rendered in the browser instead of on the server.
+- Cause: the server render of `/client-maps` and `/tj-box-maps` failed (HTTP 500, `window is not defined`). `client-maps.tsx` and `tj-box-maps-table.tsx` import `map-utils.ts`, which imports Leaflet at the top, and Leaflet reads `window` when it loads. Next then rendered the whole page in the browser, which triggered the script warning.
+- Fix: new `components/maps/map-geo.ts` holds the Leaflet-free helpers (`DEFAULT_MAP_CENTER`, `toLatLngTuple`, `resolveMapCenter`, `normalizeStatus`, `getSettingString`). `map-utils.ts` keeps the Leaflet icons and re-exports those helpers, so the canvases are unchanged. The two pages import from `map-geo.ts`. `app/layout.tsx` is unchanged.
+- Checked: `/client-maps`, `/tj-box-maps`, `/clients` and `/noc` return 200 with no script warning. The client map still shows 6 pins with popups. `scripts/ai/typecheck` passes. `scripts/ai/test`: same 20 baseline failures.
