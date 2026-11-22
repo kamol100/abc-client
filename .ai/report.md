@@ -1076,3 +1076,28 @@ Verification:
 - Browser: recorded a baseline of 97 static dashboard routes at 1440 and 390px (194 page views, 63 pages with toolbars) on the pre-change code, with toolbar text, ordered button labels, inputs, toolbar height, table top, horizontal overflow, page errors and desktop filter open/close states. After migration, 191 of 194 views are identical; the 3 differences are a live activity-log count and the approved companies Import move. Detail pages (client view, reseller view, client package, ticket, imports, products reports/in/out, invoices by client, permissions; 22 views) were recorded on the pre-change code via a temporary git stash, which was then restored: 0 differences.
 - Interaction checks in the real app (all passed): desktop client search narrowed 10 rows to 1, and closing the filter restored 10; the client settings dialog opens; the layout toggle switches and returns; a hidden column stays hidden after reload and was restored; Add opens the zone dialog and the client create link; mobile invoice filter drawer applies and closes; mobile products actions sit on their own row; the mobile client counts row is present.
 - Not covered: platform-only and client-portal pages (the tenant user cannot open them), OLT detail pages (no OLTs in the tenant), and Playwright e2e. Not committed.
+
+## Settings refactor: registry, core, ui — 22 November 2026
+
+Replaced the settings code (settings-type.ts, settings-form-schema.ts, the 420-line settings-form.tsx, settings-section-button.tsx) with:
+- registry/: define.ts (toggle/select/text/number), fields.ts (every setting once), sections.ts (6 pages and 7 ⚙ dialogs, grouped), options.ts.
+- core/: values.ts (one read and save rule per kind), use-save-setting.ts (the one company save path), visibility.ts (permissions, visibleWhen).
+- ui/: settings-panel.tsx, setting-controls.tsx, settings-button.tsx (SettingsButton, PrefixSettingsButton).
+
+Adding a setting is now one registry line, its key in a section, and a label in en/bn. All consumers were switched: 6 pages, client/olt/telegram/sms-send dialogs, 5 prefix buttons, client form, notification settings (now uses the shared save hook), and the reseller dialog (value helpers only; it keeps its own reseller_uuid save).
+
+Deleted the unlinked /setting/{dashboard,general,table,themes} pages and their 5 helper files. themes.tsx stays: the theme customizer uses ThemeSettingsPanel.
+
+Approved UI changes:
+- grouped cards with headings (settings.groups.* in en/bn);
+- no Active/Inactive text next to switches;
+- wider max-w-3xl layout and shadcn select;
+- Client Auto Inactive Time hidden while Auto Inactive Client Invoice Due is off.
+
+Behavior parity:
+- Before deleting the old code, a test compared the old and new read and save functions for all 46 settings × 45 stored values (empty, spaces, out-of-range, strings, booleans, "2", objects, NaN), plus every old section's order: 56/56 identical. The old outputs were saved as tests/unit/settings/fixtures/setting-values.json and are checked permanently by setting-values.test.ts. settings-sections.test.ts fixes each page and dialog order. The 7 existing settings tests were pointed at the new modules with their assertions unchanged.
+- Typecheck passed. Unit tests: 838 passed, 20 failed; the failing set is identical to the baseline.
+- Browser: recorded all 6 settings pages and 9 ⚙ dialogs at 1440 and 390px on the old code (label order, control type, shown value, disabled state, overflow), then on the new code: no differences in 32 captures, no page errors.
+- Real saves through the new UI, each checked in MySQL and restored: switch 0→1→0; dropdown 2→5→2; text saved with Enter and with Save, INV→INVX→INV; Cancel does not save; the dependent field hides while its parent is off (1→0→1); an out-of-range ONU dBm shows the range error and saves nothing; a notification switch 1→0→1 shows the success message; the reseller dialog opens and reads its value (not saved, to avoid creating a reseller row). Database values afterwards equal those recorded before.
+
+No line-ending changes (41 files checked). Not committed.

@@ -19,7 +19,7 @@ import SmsSentFilterFieldSchema from "@/components/sms-sent/sms-sent-filter-sche
 import SmsSentFormFieldSchema from "@/components/sms-sent/sms-sent-form-schema";
 import SmsSentTable from "@/components/sms-sent/sms-sent-table";
 import SmsSendConfirmDialog from "@/components/sms-sent/sms-send-confirm-dialog";
-import { SettingsSectionButton } from "@/components/settings/settings-section-button";
+import { SettingsButton } from "@/components/settings/ui/settings-button";
 import { SmsGatewayButton, useSmsGatewayStatus, useSmsProviderBalance } from "@/components/sms-sent/sms-gateway";
 import { isSmsGatewayActive } from "@/components/sms-sent/sms-gateway-status";
 import {
@@ -534,7 +534,7 @@ const SmsSentForm: FC<SmsSentFormProps> = ({
             {!isSingleClientMode && <SmsGatewayButton />}
             <div className="flex items-center gap-2">
               <SmsSendModeSelector value={sendMode} onChange={setSendMode} disabled={sendLocked} />
-              {!isSingleClientMode && <SettingsSectionButton section="sms" />}
+              {!isSingleClientMode && <SettingsButton section="sms" />}
             </div>
           </div>
         </div>

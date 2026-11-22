@@ -7,40 +7,23 @@ import {
     notificationCategorySettingKey,
     notificationSettingKey,
 } from "@/components/notifications/notification-catalog";
-import { SettingsPayloadSchema, type SettingsPayload } from "@/components/settings/settings-type";
+import { useSaveSetting } from "@/components/settings/core/use-save-setting";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useSettings } from "@/context/app-provider";
-import useApiMutation from "@/hooks/use-api-mutation";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function NotificationSettings() {
     const { t } = useTranslation();
-    const { settings, updateSettings } = useSettings();
-    const [pendingKey, setPendingKey] = useState<string | null>(null);
-    const { mutateAsync } = useApiMutation<unknown, SettingsPayload>({
-        url: "/company/settings",
-        method: "POST",
-        invalidateKeys: "settings",
-        successMessage: "settings.messages.updated",
-    });
+    const { settings } = useSettings();
+    const { save: saveSetting, isSaving } = useSaveSetting();
 
-    async function save(key: string, next: boolean) {
-        const value = next ? 1 : 0;
-        const payload = SettingsPayloadSchema.parse({ settings: { [key]: value } });
-        setPendingKey(key);
-        try {
-            await mutateAsync(payload);
-            updateSettings({ [key]: value });
-        } finally {
-            setPendingKey(null);
-        }
-    }
+    // Notification switches are not in the settings registry; they are saved as 1/0.
+    const save = (key: string, next: boolean) => saveSetting(key, next ? 1 : 0);
 
     return (
         <div className="flex flex-col gap-4">
@@ -70,7 +53,7 @@ export function NotificationSettings() {
                                 </div>
                                 <Switch
                                     checked={categoryOn}
-                                    disabled={pendingKey === categoryKey}
+                                    disabled={isSaving(categoryKey)}
                                     onCheckedChange={(checked) => void save(categoryKey, checked)}
                                     aria-label={t(`notifications.categories.${category}`)}
                                     data-testid={`notify-${categoryKey}`}
@@ -92,7 +75,7 @@ export function NotificationSettings() {
                                                 <Switch
                                                     id={eventKey}
                                                     checked={eventOn}
-                                                    disabled={pendingKey === eventKey}
+                                                    disabled={isSaving(eventKey)}
                                                     onCheckedChange={(checked) => void save(eventKey, checked)}
                                                     aria-label={t(`notifications.events.${event}.title`)}
                                                     data-testid={`notify-${eventKey}`}

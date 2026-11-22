@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import SettingsForm from "@/components/settings/settings-form";
+import { SettingsPanel } from "@/components/settings/ui/settings-panel";
 import { t } from "@/lib/i18n/server";
 
 export const metadata: Metadata = {
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function MonitoringSettingsPage() {
-    return <SettingsForm section="monitoring" />;
+    return <SettingsPanel section="monitoring" />;
 }

@@ -12,11 +12,11 @@ import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-typ
 import { MyDialog } from "@/components/my-dialog";
 import { ResellerRow } from "@/components/resellers/reseller-type";
 import {
-    normalizeSettingValueForForm,
-    SettingsApiResponse,
+    readSetting,
     SettingsPayloadSchema,
-    toSettingsPayloadValue,
-} from "@/components/settings/settings-type";
+    toPayload,
+    type SettingsApiResponse,
+} from "@/components/settings/core/values";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery from "@/hooks/use-api-query";
 
@@ -102,7 +102,7 @@ export const ResellerSettingsDialog: FC<ResellerSettingsDialogProps> = ({
     });
     const remoteSettings = settingsResponse?.data?.settings as Record<string, unknown> | undefined;
     const remoteValue = Boolean(
-        normalizeSettingValueForForm(SETTING_KEY, remoteSettings?.[SETTING_KEY])
+        readSetting(SETTING_KEY, remoteSettings?.[SETTING_KEY])
     );
     const [syncedValue, setSyncedValue] = useState(false);
     const [pending, setPending] = useState(false);
@@ -125,7 +125,7 @@ export const ResellerSettingsDialog: FC<ResellerSettingsDialogProps> = ({
         async (nextValue: boolean) => {
             if (!resellerUuid) return false;
 
-            const payloadValue = toSettingsPayloadValue(SETTING_KEY, nextValue);
+            const payloadValue = toPayload(SETTING_KEY, nextValue);
             const payload = {
                 reseller_uuid: resellerUuid,
                 ...SettingsPayloadSchema.parse({

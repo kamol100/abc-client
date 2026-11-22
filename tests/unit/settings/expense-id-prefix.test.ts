@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { getSectionFieldKeys, SETTINGS_SECTION_SCHEMA } from "@/components/settings/settings-form-schema";
-import { normalizeSettingValueForForm } from "@/components/settings/settings-type";
+import { readSetting as normalizeSettingValueForForm } from "@/components/settings/core/values";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { sectionKeys as getSectionFieldKeys } from "@/components/settings/registry/sections";
 
 describe("expense id prefix setting", () => {
     it("sits with the other id prefixes on the general settings form", () => {
@@ -17,10 +18,8 @@ describe("expense id prefix setting", () => {
             "client_edit_open_on_new_tab",
             "create_invoice_billing_type_auto",
         ]);
-        expect(SETTINGS_SECTION_SCHEMA.general.fields[2]).toEqual({
-            kind: "text",
-            key: "expense_id_prefix",
-        });
+        expect(getSectionFieldKeys("general")[2]).toBe("expense_id_prefix");
+        expect(fieldOf("expense_id_prefix").kind).toBe("text");
     });
 
     it("shows EXP when the company has not saved a prefix", () => {

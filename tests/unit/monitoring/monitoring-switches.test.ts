@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import DeviceFormFieldSchema from "@/components/device/device-form-schema";
 import { DeviceFormSchema } from "@/components/device/device-type";
 import { monitoringStatus } from "@/components/monitoring/monitoring-format";
-import { SETTINGS_SECTION_SCHEMA } from "@/components/settings/settings-form-schema";
-import {
-    isSettingsSelectKey,
-    normalizeSettingValueForForm,
-    toSettingsPayloadValue,
-} from "@/components/settings/settings-type";
+import { readSetting as normalizeSettingValueForForm, toPayload as toSettingsPayloadValue } from "@/components/settings/core/values";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { SECTIONS, sectionKeys } from "@/components/settings/registry/sections";
+
+const SETTINGS_SECTION_SCHEMA = { monitoring: { ...SECTIONS.monitoring, fields: sectionKeys("monitoring").map((key) => ({ key, ...fieldOf(key) })) } };
+const isSettingsSelectKey = (key: Parameters<typeof fieldOf>[0]) => fieldOf(key).kind === "select";
 import bn from "@/public/lang/bn.json";
 import en from "@/public/lang/en.json";
 

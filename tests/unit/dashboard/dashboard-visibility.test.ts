@@ -4,14 +4,10 @@ import {
   isDashboardItemVisible,
   resolveDashboardVisibility,
 } from "@/components/dashboard/dashboard-visibility";
-import {
-  filterSettingsFieldsByPermission,
-  SETTINGS_SECTION_SCHEMA,
-} from "@/components/settings/settings-form-schema";
-import {
-  isSettingsSwitchKey,
-  normalizeSettingValueForForm,
-} from "@/components/settings/settings-type";
+import { readSetting } from "@/components/settings/core/values";
+import { visibleSettingKeys } from "@/components/settings/core/visibility";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("dashboard visibility settings", () => {
   it("shows an item when the setting is missing", () => {
@@ -55,18 +51,17 @@ describe("dashboard visibility settings", () => {
 
   it("registers every dashboard item as a settings switch that defaults on", () => {
     for (const item of DASHBOARD_VISIBILITY_ITEMS) {
-      expect(isSettingsSwitchKey(item.settingKey)).toBe(true);
-      expect(normalizeSettingValueForForm(item.settingKey, null)).toBe(true);
-      expect(normalizeSettingValueForForm(item.settingKey, 0)).toBe(false);
+      expect(fieldOf(item.settingKey).kind).toBe("toggle");
+      expect(readSetting(item.settingKey, null)).toBe(true);
+      expect(readSetting(item.settingKey, 0)).toBe(false);
     }
   });
 
   it("hides settings for dashboard cards the user cannot access", () => {
-    const visible = filterSettingsFieldsByPermission(
-      SETTINGS_SECTION_SCHEMA.dashboard.fields,
-      (permission) => permission === "dashboard-card.invoice",
-    );
-    const keys = visible.map((field) => field.key);
+    const keys = visibleSettingKeys(sectionKeys("dashboard"), {
+      hasPermission: (permission) => permission === "dashboard-card.invoice",
+      valueOf: () => null,
+    });
 
     expect(keys).toContain("dashboard_show_invoice");
     expect(keys).toContain("dashboard_show_top_due_invoices");

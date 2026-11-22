@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { selectSettingsFields } from "@/components/settings/settings-form-schema";
+import { sectionKeys } from "@/components/settings/registry/sections";
 
 const CLIENT_SETTINGS_FIELDS = [
     "payment_deadline",
@@ -12,10 +12,9 @@ const CLIENT_SETTINGS_FIELDS = [
 
 describe("client settings fields", () => {
     it("keeps the client fields from general settings in that order", () => {
-        const fields = selectSettingsFields("general", CLIENT_SETTINGS_FIELDS);
-
-        expect(fields.map((field) => field.key)).toEqual([...CLIENT_SETTINGS_FIELDS]);
-        expect(fields.some((field) => field.key === "invoice_prefix")).toBe(false);
+        expect(sectionKeys("clients")).toEqual([...CLIENT_SETTINGS_FIELDS]);
+        expect(sectionKeys("general")).toEqual(expect.arrayContaining([...CLIENT_SETTINGS_FIELDS]));
+        expect(sectionKeys("clients")).not.toContain("invoice_prefix");
     });
 
     it.each([
@@ -24,7 +23,8 @@ describe("client settings fields", () => {
         "expense_id_prefix",
         "product_code_prefix",
         "ticket_code_prefix",
-    ] as const)("keeps %s available from general settings", (key) => {
-        expect(selectSettingsFields("general", [key]).map((field) => field.key)).toEqual([key]);
+    ] as const)("keeps %s available from general settings and its own dialog", (key) => {
+        expect(sectionKeys("general")).toContain(key);
+        expect(sectionKeys(key)).toEqual([key]);
     });
 });

@@ -6,7 +6,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
-import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
+import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import DisplayCount from "@/components/display-count";

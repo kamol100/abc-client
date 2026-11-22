@@ -3,7 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
-import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
+import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import { TicketColumns } from "./ticket-column";
 import { TicketRow } from "./ticket-type";
 import { useTranslation } from "react-i18next";

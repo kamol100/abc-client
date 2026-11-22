@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { SETTINGS_SECTION_SCHEMA } from "@/components/settings/settings-form-schema";
 import {
     clientAutoInactiveTimeSetting,
-    toSettingsPayloadValue,
-} from "@/components/settings/settings-type";
+    toPayload as toSettingsPayloadValue,
+} from "@/components/settings/core/values";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("client auto inactive time setting", () => {
     it("offers hours 00 through 23 on general settings and defaults to 12", () => {
-        const field = SETTINGS_SECTION_SCHEMA.general.fields.find(
-            (item) => item.kind === "select" && item.key === "auto_inactive_client_time",
-        );
+        expect(sectionKeys("general")).toContain("auto_inactive_client_time");
+        const field = fieldOf("auto_inactive_client_time");
 
         expect(field?.kind).toBe("select");
         if (field?.kind !== "select") return;

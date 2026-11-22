@@ -55,8 +55,8 @@ vi.mock("@/hooks/use-api-query", () => ({
     },
 }));
 
-vi.mock("@/components/settings/settings-section-button", () => ({
-    SettingsSectionButton: () => null,
+vi.mock("@/components/settings/ui/settings-button", () => ({
+    SettingsButton: () => null,
 }));
 
 vi.mock("@/components/data-table/data-table", () => ({

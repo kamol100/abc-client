@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { SettingsSectionButton } from "@/components/settings/settings-section-button";
-import type { SettingsFieldKey } from "@/components/settings/settings-type";
+import { SettingsButton } from "@/components/settings/ui/settings-button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
@@ -21,15 +20,6 @@ import dynamic from "next/dynamic";
 const ClientCount = dynamic(() => import("@/components/clients/client-count"), { ssr: false });
 
 const NEW_CLIENTS_THIS_MONTH = "this_month";
-
-const CLIENT_SETTINGS_FIELDS = [
-    "payment_deadline",
-    "auto_inactive_client_invoice_due",
-    "auto_inactive_client_time",
-    "client_view_open_on_new_tab",
-    "client_edit_open_on_new_tab",
-    "create_invoice_billing_type_auto",
-] as const satisfies readonly SettingsFieldKey[];
 
 type ClientTableProps = {
     createdAt?: string;
@@ -112,19 +102,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
         start: [
             { key: "activity", node: <ClientCount />, show: !isResellerReport, mobile: "row" },
         ],
-        end: [
-            {
-                key: "settings",
-                node: (
-                    <SettingsSectionButton
-                        section="general"
-                        fields={CLIENT_SETTINGS_FIELDS}
-                        title="client.settings.title"
-                        description="client.settings.description"
-                    />
-                ),
-            },
-        ],
+        end: [{ key: "settings", node: <SettingsButton section="clients" /> }],
         features: {
             columns: true,
             filter: {

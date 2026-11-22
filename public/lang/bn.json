@@ -5395,6 +5395,16 @@
             "not_set": "সেট করা নেই",
             "prefix_description": "নতুন আইডির শুরুতে ব্যবহৃত হয়।"
         },
+        "groups": {
+            "id_prefixes": "আইডি প্রিফিক্স",
+            "clients": "ক্লায়েন্ট",
+            "sms_client_events": "ক্লায়েন্ট ইভেন্ট",
+            "sms_invoices": "ইনভয়েস",
+            "due_reminders": "বকেয়া রিমাইন্ডার"
+        },
+        "errors": {
+            "number": "একটি সংখ্যা লিখুন।"
+        },
         "sections": {
             "olt": {
                 "title": "ওএলটি পোলিং সেটিংস",

@@ -3,7 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import { PrefixSettingsButton } from "@/components/settings/settings-section-button";
+import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import ExpenseFilterSchema from "@/components/expenses/expense-filter-schema";
 import ExpenseForm from "@/components/expenses/expense-form";
 import { ExpenseColumns } from "@/components/expenses/expense-column";

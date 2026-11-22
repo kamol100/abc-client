@@ -3,7 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import { SettingsSectionButton } from "@/components/settings/settings-section-button";
+import { SettingsButton } from "@/components/settings/ui/settings-button";
 import { getTelegramColumns } from "@/components/telegram/telegram-column";
 import { TelegramFilterSchema } from "@/components/telegram/telegram-filter-schema";
 import TelegramForm from "@/components/telegram/telegram-form";
@@ -44,7 +44,7 @@ const TelegramTable: FC = () => {
           ? `${t("telegram.title_plural")} (${pagination.total})`
           : t("telegram.title_plural"),
         end: [
-          { key: "settings-section-button", node: <SettingsSectionButton section="telegram" size="default" /> },
+          { key: "settings-section-button", node: <SettingsButton section="telegram" size="default" /> },
         ],
         features: {
           columns: true,

@@ -1,5 +1,5 @@
 import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
-import { paymentDeadlineSetting } from "@/components/settings/settings-type";
+import { paymentDeadlineSetting } from "@/components/settings/core/values";
 
 export const clientImageFields = [
   {

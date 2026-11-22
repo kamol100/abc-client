@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { SETTINGS_SECTION_SCHEMA } from "@/components/settings/settings-form-schema";
-import { paymentDeadlineSetting } from "@/components/settings/settings-type";
+import { paymentDeadlineSetting } from "@/components/settings/core/values";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("payment deadline setting", () => {
     it("offers days 01 through 30 on general settings and defaults to 11", () => {
-        const field = SETTINGS_SECTION_SCHEMA.general.fields.find(
-            (item) => item.kind === "select" && item.key === "payment_deadline",
-        );
+        expect(sectionKeys("general")).toContain("payment_deadline");
+        const field = fieldOf("payment_deadline");
 
         expect(field?.kind).toBe("select");
         if (field?.kind !== "select") return;

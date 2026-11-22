@@ -5395,6 +5395,16 @@
             "not_set": "Not set",
             "prefix_description": "Used at the start of new IDs."
         },
+        "groups": {
+            "id_prefixes": "ID prefixes",
+            "clients": "Clients",
+            "sms_client_events": "Client events",
+            "sms_invoices": "Invoices",
+            "due_reminders": "Due reminders"
+        },
+        "errors": {
+            "number": "Enter a number."
+        },
         "sections": {
             "olt": {
                 "title": "OLT Polling Settings",

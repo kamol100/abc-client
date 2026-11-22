@@ -3,7 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import { SettingsSectionButton } from "@/components/settings/settings-section-button";
+import { SettingsButton } from "@/components/settings/ui/settings-button";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useOltColumns } from "./olt-column";
@@ -42,7 +42,7 @@ const OltTable: FC = () => {
             toolbar={{
                 title: toolbarTitle,
                 end: [
-                    { key: "settings-section-button", node: <SettingsSectionButton section="olt" /> },
+                    { key: "settings-section-button", node: <SettingsButton section="olt" /> },
                 ],
                 features: {
                     columns: true,
