@@ -34,8 +34,9 @@ export function ToolbarActions<TData>({ table, items, columns, layoutToggle, fil
       {columns && <DataTableViewOptions table={table} />}
       {layoutToggle && (
         <MyButton
-          size="default"
+          size="icon"
           variant="outline"
+          className="shrink-0"
           onClick={toggleMode}
           aria-label={isFixed ? "Switch to full layout" : "Switch to fixed layout"}
         >

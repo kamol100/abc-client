@@ -1101,3 +1101,12 @@ Behavior parity:
 - Real saves through the new UI, each checked in MySQL and restored: switch 0→1→0; dropdown 2→5→2; text saved with Enter and with Save, INV→INVX→INV; Cancel does not save; the dependent field hides while its parent is off (1→0→1); an out-of-range ONU dBm shows the range error and saves nothing; a notification switch 1→0→1 shows the success message; the reseller dialog opens and reads its value (not saved, to avoid creating a reseller row). Database values afterwards equal those recorded before.
 
 No line-ending changes (41 files checked). Not committed.
+
+## Toolbar button alignment and size (products and all list pages)
+
+- Problem: on /products the filter button sat 2px lower than its neighbours (old `mt-1` wrapper), and icon-only buttons had mixed widths (36 / 50 / 48 px).
+- Fix (shared toolbar parts): the view-options, layout-toggle and filter buttons (desktop trigger, mobile drawer, simple search) are now `size="icon"` (36×36) and the filter wrapper is gone. View options lost `ml-auto`, which left a gap on mobile, and an invisible label `div` (`md:show` is not a Tailwind class). `FormTrigger` create and the client Add link use `size="icon"` on mobile.
+- Also: `DashboardTopDueInvoicesTable` hides the layout toggle (`layoutToggle: false`).
+- Effect: every list toolbar is 4px shorter on desktop, and icon buttons are 14px narrower.
+- Checked: Playwright measured /products and /clients at 1440 and 390 px; all buttons are h36 on one line, icon buttons are w36. `scripts/ai/typecheck` passes. `scripts/ai/test`: 838 passed, same 20 baseline failures.
+- Not mine: `components/dashboard/items/DashboardZoneDueSummaryTable.tsx` has an uncommitted change that I left alone.

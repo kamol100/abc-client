@@ -58,6 +58,7 @@ export default function DashboardTopDueInvoicesTable({
               title: toolbarTitle,
               features: {
                 columns: true,
+                layoutToggle: false,
                 filter: toolbarOptions,
               },
             }}

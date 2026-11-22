@@ -18,22 +18,18 @@ type BaseProps = {
   resultCount?: number;
 };
 
-/**
- * Desktop, closed: just the button that opens the filter row. The wrapper keeps
- * FormFilter's closed-state box (mt-1 h-9), so toolbar height is unchanged.
- */
+/** Desktop, closed: just the button that opens the filter row. */
 export function ToolbarFilterTrigger({ onOpen }: { onOpen: () => void }) {
   const { t } = useTranslation();
   return (
-    <div className="mt-1 h-9 !ml-[1px] flex-none">
-      <MyButton
-        action="filter"
-        size="default"
-        variant="outline"
-        aria-label={t("common.filter")}
-        onClick={onOpen}
-      />
-    </div>
+    <MyButton
+      action="filter"
+      size="icon"
+      variant="outline"
+      className="shrink-0"
+      aria-label={t("common.filter")}
+      onClick={onOpen}
+    />
   );
 }
 
@@ -81,7 +77,7 @@ export function ToolbarFilterDrawer({ options, filterHook, setFilter, resultCoun
       open={open}
       onOpenChange={setOpen}
       trigger={
-        <MyButton action="filter" size="default" variant="outline" aria-label={t("common.filter")} />
+        <MyButton action="filter" size="icon" variant="outline" className="shrink-0" aria-label={t("common.filter")} />
       }
       title="common.filter"
       side="bottom"
@@ -132,8 +128,9 @@ export function ToolbarSimpleSearchTrigger({ pinned, onToggle }: { pinned: boole
   return (
     <MyButton
       action="filter"
-      size="default"
+      size="icon"
       variant="outline"
+      className="shrink-0"
       disabled={pinned}
       aria-label={t("common.filter")}
       onClick={onToggle}

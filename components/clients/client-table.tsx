@@ -86,9 +86,10 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
     const FormLink = () => (
         <MyButton
             action="add"
-            size="default"
+            size={isMobile ? "icon" : "default"}
             variant="default"
             title={isMobile ? undefined : t("common.add")}
+            aria-label={t("common.add")}
             url="/clients/create"
         />
     );

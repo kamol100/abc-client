@@ -11,7 +11,7 @@ const FormTrigger = forwardRef<HTMLButtonElement, FormTriggerProps>(({ mode, ...
     const isMobile = useIsMobile();
     const { t } = useTranslation();
     return mode === "create" ? (
-        <MyButton ref={ref} action="create" size="default" variant="default" title={isMobile ? "" : t("common.add")} {...props} />
+        <MyButton ref={ref} action="create" size={isMobile ? "icon" : "default"} variant="default" title={isMobile ? "" : t("common.add")} {...props} />
     ) : (
         <MyButton ref={ref} action="edit" icon {...props} />
     )
