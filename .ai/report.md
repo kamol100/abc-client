@@ -1173,3 +1173,19 @@ No line-ending changes (41 files checked). Not committed.
   - `scripts/ai/typecheck` passes;
   - `scripts/ai/test`: 846 passed, same 20 baseline failures;
   - browser: 6 pins on the vp clients list at 1440 and 390 px, and the click opens a new tab while the list stays on /clients.
+
+## Map pages: mobile filter sheet, menu above the map
+
+- New `components/maps/map-filter.tsx` `MapFilter`, used by `/client-maps` and `/tj-box-maps`:
+  - desktop keeps the inline filter card;
+  - mobile shows the page title and a filter button that opens `ToolbarFilterDrawer`, the same bottom sheet as list tables (Reset / Apply Filter).
+  - One `useFilterForm` drives both views, and the filter schemas are memoized.
+- The map wrapper now has `isolate`. Leaflet's panes and controls (z-index 400–1000) stay inside the map's own stacking context, so the mobile menu sheet and the sticky navbar are drawn above the map.
+- Checked:
+  - Browser at 390×844, both pages:
+    - the map starts at 128px, 635px tall;
+    - the sheet opens with all fields and is the top element;
+    - on the client map, Status = Inactive leaves 0 pins and closes the sheet;
+    - with the menu open, the element at the map centre belongs to the menu.
+  - Desktop at 1440 and 1280: map size is unchanged (726 / 546px), the inline filter works, and no drawer is rendered.
+  - `scripts/ai/typecheck` passes. `scripts/ai/test`: same 20 baseline failures.

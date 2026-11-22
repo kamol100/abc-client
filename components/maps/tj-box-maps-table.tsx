@@ -6,7 +6,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
-import FormFilter from "@/components/form-wrapper/form-filter";
+import MapFilter from "@/components/maps/map-filter";
 import { TjBoxMapListSchema, TjBoxMapRowSchema } from "@/components/maps/maps-type";
 import TjBoxMapsFilterSchema from "@/components/maps/tj-box-maps-filter-schema";
 import { resolveMapCenter } from "@/components/maps/map-geo";
@@ -38,6 +38,7 @@ export default function TjBoxMapsTable() {
   const { t } = useTranslation();
   const { settings } = useSettings();
   const [filterValue, setFilter] = useState<string | null>(null);
+  const filterSchema = useMemo(() => TjBoxMapsFilterSchema(), []);
 
   const params = useMemo(
     () =>
@@ -65,22 +66,21 @@ export default function TjBoxMapsTable() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div className="shrink-0 rounded-md border border-border bg-card p-3">
-        <FormFilter
-          formSchema={TjBoxMapsFilterSchema()}
-          grids={5}
-          setFilter={setFilter}
-          forceOpen
-          searchButton
-        />
-      </div>
+      <MapFilter
+        formSchema={filterSchema}
+        grids={5}
+        filterValue={filterValue}
+        setFilter={setFilter}
+        title="menu.maps.tj_box_maps.title"
+      />
 
       {isError ? (
         <div className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           {t("tj_box_map.error.load_failed")}
         </div>
       ) : (
-        <div className="relative flex min-h-[320px] flex-1 flex-col">
+        <div className="relative isolate flex min-h-[320px] flex-1 flex-col">
+          {/* isolate: keeps Leaflet's z-index 400-1000 layers inside the map, under the mobile menu and navbar. */}
           <TjBoxMapsCanvas data={mapRows} center={center} />
 
           {(isLoading || isFetching) && (

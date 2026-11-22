@@ -6,7 +6,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
-import FormFilter from "@/components/form-wrapper/form-filter";
+import MapFilter from "@/components/maps/map-filter";
 import { parseClientMapData } from "@/components/maps/client-map-data";
 import ClientMapsFilterSchema from "@/components/maps/client-maps-filter-schema";
 import { getSettingString, resolveMapCenter } from "@/components/maps/map-geo";
@@ -27,6 +27,7 @@ export default function ClientMapsTable() {
   const { settings } = useSettings();
 
   const [filterValue, setFilter] = useState<string | null>(null);
+  const filterSchema = useMemo(() => ClientMapsFilterSchema(), []);
 
   const params = useMemo(() => filterValue ? Object.fromEntries(new URLSearchParams(filterValue)) : undefined, [filterValue]);
 
@@ -53,22 +54,21 @@ export default function ClientMapsTable() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div className="shrink-0 rounded-md border border-border bg-card p-3">
-        <FormFilter
-          formSchema={ClientMapsFilterSchema()}
-          grids={4}
-          setFilter={setFilter}
-          searchButton
-          forceOpen={true}
-        />
-      </div>
+      <MapFilter
+        formSchema={filterSchema}
+        grids={4}
+        filterValue={filterValue}
+        setFilter={setFilter}
+        title="menu.maps.client_maps.title"
+      />
 
       {isError ? (
         <div className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           {t("client_map.error.load_failed")}
         </div>
       ) : (
-        <div className="relative flex min-h-[320px] flex-1 flex-col">
+        <div className="relative isolate flex min-h-[320px] flex-1 flex-col">
+          {/* isolate: keeps Leaflet's z-index 400-1000 layers inside the map, under the mobile menu and navbar. */}
           <ClientMapsCanvas
             devices={mapData.devices}
             clients={mapData.clients}
