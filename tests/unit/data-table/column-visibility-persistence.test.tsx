@@ -65,8 +65,7 @@ function renderClientsTable(toggleColumns = true) {
       columns={columns}
       data={rows}
       queryKey="clients"
-      toggleColumns={toggleColumns}
-      toolbar={toggleColumns}
+      toolbar={toggleColumns ? { features: { columns: true } } : false}
     />,
   );
 }

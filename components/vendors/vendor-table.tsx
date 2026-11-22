@@ -42,14 +42,18 @@ const VendorTable: FC = () => {
             data={vendors}
             setFilter={setFilter}
             columns={VendorsColumns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                    add: VendorForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}
             isFetching={isFetching}
-            form={VendorForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

@@ -85,15 +85,19 @@ const AgentTransactionTable: FC<AgentTransactionTableProps> = ({
       data={transactions}
       columns={columns}
       setFilter={setFilter}
-      toolbarOptions={toolbarOptions}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          filter: toolbarOptions,
+          add: CreateAction,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
-      toolbarTitle={toolbarTitle}
       queryKey={queryKey}
-      form={CreateAction}
     />
   );
 };

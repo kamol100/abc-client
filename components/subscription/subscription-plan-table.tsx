@@ -26,8 +26,12 @@ export default function SubscriptionPlanTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={hasPermission("subscription-plans.create") ? SubscriptionPlanForm : undefined}
-      toolbarTitle={t("subscription.plan.title")}
+      toolbar={{
+        title: t("subscription.plan.title"),
+        features: {
+          add: hasPermission("subscription-plans.create") ? SubscriptionPlanForm : undefined,
+        },
+      }}
     />
   );
 }

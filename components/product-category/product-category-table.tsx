@@ -38,13 +38,17 @@ const ProductCategoryTable: FC = () => {
             data={productCategories}
             setFilter={setFilter}
             columns={ProductCategoryColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: ProductCategoryForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={ProductCategoryForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

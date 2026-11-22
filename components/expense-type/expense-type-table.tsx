@@ -38,13 +38,17 @@ const ExpenseTypeTable: FC = () => {
             data={expenseTypes}
             setFilter={setFilter}
             columns={ExpenseTypeColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: ExpenseTypeForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={ExpenseTypeForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

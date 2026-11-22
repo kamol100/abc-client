@@ -64,15 +64,18 @@ const CommunicationLogTable: FC = () => {
       data={logs}
       columns={columns}
       setFilter={setFilter}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          filter: toolbarOptions,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
-      toolbarTitle={toolbarTitle}
-      toolbarOptions={toolbarOptions}
       queryKey="communicationLogs"
-      form={undefined}
     />
   );
 };

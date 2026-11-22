@@ -276,19 +276,21 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toolbarOptions={toolbarOptions}
-                toggleColumns={true}
+                toolbar={{
+                    title: toolbarTitle,
+                    features: {
+                        columns: true,
+                        filter: toolbarOptions,
+                        add: showCreateAction && hasPermission(createPermission)
+                            ? CreateAction
+                            : undefined,
+                    },
+                }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}
                 isFetching={isFetching}
                 queryKey={queryKeyRoot}
-                toolbarTitle={toolbarTitle}
-                form={
-                    showCreateAction && hasPermission(createPermission)
-                        ? CreateAction
-                        : undefined
-                }
             />
         </div>
     );

@@ -70,15 +70,18 @@ const CommunicationQueueTable: FC = () => {
         data={items}
         columns={columns}
         setFilter={setFilter}
-        toggleColumns
+        toolbar={{
+          title: toolbarTitle,
+          features: {
+            columns: true,
+            filter: toolbarOptions,
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}
         isFetching={isFetching}
-        toolbarTitle={toolbarTitle}
-        toolbarOptions={toolbarOptions}
         queryKey="communicationQueue"
-        form={undefined}
       />
     </div>
   );

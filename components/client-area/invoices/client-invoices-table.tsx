@@ -51,14 +51,18 @@ const ClientInvoicesTable: FC = () => {
       <DataTable
         data={invoices}
         columns={columns}
-        toolbarOptions={toolbarOptions}
+        toolbar={{
+          title: toolbarTitle,
+          features: {
+            filter: toolbarOptions,
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}
         isFetching={isFetching}
         setFilter={setFilter}
         queryKey="client-invoices"
-        toolbarTitle={toolbarTitle}
       />
     </div>
   );

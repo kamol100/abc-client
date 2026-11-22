@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ClientTable from "@/components/clients/client-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 
 const queryCalls = vi.hoisted(() => [] as Array<{ url: string; queryKey: unknown[]; params?: Record<string, string>; enabled?: boolean }>);
 const clientAccess = vi.hoisted(() => ({ list: true, create: true }));
@@ -59,24 +60,18 @@ vi.mock("@/components/settings/settings-section-button", () => ({
 }));
 
 vi.mock("@/components/data-table/data-table", () => ({
-    DataTable: ({
-        toolbarTitle,
-        form,
-        toolbarOptions,
-        simpleSearch,
-    }: {
-        toolbarTitle?: string;
-        form?: () => null;
-        toolbarOptions?: { filter?: Array<{ name: string }> };
-        simpleSearch?: boolean;
-    }) => (
-        <div>
-            <span>{toolbarTitle}</span>
-            <span>{form ? "has-create" : "report-only"}</span>
-            <span>{toolbarOptions?.filter?.map((field) => field.name).join(",")}</span>
-            <span>{simpleSearch ? "simple-search-on" : "simple-search-off"}</span>
-        </div>
-    ),
+    DataTable: ({ toolbar }: { toolbar?: boolean | DataTableToolbarConfig }) => {
+        const config = typeof toolbar === "object" ? toolbar : {};
+        const filter = config.features?.filter;
+        return (
+            <div>
+                <span>{config.title}</span>
+                <span>{config.features?.add ? "has-create" : "report-only"}</span>
+                <span>{filter?.filter?.map((field) => field.name).join(",")}</span>
+                <span>{filter?.simpleSearch ? "simple-search-on" : "simple-search-off"}</span>
+            </div>
+        );
+    },
 }));
 
 describe("ClientTable reseller report", () => {

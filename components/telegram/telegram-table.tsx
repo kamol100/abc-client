@@ -39,19 +39,23 @@ const TelegramTable: FC = () => {
       data={rows}
       columns={columns}
       setFilter={setFilter}
-      toggleColumns
+      toolbar={{
+        title: pagination?.total
+          ? `${t("telegram.title_plural")} (${pagination.total})`
+          : t("telegram.title_plural"),
+        end: [
+          { key: "settings-section-button", node: <SettingsSectionButton section="telegram" size="default" /> },
+        ],
+        features: {
+          columns: true,
+          filter: { filter: TelegramFilterSchema() },
+          add: hasPermission("telegram.create") ? TelegramForm : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={hasPermission("telegram.create") ? TelegramForm : undefined}
-      toolbarOptions={{ filter: TelegramFilterSchema() }}
-      toolbarBeforeViewOptions={<SettingsSectionButton section="telegram" size="default" />}
-      toolbarTitle={
-        pagination?.total
-          ? `${t("telegram.title_plural")} (${pagination.total})`
-          : t("telegram.title_plural")
-      }
     />
   );
 };

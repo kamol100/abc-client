@@ -44,14 +44,18 @@ const DeviceTable: FC = () => {
       data={devices}
       setFilter={setFilter}
       columns={columns}
-      toolbarOptions={{ filter: DeviceFilterSchema() }}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          filter: { filter: DeviceFilterSchema() },
+          add: canCreate ? DeviceForm : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
-      form={canCreate ? DeviceForm : undefined}
-      toolbarTitle={toolbarTitle}
       queryKey="devices"
     />
   );

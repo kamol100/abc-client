@@ -69,15 +69,18 @@ const ActivityLogTable: FC = () => {
             data={activities}
             setFilter={setFilter}
             columns={columns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}
             isFetching={isFetching}
-            toolbarTitle={toolbarTitle}
-            toolbarOptions={toolbarOptions}
             queryKey="activities"
-            form={undefined}
             initialColumnVisibility={initialColumnVisibility}
         />
     );

@@ -55,12 +55,16 @@ export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId }) => {
       data={rows}
       setFilter={setFilter}
       columns={TransactionsColumns}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

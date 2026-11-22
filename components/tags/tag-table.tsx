@@ -28,13 +28,17 @@ const TagTable: FC = () => {
         <DataTable
             data={tags}
             columns={TagColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: TagForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={TagForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

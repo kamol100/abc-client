@@ -41,15 +41,19 @@ const AgentTable: FC = () => {
             data={agents}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={{ filter: AgentFilterSchema() }}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: { filter: AgentFilterSchema() },
+                    add: hasPermission("agents.create") ? AgentForm : undefined,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="agents"
-            form={hasPermission("agents.create") ? AgentForm : undefined}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

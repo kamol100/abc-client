@@ -72,10 +72,14 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
                 isLoading={isLoading}
                 isFetching={isFetching}
                 setFilter={(value) => setFilter(value)}
-                toolbarOptions={toolbarOptions}
+                toolbar={{
+                    title: toolbarTitle,
+                    features: {
+                        filter: toolbarOptions,
+                        add: BackButton,
+                    },
+                }}
                 queryKey="invoices"
-                form={BackButton}
-                toolbarTitle={toolbarTitle}
             />
         </div>
     );

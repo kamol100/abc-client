@@ -41,14 +41,17 @@ const MikrotikPackagesTable: FC = () => {
         data={packages}
         setFilter={setFilter}
         columns={columns}
-        toolbarOptions={{ filter: MikrotikPackageFilterSchema(), showFilter: true }}
-        toggleColumns={false}
+        toolbar={{
+          title: toolbarTitle,
+          features: {
+            filter: { filter: MikrotikPackageFilterSchema(), showFilter: true },
+            add: MikrotikPackagesToolbarActions,
+          },
+        }}
         pagination={undefined}
         isLoading={isLoading}
         isFetching={isFetching}
         queryKey="mikrotik-packages"
-        form={MikrotikPackagesToolbarActions}
-        toolbarTitle={toolbarTitle}
       />
     </div>
   );

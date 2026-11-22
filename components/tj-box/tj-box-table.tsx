@@ -47,15 +47,19 @@ const TjBoxTable: FC = () => {
             data={tjBoxes}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                    add: hasPermission("tj-boxes.create") ? TjBoxForm : undefined,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="tj-boxes"
-            form={hasPermission("tj-boxes.create") ? TjBoxForm : undefined}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

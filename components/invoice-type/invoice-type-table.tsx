@@ -31,14 +31,18 @@ const InvoiceTypeTable: FC = () => {
         <DataTable
             data={invoiceTypes}
             columns={columns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: hasPermission("invoice-types.create") ? InvoiceTypeForm : undefined,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="invoice-types"
-            form={hasPermission("invoice-types.create") ? InvoiceTypeForm : undefined}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

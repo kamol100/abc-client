@@ -353,8 +353,12 @@ export default function ClientTrafficReport() {
       <DataTable
         data={rows}
         columns={columns}
-        toolbarOptions={toolbarOptions}
-        toggleColumns
+        toolbar={{
+          features: {
+            columns: true,
+            filter: toolbarOptions,
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

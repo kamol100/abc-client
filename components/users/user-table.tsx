@@ -43,14 +43,18 @@ const UserTable: FC = () => {
       data={users}
       setFilter={setFilter}
       columns={UsersColumns}
-      toolbarOptions={toolbarOptions}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          filter: toolbarOptions,
+          add: UserForm,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
-      form={UserForm}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

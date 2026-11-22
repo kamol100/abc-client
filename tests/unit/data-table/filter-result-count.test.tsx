@@ -89,7 +89,7 @@ describe("filter result count", () => {
                     columns={columns}
                     data={[]}
                     pagination={{ count: 40, current_page: 1, per_page: 40, total: 902, total_pages: 23 }}
-                    toolbarOptions={{ filter: fields }}
+                    toolbar={{ features: { filter: { filter: fields } } }}
                 />
             </TableLayoutProvider>,
         );

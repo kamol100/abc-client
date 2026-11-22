@@ -128,8 +128,6 @@ const ClientHistory: FC<Props> = ({ clientId }) => {
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="client-history"
-            toolbarTitle={toolbarTitle}
-            toggleColumns={false}
         />
     );
 };

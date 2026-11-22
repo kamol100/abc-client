@@ -1,5 +1,6 @@
 import { notificationListParams } from "@/components/notifications/notification-filter-schema";
 import { NotificationTable } from "@/components/notifications/notification-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -15,8 +16,8 @@ vi.mock("react-i18next", () => ({
 }));
 
 vi.mock("@/components/data-table/data-table", () => ({
-    DataTable: ({ toolbarTitle }: { toolbarTitle?: string }) => (
-        <div data-testid="notification-history">{toolbarTitle}</div>
+    DataTable: ({ toolbar }: { toolbar?: boolean | DataTableToolbarConfig }) => (
+        <div data-testid="notification-history">{typeof toolbar === "object" ? toolbar.title : null}</div>
     ),
 }));
 

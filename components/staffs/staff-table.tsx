@@ -50,14 +50,18 @@ const StaffTable: FC = () => {
       data={staffs}
       setFilter={setFilter}
       columns={StaffColumns}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          add: FormLink,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
       queryKey="staffs"
-      form={FormLink}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

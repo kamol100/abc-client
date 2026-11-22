@@ -196,8 +196,12 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
                         isLoading={list.isLoading && displayed.length === 0}
                         isFetching={list.isFetching}
                         setFilter={setFilter}
-                        toolbarOptions={{ filter: inboxFilterSchema(kind) }}
-                        toolbarTitle={t(kind === "issue" ? "platform_support.issues" : "platform_support.chats")}
+                        toolbar={{
+                            title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
+                            features: {
+                                filter: { filter: inboxFilterSchema(kind) },
+                            },
+                        }}
                     />
                 </div>
             )}

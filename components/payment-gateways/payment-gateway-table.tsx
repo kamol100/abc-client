@@ -43,15 +43,17 @@ const PaymentGatewayTable: FC = () => {
       data={gateways}
       columns={columns}
       setFilter={setFilter}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          add: hasPermission("payment-gateways.create") ? PaymentGatewayForm : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={
-        hasPermission("payment-gateways.create") ? PaymentGatewayForm : undefined
-      }
-      toolbarTitle={toolbarTitle}
     />
   );
 };

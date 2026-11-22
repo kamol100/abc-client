@@ -157,22 +157,30 @@ const pagination = data?.data?.pagination;
   data={rows}
   columns={WidgetColumns}
   setFilter={setFilter}
-  toggleColumns
   pagination={pagination}
   setCurrentPage={setCurrentPage}
   isLoading={isLoading}
   isFetching={isFetching}
-  form={hasPermission("widgets.create") ? WidgetForm : undefined}
-  toolbarOptions={{ filter: WidgetFilterSchema() }}  // optional
-  toolbarTitle={pagination?.total
-    ? `${t("widget.title")} (${pagination.total})`
-    : t("widget.title")}
+  toolbar={{
+    title: pagination?.total
+      ? `${t("widget.title")} (${pagination.total})`
+      : t("widget.title"),
+    // start / center / end: page content, rendered in array order.
+    // end: [{ key: "settings", node: <WidgetSettingsButton />, show: canEdit }],
+    features: {
+      columns: true,
+      filter: { filter: WidgetFilterSchema() },  // optional
+      add: hasPermission("widgets.create") ? WidgetForm : undefined,
+    },
+  }}
 />
 ```
 
+**Toolbar:** one `toolbar` config (`components/data-table/toolbar/toolbar-config.ts`). `start`, `center` and `end` hold page items `{ key, node, show?, mobile?: "inline" | "row" | "hidden" }`. Built-ins live in `features` and have a fixed place: page `end` items, then columns, layout toggle (`layoutToggle`, default on), filter, add. Do not try to move built-ins. `toolbar={false}` hides the toolbar.
+
 API list envelope: `{ success, data: { data: T[], pagination } }` → items at `data.data.data`, pagination at `data.data.pagination`.
 
-**Filters:** `{feature}-filter-schema.ts` returns `FieldConfig[]`. Pass as `toolbarOptions={{ filter }}`. Text fields that should auto-search use `watchForFilter: true` (debounce via `useFilterForm`). Date ranges serialize to `from,to`.
+**Filters:** `{feature}-filter-schema.ts` returns `FieldConfig[]`. Pass as `toolbar.features.filter = { filter }`. Text fields that should auto-search use `watchForFilter: true` (debounce via `useFilterForm`). Date ranges serialize to `from,to`.
 
 **Columns:** `DataTableColumnHeader` + i18n title keys. Actions: edit `WidgetForm mode="edit" data={{ id }}` + `DeleteModal` (`api_url`, `keys` = queryKey, confirm i18n keys). Use `cellIndex(rowIndex, pagination)` when showing row numbers.
 

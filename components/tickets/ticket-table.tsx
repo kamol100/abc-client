@@ -52,17 +52,22 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
             data={tickets}
             setFilter={setFilter}
             columns={TicketColumns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
-            toolbarBeforeViewOptions={<PrefixSettingsButton field="ticket_code_prefix" />}
+            toolbar={tableToolBar ? {
+                title: toolbarTitle,
+                end: [
+                    { key: "prefix-settings-button", node: <PrefixSettingsButton field="ticket_code_prefix" /> },
+                ],
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                    add: TicketCreateDialog,
+                },
+            } : false}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={TicketCreateDialog}
-            toolbarTitle={toolbarTitle}
             queryKey="tickets"
-            toolbar={tableToolBar}
         />
     );
 };

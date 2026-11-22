@@ -44,30 +44,34 @@ const SmsTemplateTable: FC = () => {
     <DataTable
       data={smsTemplates}
       columns={columns}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        end: [
+          { key: "actions", node: canCreate ? (
+              <MyButton
+                type="button"
+                size="default"
+                variant="outline"
+                icon={false}
+                loading={isImporting}
+                disabled={isImporting}
+                onClick={() => importTemplates({ message: "import" })}
+              >
+                <Import aria-hidden />
+                {t("sms_template.import")}
+              </MyButton>
+            ) : undefined },
+        ],
+        features: {
+          columns: true,
+          add: canCreate ? SmsTemplateForm : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
       queryKey="sms-templates"
-      form={canCreate ? SmsTemplateForm : undefined}
-      toolbarTitle={toolbarTitle}
-      toolbarBeforeViewOptions={
-        canCreate ? (
-          <MyButton
-            type="button"
-            size="default"
-            variant="outline"
-            icon={false}
-            loading={isImporting}
-            disabled={isImporting}
-            onClick={() => importTemplates({ message: "import" })}
-          >
-            <Import aria-hidden />
-            {t("sms_template.import")}
-          </MyButton>
-        ) : undefined
-      }
     />
   );
 };

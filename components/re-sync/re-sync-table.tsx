@@ -111,14 +111,18 @@ const ReSyncTable: FC = () => {
         data={listData}
         setFilter={setFilter}
         columns={columns}
-        toolbarOptions={{ filter: ReSyncFilterSchema() }}
-        toggleColumns
+        toolbar={{
+          title: toolbarTitle,
+          features: {
+            columns: true,
+            filter: { filter: ReSyncFilterSchema() },
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}
         isFetching={isFetching}
         queryKey="re-sync"
-        toolbarTitle={toolbarTitle}
       />
     </div>
   );

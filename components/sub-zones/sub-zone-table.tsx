@@ -38,13 +38,17 @@ const SubZoneTable: FC = () => {
             data={subZones}
             setFilter={setFilter}
             columns={SubZonesColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: SubZoneForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={SubZoneForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

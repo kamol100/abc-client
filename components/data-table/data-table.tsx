@@ -31,11 +31,10 @@ import { useTableLayoutMode } from "@/context/table-layout-provider";
 import { cn } from "@/lib/utils";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
-import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
-import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
+import { DataTableToolbar } from "@/components/data-table/toolbar/data-table-toolbar";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePersistedColumnVisibility } from "@/components/data-table/use-persisted-column-visibility";
 import { useTranslation } from "react-i18next";
-import { ReactNode } from "react";
 
 declare module "@tanstack/react-table" {
   interface ColumnMeta<TData, TValue> {
@@ -45,57 +44,42 @@ declare module "@tanstack/react-table" {
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  toolbarInfoComponent?: ReactNode;
   data: TData[];
-  toolbar?: boolean;
-  toolbarOptions?: DataTableToolbarOptions;
-  toggleColumns?: boolean;
+  /**
+   * Toolbar content: title, start/center/end items and built-in features.
+   * `false` hides the toolbar; `true` (default) shows only the built-ins.
+   */
+  toolbar?: boolean | DataTableToolbarConfig;
   pagination?: Pagination;
   setCurrentPage?: (page: number) => void;
   isLoading?: boolean;
   isFetching?: boolean;
   setFilter?: (x: string) => void;
   queryKey?: string;
-  form?: any;
-  toolbarTitle?: string | null;
-  toolbarTitleClass?: string;
   initialColumnVisibility?: VisibilityState;
-  toolbarBeforeViewOptions?: React.ReactNode;
-  toolbarBeforeForm?: React.ReactNode;
-  /** Mobile client list only. Other tables keep the bottom-sheet filters. */
-  simpleSearch?: boolean;
-  /** Put toolbar actions on the next row below the `md` breakpoint. */
-  wrapActionsOnMobile?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  toolbarInfoComponent = null,
   data,
   toolbar = true,
-  toolbarOptions,
-  toggleColumns = false,
   pagination: paginationData = undefined,
   setCurrentPage = () => { },
   isFetching = false,
   isLoading = false,
   setFilter = () => { },
   queryKey,
-  form,
-  toolbarTitle = null,
-  toolbarTitleClass = "",
   initialColumnVisibility,
-  toolbarBeforeViewOptions,
-  toolbarBeforeForm,
-  simpleSearch = false,
-  wrapActionsOnMobile = false,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const { t } = useTranslation();
   const pathname = usePathname();
+  const toolbarConfig: DataTableToolbarConfig = typeof toolbar === "object" ? toolbar : {};
+  // Column choices are saved only when the column menu is on.
+  const columnsEnabled = toolbarConfig.features?.columns === true;
   const { columnVisibility, onColumnVisibilityChange, hasResolvedVisibility } =
     usePersistedColumnVisibility({
-      enabled: toggleColumns,
+      enabled: columnsEnabled,
       pathname: pathname ?? "",
       queryKey,
       columns,
@@ -151,19 +135,10 @@ export function DataTable<TData, TValue>({
         <div className="shrink-0 pb-3">
           <DataTableToolbar
             table={table}
-            toolbarInfoComponent={toolbarInfoComponent}
-            toolbarOptions={toolbarOptions}
             data={data}
-            toggleColumns={toggleColumns}
+            config={toolbarConfig}
             setFilter={setFilter}
             queryKey={queryKey}
-            form={form}
-            toolbarTitle={toolbarTitle}
-            toolbarTitleClass={toolbarTitleClass}
-            toolbarBeforeViewOptions={toolbarBeforeViewOptions}
-            toolbarBeforeForm={toolbarBeforeForm}
-            simpleSearch={simpleSearch}
-            wrapActionsOnMobile={wrapActionsOnMobile}
             resultCount={paginationData?.total}
           />
         </div>

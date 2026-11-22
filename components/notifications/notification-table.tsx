@@ -61,19 +61,20 @@ export function NotificationTable() {
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toggleColumns={true}
+                toolbar={{
+                    title: pagination?.total
+                        ? `${t("notifications.title")} (${pagination.total})`
+                        : t("notifications.title"),
+                    features: {
+                        columns: true,
+                        filter: toolbarOptions,
+                    },
+                }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
                 isFetching={isFetching}
-                toolbarTitle={
-                    pagination?.total
-                        ? `${t("notifications.title")} (${pagination.total})`
-                        : t("notifications.title")
-                }
-                toolbarOptions={toolbarOptions}
                 queryKey={NOTIFICATIONS_QUERY_KEY}
-                form={undefined}
             />
         </div>
     );

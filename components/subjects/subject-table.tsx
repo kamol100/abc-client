@@ -27,13 +27,17 @@ const SubjectTable: FC = () => {
         <DataTable
             data={subjects}
             columns={SubjectColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: SubjectForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={SubjectForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

@@ -41,13 +41,17 @@ const DeviceTypeTable: FC = () => {
       data={deviceTypes}
       setFilter={setFilter}
       columns={DeviceTypeColumns}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          add: DeviceTypeForm,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={DeviceTypeForm}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

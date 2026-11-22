@@ -24,8 +24,12 @@ export default function FeatureTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={hasPermission("features.create") ? FeatureForm : undefined}
-      toolbarTitle={t("subscription.feature.title")}
+      toolbar={{
+        title: t("subscription.feature.title"),
+        features: {
+          add: hasPermission("features.create") ? FeatureForm : undefined,
+        },
+      }}
     />
   );
 }

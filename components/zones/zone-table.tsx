@@ -38,13 +38,17 @@ const ZoneTable: FC = () => {
             data={zones}
             setFilter={setFilter}
             columns={ZonesColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: ZoneForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={ZoneForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

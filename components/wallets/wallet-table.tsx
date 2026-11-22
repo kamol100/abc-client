@@ -159,12 +159,16 @@ export const ClientWalletTable: FC = () => {
       data={rows}
       setFilter={setFilter}
       columns={ClientWalletColumns}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

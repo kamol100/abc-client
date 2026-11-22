@@ -38,13 +38,17 @@ const UnitTypeTable: FC = () => {
             data={unitTypes}
             setFilter={setFilter}
             columns={UnitTypeColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: UnitTypeForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={UnitTypeForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

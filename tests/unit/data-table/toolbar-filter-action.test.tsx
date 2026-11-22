@@ -66,8 +66,10 @@ describe("toolbar action while filtering", () => {
           columns={columns}
           data={[{ name: "client" }]}
           setFilter={vi.fn()}
-          toolbarOptions={{ filter, filter_row: 2 }}
-          toolbarBeforeViewOptions={<button type="button">Import selected</button>}
+          toolbar={{
+            end: [{ key: "import", node: <button type="button">Import selected</button> }],
+            features: { filter: { filter, filter_row: 2 } },
+          }}
         />
       </TableLayoutProvider>,
     );

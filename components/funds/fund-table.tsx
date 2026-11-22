@@ -103,15 +103,19 @@ const FundTable: FC<FundTableProps> = ({
         data={funds}
         columns={columns}
         setFilter={setFilter}
-        toolbarOptions={toolbarOptions}
-        toggleColumns
+        toolbar={{
+          title: toolbarTitle,
+          features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: showCreateAction ? FundForm : undefined,
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}
         isFetching={isFetching}
         queryKey="funds"
-        form={showCreateAction ? FundForm : undefined}
-        toolbarTitle={toolbarTitle}
       />
     </div>
   );

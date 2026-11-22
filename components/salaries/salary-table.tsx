@@ -50,14 +50,18 @@ const SalaryTable: FC = () => {
       data={salaries}
       setFilter={setFilter}
       columns={SalaryColumns}
-      toggleColumns
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          add: FormLink,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
       queryKey="salaries"
-      form={FormLink}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

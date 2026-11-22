@@ -80,46 +80,48 @@ const ImportClientTable: FC = () => {
                 data={syncClients}
                 setFilter={setFilter}
                 columns={columns}
-                toolbarOptions={{ filter: ImportClientFilterSchema() }}
-                toggleColumns
+                toolbar={{
+                    title: toolbarTitle,
+                    start: [{ key: "info", node: selectAllActive ? (
+                            <MyBadge type="error" variant="soft" size="md" className="shrink-0">
+                                {t("import_client.messages.select_all_pages", {
+                                    count: pagination?.total ?? 0,
+                                })}
+                            </MyBadge>
+                        ) : null, mobile: "row" }],
+                    end: [
+                        { key: "actions", node: canImport && selectedIds.length > 0 ? (
+                                <ImportClientBulkDialog
+                                    allImport={selectAllActive}
+                                    importIds={selectAllActive ? [] : selectedIds}
+                                    onImported={() => {
+                                        setSelectedIds([]);
+                                        void refetch();
+                                    }}
+                                    trigger={
+                                        <MyButton
+                                            type="button"
+                                            size="default"
+                                            variant="outline"
+                                            icon={false}
+                                        >
+                                            <Upload aria-hidden />
+                                            {t("import_client.actions.import")}
+                                        </MyButton>
+                                    }
+                                />
+                            ) : null },
+                    ],
+                    features: {
+                        columns: true,
+                        filter: { filter: ImportClientFilterSchema() },
+                    },
+                }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
                 isFetching={isFetching}
                 queryKey="sync-clients"
-                toolbarTitle={toolbarTitle}
-                toolbarInfoComponent={
-                    selectAllActive ? (
-                        <MyBadge type="error" variant="soft" size="md" className="shrink-0">
-                            {t("import_client.messages.select_all_pages", {
-                                count: pagination?.total ?? 0,
-                            })}
-                        </MyBadge>
-                    ) : null
-                }
-                toolbarBeforeViewOptions={
-                    canImport && selectedIds.length > 0 ? (
-                        <ImportClientBulkDialog
-                            allImport={selectAllActive}
-                            importIds={selectAllActive ? [] : selectedIds}
-                            onImported={() => {
-                                setSelectedIds([]);
-                                void refetch();
-                            }}
-                            trigger={
-                                <MyButton
-                                    type="button"
-                                    size="default"
-                                    variant="outline"
-                                    icon={false}
-                                >
-                                    <Upload aria-hidden />
-                                    {t("import_client.actions.import")}
-                                </MyButton>
-                            }
-                        />
-                    ) : null
-                }
             />
         </div>
     );

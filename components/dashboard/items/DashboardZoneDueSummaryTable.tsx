@@ -59,12 +59,16 @@ export default function DashboardZoneDueSummaryTable({
             data={isLoading ? [] : dueItems}
             columns={columns}
             setFilter={setFilter}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={{
+              title: toolbarTitle,
+              features: {
+                columns: true,
+                filter: toolbarOptions,
+              },
+            }}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="dashboard-zone-wise-top-invoice-due"
-            toolbarTitle={toolbarTitle}
           />
         </div>
       )}

@@ -24,8 +24,12 @@ export default function CompanySubscriptionTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={hasPermission("company-subscriptions.create") ? CompanySubscriptionForm : undefined}
-      toolbarTitle={t("subscription.company.title")}
+      toolbar={{
+        title: t("subscription.company.title"),
+        features: {
+          add: hasPermission("company-subscriptions.create") ? CompanySubscriptionForm : undefined,
+        },
+      }}
     />
   );
 }

@@ -39,14 +39,20 @@ const CompanyTable: FC = () => {
             data={companies}
             setFilter={setFilter}
             columns={CompaniesColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                end: [
+                    { key: "company-import-dialog", node: <CompanyImportDialog /> },
+                ],
+                features: {
+                    columns: true,
+                    add: CompanyForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={CompanyForm}
-            toolbarTitle={toolbarTitle}
-            toolbarBeforeForm={<CompanyImportDialog />}
         />
     );
 };

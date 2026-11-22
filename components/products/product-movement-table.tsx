@@ -101,14 +101,18 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toolbarOptions={toolbarOptions}
-                toggleColumns={true}
+                toolbar={{
+                    title: toolbarTitle,
+                    features: {
+                        columns: true,
+                        filter: toolbarOptions,
+                    },
+                }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}
                 isFetching={isFetching}
                 queryKey={queryKeyRoot}
-                toolbarTitle={toolbarTitle}
             />
         </div>
     );

@@ -38,14 +38,18 @@ const ArchivedClientTable: FC = () => {
             data={clients}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={{ filter: ClientFilterSchema() }}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: { filter: ClientFilterSchema() },
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}
             isFetching={isFetching}
             queryKey="archived-clients"
-            toolbarTitle={toolbarTitle}
         />
     );
 };

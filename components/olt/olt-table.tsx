@@ -39,14 +39,20 @@ const OltTable: FC = () => {
             data={olts}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={{ filter: OLT_FILTER }}
-            toggleColumns={true}
-            toolbarBeforeViewOptions={<SettingsSectionButton section="olt" />}
+            toolbar={{
+                title: toolbarTitle,
+                end: [
+                    { key: "settings-section-button", node: <SettingsSectionButton section="olt" /> },
+                ],
+                features: {
+                    columns: true,
+                    filter: { filter: OLT_FILTER },
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            toolbarTitle={toolbarTitle}
             queryKey="olts"
         />
     );

@@ -50,16 +50,19 @@ export default function OnuTable({ filterValue, tableToolBar = true, showOlt = t
             data={onus}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={tableToolBar ? {
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                },
+            } : false}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             // Not `isLoading || isFetching`: a refetch must not swap the rows for a skeleton (open row dialogs would close).
             isLoading={isLoading}
             isFetching={isFetching}
-            toolbarTitle={toolbarTitle}
             queryKey="onus"
-            toolbar={tableToolBar}
         />
     );
 }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { SettingsSectionButton } from "@/components/settings/settings-section-button";
 import type { SettingsFieldKey } from "@/components/settings/settings-type";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -92,10 +93,6 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
         [clients],
     );
 
-    const toolbarOptions = {
-        filter: isResellerReport ? ResellerClientFilterSchema() : ClientFilterSchema(),
-    };
-
     const FormLink = () => (
         <MyButton
             action="add"
@@ -109,6 +106,34 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
     const toolbarTitle = pagination?.total
         ? `${t(titleKey)} (${pagination.total})`
         : t(titleKey);
+
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        start: [
+            { key: "activity", node: <ClientCount />, show: !isResellerReport, mobile: "row" },
+        ],
+        end: [
+            {
+                key: "settings",
+                node: (
+                    <SettingsSectionButton
+                        section="general"
+                        fields={CLIENT_SETTINGS_FIELDS}
+                        title="client.settings.title"
+                        description="client.settings.description"
+                    />
+                ),
+            },
+        ],
+        features: {
+            columns: true,
+            filter: {
+                filter: isResellerReport ? ResellerClientFilterSchema() : ClientFilterSchema(),
+                simpleSearch: variant === "default",
+            },
+            add: canCreateClient ? FormLink : undefined,
+        },
+    };
 
     if (!canListClients) {
         return (
@@ -137,28 +162,15 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
             )}
             <ClientOnlineStatusProvider clientIds={onlineStatusIds}>
                 <DataTable
-                    toolbarInfoComponent={isResellerReport ? undefined : <ClientCount />}
+                    toolbar={toolbar}
                     data={clients}
                     setFilter={setFilter}
                     columns={columns}
-                    toolbarOptions={toolbarOptions}
-                    toggleColumns={true}
-                    toolbarBeforeViewOptions={
-                        <SettingsSectionButton
-                            section="general"
-                            fields={CLIENT_SETTINGS_FIELDS}
-                            title="client.settings.title"
-                            description="client.settings.description"
-                        />
-                    }
                     pagination={pagination}
                     setCurrentPage={setCurrentPage}
                     isLoading={!filterReady || isLoading}
                     isFetching={isFetching}
                     queryKey={isResellerReport ? "reseller-clients" : "clients"}
-                    form={canCreateClient ? FormLink : undefined}
-                    toolbarTitle={toolbarTitle}
-                    {...(variant === "default" ? { simpleSearch: true } : {})}
                 />
             </ClientOnlineStatusProvider>
         </div>

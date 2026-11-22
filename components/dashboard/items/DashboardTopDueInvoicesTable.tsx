@@ -54,12 +54,16 @@ export default function DashboardTopDueInvoicesTable({
             data={isLoading ? [] : invoices}
             columns={columns}
             setFilter={setFilter}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={{
+              title: toolbarTitle,
+              features: {
+                columns: true,
+                filter: toolbarOptions,
+              },
+            }}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="dashboard-top-due-invoices"
-            toolbarTitle={toolbarTitle}
           />
         </div>
       )}

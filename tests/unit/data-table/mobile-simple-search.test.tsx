@@ -157,9 +157,15 @@ function renderTable(simpleSearch?: boolean) {
             <DataTable
                 columns={columns}
                 data={[]}
-                toolbarOptions={{ filter: ClientFilterSchema() }}
+                toolbar={{
+                    features: {
+                        filter: {
+                            filter: ClientFilterSchema(),
+                            ...(simpleSearch === undefined ? {} : { simpleSearch }),
+                        },
+                    },
+                }}
                 setFilter={setFilter}
-                {...(simpleSearch === undefined ? {} : { simpleSearch })}
             />
         </TableLayoutProvider>,
     );

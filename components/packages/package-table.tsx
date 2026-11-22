@@ -64,14 +64,18 @@ const PackageTable: FC<Props> = ({ packageType = "client" }) => {
       data={packages}
       setFilter={setFilter}
       columns={columns}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          add: hasPermission("packages.create") ? FormComponent : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
       queryKey="packages"
-      form={hasPermission("packages.create") ? FormComponent : undefined}
-      toolbarTitle={toolbarTitle}
     />
   );
 };

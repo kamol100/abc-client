@@ -1,0 +1,129 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+
+type ToolbarLayoutProps = {
+  isMobile: boolean;
+  start?: ReactNode;
+  center?: ReactNode;
+  end?: ReactNode;
+  /** Mobile only: left side of the first row (page size). */
+  mobileLead?: ReactNode;
+  /** Mobile only: "row" puts the end actions on their own row. */
+  mobileActions?: "inline" | "row";
+  /** Mobile only: items that asked for their own full-width row. */
+  mobileRows?: { key: string; node: ReactNode }[];
+  /** Desktop only: when set, replaces the slots (the open filter row). */
+  expanded?: ReactNode;
+  /** Full-width row under everything (mobile simple search). */
+  below?: ReactNode;
+};
+
+/**
+ * The only place that decides where toolbar slots sit.
+ *
+ * Desktop without center: start grows and wraps, end keeps its width on the
+ * right (the long-standing toolbar layout).
+ * Desktop with center: start | center | end on a 3-column grid. Both sides
+ * grow equally, so the center stays in the middle; each side is never
+ * narrower than its content.
+ * Mobile: page size + end actions, then center, start, and each "row" item on
+ * its own full-width row. Empty rows are not rendered.
+ */
+export function ToolbarLayout({
+  isMobile,
+  start,
+  center,
+  end,
+  mobileLead,
+  mobileActions = "inline",
+  mobileRows = [],
+  expanded,
+  below,
+}: ToolbarLayoutProps) {
+  if (isMobile) {
+    const actionsOnOwnRow = mobileActions === "row";
+    return (
+      <div className="flex flex-col gap-2" data-toolbar-layout="mobile">
+        <div className={cn("flex justify-end", actionsOnOwnRow && "flex-wrap")}>
+          <div className="flex w-full flex-1 flex-wrap items-center gap-x-2">
+            <div className="flex w-full justify-between">
+              <div>{mobileLead}</div>
+            </div>
+          </div>
+          <div
+            className={cn(
+              "ml-3 flex items-center gap-2",
+              actionsOnOwnRow && "ml-0 w-full justify-end",
+            )}
+            data-toolbar-slot="end"
+          >
+            {end}
+          </div>
+        </div>
+        {center && (
+          <div className="flex min-h-5 w-full flex-wrap items-center justify-center gap-2" data-toolbar-slot="center">
+            {center}
+          </div>
+        )}
+        {start && (
+          <div className="flex min-h-5 w-full flex-wrap items-center justify-center gap-2" data-toolbar-slot="start">
+            {start}
+          </div>
+        )}
+        {mobileRows.map((row) => (
+          <div key={row.key} className="flex min-h-5 w-full items-center justify-center" data-toolbar-row={row.key}>
+            {row.node}
+          </div>
+        ))}
+        {below && <div className="w-full">{below}</div>}
+      </div>
+    );
+  }
+
+  if (expanded) {
+    return (
+      <div className="flex w-full flex-col gap-2" data-toolbar-layout="expanded">
+        {expanded}
+        {below && <div className="w-full">{below}</div>}
+      </div>
+    );
+  }
+
+  if (!center) {
+    return (
+      <div className="flex flex-col gap-2" data-toolbar-layout="desktop">
+        <div className="flex justify-end">
+          <div className="flex w-full flex-1 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
+            {start}
+          </div>
+          <div className="ml-3 flex items-center gap-2" data-toolbar-slot="end">
+            {end}
+          </div>
+        </div>
+        {below && <div className="w-full">{below}</div>}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2" data-toolbar-layout="desktop-centered">
+      <div className="grid grid-cols-[minmax(max-content,1fr)_auto_minmax(max-content,1fr)] items-center gap-3">
+        <div className="flex min-h-9 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
+          {start}
+        </div>
+        <div className="flex items-center justify-center gap-2" data-toolbar-slot="center">
+          {center}
+        </div>
+        <div className="flex justify-end">
+          {/* Content-sized, so a child's ml-auto cannot split the group. */}
+          <div className="flex items-center gap-2" data-toolbar-slot="end">
+            {end}
+          </div>
+        </div>
+      </div>
+      {below && <div className="w-full">{below}</div>}
+    </div>
+  );
+}

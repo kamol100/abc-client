@@ -37,14 +37,17 @@ const DemoRequestTable: FC = () => {
             data={rows}
             setFilter={setFilter}
             columns={demoRequestsColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            toolbarTitle={toolbarTitle}
             queryKey="demo-requests"
-            form={undefined}
         />
     );
 };

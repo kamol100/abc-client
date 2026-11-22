@@ -57,15 +57,21 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
                 data={expenses}
                 setFilter={setFilter}
                 columns={ExpenseColumns}
-                toolbarOptions={toolbarOptions}
-                toggleColumns
-                toolbarBeforeViewOptions={<PrefixSettingsButton field="expense_id_prefix" />}
+                toolbar={{
+                    title: toolbarTitle,
+                    end: [
+                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="expense_id_prefix" /> },
+                    ],
+                    features: {
+                        columns: true,
+                        filter: toolbarOptions,
+                        add: showCreateAction ? ExpenseForm : undefined,
+                    },
+                }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}
                 isFetching={isFetching}
-                form={showCreateAction ? ExpenseForm : undefined}
-                toolbarTitle={toolbarTitle}
                 queryKey="expenses"
             />
         </div>

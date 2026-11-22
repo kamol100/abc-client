@@ -195,8 +195,12 @@ export default function SupportHome({
                 isLoading={list.isLoading}
                 isFetching={list.isFetching}
                 setFilter={setFilter}
-                toolbarOptions={{ filter: supportFilterSchema(activeScope, kind) }}
-                toolbarTitle={t(kind === "issue" ? "platform_support.issues" : "platform_support.chats")}
+                toolbar={{
+                    title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
+                    features: {
+                        filter: { filter: supportFilterSchema(activeScope, kind) },
+                    },
+                }}
             /></div>}
         </div>
     );

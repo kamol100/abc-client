@@ -80,17 +80,22 @@ const PaymentTable: FC<PaymentTableProps> = ({
             <DataTable
                 data={payments}
                 setFilter={setFilter}
-                toolbar={tableToolBar}
+                toolbar={tableToolBar ? {
+                    title: toolbarTitle,
+                    end: [
+                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="pid_prefix" /> },
+                    ],
+                    features: {
+                        columns: true,
+                        filter: { filter: PaymentFilterSchema(canViewAllPayments) },
+                    },
+                } : false}
                 columns={PaymentColumns}
-                toggleColumns
-                toolbarBeforeViewOptions={<PrefixSettingsButton field="pid_prefix" />}
-                toolbarOptions={{ filter: PaymentFilterSchema(canViewAllPayments) }}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}
                 isFetching={isFetching}
                 queryKey="payments"
-                toolbarTitle={toolbarTitle}
             />
         </div>
     );

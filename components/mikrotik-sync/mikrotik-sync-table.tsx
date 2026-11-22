@@ -149,41 +149,43 @@ const MikrotikSyncTable: FC = () => {
         data={rows}
         setFilter={setFilter}
         columns={columns}
-        toolbarOptions={toolbarOptions}
-        toggleColumns
+        toolbar={{
+          title: toolbarTitle,
+          start: [{ key: "info", node: selectAllActive ? (
+              <MyBadge type="error" variant="soft" size="md" className="shrink-0">
+                {t("mikrotik_sync.messages.select_all_pages", {
+                  count: pagination?.total ?? 0,
+                })}
+              </MyBadge>
+            ) : null, mobile: "row" }],
+          end: [
+            { key: "actions", node: canBulkImport && selectedIds.length > 0 ? (
+                <MikrotikSyncBulkDialog
+                  allImport={selectAllActive}
+                  importIds={selectAllActive ? [] : selectedIds}
+                  onImported={() => {
+                    setSelectedIds([]);
+                    void refetch();
+                  }}
+                  trigger={
+                    <MyButton type="button" size="default" variant="outline" icon={false}>
+                      <Upload aria-hidden />
+                      {t("mikrotik_sync.actions.import")}
+                    </MyButton>
+                  }
+                />
+              ) : null },
+          ],
+          features: {
+            columns: true,
+            filter: toolbarOptions,
+          },
+        }}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}
         isFetching={isFetching}
         queryKey="mikrotik-sync"
-        toolbarTitle={toolbarTitle}
-        toolbarInfoComponent={
-          selectAllActive ? (
-            <MyBadge type="error" variant="soft" size="md" className="shrink-0">
-              {t("mikrotik_sync.messages.select_all_pages", {
-                count: pagination?.total ?? 0,
-              })}
-            </MyBadge>
-          ) : null
-        }
-        toolbarBeforeViewOptions={
-          canBulkImport && selectedIds.length > 0 ? (
-            <MikrotikSyncBulkDialog
-              allImport={selectAllActive}
-              importIds={selectAllActive ? [] : selectedIds}
-              onImported={() => {
-                setSelectedIds([]);
-                void refetch();
-              }}
-              trigger={
-                <MyButton type="button" size="default" variant="outline" icon={false}>
-                  <Upload aria-hidden />
-                  {t("mikrotik_sync.actions.import")}
-                </MyButton>
-              }
-            />
-          ) : null
-        }
       />
     </div>
   );

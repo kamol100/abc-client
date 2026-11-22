@@ -40,13 +40,17 @@ const RoleTable: FC = () => {
             data={roles}
             setFilter={setFilter}
             columns={RoleColumns}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    add: RoleForm,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
-            form={RoleForm}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

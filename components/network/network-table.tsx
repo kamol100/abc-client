@@ -43,14 +43,18 @@ const NetworkTable: FC = () => {
       data={networks}
       setFilter={setFilter}
       columns={NetworkColumns}
-      toolbarOptions={{ filter: NetworkFilterSchema() }}
-      toggleColumns={true}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          columns: true,
+          filter: { filter: NetworkFilterSchema() },
+          add: canCreate ? NetworkForm : undefined,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      form={canCreate ? NetworkForm : undefined}
-      toolbarTitle={toolbarTitle}
       queryKey="networks"
     />
   );

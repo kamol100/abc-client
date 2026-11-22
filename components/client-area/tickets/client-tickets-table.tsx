@@ -44,15 +44,19 @@ const ClientTicketsTable: FC = () => {
     <DataTable
       data={tickets}
       columns={columns}
-      toolbarOptions={toolbarOptions}
+      toolbar={{
+        title: toolbarTitle,
+        features: {
+          filter: toolbarOptions,
+          add: ClientTicketForm,
+        },
+      }}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}
       isFetching={isFetching}
       setFilter={setFilter}
-      form={ClientTicketForm}
       queryKey="client-tickets"
-      toolbarTitle={toolbarTitle}
     />
   );
 };

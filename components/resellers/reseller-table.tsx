@@ -60,15 +60,19 @@ const ResellerTable: FC = () => {
             data={resellers}
             setFilter={setFilter}
             columns={columns}
-            toolbarOptions={toolbarOptions}
-            toggleColumns={true}
+            toolbar={{
+                title: toolbarTitle,
+                features: {
+                    columns: true,
+                    filter: toolbarOptions,
+                    add: hasPermission("resellers.create") ? FormLink : undefined,
+                },
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}
             isFetching={isFetching}
             queryKey="resellers"
-            form={hasPermission("resellers.create") ? FormLink : undefined}
-            toolbarTitle={toolbarTitle}
         />
     );
 };

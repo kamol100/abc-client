@@ -141,8 +141,12 @@ export function HelpArticlesTable() {
       <DataTable columns={articleColumns} data={articles.data?.data?.data ?? []}
         pagination={pagination} setCurrentPage={articles.setCurrentPage}
         isLoading={articles.isLoading} isFetching={articles.isFetching}
-        queryKey={ARTICLE_URL} toggleColumns toolbarTitle={pagination?.total ? `${title} (${pagination.total})` : title}
-        toolbarBeforeForm={canAddArticles && <ArticleDialog {...categoryProps} />} />
+        queryKey={ARTICLE_URL}
+        toolbar={{
+          title: pagination?.total ? `${title} (${pagination.total})` : title,
+          end: [{ key: "article-dialog", node: <ArticleDialog {...categoryProps} />, show: canAddArticles }],
+          features: { columns: true },
+        }} />
     </>
   );
 }
@@ -169,8 +173,14 @@ export function HelpCategoriesTable() {
     <>
       {categories.isError && <p role="alert">{t("help.error")}</p>}
       <DataTable columns={columns} data={rows} isLoading={categories.isLoading} isFetching={categories.isFetching}
-        queryKey={CATEGORY_URL} toggleColumns toolbarTitle={rows.length ? `${title} (${rows.length})` : title}
-        form={hasPermission("platform-help-admin.categories.create") ? CategoryDialog : undefined} />
+        queryKey={CATEGORY_URL}
+        toolbar={{
+          title: rows.length ? `${title} (${rows.length})` : title,
+          features: {
+            columns: true,
+            add: hasPermission("platform-help-admin.categories.create") ? CategoryDialog : undefined,
+          },
+        }} />
     </>
   );
 }

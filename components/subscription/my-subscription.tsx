@@ -211,7 +211,9 @@ function SubscriptionInvoiceTable() {
         isLoading={isLoading}
         isFetching={isFetching}
         queryKey="my-subscription-invoices"
-        toolbarTitle={toolbarTitle}
+        toolbar={{
+          title: toolbarTitle,
+        }}
       />
       <SubscriptionPayDialog
         open={payInvoiceId !== null}

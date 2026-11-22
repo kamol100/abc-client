@@ -51,17 +51,23 @@ const ProductTable: FC = () => {
             data={products}
             columns={columns}
             setFilter={setFilter}
-            toggleColumns={true}
-            toolbarBeforeViewOptions={<PrefixSettingsButton field="product_code_prefix" />}
+            toolbar={{
+                title: toolbarTitle,
+                end: [
+                    { key: "prefix-settings-button", node: <PrefixSettingsButton field="product_code_prefix" /> },
+                ],
+                features: {
+                    columns: true,
+                    filter: { filter: ProductFilterSchema() },
+                    add: ProductsToolbarActions,
+                },
+                mobileActions: "row",
+            }}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="products"
-            form={ProductsToolbarActions}
-            wrapActionsOnMobile
-            toolbarOptions={{ filter: ProductFilterSchema() }}
-            toolbarTitle={toolbarTitle}
         />
         </>
     );

@@ -94,21 +94,24 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 data={invoices}
                 setFilter={setFilter}
                 columns={columns}
-                toolbarOptions={toolbarOptions}
-                toggleColumns={true}
-                toolbarBeforeViewOptions={<PrefixSettingsButton field="invoice_prefix" />}
-                toolbar={tableToolBar}
+                toolbar={tableToolBar ? {
+                    title: toolbarTitle,
+                    end: [
+                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="invoice_prefix" /> },
+                    ],
+                    features: {
+                        columns: true,
+                        filter: toolbarOptions,
+                        add: hasPermission("invoices.create") && showCreateAction
+                            ? CreateButton
+                            : undefined,
+                    },
+                } : false}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}
                 isFetching={isFetching}
                 queryKey="invoices"
-                toolbarTitle={toolbarTitle}
-                form={
-                    hasPermission("invoices.create") && showCreateAction
-                        ? CreateButton
-                        : undefined
-                }
             />
         </div>
     );
