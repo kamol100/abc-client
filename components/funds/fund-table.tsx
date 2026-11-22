@@ -2,10 +2,9 @@
 
 import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Landmark } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
-import { CardContent } from "@/components/ui/card";
-import Card from "@/components/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import FundFilterSchema from "@/components/funds/fund-filter-schema";
 import FundForm from "@/components/funds/fund-form";
@@ -78,33 +77,38 @@ const FundTable: FC<FundTableProps> = ({
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardContent className="p-4">
-          <p className="text-sm text-muted-foreground">{t("fund.balance.label")}</p>
-          {isLoading ? (
-            <Skeleton className="h-8 w-32 mt-2" />
-          ) : (
-            <div className="text-lg font-semibold text-primary">
-              <DisplayCount amount={toNumber(totalBalance)} formatCurrency animate currency="BDT" />
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <div className="min-h-10">
-        {isError && (
-          <div role="alert" className="flex items-center gap-2 text-destructive">
-            <span>{t("fund.load_error")}</span>
-            <MyButton onClick={() => void refetch()}>{t("fund.retry")}</MyButton>
-          </div>
-        )}
-      </div>
+      {isError && (
+        <div role="alert" className="flex min-h-10 items-center gap-2 text-destructive">
+          <span>{t("fund.load_error")}</span>
+          <MyButton onClick={() => void refetch()}>{t("fund.retry")}</MyButton>
+        </div>
+      )}
       <DataTable
         data={funds}
         columns={columns}
         setFilter={setFilter}
         toolbar={{
           title: toolbarTitle,
+          center: [
+            {
+              key: "balance",
+              node: (
+                // Same chip as the navbar wallet balance. The amount box keeps its
+                // width, so swapping the skeleton for the amount does not move the toolbar.
+                <div className="flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-[var(--radius)] border border-border bg-background px-2.5">
+                  <Landmark className="size-4 text-muted-foreground" aria-hidden />
+                  <span className="text-xs text-muted-foreground">{t("fund.balance.label")}</span>
+                  <span className="inline-flex min-w-16 items-center justify-end text-sm font-semibold">
+                    {isLoading ? (
+                      <Skeleton className="h-4 w-16" />
+                    ) : (
+                      <DisplayCount amount={toNumber(totalBalance)} formatCurrency animate currency="BDT" />
+                    )}
+                  </span>
+                </div>
+              ),
+            },
+          ],
           features: {
             columns: true,
             filter: toolbarOptions,

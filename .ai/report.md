@@ -1235,3 +1235,18 @@ No line-ending changes (41 files checked). Not committed.
   - browser at 390 and 360px: page size on the left; MikroTik Import, All Sync, View, layout and Filter in one row, all 36×36 at the same height. With a row selected, Client Import (1) joins the row, and the page does not scroll sideways at 360px.
   - browser at 1440px: unchanged, both buttons stay after the title.
   - `scripts/ai/typecheck` passes.
+
+## Funds: balance in the toolbar centre
+
+- `fund-table.tsx`: removed the balance card.
+  - The balance ("Balance" plus the animated amount) is now the toolbar's `center` item. The layout already handles it: centred between the title and the buttons on desktop, and its own centred row under the buttons on mobile.
+  - The balance is drawn as the same chip as the navbar wallet balance: outlined, h-9, `rounded-[var(--radius)]`. Inside: a muted `Landmark` icon, the label in small muted text, and the amount semibold. It lines up with the toolbar's icon buttons.
+  - The amount box has `min-w-16`, so the loading skeleton and the amount take the same space.
+  - It is used by `/funds` and `/reports/funds`.
+- The load-error box used to hold an empty `min-h-10` slot above the table at all times. With the card gone, that showed as a blank gap. It is now rendered only when loading fails, with the same `min-h-10` for its own content.
+- Checked:
+  - browser on both pages at 1440, 1024 and 390px;
+    - desktop: the balance midpoint equals the table midpoint (848 / 640);
+    - the toolbar moved up 56px to where the card used to start;
+    - no sideways scrolling.
+  - `scripts/ai/typecheck` passes.
