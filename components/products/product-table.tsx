@@ -54,7 +54,7 @@ const ProductTable: FC = () => {
             toolbar={{
                 title: toolbarTitle,
                 end: [
-                    { key: "prefix-settings-button", node: <PrefixSettingsButton field="product_code_prefix" /> },
+                    { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="product_code_prefix" /> },
                 ],
                 features: {
                     columns: true,

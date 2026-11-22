@@ -107,6 +107,7 @@ export function DataTableToolbar<TData>({
   const startItems = inSlot(start);
   const centerItems = inSlot(center);
   const endItems = [...toActions, ...inSlot(end)];
+  const filterRowItems = endItems.filter((item) => item.inFilterRow !== false);
   const showStart = hasToolbarStart(filter, config.title, startItems, isMobile, isFiltered);
 
   return (
@@ -141,14 +142,22 @@ export function DataTableToolbar<TData>({
       mobileActions={config.mobileActions}
       expanded={
         !isMobile && filterOpen && filterOptions ? (
-          <ToolbarFilterRow
-            options={filterOptions}
-            filterHook={filterHook}
-            setFilter={setFilter}
-            resultCount={resultCount}
-            onOpenChange={handleFilterOpenChange}
-            endAction={endItems.length > 0 ? renderItems(endItems) : undefined}
-          />
+          <>
+            {/* Center items (e.g. a running total) stay visible above the open filter. */}
+            {centerItems.length > 0 && (
+              <div className="flex items-center justify-center gap-2" data-toolbar-slot="center">
+                {renderItems(centerItems)}
+              </div>
+            )}
+            <ToolbarFilterRow
+              options={filterOptions}
+              filterHook={filterHook}
+              setFilter={setFilter}
+              resultCount={resultCount}
+              onOpenChange={handleFilterOpenChange}
+              endAction={filterRowItems.length > 0 ? renderItems(filterRowItems) : undefined}
+            />
+          </>
         ) : undefined
       }
       below={

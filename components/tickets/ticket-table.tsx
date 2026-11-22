@@ -55,7 +55,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
             toolbar={tableToolBar ? {
                 title: toolbarTitle,
                 end: [
-                    { key: "prefix-settings-button", node: <PrefixSettingsButton field="ticket_code_prefix" /> },
+                    { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="ticket_code_prefix" /> },
                 ],
                 features: {
                     columns: true,

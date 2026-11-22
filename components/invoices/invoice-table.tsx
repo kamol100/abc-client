@@ -86,9 +86,11 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
         />
     );
 
+
     return (
         <div className="space-y-4">
-            {reportsToolbar && <InvoiceReports reports={reports} isLoading={isLoading} />}
+            {/* Without the toolbar (client view), the totals sit above the table. */}
+            {reportsToolbar && !tableToolBar && <InvoiceReports reports={reports} isLoading={isLoading} />}
 
             <DataTable
                 data={invoices}
@@ -96,8 +98,11 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 columns={columns}
                 toolbar={tableToolBar ? {
                     title: toolbarTitle,
+                    center: reportsToolbar
+                        ? [{ key: "totals", node: <InvoiceReports reports={reports} isLoading={isLoading} layout="toolbar" /> }]
+                        : undefined,
                     end: [
-                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="invoice_prefix" /> },
+                        { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="invoice_prefix" /> },
                     ],
                     features: {
                         columns: true,

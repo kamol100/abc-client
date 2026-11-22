@@ -1250,3 +1250,67 @@ No line-ending changes (41 files checked). Not committed.
     - the toolbar moved up 56px to where the card used to start;
     - no sideways scrolling.
   - `scripts/ai/typecheck` passes.
+
+## Invoices: totals as chips
+
+- `components/invoices/invoice-reports.tsx` (CRLF kept): the totals card is replaced by four chips: Sub Total, Discount, Total, Paid. They use the same style as the navbar wallet balance: outlined, `rounded-[var(--radius)]`, a muted icon, a small muted label and the amount in semibold. Paid uses the `success` token.
+  - Desktop and tablet (sm+): one row of h-9 chips, wrapping when narrow.
+  - Phones: a 2x2 grid, label above the amount.
+- Chosen by the user from three temporary designs (chips, collection progress, stat cards) shown on `/invoices`. The preview file was deleted and its import removed.
+- Loading: the chips render with a skeleton in the fixed-size amount slot. Before, an `h-20` block was shown, and the list jumped when data arrived.
+- The same totals, translations and API fields. The component is used by `/invoices`, the client view's invoice tab, `client-invoice-table.tsx` and the client area invoices.
+- Checked:
+  - browser `/invoices`:
+    - 1440 light and dark: one row;
+    - 768: 2+2 wrap;
+    - 390 and 360: 2x2 grid;
+    - no sideways scrolling at any width;
+    - no hydration or nesting errors in the console;
+  - `scripts/ai/typecheck` passes.
+- Existing, not changed: at 768px the navbar breadcrumb overlaps the navbar buttons.
+
+## Payments: total paid as a toolbar chip; totals stay visible with the filter open
+
+- New `components/summary-chip.tsx` `SummaryChip({ icon, label, amount, isLoading, currency })`: one money total as an h-9 chip, the same style as the navbar wallet balance, with a fixed-size amount slot while loading. `fund-table.tsx` now uses it; its look is unchanged.
+- `payment-table.tsx`: the Total Paid card is gone. Total Paid is now a `SummaryChip` (Banknote icon):
+  - with the toolbar: in its `center` slot (`/payments`, `/reports/payments`);
+  - without a toolbar (client view, `tableToolBar={false}`): above the table, left-aligned.
+- `data-table-toolbar.tsx`: while the desktop filter row is open, it replaces the toolbar. Center items now stay on a centred line above the filter fields, so a total (Funds Balance, Total Paid) stays visible while filtering. Mobile is unchanged: the filter is a bottom sheet and the center row stays.
+- Known: the chip remounts when the filter opens or closes, so its amount replays the short count-up animation.
+- Checked:
+  - browser 1440px:
+    - `/payments`, `/reports/payments`, `/funds`: the chip is centred over the table (midpoint 848 = table midpoint);
+    - with the filter open, the chip stays at the same x/y, and after a search the total updates with the result;
+  - browser 390px: the chip has its own centred row, with no sideways scrolling;
+  - client view: Total Paid chip above the payments table;
+  - no nesting or hydration console errors;
+  - `scripts/ai/typecheck` passes.
+
+## Invoices: totals in the toolbar centre
+
+- `invoice-table.tsx`: with its toolbar, the totals chips are now the toolbar's `center` item, like Funds and Payments, so they stay visible above the open filter. Without a toolbar (client view), they stay above the table.
+- `invoice-reports.tsx`: new `layout` prop.
+  - `"block"` (default) keeps the earlier layout. It is used by the client view, `client-invoice-table.tsx` and the client area.
+  - `"toolbar"`: one row from 1440px; an even 2x2 grid below that (the centre column is too narrow for four chips at 1280px and they wrapped 3+1); a full-width 2x2 grid on phones.
+- Checked:
+  - browser `/invoices`:
+    - 1920 and 1440: title, 4 chips and buttons on one 36px row;
+    - 1280 and 1024: even 2x2 in the centre column;
+    - 390: full-width 2x2 under the buttons;
+    - no overflow or sideways scrolling at any width;
+    - filter open at 1440: the chips stay on a centred row above the fields;
+  - client view: chips above the invoice table;
+  - no nesting or hydration console errors;
+  - `scripts/ai/typecheck` passes.
+
+## List pages: settings button hidden while the filter is open
+
+- New `ToolbarItem.inFilterRow` (in `toolbar-config.ts`, default true). On desktop, the open filter row carries the page's `end` items; an item with `false` is left out of it. When the filter closes, the item is back in the toolbar.
+- Set to `false` on the settings (gear) button of every list toolbar that has one:
+  - clients, tickets, payments, products, invoices, expenses, telegram, OLTs;
+  - this also covers the report pages built on the same tables.
+- Other end items still show in the filter row, for example MikroTik Sync's Client Import.
+- Mobile is unchanged: the filter is a bottom sheet, and the toolbar buttons stay.
+- Checked:
+  - browser at 1440px on `/clients`, `/tickets`, `/payments`, `/products`, `/invoices`, `/expenses`, `/telegram` and `/olts`: one gear button with the filter closed, none with it open;
+  - `scripts/ai/typecheck` passes.

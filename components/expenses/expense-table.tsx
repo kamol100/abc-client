@@ -60,7 +60,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
                 toolbar={{
                     title: toolbarTitle,
                     end: [
-                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="expense_id_prefix" /> },
+                        { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="expense_id_prefix" /> },
                     ],
                     features: {
                         columns: true,

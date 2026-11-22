@@ -42,7 +42,7 @@ const OltTable: FC = () => {
             toolbar={{
                 title: toolbarTitle,
                 end: [
-                    { key: "settings-section-button", node: <SettingsButton section="olt" /> },
+                    { key: "settings-section-button", inFilterRow: false, node: <SettingsButton section="olt" /> },
                 ],
                 features: {
                     columns: true,

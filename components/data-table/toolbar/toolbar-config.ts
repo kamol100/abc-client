@@ -19,6 +19,11 @@ export type ToolbarItem = {
   show?: boolean;
   /** Default "inline". */
   mobile?: ToolbarItemMobile;
+  /**
+   * Desktop: an `end` item also shows in the open filter row. Default true;
+   * false hides it while the filter is open (e.g. settings buttons).
+   */
+  inFilterRow?: boolean;
 };
 
 export type ToolbarFilterFeature = DataTableToolbarOptions & {

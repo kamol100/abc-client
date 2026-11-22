@@ -103,7 +103,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
         start: [
             { key: "activity", node: <ClientCount />, show: !isResellerReport, mobile: "row" },
         ],
-        end: [{ key: "settings", node: <SettingsButton section="clients" /> }],
+        end: [{ key: "settings", inFilterRow: false, node: <SettingsButton section="clients" /> }],
         features: {
             columns: true,
             filter: {

@@ -4,12 +4,10 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { toNumber } from "@/lib/helper/helper";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Card from "@/components/card";
+import { Banknote } from "lucide-react";
 import { DataTable } from "@/components/data-table/data-table";
 import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
-import { CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import DisplayCount from "@/components/display-count";
+import SummaryChip from "@/components/summary-chip";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import { PaymentColumns } from "@/components/payments/payment-column";
 import { PaymentRow } from "@/components/payments/payment-type";
@@ -58,32 +56,23 @@ const PaymentTable: FC<PaymentTableProps> = ({
         ? `${t(toolbarTitleKey)} (${pagination.total})`
         : t(toolbarTitleKey);
 
+    const totalChip = (
+        <SummaryChip icon={Banknote} label="payment.total_paid" amount={toNumber(totalPaid)} isLoading={isLoading} />
+    );
+
     return (
         <div className="space-y-4">
-            <Card>
-                <CardContent className="p-4">
-                    <p className="text-sm text-muted-foreground">{t("payment.total_paid")}</p>
-                    {isLoading ? (
-                        <Skeleton className="h-8 w-32 mt-2" />
-                    ) : (
-                        <DisplayCount
-                            amount={toNumber(totalPaid)}
-                            formatCurrency
-                            className="text-xl font-semibold text-primary"
-                            animate
-                            duration={800}
-                        />
-                    )}
-                </CardContent>
-            </Card>
+            {/* Without the toolbar (client view), the total sits above the table. */}
+            {!tableToolBar && <div className="flex">{totalChip}</div>}
 
             <DataTable
                 data={payments}
                 setFilter={setFilter}
                 toolbar={tableToolBar ? {
                     title: toolbarTitle,
+                    center: [{ key: "total-paid", node: totalChip }],
                     end: [
-                        { key: "prefix-settings-button", node: <PrefixSettingsButton field="pid_prefix" /> },
+                        { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="pid_prefix" /> },
                     ],
                     features: {
                         columns: true,

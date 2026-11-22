@@ -44,7 +44,7 @@ const TelegramTable: FC = () => {
           ? `${t("telegram.title_plural")} (${pagination.total})`
           : t("telegram.title_plural"),
         end: [
-          { key: "settings-section-button", node: <SettingsButton section="telegram" size="default" /> },
+          { key: "settings-section-button", inFilterRow: false, node: <SettingsButton section="telegram" size="default" /> },
         ],
         features: {
           columns: true,
