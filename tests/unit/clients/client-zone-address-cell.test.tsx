@@ -11,14 +11,17 @@ vi.mock("react-i18next", () => ({
                 ? "Show more"
                 : key === "client.address.show_less"
                     ? "Show less"
-                    : key,
+                    : key === "client.address.directions"
+                        ? "Directions on map"
+                        : key,
     }),
 }));
 
-const client = (address: string | null): ClientRow => ({
+const client = (address: string | null, location: Partial<ClientRow> = {}): ClientRow => ({
     name: "Kamol",
     status: 1,
     current_address: address,
+    ...location,
     zone: { id: 1, name: "Mirpur" },
     network: { id: 2, name: "Core" },
 });
@@ -89,5 +92,36 @@ describe("ClientZoneAddressCell", () => {
 
         expect(screen.getByRole("button", { name: "Show more" })).toHaveAttribute("aria-expanded", "false");
         expect(screen.getByText(address)).toHaveClass("line-clamp-1");
+    });
+
+    it("links to map directions when the client has a location", async () => {
+        const user = userEvent.setup();
+        const rowClick = vi.fn();
+
+        render(
+            <div onClick={rowClick}>
+                <ClientZoneAddressCell client={client("Road 5, Mirpur", { adr_latitude: "23.8103", adr_longitude: "90.4125" })} />
+            </div>,
+        );
+
+        const link = screen.getByRole("link", { name: "Directions on map" });
+        expect(link).toHaveAttribute("href", "https://www.google.com/maps/dir/?api=1&destination=23.8103,90.4125");
+        expect(link).toHaveAttribute("target", "_blank");
+        expect(link).toHaveAttribute("rel", "noopener noreferrer");
+
+        link.addEventListener("click", (event) => event.preventDefault());
+        await user.click(link);
+        expect(rowClick).not.toHaveBeenCalled();
+    });
+
+    it("shows no directions link without a usable location", () => {
+        const { rerender } = render(<ClientZoneAddressCell client={client("Road 5, Mirpur")} />);
+        expect(screen.queryByRole("link", { name: "Directions on map" })).not.toBeInTheDocument();
+
+        rerender(<ClientZoneAddressCell client={client("Road 5, Mirpur", { adr_latitude: "", adr_longitude: "" })} />);
+        expect(screen.queryByRole("link", { name: "Directions on map" })).not.toBeInTheDocument();
+
+        rerender(<ClientZoneAddressCell client={client("Road 5, Mirpur", { adr_latitude: "abc", adr_longitude: "90.4" })} />);
+        expect(screen.queryByRole("link", { name: "Directions on map" })).not.toBeInTheDocument();
     });
 });

@@ -1570,7 +1570,8 @@
         "address": {
             "label": "Address",
             "show_more": "Show more",
-            "show_less": "Show less"
+            "show_less": "Show less",
+            "directions": "Directions on map"
         },
         "connection_type": {
             "label": "Connection Type",

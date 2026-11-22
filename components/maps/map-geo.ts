@@ -89,3 +89,16 @@ export function getSettingString(
   }
   return null;
 }
+
+/**
+ * Google Maps directions to a point, or null when either coordinate is blank
+ * or not a valid location. Blank is checked first: Number("") is 0, which
+ * would otherwise become a real point.
+ */
+export function directionsUrl(lat: unknown, lng: unknown): string | null {
+  const isBlank = (value: unknown) => value === null || value === undefined || String(value).trim() === "";
+  if (isBlank(lat) || isBlank(lng)) return null;
+
+  const point = toLatLngTuple([lat, lng]);
+  return point ? `https://www.google.com/maps/dir/?api=1&destination=${point[0]},${point[1]}` : null;
+}

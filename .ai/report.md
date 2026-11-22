@@ -1162,3 +1162,14 @@ No line-ending changes (41 files checked). Not committed.
   - 390×844: 506 → 605, ending 16px above the mobile bottom nav, no scroll.
 - `scripts/ai/typecheck` passes.
 - Existing, unchanged: on phones the map filter card shows only the Device field, with the rest cut off. The original code does the same.
+
+## Clients list: map pin with directions before the address
+
+- `client-zone-address-cell.tsx`: when a client has a valid location, a `MapPin` link shows before the address. It opens Google Maps directions (`/maps/dir/?api=1&destination=lat,lng`) in a new tab, with `noopener noreferrer`. The click doesn't reach the row, and the tooltip and aria-label use the new key `client.address.directions` (en and bn). It is used by the clients list and the archived clients list.
+- `map-geo.ts` `directionsUrl(lat, lng)`: returns null for a blank or invalid point (blank is checked first, because `Number("")` is 0).
+- Needs the backend change in isp-backend: the list endpoints did not select `adr_latitude` and `adr_longitude`.
+- Checked:
+  - unit tests: 2 new cell tests and 2 for `directionsUrl`;
+  - `scripts/ai/typecheck` passes;
+  - `scripts/ai/test`: 846 passed, same 20 baseline failures;
+  - browser: 6 pins on the vp clients list at 1440 and 390 px, and the click opens a new tab while the list stays on /clients.

@@ -1570,7 +1570,8 @@
         "address": {
             "label": "ঠিকানা",
             "show_more": "আরও দেখুন",
-            "show_less": "কম দেখুন"
+            "show_less": "কম দেখুন",
+            "directions": "ম্যাপে দিকনির্দেশনা"
         },
         "connection_type": {
             "label": "কানেকশন টাইপ",
