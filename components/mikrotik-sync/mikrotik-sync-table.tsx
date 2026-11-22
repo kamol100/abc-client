@@ -14,7 +14,7 @@ import {
 } from "@/components/mikrotik-sync/mikrotik-sync-column";
 import MikrotikSyncBulkDialog from "@/components/mikrotik-sync/mikrotik-sync-bulk-dialog";
 import MikrotikSyncFilterSchema from "@/components/mikrotik-sync/mikrotik-sync-filter-schema";
-import MikrotikSyncForm from "@/components/mikrotik-sync/mikrotik-sync-form";
+import MikrotikSyncActionButton from "@/components/mikrotik-sync/mikrotik-sync-form";
 import {
   MikrotikSyncList,
   MikrotikSyncRow,
@@ -100,6 +100,7 @@ const MikrotikSyncTable: FC = () => {
   const importableIds = rows.filter(isImportable).map((row) => row.id);
   const selectAllActive =
     importableIds.length > 0 && importableIds.every((id) => selectedIds.includes(id));
+  const selectedCount = selectAllActive ? totalCount : selectedIds.length;
   const toolbarOptions = useMemo(
     () => ({
       filter: MikrotikSyncFilterSchema(),
@@ -113,19 +114,6 @@ const MikrotikSyncTable: FC = () => {
 
   return (
     <div className="space-y-3 w-full">
-      <div className="flex w-full flex-col gap-3 md:flex-row md:items-center">
-        {canLoad && (
-          <div className="w-full min-w-0 md:flex-1">
-            <MikrotikSyncForm action="load" />
-          </div>
-        )}
-        {canResolve && (
-          <div className="w-full min-w-0 md:flex-1">
-            <MikrotikSyncForm action="resolve" />
-          </div>
-        )}
-      </div>
-
       <Card className="p-3">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground">
@@ -159,6 +147,8 @@ const MikrotikSyncTable: FC = () => {
               </MyBadge>
             ) : null, mobile: "row" }],
           end: [
+            { key: "load", show: canLoad, node: <MikrotikSyncActionButton action="load" /> },
+            { key: "resolve", show: canResolve, node: <MikrotikSyncActionButton action="resolve" /> },
             { key: "actions", node: canBulkImport && selectedIds.length > 0 ? (
                 <MikrotikSyncBulkDialog
                   allImport={selectAllActive}
@@ -168,9 +158,18 @@ const MikrotikSyncTable: FC = () => {
                     void refetch();
                   }}
                   trigger={
-                    <MyButton type="button" size="default" variant="outline" icon={false}>
+                    <MyButton
+                      type="button"
+                      size="default"
+                      variant="outline"
+                      icon={false}
+                      className="shrink-0 max-md:w-9 max-md:px-0"
+                      aria-label={t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
+                    >
                       <Upload aria-hidden />
-                      {t("mikrotik_sync.actions.import")}
+                      <span className="hidden md:inline">
+                        {t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
+                      </span>
                     </MyButton>
                   }
                 />

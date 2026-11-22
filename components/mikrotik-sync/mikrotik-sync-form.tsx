@@ -1,11 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Import, RefreshCw, type LucideIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import Card from "@/components/card";
 import Label from "@/components/label";
 import MyButton, { type MyButtonActionType } from "@/components/my-button";
+import { MyDialog, useMyDialogClose } from "@/components/my-dialog";
 import SelectDropdown from "@/components/select-dropdown";
 import { MikrotikSyncNetworkFieldSchema } from "@/components/mikrotik-sync/mikrotik-sync-form-schema";
 import {
@@ -24,6 +25,7 @@ const ACTION_CONFIG: Record<
     apiUrl: string;
     buttonKey: string;
     buttonAction: MyButtonActionType;
+    icon: LucideIcon;
     successMessageKey: string;
     descriptionKey: string;
   }
@@ -32,6 +34,7 @@ const ACTION_CONFIG: Record<
     apiUrl: "/mikrotik-sync/load",
     buttonKey: "mikrotik_sync.sync.actions.load",
     buttonAction: "import",
+    icon: Import,
     successMessageKey: "mikrotik_sync.messages.load_success",
     descriptionKey: "mikrotik_sync.sync.descriptions.load",
   },
@@ -39,17 +42,16 @@ const ACTION_CONFIG: Record<
     apiUrl: "/mikrotik-sync/resolve-all",
     buttonKey: "mikrotik_sync.sync.actions.all_sync",
     buttonAction: "sync",
+    icon: RefreshCw,
     successMessageKey: "mikrotik_sync.messages.all_sync_success",
     descriptionKey: "mikrotik_sync.sync.descriptions.resolve",
   },
 };
 
-export default function MikrotikSyncForm({
-  action = "load",
-}: {
-  action?: MikrotikSyncAction;
-}) {
+/** Network select + submit. Closes its dialog after a successful run. */
+function MikrotikSyncForm({ action }: { action: MikrotikSyncAction }) {
   const { t } = useTranslation();
+  const closeDialog = useMyDialogClose();
   const form = useForm<MikrotikSyncNetworkInput>({
     resolver: zodResolver(MikrotikSyncNetworkSchema),
     mode: "onSubmit",
@@ -63,41 +65,68 @@ export default function MikrotikSyncForm({
     successMessage: config.successMessageKey,
     onSuccess: () => {
       form.reset();
+      closeDialog?.();
     },
   });
 
   if (!networkField || networkField.type !== "dropdown") return null;
 
   return (
-    <Card className="p-3">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((values) => mutate(values))}
-          className="grid grid-cols-1 items-end gap-3 sm:grid-cols-[minmax(0,1fr)_auto]"
-        >
-          <div>
-            <div className="flex items-center gap-2">
-              <Label label={networkField.label} />
-              <p className="text-sm font-normal text-muted-foreground -mt-1.5">
-                {t(config.descriptionKey)}
-              </p>
-            </div>
-            <SelectDropdown
-              name={networkField.name}
-              api={networkField.api}
-              placeholder={networkField.placeholder}
-            />
-          </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit((values) => mutate(values))} className="flex flex-col gap-4">
+        <div>
+          <Label label={networkField.label} />
+          <SelectDropdown
+            name={networkField.name}
+            api={networkField.api}
+            placeholder={networkField.placeholder}
+          />
+        </div>
+        <div className="flex justify-end">
           <MyButton
             action={config.buttonAction}
             type="submit"
-            size={"default"}
+            size="default"
+            variant="default"
             loading={isPending}
             title={t(config.buttonKey)}
             className="w-full sm:w-auto"
           />
-        </form>
-      </Form>
-    </Card>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+/**
+ * Toolbar button that opens the Import (load) or All Sync (resolve) form in a
+ * dialog. Icon only on phones, icon + label from md up.
+ */
+export default function MikrotikSyncActionButton({ action }: { action: MikrotikSyncAction }) {
+  const { t } = useTranslation();
+  const config = ACTION_CONFIG[action];
+  const Icon = config.icon;
+
+  return (
+    <MyDialog
+      size="md"
+      title={config.buttonKey}
+      description={config.descriptionKey}
+      trigger={
+        <MyButton
+          type="button"
+          action={config.buttonAction}
+          size="default"
+          variant="outline"
+          className="shrink-0 max-md:w-9 max-md:px-0"
+          aria-label={t(config.buttonKey)}
+        >
+          <Icon aria-hidden />
+          <span className="hidden md:inline">{t(config.buttonKey)}</span>
+        </MyButton>
+      }
+    >
+      <MikrotikSyncForm action={action} />
+    </MyDialog>
   );
 }

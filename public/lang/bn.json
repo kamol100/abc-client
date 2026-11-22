@@ -4640,6 +4640,7 @@
         },
         "actions": {
             "import": "ইমপোর্ট",
+            "import_selected": "নির্বাচিত ইমপোর্ট ({{count}})",
             "individual_sync": "ইনডিভিজুয়াল সিঙ্ক"
         },
         "bulk": {

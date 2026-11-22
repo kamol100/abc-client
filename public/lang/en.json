@@ -4640,6 +4640,7 @@
         },
         "actions": {
             "import": "Import",
+            "import_selected": "Import selected ({{count}})",
             "individual_sync": "Individual Sync"
         },
         "bulk": {
