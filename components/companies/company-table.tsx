@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { CompanyRow } from "@/components/companies/company-type";
 import { CompaniesColumns } from "@/components/companies/companies-column";
 import CompanyForm from "@/components/companies/company-form";
@@ -34,21 +35,23 @@ const CompanyTable: FC = () => {
         ? t("company.title_plural") + ` (${pagination.total})`
         : t("company.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        end: [
+            { key: "company-import-dialog", node: <CompanyImportDialog /> },
+        ],
+        features: {
+            columns: true,
+            add: CompanyForm,
+        },
+    };
+
     return (
         <DataTable
             data={companies}
             setFilter={setFilter}
             columns={CompaniesColumns}
-            toolbar={{
-                title: toolbarTitle,
-                end: [
-                    { key: "company-import-dialog", node: <CompanyImportDialog /> },
-                ],
-                features: {
-                    columns: true,
-                    add: CompanyForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

@@ -5,6 +5,7 @@ import ProductFeedback, { ProductBackgroundError } from "@/components/products/p
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useProductColumns } from "@/components/products/product-column";
@@ -44,6 +45,19 @@ const ProductTable: FC = () => {
     if (!allowed) return <ProductFeedback denied />;
     if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        end: [
+            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="product_code_prefix" /> },
+        ],
+        features: {
+            columns: true,
+            filter: { filter: ProductFilterSchema() },
+            add: ProductsToolbarActions,
+        },
+        mobileActions: "row",
+    };
+
     return (
         <>
         <ProductBackgroundError failed={isError} retry={refetch} />
@@ -51,18 +65,7 @@ const ProductTable: FC = () => {
             data={products}
             columns={columns}
             setFilter={setFilter}
-            toolbar={{
-                title: toolbarTitle,
-                end: [
-                    { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="product_code_prefix" /> },
-                ],
-                features: {
-                    columns: true,
-                    filter: { filter: ProductFilterSchema() },
-                    add: ProductsToolbarActions,
-                },
-                mobileActions: "row",
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

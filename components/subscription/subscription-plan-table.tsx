@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { SubscriptionPlanColumns } from "@/components/subscription/subscription-plan-column";
 import SubscriptionPlanForm from "@/components/subscription/subscription-plan-form";
 import { SubscriptionPlanRow } from "@/components/subscription/subscription-plan-type";
@@ -18,6 +19,13 @@ export default function SubscriptionPlanTable() {
   const plans = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
 
+  const toolbar: DataTableToolbarConfig = {
+    title: t("subscription.plan.title"),
+    features: {
+      add: hasPermission("subscription-plans.create") ? SubscriptionPlanForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={plans}
@@ -26,12 +34,7 @@ export default function SubscriptionPlanTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      toolbar={{
-        title: t("subscription.plan.title"),
-        features: {
-          add: hasPermission("subscription-plans.create") ? SubscriptionPlanForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
     />
   );
 }

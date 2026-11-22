@@ -3,6 +3,7 @@
 import { FC } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { SubjectColumns } from "./subject-column";
 import SubjectForm from "./subject-form";
 import { SubjectRow } from "./subject-type";
@@ -23,17 +24,19 @@ const SubjectTable: FC = () => {
         ? `${t("subject.title_plural")} (${pagination.total})`
         : t("subject.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: SubjectForm,
+        },
+    };
+
     return (
         <DataTable
             data={subjects}
             columns={SubjectColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: SubjectForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

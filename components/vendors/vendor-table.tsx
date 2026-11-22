@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { VendorRow } from "@/components/vendors/vendor-type";
 import { VendorsColumns } from "@/components/vendors/vendors-column";
 import VendorForm from "@/components/vendors/vendor-form";
@@ -37,19 +38,21 @@ const VendorTable: FC = () => {
         ? `${t("vendor.title_plural")} (${pagination.total})`
         : t("vendor.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: VendorForm,
+        },
+    };
+
     return (
         <DataTable
             data={vendors}
             setFilter={setFilter}
             columns={VendorsColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                    add: VendorForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}

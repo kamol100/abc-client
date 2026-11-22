@@ -4,6 +4,7 @@ import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePermissions } from "@/context/app-provider";
 import { useInvoiceTypeColumns } from "@/components/invoice-type/invoice-type-column";
 import InvoiceTypeForm from "@/components/invoice-type/invoice-type-form";
@@ -27,17 +28,19 @@ const InvoiceTypeTable: FC = () => {
         ? `${t("invoice_type.title_plural")} (${pagination.total})`
         : t("invoice_type.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: hasPermission("invoice-types.create") ? InvoiceTypeForm : undefined,
+        },
+    };
+
     return (
         <DataTable
             data={invoiceTypes}
             columns={columns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: hasPermission("invoice-types.create") ? InvoiceTypeForm : undefined,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import MyButton from "@/components/my-button";
 import AgentTransactionFilterSchema from "@/components/agent-transactions/agent-transaction-filter-schema";
 import { getAgentTransactionColumns } from "@/components/agent-transactions/agent-transaction-column";
@@ -80,19 +81,21 @@ const AgentTransactionTable: FC<AgentTransactionTableProps> = ({
     return AddFromAgents;
   }, [hasPermission, hideCreateAction, t]);
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+      add: CreateAction,
+    },
+  };
+
   return (
     <DataTable
       data={transactions}
       columns={columns}
       setFilter={setFilter}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          filter: toolbarOptions,
-          add: CreateAction,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}

@@ -5,6 +5,7 @@ import useApiQuery, {
   type PaginatedApiResponse,
 } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { DeviceTypeColumns } from "./device-type-column";
 import DeviceTypeForm from "./device-type-form";
 import type { DeviceTypeRow } from "./device-type-type";
@@ -36,18 +37,20 @@ const DeviceTypeTable: FC = () => {
       ? `${t("device_type.title_plural")} (${pagination.total})`
       : t("device_type.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      add: DeviceTypeForm,
+    },
+  };
+
   return (
     <DataTable
       data={deviceTypes}
       setFilter={setFilter}
       columns={DeviceTypeColumns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          add: DeviceTypeForm,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

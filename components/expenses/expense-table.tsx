@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import ExpenseFilterSchema from "@/components/expenses/expense-filter-schema";
 import ExpenseForm from "@/components/expenses/expense-form";
@@ -50,24 +51,26 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
         ? `${t(toolbarTitleKey)} (${pagination.total})`
         : t(toolbarTitleKey);
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        center: [{ key: "totals", node: <ExpenseReports reports={reports} isLoading={isLoading} /> }],
+        end: [
+            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="expense_id_prefix" /> },
+        ],
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: showCreateAction ? ExpenseForm : undefined,
+        },
+    };
+
     return (
         <div className="space-y-4 pl-0.5">
             <DataTable
                 data={expenses}
                 setFilter={setFilter}
                 columns={ExpenseColumns}
-                toolbar={{
-                    title: toolbarTitle,
-                    center: [{ key: "totals", node: <ExpenseReports reports={reports} isLoading={isLoading} /> }],
-                    end: [
-                        { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="expense_id_prefix" /> },
-                    ],
-                    features: {
-                        columns: true,
-                        filter: toolbarOptions,
-                        add: showCreateAction ? ExpenseForm : undefined,
-                    },
-                }}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}

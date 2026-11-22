@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { toNumber } from "@/lib/helper/helper";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import Card from "@/components/card";
 import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -45,6 +46,13 @@ const ClientPaymentsTable: FC = () => {
     ? `${t("payment.title_plural")} (${pagination.total})`
     : t("payment.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -69,12 +77,7 @@ const ClientPaymentsTable: FC = () => {
       <DataTable
         data={payments}
         columns={columns}
-        toolbar={{
-          title: toolbarTitle,
-          features: {
-            filter: toolbarOptions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

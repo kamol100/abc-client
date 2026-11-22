@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import { TicketColumns } from "./ticket-column";
 import { TicketRow } from "./ticket-type";
@@ -47,22 +48,24 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
 
     const toolbarOptions = useMemo(() => ({ filter: TicketFilterSchema() }), []);
 
+    const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
+        title: toolbarTitle,
+        end: [
+            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="ticket_code_prefix" /> },
+        ],
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: TicketCreateDialog,
+        },
+    } : false;
+
     return (
         <DataTable
             data={tickets}
             setFilter={setFilter}
             columns={TicketColumns}
-            toolbar={tableToolBar ? {
-                title: toolbarTitle,
-                end: [
-                    { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="ticket_code_prefix" /> },
-                ],
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                    add: TicketCreateDialog,
-                },
-            } : false}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

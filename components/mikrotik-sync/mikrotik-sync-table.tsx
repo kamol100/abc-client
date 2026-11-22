@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import {
   isImportable,
   useMikrotikSyncColumns,
@@ -117,6 +118,51 @@ const MikrotikSyncTable: FC = () => {
     ? `${t("mikrotik_sync.title_plural")} (${totalCount})`
     : t("mikrotik_sync.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    start: [
+      { key: "load", show: canLoad, mobile: "actions", node: <MikrotikSyncActionButton action="load" /> },
+      { key: "resolve", show: canResolve, mobile: "actions", node: <MikrotikSyncActionButton action="resolve" /> },
+      { key: "info", node: selectAllActive ? (
+        <MyBadge type="error" variant="soft" size="md" className="shrink-0">
+          {t("mikrotik_sync.messages.select_all_pages", {
+            count: pagination?.total ?? 0,
+          })}
+        </MyBadge>
+      ) : null, mobile: "row" }],
+    end: [
+      { key: "actions", node: canBulkImport && selectedIds.length > 0 ? (
+          <MikrotikSyncBulkDialog
+            allImport={selectAllActive}
+            importIds={selectAllActive ? [] : selectedIds}
+            onImported={() => {
+              setSelectedIds([]);
+              void refetch();
+            }}
+            trigger={
+              <MyButton
+                type="button"
+                size="default"
+                variant="outline"
+                icon={false}
+                className="shrink-0 max-md:w-9 max-md:px-0"
+                aria-label={t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
+              >
+                <Upload aria-hidden />
+                <span className="hidden md:inline">
+                  {t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
+                </span>
+              </MyButton>
+            }
+          />
+        ) : null },
+    ],
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <div className="space-y-3 w-full">
       <Card className="p-3">
@@ -142,50 +188,7 @@ const MikrotikSyncTable: FC = () => {
         data={rows}
         setFilter={setFilter}
         columns={columns}
-        toolbar={{
-          title: toolbarTitle,
-          start: [
-            { key: "load", show: canLoad, mobile: "actions", node: <MikrotikSyncActionButton action="load" /> },
-            { key: "resolve", show: canResolve, mobile: "actions", node: <MikrotikSyncActionButton action="resolve" /> },
-            { key: "info", node: selectAllActive ? (
-              <MyBadge type="error" variant="soft" size="md" className="shrink-0">
-                {t("mikrotik_sync.messages.select_all_pages", {
-                  count: pagination?.total ?? 0,
-                })}
-              </MyBadge>
-            ) : null, mobile: "row" }],
-          end: [
-            { key: "actions", node: canBulkImport && selectedIds.length > 0 ? (
-                <MikrotikSyncBulkDialog
-                  allImport={selectAllActive}
-                  importIds={selectAllActive ? [] : selectedIds}
-                  onImported={() => {
-                    setSelectedIds([]);
-                    void refetch();
-                  }}
-                  trigger={
-                    <MyButton
-                      type="button"
-                      size="default"
-                      variant="outline"
-                      icon={false}
-                      className="shrink-0 max-md:w-9 max-md:px-0"
-                      aria-label={t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
-                    >
-                      <Upload aria-hidden />
-                      <span className="hidden md:inline">
-                        {t("mikrotik_sync.actions.import_selected", { count: selectedCount })}
-                      </span>
-                    </MyButton>
-                  }
-                />
-              ) : null },
-          ],
-          features: {
-            columns: true,
-            filter: toolbarOptions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

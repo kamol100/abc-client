@@ -4,6 +4,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { Upload } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { isImportable, useImportClientColumns } from "@/components/import-client/import-client-column";
 import ImportClientBulkDialog from "@/components/import-client/import-client-bulk-dialog";
 import ImportClientFilterSchema from "@/components/import-client/import-client-filter-schema";
@@ -73,6 +74,44 @@ const ImportClientTable: FC = () => {
         ? `${t("import_client.title_plural")} (${pagination.total})`
         : t("import_client.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        start: [{ key: "info", node: selectAllActive ? (
+                <MyBadge type="error" variant="soft" size="md" className="shrink-0">
+                    {t("import_client.messages.select_all_pages", {
+                        count: pagination?.total ?? 0,
+                    })}
+                </MyBadge>
+            ) : null, mobile: "row" }],
+        end: [
+            { key: "actions", node: canImport && selectedIds.length > 0 ? (
+                    <ImportClientBulkDialog
+                        allImport={selectAllActive}
+                        importIds={selectAllActive ? [] : selectedIds}
+                        onImported={() => {
+                            setSelectedIds([]);
+                            void refetch();
+                        }}
+                        trigger={
+                            <MyButton
+                                type="button"
+                                size="default"
+                                variant="outline"
+                                icon={false}
+                            >
+                                <Upload aria-hidden />
+                                {t("import_client.actions.import")}
+                            </MyButton>
+                        }
+                    />
+                ) : null },
+        ],
+        features: {
+            columns: true,
+            filter: { filter: ImportClientFilterSchema() },
+        },
+    };
+
     return (
         <div className="space-y-3">
             {canSync && <ImportClientSyncForm />}
@@ -80,43 +119,7 @@ const ImportClientTable: FC = () => {
                 data={syncClients}
                 setFilter={setFilter}
                 columns={columns}
-                toolbar={{
-                    title: toolbarTitle,
-                    start: [{ key: "info", node: selectAllActive ? (
-                            <MyBadge type="error" variant="soft" size="md" className="shrink-0">
-                                {t("import_client.messages.select_all_pages", {
-                                    count: pagination?.total ?? 0,
-                                })}
-                            </MyBadge>
-                        ) : null, mobile: "row" }],
-                    end: [
-                        { key: "actions", node: canImport && selectedIds.length > 0 ? (
-                                <ImportClientBulkDialog
-                                    allImport={selectAllActive}
-                                    importIds={selectAllActive ? [] : selectedIds}
-                                    onImported={() => {
-                                        setSelectedIds([]);
-                                        void refetch();
-                                    }}
-                                    trigger={
-                                        <MyButton
-                                            type="button"
-                                            size="default"
-                                            variant="outline"
-                                            icon={false}
-                                        >
-                                            <Upload aria-hidden />
-                                            {t("import_client.actions.import")}
-                                        </MyButton>
-                                    }
-                                />
-                            ) : null },
-                    ],
-                    features: {
-                        columns: true,
-                        filter: { filter: ImportClientFilterSchema() },
-                    },
-                }}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}

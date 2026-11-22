@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { ZoneRow } from "@/components/zones/zone-type";
 import { ZonesColumns } from "@/components/zones/zones-column";
 import ZoneForm from "@/components/zones/zone-form";
@@ -33,18 +34,20 @@ const ZoneTable: FC = () => {
         ? `${t("zone.title")} (${pagination.total})`
         : t("zone.title");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: ZoneForm,
+        },
+    };
+
     return (
         <DataTable
             data={zones}
             setFilter={setFilter}
             columns={ZonesColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: ZoneForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

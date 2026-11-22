@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { ProductCategoryColumns } from "./product-category-column";
 import ProductCategoryForm from "./product-category-form";
 import { ProductCategoryRow } from "./product-category-type";
@@ -33,18 +34,20 @@ const ProductCategoryTable: FC = () => {
         ? `${t("product_category.title_plural")} (${pagination.total})`
         : t("product_category.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: ProductCategoryForm,
+        },
+    };
+
     return (
         <DataTable
             data={productCategories}
             setFilter={setFilter}
             columns={ProductCategoryColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: ProductCategoryForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

@@ -2,6 +2,7 @@
 
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { useDashboardTopDueInvoiceColumns } from "@/components/dashboard/dashboard-top-due-invoice-columns";
 import DashboardTopDueInvoiceFilterSchema from "@/components/dashboard/dashboard-top-due-invoice-filter-schema";
 import type { DashboardTopDueInvoice } from "@/components/dashboard/dashboard-type";
@@ -38,6 +39,15 @@ export default function DashboardTopDueInvoicesTable({
     return title;
   }, [t, isLoading, invoices.length]);
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      layoutToggle: false,
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <Card className="p-4 md:p-5">
       {isError ? (
@@ -54,14 +64,7 @@ export default function DashboardTopDueInvoicesTable({
             data={isLoading ? [] : invoices}
             columns={columns}
             setFilter={setFilter}
-            toolbar={{
-              title: toolbarTitle,
-              features: {
-                columns: true,
-                layoutToggle: false,
-                filter: toolbarOptions,
-              },
-            }}
+            toolbar={toolbar}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="dashboard-top-due-invoices"

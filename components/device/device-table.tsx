@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import DeviceFilterSchema from "./device-filter-schema";
@@ -39,19 +40,21 @@ const DeviceTable: FC = () => {
     ? `${t("device.title_plural")} (${pagination.total})`
     : t("device.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: { filter: DeviceFilterSchema() },
+      add: canCreate ? DeviceForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={devices}
       setFilter={setFilter}
       columns={columns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          filter: { filter: DeviceFilterSchema() },
-          add: canCreate ? DeviceForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}

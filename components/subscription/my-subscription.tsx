@@ -9,6 +9,7 @@ import { Check, CreditCard } from "lucide-react";
 import { useFetch } from "@/app/actions";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import DisplayCount from "@/components/display-count";
 import { InvoiceListApiResponse, InvoiceRow } from "@/components/invoices/invoice-type";
@@ -201,6 +202,10 @@ function SubscriptionInvoiceTable() {
     ? `${t("subscription.invoices.title")} (${pagination.total})`
     : t("subscription.invoices.title");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+  };
+
   return (
     <>
       <DataTable
@@ -211,9 +216,7 @@ function SubscriptionInvoiceTable() {
         isLoading={isLoading}
         isFetching={isFetching}
         queryKey="my-subscription-invoices"
-        toolbar={{
-          title: toolbarTitle,
-        }}
+        toolbar={toolbar}
       />
       <SubscriptionPayDialog
         open={payInvoiceId !== null}

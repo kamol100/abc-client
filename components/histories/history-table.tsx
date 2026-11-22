@@ -4,6 +4,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { getHistoryColumns } from "./history-column";
 import HistoryFilterSchema from "./history-filter-schema";
 import type { HistoryRow } from "./history-type";
@@ -50,18 +51,20 @@ const HistoryTable: FC = () => {
         []
     );
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+        },
+    };
+
     return (
         <DataTable
             data={histories}
             columns={columns}
             setFilter={setFilter}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

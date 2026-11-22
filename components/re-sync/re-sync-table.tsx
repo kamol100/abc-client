@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useFetch } from "@/app/actions";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import ReSyncFilterSchema from "@/components/re-sync/re-sync-filter-schema";
 import ReSyncForm from "@/components/re-sync/re-sync-form";
 import { useReSyncColumns } from "@/components/re-sync/re-sync-column";
@@ -83,6 +84,14 @@ const ReSyncTable: FC = () => {
     ? `${t("re_sync.title_plural")} (${totalCount})`
     : t("re_sync.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: { filter: ReSyncFilterSchema() },
+    },
+  };
+
   return (
     <div className="space-y-3">
       {canLoad && <ReSyncForm actionType="load" />}
@@ -111,13 +120,7 @@ const ReSyncTable: FC = () => {
         data={listData}
         setFilter={setFilter}
         columns={columns}
-        toolbar={{
-          title: toolbarTitle,
-          features: {
-            columns: true,
-            filter: { filter: ReSyncFilterSchema() },
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

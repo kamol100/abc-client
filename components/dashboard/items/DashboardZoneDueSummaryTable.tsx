@@ -2,6 +2,7 @@
 
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { useDashboardZoneWiseTopInvoiceDueColumns } from "@/components/dashboard/dashboard-zone-wise-top-invoice-due-columns";
 import DashboardZoneWiseTopInvoiceDueFilterSchema from "@/components/dashboard/dashboard-zone-wise-top-invoice-due-filter-schema";
 import type { DashboardZoneWiseTopInvoiceDueItem } from "@/components/dashboard/dashboard-type";
@@ -41,6 +42,15 @@ export default function DashboardZoneDueSummaryTable({
     return `${title}${count}`;
   }, [t, isLoading, dueItems.length]);
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      layoutToggle: false,
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <Card className="p-4 md:p-5">
       {isError ? (
@@ -59,14 +69,7 @@ export default function DashboardZoneDueSummaryTable({
             data={isLoading ? [] : dueItems}
             columns={columns}
             setFilter={setFilter}
-            toolbar={{
-              title: toolbarTitle,
-              features: {
-                columns: true,
-                layoutToggle: false,
-                filter: toolbarOptions,
-              },
-            }}
+            toolbar={toolbar}
             isLoading={isLoading}
             isFetching={isFetching}
             queryKey="dashboard-zone-wise-top-invoice-due"

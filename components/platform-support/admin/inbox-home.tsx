@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { InboxAssigneeSelect } from "@/components/platform-support/admin/inbox-assignees";
 import { inboxColumns } from "@/components/platform-support/admin/inbox-column";
 import { inboxFilterSchema } from "@/components/platform-support/admin/inbox-filter";
@@ -133,6 +134,13 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
         ? format(list.dataUpdatedAt, "HH:mm:ss")
         : "";
 
+    const toolbar: DataTableToolbarConfig = {
+        title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
+        features: {
+            filter: { filter: inboxFilterSchema(kind) },
+        },
+    };
+
     return (
         <div className={supportPageClass} data-testid="platform-inbox">
             <SupportHeading title={t("platform_support.inbox.title")} subtitle={t("platform_support.redesign.inbox_intro")} icon={Inbox}
@@ -196,12 +204,7 @@ export default function InboxHome({ initialKind = "issue" }: { initialKind?: str
                         isLoading={list.isLoading && displayed.length === 0}
                         isFetching={list.isFetching}
                         setFilter={setFilter}
-                        toolbar={{
-                            title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
-                            features: {
-                                filter: { filter: inboxFilterSchema(kind) },
-                            },
-                        }}
+                        toolbar={toolbar}
                     />
                 </div>
             )}

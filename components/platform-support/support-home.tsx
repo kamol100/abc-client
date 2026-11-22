@@ -6,6 +6,7 @@ import { Headset, MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { supportColumns } from "@/components/platform-support/support-column";
 import { supportFilterSchema } from "@/components/platform-support/support-form-schema";
 import { SupportComposer } from "@/components/platform-support/support-composer";
@@ -137,6 +138,13 @@ export default function SupportHome({
         return thread ? [thread] : [];
     });
 
+    const toolbar: DataTableToolbarConfig = {
+        title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
+        features: {
+            filter: { filter: supportFilterSchema(activeScope, kind) },
+        },
+    };
+
     return (
         <div className={supportPageClass}>
             <SupportHeading title={t("platform_support.title")} subtitle={t("platform_support.redesign.requests_intro")} icon={Headset}
@@ -195,12 +203,7 @@ export default function SupportHome({
                 isLoading={list.isLoading}
                 isFetching={list.isFetching}
                 setFilter={setFilter}
-                toolbar={{
-                    title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
-                    features: {
-                        filter: { filter: supportFilterSchema(activeScope, kind) },
-                    },
-                }}
+                toolbar={toolbar}
             /></div>}
         </div>
     );

@@ -2,6 +2,7 @@
 
 import { useFetch } from "@/app/actions";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import useApiQuery, {
   PaginatedApiResponse,
 } from "@/hooks/use-api-query";
@@ -154,17 +155,19 @@ export const ClientWalletTable: FC = () => {
     ? `${t("wallet.client_wallet_title")} (${pagination.total})`
     : t("wallet.client_wallet_title");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+    },
+  };
+
   return (
     <DataTable
       data={rows}
       setFilter={setFilter}
       columns={ClientWalletColumns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}

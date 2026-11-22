@@ -3,6 +3,7 @@
 import { FC } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { TagColumns } from "./tag-column";
 import TagForm from "./tag-form";
 import { TagRow } from "./tag-type";
@@ -24,17 +25,19 @@ const TagTable: FC = () => {
         ? `${t("tag.title_plural")} (${pagination.total})`
         : t("tag.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: TagForm,
+        },
+    };
+
     return (
         <DataTable
             data={tags}
             columns={TagColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: TagForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

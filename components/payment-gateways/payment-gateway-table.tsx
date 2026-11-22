@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePermissions } from "@/context/app-provider";
 import type { PaymentGatewayRow } from "./payment-gateway-type";
 import { getPaymentGatewayColumns } from "./payment-gateway-column";
@@ -38,18 +39,20 @@ const PaymentGatewayTable: FC = () => {
     ? t("payment_gateway.title_plural_count", { count: pagination.total })
     : t("payment_gateway.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      add: hasPermission("payment-gateways.create") ? PaymentGatewayForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={gateways}
       columns={columns}
       setFilter={setFilter}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          add: hasPermission("payment-gateways.create") ? PaymentGatewayForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

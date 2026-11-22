@@ -6,6 +6,7 @@ import { CloudDownload, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import Card from "@/components/card";
 import MyButton from "@/components/my-button";
@@ -345,6 +346,13 @@ export default function ClientTrafficReport() {
     );
   }
 
+  const toolbar: DataTableToolbarConfig = {
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <div className="space-y-4">
       <h1 className="text-lg font-semibold text-foreground">{t("traffic_report.title")}</h1>
@@ -353,12 +361,7 @@ export default function ClientTrafficReport() {
       <DataTable
         data={rows}
         columns={columns}
-        toolbar={{
-          features: {
-            columns: true,
-            filter: toolbarOptions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

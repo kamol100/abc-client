@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Landmark } from "lucide-react";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import FundFilterSchema from "@/components/funds/fund-filter-schema";
 import FundForm from "@/components/funds/fund-form";
 import { getFundColumns } from "@/components/funds/fund-column";
@@ -74,6 +75,29 @@ const FundTable: FC<FundTableProps> = ({
 
   const columns = useMemo(() => getFundColumns(() => pagination), [pagination]);
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    center: [
+      {
+        key: "balance",
+        node: (
+          <SummaryChip
+            icon={Landmark}
+            label="fund.balance.label"
+            amount={toNumber(totalBalance)}
+            isLoading={isLoading}
+            currency="BDT"
+          />
+        ),
+      },
+    ],
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+      add: showCreateAction ? FundForm : undefined,
+    },
+  };
+
   return (
     <div className="space-y-4">
       {isError && (
@@ -86,28 +110,7 @@ const FundTable: FC<FundTableProps> = ({
         data={funds}
         columns={columns}
         setFilter={setFilter}
-        toolbar={{
-          title: toolbarTitle,
-          center: [
-            {
-              key: "balance",
-              node: (
-                <SummaryChip
-                  icon={Landmark}
-                  label="fund.balance.label"
-                  amount={toNumber(totalBalance)}
-                  isLoading={isLoading}
-                  currency="BDT"
-                />
-              ),
-            },
-          ],
-          features: {
-            columns: true,
-            filter: toolbarOptions,
-            add: showCreateAction ? FundForm : undefined,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}

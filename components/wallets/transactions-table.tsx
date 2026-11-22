@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { TransactionsColumns } from "@/components/wallets/transactions-column";
 import {
   WalletTransactionRow,
@@ -50,17 +51,19 @@ export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId }) => {
     ? `${t("wallet.title_plural")} (${pagination.total})`
     : t("wallet.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+    },
+  };
+
   return (
     <DataTable
       data={rows}
       setFilter={setFilter}
       columns={TransactionsColumns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

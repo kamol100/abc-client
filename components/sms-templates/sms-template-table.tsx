@@ -4,6 +4,7 @@ import { Import } from "lucide-react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import MyButton from "@/components/my-button";
 import SmsTemplateForm from "@/components/sms-templates/sms-template-form";
 import { useSmsTemplateColumns } from "@/components/sms-templates/sms-template-column";
@@ -40,33 +41,35 @@ const SmsTemplateTable: FC = () => {
     ? `${t("sms_template.title_plural")} (${pagination.total})`
     : t("sms_template.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    end: [
+      { key: "actions", node: canCreate ? (
+          <MyButton
+            type="button"
+            size="default"
+            variant="outline"
+            icon={false}
+            loading={isImporting}
+            disabled={isImporting}
+            onClick={() => importTemplates({ message: "import" })}
+          >
+            <Import aria-hidden />
+            {t("sms_template.import")}
+          </MyButton>
+        ) : undefined },
+    ],
+    features: {
+      columns: true,
+      add: canCreate ? SmsTemplateForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={smsTemplates}
       columns={columns}
-      toolbar={{
-        title: toolbarTitle,
-        end: [
-          { key: "actions", node: canCreate ? (
-              <MyButton
-                type="button"
-                size="default"
-                variant="outline"
-                icon={false}
-                loading={isImporting}
-                disabled={isImporting}
-                onClick={() => importTemplates({ message: "import" })}
-              >
-                <Import aria-hidden />
-                {t("sms_template.import")}
-              </MyButton>
-            ) : undefined },
-        ],
-        features: {
-          columns: true,
-          add: canCreate ? SmsTemplateForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

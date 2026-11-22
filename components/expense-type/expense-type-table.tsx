@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { ExpenseTypeColumns } from "./expense-type-column";
 import ExpenseTypeForm from "./expense-type-form";
 import { ExpenseTypeRow } from "./expense-type-type";
@@ -33,18 +34,20 @@ const ExpenseTypeTable: FC = () => {
         ? `${t("expense_type.title_plural")} (${pagination.total})`
         : t("expense_type.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: ExpenseTypeForm,
+        },
+    };
+
     return (
         <DataTable
             data={expenseTypes}
             setFilter={setFilter}
             columns={ExpenseTypeColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: ExpenseTypeForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { MyButton } from "@/components/my-button";
 import { getNotificationColumns } from "@/components/notifications/notification-column";
 import type { NotificationRow } from "@/components/notifications/notification-catalog";
@@ -47,6 +48,16 @@ export function NotificationTable() {
         []
     );
 
+    const toolbar: DataTableToolbarConfig = {
+        title: pagination?.total
+            ? `${t("notifications.title")} (${pagination.total})`
+            : t("notifications.title"),
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+        },
+    };
+
     return (
         <div className="flex flex-col gap-3">
             <div className="flex justify-end">
@@ -61,15 +72,7 @@ export function NotificationTable() {
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toolbar={{
-                    title: pagination?.total
-                        ? `${t("notifications.title")} (${pagination.total})`
-                        : t("notifications.title"),
-                    features: {
-                        columns: true,
-                        filter: toolbarOptions,
-                    },
-                }}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading || isFetching}

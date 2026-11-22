@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { useSidebar } from "@/components/ui/sidebar";
 import { StaffColumns } from "./staff-column";
 import { StaffRow } from "./staff-type";
@@ -45,18 +46,20 @@ const StaffTable: FC = () => {
     </Link>
   );
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      add: FormLink,
+    },
+  };
+
   return (
     <DataTable
       data={staffs}
       setFilter={setFilter}
       columns={StaffColumns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          add: FormLink,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

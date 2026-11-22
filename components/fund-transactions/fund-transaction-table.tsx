@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import FundTransactionForm from "@/components/fund-transactions/fund-transaction-form";
 import FundTransactionFilterSchema from "@/components/fund-transactions/fund-transaction-filter-schema";
 import { getFundTransactionColumns } from "@/components/fund-transactions/fund-transaction-column";
@@ -93,19 +94,21 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
     return AddTransaction;
   }, [fund?.balance, fund?.id, fund?.name, hasPermission, hideCreateAction, queryKey]);
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+      add: CreateAction,
+    },
+  };
+
   return (
     <DataTable
       data={transactions}
       columns={columns}
       setFilter={setFilter}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          filter: toolbarOptions,
-          add: CreateAction,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}

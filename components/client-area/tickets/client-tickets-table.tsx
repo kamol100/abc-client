@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { TicketRow } from "@/components/tickets/ticket-type";
 import { useClientTicketColumns } from "./client-ticket-columns";
 import ClientTicketFilterSchema from "./client-ticket-filter-schema";
@@ -40,17 +41,19 @@ const ClientTicketsTable: FC = () => {
     ? `${t("ticket.title_plural")} (${pagination.total})`
     : t("ticket.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      filter: toolbarOptions,
+      add: ClientTicketForm,
+    },
+  };
+
   return (
     <DataTable
       data={tickets}
       columns={columns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          filter: toolbarOptions,
-          add: ClientTicketForm,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading || isFetching}

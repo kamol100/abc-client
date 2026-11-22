@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePermissions } from "@/context/app-provider";
 import { useTjBoxColumns } from "@/components/tj-box/tj-box-column";
 import TjBoxFilterSchema from "@/components/tj-box/tj-box-filter-schema";
@@ -42,19 +43,21 @@ const TjBoxTable: FC = () => {
         ? `${t("tj_box.title_plural")} (${pagination.total})`
         : t("tj_box.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: hasPermission("tj-boxes.create") ? TjBoxForm : undefined,
+        },
+    };
+
     return (
         <DataTable
             data={tjBoxes}
             setFilter={setFilter}
             columns={columns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                    add: hasPermission("tj-boxes.create") ? TjBoxForm : undefined,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

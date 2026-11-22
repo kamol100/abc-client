@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { UnitTypeColumns } from "./unit-type-column";
 import UnitTypeForm from "./unit-type-form";
 import { UnitTypeRow } from "./unit-type-type";
@@ -33,18 +34,20 @@ const UnitTypeTable: FC = () => {
         ? `${t("unit_type.title_plural")} (${pagination.total})`
         : t("unit_type.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: UnitTypeForm,
+        },
+    };
+
     return (
         <DataTable
             data={unitTypes}
             setFilter={setFilter}
             columns={UnitTypeColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: UnitTypeForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

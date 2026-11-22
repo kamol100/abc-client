@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import ClientInvoiceFilterSchema from "@/components/invoices/client-invoice-filter-schema";
 import { clientInvoiceColumns } from "@/components/invoices/client-invoice-columns";
 import { clientInvoiceQueryParams } from "@/components/invoices/client-invoice-params";
@@ -59,6 +60,14 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
         </MyButton>
     );
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            filter: toolbarOptions,
+            add: BackButton,
+        },
+    };
+
     return (
         <div className="space-y-4">
             {(isLoading || reports) && (
@@ -72,13 +81,7 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
                 isLoading={isLoading}
                 isFetching={isFetching}
                 setFilter={(value) => setFilter(value)}
-                toolbar={{
-                    title: toolbarTitle,
-                    features: {
-                        filter: toolbarOptions,
-                        add: BackButton,
-                    },
-                }}
+                toolbar={toolbar}
                 queryKey="invoices"
             />
         </div>

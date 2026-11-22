@@ -4,6 +4,7 @@ import { FC, Suspense, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import InvoiceReports from "@/components/invoices/invoice-reports";
 import { InvoiceListApiResponse } from "@/components/invoices/invoice-type";
 import { useClientInvoiceColumns } from "@/components/client-area/invoices/client-invoice-columns";
@@ -42,6 +43,13 @@ const ClientInvoicesTable: FC = () => {
     ? `${t("invoice.title_plural")} (${pagination.total})`
     : t("invoice.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <div className="space-y-4">
       <Suspense fallback={null}>
@@ -51,12 +59,7 @@ const ClientInvoicesTable: FC = () => {
       <DataTable
         data={invoices}
         columns={columns}
-        toolbar={{
-          title: toolbarTitle,
-          features: {
-            filter: toolbarOptions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading || isFetching}

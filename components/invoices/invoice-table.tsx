@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import MyButton from "@/components/my-button";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -87,6 +88,23 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
     );
 
 
+    const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
+        title: toolbarTitle,
+        center: reportsToolbar
+            ? [{ key: "totals", node: <InvoiceReports reports={reports} isLoading={isLoading} layout="toolbar" /> }]
+            : undefined,
+        end: [
+            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="invoice_prefix" /> },
+        ],
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: hasPermission("invoices.create") && showCreateAction
+                ? CreateButton
+                : undefined,
+        },
+    } : false;
+
     return (
         <div className="space-y-4">
             {/* Without the toolbar (client view), the totals sit above the table. */}
@@ -96,22 +114,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 data={invoices}
                 setFilter={setFilter}
                 columns={columns}
-                toolbar={tableToolBar ? {
-                    title: toolbarTitle,
-                    center: reportsToolbar
-                        ? [{ key: "totals", node: <InvoiceReports reports={reports} isLoading={isLoading} layout="toolbar" /> }]
-                        : undefined,
-                    end: [
-                        { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="invoice_prefix" /> },
-                    ],
-                    features: {
-                        columns: true,
-                        filter: toolbarOptions,
-                        add: hasPermission("invoices.create") && showCreateAction
-                            ? CreateButton
-                            : undefined,
-                    },
-                } : false}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}

@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { NetworkColumns } from "./network-column";
@@ -38,19 +39,21 @@ const NetworkTable: FC = () => {
     ? `${t("network.title_plural")} (${pagination.total})`
     : t("network.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: { filter: NetworkFilterSchema() },
+      add: canCreate ? NetworkForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={networks}
       setFilter={setFilter}
       columns={NetworkColumns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          filter: { filter: NetworkFilterSchema() },
-          add: canCreate ? NetworkForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

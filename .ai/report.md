@@ -1329,3 +1329,19 @@ No line-ending changes (41 files checked). Not committed.
   - `/funds` and `/payments` look the same;
   - no nesting or hydration console errors;
   - `scripts/ai/typecheck` passes.
+
+## List tables: toolbar config as a typed const
+
+- Refactor only, no behaviour change. Every `DataTable` toolbar written inline, `toolbar={{ ... }}` or `toolbar={flag ? { ... } : false}`, is now a `const toolbar: DataTableToolbarConfig` (or `DataTableToolbarConfig | false`) declared right before the component's `return`, with `toolbar={toolbar}` on the table. This matches `client-table.tsx`.
+  - 63 files, 64 toolbars (`help-management.tsx` has two, in separate components).
+  - The `import type { DataTableToolbarConfig }` line is added after the DataTable import.
+  - The config text is unchanged, only moved and re-indented. CRLF and LF are kept per file.
+  - No inline `toolbar={{` remains; the rest are `toolbar={false}`.
+- Done with a script: for each file, find the expression's matching brace, then move it before the nearest preceding `return (`. The typecheck confirms every `toolbar` is in scope where it is used.
+- Checked:
+  - `scripts/ai/typecheck` passes;
+  - `scripts/ai/test`: 849 passed, same 20 baseline failures;
+  - browser at 1440px on 35 list pages (clients, invoices, payments, expenses, funds, fund transactions, tickets, products, zones, sub zones, networks, client and reseller packages, staffs, resellers, OLTs, ONUs, devices, TJ boxes, MikroTik Sync, vendors, tags, roles, activity logs, SMS templates, expense and invoice types, my wallets, salaries, archived clients, telegram, reports/payments):
+    - each returns 200 and renders its toolbar title;
+    - the filter row opens where the page has one;
+    - no page errors.

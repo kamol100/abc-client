@@ -10,6 +10,7 @@ import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import MyButton from "@/components/my-button";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import MyTooltip from "@/components/my-tooltip";
@@ -256,6 +257,17 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
     if (!hasPermission(`products-${mode}.report`)) return <ProductFeedback denied />;
     if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+            add: showCreateAction && hasPermission(createPermission)
+                ? CreateAction
+                : undefined,
+        },
+    };
+
     return (
         <div className="space-y-4">
             <ProductBackgroundError failed={isError} retry={refetch} />
@@ -276,16 +288,7 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toolbar={{
-                    title: toolbarTitle,
-                    features: {
-                        columns: true,
-                        filter: toolbarOptions,
-                        add: showCreateAction && hasPermission(createPermission)
-                            ? CreateAction
-                            : undefined,
-                    },
-                }}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}

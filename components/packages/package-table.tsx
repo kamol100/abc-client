@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import PackageForm from "@/components/packages/package-form";
 import { usePackageColumns } from "@/components/packages/package-column";
 import {
@@ -59,18 +60,20 @@ const PackageTable: FC<Props> = ({ packageType = "client" }) => {
     <PackageForm mode="create" api="/packages" packageType={packageType} />
   );
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      add: hasPermission("packages.create") ? FormComponent : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={packages}
       setFilter={setFilter}
       columns={columns}
-      toolbar={{
-        title: toolbarTitle,
-        features: {
-          columns: true,
-          add: hasPermission("packages.create") ? FormComponent : undefined,
-        },
-      }}
+      toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}

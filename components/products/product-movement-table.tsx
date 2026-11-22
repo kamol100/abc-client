@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import MyButton from "@/components/my-button";
 import ProductReportsSummary from "@/components/products/product-reports-summary";
 import ProductMovementFilterSchema, {
@@ -74,6 +75,14 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
     if (!allowed) return <ProductFeedback denied />;
     if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+        },
+    };
+
     return (
         <div className="space-y-4">
             <ProductBackgroundError failed={isError} retry={refetch} />
@@ -101,13 +110,7 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
                 data={rows}
                 setFilter={setFilter}
                 columns={columns}
-                toolbar={{
-                    title: toolbarTitle,
-                    features: {
-                        columns: true,
-                        filter: toolbarOptions,
-                    },
-                }}
+                toolbar={toolbar}
                 pagination={pagination}
                 setCurrentPage={setCurrentPage}
                 isLoading={isLoading}

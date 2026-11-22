@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { CompanySubscriptionColumns } from "@/components/subscription/company-subscription-column";
 import CompanySubscriptionForm from "@/components/subscription/company-subscription-form";
 import { CompanySubscriptionRow } from "@/components/subscription/company-subscription-type";
@@ -16,6 +17,13 @@ export default function CompanySubscriptionTable() {
     url: "company-subscriptions",
   });
 
+  const toolbar: DataTableToolbarConfig = {
+    title: t("subscription.company.title"),
+    features: {
+      add: hasPermission("company-subscriptions.create") ? CompanySubscriptionForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={data?.data?.data ?? []}
@@ -24,12 +32,7 @@ export default function CompanySubscriptionTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      toolbar={{
-        title: t("subscription.company.title"),
-        features: {
-          add: hasPermission("company-subscriptions.create") ? CompanySubscriptionForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
     />
   );
 }

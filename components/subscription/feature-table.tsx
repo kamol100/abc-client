@@ -1,6 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { FeatureColumns } from "@/components/subscription/feature-column";
 import FeatureForm from "@/components/subscription/feature-form";
 import { FeatureRow } from "@/components/subscription/feature-type";
@@ -16,6 +17,13 @@ export default function FeatureTable() {
     url: "features",
   });
 
+  const toolbar: DataTableToolbarConfig = {
+    title: t("subscription.feature.title"),
+    features: {
+      add: hasPermission("features.create") ? FeatureForm : undefined,
+    },
+  };
+
   return (
     <DataTable
       data={data?.data?.data ?? []}
@@ -24,12 +32,7 @@ export default function FeatureTable() {
       setCurrentPage={setCurrentPage}
       isLoading={isLoading}
       isFetching={isFetching}
-      toolbar={{
-        title: t("subscription.feature.title"),
-        features: {
-          add: hasPermission("features.create") ? FeatureForm : undefined,
-        },
-      }}
+      toolbar={toolbar}
     />
   );
 }

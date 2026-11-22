@@ -4,6 +4,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { getCommunicationQueueColumns } from "./communication-queue-column";
 import { communicationQueueFilterSchema } from "./communication-queue-filter-schema";
 import { CommunicationQueueResendAllDialog } from "./communication-queue-resend-all-dialog";
@@ -58,6 +59,14 @@ const CommunicationQueueTable: FC = () => {
 
   const canResendAll = hasPermission("communication-queue.resend-all");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      columns: true,
+      filter: toolbarOptions,
+    },
+  };
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -70,13 +79,7 @@ const CommunicationQueueTable: FC = () => {
         data={items}
         columns={columns}
         setFilter={setFilter}
-        toolbar={{
-          title: toolbarTitle,
-          features: {
-            columns: true,
-            filter: toolbarOptions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         isLoading={isLoading}

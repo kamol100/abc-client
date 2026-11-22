@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useMemo, useState } from "react";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useSetting } from "@/context/app-provider";
 import { getActivityLogColumns } from "./activity-log-column";
@@ -64,18 +65,20 @@ const ActivityLogTable: FC = () => {
         []
     );
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+        },
+    };
+
     return (
         <DataTable
             data={activities}
             setFilter={setFilter}
             columns={columns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading || isFetching}

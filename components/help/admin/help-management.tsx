@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import FormTrigger from "@/components/form-trigger";
@@ -135,6 +136,12 @@ export function HelpArticlesTable() {
   if (!canReadArticles) return <p role="alert">{t("platform_support.errors.forbidden")}</p>;
 
   const title = t("help.management.articles");
+  const toolbar: DataTableToolbarConfig = {
+    title: pagination?.total ? `${title} (${pagination.total})` : title,
+    end: [{ key: "article-dialog", node: <ArticleDialog {...categoryProps} />, show: canAddArticles }],
+    features: { columns: true },
+  };
+
   return (
     <>
       {(articles.isError || categories.isError) && <p role="alert">{t("help.error")}</p>}
@@ -142,11 +149,7 @@ export function HelpArticlesTable() {
         pagination={pagination} setCurrentPage={articles.setCurrentPage}
         isLoading={articles.isLoading} isFetching={articles.isFetching}
         queryKey={ARTICLE_URL}
-        toolbar={{
-          title: pagination?.total ? `${title} (${pagination.total})` : title,
-          end: [{ key: "article-dialog", node: <ArticleDialog {...categoryProps} />, show: canAddArticles }],
-          features: { columns: true },
-        }} />
+        toolbar={toolbar} />
     </>
   );
 }
@@ -169,18 +172,20 @@ export function HelpCategoriesTable() {
   if (!canRead) return <p role="alert">{t("platform_support.errors.forbidden")}</p>;
 
   const title = t("help.management.categories");
+  const toolbar: DataTableToolbarConfig = {
+    title: rows.length ? `${title} (${rows.length})` : title,
+    features: {
+      columns: true,
+      add: hasPermission("platform-help-admin.categories.create") ? CategoryDialog : undefined,
+    },
+  };
+
   return (
     <>
       {categories.isError && <p role="alert">{t("help.error")}</p>}
       <DataTable columns={columns} data={rows} isLoading={categories.isLoading} isFetching={categories.isFetching}
         queryKey={CATEGORY_URL}
-        toolbar={{
-          title: rows.length ? `${title} (${rows.length})` : title,
-          features: {
-            columns: true,
-            add: hasPermission("platform-help-admin.categories.create") ? CategoryDialog : undefined,
-          },
-        }} />
+        toolbar={toolbar} />
     </>
   );
 }

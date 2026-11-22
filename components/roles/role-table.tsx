@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { RoleColumns } from "./role-column";
 import RoleForm from "./role-form";
 import { RoleRow } from "./role-type";
@@ -35,18 +36,20 @@ const RoleTable: FC = () => {
         ? `${t("role.title_plural")} (${pagination.total})`
         : t("role.title_plural");
 
+    const toolbar: DataTableToolbarConfig = {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            add: RoleForm,
+        },
+    };
+
     return (
         <DataTable
             data={roles}
             setFilter={setFilter}
             columns={RoleColumns}
-            toolbar={{
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    add: RoleForm,
-                },
-            }}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             isLoading={isLoading}

@@ -3,6 +3,7 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { useMikrotikPackageColumns } from "@/components/mikrotik-packages/mikrotik-package-column";
 import MikrotikPackageFilterSchema from "@/components/mikrotik-packages/mikrotik-package-filter-schema";
 import { MikrotikPackageRow } from "@/components/mikrotik-packages/mikrotik-package-type";
@@ -35,19 +36,21 @@ const MikrotikPackagesTable: FC = () => {
   const columns = useMikrotikPackageColumns();
   const toolbarTitle = t("mikrotik_package.title_plural");
 
+  const toolbar: DataTableToolbarConfig = {
+    title: toolbarTitle,
+    features: {
+      filter: { filter: MikrotikPackageFilterSchema(), showFilter: true },
+      add: MikrotikPackagesToolbarActions,
+    },
+  };
+
   return (
     <div className="space-y-3">
       <DataTable
         data={packages}
         setFilter={setFilter}
         columns={columns}
-        toolbar={{
-          title: toolbarTitle,
-          features: {
-            filter: { filter: MikrotikPackageFilterSchema(), showFilter: true },
-            add: MikrotikPackagesToolbarActions,
-          },
-        }}
+        toolbar={toolbar}
         pagination={undefined}
         isLoading={isLoading}
         isFetching={isFetching}

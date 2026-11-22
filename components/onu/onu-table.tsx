@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
+import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { useSetting } from "@/context/app-provider";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useOnuColumns } from "./onu-column";
@@ -45,18 +46,20 @@ export default function OnuTable({ filterValue, tableToolBar = true, showOlt = t
     const toolbarTitle = pagination?.total ? `${t("onu.title_plural")} (${pagination.total})` : t("onu.title_plural");
     const toolbarOptions = useMemo(() => ({ filter: OnuFilterSchema() }), []);
 
+    const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
+        title: toolbarTitle,
+        features: {
+            columns: true,
+            filter: toolbarOptions,
+        },
+    } : false;
+
     return (
         <DataTable
             data={onus}
             setFilter={setFilter}
             columns={columns}
-            toolbar={tableToolBar ? {
-                title: toolbarTitle,
-                features: {
-                    columns: true,
-                    filter: toolbarOptions,
-                },
-            } : false}
+            toolbar={toolbar}
             pagination={pagination}
             setCurrentPage={setCurrentPage}
             // Not `isLoading || isFetching`: a refetch must not swap the rows for a skeleton (open row dialogs would close).
