@@ -6,8 +6,10 @@ import type { DataTableToolbarOptions } from "@/components/data-table/data-table
  * - inline: stays with its slot (start/center rows, or the actions row for end)
  * - row: gets its own full-width, centered row
  * - hidden: not rendered on mobile
+ * - actions: a start/center item that joins the right-hand actions row,
+ *   before the end items
  */
-export type ToolbarItemMobile = "inline" | "row" | "hidden";
+export type ToolbarItemMobile = "inline" | "row" | "hidden" | "actions";
 
 /** Page content placed in a slot. Array order is render order. */
 export type ToolbarItem = {

@@ -1226,3 +1226,12 @@ No line-ending changes (41 files checked). Not committed.
   - `scripts/ai/typecheck` passes.
 - The load button label (`mikrotik_sync.sync.actions.load`) changed from "Import" to "MikroTik Import" (bn: "মাইক্রোটিক ইমপোর্ট"). The same key is the title of its dialog. Only this button uses the key; `re_sync` has its own.
 - The bulk button label (`mikrotik_sync.actions.import_selected`) changed from "Import selected ({{count}})" to "Client Import ({{count}})" (bn: "ক্লায়েন্ট ইমপোর্ট ({{count}})"). The count is unchanged.
+
+## MikroTik Sync: phone toolbar, buttons in the actions row
+
+- New `ToolbarItemMobile` value `"actions"` (in `toolbar-config.ts`): on mobile, a start or center item with this value goes into the right-hand actions row, before the end items, instead of getting its own centred row. Desktop placement is unchanged, and no other table uses it.
+- `mikrotik-sync-table.tsx`: MikroTik Import and All Sync use `mobile: "actions"`.
+- Checked:
+  - browser at 390 and 360px: page size on the left; MikroTik Import, All Sync, View, layout and Filter in one row, all 36×36 at the same height. With a row selected, Client Import (1) joins the row, and the page does not scroll sideways at 360px.
+  - browser at 1440px: unchanged, both buttons stay after the title.
+  - `scripts/ai/typecheck` passes.

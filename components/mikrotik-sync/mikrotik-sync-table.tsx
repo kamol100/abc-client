@@ -145,8 +145,8 @@ const MikrotikSyncTable: FC = () => {
         toolbar={{
           title: toolbarTitle,
           start: [
-            { key: "load", show: canLoad, node: <MikrotikSyncActionButton action="load" /> },
-            { key: "resolve", show: canResolve, node: <MikrotikSyncActionButton action="resolve" /> },
+            { key: "load", show: canLoad, mobile: "actions", node: <MikrotikSyncActionButton action="load" /> },
+            { key: "resolve", show: canResolve, mobile: "actions", node: <MikrotikSyncActionButton action="resolve" /> },
             { key: "info", node: selectAllActive ? (
               <MyBadge type="error" variant="soft" size="md" className="shrink-0">
                 {t("mikrotik_sync.messages.select_all_pages", {

@@ -96,14 +96,17 @@ export function DataTableToolbar<TData>({
   const start = visibleItems(config.start, isMobile);
   const center = visibleItems(config.center, isMobile);
   const end = visibleItems(config.end, isMobile);
-  const inSlot = (items: ToolbarItem[]) => (isMobile ? items.filter((item) => item.mobile !== "row") : items);
+  const inSlot = (items: ToolbarItem[]) =>
+    isMobile ? items.filter((item) => item.mobile !== "row" && item.mobile !== "actions") : items;
+  // On mobile, start/center items marked "actions" join the actions row, before the end items.
+  const toActions = isMobile ? [...start, ...center].filter((item) => item.mobile === "actions") : [];
   const mobileRows = isMobile
     ? [...start, ...center, ...end].filter((item) => item.mobile === "row")
     : [];
 
   const startItems = inSlot(start);
   const centerItems = inSlot(center);
-  const endItems = inSlot(end);
+  const endItems = [...toActions, ...inSlot(end)];
   const showStart = hasToolbarStart(filter, config.title, startItems, isMobile, isFiltered);
 
   return (
