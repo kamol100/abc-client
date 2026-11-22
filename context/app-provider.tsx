@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type PropsWithChildren,
@@ -97,8 +98,8 @@ const DEFAULT_IMPERSONATION_STATE: ImpersonationState = {
   original_user_id: null,
 };
 
+/** Browser only: the state saved by setImpersonation. */
 function loadImpersonationState(): ImpersonationState {
-  if (typeof window === "undefined") return DEFAULT_IMPERSONATION_STATE;
   try {
     const stored = localStorage.getItem(IMPERSONATION_STATE_KEY);
     if (stored) {
@@ -148,9 +149,15 @@ export default function AppProvider({
   const [subscription, setSubscription] = useState<SubscriptionSummary | null>(
     initialData.subscription ?? null
   );
+  // Start from the default, the same as the server render, so hydration
+  // matches. The saved state is applied right after hydration, before the
+  // first paint, so the impersonation badge does not flash.
   const [impersonation, setImpersonationRaw] = useState<ImpersonationState>(
-    loadImpersonationState
+    DEFAULT_IMPERSONATION_STATE
   );
+  useLayoutEffect(() => {
+    setImpersonationRaw(loadImpersonationState());
+  }, []);
 
   // Wrap setImpersonation to persist to localStorage
   const setImpersonation: React.Dispatch<React.SetStateAction<ImpersonationState>> = useCallback(

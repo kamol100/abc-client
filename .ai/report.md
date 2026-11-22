@@ -1345,3 +1345,20 @@ No line-ending changes (41 files checked). Not committed.
     - each returns 200 and renders its toolbar title;
     - the filter row opens where the page has one;
     - no page errors.
+
+## Impersonation: hydration error and "Encountered a script tag" warning
+
+- Cause: `AppProvider` (`context/app-provider.tsx`) seeded the impersonation state from `localStorage` in the `useState` initializer.
+  - The server has no `localStorage`, so it rendered "not impersonating". The browser's first render said "impersonating". The sidebar header (orange ring and the "Impersonating" line in `app-sidebar.tsx`) therefore did not match.
+  - React threw "Hydration failed" and re-rendered the whole tree on the client, including the root layout's theme `<script>`. That client render is what logs "Encountered a script tag". The script itself is fine.
+- Fix: state starts at `DEFAULT_IMPERSONATION_STATE` (the same as the server), and a `useLayoutEffect` loads the saved state right after hydration, before the first paint, so the badge does not flash. `loadImpersonationState` no longer needs its `window` guard, because it only runs in the browser. Setting, persisting and clearing the state are unchanged. The client dashboard layout uses the same provider, so it is fixed too.
+- Reproduced before the fix in the browser:
+  1. log in as vpc;
+  2. `/staffs`, then "Login as this staff member", then Login;
+  3. `/dashboard` logged the hydration error and the script-tag warning.
+- Checked after the fix, same flow:
+  - no console errors on `/dashboard`, after a reload, or on `/clients`;
+  - the badge and ring show while impersonating;
+  - "Exit Impersonation" returns to the normal account with no errors;
+  - `scripts/ai/typecheck` passes.
+- Side effect of testing: the impersonation was started 3 times from fresh browser sessions. Only the last run exited through the UI; the first two sessions were closed while still impersonating.
