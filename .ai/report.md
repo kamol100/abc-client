@@ -1393,3 +1393,20 @@ No line-ending changes (41 files checked). Not committed.
     - filtering by staff could not be run until the column exists;
   - `scripts/ai/typecheck` passes;
   - `scripts/ai/test`: 848 passed, same 20 baseline failures.
+
+## Fund transactions filter: date range picker, "Transaction By" label
+
+- `fund-transaction-filter-schema.ts`:
+  - `created_at` is now a `dateRange` field (`closeOnSelectDate: false`, placeholder "Date"), the same picker as the invoice filter. One day sends `created_at=YYYY-MM-DD`; a range sends `YYYY-MM-DD,YYYY-MM-DD`. Before, it was free text.
+  - The staff dropdown placeholder is now "Transaction By" (`fund_transaction.transaction_by.label`).
+  - The now-unused placeholder keys `fund_transaction.created_at.placeholder` and `fund_transaction.transaction_by.placeholder` were removed from en and bn.
+- Needs the isp-backend fix to the `created_at` filter. Before it, a single day matched only midnight and a range dropped the end day after 00:00.
+- Checked, browser `/fund-transactions` at 1440px on the migrated local DB:
+  - a single day, 23 Nov, gives 2 rows;
+  - the range 19–23 Nov gives 3 rows (19 Nov 16:37 and two on 23 Nov 02:24);
+  - Transaction By = vp gives 2 rows, and the column shows "vp" for the new rows;
+  - no page errors.
+- Existing, not changed:
+  - Shared `DatePicker`: after a date is applied, the first click on the field does not open the calendar; a second click does. Same on `/invoices`.
+  - `tests/unit/form/date-picker-range.test.tsx` (part of the 20 baseline failures) hardcodes October 2026 and fails now that the calendar opens on November; it does not test the range logic.
+- `scripts/ai/typecheck` passes; `scripts/ai/test`: 848 passed, same 20 baseline failures.

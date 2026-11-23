@@ -5,10 +5,10 @@ export const FundTransactionFilterSchema = (
 ): FieldConfig[] => {
   const filters: FieldConfig[] = [
     {
-      type: "text",
+      type: "dateRange",
       name: "created_at",
-      placeholder: "fund_transaction.created_at.placeholder",
-      watchForFilter: true,
+      placeholder: "fund_transaction.created_at.label",
+      closeOnSelectDate: false,
     },
     {
       type: "dropdown",
@@ -42,7 +42,7 @@ export const FundTransactionFilterSchema = (
     {
       type: "dropdown",
       name: "transaction_by",
-      placeholder: "fund_transaction.transaction_by.placeholder",
+      placeholder: "fund_transaction.transaction_by.label",
       api: "/dropdown-staffs",
       valueMapping: { idKey: "id", labelKey: "name" },
       isClearable: true,

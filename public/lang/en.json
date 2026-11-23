@@ -3852,8 +3852,7 @@
         "sl": "SL",
         "current_balance": "Current Balance",
         "created_at": {
-            "label": "Date",
-            "placeholder": "Search by date"
+            "label": "Date"
         },
         "fund": {
             "label": "Fund",
@@ -3883,8 +3882,7 @@
             }
         },
         "transaction_by": {
-            "label": "Transaction By",
-            "placeholder": "Select staff"
+            "label": "Transaction By"
         },
         "amount": {
             "label": "Amount",

@@ -3852,8 +3852,7 @@
         "sl": "ক্রম",
         "current_balance": "কারেন্ট ব্যালেন্স",
         "created_at": {
-            "label": "তারিখ",
-            "placeholder": "তারিখ দিয়ে সার্চ করুন"
+            "label": "তারিখ"
         },
         "fund": {
             "label": "ফান্ড",
@@ -3883,8 +3882,7 @@
             }
         },
         "transaction_by": {
-            "label": "লেনদেনকারী",
-            "placeholder": "স্টাফ সিলেক্ট করুন"
+            "label": "লেনদেনকারী"
         },
         "amount": {
             "label": "পরিমাণ",
