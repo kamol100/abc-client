@@ -1,3 +1,45 @@
+## Communication queue: toolbar Resend All / Stop All, inline Stop — 2026-11-23
+
+- The heading row with the text Resend All link above the table is removed.
+- The toolbar now has two icon buttons right after the Filter button: Resend All (refresh icon) and Stop All (stop icon), each with a tooltip.
+- The buttons stay after the Filter button when the filter row is open. For that, the shared toolbar got a new option, `ToolbarItem.onlyInFilterRow`: an `end` item that only renders in the open filter row. The same node is also passed as `features.add`, which is the slot after the filter button while the row is closed. No other table uses the option.
+- Both buttons open one shared dialog, `communication-queue-bulk-dialog.tsx`, which replaces `communication-queue-resend-all-dialog.tsx`. It keeps the same All / Custom client / Custom other / Invoice due / Invoice due reminder checkboxes and logic. Resend All works as before. Stop All posts to the new `/communication-queue/stop-all`.
+- Pending rows get an inline Stop button (`communication-queue-stop-button.tsx`) that stops at once, with a toast. Failed and stopped rows keep Resend.
+- Permissions: `communication-queue.stop` and `communication-queue.stop-all`.
+- New keys `communication_queue.stop`, `stop_all`, `stop_sms` and `stop_success` are in `en.json` and `bn.json`.
+- The e2e source-evidence list was updated for the renamed and new files.
+
+On `http://vp.isp.test/communication-queue` as vpc:
+- The heading block is gone.
+- Desktop and 390px: the toolbar ends with View, layout, Filter, Resend All.
+- With the filter open: Reset, Filter, Resend All.
+- The Resend All dialog shows the same five checkboxes.
+- No page errors.
+
+The Stop buttons were not seen in the browser. vpc does not have the new permissions until `php artisan update:permission` runs in isp-backend, and that was not run here.
+
+`scripts/ai/typecheck` passed. New toolbar test in `tests/unit/data-table/toolbar-filter-action.test.tsx`. `scripts/ai/test`: 860 passed, with the same 20 baseline failures.
+
+Toggle jump fix: the open filter row had a 4px top margin (`mt-1` in `FormFilter`) that the closed toolbar row does not, so the toolbar grew from 36px to 40px and the table moved 4px down and back. `FormFilter` has a new `flush` prop that drops that margin, and `ToolbarFilterRow` passes it. Standalone filters (maps, income/expense report) are unchanged. Measured at 1440px: on `/communication-queue` the table top stays at 129px with the filter open or closed (was 129 → 133). On `/fund-transactions`, `/expenses` and `/invoices` the open toolbar is 4px shorter than before; it still grows by the totals row and the two filter rows those pages show.
+
+After `update:permission` had been run locally, the page showed the Stop All button and inline Stop on pending rows, and a stopped row showed status Stop with "Force stopped by vp".
+
+## Communication queue: status badges with icons — 2026-11-23
+
+The Status column in `components/communication-queue/communication-queue-column.tsx` now shows a `Badge` with an icon instead of colored text. It uses the shared `theme-badge-*` colors:
+
+- Pending: warning, clock.
+- Processing: info, spinning loader (`motion-safe` only).
+- Completed and Sent: success, check.
+- Failed and Stop: danger, x / stop.
+- Unknown and any other value: muted, help icon.
+
+The local database also has `sent` rows, written by `TelegramTicketNotificationJob`. They used to show the raw key `communication_queue.status.options.sent`, so `sent` was added to `en.json` ("Sent") and `bn.json`. The status filter was left unchanged.
+
+On `http://vp.isp.test/communication-queue` as vpc at 1440px, light and dark: the Failed and Pending badges showed with their icons, and there were no page errors. In dark mode the red badge text is dim, because the dark `--destructive` token is 30.6% lightness. That token is shared by every `theme-badge-danger` badge (for example, Expense on Fund Transactions), so it was not changed here.
+
+`scripts/ai/typecheck` passed. No unit test covers this column.
+
 ## Fund transfer: Transaction By for bKash — 2026-11-23
 
 In Add Fund Transaction, choosing bKash under Fund Send By shows a new optional Transaction By dropdown right below it. The dropdown lists staff with a remaining bKash amount, from the new `GET /dropdown-bkash-staff-balances`. Picking a staff member shows "Total Amount: ৳x" under the list. An Amount above that total shows "Amount must be equal to or less than the Transaction By amount." under Amount and blocks the save. The same check also runs in the API. Leaving it empty keeps the old behaviour. The field hides and clears itself when the sender changes away from bKash or is cleared. The amount is re-checked when the staff changes or is cleared.

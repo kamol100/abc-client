@@ -7,7 +7,7 @@ import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import { getCommunicationQueueColumns } from "./communication-queue-column";
 import { communicationQueueFilterSchema } from "./communication-queue-filter-schema";
-import { CommunicationQueueResendAllDialog } from "./communication-queue-resend-all-dialog";
+import { CommunicationQueueBulkDialog } from "./communication-queue-bulk-dialog";
 import { usePermissions } from "@/context/app-provider";
 import type { CommunicationQueueRow } from "./communication-queue-type";
 
@@ -58,23 +58,29 @@ const CommunicationQueueTable: FC = () => {
   );
 
   const canResendAll = hasPermission("communication-queue.resend-all");
+  const canStopAll = hasPermission("communication-queue.stop-all");
+  const bulkActions =
+    canResendAll || canStopAll ? (
+      <>
+        {canResendAll && <CommunicationQueueBulkDialog action="resend" />}
+        {canStopAll && <CommunicationQueueBulkDialog action="stop" />}
+      </>
+    ) : null;
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    // The bulk buttons sit after the filter button: in `add` while the filter is
+    // closed, and in the open filter row (which replaces the actions row).
+    end: [{ key: "bulk-actions", onlyInFilterRow: true, node: bulkActions }],
     features: {
       columns: true,
       filter: toolbarOptions,
+      add: bulkActions,
     },
   };
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-xl font-semibold">
-          {t("communication_queue.title_plural")}
-        </h2>
-        {canResendAll && <CommunicationQueueResendAllDialog />}
-      </div>
       <DataTable
         data={items}
         columns={columns}

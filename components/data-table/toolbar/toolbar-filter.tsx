@@ -59,6 +59,7 @@ export function ToolbarFilterRow({
         setShowFilter={onOpenChange}
         resultCount={resultCount}
         endAction={endAction}
+        flush
       />
     </div>
   );

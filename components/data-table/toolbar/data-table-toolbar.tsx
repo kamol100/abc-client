@@ -130,7 +130,7 @@ export function DataTableToolbar<TData>({
       end={
         <ToolbarActions
           table={table}
-          items={endItems}
+          items={endItems.filter((item) => !item.onlyInFilterRow)}
           columns={features.columns ?? false}
           layoutToggle={features.layoutToggle ?? true}
           filter={filterControl}

@@ -869,6 +869,10 @@
         "resend": "Resend",
         "resend_all": "Resend All",
         "resend_sms": "Resend SMS",
+        "stop": "Stop",
+        "stop_all": "Stop All",
+        "stop_sms": "Stop SMS",
+        "stop_success": "SMS stopped successfully",
         "resend_success": "SMS resent successfully",
         "sms_to": {
             "label": "SMS To"
@@ -900,6 +904,7 @@
                 "pending": "Pending",
                 "stop": "Stop",
                 "failed": "Failed",
+                "sent": "Sent",
                 "completed": "Completed",
                 "processing": "Processing",
                 "unknown": "Unknown"

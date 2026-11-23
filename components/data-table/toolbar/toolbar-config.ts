@@ -24,6 +24,12 @@ export type ToolbarItem = {
    * false hides it while the filter is open (e.g. settings buttons).
    */
   inFilterRow?: boolean;
+  /**
+   * Desktop: an `end` item that shows only in the open filter row, after the filter
+   * button. Pair it with the same node in `features.add` to keep it after the
+   * filter button in both states. Default false.
+   */
+  onlyInFilterRow?: boolean;
 };
 
 export type ToolbarFilterFeature = DataTableToolbarOptions & {

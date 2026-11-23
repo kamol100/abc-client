@@ -3,10 +3,22 @@
 import { useEffect, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
+import {
+  CircleCheck,
+  CircleHelp,
+  CircleStop,
+  CircleX,
+  Clock,
+  LoaderCircle,
+  type LucideIcon,
+} from "lucide-react";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { Badge } from "@/components/ui/badge";
 import { usePermissions } from "@/context/app-provider";
 import { cellIndex } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 import { CommunicationQueueResendButton } from "./communication-queue-resend-button";
+import { CommunicationQueueStopButton } from "./communication-queue-stop-button";
 import type { CommunicationQueueRow } from "./communication-queue-type";
 
 const MESSAGE_MAX_LENGTH = 50;
@@ -227,25 +239,30 @@ function CommunicationQueueMessageCell({ message }: { message?: string | null })
   );
 }
 
+const STATUS_BADGES: Record<string, { icon: LucideIcon; className: string; iconClassName?: string }> = {
+  pending: { icon: Clock, className: "theme-badge-warning" },
+  processing: { icon: LoaderCircle, className: "theme-badge-info", iconClassName: "motion-safe:animate-spin" },
+  completed: { icon: CircleCheck, className: "theme-badge-success" },
+  sent: { icon: CircleCheck, className: "theme-badge-success" },
+  failed: { icon: CircleX, className: "theme-badge-danger" },
+  stop: { icon: CircleStop, className: "theme-badge-danger" },
+  unknown: { icon: CircleHelp, className: "theme-badge-muted" },
+};
+
 function CommunicationQueueStatusCell({
   status,
 }: {
   status?: string | null;
 }) {
   const { t } = useTranslation();
-  const key = status ?? "unknown";
-  const colorClass =
-    key === "stop" || key === "failed"
-      ? "text-red-600 dark:text-red-400"
-      : key === "completed"
-        ? "text-green-600 dark:text-green-400"
-        : key === "processing"
-          ? "text-blue-600 dark:text-blue-400"
-          : "text-muted-foreground";
+  const key = status && STATUS_BADGES[status] ? status : "unknown";
+  const { icon: Icon, className, iconClassName } = STATUS_BADGES[key];
+
   return (
-    <span className={`capitalize ${colorClass}`}>
+    <Badge variant="outline" className={cn("gap-1 whitespace-nowrap", className)}>
+      <Icon className={cn("size-3.5 shrink-0", iconClassName)} aria-hidden />
       {t(`communication_queue.status.options.${key}`)}
-    </span>
+    </Badge>
   );
 }
 
@@ -255,18 +272,21 @@ function CommunicationQueueActionsCell({
   item: CommunicationQueueRow;
 }) {
   const { hasPermission } = usePermissions();
-  const canResend = hasPermission("communication-queue.resend");
-  const isResendable =
-    item.status === "stop" || item.status === "failed";
+  const canResend =
+    hasPermission("communication-queue.resend") &&
+    (item.status === "stop" || item.status === "failed");
+  // Only SMS still waiting can be stopped; processing ones are already with the gateway.
+  const canStop = hasPermission("communication-queue.stop") && item.status === "pending";
   const itemId = typeof item.id === "number" ? String(item.id) : item.id;
 
-  if (!canResend || !isResendable) {
+  if (!canResend && !canStop) {
     return <span className="text-muted-foreground">—</span>;
   }
 
   return (
     <div className="flex items-center justify-end gap-2 mr-3">
-      <CommunicationQueueResendButton smsId={itemId} />
+      {canResend && <CommunicationQueueResendButton smsId={itemId} />}
+      {canStop && <CommunicationQueueStopButton smsId={itemId} />}
     </div>
   );
 }

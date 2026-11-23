@@ -87,4 +87,36 @@ describe("toolbar action while filtering", () => {
     expect(screen.getByPlaceholderText("any.placeholder")).toBeVisible();
     expect(screen.getByPlaceholderText("client.placeholder")).toBeVisible();
   });
+
+  it("keeps a filter-row-only item after the filter button, open or closed", async () => {
+    const user = userEvent.setup();
+    const bulk = <button type="button">Bulk action</button>;
+
+    render(
+      <TableLayoutProvider>
+        <DataTable
+          columns={columns}
+          data={[{ name: "client" }]}
+          setFilter={vi.fn()}
+          toolbar={{
+            end: [{ key: "bulk", onlyInFilterRow: true, node: bulk }],
+            features: { filter: { filter, filter_row: 2 }, add: bulk },
+          }}
+        />
+      </TableLayoutProvider>,
+    );
+
+    // Closed: only the `add` copy, placed after the filter button.
+    const closed = screen.getAllByRole("button", { name: "Bulk action" });
+    expect(closed).toHaveLength(1);
+    expect(filterButton().compareDocumentPosition(closed[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    await user.click(filterButton());
+
+    // Open: the filter-row copy, still after the filter button.
+    const open = screen.getAllByRole("button", { name: "Bulk action" });
+    expect(open).toHaveLength(1);
+    expect(open[0].closest("[data-filter-actions]")).not.toBeNull();
+    expect(filterButton().compareDocumentPosition(open[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });

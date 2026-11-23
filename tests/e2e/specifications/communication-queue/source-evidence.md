@@ -7,8 +7,9 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `app/(dashboard)/communication-queue/page.tsx`
 - `components/communication-queue/communication-queue-column.tsx`
 - `components/communication-queue/communication-queue-filter-schema.ts`
-- `components/communication-queue/communication-queue-resend-all-dialog.tsx`
+- `components/communication-queue/communication-queue-bulk-dialog.tsx`
 - `components/communication-queue/communication-queue-resend-button.tsx`
+- `components/communication-queue/communication-queue-stop-button.tsx`
 - `components/communication-queue/communication-queue-table.tsx`
 - `components/communication-queue/communication-queue-type.ts`
 
@@ -16,11 +17,15 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 
 - `communication-queue.resend`
 - `communication-queue.resend-all`
+- `communication-queue.stop`
+- `communication-queue.stop-all`
 
 ## Observed API templates (not validated endpoints)
 
 - `/communication-queue/${smsId}/resend`
 - `/communication-queue/resend-all`
+- `/communication-queue/${smsId}/stop`
+- `/communication-queue/stop-all`
 - `communication-queue`
 
 ## Observed form/config field names
@@ -35,6 +40,8 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - GET `/communication-queue` → `communication-queue.access`; `CommunicationQueueController::index`; `../isp-backend/routes/api.php:391`
 - POST `/communication-queue/{communicationQueue}/resend` → `communication-queue.resend`; `CommunicationQueueController::resend`; `../isp-backend/routes/api.php:392`
 - POST `/communication-queue/resend-all` → `communication-queue.resend-all`; `CommunicationQueueController::resendAll`; `../isp-backend/routes/api.php:393`
+- POST `/communication-queue/{communicationQueue}/stop` → `communication-queue.stop`; `CommunicationQueueController::stop`; `../isp-backend/routes/api.php`
+- POST `/communication-queue/stop-all` → `communication-queue.stop-all`; `CommunicationQueueController::stopAll`; `../isp-backend/routes/api.php`
 
 ## Backend contract files to review
 

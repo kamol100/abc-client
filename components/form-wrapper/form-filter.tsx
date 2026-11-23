@@ -42,6 +42,11 @@ type FormFilterProps = {
   resultCount?: number;
   /** Stays in the filter action row while the fields are open. */
   endAction?: ReactNode;
+  /**
+   * No top margin. The table toolbar uses it so the open filter row is exactly as
+   * tall as the closed toolbar and the table below does not jump.
+   */
+  flush?: boolean;
 };
 
 function FilterTextField({
@@ -130,6 +135,7 @@ const FormFilter = ({
   filterRows,
   resultCount,
   endAction,
+  flush = false,
 }: FormFilterProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(forceOpen);
@@ -227,9 +233,10 @@ const FormFilter = ({
     <div
       className={cn(
         "flex-none gap-3 md:flex lg:flex",
-        rowCount != null && "mt-1 h-auto min-w-0 items-start",
+        rowCount != null && "h-auto min-w-0 items-start",
+        rowCount != null && !flush && "mt-1",
         rowCount != null && fieldsOpen && "w-full",
-        className ?? (rowCount != null ? undefined : "mt-1 h-9 !ml-[1px]"),
+        className ?? (rowCount != null ? undefined : cn(!flush && "mt-1", "h-9 !ml-[1px]")),
       )}
     >
       {fieldsOpen && (
