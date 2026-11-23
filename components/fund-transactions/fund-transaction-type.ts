@@ -39,6 +39,10 @@ export const FundTransactionRowSchema = z
   })
   .passthrough();
 
+/** Compares in paisa so 500.1 vs 500.10 does not trip on float rounding. */
+const exceedsTransactionByAmount = (amount: number, limit: number | null | undefined): boolean =>
+  Math.round(amount * 100) > Math.round((limit ?? 0) * 100);
+
 export const FundTransactionFormSchema = z
   .object({
     amount: z.coerce
@@ -52,6 +56,10 @@ export const FundTransactionFormSchema = z
       z.string().nullable().optional()
     ),
     transfer_by: optionalNullableNumber,
+    /** Optional staff for a bKash transfer; limits the amount to their bKash total. */
+    transaction_by: optionalNullableNumber,
+    /** That staff's bKash total, filled from the dropdown. Not sent to the API. */
+    transaction_by_amount: optionalNullableNumber,
     transaction_type: z.literal("transfer").default("transfer"),
   })
   .superRefine((values, ctx) => {
@@ -60,6 +68,14 @@ export const FundTransactionFormSchema = z
         code: z.ZodIssueCode.custom,
         path: ["transfer_by"],
         message: "fund_transaction.transfer_by.errors.required",
+      });
+    }
+
+    if (values.transaction_by && exceedsTransactionByAmount(values.amount, values.transaction_by_amount)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["amount"],
+        message: "fund_transaction.transaction_by.errors.max",
       });
     }
   });

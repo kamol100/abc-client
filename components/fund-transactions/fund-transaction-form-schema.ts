@@ -1,5 +1,8 @@
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
+/** Staff with a remaining bKash amount: `{ id, name, amount }`. */
+export const BKASH_STAFF_BALANCES_API = "/dropdown-bkash-staff-balances";
+
 const transferFundApi = (excludeFundId?: string | number | null) => {
   if (excludeFundId === undefined || excludeFundId === null || excludeFundId === "") {
     return "/dropdown-funds";
@@ -26,6 +29,18 @@ export const FundTransactionFormFieldSchema = (
         { field: "sender_balance", from: "balance" },
         { field: "sender_uuid", from: "uuid" },
       ],
+    },
+    {
+      // Shown only when the sender is the bKash fund (see the form).
+      type: "dropdown",
+      name: "transaction_by",
+      label: {
+        labelText: "fund_transaction.transaction_by.label",
+      },
+      placeholder: "fund_transaction.transaction_by.placeholder",
+      api: BKASH_STAFF_BALANCES_API,
+      isClearable: true,
+      populate: [{ field: "transaction_by_amount", from: "amount" }],
     },
     {
       type: "number",

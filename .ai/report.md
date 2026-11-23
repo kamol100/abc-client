@@ -1,3 +1,25 @@
+## Fund transfer: Transaction By for bKash — 2026-11-23
+
+In Add Fund Transaction, choosing bKash under Fund Send By shows a new optional Transaction By dropdown right below it. The dropdown lists staff with a remaining bKash amount, from the new `GET /dropdown-bkash-staff-balances`. Picking a staff member shows "Total Amount: ৳x" under the list. An Amount above that total shows "Amount must be equal to or less than the Transaction By amount." under Amount and blocks the save. The same check also runs in the API. Leaving it empty keeps the old behaviour. The field hides and clears itself when the sender changes away from bKash or is cleared. The amount is re-checked when the staff changes or is cleared.
+
+Changes:
+- `fund-transaction-form-schema.ts`: new `transaction_by` field.
+- `fund-transaction-type.ts`: `transaction_by` and `transaction_by_amount`, with the limit check compared in paisa.
+- `fund-transaction-form.tsx`: `useBkashTransactionBy` and `BkashTransactionBy`. `FundBalanceHint` takes a label. The sender name is cleared with the other sender details. `transaction_by_amount` is not sent.
+- New keys `fund_transaction.transaction_by.placeholder`, `.total` and `.errors.max` in `en.json` and `bn.json`.
+
+On `http://vp.isp.test/fund-transactions` as vpc at 1440px:
+- Sender cash: no Transaction By field.
+- Sender bkash: the field appears and lists vp and vps.
+- Amount 5000 then picking vp: "Total Amount: ৳720" and the error appeared.
+- 720: no error.
+- 721: error shown, and Save sent no request.
+- Clearing the staff removed the error and the total line.
+- Switching the sender to vp hid the field.
+- No page errors and nothing was saved.
+
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/fund-transactions` passed (17, 4 new). `scripts/ai/test`: 859 passed, with the same 20 baseline failures.
+
 ## Fund transaction form: readability refactor — 2026-11-23
 
 `components/fund-transactions/fund-transaction-form.tsx` is reorganised. The UI and behaviour are unchanged. A comment at the top explains why there are two forms: the receiver fund's uuid is part of the API path (`POST /fund-transactions/{uuid}`), so it lives in its own small form, while sender, amount and note go through `FormBuilder`. The code is split into named pieces:

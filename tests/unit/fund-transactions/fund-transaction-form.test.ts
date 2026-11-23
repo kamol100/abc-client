@@ -103,11 +103,11 @@ describe("fundTransactionAccess", () => {
 });
 
 describe("FundTransactionFormFieldSchema", () => {
-  it("asks for the sender fund first, then amount and note", () => {
+  it("asks for the sender fund first, then transaction by, amount and note", () => {
     const fields = FundTransactionFormFieldSchema("receiver-fund");
     const sender = fields[0];
 
-    expect(fields.map((field) => field.name)).toEqual(["transfer_by", "amount", "note"]);
+    expect(fields.map((field) => field.name)).toEqual(["transfer_by", "transaction_by", "amount", "note"]);
     expect(fields.some((field) => field.name === "transaction_type")).toBe(false);
     expect(sender && "label" in sender ? sender.label?.labelText : "").toBe(
       "fund_transaction.transfer_by.label",
@@ -117,6 +117,40 @@ describe("FundTransactionFormFieldSchema", () => {
       { field: "sender_name", from: "name" },
       { field: "sender_balance", from: "balance" },
       { field: "sender_uuid", from: "uuid" },
+    ]);
+  });
+});
+
+describe("Transaction By field", () => {
+  it("is optional, loads staff bKash totals, and fills the limit", () => {
+    const field = FundTransactionFormFieldSchema(null).find((item) => item.name === "transaction_by");
+
+    expect(field && "label" in field ? field.label?.mandatory : undefined).toBeFalsy();
+    expect(field && "api" in field ? field.api : "").toBe("/dropdown-bkash-staff-balances");
+    expect(field && "populate" in field ? field.populate : []).toEqual([
+      { field: "transaction_by_amount", from: "amount" },
+    ]);
+  });
+});
+
+describe("FundTransactionFormSchema transaction by limit", () => {
+  const base = { transfer_by: 8, note: "" };
+  const amountErrors = (values: Record<string, unknown>) => {
+    const result = FundTransactionFormSchema.safeParse({ ...base, ...values });
+    return result.success ? [] : result.error.issues.filter((issue) => issue.path[0] === "amount").map((issue) => issue.message);
+  };
+
+  it("allows any amount when no staff is selected", () => {
+    expect(amountErrors({ amount: 9999, transaction_by: null, transaction_by_amount: 100 })).toEqual([]);
+  });
+
+  it("allows an amount equal to the staff total", () => {
+    expect(amountErrors({ amount: "500.10", transaction_by: 5, transaction_by_amount: 500.1 })).toEqual([]);
+  });
+
+  it("rejects an amount above the staff total", () => {
+    expect(amountErrors({ amount: 500.11, transaction_by: 5, transaction_by_amount: "500.10" })).toEqual([
+      "fund_transaction.transaction_by.errors.max",
     ]);
   });
 });

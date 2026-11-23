@@ -10,6 +10,9 @@
  *
  * The receiver field is passed into `TransferForm` as a slot so it renders between
  * the sender and the amount.
+ *
+ * When the sender is the bKash fund, an optional Transaction By (staff) field appears.
+ * If a staff member is picked, the amount may not exceed their bKash total.
  */
 
 import { ReactNode, useEffect, useMemo } from "react";
@@ -51,14 +54,19 @@ const TRANSFER_DEFAULTS = {
   amount: 0,
   note: "",
   transfer_by: null,
+  transaction_by: null,
+  transaction_by_amount: null,
   transaction_type: "transfer",
 };
 
-/** This dialog only records transfers. */
-const asTransfer = (values: FieldValues): FieldValues => ({
-  ...values,
-  transaction_type: "transfer",
-});
+/** This dialog only records transfers. The staff's bKash total is only for the form check. */
+const asTransfer = (values: FieldValues): FieldValues => {
+  const payload: FieldValues = { ...values, transaction_type: "transfer" };
+  delete payload.transaction_by_amount;
+  return payload;
+};
+
+const QUIET = { shouldDirty: false, shouldValidate: false } as const;
 
 const hasSelection = (value: unknown): boolean => value != null && value !== "";
 
@@ -67,14 +75,21 @@ const selectedUuid = (value: unknown): string | null =>
 
 // --- Shared ---
 
-/** "Current Balance: ৳1,220" under a fund field, or "unavailable" when unknown. */
-const FundBalanceHint = ({ balance }: { balance: unknown }) => {
+/** "Current Balance: ৳1,220" under a field, or "unavailable" when unknown. */
+const FundBalanceHint = ({
+  balance,
+  label = "fund_transaction.current_balance",
+}: {
+  balance: unknown;
+  /** Translation key shown before the amount. */
+  label?: string;
+}) => {
   const { t } = useTranslation();
   const known = typeof balance === "number" || (typeof balance === "string" && balance !== "");
 
   return (
     <p className="text-sm text-muted-foreground">
-      {t("fund_transaction.current_balance")}:{" "}
+      {t(label)}:{" "}
       {known ? `৳${formatMoney(balance)}` : t("fund_transaction.balance_unavailable")}
     </p>
   );
@@ -83,8 +98,9 @@ const FundBalanceHint = ({ balance }: { balance: unknown }) => {
 // --- Sender fund (inside FormBuilder) ---
 
 const clearSenderDetails = (setValue: UseFormReturn["setValue"]) => {
-  setValue("sender_balance", null, { shouldDirty: false, shouldValidate: false });
-  setValue("sender_uuid", null, { shouldDirty: false, shouldValidate: false });
+  setValue("sender_name", null, QUIET);
+  setValue("sender_balance", null, QUIET);
+  setValue("sender_uuid", null, QUIET);
 };
 
 /**
@@ -122,7 +138,53 @@ const SenderFundBalance = ({ receiverUuid }: { receiverUuid: string | null }) =>
   return hasSender ? <FundBalanceHint balance={senderBalance} /> : null;
 };
 
-// --- Transfer form: sender, receiver slot, amount, note ---
+// --- Transaction By (bKash sender only, inside FormBuilder) ---
+
+const isBkashFund = (name: unknown): boolean =>
+  typeof name === "string" && name.trim().toLowerCase() === "bkash";
+
+/**
+ * Shows Transaction By only while the sender is the bKash fund, clears it when hidden,
+ * and re-checks the amount when the staff (and so the limit) changes.
+ */
+function useBkashTransactionBy() {
+  const { setValue, trigger } = useFormContext();
+  const transferBy = useWatch({ name: "transfer_by" });
+  const senderName = useWatch({ name: "sender_name" });
+  const transactionBy = useWatch({ name: "transaction_by" });
+  const limit = useWatch({ name: "transaction_by_amount" });
+  const amount = useWatch({ name: "amount" });
+
+  const visible = hasSelection(transferBy) && isBkashFund(senderName);
+  const selected = visible && hasSelection(transactionBy);
+
+  useEffect(() => {
+    if (!visible && hasSelection(transactionBy)) setValue("transaction_by", null, QUIET);
+    if (!selected && limit != null) setValue("transaction_by_amount", null, QUIET);
+  }, [limit, selected, setValue, transactionBy, visible]);
+
+  useEffect(() => {
+    if (Number(amount) > 0) void trigger("amount");
+    // Only when the limit changes; typing in Amount validates itself.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, limit, trigger]);
+
+  return { visible, selected, limit };
+}
+
+const BkashTransactionBy = ({ field }: { field: ReactNode }) => {
+  const { visible, selected, limit } = useBkashTransactionBy();
+  if (!visible) return null;
+
+  return (
+    <div className="grid gap-1">
+      {field}
+      {selected ? <FundBalanceHint label="fund_transaction.transaction_by.total" balance={limit} /> : null}
+    </div>
+  );
+};
+
+// --- Transfer form: sender, Transaction By, receiver slot, amount, note ---
 
 const TransferForm = ({
   receiverUuid,
@@ -165,6 +227,7 @@ const TransferForm = ({
               {render("transfer_by")}
               <SenderFundBalance receiverUuid={receiverUuid} />
             </div>
+            <BkashTransactionBy field={render("transaction_by")} />
             {receiverField}
             {render("amount")}
             {render("note")}

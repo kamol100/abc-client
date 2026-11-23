@@ -3882,7 +3882,12 @@
             }
         },
         "transaction_by": {
-            "label": "Transaction By"
+            "label": "Transaction By",
+            "placeholder": "Select staff",
+            "total": "Total Amount",
+            "errors": {
+                "max": "Amount must be equal to or less than the Transaction By amount."
+            }
         },
         "amount": {
             "label": "Amount",
