@@ -3,13 +3,14 @@
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/context/app-provider";
-import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
+import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import FundTransactionForm from "@/components/fund-transactions/fund-transaction-form";
 import FundTransactionFilterSchema from "@/components/fund-transactions/fund-transaction-filter-schema";
 import { getFundTransactionColumns } from "@/components/fund-transactions/fund-transaction-column";
-import { FundTransactionRow } from "@/components/fund-transactions/fund-transaction-type";
+import FundTransactionReports from "@/components/fund-transactions/fund-transaction-reports";
+import { FundTransactionListPayload } from "@/components/fund-transactions/fund-transaction-type";
 
 type FundTransactionTarget = {
   id: string | number;
@@ -47,7 +48,7 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
   );
 
   const { data, isLoading, isFetching, setCurrentPage } =
-    useApiQuery<PaginatedApiResponse<FundTransactionRow>>({
+    useApiQuery<ApiResponse<FundTransactionListPayload>>({
       queryKey: [queryKey],
       url: apiUrl,
       params,
@@ -55,6 +56,7 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
 
   const transactions = data?.data?.data ?? [];
   const pagination = data?.data?.pagination;
+  const typeTotals = data?.data?.reports?.type_totals;
 
   const toolbarTitle = pagination?.total
     ? `${t("fund_transaction.title_plural")} (${pagination.total})`
@@ -96,6 +98,12 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    center: [
+      {
+        key: "type-totals",
+        node: <FundTransactionReports totals={typeTotals} isLoading={isLoading} />,
+      },
+    ],
     features: {
       columns: true,
       filter: toolbarOptions,

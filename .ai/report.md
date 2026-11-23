@@ -1,3 +1,11 @@
+## Fund transactions: totals by transaction type — 2026-11-23
+
+The Fund Transactions toolbar now shows one chip per transaction type (Deposit, Transfer, Withdraw, Expense, Salary) with its total, in the same toolbar center slot and chip style as the invoice and expense totals. A type is shown only when its total is above 0. While the list first loads, one chip-sized skeleton holds the spot. The totals cover every page of the filtered list and follow the filters. The same chips appear in the fund's transaction dialog on the Funds page. Labels reuse `fund_transaction.transaction_type.options.*`, so no new translation keys. New: `components/fund-transactions/fund-transaction-reports.tsx` and the `FundTransactionListPayload` types. The data comes from the new `data.reports.type_totals` in `isp-backend`.
+
+On `http://vp.isp.test/fund-transactions`, signed in as vpc: at 1440px the toolbar showed Deposit 10,300.00, Transfer 100.00 and Expense 100.00. Withdraw and Salary were 0 and hidden. At 390px the three chips sat in a two-column grid above the table. No page errors. Dark mode was not switched; the chips use `SummaryChip` and theme tokens.
+
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/fund-transactions` passed (13, 4 new). `scripts/ai/test`: 855 passed, with the same 20 baseline failures.
+
 ## Client setting: Create invoice for billing type auto — 2026-11-21
 
 Client Settings (the gear on the clients list) has a new switch, "Create invoice for billing type auto", after "Client edit open on new tab". The setting key is `create_invoice_billing_type_auto` and it defaults to off. It is a company setting in the General section, like the other client switches, so it also shows on the General settings form. Like the other switches it saves on toggle and is stored as `1`/`0`. Nothing reads it yet. The backend saves the `settings` map without a key whitelist, so no API change was needed. Labels are in `en.json` and `bn.json` under `settings.fields`.

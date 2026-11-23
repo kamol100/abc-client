@@ -68,5 +68,18 @@ export type FundRef = z.infer<typeof FundRefSchema>;
 export type FundTransactionType = z.infer<typeof FundTransactionTypeSchema>;
 export type FundTransactionRow = z.infer<typeof FundTransactionRowSchema>;
 
+/** Sum of `amount` per transaction type across every page of the filtered list. */
+export type FundTransactionTypeTotals = Partial<Record<FundTransactionType, number | string | null>>;
+
+export type FundTransactionReports = {
+  type_totals?: FundTransactionTypeTotals | null;
+};
+
+export type FundTransactionListPayload = {
+  data: FundTransactionRow[];
+  pagination: Pagination;
+  reports?: FundTransactionReports | null;
+};
+
 export type FundTransactionFormInput = z.input<typeof FundTransactionFormSchema>;
 export type FundTransactionPayload = z.output<typeof FundTransactionFormSchema>;
