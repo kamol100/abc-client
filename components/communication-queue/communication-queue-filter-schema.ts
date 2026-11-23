@@ -23,14 +23,11 @@ export function communicationQueueFilterSchema(): FieldConfig[] {
 
   return [
     {
+      // Searches SMS to, SMS from, message and comment as you type.
       type: "text",
-      name: "sms_to",
-      placeholder: "communication_queue.sms_to.label",
-    },
-    {
-      type: "text",
-      name: "sms_from",
-      placeholder: "communication_queue.sms_from.label",
+      name: "any",
+      placeholder: "communication_queue.any_search.placeholder",
+      watchForFilter: true,
     },
     {
       type: "dropdown",
@@ -43,6 +40,19 @@ export function communicationQueueFilterSchema(): FieldConfig[] {
       name: "status",
       placeholder: "communication_queue.status.label",
       options: statusOptions,
+    },
+    {
+      // One day, or a range (both days included).
+      type: "dateRange",
+      name: "send_at",
+      placeholder: "communication_queue.send_at.label",
+      closeOnSelectDate: false,
+    },
+    {
+      type: "dateRange",
+      name: "expire_at",
+      placeholder: "communication_queue.expire_at.label",
+      closeOnSelectDate: false,
     },
   ];
 }

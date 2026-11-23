@@ -887,6 +887,9 @@
                 "required": "Delete reason is required"
             }
         },
+        "any_search": {
+            "placeholder": "Search number, message or comment"
+        },
         "resend_success": "SMS resent successfully",
         "sms_to": {
             "label": "SMS To"

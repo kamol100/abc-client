@@ -1,3 +1,17 @@
+## Communication queue filters: any search, Send At, Expire At — 2026-11-23
+
+The queue filter row drops the SMS To and SMS From fields. It now has an "any" search ("Search number, message or comment") that searches SMS to, SMS from, message and comment as you type (`watchForFilter`, like the client any search). It also has Send At and Expire At date pickers that take one day or a range (`dateRange`, Apply button). SMS Type and Status are unchanged. The table's old `watchFields` option was removed: dropdowns and dates submit on change, and the any field is watched. New keys `communication_queue.any_search.placeholder` are in `en.json` and `bn.json`. Backend: new `any`, `send_at` and `expire_at` filters in isp-backend.
+
+On `/communication-queue` as vpc at 1440px, checked against database counts:
+- any `4434` → 12; any `Sadia` → 2; clearing it → 22.
+- Send At on 7 Nov → 10; Send At 18–19 Nov → 3, chosen with real mouse moves and shown as "11/18/2026 - 11/19/2026".
+- Expire At on 24 Nov → 2.
+- No page errors.
+
+Very fast scripted clicks on the range picker registered only the first day. Real pointer movement selected the range correctly on this page and on `/fund-transactions`, which uses the same `DatePicker`.
+
+`scripts/ai/typecheck` passed. `scripts/ai/test`: the same 20 baseline failures, everything else passed.
+
 ## Table toolbar: focus ring cut off in the open filter row — 2026-11-23
 
 Removing the open filter row's `mt-1` (the toggle-jump fix) left the toolbar flush against the top of the page scroll area (`[&>*]:overflow-auto` in the page container). That area clips its content, so a focused filter input lost the top of its focus ring, which reaches about 4px above the input. This affected every list page, including `/communication-queue` and `/clients`. `ToolbarLayout` now gives all four layouts (desktop, desktop-centered, open filter row, mobile) the same `pt-1` (`TOOLBAR_ROOT`). The ring has room, and opening or closing the filter still does not move the table. Keyboard focus rings on toolbar buttons get the same room.

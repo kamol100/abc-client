@@ -52,7 +52,6 @@ const CommunicationQueueTable: FC = () => {
   const toolbarOptions = useMemo(
     () => ({
       filter: communicationQueueFilterSchema(),
-      watchFields: ["sms_to", "sms_from", "sms_type", "status"],
     }),
     []
   );
