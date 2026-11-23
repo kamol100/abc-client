@@ -1,7 +1,9 @@
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { invoiceNoteFitsMysqlText } from "@/components/invoices/invoice-type";
+import { INVOICE_PAYMENT_FUNDS_API } from "@/components/invoices/payment-fund-access";
 
-export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
+/** `fundLocked`: the user may only pay into their own fund (see paymentFundAccess). */
+export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: boolean } = {}): FormFieldConfig[] => [
     {
         type: "date",
         name: "create_date",
@@ -60,7 +62,8 @@ export const InvoiceFormFieldSchema = (): FormFieldConfig[] => [
         name: "fund_id",
         label: { labelText: "invoice.fund.label" },
         placeholder: "invoice.fund.placeholder",
-        api: "/dropdown-funds",
+        api: INVOICE_PAYMENT_FUNDS_API,
+        isDisabled: fundLocked,
         valueKey: "fund",
         valueMapping: { idKey: "id", labelKey: "name" },
     },

@@ -25,10 +25,10 @@ import {
 } from "@/components/invoices/invoice-type";
 import { BadgePercent, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
-import { usePermissions, useProfile, useSetting } from "@/context/app-provider";
+import { usePermissions, useProfile } from "@/context/app-provider";
 import InvoiceDiscountDialog from "@/components/invoices/invoice-discount-dialog";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
-import { paymentFundAccess } from "@/components/invoices/payment-fund-access";
+import { INVOICE_PAYMENT_FUNDS_API, paymentFundAccess } from "@/components/invoices/payment-fund-access";
 
 const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
 
@@ -63,10 +63,12 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
-    const roles = useSetting("roles");
-    const canChangeFund = hasPermission("invoices.change-fund");
     const { assignedFundId, lockFund, blockSubmit, showUnassignedWarning } =
-        paymentFundAccess({ roles, staff: profile.staff, canChangeFund });
+        paymentFundAccess({
+            staff: profile.staff,
+            canChangeFund: hasPermission("invoices.change-fund"),
+            canUseBkashFund: hasPermission("invoices.bkash-fund-access"),
+        });
     const canDiscount = hasPermission("invoices.apply-discount");
     const canChangePaymentDate = hasPermission("invoices.change-payment-date");
     const [invoices, setInvoices] = useState(invoiceDue);
@@ -466,7 +468,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                         placeholder={t(
                                             "invoice.bulk_pay.fund.placeholder",
                                         )}
-                                        api="/dropdown-funds"
+                                        api={INVOICE_PAYMENT_FUNDS_API}
                                         isDisabled={lockFund}
                                         isClearable={!lockFund}
                                     />

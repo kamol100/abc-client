@@ -1,5 +1,3 @@
-const FUND_ADMIN_ROLES = ["Admin", "Super Admin"] as const;
-
 export interface PaymentFundStaff {
     fund?: {
         id?: unknown;
@@ -15,6 +13,9 @@ export interface PaymentFundAccess {
     showUnassignedWarning: boolean;
 }
 
+/** Funds this user may record an invoice payment in (the API applies the same rules). */
+export const INVOICE_PAYMENT_FUNDS_API = "/dropdown-funds?scope=invoice-payment";
+
 export function resolveAssignedFundId(fund: PaymentFundStaff["fund"]): number | null {
     if (fund == null || fund.id == null || fund.id === "" || typeof fund.id === "boolean") {
         return null;
@@ -26,28 +27,23 @@ export function resolveAssignedFundId(fund: PaymentFundStaff["fund"]): number | 
 }
 
 /**
- * Admin, Super Admin, and anyone with invoices.change-fund may choose any
- * fund. Everyone else is limited to the fund assigned to their staff record.
+ * Invoice payments, permission based only (roles do not widen it):
+ * - invoices.change-fund: any fund;
+ * - invoices.bkash-fund-access: own fund or the bKash fund;
+ * - neither: locked to the fund on their staff record.
  */
 export function paymentFundAccess(input: {
-    roles: unknown;
     staff: PaymentFundStaff | null | undefined;
     canChangeFund?: boolean;
+    canUseBkashFund?: boolean;
 }): PaymentFundAccess {
-    const roles = Array.isArray(input.roles) ? input.roles : null;
-    const canChooseFund =
-        input.canChangeFund === true ||
-        (roles?.some((role: unknown) =>
-            FUND_ADMIN_ROLES.some((adminRole) => adminRole === role),
-        ) ?? false);
+    const canChooseFund = input.canChangeFund === true || input.canUseBkashFund === true;
     const fundFieldKnown = input.staff == null || Object.hasOwn(input.staff, "fund");
     const assignedFundId = fundFieldKnown
         ? resolveAssignedFundId(input.staff?.fund)
         : null;
-    const waitingForProfile =
-        roles == null || (!canChooseFund && input.staff != null && !fundFieldKnown);
 
-    if (waitingForProfile) {
+    if (input.canChangeFund !== true && !fundFieldKnown) {
         return {
             canChooseFund: false,
             assignedFundId: null,

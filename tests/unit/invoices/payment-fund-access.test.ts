@@ -23,13 +23,10 @@ describe("resolveAssignedFundId", () => {
 });
 
 describe("paymentFundAccess", () => {
-    it("locks a non-admin to their assigned fund", () => {
-        expect(
-            paymentFundAccess({
-                roles: ["Staff"],
-                staff: { fund: { id: 4, name: "cash" } },
-            }),
-        ).toEqual({
+    const own = { fund: { id: 4, name: "cash" } };
+
+    it("locks a staff member without either permission to their own fund", () => {
+        expect(paymentFundAccess({ staff: own })).toEqual({
             canChooseFund: false,
             assignedFundId: 4,
             lockFund: true,
@@ -38,13 +35,8 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("blocks a non-admin who has no assigned fund", () => {
-        expect(
-            paymentFundAccess({
-                roles: ["Manager"],
-                staff: { fund: null },
-            }),
-        ).toMatchObject({
+    it("blocks a staff member without either permission or an own fund", () => {
+        expect(paymentFundAccess({ staff: { fund: null } })).toMatchObject({
             assignedFundId: null,
             lockFund: true,
             blockSubmit: true,
@@ -52,29 +44,36 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("lets a non-admin with invoices.change-fund choose any fund", () => {
-        expect(
-            paymentFundAccess({
-                roles: ["Staff"],
-                staff: { fund: { id: 4, name: "cash" } },
-                canChangeFund: true,
-            }),
-        ).toEqual({
+    it("lets invoices.change-fund choose any fund, with or without an own fund", () => {
+        expect(paymentFundAccess({ staff: own, canChangeFund: true })).toEqual({
             canChooseFund: true,
             assignedFundId: 4,
             lockFund: false,
             blockSubmit: false,
             showUnassignedWarning: false,
         });
-
-        expect(
-            paymentFundAccess({
-                roles: ["Manager"],
-                staff: { fund: null },
-                canChangeFund: true,
-            }),
-        ).toMatchObject({
+        expect(paymentFundAccess({ staff: { fund: null }, canChangeFund: true })).toMatchObject({
             canChooseFund: true,
+            assignedFundId: null,
+            lockFund: false,
+            blockSubmit: false,
+        });
+        expect(paymentFundAccess({ staff: null, canChangeFund: true })).toMatchObject({
+            lockFund: false,
+            blockSubmit: false,
+        });
+    });
+
+    it("lets invoices.bkash-fund-access choose between the own and bKash funds", () => {
+        expect(paymentFundAccess({ staff: own, canUseBkashFund: true })).toEqual({
+            canChooseFund: true,
+            assignedFundId: 4,
+            lockFund: false,
+            blockSubmit: false,
+            showUnassignedWarning: false,
+        });
+        // No own fund: the bKash fund is still allowed, so nothing is blocked.
+        expect(paymentFundAccess({ staff: { fund: null }, canUseBkashFund: true })).toMatchObject({
             assignedFundId: null,
             lockFund: false,
             blockSubmit: false,
@@ -82,55 +81,20 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("lets an admin choose a fund with or without a personal assignment", () => {
-        expect(
-            paymentFundAccess({
-                roles: ["Admin"],
-                staff: { fund: { id: 4 } },
-            }),
-        ).toMatchObject({
-            canChooseFund: true,
-            assignedFundId: 4,
-            lockFund: false,
-            blockSubmit: false,
-            showUnassignedWarning: false,
-        });
-
-        expect(
-            paymentFundAccess({
-                roles: ["Super Admin"],
-                staff: null,
-            }),
-        ).toMatchObject({
-            canChooseFund: true,
-            assignedFundId: null,
-            lockFund: false,
-            blockSubmit: false,
-            showUnassignedWarning: false,
-        });
+    it("ignores roles: an admin without the permission is locked like anyone else", () => {
+        // Roles are no longer an input; access comes only from the permissions.
+        expect(paymentFundAccess({ staff: own }).lockFund).toBe(true);
     });
 
     it("does not select a fund or show the unassigned warning while the profile is incomplete", () => {
-        expect(
-            paymentFundAccess({
-                roles: undefined,
-                staff: { fund: { id: 4 } },
-            }),
-        ).toEqual({
+        expect(paymentFundAccess({ staff: {} })).toEqual({
             canChooseFund: false,
             assignedFundId: null,
             lockFund: true,
             blockSubmit: true,
             showUnassignedWarning: false,
         });
-
-        expect(
-            paymentFundAccess({
-                roles: ["Staff"],
-                staff: {},
-            }),
-        ).toMatchObject({
-            assignedFundId: null,
+        expect(paymentFundAccess({ staff: {}, canUseBkashFund: true })).toMatchObject({
             blockSubmit: true,
             showUnassignedWarning: false,
         });

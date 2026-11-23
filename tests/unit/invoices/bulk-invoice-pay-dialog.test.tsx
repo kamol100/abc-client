@@ -10,6 +10,7 @@ import { InvoiceDueItem } from "@/components/clients/client-type";
 const session = vi.hoisted(() => ({
     roles: ["Staff"] as unknown,
     canChangeFund: false,
+    canUseBkash: false,
     canDiscount: false,
     staff: { fund: { id: 4, name: "cash" } } as {
         fund?: { id?: unknown; name?: string } | null;
@@ -21,6 +22,7 @@ const discountHarness = vi.hoisted(() => ({
 }));
 
 const mutate = vi.hoisted(() => vi.fn());
+const fundApi = vi.hoisted(() => ({ value: undefined as string | undefined }));
 
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
@@ -32,6 +34,7 @@ vi.mock("@/context/app-provider", () => ({
     usePermissions: () => ({
         hasPermission: (name: string) => {
             if (name === "invoices.change-fund") return session.canChangeFund;
+            if (name === "invoices.bkash-fund-access") return session.canUseBkash;
             if (name === "invoices.apply-discount") return session.canDiscount;
             return false;
         },
@@ -108,13 +111,16 @@ vi.mock("@/components/my-dialog", () => ({
 vi.mock("@/components/select-dropdown", () => ({
     default: ({
         name,
+        api,
         isDisabled,
         placeholder,
     }: {
         name: string;
+        api?: string;
         isDisabled?: boolean;
         placeholder?: string;
     }) => {
+        if (name === "fund_id") fundApi.value = api;
         const { watch, setValue } = useFormContext();
         const value = watch(name);
         const selected = value == null || value === "" ? "" : String(value);
@@ -187,9 +193,17 @@ describe("BulkInvoicePayDialog fund selection", () => {
         mutate.mockReset();
         session.roles = ["Staff"];
         session.canChangeFund = false;
+        session.canUseBkash = false;
         session.canDiscount = false;
         discountHarness.enabled = false;
         session.staff = { fund: { id: 4, name: "cash" } };
+        fundApi.value = undefined;
+    });
+
+    it("asks the API for the funds this user may pay into", async () => {
+        renderDialog();
+        await waitFor(() => expect(fundSelect()).toBeInTheDocument());
+        expect(fundApi.value).toBe("/dropdown-funds?scope=invoice-payment");
     });
 
     it("preselects and locks the assigned fund for a non-admin", async () => {
@@ -259,47 +273,45 @@ describe("BulkInvoicePayDialog fund selection", () => {
         );
     });
 
-    it("lets an admin change the preselected fund and submit another fund", async () => {
+    it("locks an Admin or Super Admin role without the permission to its own fund", async () => {
+        for (const role of ["Admin", "Super Admin"]) {
+            session.roles = [role];
+            const { unmount } = renderDialog();
+
+            await waitFor(() => expect(fundSelect()).toHaveValue("4"));
+            expect(fundSelect()).toBeDisabled();
+            unmount();
+        }
+    });
+
+    it("lets invoices.bkash-fund-access start on the own fund and switch to another allowed fund", async () => {
         const user = userEvent.setup();
-        session.roles = ["Admin"];
+        session.canUseBkash = true;
         renderDialog();
 
         await waitFor(() => expect(fundSelect()).toHaveValue("4"));
         expect(fundSelect()).toBeEnabled();
-        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 
         await user.selectOptions(fundSelect(), "9");
         await user.click(submitButton());
 
         await waitFor(() => expect(mutate).toHaveBeenCalledTimes(1));
-        expect(mutate).toHaveBeenCalledWith(
-            expect.objectContaining({ fund_id: 9 }),
-        );
+        expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ fund_id: 9 }));
     });
 
-    it("lets an admin submit after choosing a fund when none is assigned", async () => {
-        const user = userEvent.setup();
-        session.roles = ["Super Admin"];
-        session.staff = null;
+    it("lets invoices.bkash-fund-access pay without an own fund (the bKash fund is allowed)", () => {
+        session.canUseBkash = true;
+        session.staff = { fund: null };
         renderDialog();
 
         expect(fundSelect()).toBeEnabled();
         expect(fundSelect()).toHaveValue("");
         expect(screen.queryByRole("alert")).not.toBeInTheDocument();
         expect(submitButton()).toBeEnabled();
-
-        await user.selectOptions(fundSelect(), "9");
-        await user.click(submitButton());
-
-        await waitFor(() => expect(mutate).toHaveBeenCalledTimes(1));
-        expect(mutate).toHaveBeenCalledWith(
-            expect.objectContaining({ fund_id: 9 }),
-        );
     });
 
     it("does not select a fund or show the unassigned warning while user data is missing", () => {
-        session.roles = undefined;
-        session.staff = { fund: { id: 9, name: "bank" } };
+        session.staff = {};
         renderDialog();
 
         expect(fundSelect()).toBeDisabled();

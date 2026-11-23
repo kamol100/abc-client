@@ -1,8 +1,36 @@
 import {
   paymentFundAccess,
+  resolveAssignedFundId,
   type PaymentFundAccess,
   type PaymentFundStaff,
 } from "@/components/invoices/payment-fund-access";
+
+/** This page still lets these roles choose any fund (invoice payments do not). */
+const FUND_ADMIN_ROLES = ["Admin", "Super Admin"] as const;
+
+function roleFundAccess(roles: unknown, staff: PaymentFundStaff | null | undefined): PaymentFundAccess {
+  if (!Array.isArray(roles)) {
+    return {
+      canChooseFund: false,
+      assignedFundId: null,
+      lockFund: true,
+      blockSubmit: true,
+      showUnassignedWarning: false,
+    };
+  }
+
+  const isAdmin = roles.some((role: unknown) => FUND_ADMIN_ROLES.some((admin) => admin === role));
+  if (!isAdmin) return paymentFundAccess({ staff });
+
+  const fundFieldKnown = staff == null || Object.hasOwn(staff, "fund");
+  return {
+    canChooseFund: true,
+    assignedFundId: fundFieldKnown ? resolveAssignedFundId(staff?.fund) : null,
+    lockFund: false,
+    blockSubmit: false,
+    showUnassignedWarning: false,
+  };
+}
 
 export interface FundAccountRef {
   id?: unknown;
@@ -51,10 +79,7 @@ export function fundTransactionAccess(input: {
   staff: FundStaff | null | undefined;
   presetFund?: FundAccountRef | null;
 }): FundTransactionAccess {
-  const access = paymentFundAccess({
-    roles: input.roles,
-    staff: input.staff,
-  });
+  const access = roleFundAccess(input.roles, input.staff);
 
   if (access.canChooseFund) {
     const preset = input.presetFund ?? null;

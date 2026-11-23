@@ -3,12 +3,15 @@
 import { FC, ReactNode, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import InvoiceLinesEditor from "@/components/invoices/invoice-lines-editor";
 import InvoiceTotals from "@/components/invoices/invoice-totals";
 import { cn } from "@/lib/utils";
 import InvoiceFormFieldSchema from "@/components/invoices/invoice-form-schema";
+import { paymentFundAccess, type PaymentFundAccess } from "@/components/invoices/payment-fund-access";
+import { usePermissions, useProfile } from "@/context/app-provider";
 import { InvoiceFormSchema, InvoiceFormState } from "@/components/invoices/invoice-type";
 
 type InvoiceFormProps = {
@@ -26,6 +29,7 @@ type ContentProps = {
     mode: string;
     hideClient?: boolean;
     embedded?: boolean;
+    fundAccess: PaymentFundAccess;
 };
 
 const defaultLine = {
@@ -57,10 +61,23 @@ const InvoiceFormContent: FC<ContentProps> = ({
     mode,
     hideClient = false,
     embedded = false,
+    fundAccess,
 }) => {
+    const { t } = useTranslation();
     const { watch, setValue } = useFormContext<InvoiceFormState>();
 
     const status = watch("status");
+    const fundId = watch("fund_id");
+    const paying = status === "paid" || status === "partial_paid";
+    const { assignedFundId, lockFund, showUnassignedWarning } = fundAccess;
+
+    // Paying a new invoice: start on the user's own fund; keep it there when locked.
+    useEffect(() => {
+        if (mode !== "create" || !paying || assignedFundId == null) return;
+        if (lockFund ? fundId !== assignedFundId : !fundId) {
+            setValue("fund_id", assignedFundId, { shouldDirty: false });
+        }
+    }, [mode, paying, assignedFundId, lockFund, fundId, setValue]);
 
     const fieldMap = useMemo(() => {
         const map = new Map<string, FormFieldConfig>();
@@ -105,9 +122,16 @@ const InvoiceFormContent: FC<ContentProps> = ({
                     {field("discount")}
                     {field("status")}
                     {status === "partial_paid" && field("partial_amount")}
-                    {(status === "paid" || status === "partial_paid") && (
+                    {paying && (
                         <>
-                            {field("fund_id")}
+                            <div className="flex flex-col gap-2">
+                                {field("fund_id")}
+                                {showUnassignedWarning && (
+                                    <p role="alert" className="text-sm text-destructive">
+                                        {t("invoice.bulk_pay.fund.errors.unassigned")}
+                                    </p>
+                                )}
+                            </div>
                             {field("payment_date")}
                         </>
                     )}
@@ -135,7 +159,14 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
     onSuccess,
 }) => {
     const router = useRouter();
-    const formSchema = InvoiceFormFieldSchema();
+    const { hasPermission } = usePermissions();
+    const { profile } = useProfile();
+    const fundAccess = paymentFundAccess({
+        staff: profile.staff,
+        canChangeFund: hasPermission("invoices.change-fund"),
+        canUseBkashFund: hasPermission("invoices.bkash-fund-access"),
+    });
+    const formSchema = InvoiceFormFieldSchema({ fundLocked: fundAccess.lockFund });
     const embedded = clientId !== undefined;
     const formData = useMemo(() => {
         if (mode === "edit") return data;
@@ -164,6 +195,7 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
                         mode={mode}
                         hideClient
                         embedded
+                        fundAccess={fundAccess}
                     />
                 )}
             </FormBuilder>
@@ -191,6 +223,7 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
                             formSchema={formSchema}
                             renderField={renderField}
                             mode={mode}
+                            fundAccess={fundAccess}
                         />
                     )}
                 </FormBuilder>

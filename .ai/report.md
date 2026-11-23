@@ -1410,3 +1410,30 @@ No line-ending changes (41 files checked). Not committed.
   - Shared `DatePicker`: after a date is applied, the first click on the field does not open the calendar; a second click does. Same on `/invoices`.
   - `tests/unit/form/date-picker-range.test.tsx` (part of the 20 baseline failures) hardcodes October 2026 and fails now that the calendar opens on November; it does not test the range logic.
 - `scripts/ai/typecheck` passes; `scripts/ai/test`: 848 passed, same 20 baseline failures.
+
+## Invoice payments: fund choice by permission only
+
+- `payment-fund-access.ts` `paymentFundAccess({ staff, canChangeFund, canUseBkashFund })`:
+  - no `roles` input any more;
+  - `invoices.change-fund` or `invoices.bkash-fund-access` unlocks the dropdown; neither locks it to the staff's own fund;
+  - with bKash access and no own fund, the user is not blocked (the bKash fund is allowed);
+  - new `INVOICE_PAYMENT_FUNDS_API = "/dropdown-funds?scope=invoice-payment"`, so the API lists only the allowed funds (own + bKash, or all).
+- `bulk-invoice-pay-dialog.tsx` (used by every Pay button): permission based, no `useSetting("roles")`, scoped API.
+- Invoice create form (`invoice-form.tsx`, `invoice-form-schema.ts`):
+  - with status Paid or Partial Paid, the fund field uses the scoped API;
+  - it is locked when the user has neither permission;
+  - it starts on the user's own fund (kept there when locked);
+  - it shows the existing "no fund assigned" warning.
+  - Before, anyone could pick any fund here.
+- Not changed:
+  - Fund Transactions page: `fund-transaction-access.ts` keeps the Admin/Super Admin role rule (moved into a local `roleFundAccess`); its tests pass unchanged.
+  - `invoice-pay-dialog.tsx` is not used anywhere, and its backend route is disabled.
+- Tests:
+  - `payment-fund-access.test.ts` rewritten for the permission rules;
+  - `bulk-invoice-pay-dialog.test.tsx`: Admin/Super Admin without the permission are now locked; bKash access can switch funds and can pay without an own fund; the dialog asks for the scoped API.
+  - `scripts/ai/typecheck` passes; `scripts/ai/test`: 851 passed, same 20 baseline failures.
+- Browser (local, as vpc: Admin role, has `invoices.change-fund`):
+  - Pay dialog starts on "vp", is unlocked and lists all 6 company funds;
+  - create invoice with status Paid preselects "vp", unlocked;
+  - no page errors.
+  - The locked and bKash states could not be shown in the browser: no local user has `invoices.pay` without `invoices.change-fund` (vp-bill's role has no invoice permissions), and changing roles is a data change. The unit and feature tests cover those states.
