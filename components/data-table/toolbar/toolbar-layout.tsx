@@ -3,6 +3,14 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
+/**
+ * Top room for focus rings. The page scroll area clips at the toolbar's top edge,
+ * so without it the ring of a focused filter input or button is cut off. Every
+ * layout (closed, open filter row, mobile) has the same room, so toggling the
+ * filter does not move the table.
+ */
+const TOOLBAR_ROOT = "pt-1";
+
 type ToolbarLayoutProps = {
   isMobile: boolean;
   start?: ReactNode;
@@ -45,7 +53,7 @@ export function ToolbarLayout({
   if (isMobile) {
     const actionsOnOwnRow = mobileActions === "row";
     return (
-      <div className="flex flex-col gap-2" data-toolbar-layout="mobile">
+      <div className={cn("flex flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="mobile">
         <div className={cn("flex justify-end", actionsOnOwnRow && "flex-wrap")}>
           <div className="flex w-full flex-1 flex-wrap items-center gap-x-2">
             <div className="flex w-full justify-between">
@@ -84,7 +92,7 @@ export function ToolbarLayout({
 
   if (expanded) {
     return (
-      <div className="flex w-full flex-col gap-2" data-toolbar-layout="expanded">
+      <div className={cn("flex w-full flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="expanded">
         {expanded}
         {below && <div className="w-full">{below}</div>}
       </div>
@@ -93,7 +101,7 @@ export function ToolbarLayout({
 
   if (!center) {
     return (
-      <div className="flex flex-col gap-2" data-toolbar-layout="desktop">
+      <div className={cn("flex flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="desktop">
         <div className="flex justify-end">
           <div className="flex w-full flex-1 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
             {start}
@@ -108,7 +116,7 @@ export function ToolbarLayout({
   }
 
   return (
-    <div className="flex flex-col gap-2" data-toolbar-layout="desktop-centered">
+    <div className={cn("flex flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="desktop-centered">
       <div className="grid grid-cols-[minmax(max-content,1fr)_auto_minmax(max-content,1fr)] items-center gap-3">
         <div className="flex min-h-9 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
           {start}

@@ -1,3 +1,11 @@
+## Table toolbar: focus ring cut off in the open filter row — 2026-11-23
+
+Removing the open filter row's `mt-1` (the toggle-jump fix) left the toolbar flush against the top of the page scroll area (`[&>*]:overflow-auto` in the page container). That area clips its content, so a focused filter input lost the top of its focus ring, which reaches about 4px above the input. This affected every list page, including `/communication-queue` and `/clients`. `ToolbarLayout` now gives all four layouts (desktop, desktop-centered, open filter row, mobile) the same `pt-1` (`TOOLBAR_ROOT`). The ring has room, and opening or closing the filter still does not move the table. Keyboard focus rings on toolbar buttons get the same room.
+
+Measured at 1440px: on `/communication-queue` and `/clients` the table top stays at 133px with the filter closed, open and closed again. It used to be 129px, so every list page now starts 4px lower. The focused input's top is at 84px, below the 80px clip edge. Screenshots of the focused SMS To and client search inputs show the full ring. `/fund-transactions` still grows only by its totals row.
+
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/data-table`: the same 2 baseline failures in `column-visibility-persistence`, everything else passed.
+
 ## Communication queue: Delete All and inline Delete with a reason — 2026-11-23
 
 - The toolbar has a third icon button after Resend All and Stop All: Delete All (trash icon). It uses the same placement as the other two, including in the open filter row.
