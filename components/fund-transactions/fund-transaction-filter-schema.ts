@@ -39,6 +39,14 @@ export const FundTransactionFilterSchema = (
       isClearable: true,
       isSearchable: false,
     },
+    {
+      type: "dropdown",
+      name: "transaction_by",
+      placeholder: "fund_transaction.transaction_by.placeholder",
+      api: "/dropdown-staffs",
+      valueMapping: { idKey: "id", labelKey: "name" },
+      isClearable: true,
+    },
   ];
 
   if (includeFundFilter) {

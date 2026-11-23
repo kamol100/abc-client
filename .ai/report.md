@@ -1377,3 +1377,19 @@ No line-ending changes (41 files checked). Not committed.
   - `scripts/ai/typecheck` passes;
   - `tests/unit/settings` 79/79;
   - `scripts/ai/test`: 848 passed, same 20 baseline failures.
+
+## Fund transactions: "Transaction By" column and filter
+
+- `fund-transaction-type.ts`: the row has an optional `transaction_by: {id, name} | null` (from the new backend field).
+- `fund-transaction-column.tsx`: new "Transaction By" column after Amount, showing the staff name, or "—" when empty (older rows and non-staff transactions).
+- `fund-transaction-filter-schema.ts`: new staff dropdown filter `transaction_by` (`/dropdown-staffs`, id/name), after Transaction Type.
+- i18n: `fund_transaction.transaction_by.label` and `.placeholder` in en ("Transaction By", "Select staff") and bn.
+- Needs the isp-backend change and its migration.
+- Checked:
+  - browser `/fund-transactions` at 1440px, against a local DB not yet migrated:
+    - the column header renders after Amount, and existing rows show "—";
+    - the filter row has the staff dropdown, listing vp, vp-manager, vp-bill and vps;
+    - no page errors;
+    - filtering by staff could not be run until the column exists;
+  - `scripts/ai/typecheck` passes;
+  - `scripts/ai/test`: 848 passed, same 20 baseline failures.

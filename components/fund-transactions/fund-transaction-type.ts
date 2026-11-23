@@ -31,6 +31,11 @@ export const FundTransactionRowSchema = z
     transaction_type: FundTransactionTypeSchema,
     created_at: z.string().nullable().optional(),
     fund: FundRefSchema.nullable().optional(),
+    /** Staff who made the transaction; can differ from the fund's owner. */
+    transaction_by: z
+      .object({ id: z.coerce.number(), name: z.string() })
+      .nullable()
+      .optional(),
   })
   .passthrough();
 

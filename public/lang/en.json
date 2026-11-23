@@ -3882,6 +3882,10 @@
                 "salary": "Salary"
             }
         },
+        "transaction_by": {
+            "label": "Transaction By",
+            "placeholder": "Select staff"
+        },
         "amount": {
             "label": "Amount",
             "placeholder": "Enter amount",

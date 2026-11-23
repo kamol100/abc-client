@@ -130,6 +130,15 @@ export const getFundTransactionColumns = (
       enableSorting: false,
     },
     {
+      id: "transaction_by",
+      accessorKey: "transaction_by.name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="fund_transaction.transaction_by.label" />
+      ),
+      cell: ({ row }) => <span>{row.original.transaction_by?.name ?? "—"}</span>,
+      enableSorting: false,
+    },
+    {
       accessorKey: "note",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="fund_transaction.note.label" />

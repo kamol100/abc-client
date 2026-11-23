@@ -3882,6 +3882,10 @@
                 "salary": "স্যালারি"
             }
         },
+        "transaction_by": {
+            "label": "লেনদেনকারী",
+            "placeholder": "স্টাফ সিলেক্ট করুন"
+        },
         "amount": {
             "label": "পরিমাণ",
             "placeholder": "পরিমাণ দিন",
