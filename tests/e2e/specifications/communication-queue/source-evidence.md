@@ -9,8 +9,12 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `components/communication-queue/communication-queue-delete-button.tsx`
 - `components/communication-queue/communication-queue-delete-reason-dialog.tsx`
 - `components/communication-queue/communication-queue-filter-schema.ts`
+- `components/communication-queue/communication-queue-archive-dialog.tsx`
+- `components/communication-queue/communication-queue-archive-table.tsx`
 - `components/communication-queue/communication-queue-bulk-dialog.tsx`
 - `components/communication-queue/communication-queue-resend-button.tsx`
+- `components/communication-queue/communication-queue-restore-button.tsx`
+- `components/communication-queue/communication-queue-restore-options.tsx`
 - `components/communication-queue/communication-queue-stop-button.tsx`
 - `components/communication-queue/communication-queue-table.tsx`
 - `components/communication-queue/communication-queue-type.ts`
@@ -23,6 +27,11 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `communication-queue.stop-all`
 - `communication-queue.delete`
 - `communication-queue.delete-all`
+- `communication-queue.archive`
+- `communication-queue.restore`
+- `communication-queue.restore-all`
+- `communication-queue.force-delete`
+- `communication-queue.force-delete-all`
 
 ## Observed API templates (not validated endpoints)
 
@@ -32,6 +41,11 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `/communication-queue/stop-all`
 - `/communication-queue/${smsId}` (DELETE)
 - `/communication-queue/delete-all`
+- `communication-queue/archive`
+- `/communication-queue/${smsId}/restore`
+- `/communication-queue/restore-all`
+- `/communication-queue/${itemId}/force` (DELETE)
+- `/communication-queue/force-delete-all`
 - `communication-queue`
 
 ## Observed form/config field names
@@ -50,6 +64,11 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - POST `/communication-queue/stop-all` → `communication-queue.stop-all`; `CommunicationQueueController::stopAll`; `../isp-backend/routes/api.php`
 - DELETE `/communication-queue/{communicationQueue}` → `communication-queue.delete`; `CommunicationQueueController::destroy`; `../isp-backend/routes/api.php`
 - POST `/communication-queue/delete-all` → `communication-queue.delete-all`; `CommunicationQueueController::destroyAll`; `../isp-backend/routes/api.php`
+- GET `/communication-queue/archive` → `communication-queue.archive`; `CommunicationQueueArchiveController::index`
+- POST `/communication-queue/{communicationQueue}/restore` → `communication-queue.restore`; `CommunicationQueueArchiveController::restore`
+- POST `/communication-queue/restore-all` → `communication-queue.restore-all`; `CommunicationQueueArchiveController::restoreAll`
+- DELETE `/communication-queue/{communicationQueue}/force` → `communication-queue.force-delete`; `CommunicationQueueArchiveController::forceDelete`
+- POST `/communication-queue/force-delete-all` → `communication-queue.force-delete-all`; `CommunicationQueueArchiveController::forceDeleteAll`
 
 ## Backend contract files to review
 

@@ -1,3 +1,31 @@
+## DatePicker time option, aligned queue confirm buttons with icons — 2026-11-23
+
+- `components/form/DatePicker.tsx` has a new opt-in `showTime` (single mode only) and a `timeFormat` (default `hh:mm a`). With `showTime`:
+  - A time field and a Done button sit under the calendar.
+  - Picking a day keeps the current time, or uses now for a first pick, and the popover stays open.
+  - Changing the time updates the Date.
+  - The trigger shows `MM/dd/yyyy hh:mm a`.
+  Without `showTime` nothing changes: no time field, date-only display, and it closes on pick as before. New keys `common.time` and `common.done` are in `en.json` and `bn.json`.
+- The archive Restore send time now uses this DatePicker (`showTime`, not clearable, disabled for "Keep old status") instead of a native `datetime-local` input. The restore options hold a `Date` and send `yyyy-MM-dd HH:mm:ss` local time.
+- New `communication-queue-confirm-footer.tsx` is used by every queue confirm window: Resend All, Stop All, Delete All and its reason step, the inline delete reason, Restore All, Delete All Permanently, and inline Restore. Both buttons are now 36px. Before, Cancel had no size and rendered 32px next to a 36px submit, so they did not line up. Cancel has the X icon. The confirm button shows its action icon (refresh, stop, trash, archive-restore), which turns into a spinner while the request runs. Inline permanent delete keeps the app's `DeleteModal`, which already has the same sizes and icons.
+
+Checked in the browser on `/communication-queue` as vpc at 1440px, cancelling every time so nothing changed. All 10 confirm windows have Cancel and confirm at 36px on the same line, both with an icon. Restore All shows the current date-time ("11/23/2026 09:43 PM"; the time field showed 21:43), and choosing "Keep old status" disables it. No page errors.
+
+`scripts/ai/typecheck` passed. New `tests/unit/form/date-picker-time.test.tsx` (2 tests: unchanged default behaviour, and time kept and set). `tests/unit/communication-queue/restore-options.test.tsx` was updated (4). `scripts/ai/test`: the same 20 baseline failures, everything else passed. The baseline DatePicker failures hard-code October 2026 dates and fail the same way on HEAD.
+
+## Communication queue: deleted-SMS archive with restore and permanent delete — 2026-11-23
+
+- An archive icon button now sits before the Filter button (permission `communication-queue.archive`). It opens a full-screen modal with the deleted SMS.
+- The modal's table (`communication-queue-archive-table.tsx`) has the queue's search and filters plus a Deleted At date filter. It reuses the queue columns through a new `archive` variant, which adds a Deleted At column and swaps the row actions.
+- Row actions:
+  - Restore opens a dialog with a "Pending (send again)" / "Keep old status" radio and a "Send at" date-time that defaults to now. The time is enabled only for Pending.
+  - Delete permanently uses the app's standard `DeleteModal` confirm, with no reason.
+- Toolbar bulk buttons, after Filter in both states: Restore All and Delete All Permanently. Both use the shared bulk dialog with the type checkboxes and the six statuses, all checked. Restore All also shows the restore options. The bulk dialog's single status-and-reason flag became separate `pickStatus` / `askReason` / `restoreOptions` / `destructive` / `refresh` settings; Resend, Stop and Delete All behave as before.
+- New files: `communication-queue-restore-options.tsx` (shared radio and date-time, plus payload helpers), `communication-queue-restore-button.tsx`, `communication-queue-archive-dialog.tsx`.
+- New keys under `communication_queue` (`archive.*`, `deleted_at`, `restore.*`, `force_delete.*`) are in `en.json` and `bn.json`. The e2e source-evidence list was updated.
+
+`scripts/ai/typecheck` passed. `tests/unit/communication-queue/restore-options.test.tsx` passed (4 tests). `scripts/ai/test`: 866 passed, with the same 20 baseline failures. In the browser, the queue page still loads with no errors. The archive itself was not checked: vpc needs the new permissions from `update:permission`, which was not run here.
+
 ## Communication queue filters: any search, Send At, Expire At — 2026-11-23
 
 The queue filter row drops the SMS To and SMS From fields. It now has an "any" search ("Search number, message or comment") that searches SMS to, SMS from, message and comment as you type (`watchForFilter`, like the client any search). It also has Send At and Expire At date pickers that take one day or a range (`dateRange`, Apply button). SMS Type and Status are unchanged. The table's old `watchFields` option was removed: dropdowns and dates submit on change, and the any field is watched. New keys `communication_queue.any_search.placeholder` are in `en.json` and `bn.json`. Backend: new `any`, `send_at` and `expire_at` filters in isp-backend.

@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import MyButton from "@/components/my-button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { CommunicationQueueConfirmFooter } from "./communication-queue-confirm-footer";
 
 type Props = {
   open: boolean;
@@ -78,15 +77,14 @@ export function CommunicationQueueDeleteReasonDialog({ open, onOpenChange, descr
             {showError ? t("communication_queue.delete_reason.errors.required") : null}
           </p>
         </div>
-        <DialogFooter>
-          <MyButton variant="outline" onClick={() => onOpenChange(false)}>
-            {t("common.cancel")}
-          </MyButton>
-          <MyButton variant="destructive" size="default" onClick={submit} disabled={isPending}>
-            {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-            {t("communication_queue.delete_sms")}
-          </MyButton>
-        </DialogFooter>
+        <CommunicationQueueConfirmFooter
+          onCancel={() => onOpenChange(false)}
+          onConfirm={submit}
+          confirmLabel="communication_queue.delete_sms"
+          confirmIcon={Trash2}
+          pending={isPending}
+          destructive
+        />
       </DialogContent>
     </Dialog>
   );

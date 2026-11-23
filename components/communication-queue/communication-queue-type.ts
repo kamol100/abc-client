@@ -13,6 +13,8 @@ export const CommunicationQueueRowSchema = z
     comment: z.string().nullable().optional(),
     send_at: z.string().nullable().optional(),
     expire_at: z.string().nullable().optional(),
+    /** Archive list only: when it was deleted. */
+    deleted_at: z.string().nullable().optional(),
   })
   .passthrough();
 

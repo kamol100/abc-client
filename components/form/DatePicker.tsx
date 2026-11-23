@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import Label from "../label";
 import { MyButton } from "../my-button";
 import { Calendar } from "../ui/calendar";
+import { Input } from "../ui/input";
 import {
     Popover,
     PopoverContent,
@@ -41,9 +42,30 @@ type DatePickerProps = {
     clearable?: boolean;
     hide_calendar_icon_on_date_range?: boolean;
     locale?: Partial<DayPickerLocale>;
+    /**
+     * Single mode only: also pick a time (a time field under the calendar). The value
+     * stays a Date, now with hours and minutes, and the popover stays open until Done.
+     * Off by default, so existing pickers are unchanged.
+     */
+    showTime?: boolean;
+    /** Display format for the time part when showTime is on. */
+    timeFormat?: string;
 };
 
 const RANGE_SEPARATOR = " - ";
+
+const pad2 = (value: number) => String(value).padStart(2, "0");
+
+/** "HH:mm" for an <input type="time">. */
+const toTimeInputValue = (date: Date | undefined) =>
+    date ? `${pad2(date.getHours())}:${pad2(date.getMinutes())}` : "";
+
+/** The day from `day`, the hours/minutes from `time` (seconds cleared). */
+const withTime = (day: Date, time: Date | undefined): Date => {
+    const next = new Date(day);
+    next.setHours(time ? time.getHours() : 0, time ? time.getMinutes() : 0, 0, 0);
+    return next;
+};
 
 const rangeEndpointFormats = (rangeDateFormat: string) => {
     const splitAt = rangeDateFormat.indexOf(RANGE_SEPARATOR);
@@ -175,7 +197,11 @@ const DatePicker = ({
     closeOnSelectDate = true,
     clearable = true,
     hide_calendar_icon_on_date_range = true,
+    showTime = false,
+    timeFormat = "hh:mm a",
 }: DatePickerProps) => {
+    const timeEnabled = showTime && mode === "single";
+    const displayDateFormat = timeEnabled ? `${dateFormat} ${timeFormat}` : dateFormat;
     const { t, i18n } = useTranslation();
     const language = parseLanguage(i18n.language);
     const locale = language === "en" ? enUS : bn;
@@ -188,7 +214,7 @@ const DatePicker = ({
     const [hoveredDay, setHoveredDay] = useState<Date | undefined>();
 
     const displayValue = (value: DatePickerValue) =>
-        formatDatePickerDisplay(value, mode, dateFormat, rangeDateFormat);
+        formatDatePickerDisplay(value, mode, displayDateFormat, rangeDateFormat);
 
     const resetPendingRange = useCallback(() => {
         setIsChoosingRange(false);
@@ -222,9 +248,30 @@ const DatePicker = ({
         if (shouldClose) setOpen(false);
     }, [onValueChange, resetPendingRange]);
 
-    const handleSelect = useCallback((next: Date | undefined, onChange: (value: DatePickerValue) => void) => {
+    const handleSelect = useCallback((
+        next: Date | undefined,
+        onChange: (value: DatePickerValue) => void,
+        current?: Date,
+    ) => {
+        if (timeEnabled) {
+            // Keep the chosen time (or now, for a first pick); stay open to set the time.
+            commitValue(next ? withTime(next, current ?? new Date()) : undefined, onChange, false);
+            return;
+        }
         commitValue(next, onChange, closeOnSelectDate && Boolean(next));
-    }, [closeOnSelectDate, commitValue]);
+    }, [closeOnSelectDate, commitValue, timeEnabled]);
+
+    const handleTimeChange = useCallback((
+        time: string,
+        current: Date | undefined,
+        onChange: (value: DatePickerValue) => void,
+    ) => {
+        const match = /^(\d{2}):(\d{2})$/.exec(time);
+        if (!match) return;
+        const next = new Date(current ?? new Date());
+        next.setHours(Number(match[1]), Number(match[2]), 0, 0);
+        commitValue(next, onChange, false);
+    }, [commitValue]);
 
     const handleRangeSelect = useCallback((
         next: DateRange | undefined,
@@ -362,16 +409,42 @@ const DatePicker = ({
                                             </div>
                                         </div>
                                     ) : (
-                                        <Calendar
-                                            locale={locale}
-                                            mode="single"
-                                            selected={parsed as Date | undefined}
-                                            onSelect={(next) => handleSelect(next, onChange)}
-                                            autoFocus
-                                            defaultMonth={
-                                                (parsed as Date | undefined) ?? new Date()
-                                            }
-                                        />
+                                        <div className="flex flex-col">
+                                            <Calendar
+                                                locale={locale}
+                                                mode="single"
+                                                selected={parsed as Date | undefined}
+                                                onSelect={(next) => handleSelect(next, onChange, parsed as Date | undefined)}
+                                                autoFocus
+                                                defaultMonth={
+                                                    (parsed as Date | undefined) ?? new Date()
+                                                }
+                                            />
+                                            {timeEnabled && (
+                                                <div className="flex items-center gap-2 border-t border-border p-2">
+                                                    <Input
+                                                        type="time"
+                                                        aria-label={t("common.time")}
+                                                        className="h-8 flex-1"
+                                                        value={toTimeInputValue(parsed as Date | undefined)}
+                                                        onChange={(event) =>
+                                                            handleTimeChange(event.target.value, parsed as Date | undefined, onChange)
+                                                        }
+                                                    />
+                                                    <MyButton
+                                                        type="button"
+                                                        variant="default"
+                                                        size="sm"
+                                                        onClick={(event) => {
+                                                            event.preventDefault();
+                                                            setOpen(false);
+                                                        }}
+                                                    >
+                                                        {t("common.done")}
+                                                    </MyButton>
+                                                </div>
+                                            )}
+                                        </div>
                                     )}
                                 </PopoverContent>
                             </Popover>

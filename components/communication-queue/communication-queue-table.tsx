@@ -8,6 +8,7 @@ import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/too
 import { getCommunicationQueueColumns } from "./communication-queue-column";
 import { communicationQueueFilterSchema } from "./communication-queue-filter-schema";
 import { CommunicationQueueBulkDialog } from "./communication-queue-bulk-dialog";
+import { CommunicationQueueArchiveDialog } from "./communication-queue-archive-dialog";
 import { usePermissions } from "@/context/app-provider";
 import type { CommunicationQueueRow } from "./communication-queue-type";
 
@@ -72,7 +73,11 @@ const CommunicationQueueTable: FC = () => {
     title: toolbarTitle,
     // The bulk buttons sit after the filter button: in `add` while the filter is
     // closed, and in the open filter row (which replaces the actions row).
-    end: [{ key: "bulk-actions", onlyInFilterRow: true, node: bulkActions }],
+    end: [
+      // Before the filter button (closed), and in the open filter row.
+      { key: "archive", inFilterRow: false, show: hasPermission("communication-queue.archive"), node: <CommunicationQueueArchiveDialog /> },
+      { key: "bulk-actions", onlyInFilterRow: true, node: bulkActions },
+    ],
     features: {
       columns: true,
       filter: toolbarOptions,

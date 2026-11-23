@@ -22,6 +22,8 @@
         "results": "Results",
         "reset": "Reset",
         "clear": "Clear",
+        "time": "Time",
+        "done": "Done",
         "apply": "Apply",
         "apply_filter": "Apply Filter",
         "toggle_columns": "Toggle columns",
@@ -889,6 +891,33 @@
         },
         "any_search": {
             "placeholder": "Search number, message or comment"
+        },
+        "archive": {
+            "open": "Deleted SMS",
+            "title": "Deleted SMS",
+            "title_count": "Deleted SMS ({{count}})"
+        },
+        "deleted_at": {
+            "label": "Deleted At"
+        },
+        "restore": {
+            "label": "Restore",
+            "all": "Restore All",
+            "submit": "Restore SMS",
+            "success": "SMS restored successfully",
+            "status_label": "Status after restore",
+            "mode_pending": "Pending (send again)",
+            "mode_keep": "Keep old status",
+            "send_at": "Send at",
+            "send_at_hint": "The SMS is sent at this time.",
+            "send_at_keep_hint": "Send time is unchanged when keeping the old status."
+        },
+        "force_delete": {
+            "label": "Delete permanently",
+            "all": "Delete All Permanently",
+            "submit": "Delete permanently",
+            "success": "SMS permanently deleted",
+            "confirm_one": "This SMS will be removed for good and cannot be restored."
         },
         "resend_success": "SMS resent successfully",
         "sms_to": {

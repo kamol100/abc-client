@@ -2,7 +2,8 @@
 
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-export function communicationQueueFilterSchema(): FieldConfig[] {
+/** `archive`: the deleted-SMS list, which can also filter by Deleted At. */
+export function communicationQueueFilterSchema({ archive = false }: { archive?: boolean } = {}): FieldConfig[] {
   const smsTypeOptions = [
     { value: "custom_client", label: "communication_queue.sms_type.options.custom_client" },
     { value: "custom_other", label: "communication_queue.sms_type.options.custom_other" },
@@ -21,7 +22,7 @@ export function communicationQueueFilterSchema(): FieldConfig[] {
     { value: "processing", label: "communication_queue.status.options.processing" },
   ];
 
-  return [
+  const fields: FieldConfig[] = [
     {
       // Searches SMS to, SMS from, message and comment as you type.
       type: "text",
@@ -55,6 +56,17 @@ export function communicationQueueFilterSchema(): FieldConfig[] {
       closeOnSelectDate: false,
     },
   ];
+
+  if (archive) {
+    fields.push({
+      type: "dateRange",
+      name: "deleted_at",
+      placeholder: "communication_queue.deleted_at.label",
+      closeOnSelectDate: false,
+    });
+  }
+
+  return fields;
 }
 
 export default communicationQueueFilterSchema;

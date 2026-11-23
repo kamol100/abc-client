@@ -20,15 +20,37 @@ import { cn } from "@/lib/utils";
 import { CommunicationQueueResendButton } from "./communication-queue-resend-button";
 import { CommunicationQueueStopButton } from "./communication-queue-stop-button";
 import { CommunicationQueueDeleteButton } from "./communication-queue-delete-button";
+import { CommunicationQueueRestoreButton } from "./communication-queue-restore-button";
+import { DeleteModal } from "@/components/delete-modal";
 import type { CommunicationQueueRow } from "./communication-queue-type";
 
 const MESSAGE_MAX_LENGTH = 50;
 
 type GetPagination = () => Pagination | undefined;
 
+/** "archive": the deleted-SMS list, with Deleted At and Restore / Delete permanently actions. */
+export type CommunicationQueueColumnsVariant = "queue" | "archive";
+
 export function getCommunicationQueueColumns(
-  getPagination: GetPagination
+  getPagination: GetPagination,
+  variant: CommunicationQueueColumnsVariant = "queue",
 ): ColumnDef<CommunicationQueueRow>[] {
+  const deletedAtColumn: ColumnDef<CommunicationQueueRow>[] =
+    variant === "archive"
+      ? [
+          {
+            accessorKey: "deleted_at",
+            header: ({ column }) => (
+              <DataTableColumnHeader column={column} title="communication_queue.deleted_at.label" />
+            ),
+            cell: ({ row }) => (
+              <div className="text-muted-foreground">{row.original.deleted_at ?? "—"}</div>
+            ),
+            enableSorting: false,
+          },
+        ]
+      : [];
+
   return [
     {
       id: "sl",
@@ -174,6 +196,7 @@ export function getCommunicationQueueColumns(
       ),
       enableSorting: false,
     },
+    ...deletedAtColumn,
     {
       id: "actions",
       header: ({ column }) => (
@@ -183,9 +206,12 @@ export function getCommunicationQueueColumns(
           title="common.actions"
         />
       ),
-      cell: ({ row }) => (
-        <CommunicationQueueActionsCell item={row.original} />
-      ),
+      cell: ({ row }) =>
+        variant === "archive" ? (
+          <CommunicationQueueArchiveActionsCell item={row.original} />
+        ) : (
+          <CommunicationQueueActionsCell item={row.original} />
+        ),
       enableSorting: false,
       enableHiding: false,
     },
@@ -291,6 +317,34 @@ function CommunicationQueueActionsCell({
       {canResend && <CommunicationQueueResendButton smsId={itemId} />}
       {canStop && <CommunicationQueueStopButton smsId={itemId} />}
       {canDelete && <CommunicationQueueDeleteButton smsId={itemId} />}
+    </div>
+  );
+}
+
+/** Archive row: restore it, or delete it for good (standard delete confirm). */
+function CommunicationQueueArchiveActionsCell({ item }: { item: CommunicationQueueRow }) {
+  const { t } = useTranslation();
+  const { hasPermission } = usePermissions();
+  const canRestore = hasPermission("communication-queue.restore");
+  const canForceDelete = hasPermission("communication-queue.force-delete");
+  const itemId = typeof item.id === "number" ? String(item.id) : item.id;
+
+  if (!canRestore && !canForceDelete) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+
+  return (
+    <div className="flex items-center justify-end gap-2 mr-3">
+      {canRestore && <CommunicationQueueRestoreButton smsId={itemId} />}
+      {canForceDelete && (
+        <DeleteModal
+          api_url={`/communication-queue/${itemId}/force`}
+          keys="communicationQueueArchive"
+          confirmMessage="communication_queue.force_delete.confirm_one"
+          message="communication_queue.force_delete.success"
+          tooltip={t("communication_queue.force_delete.label")}
+        />
+      )}
     </div>
   );
 }
