@@ -1,12 +1,27 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
-import { FieldValues, useForm, useFormContext, useWatch } from "react-hook-form";
+/**
+ * Add Fund Transaction dialog: moves money from a sender fund to a receiver fund.
+ *
+ * The form is split in two on purpose:
+ * - The receiver fund lives in its own small form (`useReceiverFund`), because its
+ *   uuid is part of the API path: `POST /fund-transactions/{receiverUuid}`.
+ * - Sender, amount and note live in `FormBuilder` (`TransferForm`) and are the payload.
+ *
+ * The receiver field is passed into `TransferForm` as a slot so it renders between
+ * the sender and the amount.
+ */
+
+import { ReactNode, useEffect, useMemo } from "react";
+import { FieldValues, useForm, useFormContext, useWatch, type UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import SelectDropdown from "@/components/select-dropdown";
 import FormTrigger from "@/components/form-trigger";
 import FormBuilder from "@/components/form-wrapper/form-builder";
-import { fundTransactionAccess } from "@/components/fund-transactions/fund-transaction-access";
+import {
+  fundTransactionAccess,
+  type FundTransactionAccess,
+} from "@/components/fund-transactions/fund-transaction-access";
 import FundTransactionFormFieldSchema from "@/components/fund-transactions/fund-transaction-form-schema";
 import { FundTransactionFormSchema } from "@/components/fund-transactions/fund-transaction-type";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -15,13 +30,8 @@ import { Form } from "@/components/ui/form";
 import { useProfile, useSetting } from "@/context/app-provider";
 import { formatMoney } from "@/lib/helper/helper";
 
-type FundPickValues = {
-  fund_uuid: string | null;
-  fund_name: string;
-  fund_balance: number | string | null;
-};
-
 type FundTransactionFormProps = {
+  /** Receiver fund uuid to preset (the fund's own transactions dialog). */
   fundId?: string | number | null;
   fundName?: string | null;
   fundBalance?: number | string | null;
@@ -31,109 +41,243 @@ type FundTransactionFormProps = {
   trigger?: ReactNode;
 };
 
-const hasSelection = (value: unknown): boolean =>
-  value != null && value !== "";
+type ReceiverFundValues = {
+  fund_uuid: string | null;
+  fund_name: string;
+  fund_balance: number | string | null;
+};
 
-const SenderFundDetails = ({ receiverUuid }: { receiverUuid: string | null }) => {
+const TRANSFER_DEFAULTS = {
+  amount: 0,
+  note: "",
+  transfer_by: null,
+  transaction_type: "transfer",
+};
+
+/** This dialog only records transfers. */
+const asTransfer = (values: FieldValues): FieldValues => ({
+  ...values,
+  transaction_type: "transfer",
+});
+
+const hasSelection = (value: unknown): boolean => value != null && value !== "";
+
+const selectedUuid = (value: unknown): string | null =>
+  typeof value === "string" && value !== "" ? value : null;
+
+// --- Shared ---
+
+/** "Current Balance: ৳1,220" under a fund field, or "unavailable" when unknown. */
+const FundBalanceHint = ({ balance }: { balance: unknown }) => {
   const { t } = useTranslation();
+  const known = typeof balance === "number" || (typeof balance === "string" && balance !== "");
+
+  return (
+    <p className="text-sm text-muted-foreground">
+      {t("fund_transaction.current_balance")}:{" "}
+      {known ? `৳${formatMoney(balance)}` : t("fund_transaction.balance_unavailable")}
+    </p>
+  );
+};
+
+// --- Sender fund (inside FormBuilder) ---
+
+const clearSenderDetails = (setValue: UseFormReturn["setValue"]) => {
+  setValue("sender_balance", null, { shouldDirty: false, shouldValidate: false });
+  setValue("sender_uuid", null, { shouldDirty: false, shouldValidate: false });
+};
+
+/**
+ * Clears the sender's populated details when it is cleared, and rejects a sender
+ * that is the same fund as the receiver.
+ */
+function useSenderFundGuard(receiverUuid: string | null) {
   const { setError, setValue } = useFormContext();
   const transferBy = useWatch({ name: "transfer_by" });
   const senderUuid = useWatch({ name: "sender_uuid" });
-  const senderBalance = useWatch({ name: "sender_balance" });
 
   useEffect(() => {
     if (!hasSelection(transferBy)) {
-      setValue("sender_balance", null, { shouldDirty: false, shouldValidate: false });
-      setValue("sender_uuid", null, { shouldDirty: false, shouldValidate: false });
+      clearSenderDetails(setValue);
       return;
     }
 
     if (!receiverUuid || senderUuid !== receiverUuid) return;
 
     setValue("transfer_by", null, { shouldDirty: true, shouldValidate: true });
-    setValue("sender_balance", null, { shouldDirty: false, shouldValidate: false });
-    setValue("sender_uuid", null, { shouldDirty: false, shouldValidate: false });
+    clearSenderDetails(setValue);
     setError("transfer_by", {
       type: "validate",
       message: "fund_transaction.transfer_by.errors.same",
     });
   }, [receiverUuid, senderUuid, setError, setValue, transferBy]);
 
-  if (!hasSelection(transferBy)) return null;
+  return hasSelection(transferBy);
+}
 
-  const balanceKnown = typeof senderBalance === "number" || typeof senderBalance === "string";
+const SenderFundBalance = ({ receiverUuid }: { receiverUuid: string | null }) => {
+  const hasSender = useSenderFundGuard(receiverUuid);
+  const senderBalance = useWatch({ name: "sender_balance" });
 
-  return (
-    <p className="text-sm text-muted-foreground">
-      {t("fund_transaction.current_balance")}:{" "}
-      {balanceKnown && senderBalance !== ""
-        ? `৳${formatMoney(senderBalance)}`
-        : t("fund_transaction.balance_unavailable")}
-    </p>
-  );
+  return hasSender ? <FundBalanceHint balance={senderBalance} /> : null;
 };
 
-const FundTransactionEditor = ({
-  fundId,
+// --- Transfer form: sender, receiver slot, amount, note ---
+
+const TransferForm = ({
+  receiverUuid,
   queryKey,
-  actionButton,
-  receiver,
+  canSubmit,
+  receiverField,
 }: {
-  fundId: string | null;
+  /** Null until a receiver is chosen; the form cannot post without it. */
+  receiverUuid: string | null;
   queryKey: string;
-  actionButton: boolean;
-  receiver: ReactNode;
+  canSubmit: boolean;
+  receiverField: ReactNode;
 }) => {
-  const [senderField, amountField, noteField] = FundTransactionFormFieldSchema(fundId);
-  const renderNamedField = (
-    renderField: (field: FieldConfig) => ReactNode,
-    field: FieldConfig | undefined,
-  ) => (field ? renderField(field) : null);
+  const formSchema = useMemo(() => FundTransactionFormFieldSchema(receiverUuid), [receiverUuid]);
+  const fieldNamed = (name: string): FieldConfig | undefined =>
+    formSchema.find((field) => field.name === name);
 
   return (
     <FormBuilder
-      formSchema={FundTransactionFormFieldSchema(fundId)}
+      formSchema={formSchema}
       grids={1}
-      api={fundId ? `/fund-transactions/${fundId}` : ""}
+      api={receiverUuid ? `/fund-transactions/${receiverUuid}` : ""}
       mode="create"
       schema={FundTransactionFormSchema}
       method="POST"
       queryKey={queryKey}
-      actionButton={actionButton}
-      data={{
-        amount: 0,
-        note: "",
-        transfer_by: null,
-        transaction_type: "transfer",
-      }}
-      transformPayload={(values: FieldValues) => ({
-        ...values,
-        transaction_type: "transfer",
-      })}
+      actionButton={canSubmit}
+      data={TRANSFER_DEFAULTS}
+      transformPayload={asTransfer}
     >
-      {(renderField) => (
-        <div className="grid gap-4">
-          <div className="grid gap-1">
-            {renderNamedField(renderField, senderField)}
-            <SenderFundDetails receiverUuid={fundId} />
+      {(renderField) => {
+        const render = (name: string) => {
+          const field = fieldNamed(name);
+          return field ? renderField(field) : null;
+        };
+
+        return (
+          <div className="grid gap-4">
+            <div className="grid gap-1">
+              {render("transfer_by")}
+              <SenderFundBalance receiverUuid={receiverUuid} />
+            </div>
+            {receiverField}
+            {render("amount")}
+            {render("note")}
           </div>
-          {receiver}
-          {renderNamedField(renderField, amountField)}
-          {renderNamedField(renderField, noteField)}
-        </div>
-      )}
+        );
+      }}
     </FormBuilder>
   );
 };
+
+// --- Receiver fund (its own form) ---
+
+/**
+ * Receiver fund state. Starts on the preset fund (or the user's own fund when they
+ * cannot choose) and stays there when the fund is locked.
+ */
+function useReceiverFund(access: FundTransactionAccess) {
+  const picker = useForm<ReceiverFundValues>({
+    defaultValues: {
+      fund_uuid: access.fundUuid,
+      fund_name: access.fundName,
+      fund_balance: access.fundBalance,
+    },
+  });
+  const { clearErrors, control, getValues, setError, setValue } = picker;
+  const receiverUuid = selectedUuid(useWatch({ control, name: "fund_uuid" }));
+  const receiverBalance = useWatch({ control, name: "fund_balance" });
+
+  useEffect(() => {
+    const keepAccessFund = access.lockFund || (access.fundUuid && !getValues("fund_uuid"));
+    if (!keepAccessFund) return;
+
+    setValue("fund_uuid", access.fundUuid);
+    setValue("fund_name", access.fundName);
+    setValue("fund_balance", access.fundBalance);
+  }, [access.fundBalance, access.fundName, access.fundUuid, access.lockFund, getValues, setValue]);
+
+  useEffect(() => {
+    if (receiverUuid) clearErrors("fund_uuid");
+  }, [clearErrors, receiverUuid]);
+
+  /** The receiver is not in the transfer schema, so flag it when the transfer form submits. */
+  const flagMissingReceiver = () => {
+    if (receiverUuid || access.blockSubmit) return;
+    setError("fund_uuid", {
+      type: "required",
+      message: "fund_transaction.received_by.errors.required",
+    });
+  };
+
+  return { picker, receiverUuid, receiverBalance, flagMissingReceiver };
+}
+
+const ReceiverFundField = ({
+  picker,
+  access,
+  receiverUuid,
+  receiverBalance,
+}: {
+  picker: UseFormReturn<ReceiverFundValues>;
+  access: FundTransactionAccess;
+  receiverUuid: string | null;
+  receiverBalance: unknown;
+}) => {
+  const { t } = useTranslation();
+  const locked = access.lockFund;
+
+  return (
+    <div className="grid gap-1">
+      <Form {...picker}>
+        <SelectDropdown
+          name="fund_uuid"
+          label={{
+            labelText: "fund_transaction.received_by.label",
+            mandatory: true,
+          }}
+          placeholder="fund_transaction.received_by.placeholder"
+          api={locked ? undefined : "/dropdown-funds"}
+          options={locked ? (access.fundOption ? [access.fundOption] : []) : undefined}
+          optionValueKey={locked ? undefined : "uuid"}
+          isDisabled={locked}
+          isClearable={false}
+          populate={
+            locked
+              ? undefined
+              : [
+                { field: "fund_name", from: "name" },
+                { field: "fund_balance", from: "balance" },
+              ]
+          }
+        />
+      </Form>
+
+      {access.showUnassignedWarning ? (
+        <p role="alert" className="text-sm text-destructive">
+          {t("fund_transaction.fund.errors.unassigned")}
+        </p>
+      ) : null}
+
+      {receiverUuid ? <FundBalanceHint balance={receiverBalance} /> : null}
+    </div>
+  );
+};
+
+// --- Dialog body ---
 
 const FundTransactionBody = ({
   queryKey,
   presetFund,
 }: {
   queryKey: string;
-  presetFund: FundPickValues | null;
+  presetFund: ReceiverFundValues | null;
 }) => {
-  const { t } = useTranslation();
   const { profile } = useProfile();
   const roles = useSetting("roles");
   const access = fundTransactionAccess({
@@ -147,102 +291,21 @@ const FundTransactionBody = ({
       }
       : null,
   });
-
-  const picker = useForm<FundPickValues>({
-    defaultValues: {
-      fund_uuid: access.fundUuid,
-      fund_name: access.fundName,
-      fund_balance: access.fundBalance,
-    },
-  });
-  const { clearErrors, control, getValues, setError, setValue } = picker;
-  const fundUuid = useWatch({ control, name: "fund_uuid" });
-  const fundBalance = useWatch({ control, name: "fund_balance" });
-
-  useEffect(() => {
-    if (access.lockFund) {
-      setValue("fund_uuid", access.fundUuid);
-      setValue("fund_name", access.fundName);
-      setValue("fund_balance", access.fundBalance);
-      return;
-    }
-
-    if (access.fundUuid && !getValues("fund_uuid")) {
-      setValue("fund_uuid", access.fundUuid);
-      setValue("fund_name", access.fundName);
-      setValue("fund_balance", access.fundBalance);
-    }
-  }, [
-    access.fundBalance,
-    access.fundName,
-    access.fundUuid,
-    access.lockFund,
-    getValues,
-    setValue,
-  ]);
-
-  const selectedFundUuid = typeof fundUuid === "string" && fundUuid !== "" ? fundUuid : null;
-
-  useEffect(() => {
-    if (selectedFundUuid) clearErrors("fund_uuid");
-  }, [clearErrors, selectedFundUuid]);
+  const { picker, receiverUuid, receiverBalance, flagMissingReceiver } = useReceiverFund(access);
 
   return (
-    <div
-      className="grid gap-4"
-      onSubmitCapture={() => {
-        if (selectedFundUuid || access.blockSubmit) return;
-        setError("fund_uuid", {
-          type: "required",
-          message: "fund_transaction.received_by.errors.required",
-        });
-      }}
-    >
-      <FundTransactionEditor
-        fundId={access.blockSubmit ? null : selectedFundUuid}
+    <div className="grid gap-4" onSubmitCapture={flagMissingReceiver}>
+      <TransferForm
+        receiverUuid={access.blockSubmit ? null : receiverUuid}
         queryKey={queryKey}
-        actionButton={!access.blockSubmit}
-        receiver={
-          <div className="grid gap-1">
-            <Form {...picker}>
-              <SelectDropdown
-                name="fund_uuid"
-                label={{
-                  labelText: "fund_transaction.received_by.label",
-                  mandatory: true,
-                }}
-                placeholder="fund_transaction.received_by.placeholder"
-                api={access.lockFund ? undefined : "/dropdown-funds"}
-                options={access.lockFund ? (access.fundOption ? [access.fundOption] : []) : undefined}
-                optionValueKey={access.lockFund ? undefined : "uuid"}
-                isDisabled={access.lockFund}
-                isClearable={false}
-                populate={
-                  access.lockFund
-                    ? undefined
-                    : [
-                      { field: "fund_name", from: "name" },
-                      { field: "fund_balance", from: "balance" },
-                    ]
-                }
-              />
-            </Form>
-
-            {access.showUnassignedWarning ? (
-              <p role="alert" className="text-sm text-destructive">
-                {t("fund_transaction.fund.errors.unassigned")}
-              </p>
-            ) : null}
-
-            {selectedFundUuid ? (
-              <p className="text-sm text-muted-foreground">
-                {t("fund_transaction.current_balance")}:{" "}
-                {fundBalance != null && fundBalance !== ""
-                  ? `৳${formatMoney(fundBalance)}`
-                  : t("fund_transaction.balance_unavailable")}
-              </p>
-            ) : null}
-          </div>
+        canSubmit={!access.blockSubmit}
+        receiverField={
+          <ReceiverFundField
+            picker={picker}
+            access={access}
+            receiverUuid={receiverUuid}
+            receiverBalance={receiverBalance}
+          />
         }
       />
     </div>
@@ -258,14 +321,13 @@ const FundTransactionForm = ({
   onOpenChange,
   trigger,
 }: FundTransactionFormProps) => {
-  const presetFund =
-    fundId != null && fundId !== ""
-      ? {
-        fund_uuid: String(fundId),
-        fund_name: fundName ?? "",
-        fund_balance: fundBalance,
-      }
-      : null;
+  const presetFund = hasSelection(fundId)
+    ? {
+      fund_uuid: String(fundId),
+      fund_name: fundName ?? "",
+      fund_balance: fundBalance,
+    }
+    : null;
 
   return (
     <MyDialog

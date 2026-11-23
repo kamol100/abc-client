@@ -1,3 +1,19 @@
+## Fund transaction form: readability refactor — 2026-11-23
+
+`components/fund-transactions/fund-transaction-form.tsx` is reorganised. The UI and behaviour are unchanged. A comment at the top explains why there are two forms: the receiver fund's uuid is part of the API path (`POST /fund-transactions/{uuid}`), so it lives in its own small form, while sender, amount and note go through `FormBuilder`. The code is split into named pieces:
+
+- `FundBalanceHint` replaces the two copies of the "Current Balance" line.
+- `useSenderFundGuard` holds the effect that clears the sender details and rejects a sender that is also the receiver.
+- `useReceiverFund` holds the receiver form, the preset/locked-fund effect (one condition instead of two copied branches), and `flagMissingReceiver`, which used to be an inline `onSubmitCapture`.
+- `ReceiverFundField` renders the receiver dropdown, the unassigned warning and the balance.
+- `TransferForm` (was `FundTransactionEditor`) builds the field schema once with `useMemo` and renders fields by name instead of by array position. The default values and the "always a transfer" payload transform are named constants.
+
+Same API calls, permission rules, translations and markup.
+
+A Playwright script was run on `http://vp.isp.test` as vpc before and after the change, and the outputs were identical. The script covers: opening Add on `/fund-transactions`, an empty save (three required errors), picking bkash → vp (both balances shown), saving 999999 (the API's "Transaction amount must be less or qual account balance" error, dialog stays open), choosing the sender fund as the receiver (sender cleared with an error), and the preset receiver from a fund's View dialog on `/funds` (vp preset with balance, vp left out of the sender list). No page errors and no transaction was saved. The locked-fund path for a staff member without an admin role was not run in the browser.
+
+`scripts/ai/typecheck` passed. `npx vitest run tests/unit/fund-transactions` passed (13).
+
 ## Fund transactions: totals by transaction type — 2026-11-23
 
 The Fund Transactions toolbar now shows one chip per transaction type (Deposit, Transfer, Withdraw, Expense, Salary) with its total, in the same toolbar center slot and chip style as the invoice and expense totals. A type is shown only when its total is above 0. While the list first loads, one chip-sized skeleton holds the spot. The totals cover every page of the filtered list and follow the filters. The same chips appear in the fund's transaction dialog on the Funds page. Labels reuse `fund_transaction.transaction_type.options.*`, so no new translation keys. New: `components/fund-transactions/fund-transaction-reports.tsx` and the `FundTransactionListPayload` types. The data comes from the new `data.reports.type_totals` in `isp-backend`.
