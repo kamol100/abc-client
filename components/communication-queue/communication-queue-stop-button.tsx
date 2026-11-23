@@ -40,17 +40,16 @@ export function CommunicationQueueStopButton({ smsId }: { smsId: string }) {
     <MyButton
       onClick={() => stop()}
       disabled={isPending}
-      unstyled
-      className="p-0 hover:bg-transparent"
+      variant="outline"
+      size="icon"
+      tooltip={t("communication_queue.stop")}
+      aria-label={t("communication_queue.stop")}
     >
-      <div className="flex items-center gap-1">
-        {isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <CircleStop className="h-4 w-4" />
-        )}
-        <span>{t("communication_queue.stop")}</span>
-      </div>
+      {isPending ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <CircleStop className="h-4 w-4" />
+      )}
     </MyButton>
   );
 }

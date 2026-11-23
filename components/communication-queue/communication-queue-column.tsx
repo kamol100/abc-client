@@ -19,6 +19,7 @@ import { cellIndex } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { CommunicationQueueResendButton } from "./communication-queue-resend-button";
 import { CommunicationQueueStopButton } from "./communication-queue-stop-button";
+import { CommunicationQueueDeleteButton } from "./communication-queue-delete-button";
 import type { CommunicationQueueRow } from "./communication-queue-type";
 
 const MESSAGE_MAX_LENGTH = 50;
@@ -277,9 +278,11 @@ function CommunicationQueueActionsCell({
     (item.status === "stop" || item.status === "failed");
   // Only SMS still waiting can be stopped; processing ones are already with the gateway.
   const canStop = hasPermission("communication-queue.stop") && item.status === "pending";
+  // Delete works for every status; it asks for a reason first.
+  const canDelete = hasPermission("communication-queue.delete");
   const itemId = typeof item.id === "number" ? String(item.id) : item.id;
 
-  if (!canResend && !canStop) {
+  if (!canResend && !canStop && !canDelete) {
     return <span className="text-muted-foreground">—</span>;
   }
 
@@ -287,6 +290,7 @@ function CommunicationQueueActionsCell({
     <div className="flex items-center justify-end gap-2 mr-3">
       {canResend && <CommunicationQueueResendButton smsId={itemId} />}
       {canStop && <CommunicationQueueStopButton smsId={itemId} />}
+      {canDelete && <CommunicationQueueDeleteButton smsId={itemId} />}
     </div>
   );
 }

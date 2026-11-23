@@ -873,6 +873,20 @@
         "stop_all": "Stop All",
         "stop_sms": "Stop SMS",
         "stop_success": "SMS stopped successfully",
+        "delete": "Delete",
+        "delete_all": "Delete All",
+        "delete_sms": "Delete SMS",
+        "delete_success": "SMS deleted successfully",
+        "delete_confirm_title": "Delete from queue?",
+        "delete_confirm_one": "This SMS will be removed from the queue. Write why you are deleting it.",
+        "delete_confirm_all": "Every SMS with the selected types and statuses will be removed from the queue. Write why you are deleting them.",
+        "delete_reason": {
+            "label": "Delete reason",
+            "placeholder": "Why are you deleting?",
+            "errors": {
+                "required": "Delete reason is required"
+            }
+        },
         "resend_success": "SMS resent successfully",
         "sms_to": {
             "label": "SMS To"

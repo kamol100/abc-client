@@ -48,18 +48,16 @@ export function CommunicationQueueResendButton({
     <MyButton
       onClick={() => resend()}
       disabled={isPending}
-      title={t("communication_queue.resend")}
-      unstyled
-      className="p-0 hover:bg-transparent"
+      variant="outline"
+      size="icon"
+      tooltip={t("communication_queue.resend")}
+      aria-label={t("communication_queue.resend")}
     >
-      <div className="flex items-center gap-1">
-        {isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <RefreshCw className="h-4 w-4" />
-        )}
-        <span>{t("communication_queue.resend")}</span>
-      </div>
+      {isPending ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <RefreshCw className="h-4 w-4" />
+      )}
     </MyButton>
   );
 }

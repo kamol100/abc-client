@@ -3,7 +3,7 @@
 import { useFetch } from "@/app/actions";
 import { parseApiError } from "@/lib/helper/helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CircleStop, Loader2, RefreshCw, type LucideIcon } from "lucide-react";
+import { CircleStop, Loader2, RefreshCw, Trash2, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -18,15 +18,31 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { CommunicationQueueDeleteReasonDialog } from "./communication-queue-delete-reason-dialog";
 
 const SMS_TYPE_OPTIONS = ["custom_client", "custom_other", "invoice_due", "invoice_due_reminder"] as const;
+/** Delete All only: every status starts checked. */
+const STATUS_OPTIONS = ["pending", "processing", "completed", "sent", "failed", "stop"] as const;
 
-export type CommunicationQueueBulkAction = "resend" | "stop";
+export type CommunicationQueueBulkAction = "resend" | "stop" | "delete";
 
-/** Resend All requeues stopped/failed SMS; Stop All stops pending SMS. Same type picker. */
+type BulkPayload = { sms_type: string[]; statuses?: string[]; reason?: string };
+
+/**
+ * Resend All requeues stopped/failed SMS; Stop All stops pending SMS; Delete All
+ * deletes the chosen statuses after a reason. Same type picker for all three.
+ */
 const BULK_ACTIONS: Record<
   CommunicationQueueBulkAction,
-  { url: string; icon: LucideIcon; title: string; submit: string; success: string }
+  {
+    url: string;
+    icon: LucideIcon;
+    title: string;
+    submit: string;
+    success: string;
+    /** Delete All: pick statuses, then confirm with a reason. */
+    pickStatusAndReason?: boolean;
+  }
 > = {
   resend: {
     url: "/communication-queue/resend-all",
@@ -42,6 +58,14 @@ const BULK_ACTIONS: Record<
     submit: "communication_queue.stop_sms",
     success: "communication_queue.stop_success",
   },
+  delete: {
+    url: "/communication-queue/delete-all",
+    icon: Trash2,
+    title: "communication_queue.delete_all",
+    submit: "communication_queue.delete_sms",
+    success: "communication_queue.delete_success",
+    pickStatusAndReason: true,
+  },
 };
 
 export function CommunicationQueueBulkDialog({ action }: { action: CommunicationQueueBulkAction }) {
@@ -52,9 +76,11 @@ export function CommunicationQueueBulkDialog({ action }: { action: Communication
   const [open, setOpen] = useState(false);
   const [allSms, setAllSms] = useState(true);
   const [smsType, setSmsType] = useState<string[]>(["all"]);
+  const [statuses, setStatuses] = useState<string[]>([...STATUS_OPTIONS]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const { mutate: submitBulk, isPending } = useMutation({
-    mutationFn: async (payload: { sms_type: string[] }) => {
+    mutationFn: async (payload: BulkPayload) => {
       const result = await useFetch({
         url: config.url,
         method: "POST",
@@ -66,6 +92,7 @@ export function CommunicationQueueBulkDialog({ action }: { action: Communication
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["communicationQueue"] });
       toast.success(t(config.success));
+      setConfirmOpen(false);
       setOpen(false);
     },
     onError: (error: unknown) => {
@@ -97,7 +124,15 @@ export function CommunicationQueueBulkDialog({ action }: { action: Communication
     }
   }, [smsType]);
 
+  const handleStatus = (value: string, checked: boolean) => {
+    setStatuses((prev) => (checked ? [...prev, value] : prev.filter((x) => x !== value)));
+  };
+
   const handleSubmit = () => {
+    if (config.pickStatusAndReason) {
+      setConfirmOpen(true);
+      return;
+    }
     submitBulk({ sms_type: smsType });
   };
 
@@ -147,17 +182,51 @@ export function CommunicationQueueBulkDialog({ action }: { action: Communication
               </Label>
             </div>
           ))}
+          {config.pickStatusAndReason && (
+            <fieldset className="grid gap-3 border-t pt-4">
+              <legend className="float-left mb-1 text-sm font-medium">{t("communication_queue.status.label")}</legend>
+              {STATUS_OPTIONS.map((status) => (
+                <div key={status} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`${action}-status-${status}`}
+                    checked={statuses.includes(status)}
+                    onCheckedChange={(checked) => handleStatus(status, checked === true)}
+                  />
+                  <Label
+                    htmlFor={`${action}-status-${status}`}
+                    className="cursor-pointer text-sm font-medium leading-none"
+                  >
+                    {t(`communication_queue.status.options.${status}`)}
+                  </Label>
+                </div>
+              ))}
+            </fieldset>
+          )}
         </div>
         <DialogFooter>
           <MyButton variant="outline" onClick={() => setOpen(false)}>
             {t("common.cancel")}
           </MyButton>
-          <MyButton variant="default" size="default" onClick={handleSubmit} disabled={isPending}>
+          <MyButton
+            variant={config.pickStatusAndReason ? "destructive" : "default"}
+            size="default"
+            onClick={handleSubmit}
+            disabled={isPending || (config.pickStatusAndReason && statuses.length === 0)}
+          >
             {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
             {t(config.submit)}
           </MyButton>
         </DialogFooter>
       </DialogContent>
+      {config.pickStatusAndReason && (
+        <CommunicationQueueDeleteReasonDialog
+          open={confirmOpen}
+          onOpenChange={setConfirmOpen}
+          description="communication_queue.delete_confirm_all"
+          isPending={isPending}
+          onConfirm={(reason) => submitBulk({ sms_type: smsType, statuses, reason })}
+        />
+      )}
     </Dialog>
   );
 }

@@ -59,11 +59,13 @@ const CommunicationQueueTable: FC = () => {
 
   const canResendAll = hasPermission("communication-queue.resend-all");
   const canStopAll = hasPermission("communication-queue.stop-all");
+  const canDeleteAll = hasPermission("communication-queue.delete-all");
   const bulkActions =
-    canResendAll || canStopAll ? (
+    canResendAll || canStopAll || canDeleteAll ? (
       <>
         {canResendAll && <CommunicationQueueBulkDialog action="resend" />}
         {canStopAll && <CommunicationQueueBulkDialog action="stop" />}
+        {canDeleteAll && <CommunicationQueueBulkDialog action="delete" />}
       </>
     ) : null;
 

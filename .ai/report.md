@@ -1,3 +1,22 @@
+## Communication queue: Delete All and inline Delete with a reason — 2026-11-23
+
+- The toolbar has a third icon button after Resend All and Stop All: Delete All (trash icon). It uses the same placement as the other two, including in the open filter row.
+- Delete All opens the shared bulk dialog with the same type checkboxes plus status checkboxes (Pending, Processing, Completed, Sent, Failed, Stop), all checked by default. Its submit button is disabled with no status checked. Submitting opens a confirmation dialog that requires a delete reason, then posts `{ sms_type, statuses, reason }` to `/communication-queue/delete-all`.
+- Every row, of any status, gets an inline Delete. It opens the same reason dialog and sends `DELETE /communication-queue/{id}` with `{ reason }`.
+- The reason dialog (`communication-queue-delete-reason-dialog.tsx`) trims the reason, requires it, and keeps a fixed line for the error so the buttons do not move.
+- Permissions: `communication-queue.delete` and `communication-queue.delete-all`.
+- New keys under `communication_queue` (`delete*`, `delete_reason.*`) are in `en.json` and `bn.json`.
+- The e2e source-evidence list was updated.
+
+`scripts/ai/typecheck` passed. `tests/unit/communication-queue/delete-reason-dialog.test.tsx` passed (2). `scripts/ai/test`: 862 passed, with the same 20 baseline failures. After the migration and `update:permission` had been run locally (not by the agent), it was checked on `/communication-queue` as vpc at 1440px:
+- The toolbar ends Filter, Resend All, Stop All, Delete All.
+- Row actions are icon-only outline buttons: Resend, Stop or Delete as the status allows. Each has a hover tooltip and an `aria-label`.
+- Empty reason: shows "Delete reason is required" and nothing is sent. The dialog was cancelled, so nothing was deleted.
+- The Delete All dialog lists the types and the six statuses, all checked.
+- No page errors.
+
+The inline Resend, Stop and Delete buttons were changed from icon + text to icon-only (`MyButton` outline/icon with `tooltip`). The status group in the Delete All dialog uses one visible `<legend>`.
+
 ## Communication queue: toolbar Resend All / Stop All, inline Stop — 2026-11-23
 
 - The heading row with the text Resend All link above the table is removed.
