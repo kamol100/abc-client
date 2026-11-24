@@ -16,46 +16,13 @@ import { usePermissions } from "@/context/app-provider";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { cn } from "@/lib/utils";
 import type { NocMapMarker } from "./noc-map-canvas";
+import NocPorts from "./noc-ports";
+import { isPortOutage, NocSummary } from "./noc-type";
 
 const NocMapCanvas = dynamic(() => import("./noc-map-canvas"), {
     ssr: false,
     loading: () => <Skeleton className="h-[340px] w-full rounded-md border border-border" />,
 });
-
-type NameRef = { name: string } | null;
-
-// GET /monitoring/summary
-interface NocSummary {
-    generated_at: string;
-    counts: { down: number; unknown: number; up: number; open_outages: number };
-    maintenance: { id: string; device: NameRef; network: NameRef; starts_at: string; ends_at: string; reason: string | null }[];
-    down_devices: {
-        id: string;
-        name: string;
-        category: string;
-        network: NameRef;
-        zone: NameRef;
-        device_ip: string | null;
-        latitude: number | null;
-        longitude: number | null;
-        down_since: string | null;
-        affected_clients: number | null;
-        in_maintenance: boolean;
-        is_olt: boolean;
-    }[];
-    open_outages: {
-        id: string;
-        title: string;
-        device_id: string | null;
-        type: string;
-        started_at: string;
-        affected_clients: number | null;
-        acknowledged: boolean;
-        ticket: { id: string; number: number | string } | null;
-        during_maintenance: boolean;
-        downstream: boolean;
-    }[];
-}
 
 // Not map-utils' toLatLngTuple: that module imports Leaflet, which cannot load during SSR.
 function position(device: NocSummary["down_devices"][number]): [number, number] | null {
@@ -84,12 +51,14 @@ export default function NocView() {
         if (isLoading) {
             return (
                 <div className="flex flex-col gap-4" aria-busy>
-                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                        {[1, 2, 3, 4].map((key) => (
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+                        {[1, 2, 3, 4, 5, 6].map((key) => (
                             <Skeleton key={key} className="h-20" />
                         ))}
                     </div>
                     <Skeleton className="h-40 w-full" />
+                    {/* Ports down */}
+                    <Skeleton className="h-28 w-full" />
                     <Skeleton className="h-[340px] w-full" />
                 </div>
             );
@@ -101,6 +70,12 @@ export default function NocView() {
             { key: "unknown", value: summary.counts.unknown, className: "text-muted-foreground" },
             { key: "up", value: summary.counts.up, className: "text-green-700 dark:text-green-400" },
             { key: "open_outages", value: summary.counts.open_outages, className: "" },
+            // "—" on an API without port monitoring.
+            ...(["pon_ports_down", "uplinks_down"] as const).map((key) => ({
+                key,
+                value: summary.counts[key] ?? "—",
+                className: (summary.counts[key] ?? 0) > 0 ? "text-destructive" : "",
+            })),
         ];
         const downFor = (since: string | null) => duration(secondsSince(since));
         const markers: NocMapMarker[] = summary.down_devices.flatMap((device) => {
@@ -112,7 +87,7 @@ export default function NocView() {
 
         return (
             <>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
                     {counts.map((count) => (
                         <Card key={count.key} className="px-4 py-3.5">
                             <div className="text-sm text-muted-foreground">{t(`noc.counts.${count.key}`)}</div>
@@ -207,6 +182,10 @@ export default function NocView() {
                     </div>
                 )}
 
+                {summary.ports_down && (
+                    <NocPorts portsDown={summary.ports_down} portMonitoring={summary.port_monitoring} canShowOlt={canShowOlt} />
+                )}
+
                 {markers.length > 0 && (
                     <section aria-label={t("noc.map_label")}>
                         <NocMapCanvas markers={markers} />
@@ -224,7 +203,13 @@ export default function NocView() {
                                 className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-3.5 py-3 last:border-b-0"
                             >
                                 <div className="min-w-0 flex-[1_1_320px]">
-                                    <div className="font-semibold">{outage.title}</div>
+                                    <div className="font-semibold">
+                                        {outage.title}
+                                        {/* The title is normally "OLT · port"; add the port when it is not in it. */}
+                                        {outage.port && !outage.title.includes(outage.port.name) && (
+                                            <span className="font-normal text-muted-foreground"> · {outage.port.name}</span>
+                                        )}
+                                    </div>
                                     <div className="text-sm text-muted-foreground">
                                         {t("noc.outage_started", {
                                             ago: duration(secondsSince(outage.started_at)),
@@ -233,6 +218,11 @@ export default function NocView() {
                                     </div>
                                 </div>
                                 <div className="flex flex-wrap items-center gap-2">
+                                    {isPortOutage(outage.type) && (
+                                        <MyBadge type="error" variant="soft" size="sm" icon={false}>
+                                            {t(`monitoring.outage_type.${outage.type}`)}
+                                        </MyBadge>
+                                    )}
                                     {outage.during_maintenance && (
                                         <MyBadge type="warning" variant="soft" size="sm" icon={false}>
                                             {t("noc.badges.maintenance")}

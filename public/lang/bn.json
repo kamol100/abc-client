@@ -7379,6 +7379,50 @@
             "admin_down": "নিষ্ক্রিয়",
             "view_onus": "{{port}}-এর ওএনইউ দেখুন"
         },
+        "ports": {
+            "title": "পোর্ট",
+            "tabs": {
+                "pon": "PON পোর্ট ({{count}})",
+                "uplink": "Uplink পোর্ট ({{count}})"
+            },
+            "problems_only": "শুধু সমস্যাগুলো দেখান",
+            "status": {
+                "up": "আপ",
+                "link_down": "লিংক ডাউন",
+                "disabled": "নিষ্ক্রিয়",
+                "unknown": "অজানা"
+            },
+            "summary": {
+                "up": "{{count}}টি আপ",
+                "link_down": "{{count}}টির লিংক ডাউন",
+                "disabled": "{{count}}টি নিষ্ক্রিয়",
+                "unknown": "{{count}}টি অজানা"
+            },
+            "columns": {
+                "port": "পোর্ট",
+                "status": "অবস্থা",
+                "down_since": "কখন থেকে ডাউন / শেষ পরিবর্তন",
+                "onus": "ONU",
+                "clients": "ক্ষতিগ্রস্ত ক্লায়েন্ট",
+                "traffic": "ট্রাফিক ইন / আউট",
+                "speed": "স্পিড",
+                "tx_power": "Tx পাওয়ার",
+                "temperature": "তাপমাত্রা",
+                "history": "ইতিহাস"
+            },
+            "changed": "পরিবর্তন: {{time}}",
+            "pct_of_speed": "লিংক স্পিডের {{in}}% / {{out}}%",
+            "history_aria": "{{port}}-এর ইতিহাস দেখুন",
+            "empty_uplink": "এই OLT কোনো Uplink পোর্ট জানায় না, অথবা এর SNMP অ্যাক্সেসে ইন্টারফেস কাউন্টার নেই।",
+            "no_problems": "কোনো পোর্ট ডাউন বা নিষ্ক্রিয় নেই।",
+            "history": {
+                "title": "পোর্টের ইতিহাস",
+                "to": "পরিবর্তিত হয়ে",
+                "lasted": "স্থায়ী ছিল {{duration}}",
+                "ongoing": "এখনও এই অবস্থায় আছে",
+                "empty": "এখনও কোনো পরিবর্তন রেকর্ড হয়নি"
+            }
+        },
         "access": {
             "where": {
                 "title": "এই তথ্যগুলো কোথায় পাবেন?",
@@ -7724,7 +7768,9 @@
         },
         "outage_type": {
             "device_down": "ডিভাইস ডাউন",
-            "router_unreachable": "নেটওয়ার্কে পৌঁছানো যাচ্ছে না"
+            "router_unreachable": "নেটওয়ার্কে পৌঁছানো যাচ্ছে না",
+            "pon_port_down": "PON পোর্ট ডাউন",
+            "uplink_down": "Uplink ডাউন"
         },
         "checks": {
             "title": "চেক",
@@ -7756,13 +7802,33 @@
     },
     "noc": {
         "title": "এনওসি",
+        "ports_down": "ডাউন পোর্ট",
+        "no_ports_down": "মনিটর করা সব পোর্ট আপ আছে।",
+        "no_ports_monitored": "এখনো কোনো OLT-এর পোর্ট মনিটর করা হচ্ছে না। এখানে পোর্ট দেখতে কোনো OLT-এর পোলিং চালু করুন।",
+        "port_type": {
+            "pon": "PON পোর্ট",
+            "uplink": "Uplink পোর্ট"
+        },
+        "onus_on_port": "পোর্টে {{count}}টি ONU",
+        "not_polled": {
+            "summary": "{{total}}টি OLT-এর মধ্যে {{count}}টিতে পোর্ট মনিটরিং বন্ধ বা পুরোনো",
+            "last_polled": "শেষ পোল: {{time}}",
+            "reasons": {
+                "polling_off": "পোলিং বন্ধ",
+                "no_access": "কোনো SNMP অ্যাক্সেস সেভ করা নেই",
+                "stale": "ডেটা পুরোনো হয়ে গেছে",
+                "failing": "পোলিং ব্যর্থ হচ্ছে"
+            }
+        },
         "updated": "হালনাগাদ {{time}} · প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
         "refreshes": "প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
         "counts": {
             "down": "ডাউন",
             "unknown": "অজানা",
             "up": "আপ",
-            "open_outages": "চলমান আউটেজ"
+            "open_outages": "চলমান আউটেজ",
+            "pon_ports_down": "ডাউন PON পোর্ট",
+            "uplinks_down": "ডাউন Uplink"
         },
         "maintenance": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত",
         "maintenance_reason": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত: {{reason}}",
