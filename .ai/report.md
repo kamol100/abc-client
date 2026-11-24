@@ -1,3 +1,14 @@
+## Product out: default date and unit price from stock — 2026-11-24
+
+- When you create a product out, "Out date" now starts as today. The edit form keeps the saved date. (`components/products/product-out-form.tsx`)
+- In a product line, picking a stock batch in "Product In" fills "Unit price" with that batch's selling price. The backend (`ProductInDropdownResource`) sends `unit_sell_price` and uses `unit_price` when no selling price is set. The value can still be edited. The line total recalculates on its own. (`components/products/product-out-lines-editor.tsx`, using `SelectDropdown`'s `populate`)
+- Products don't have their own price; the price is stored on the stock-in batch. So the fill happens when you pick the batch, not the product.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 881 passed. The same 20 failures happen with these changes stashed, so they are not caused by this change.
+- Not checked in the browser.
+
 ## Theme font weight option — 2026-11-24
 
 - There is a new `fontWeight` theme option: `light`, `regular` (default) or `bold`. It shifts the whole weight scale. `tailwind.config.ts` maps `font-normal`, `font-medium`, `font-semibold` and `font-bold` to `--font-weight-*` variables. `globals.css` sets those per `html[data-font-weight]` (light 300/400/500/600, regular 400/500/600/700, bold 500/600/700/700) and gives `body` the normal weight, so headings stay heavier than body text.

@@ -160,6 +160,9 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                             isDisabled={productId <= 0}
                             label={{ labelText: "product_out.line.product_in.label" }}
                             placeholder="product_out.line.product_in.placeholder"
+                            populate={[
+                                { field: `product.${index}.unit_price`, from: "unit_sell_price" },
+                            ]}
                             onValueChange={() => {
                                 setValue(`product.${index}.serial`, [], {
                                     shouldDirty: true,

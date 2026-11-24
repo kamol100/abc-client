@@ -142,11 +142,12 @@ const ProductOutForm: FC<ProductOutFormProps> = ({ mode = "create", data, produc
     const formData = useMemo(() => {
         if (mode === "edit" && data) return data;
 
+        const createDefaults = { ...defaultValues, out_date: new Date() };
         const selectedProductId = resolveProductInProductId(productId);
-        if (selectedProductId === 0) return defaultValues;
+        if (selectedProductId === 0) return createDefaults;
 
         return {
-            ...defaultValues,
+            ...createDefaults,
             product: [
                 {
                     ...defaultValues.product[0],
