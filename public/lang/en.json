@@ -862,6 +862,9 @@
         },
         "sent_at": {
             "label": "Sent At"
+        },
+        "any_search": {
+            "placeholder": "Search number or message"
         }
     },
     "communication_queue": {

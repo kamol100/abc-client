@@ -862,6 +862,9 @@
         },
         "sent_at": {
             "label": "পাঠানোর সময়"
+        },
+        "any_search": {
+            "placeholder": "নম্বর বা মেসেজ খুঁজুন"
         }
     },
     "communication_queue": {

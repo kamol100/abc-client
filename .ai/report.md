@@ -1,3 +1,24 @@
+## Communication log filters: any search and Sent At — 2026-11-24
+
+- `components/communication-logs/communication-log-filter-schema.ts`: the SMS To and SMS From text fields are replaced by one "any" search ("Search number or message"). It matches SMS to, SMS from and the message body. The filter row also has a new Sent At date filter that takes one day or a range (`dateRange`, stays open for a range).
+- `communication-log-table.tsx`: the watched fields are now `any`, channel, type, status and `sent_at`, so the search runs as you type.
+- New key `communication_log.any_search.placeholder` is in `en.json` and `bn.json`. Sent At reuses `communication_log.sent_at.label`.
+
+Checked in the browser on `/communication-logs` as vpc. All counts matched the database:
+
+| Filter | Rows |
+| --- | --- |
+| none | 4 |
+| any `4434` | 2 |
+| any `invoice due` | 1 |
+| any `96176` (SMS from) | 3 |
+| Sent At 19 Nov | 2 |
+| Sent At 11–17 Nov | 2 |
+
+Reset brought it back to 4, and there were no page errors.
+
+`scripts/ai/typecheck` passed. `scripts/ai/test` failed only on the same 20 baseline tests; everything else passed.
+
 ## DatePicker time option, aligned queue confirm buttons with icons — 2026-11-23
 
 - `components/form/DatePicker.tsx` has a new opt-in `showTime` (single mode only) and a `timeFormat` (default `hh:mm a`). With `showTime`:

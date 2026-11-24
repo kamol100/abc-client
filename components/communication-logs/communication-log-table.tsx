@@ -50,11 +50,11 @@ const CommunicationLogTable: FC = () => {
     () => ({
       filter: CommunicationLogFilterSchema(),
       watchFields: [
+        "any",
         "channel",
-        "sms_to",
-        "sms_from",
         "sms_type",
         "status",
+        "sent_at",
       ],
     }),
     []

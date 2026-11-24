@@ -27,20 +27,16 @@ export function CommunicationLogFilterSchema(): FieldConfig[] {
 
   return [
     {
+      // Searches SMS to, SMS from and the message body as you type.
+      type: "text",
+      name: "any",
+      placeholder: "communication_log.any_search.placeholder",
+    },
+    {
       type: "dropdown",
       name: "channel",
       placeholder: "communication_log.channel.label",
       options: channelOptions,
-    },
-    {
-      type: "text",
-      name: "sms_to",
-      placeholder: "communication_log.sms_to.label",
-    },
-    {
-      type: "text",
-      name: "sms_from",
-      placeholder: "communication_log.sms_from.label",
     },
     {
       type: "dropdown",
@@ -53,6 +49,13 @@ export function CommunicationLogFilterSchema(): FieldConfig[] {
       name: "status",
       placeholder: "communication_log.status.label",
       options: statusOptions,
+    },
+    {
+      // One day, or a range (both days included).
+      type: "dateRange",
+      name: "sent_at",
+      placeholder: "communication_log.sent_at.label",
+      closeOnSelectDate: false,
     },
   ];
 }
