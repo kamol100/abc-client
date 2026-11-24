@@ -1,14 +1,18 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
+import DisplayCount from "@/components/display-count";
+import { DashboardStatCard, DashboardStatRow } from "@/components/dashboard/items/DashboardAccentCard";
+import { DASHBOARD_CARD_ACCENTS, type DashboardCardAccent } from "@/components/dashboard/dashboard-constants";
 import type { DashboardTicketSummary } from "@/components/dashboard/dashboard-type";
-import { DashboardMetricCard, DashboardMetricRow, DashboardMetricRowSkeleton } from "./DashboardMetricCard";
+import { toNumber } from "@/lib/helper/helper";
 
 type Props = {
   data: DashboardTicketSummary;
   isLoading: boolean;
   isRefreshing: boolean;
   isError: boolean;
+  accent?: DashboardCardAccent;
 };
 
 const METRICS: Array<{ labelKey: string; key: keyof DashboardTicketSummary }> = [
@@ -17,30 +21,29 @@ const METRICS: Array<{ labelKey: string; key: keyof DashboardTicketSummary }> = 
   { labelKey: "dashboard.metrics.resolved", key: "total_resolve_ticket" },
 ];
 
-export default function DashboardSupportTicketCard({ data, isLoading, isRefreshing, isError }: Props) {
+export default function DashboardSupportTicketCard({
+  data,
+  isLoading,
+  isRefreshing,
+  isError,
+  accent = DASHBOARD_CARD_ACCENTS.ticket,
+}: Props) {
   const { t } = useTranslation();
+  // The big number is the sum of the three rows below it.
+  const total = data ? METRICS.reduce((sum, { key }) => sum + toNumber(data[key] as number), 0) : 0;
 
   return (
-    <DashboardMetricCard
-      title={t("dashboard.cards.support_ticket")}
-      isLoading={isLoading}
-      isRefreshing={isRefreshing}
+    <DashboardStatCard
+      accent={accent}
+      label={t("dashboard.cards.support_ticket")}
+      value={<DisplayCount amount={total} />}
+      isLoading={isLoading || isRefreshing}
       isError={isError}
-      skeletonBody={
-        <>
-          {METRICS.map(({ key }) => (
-            <DashboardMetricRowSkeleton key={key} />
-          ))}
-        </>
-      }
+      skeletonRows={METRICS.length}
     >
       {data && METRICS.map(({ labelKey, key }) => (
-        <DashboardMetricRow
-          key={key}
-          label={`${t(labelKey)}:`}
-          value={data[key] as number}
-        />
+        <DashboardStatRow key={key} label={t(labelKey)} value={data[key] as number} />
       ))}
-    </DashboardMetricCard>
+    </DashboardStatCard>
   );
 }

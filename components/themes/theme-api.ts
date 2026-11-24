@@ -47,11 +47,12 @@ export function useThemes(enabled = true) {
 export function recordSettings(settings: ThemeRecordSettings): ThemeRecordSettings {
   const {
     color, density, radius, navDrawerSide, preset, gradients, gradientStyle, gradientAngle,
-    font, fontSize, fontWeight, shadow, border, buttonRadius, cardRadius, dialogRadius, palette,
+    font, fontSize, fontWeight, shadow, border, buttonRadius, cardRadius, dialogRadius, cardBorder, cardColors, palette,
   } = settings;
   return {
     color, density, radius, navDrawerSide, preset, gradients, gradientStyle, gradientAngle,
-    font, fontSize, fontWeight: fontWeight ?? "regular", shadow, border, buttonRadius, cardRadius, dialogRadius, palette: palette ?? null,
+    font, fontSize, fontWeight: fontWeight ?? "regular", shadow, border, buttonRadius, cardRadius, dialogRadius,
+    cardBorder: cardBorder ?? "off", cardColors: cardColors ?? "multi", palette: palette ?? null,
   };
 }
 

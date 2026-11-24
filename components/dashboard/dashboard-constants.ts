@@ -1,5 +1,18 @@
 import type { DashboardDateFilter } from "@/components/dashboard/dashboard-type";
 import { formatMoney } from "@/lib/helper/helper";
+import {
+  CalendarClock,
+  CircleCheck,
+  FileText,
+  HandCoins,
+  LifeBuoy,
+  Network,
+  Package,
+  PiggyBank,
+  Receipt,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 
 export const DASHBOARD_CARD_PERMISSIONS = {
   client: "dashboard-card.client",
@@ -13,6 +26,31 @@ export const DASHBOARD_CARD_PERMISSIONS = {
   productStock: "dashboard-card.product-stock",
   invoiceExpenseGraph: "dashboard-card.invoice-expense-graph",
 } as const;
+
+/** Which of the theme's 5 card colors a card uses (chart colors, or the primary color in Brand only). */
+export type DashboardCardTone = 1 | 2 | 3 | 4 | 5;
+
+export interface DashboardCardAccent {
+  icon: LucideIcon;
+  tone: DashboardCardTone;
+}
+
+/**
+ * Fixed icon and color slot per summary card. Fixed per card (not by position), so a
+ * card keeps its color when permissions hide the cards around it.
+ */
+export const DASHBOARD_CARD_ACCENTS = {
+  client: { icon: Users, tone: 1 },
+  reseller: { icon: Network, tone: 2 },
+  invoice: { icon: FileText, tone: 3 },
+  invoicePaid: { icon: CircleCheck, tone: 4 },
+  staffCollection: { icon: HandCoins, tone: 5 },
+  invoiceDues: { icon: CalendarClock, tone: 1 },
+  expense: { icon: Receipt, tone: 2 },
+  fund: { icon: PiggyBank, tone: 3 },
+  ticket: { icon: LifeBuoy, tone: 4 },
+  productStock: { icon: Package, tone: 5 },
+} as const satisfies Record<string, DashboardCardAccent>;
 
 export const CLIENT_DATE_FILTER_OPTIONS: ReadonlyArray<{ value: DashboardDateFilter; labelKey: string }> = [
   { value: "all", labelKey: "dashboard.filters.date.all" },

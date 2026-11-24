@@ -62,6 +62,27 @@ describe("theme palette", () => {
     expect(previewCss("tp-2", { ...settings, fontWeight: "light" }, padma)).toContain("--font-weight-normal:300;");
   });
 
+  it("sets the dashboard card accent variables in a preview scope", () => {
+    const settings = { ...DEFAULT_THEME_SETTINGS, palette: padma };
+    const off = previewCss("tp-3", settings, padma);
+    expect(off).toContain("--dash-card-top:0px;--dash-card-ring:0px;");
+    expect(off).toContain("--dash-tone-1:var(--chart-1);");
+    expect(off).toContain("--dash-icon-mix:#000;");
+    expect(off).toContain("--dash-icon-mix:#fff;");
+
+    const full = previewCss("tp-4", { ...settings, cardBorder: "full", cardColors: "brand" }, padma);
+    expect(full).toContain("--dash-card-top:2px;--dash-card-ring:1.5px;--dash-card-border:transparent;");
+    expect(full).toContain("--dash-tone-5:var(--primary);");
+    expect(previewCss("tp-5", { ...settings, cardBorder: "top" }, padma)).toContain("--dash-card-top:3px;");
+  });
+
+  it("reads the card options as off and multicolor for themes saved before they existed", () => {
+    const { cardBorder: _border, cardColors: _colors, ...older } = { ...DEFAULT_THEME_SETTINGS, palette: padma };
+    const settings = settingsFromTheme(older as typeof DEFAULT_THEME_SETTINGS, "old");
+    expect(settings.cardBorder).toBe("off");
+    expect(settings.cardColors).toBe("multi");
+  });
+
   it("fills font weight for themes saved before the option existed", () => {
     const { fontWeight: _unused, ...older } = { ...DEFAULT_THEME_SETTINGS, palette: padma };
     expect(settingsFromTheme(older as typeof DEFAULT_THEME_SETTINGS, "old").fontWeight).toBe("regular");

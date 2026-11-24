@@ -129,6 +129,8 @@ export default async function RootLayout({
       data-button-radius={themeSettings.buttonRadius}
       data-card-radius={themeSettings.cardRadius}
       data-dialog-radius={themeSettings.dialogRadius}
+      data-card-border={themeSettings.cardBorder}
+      data-card-colors={themeSettings.cardColors}
       data-palette={themePaletteCss ? "on" : "off"}
       style={themeOverrideStyle(themeSettings.overrides) as CSSProperties | undefined}
       translate="no"

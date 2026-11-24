@@ -3,6 +3,8 @@ import { paletteCss, THEME_PALETTE_STYLE_ID } from "@/lib/theme/theme-palette";
 import {
   THEME_BACKGROUNDS,
   THEME_BORDERS,
+  THEME_CARD_BORDERS,
+  THEME_CARD_COLORS,
   THEME_COLORS,
   THEME_DENSITIES,
   THEME_FONTS,
@@ -92,6 +94,8 @@ export const themePrefsSchema = z.object({
   buttonRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
   cardRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
   dialogRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
+  cardBorder: z.enum(THEME_CARD_BORDERS).optional(),
+  cardColors: z.enum(THEME_CARD_COLORS).optional(),
   overrides: overridesSchema.optional(),
   palette: themePaletteSchema.nullable().optional(),
   themeId: z.string().max(64).nullable().optional(),
@@ -115,6 +119,8 @@ export const themeSettingsSchema = themePrefsSchema.required({
   buttonRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("match"),
   cardRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("0.75"),
   dialogRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("match"),
+  cardBorder: z.enum(THEME_CARD_BORDERS).optional().default("off"),
+  cardColors: z.enum(THEME_CARD_COLORS).optional().default("multi"),
   overrides: overridesSchema.optional().default({}),
   palette: themePaletteSchema.nullable().optional().default(null),
   themeId: z.string().max(64).nullable().optional().default(null),
@@ -137,6 +143,8 @@ export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
   buttonRadius: "match",
   cardRadius: "0.75",
   dialogRadius: "match",
+  cardBorder: "off",
+  cardColors: "multi",
   overrides: {},
   palette: null,
   themeId: null,
@@ -350,6 +358,8 @@ export function applyThemeAttributes(root: HTMLElement, settings: ThemeSettings)
   root.dataset.buttonRadius = settings.buttonRadius;
   root.dataset.cardRadius = settings.cardRadius;
   root.dataset.dialogRadius = settings.dialogRadius;
+  root.dataset.cardBorder = settings.cardBorder;
+  root.dataset.cardColors = settings.cardColors;
   applyPaletteStyle(root, settings);
 
   const variables = themeOverrideVariables(settings.overrides);

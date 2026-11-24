@@ -107,9 +107,9 @@ describe("DashboardResellerSummaryCard", () => {
 
     expect(document.body).toHaveTextContent("dashboard.cards.total_resellers");
     expect(document.body).toHaveTextContent("dashboard.metrics.client");
-    expect(screen.getByText("dashboard.metrics.active:")).toBeInTheDocument();
-    expect(screen.getByText("dashboard.metrics.inactive:")).toBeInTheDocument();
-    expect(screen.getByText("dashboard.metrics.new_client:")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.active")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.inactive")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.new_client")).toBeInTheDocument();
     expect(
       Array.from(document.querySelectorAll(".sr-only"), (node) => node.textContent),
     ).toEqual(["3", "60", "55", "5", "7"]);

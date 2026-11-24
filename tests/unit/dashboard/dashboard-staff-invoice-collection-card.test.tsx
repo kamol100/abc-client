@@ -36,9 +36,9 @@ describe("DashboardStaffInvoiceCollectionCard", () => {
     expect(screen.getAllByText("5,000.00/-").length).toBeGreaterThan(0);
     expect(screen.getAllByText("40,000.00/-").length).toBeGreaterThan(0);
     expect(screen.getAllByText("50,000.00/-").length).toBeGreaterThan(0);
-    expect(screen.getByText("dashboard.metrics.today:")).toBeInTheDocument();
-    expect(screen.getByText("dashboard.metrics.this_month:")).toBeInTheDocument();
-    expect(screen.getByText("dashboard.metrics.last_month:")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.today")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.this_month")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.last_month")).toBeInTheDocument();
   });
 
   it("shows the card only when one period has an amount", () => {

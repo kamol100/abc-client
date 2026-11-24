@@ -3,6 +3,7 @@
 import { previewCss } from "@/lib/theme/theme-palette";
 import { cn } from "@/lib/utils";
 import type { ThemeRecordSettings } from "@/types/theme-types";
+import { HandCoins, UserPlus, Users } from "lucide-react";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { displayPalette } from "@/components/themes/theme-presets";
@@ -18,6 +19,12 @@ const CHART_BG = [
   "bg-[hsl(var(--chart-3))]",
   "bg-[hsl(var(--chart-4))]",
   "bg-[hsl(var(--chart-5))]",
+] as const;
+/** Stat tiles drawn like the dashboard cards, so the card border and color options show here too. */
+const PREVIEW_TILES = [
+  { key: "active", value: "1,148", icon: Users, tone: "dashboard-tone-1" },
+  { key: "collected_today", value: "৳9,650", icon: HandCoins, tone: "dashboard-tone-2" },
+  { key: "new_month", value: "37", icon: UserPlus, tone: "dashboard-tone-3" },
 ] as const;
 const SAMPLE_CLIENTS = [
   { name: "Rahim Uddin", id: "rahim01", plan: "20 Mbps", status: "active" },
@@ -123,12 +130,22 @@ export function ThemePreview({
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {(["active", "collected_today", "new_month"] as const).map((tile, index) => (
-              <div key={tile} className={cn("min-w-0 rounded-xl border bg-card p-2 shadow-[var(--shadow-card)]", index === 2 && "hidden sm:block")}>
-                <p className="truncate text-[0.7rem] text-muted-foreground">{t(`themes.preview.tiles.${tile}`)}</p>
-                <p className={cn("text-base font-bold tabular-nums", index === 0 && "text-primary", index === 1 && "text-[hsl(var(--brand-secondary))]")}>
-                  {["1,148", "৳9,650", "37"][index]}
-                </p>
+            {PREVIEW_TILES.map(({ key, value, icon: Icon, tone }, index) => (
+              <div
+                key={key}
+                className={cn(
+                  "dashboard-accent-card flex min-w-0 items-center gap-2 overflow-hidden rounded-xl border bg-card p-2 shadow-[var(--shadow-card)]",
+                  tone,
+                  index === 2 && "hidden sm:flex",
+                )}
+              >
+                <span className="dashboard-card-icon dashboard-card-icon-sm">
+                  <Icon className="size-3.5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-[0.7rem] text-muted-foreground">{t(`themes.preview.tiles.${key}`)}</p>
+                  <p className="text-base font-bold tabular-nums">{value}</p>
+                </div>
               </div>
             ))}
           </div>

@@ -2,6 +2,7 @@
 
 import { useDashboardData } from "@/components/dashboard/use-dashboard-data";
 import { cn } from "@/lib/utils";
+import { DASHBOARD_CARD_ACCENTS } from "@/components/dashboard/dashboard-constants";
 import DashboardClientSummaryCard from "@/components/dashboard/items/DashboardClientSummaryCard";
 import DashboardResellerSummaryCard from "@/components/dashboard/items/DashboardResellerSummaryCard";
 import DashboardInvoiceSummaryCard from "@/components/dashboard/items/DashboardInvoiceSummaryCard";
@@ -156,6 +157,7 @@ export default function DashboardOverview() {
               isRefreshing={isInvoiceDueSummaryFetching}
               isError={isInvoiceDueSummaryError}
               titleKey="dashboard.cards.invoices_due"
+              accent={DASHBOARD_CARD_ACCENTS.invoiceDues}
             />
           )}
 

@@ -1,9 +1,10 @@
 "use client";
 
+import { DASHBOARD_CARD_ACCENTS, type DashboardCardAccent } from "@/components/dashboard/dashboard-constants";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import DisplayCount from "@/components/display-count";
-import { DashboardMetricCard, DashboardMetricRow, DashboardMetricRowSkeleton } from "@/components/dashboard/items/DashboardMetricCard";
+import { DashboardStatCard, DashboardStatRow } from "@/components/dashboard/items/DashboardAccentCard";
 import type { DashboardResellerCount } from "@/components/dashboard/dashboard-type";
 import { usePermissions } from "@/context/app-provider";
 import { toNumber } from "@/lib/helper/helper";
@@ -13,6 +14,7 @@ type Props = {
   isLoading: boolean;
   isRefreshing: boolean;
   isError: boolean;
+  accent?: DashboardCardAccent;
 };
 
 const NEW_RESELLER_CLIENTS_HREF = "/reports/reseller-clients?created_at=this_month";
@@ -46,41 +48,29 @@ function NewResellerClientsCount({ amount }: { amount: number }) {
   );
 }
 
-export default function DashboardResellerSummaryCard({ data, isLoading, isRefreshing, isError }: Props) {
+export default function DashboardResellerSummaryCard({ data, isLoading, isRefreshing, isError, accent = DASHBOARD_CARD_ACCENTS.reseller }: Props) {
   const { t } = useTranslation();
 
   return (
-    <DashboardMetricCard
-      title={
-        <span className="inline-flex items-baseline">
-          {t("dashboard.cards.total_resellers")}
-          (<DisplayCount amount={data?.total_resellers ?? 0} />) :&nbsp;
-          <span>{t("dashboard.metrics.client")}</span>
-        </span>
-      }
-      value={
-        <span className="inline-flex items-baseline gap-1.5">
-          <DisplayCount amount={data?.total_reseller_clients ?? 0} />
-        </span>
-      }
-      isLoading={isLoading}
-      isRefreshing={isRefreshing}
-      isError={isError}
-      skeletonBody={
+    <DashboardStatCard
+      accent={accent}
+      label={
         <>
-          {METRICS.map(({ key }) => (
-            <DashboardMetricRowSkeleton key={key} />
-          ))}
+          {t("dashboard.cards.total_resellers")} (<DisplayCount amount={data?.total_resellers ?? 0} />) · {t("dashboard.metrics.client")}
         </>
       }
+      value={<DisplayCount amount={data?.total_reseller_clients ?? 0} />}
+      isLoading={isLoading || isRefreshing}
+      isError={isError}
+      skeletonRows={METRICS.length}
     >
       {data && METRICS.map(({ labelKey, key }) => {
         const amount = toNumber(data[key]);
 
         return (
-          <DashboardMetricRow
+          <DashboardStatRow
             key={key}
-            label={`${t(labelKey)}:`}
+            label={t(labelKey)}
             value={
               key === "new_clients_this_month"
                 ? <NewResellerClientsCount amount={amount} />
@@ -89,6 +79,6 @@ export default function DashboardResellerSummaryCard({ data, isLoading, isRefres
           />
         );
       })}
-    </DashboardMetricCard>
+    </DashboardStatCard>
   );
 }

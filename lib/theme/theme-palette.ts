@@ -265,6 +265,22 @@ const GRADIENT_STYLE: Record<string, string | null> = {
   sunset: "linear-gradient(var(--gradient-angle), hsl(24.6 95% 53.1%), hsl(346.8 77.2% 49.8%))",
 };
 
+const CARD_EDGES: Record<string, { top: string; ring: string }> = {
+  off: { top: "0px", ring: "0px" },
+  top: { top: "3px", ring: "0px" },
+  full: { top: "2px", ring: "1.5px" },
+};
+
+/** Dashboard card accent variables (mirrors the html[data-card-*] blocks in globals.css). */
+function cardAccentVariables(settings: Pick<ThemeSettings, "cardBorder" | "cardColors">): string {
+  const edge = CARD_EDGES[settings.cardBorder] ?? CARD_EDGES.off;
+  const border = settings.cardBorder === "full" ? "transparent" : "hsl(var(--border) / var(--border-strength))";
+  const tones = [1, 2, 3, 4, 5]
+    .map((index) => `--dash-tone-${index}:${settings.cardColors === "brand" ? "var(--primary)" : `var(--chart-${index})`};`)
+    .join("");
+  return `--dash-card-top:${edge.top};--dash-card-ring:${edge.ring};--dash-card-border:${border};${tones}`;
+}
+
 /**
  * A preview scope: palette colors plus the shape options, on `[data-theme-preview=id]`.
  * Its `.dark` variant is chosen by adding the class to the preview root.
@@ -285,10 +301,11 @@ export function previewCss(id: string, settings: Omit<ThemeSettings, "overrides"
     `--shadow-card:${SHADOW_CARD[settings.shadow] ?? "none"};` +
     `--gradient-angle:${Number(settings.gradientAngle) || 135}deg;` +
     GRADIENT_VARIABLES +
-    (style ? `--gradient-button:${style};` : "");
+    (style ? `--gradient-button:${style};` : "") +
+    cardAccentVariables(settings);
 
   return (
-    block(`${scope}:not(.dark)`, lightPaletteVariables(palette), shape) +
-    block(`${scope}.dark`, darkPaletteVariables(palette), shape)
+    block(`${scope}:not(.dark)`, lightPaletteVariables(palette), `${shape}--dash-icon-mix:#000;`) +
+    block(`${scope}.dark`, darkPaletteVariables(palette), `${shape}--dash-icon-mix:#fff;`)
   );
 }

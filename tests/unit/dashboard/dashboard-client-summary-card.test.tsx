@@ -41,7 +41,7 @@ describe("DashboardClientSummaryCard", () => {
 
     const link = screen.getByRole("link", { name: "dashboard.metrics.view_new_clients" });
     expect(link).toHaveAttribute("href", "/clients?created_at=this_month");
-    expect(screen.getByText("dashboard.metrics.active:")).toBeInTheDocument();
+    expect(screen.getByText("dashboard.metrics.active")).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "9" })).not.toBeInTheDocument();
   });
 

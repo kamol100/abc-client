@@ -7,6 +7,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { cn } from "@/lib/utils";
 import {
+  THEME_CARD_BORDERS,
+  THEME_CARD_COLORS,
   THEME_FONT_WEIGHTS,
   THEME_RADII,
   THEME_RADIUS_TOKENS,
@@ -37,8 +39,11 @@ export interface ThemeDraft {
 type ColorKey = "primary" | "secondary" | "accent";
 type OptionKey = Exclude<keyof ThemeRecordSettings, "palette" | "color" | "preset">;
 
+const OPTION_SECTIONS = ["shape", "text", "effects", "cards"] as const;
+type OptionSection = (typeof OPTION_SECTIONS)[number];
+
 /** Single-choice option groups, shown as chips. Add the next theme option here. */
-const OPTION_GROUPS: { section: "shape" | "text" | "effects"; key: OptionKey; values: readonly string[]; label: string }[] = [
+const OPTION_GROUPS: { section: OptionSection; key: OptionKey; values: readonly string[]; label: string }[] = [
   { section: "shape", key: "radius", values: THEME_RADII, label: "theme_customizer.radius.label" },
   { section: "shape", key: "buttonRadius", values: THEME_RADIUS_TOKENS, label: "theme_customizer.appearance.button_radius" },
   { section: "shape", key: "cardRadius", values: THEME_RADIUS_TOKENS, label: "theme_customizer.appearance.card_radius" },
@@ -53,6 +58,8 @@ const OPTION_GROUPS: { section: "shape" | "text" | "effects"; key: OptionKey; va
   { section: "effects", key: "gradientStyle", values: ["brand", "ocean", "sunset"], label: "themes.builder.gradient_style" },
   { section: "effects", key: "gradientAngle", values: ["90", "135", "180"], label: "themes.builder.gradient_angle" },
   { section: "effects", key: "navDrawerSide", values: ["left", "right"], label: "theme_customizer.mobile_drawer.label" },
+  { section: "cards", key: "cardBorder", values: THEME_CARD_BORDERS, label: "themes.builder.card_border" },
+  { section: "cards", key: "cardColors", values: THEME_CARD_COLORS, label: "themes.builder.card_colors" },
 ];
 
 function optionLabel(key: OptionKey, value: string, t: (key: string) => string): string {
@@ -77,6 +84,10 @@ function optionLabel(key: OptionKey, value: string, t: (key: string) => string):
       return `${value}°`;
     case "navDrawerSide":
       return t(`theme_customizer.mobile_drawer.${value}`);
+    case "cardBorder":
+      return t(`themes.builder.card_borders.${value}`);
+    case "cardColors":
+      return t(`themes.builder.card_color_options.${value}`);
     default:
       return value;
   }
@@ -359,7 +370,7 @@ export function ThemeBuilder({
           </Field>
         </Section>
 
-        {(["shape", "text", "effects"] as const).map((section) => (
+        {OPTION_SECTIONS.map((section) => (
           <Section key={section} title={t(`themes.builder.sections.${section}`)}>
             <div className="grid gap-4 sm:grid-cols-2">
               {OPTION_GROUPS.filter((group) => group.section === section).map((group) => (

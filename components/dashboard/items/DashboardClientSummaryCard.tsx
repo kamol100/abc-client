@@ -1,9 +1,10 @@
 "use client";
 
+import { DASHBOARD_CARD_ACCENTS, type DashboardCardAccent } from "@/components/dashboard/dashboard-constants";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import DisplayCount from "@/components/display-count";
-import { DashboardMetricCard, DashboardMetricRow, DashboardMetricRowSkeleton } from "@/components/dashboard/items/DashboardMetricCard";
+import { DashboardStatCard, DashboardStatRow } from "@/components/dashboard/items/DashboardAccentCard";
 import type { DashboardClientCount } from "@/components/dashboard/dashboard-type";
 import { usePermissions } from "@/context/app-provider";
 import { toNumber } from "@/lib/helper/helper";
@@ -13,6 +14,7 @@ type Props = {
   isLoading: boolean;
   isRefreshing: boolean;
   isError: boolean;
+  accent?: DashboardCardAccent;
 };
 
 const NEW_CLIENTS_HREF = "/clients?created_at=this_month";
@@ -46,32 +48,26 @@ function NewClientsCount({ amount }: { amount: number }) {
   );
 }
 
-export default function DashboardClientSummaryCard({ data, isLoading, isRefreshing, isError }: Props) {
+export default function DashboardClientSummaryCard({ data, isLoading, isRefreshing, isError, accent = DASHBOARD_CARD_ACCENTS.client }: Props) {
   const { t } = useTranslation();
 
   return (
-    <DashboardMetricCard
-      title={t("dashboard.cards.total_clients")}
+    <DashboardStatCard
+      accent={accent}
+      label={t("dashboard.cards.total_clients")}
       value={<DisplayCount amount={data?.total_clients ?? 0} />}
-      isLoading={isLoading}
-      isRefreshing={isRefreshing}
+      isLoading={isLoading || isRefreshing}
       isError={isError}
-      skeletonBody={
-        <>
-          {METRICS.map(({ key }) => (
-            <DashboardMetricRowSkeleton key={key} />
-          ))}
-        </>
-      }
+      skeletonRows={METRICS.length}
     >
       {data && METRICS.map(({ labelKey, key }) => {
         const raw = data[key];
         const amount = toNumber(typeof raw === "number" || typeof raw === "string" ? raw : 0);
 
         return (
-          <DashboardMetricRow
+          <DashboardStatRow
             key={key}
-            label={`${t(labelKey)}:`}
+            label={t(labelKey)}
             value={
               key === "new_clients_this_month"
                 ? <NewClientsCount amount={amount} />
@@ -80,6 +76,6 @@ export default function DashboardClientSummaryCard({ data, isLoading, isRefreshi
           />
         );
       })}
-    </DashboardMetricCard>
+    </DashboardStatCard>
   );
 }

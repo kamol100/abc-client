@@ -1,9 +1,9 @@
 "use client";
 
-import Card from "@/components/card";
-import DisplayCount from "@/components/display-count";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
+import DisplayCount from "@/components/display-count";
+import { DashboardStatCard, DashboardStatRow } from "@/components/dashboard/items/DashboardAccentCard";
+import { DASHBOARD_CARD_ACCENTS, type DashboardCardAccent } from "@/components/dashboard/dashboard-constants";
 import type { DashboardInvoiceSummary } from "@/components/dashboard/dashboard-type";
 import { toNumber } from "@/lib/helper/helper";
 
@@ -13,6 +13,7 @@ type Props = {
   isRefreshing: boolean;
   isError: boolean;
   titleKey?: string;
+  accent?: DashboardCardAccent;
 };
 
 const METRICS: Array<{ labelKey: string; key: keyof DashboardInvoiceSummary }> = [
@@ -20,63 +21,32 @@ const METRICS: Array<{ labelKey: string; key: keyof DashboardInvoiceSummary }> =
   { labelKey: "dashboard.metrics.last_month", key: "last_month_invoice_amount" },
 ];
 
-function InvoiceSummaryCardSkeleton() {
-  return (
-    <div className="flex h-full flex-col animate-in fade-in duration-300">
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-center justify-between gap-4 min-h-8">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-7 w-16" />
-        </div>
-      </div>
-      <div className=" px-4 py-3 space-y-2">
-        {METRICS.map(({ key }) => (
-          <div key={key} className="flex items-center justify-between">
-            <Skeleton className="h-3.5 w-20" />
-            <Skeleton className="h-3.5 w-10" />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export default function DashboardInvoiceSummaryCard({ data, isLoading, isRefreshing, isError, titleKey = "dashboard.cards.invoices" }: Props) {
+export default function DashboardInvoiceSummaryCard({
+  data,
+  isLoading,
+  isRefreshing,
+  isError,
+  titleKey = "dashboard.cards.invoices",
+  accent = DASHBOARD_CARD_ACCENTS.invoice,
+}: Props) {
   const { t } = useTranslation();
 
   return (
-    <Card className="flex h-full flex-col overflow-hidden transition-all hover:shadow-sm">
-      {isLoading || isRefreshing ? (
-        <InvoiceSummaryCardSkeleton />
-      ) : isError ? (
-        <div className="flex h-full items-center justify-center p-4">
-          <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
-        </div>
-      ) : (
-        <div className="flex h-full flex-col animate-in fade-in duration-300">
-          <div className="flex flex-1 flex-col p-4">
-            <div className="flex items-center justify-between gap-4 min-h-8">
-              <p className="text-xl font-bold text-foreground">
-                {t(titleKey)}
-              </p>
-              <p className="text-xl font-bold tracking-tight text-foreground">
-                <DisplayCount amount={data.total_invoice_amount} translation={false} />
-              </p>
-            </div>
-          </div>
-
-          <div className=" px-4 py-3 space-y-1.5">
-            {METRICS.map(({ labelKey, key }) => (
-              <div key={key} className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">{t(labelKey)}:</span>
-                <span className="font-semibold text-foreground">
-                  <DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} />
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </Card>
+    <DashboardStatCard
+      accent={accent}
+      label={t(titleKey)}
+      value={<DisplayCount amount={data.total_invoice_amount} translation={false} />}
+      isLoading={isLoading || isRefreshing}
+      isError={isError}
+      skeletonRows={METRICS.length}
+    >
+      {METRICS.map(({ labelKey, key }) => (
+        <DashboardStatRow
+          key={key}
+          label={t(labelKey)}
+          value={<DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} />}
+        />
+      ))}
+    </DashboardStatCard>
   );
 }

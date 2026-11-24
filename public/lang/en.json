@@ -5878,6 +5878,7 @@
                 "shape": "Shape",
                 "text": "Text and spacing",
                 "effects": "Effects",
+                "cards": "Dashboard cards",
                 "sharing": "Who can use it"
             },
             "name": "Theme name",
@@ -5897,7 +5898,7 @@
                 "sidebar": "Sidebar",
                 "background": "Page background",
                 "charts": "Chart colors",
-                "charts_hint": "Reports and payment charts"
+                "charts_hint": "Reports, payment charts and dashboard cards"
             },
             "backgrounds": {
                 "white": "Clean white",
@@ -5908,6 +5909,10 @@
             "font_size": "Text size",
             "font_weight": "Font weight",
             "font_weights": {"light": "Light", "regular": "Regular", "bold": "Bold"},
+            "card_border": "Color border",
+            "card_borders": {"off": "Off", "top": "Top edge", "full": "Full outline"},
+            "card_colors": "Card colors",
+            "card_color_options": {"multi": "Multicolor", "brand": "Brand only"},
             "gradients": "Gradients",
             "gradient_style": "Gradient style",
             "gradient_angle": "Gradient angle",

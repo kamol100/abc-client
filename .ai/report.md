@@ -1,3 +1,24 @@
+## Dashboard card accents and icons — 2026-11-24
+
+- Two new theme options, saved with each theme: `cardBorder` (`off`, `top`, `full`) and `cardColors` (`multi`, `brand`). They are in a new **Dashboard cards** section of the theme builder, and the builder preview's stat tiles show them. Themes saved before this read as Off and Multicolor.
+- Every staff dashboard summary card now has a fixed icon: clients, resellers, invoices, paid, dues, staff collection, expenses, fund, tickets and stock (`DASHBOARD_CARD_ACCENTS` in `dashboard-constants.ts`). Each card also has a fixed color slot from 1 to 5. Multicolor maps the slots to the theme's 5 chart colors, and Brand only uses the primary color on every card. The colors are fixed per card, so a card keeps its color when permissions hide other cards.
+- All 10 staff dashboard cards now share one layout, `DashboardStatCard` (in `DashboardAccentCard.tsx`), matching the approved prototype. It has a 40px tinted icon tile, a small muted label above a large bold value, and detail rows (`DashboardStatRow`) under a dashed line. Row labels no longer end with ":". The per-card skeletons are replaced by one loading state that keeps every line at its loaded height and shows the real icon.
+  - Support tickets: the big number is open + in progress + resolved (the sum of its rows). Before, it had no total.
+  - Staff collection: the label is "Invoice collection by" and the big value is the staff name, cut off with a title tooltip.
+  - Resellers: the label is "Total resellers (N) · Client" and the big value is the reseller client count.
+- The top edge and the full outline are drawn with `::before` and `::after` over the card, so switching options never moves the content.
+- Fund card icon is a piggy bank.
+- `ThemeAccountSync` now also re-applies the account's active theme when its saved settings differ from the device's copy, not only when the theme id differs. It compares settings regardless of key order and applies at most once per theme version. Before this, a device already on an ISPTIK theme kept its old cookie settings after a reseed, so the new card border never showed. Covered by `tests/unit/themes/theme-account-sync.test.tsx` (2 tests).
+- `globals.css` drives everything through variables (`--dash-card-*`, `--dash-tone-*`, `--dash-icon-mix`) on `html[data-card-border]` and `html[data-card-colors]`. `previewCss` sets its own copy, so the builder preview doesn't pick up the page's setting.
+- `DashboardMetricCard` is unchanged. The subscriber portal and OLT screens still use it.
+- New keys `themes.builder.sections.cards`, `card_border`, `card_borders.*`, `card_colors` and `card_color_options.*` in `en.json` and `bn.json`. The chart colors hint now mentions dashboard cards.
+
+Checks:
+- New `tests/unit/dashboard/dashboard-accent-card.test.tsx` (5 tests). The client, reseller and staff card tests now expect labels without ":". Also new: builder test for the two options, preview CSS test, and older-theme defaults test.
+- `scripts/ai/check`: typecheck passed. Tests: 911 passed, plus the same 20 baseline failures. A clean checkout of HEAD shows the same 20.
+- Backend: `ThemeTest` passed (11 tests).
+- Not checked in the browser. Run `php artisan db:seed --class=ThemeSeeder` so the colorful ISPTIK themes get the top edge.
+
 ## Delete reason for stock-in and stock-out — 2026-11-24
 
 - `DeleteModal` has a new `withReason` prop. It adds an optional "Reason for deleting" field (max 500 characters) to the confirmation; the trimmed text is sent as `{ reason }` in the DELETE body, and nothing is sent when it is empty. The field clears when the dialog closes. Other delete dialogs are unchanged.

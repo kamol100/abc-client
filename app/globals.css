@@ -1325,3 +1325,96 @@ html[data-gradients="off"] .theme-preview-button {
 .theme-gradient-card {
   background-image: var(--gradient-card);
 }
+/*
+ * Dashboard card accents (theme options cardBorder and cardColors).
+ * Everything goes through variables so the theme builder preview can set its own
+ * (previewCss) without the page's html attributes leaking into it.
+ * --card-tone is set per card by .dashboard-tone-1…5.
+ */
+:root {
+  --dash-card-top: 0px;
+  --dash-card-ring: 0px;
+  --dash-card-border: hsl(var(--border) / var(--border-strength));
+  --dash-icon-mix: #000;
+  --dash-tone-1: var(--chart-1);
+  --dash-tone-2: var(--chart-2);
+  --dash-tone-3: var(--chart-3);
+  --dash-tone-4: var(--chart-4);
+  --dash-tone-5: var(--chart-5);
+}
+
+.dark {
+  --dash-icon-mix: #fff;
+}
+
+html[data-card-border="top"] {
+  --dash-card-top: 3px;
+}
+
+html[data-card-border="full"] {
+  --dash-card-top: 2px;
+  --dash-card-ring: 1.5px;
+  --dash-card-border: transparent;
+}
+
+html[data-card-colors="brand"] {
+  --dash-tone-1: var(--primary);
+  --dash-tone-2: var(--primary);
+  --dash-tone-3: var(--primary);
+  --dash-tone-4: var(--primary);
+  --dash-tone-5: var(--primary);
+}
+
+.dashboard-tone-1 { --card-tone: var(--dash-tone-1); }
+.dashboard-tone-2 { --card-tone: var(--dash-tone-2); }
+.dashboard-tone-3 { --card-tone: var(--dash-tone-3); }
+.dashboard-tone-4 { --card-tone: var(--dash-tone-4); }
+.dashboard-tone-5 { --card-tone: var(--dash-tone-5); }
+
+.dashboard-accent-card {
+  position: relative;
+  border-color: var(--dash-card-border);
+}
+
+/* Top edge: drawn over the card, so turning it on or off never moves the content. */
+.dashboard-accent-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--dash-card-top);
+  background-color: hsl(var(--card-tone));
+  pointer-events: none;
+}
+
+/* Full outline: a ring that fades down the sides. With --dash-card-ring at 0 it draws nothing. */
+.dashboard-accent-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--dash-card-ring);
+  border-radius: inherit;
+  background-image: linear-gradient(180deg, hsl(var(--card-tone)), hsl(var(--card-tone) / 0.12) 80%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Icon tile: tinted with the card color; the icon is darkened (light mode) or lightened (dark mode) to stay readable. */
+.dashboard-card-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: max(0.375rem, calc(var(--radius-card) - 0.25rem));
+  background-color: hsl(var(--card-tone) / 0.14);
+  color: color-mix(in srgb, hsl(var(--card-tone)) 80%, var(--dash-icon-mix));
+}
+
+/* Smaller tile for the theme builder preview. */
+.dashboard-card-icon-sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.375rem;
+}
