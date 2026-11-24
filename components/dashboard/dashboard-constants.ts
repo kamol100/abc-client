@@ -7,9 +7,9 @@ import {
   HandCoins,
   Landmark,
   LifeBuoy,
-  Network,
   Package,
   Receipt,
+  UserCheck,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -41,7 +41,7 @@ export interface DashboardCardAccent {
  */
 export const DASHBOARD_CARD_ACCENTS = {
   client: { icon: Users, tone: 1 },
-  reseller: { icon: Network, tone: 2 },
+  reseller: { icon: UserCheck, tone: 2 },
   invoice: { icon: FileText, tone: 3 },
   invoicePaid: { icon: CircleCheck, tone: 4 },
   staffCollection: { icon: HandCoins, tone: 5 },
