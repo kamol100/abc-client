@@ -268,7 +268,7 @@ const FormFilter = ({
             <MyButton
               action="search"
               aria-label={t("common.search")}
-              size="default"
+              size="icon"
               onClick={triggerSubmit}
             />
           )}
@@ -276,7 +276,7 @@ const FormFilter = ({
             <MyButton
               action="reset"
               aria-label={t("common.reset")}
-              size="default"
+              size="icon"
               variant={isFilterActive ? "default" : "outline"}
               onClick={handleReset}
             />
@@ -284,7 +284,7 @@ const FormFilter = ({
           <MyButton
             action="filter"
             aria-label={t("common.filter")}
-            size="default"
+            size="icon"
             variant={isOpen ? "default" : "outline"}
             onClick={handleToggle}
             className={hideTrigger ? "hidden" : ""}
