@@ -35,6 +35,7 @@ const ProductMovementDeleteAction: FC<ProductMovementDeleteActionProps> = ({ mod
                         : "product_movement.actions.delete_out_confirmation"
                 }
                 buttonText="common.confirm_delete"
+                withReason
             />
         </div>
     );

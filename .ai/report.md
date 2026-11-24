@@ -1,3 +1,14 @@
+## Delete reason for stock-in and stock-out — 2026-11-24
+
+- `DeleteModal` has a new `withReason` prop. It adds an optional "Reason for deleting" field (max 500 characters) to the confirmation; the trimmed text is sent as `{ reason }` in the DELETE body, and nothing is sent when it is empty. The field clears when the dialog closes. Other delete dialogs are unchanged.
+- Stock-in and stock-out deletes (`ProductMovementDeleteAction`, used on the per-product tables, the reports and the client profile) turn it on. The backend adds "Product restocked by {name}" / "Stock removed by {name}" and records both in the Activity Logs page.
+- New keys `common.optional` and `common.delete_reason.label` / `placeholder` in `en.json` and `bn.json`.
+
+Checks:
+- New `tests/unit/components/delete-modal-reason.test.tsx` (5 tests); `product-movement-delete-action.test.tsx` checks the field is on.
+- `scripts/ai/check`: typecheck passed; 902 passed plus the same 20 baseline failures.
+- Not checked in the browser.
+
 ## Client products on the client profile — 2026-11-24
 
 - The client profile has a new **Products** section (between Payments and Tickets), loaded when scrolled into view like the other sections. It lists what was issued to the client: out date, product and code, quantity, unit price, VAT, discount, total, serials, received by, and the invoice number when one was created. A chip above shows the total amount. Each row has delete for staff with `products-out.delete` (stock goes back to its lot).

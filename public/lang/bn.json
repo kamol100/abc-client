@@ -1,5 +1,10 @@
 {
     "common": {
+        "optional": "ঐচ্ছিক",
+        "delete_reason": {
+            "label": "মুছে ফেলার কারণ",
+            "placeholder": "কেন মুছে ফেলা হচ্ছে?"
+        },
         "content_type": "বিষয়বস্তুর ধরন",
         "no_invoice_this_month": "এই মাসে ইনভয়েস নেই",
         "help": "সহায়তা",

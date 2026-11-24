@@ -19,13 +19,14 @@ vi.mock("@/context/app-provider", () => ({
 }));
 
 vi.mock("@/components/delete-modal", () => ({
-    DeleteModal: (props: { api_url: string; keys?: string; confirmMessage?: string }) => (
+    DeleteModal: (props: { api_url: string; keys?: string; confirmMessage?: string; withReason?: boolean }) => (
         <button
             type="button"
             data-testid="delete"
             data-url={props.api_url}
             data-keys={props.keys}
             data-confirm={props.confirmMessage}
+            data-with-reason={String(!!props.withReason)}
         />
     ),
 }));
@@ -45,6 +46,7 @@ describe("PRODUCTS-003 movement delete action", () => {
         expect(button.dataset.url).toBe(`/products-out/${uuid}`);
         expect(button.dataset.keys).toBe(PRODUCT_MOVEMENT_INVALIDATE_KEYS);
         expect(button.dataset.confirm).toBe("product_movement.actions.delete_out_confirmation");
+        expect(button.dataset.withReason).toBe("true");
         expect(PRODUCT_MOVEMENT_INVALIDATE_KEYS.split(",")).toEqual(
             expect.arrayContaining(["products", "products-in", "products-out", "products-in-reports", "products-out-reports"]),
         );

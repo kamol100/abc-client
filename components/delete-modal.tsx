@@ -8,7 +8,9 @@ import {
 } from "@/components/ui/dialog";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { TriangleAlert } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useId, useState } from "react";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 
 export type DeleteModalProps = {
@@ -21,7 +23,11 @@ export type DeleteModalProps = {
   children?: ReactNode;
   tooltip?: MyButtonProps["tooltip"];
   tooltipPlacement?: MyButtonProps["tooltipPlacement"];
+  /** Show an optional "reason" field; its text is sent as `{ reason }` in the DELETE body. */
+  withReason?: boolean;
 };
+
+const REASON_MAX_LENGTH = 500;
 
 export function DeleteModal({
   api_url,
@@ -33,10 +39,13 @@ export function DeleteModal({
   children,
   tooltip,
   tooltipPlacement,
+  withReason = false,
 }: DeleteModalProps) {
   const { t } = useTranslation();
+  const reasonId = useId();
+  const [reason, setReason] = useState("");
 
-  const { mutateAsync: deleteItem, isPending } = useApiMutation({
+  const { mutateAsync: deleteItem, isPending } = useApiMutation<unknown, { reason: string } | undefined>({
     url: api_url,
     method: "DELETE",
     invalidateKeys: keys,
@@ -46,7 +55,8 @@ export function DeleteModal({
   });
 
   const handleDelete = async (close: () => void) => {
-    await deleteItem();
+    const trimmed = reason.trim();
+    await deleteItem(withReason && trimmed ? { reason: trimmed } : undefined);
     close();
   };
 
@@ -57,6 +67,9 @@ export function DeleteModal({
       )}
       size="sm"
       loading={isPending}
+      onOpenChange={(open) => {
+        if (!open) setReason("");
+      }}
       footer={({ close, loading }) => (
         <>
           <MyButton
@@ -91,6 +104,24 @@ export function DeleteModal({
             {t(confirmMessage ?? "common.delete_confirmation_message")}
           </DialogDescription>
         </div>
+        {withReason && (
+          <div className="flex w-full flex-col gap-1.5 text-left">
+            <Label htmlFor={reasonId}>
+              {t("common.delete_reason.label")}{" "}
+              <span className="font-normal text-muted-foreground">({t("common.optional")})</span>
+            </Label>
+            <Textarea
+              id={reasonId}
+              rows={3}
+              maxLength={REASON_MAX_LENGTH}
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              placeholder={t("common.delete_reason.placeholder")}
+              disabled={isPending}
+              className="resize-none"
+            />
+          </div>
+        )}
       </div>
     </MyDialog>
   );

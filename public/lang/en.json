@@ -1,5 +1,10 @@
 {
     "common": {
+        "optional": "Optional",
+        "delete_reason": {
+            "label": "Reason for deleting",
+            "placeholder": "Why is this being deleted?"
+        },
         "content_type": "Content type",
         "no_invoice_this_month": "No invoice this month",
         "help": "Help",
