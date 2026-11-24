@@ -1,10 +1,13 @@
 import { z } from "zod";
+import { paletteCss, THEME_PALETTE_STYLE_ID } from "@/lib/theme/theme-palette";
 import {
+  THEME_BACKGROUNDS,
   THEME_BORDERS,
   THEME_COLORS,
   THEME_DENSITIES,
   THEME_FONTS,
   THEME_FONT_SIZES,
+  THEME_FONT_WEIGHTS,
   THEME_GRADIENT_ANGLES,
   THEME_GRADIENT_STYLES,
   THEME_GRADIENTS,
@@ -45,6 +48,33 @@ const overridesSchema = z
   })
   .partial();
 
+const hexSchema = z.string().regex(/^#[0-9a-fA-F]{6}$/);
+
+const paletteDarkSchema = z.object({
+  background: hexSchema,
+  card: hexSchema,
+  foreground: hexSchema,
+  muted: hexSchema,
+  border: hexSchema,
+  primary: hexSchema,
+  secondary: hexSchema,
+  accent: hexSchema,
+  sidebarFrom: hexSchema,
+  sidebarTo: hexSchema,
+});
+
+/** Same shape the API validates (isp-backend ThemeSettingsRules). */
+export const themePaletteSchema = z.object({
+  primary: hexSchema,
+  secondary: hexSchema,
+  accent: hexSchema,
+  sidebarFrom: hexSchema,
+  sidebarTo: hexSchema,
+  background: z.enum(THEME_BACKGROUNDS),
+  charts: z.array(hexSchema).length(5),
+  dark: paletteDarkSchema.nullable(),
+});
+
 export const themePrefsSchema = z.object({
   color: z.enum(THEME_COLORS).optional(),
   density: z.enum(THEME_DENSITIES).optional(),
@@ -56,12 +86,15 @@ export const themePrefsSchema = z.object({
   gradientAngle: z.enum(THEME_GRADIENT_ANGLES).optional(),
   font: z.enum(THEME_FONTS).optional(),
   fontSize: z.enum(THEME_FONT_SIZES).optional(),
+  fontWeight: z.enum(THEME_FONT_WEIGHTS).optional(),
   shadow: z.enum(THEME_SHADOWS).optional(),
   border: z.enum(THEME_BORDERS).optional(),
   buttonRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
   cardRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
   dialogRadius: z.enum(THEME_RADIUS_TOKENS).optional(),
   overrides: overridesSchema.optional(),
+  palette: themePaletteSchema.nullable().optional(),
+  themeId: z.string().max(64).nullable().optional(),
 });
 
 export const themeSettingsSchema = themePrefsSchema.required({
@@ -76,12 +109,15 @@ export const themeSettingsSchema = themePrefsSchema.required({
   gradientAngle: z.enum(THEME_GRADIENT_ANGLES).optional().default("135"),
   font: z.enum(THEME_FONTS).optional().default("geist"),
   fontSize: z.enum(THEME_FONT_SIZES).optional().default("md"),
+  fontWeight: z.enum(THEME_FONT_WEIGHTS).optional().default("regular"),
   shadow: z.enum(THEME_SHADOWS).optional().default("strong"),
   border: z.enum(THEME_BORDERS).optional().default("strong"),
   buttonRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("match"),
   cardRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("0.75"),
   dialogRadius: z.enum(THEME_RADIUS_TOKENS).optional().default("match"),
   overrides: overridesSchema.optional().default({}),
+  palette: themePaletteSchema.nullable().optional().default(null),
+  themeId: z.string().max(64).nullable().optional().default(null),
 });
 
 export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
@@ -95,12 +131,15 @@ export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
   gradientAngle: "135",
   font: "geist",
   fontSize: "md",
+  fontWeight: "regular",
   shadow: "strong",
   border: "strong",
   buttonRadius: "match",
   cardRadius: "0.75",
   dialogRadius: "match",
   overrides: {},
+  palette: null,
+  themeId: null,
 };
 
 export const PRESET_BUNDLES: Record<ThemePreset, Partial<ThemeSettings>> = {
@@ -305,11 +344,13 @@ export function applyThemeAttributes(root: HTMLElement, settings: ThemeSettings)
   root.dataset.gradientAngle = settings.gradientAngle;
   root.dataset.font = settings.font;
   root.dataset.fontSize = settings.fontSize;
+  root.dataset.fontWeight = settings.fontWeight;
   root.dataset.shadow = settings.shadow;
   root.dataset.border = settings.border;
   root.dataset.buttonRadius = settings.buttonRadius;
   root.dataset.cardRadius = settings.cardRadius;
   root.dataset.dialogRadius = settings.dialogRadius;
+  applyPaletteStyle(root, settings);
 
   const variables = themeOverrideVariables(settings.overrides);
   for (const property of THEME_OVERRIDE_PROPERTIES) {
@@ -320,6 +361,32 @@ export function applyThemeAttributes(root: HTMLElement, settings: ThemeSettings)
       root.style.removeProperty(property);
     }
   }
+}
+
+/** `data-palette` and the page-level palette style tag (also rendered by the root layout). */
+function applyPaletteStyle(root: HTMLElement, settings: ThemeSettings): void {
+  const css = paletteCss(settings.palette);
+  root.dataset.palette = css ? "on" : "off";
+
+  const doc = root.ownerDocument;
+  let style = doc.getElementById(THEME_PALETTE_STYLE_ID);
+  if (!style) {
+    style = doc.createElement("style");
+    style.id = THEME_PALETTE_STYLE_ID;
+    doc.head.appendChild(style);
+  }
+  if (style.textContent !== css) {
+    style.textContent = css;
+  }
+}
+
+/** Settings a saved theme brings, for the device: no overrides; a palette uses the default preset. */
+export function settingsFromTheme(theme: Omit<ThemeSettings, "overrides" | "themeId">, themeId: string): ThemeSettings {
+  const parsed = themeSettingsSchema.safeParse({ ...theme, overrides: {}, themeId });
+  const settings: ThemeSettings = parsed.success
+    ? parsed.data
+    : { ...DEFAULT_THEME_SETTINGS, themeId };
+  return settings.palette ? { ...settings, preset: "default" } : settings;
 }
 
 export function readThemeSettings(input: ThemeCookieInput): { settings: ThemeSettings; mode: ThemeMode } {
@@ -368,6 +435,8 @@ export function settingsWithPreset(current: ThemeSettings, preset: ThemePreset):
   return {
     ...current,
     ...PRESET_BUNDLES[preset],
+    palette: null,
+    themeId: null,
     color: current.color,
     density: current.density,
     navDrawerSide: current.navDrawerSide,

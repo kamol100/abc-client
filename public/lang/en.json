@@ -5789,6 +5789,122 @@
             "resellers": "Resellers"
         }
     },
+    "themes": {
+        "title": "Themes",
+        "description": "Pick a theme for your account, or make your own and share it with your company.",
+        "library": "Theme library",
+        "create": "Create theme",
+        "close": "Close themes",
+        "isptik": "ISPTIK theme · locked",
+        "shared_by": "Shared by {{name}}",
+        "in_use": "In use",
+        "edit": "Edit theme",
+        "copy": "Make a copy",
+        "copy_name": "{{name}} copy",
+        "deleted": "Theme deleted",
+        "delete_confirm": "Delete this theme? Anyone using it goes back to their device settings.",
+        "activate_failed": "Could not switch theme. Try again.",
+        "device_settings": "This device's settings",
+        "overview_hint": "Click a theme on the left to use it. Your choice is saved to your account and follows you to every device. Light, dark and system mode stay per device.",
+        "groups": {
+            "isptik": "ISPTIK themes",
+            "mine": "My themes",
+            "mine_empty": "You have no themes yet. Create one, or copy any theme to change it.",
+            "shared": "Shared in your company"
+        },
+        "visibility": {
+            "private": "Only me",
+            "private_hint": "Shows in My themes. Nobody else sees it.",
+            "shared": "Shared",
+            "shared_hint": "Everyone in your company can use it. Only you can edit it."
+        },
+        "preview": {
+            "label": "Theme preview",
+            "mode": "Preview mode",
+            "dark_hint": "Dark mode is made from your colors automatically. ISPTIK themes keep their own dark colors until you change a color.",
+            "nav": {
+                "dashboard": "Dashboard",
+                "clients": "Clients",
+                "invoice": "Invoice",
+                "funds": "Funds",
+                "communication": "Communication"
+            },
+            "clients": "Clients",
+            "filter": "Filter",
+            "add_client": "Add client",
+            "collected": "Collected",
+            "due": "Due",
+            "online": "Online",
+            "tiles": {
+                "active": "Active clients",
+                "collected_today": "Collected today",
+                "new_month": "New this month"
+            },
+            "payments": "Payments by method",
+            "name": "Name",
+            "package": "Package",
+            "status": "Status",
+            "statuses": {
+                "active": "Active",
+                "due": "Due",
+                "expired": "Expired"
+            },
+            "dialog": "Dialog corners"
+        },
+        "builder": {
+            "create_title": "New theme",
+            "edit_title": "Edit theme",
+            "untitled": "Untitled theme",
+            "sections": {
+                "about": "Name and starting point",
+                "colors": "Colors",
+                "shape": "Shape",
+                "text": "Text and spacing",
+                "effects": "Effects",
+                "sharing": "Who can use it"
+            },
+            "name": "Theme name",
+            "required": "Required",
+            "name_placeholder": "e.g. Office Sunrise",
+            "name_required": "Give your theme a name.",
+            "name_reserved": "That name belongs to an ISPTIK theme. Choose another.",
+            "start_from": "Start from",
+            "start_hint": "Loads all of that theme's choices",
+            "colors": {
+                "primary": "Primary",
+                "primary_hint": "Buttons, links, active menu",
+                "secondary": "Secondary",
+                "secondary_hint": "Gradient partner, second highlights",
+                "accent": "Accent",
+                "accent_hint": "Hover and soft highlights",
+                "sidebar": "Sidebar",
+                "background": "Page background",
+                "charts": "Chart colors",
+                "charts_hint": "Reports and payment charts"
+            },
+            "backgrounds": {
+                "white": "Clean white",
+                "soft": "Soft tint",
+                "strong": "Strong tint"
+            },
+            "font": "Font",
+            "font_size": "Text size",
+            "font_weight": "Font weight",
+            "font_weights": {"light": "Light", "regular": "Regular", "bold": "Bold"},
+            "gradients": "Gradients",
+            "gradient_style": "Gradient style",
+            "gradient_angle": "Gradient angle",
+            "on_off": {
+                "on": "On",
+                "off": "Off"
+            },
+            "reset": "Reset",
+            "save": "Save and use",
+            "save_changes": "Save changes",
+            "created": "Theme saved and in use",
+            "updated": "Theme updated"
+        }
+    },
     "theme_customizer": {
         "title": "Theme Customizer",
         "description": "Customize your theme.",

@@ -9,6 +9,7 @@ import { useFetch } from "../actions";
 import { redirect } from "next/navigation";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { SupportRuntime } from "@/components/platform-support/support-launcher";
+import { ThemeAccountSync } from "@/components/themes/theme-account-sync";
 
 export default async function DashboardLayout({ children }: PropsWithChildren) {
   const res = await useFetch({ url: "/user-settings" });
@@ -16,6 +17,7 @@ export default async function DashboardLayout({ children }: PropsWithChildren) {
   if (!initialData) redirect("/api/session-expired");
   return (
     <AppProvider initialData={initialData}>
+      <ThemeAccountSync />
       <TableLayoutProvider>
         <SidebarProvider>
           <AppSidebar />

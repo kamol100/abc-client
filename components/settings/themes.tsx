@@ -15,6 +15,7 @@ import {
   type ThemeDensity,
   type ThemeFont,
   type ThemeFontSize,
+  type ThemeFontWeight,
   type ThemeGradientAngle,
   type ThemeGradientStyle,
   type ThemeGradients,
@@ -62,6 +63,7 @@ const GRADIENT_STYLES: ThemeGradientStyle[] = ["brand", "ocean", "sunset"];
 const GRADIENT_ANGLES: ThemeGradientAngle[] = ["90", "135", "180"];
 const FONT_OPTIONS: ThemeFont[] = ["geist", "plex"];
 const FONT_SIZES: ThemeFontSize[] = ["sm", "md", "lg"];
+const FONT_WEIGHTS: ThemeFontWeight[] = ["light", "regular", "bold"];
 const SHADOW_OPTIONS: ThemeShadow[] = ["none", "soft", "medium", "strong"];
 const BORDER_OPTIONS: ThemeBorder[] = ["hairline", "subtle", "strong"];
 const OVERRIDE_FIELDS: { key: ThemeOverrideKey; tokenClass: string }[] = [
@@ -188,6 +190,7 @@ export function ThemeSettingsPanel({ variant = "page" }: ThemeSettingsPanelProps
     setGradientAngle,
     setFont,
     setFontSize,
+    setFontWeight,
     setShadow,
     setBorder,
     setButtonRadius,
@@ -370,6 +373,23 @@ export function ThemeSettingsPanel({ variant = "page" }: ThemeSettingsPanelProps
                   variant={settings.fontSize === value ? "default" : "outline"}
                 >
                   {t(`theme_customizer.typography.${value}`)}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <ToggleGroup
+              type="single"
+              value={settings.fontWeight}
+              onValueChange={(value) => value && setFontWeight(value as ThemeFontWeight)}
+              className="flex flex-wrap gap-2"
+              aria-label={t("themes.builder.font_weight")}
+            >
+              {FONT_WEIGHTS.map((value) => (
+                <ToggleGroupItem
+                  key={value}
+                  value={value}
+                  variant={settings.fontWeight === value ? "default" : "outline"}
+                >
+                  {t(`themes.builder.font_weights.${value}`)}
                 </ToggleGroupItem>
               ))}
             </ToggleGroup>

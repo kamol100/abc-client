@@ -1,3 +1,44 @@
+## Theme font weight option — 2026-11-24
+
+- There is a new `fontWeight` theme option: `light`, `regular` (default) or `bold`. It shifts the whole weight scale. `tailwind.config.ts` maps `font-normal`, `font-medium`, `font-semibold` and `font-bold` to `--font-weight-*` variables. `globals.css` sets those per `html[data-font-weight]` (light 300/400/500/600, regular 400/500/600/700, bold 500/600/700/700) and gives `body` the normal weight, so headings stay heavier than body text.
+- IBM Plex Sans and Hind Siliguri now also load weight 300, for Light. They stop at 700, so Bold caps there.
+- The option is in the theme builder (Text and spacing section), its live preview (`previewCss` scopes the weights), the subscriber device panel, the root `data-font-weight` attribute, and the zod schemas. Themes saved before this option read as Regular.
+- New keys `themes.builder.font_weight` and `font_weights.*` are in `en.json` and `bn.json`.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- The theme tests passed (23), with new checks that the builder sends `fontWeight` and the preview scopes the weights.
+- `scripts/ai/test`: 881 passed, plus the same 20 baseline failures.
+- Not checked in the browser: the theme API still needs `migrate` and `ThemeSeeder` locally.
+
+## Saved, shareable themes in the theme customizer — 2026-11-24
+
+- The existing theme customizer button (top bar) and the existing "Theme settings" items (user menu, company and reseller profile) now open a full-page theme screen, `components/themes/theme-studio.tsx`. It is a full-window layer, not a new route or menu item.
+  - The left side is the library: ISPTIK themes (locked), My themes, and Shared in your company. Clicking a theme uses it. My themes can be edited, copied or deleted (`DeleteModal`); ISPTIK and shared themes can be copied.
+  - The right side shows the theme in use on a preview, or the builder.
+  - The header has the Light / Dark / System mode, which stays per device.
+- Builder (`theme-builder.tsx`):
+  - The name is the only typed field. Everything else is a click: start from an ISPTIK theme, Primary / Secondary / Accent swatches, sidebar gradient, page background, chart colors, every existing option (radius, button/card/dialog radius, font, size, density, shadow, border, gradients, style, angle, phone menu side), and Only me / Shared.
+  - A live preview (`theme-preview.tsx`) shows light and dark.
+  - Changing a color turns Default or Jomuna into a colorful theme and regenerates dark mode. Chart-only changes keep an ISPTIK theme's hand-tuned dark colors.
+  - "Save and use" creates the theme and switches to it.
+- Applying a theme:
+  - `lib/theme/theme-palette.ts` turns a palette into the app's CSS variables for light and dark.
+  - The root layout renders them in `<style id="theme-palette">` with `data-palette="on"`, read from the existing `themePrefs` cookie, so there is no flash.
+  - `applyThemeAttributes` updates them on the client.
+  - `globals.css` adds the sidebar gradient.
+  - The palette and `themeId` are part of `ThemeSettings`, the zod schema and `/api/theme`. Every value is a validated hex before it is written into the style tag.
+- `ThemeAccountSync` in the dashboard layout applies the account's chosen theme when this device shows another one.
+- The subscriber portal (`client-top-navbar`) keeps the old device-only panel (`scope="device"`). Color changes there now drop a saved palette.
+- New `themes.*` keys are in `en.json` and `bn.json`.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- New tests passed: `tests/unit/theme/theme-palette.test.ts` (8) and `tests/unit/themes/theme-builder.test.tsx` (4).
+- `scripts/ai/test`: 880 passed, plus the same 20 baseline failures.
+
+Not checked in the browser: the API needs `php artisan migrate` and `php artisan db:seed --class=ThemeSeeder` on the local database first, and those need human approval.
+
 ## Communication log filters: any search and Sent At — 2026-11-24
 
 - `components/communication-logs/communication-log-filter-schema.ts`: the SMS To and SMS From text fields are replaced by one "any" search ("Search number or message"). It matches SMS to, SMS from and the message body. The filter row also has a new Sent At date filter that takes one day or a range (`dateRange`, stays open for a range).

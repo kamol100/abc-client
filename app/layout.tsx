@@ -6,6 +6,7 @@ import TanstackProvider from "@/context/tanstack-provider";
 import ThemeSettingsProvider from "@/context/theme-data-provider";
 import { ThemeProvider } from "@/context/theme-provider";
 import { LANGUAGE_COOKIE, parseLanguage } from "@/lib/i18n/languages";
+import { paletteCss, THEME_PALETTE_STYLE_ID } from "@/lib/theme/theme-palette";
 import { THEME_BOOT_SCRIPT, readThemeSettings, themeOverrideStyle } from "@/lib/theme/theme-settings";
 import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
@@ -29,14 +30,14 @@ const geistMono = Geist_Mono({
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 const hindSiliguri = Hind_Siliguri({
   variable: "--font-hind",
   subsets: ["bengali", "latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -97,6 +98,8 @@ export default async function RootLayout({
     themePrefs: cookieStore.get("themePrefs")?.value,
     themeMode: cookieStore.get("themeMode")?.value,
   });
+  // Built only from validated hex values (readThemeSettings parses the cookie with zod).
+  const themePaletteCss = paletteCss(themeSettings.palette);
   const host = await fetchHostName();
   const themeClassName = [
     geistSans.variable,
@@ -120,16 +123,19 @@ export default async function RootLayout({
       data-gradient-angle={themeSettings.gradientAngle}
       data-font={themeSettings.font}
       data-font-size={themeSettings.fontSize}
+      data-font-weight={themeSettings.fontWeight}
       data-shadow={themeSettings.shadow}
       data-border={themeSettings.border}
       data-button-radius={themeSettings.buttonRadius}
       data-card-radius={themeSettings.cardRadius}
       data-dialog-radius={themeSettings.dialogRadius}
+      data-palette={themePaletteCss ? "on" : "off"}
       style={themeOverrideStyle(themeSettings.overrides) as CSSProperties | undefined}
       translate="no"
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+        <style id={THEME_PALETTE_STYLE_ID} dangerouslySetInnerHTML={{ __html: themePaletteCss }} />
       </head>
       <body
         className="antialiased"

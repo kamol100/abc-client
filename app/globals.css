@@ -873,6 +873,33 @@ body {
     --text-4xl: 2.4rem;
   }
 
+  /* Font weight option: shifts the scale Tailwind's font-normal/medium/semibold/bold use. */
+  :root {
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+  }
+
+  html[data-font-weight="light"] {
+    --font-weight-normal: 300;
+    --font-weight-medium: 400;
+    --font-weight-semibold: 500;
+    --font-weight-bold: 600;
+  }
+
+  /* Plex and Hind stop at 700, so bold caps there. */
+  html[data-font-weight="bold"] {
+    --font-weight-normal: 500;
+    --font-weight-medium: 600;
+    --font-weight-semibold: 700;
+    --font-weight-bold: 700;
+  }
+
+  body {
+    font-weight: var(--font-weight-normal);
+  }
+
   html[data-shadow="none"] {
     --shadow-sm: none;
     --shadow-card: none;
@@ -1161,6 +1188,12 @@ body {
   --ring: 263.4 70% 50.4%;
   --sidebar-primary: 263.4 70% 50.4%;
   --sidebar-primary-foreground: 210 40% 98%;
+}
+
+/* Colorful saved themes: the sidebar is a two-color gradient (variables from lib/theme/theme-palette.ts). */
+html[data-palette="on"] [data-sidebar="sidebar"],
+.theme-palette-sidebar {
+  background-image: linear-gradient(160deg, hsl(var(--sidebar-from, var(--sidebar-background))), hsl(var(--sidebar-to, var(--sidebar-background))));
 }
 
 html[data-gradients="on"] .theme-canvas {

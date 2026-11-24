@@ -3,6 +3,7 @@
 import {
   applyThemeAttributes,
   DEFAULT_THEME_SETTINGS,
+  settingsFromTheme,
   settingsWithPreset,
 } from "@/lib/theme/theme-settings";
 import type {
@@ -11,6 +12,7 @@ import type {
   ThemeDensity,
   ThemeFont,
   ThemeFontSize,
+  ThemeFontWeight,
   ThemeGradientAngle,
   ThemeGradientStyle,
   ThemeGradients,
@@ -19,6 +21,7 @@ import type {
   ThemeOverrides,
   ThemePreset,
   ThemeRadius,
+  ThemeRecordSettings,
   ThemeRadiusToken,
   ThemeSettings,
   ThemeSettingsContextValue,
@@ -74,7 +77,8 @@ export default function ThemeSettingsProvider({
     setSettings((current) => ({ ...current, ...partial }));
   }, []);
 
-  const setColor = useCallback((color: ThemeColor) => patch({ color }), [patch]);
+  // Color changes on this device leave the saved theme (its palette would hide them).
+  const setColor = useCallback((color: ThemeColor) => patch({ color, palette: null, themeId: null }), [patch]);
   const setDensity = useCallback((density: ThemeDensity) => patch({ density }), [patch]);
   const setRadius = useCallback((radius: ThemeRadius) => patch({ radius }), [patch]);
   const setNavDrawerSide = useCallback(
@@ -95,6 +99,7 @@ export default function ThemeSettingsProvider({
   );
   const setFont = useCallback((font: ThemeFont) => patch({ font }), [patch]);
   const setFontSize = useCallback((fontSize: ThemeFontSize) => patch({ fontSize }), [patch]);
+  const setFontWeight = useCallback((fontWeight: ThemeFontWeight) => patch({ fontWeight }), [patch]);
   const setShadow = useCallback((shadow: ThemeShadow) => patch({ shadow }), [patch]);
   const setBorder = useCallback((border: ThemeBorder) => patch({ border }), [patch]);
   const setButtonRadius = useCallback(
@@ -114,10 +119,13 @@ export default function ThemeSettingsProvider({
       } else {
         delete overrides[key];
       }
-      return { ...current, overrides };
+      return { ...current, overrides, palette: null, themeId: null };
     });
   }, []);
   const clearOverrides = useCallback(() => patch({ overrides: {} }), [patch]);
+  const applyTheme = useCallback((theme: ThemeRecordSettings, themeId: string) => {
+    setSettings(settingsFromTheme(theme, themeId));
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -132,6 +140,7 @@ export default function ThemeSettingsProvider({
       setGradientAngle,
       setFont,
       setFontSize,
+      setFontWeight,
       setShadow,
       setBorder,
       setButtonRadius,
@@ -139,6 +148,7 @@ export default function ThemeSettingsProvider({
       setDialogRadius,
       setOverride,
       clearOverrides,
+      applyTheme,
     }),
     [
       settings,
@@ -152,6 +162,7 @@ export default function ThemeSettingsProvider({
       setGradientAngle,
       setFont,
       setFontSize,
+      setFontWeight,
       setShadow,
       setBorder,
       setButtonRadius,
@@ -159,6 +170,7 @@ export default function ThemeSettingsProvider({
       setDialogRadius,
       setOverride,
       clearOverrides,
+      applyTheme,
     ],
   );
 

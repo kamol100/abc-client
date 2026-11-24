@@ -93,7 +93,7 @@ export const ClientTopNavbar: FC = () => {
       </div>
       <div className="flex items-center gap-2">
         <LanguageSwitcher />
-        <ThemeCustomize />
+        <ThemeCustomize scope="device" />
         <ClientProfile />
       </div>
     </header>

@@ -94,6 +94,13 @@ export default {
     				ring: 'hsl(var(--sidebar-ring))'
     			}
     		},
+    		// Weights follow the theme's font weight option (html[data-font-weight] in globals.css).
+    		fontWeight: {
+    			normal: 'var(--font-weight-normal, 400)',
+    			medium: 'var(--font-weight-medium, 500)',
+    			semibold: 'var(--font-weight-semibold, 600)',
+    			bold: 'var(--font-weight-bold, 700)'
+    		},
     		fontFamily: {
     			sans: ['var(--font-body)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     			heading: ['var(--font-heading)', 'ui-sans-serif', 'system-ui', 'sans-serif']
