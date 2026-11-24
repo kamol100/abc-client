@@ -32,10 +32,10 @@ const defaultValues: ProductInFormState = {
     purchase_by: 0,
     purchase_date: undefined,
     voucher: "",
+    vendor_id: null,
     note: "",
     expense: {
         expense_type_id: null,
-        vendor_id: null,
         fund_id: null,
         amount: 0,
         note: "",
@@ -119,10 +119,11 @@ const ProductInFormContent: FC<ProductInContentProps> = ({
     return (
         <div className="space-y-4">
             <div className="rounded-md border p-4 sm:p-5 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                     {field("purchase_by")}
                     {field("purchase_date")}
                     {field("voucher")}
+                    {field("vendor_id")}
                 </div>
                 <div>{field("note")}</div>
 
@@ -130,7 +131,6 @@ const ProductInFormContent: FC<ProductInContentProps> = ({
                     <p className="text-sm font-semibold">{t("product_in.expense.title")}</p>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                         {field("expense.expense_type_id")}
-                        {field("expense.vendor_id")}
                         {field("expense.fund_id")}
                         {field("expense.amount")}
                     </div>

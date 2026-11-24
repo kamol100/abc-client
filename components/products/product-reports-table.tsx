@@ -15,6 +15,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { Badge } from "@/components/ui/badge";
 import MyTooltip from "@/components/my-tooltip";
 import ProductSerialDialog from "@/components/products/product-serial-dialog";
+import ProductMovementDeleteAction from "@/components/products/product-movement-delete-action";
 import ProductReportsFilterSchema from "@/components/products/product-reports-filter-schema";
 import ProductReportsSummary from "@/components/products/product-reports-summary";
 import {
@@ -36,7 +37,7 @@ const STATUS_STYLES: Record<string, string> = {
     replace: "theme-badge-info",
 };
 
-function useProductReportsColumns(
+export function useProductReportsColumns(
     mode: ProductMovementMode,
 ): ColumnDef<ProductReportRow>[] {
     const { t } = useTranslation();
@@ -189,6 +190,21 @@ function useProductReportsColumns(
                     </MyTooltip>
                 ),
                 enableSorting: false,
+            },
+            {
+                id: "actions",
+                header: ({ column }) => (
+                    <DataTableColumnHeader
+                        column={column}
+                        className="flex justify-end mr-2"
+                        title="common.actions"
+                    />
+                ),
+                cell: ({ row }) => (
+                    <ProductMovementDeleteAction mode={mode} id={row.original.id} />
+                ),
+                enableSorting: false,
+                enableHiding: false,
             },
         ],
         [mode, t],

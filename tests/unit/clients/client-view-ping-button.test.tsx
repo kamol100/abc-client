@@ -30,6 +30,10 @@ vi.mock("@/components/clients/client-history", () => ({
     default: () => null,
 }));
 
+vi.mock("@/components/products/client-product-table", () => ({
+    default: () => null,
+}));
+
 vi.mock("@/components/clients/client-onu-section", () => ({
     default: () => null,
 }));

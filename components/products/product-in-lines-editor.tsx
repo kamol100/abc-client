@@ -229,6 +229,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.quantity`}
                             label={{
                                 labelText: "product_in.line.quantity.label",
@@ -240,6 +241,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.unit_price`}
                             label={{
                                 labelText: "product_in.line.unit_price.label",
@@ -251,6 +253,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.unit_sell_price`}
                             label={{ labelText: "product_in.line.unit_sell_price.label" }}
                             placeholder="product_in.line.unit_sell_price.placeholder"
@@ -260,6 +263,7 @@ const ProductInLineItem: FC<ProductInLineItemProps> = ({
                         <InputField
                             reserveErrorSpace={true}
                             type="number"
+                            step="any"
                             name={`product.${index}.vat`}
                             label={{ labelText: "product_in.line.vat.label" }}
                             placeholder="product_in.line.vat.placeholder"

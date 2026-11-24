@@ -41,21 +41,21 @@ export const ProductInFormFieldSchema = (): FieldConfig[] => {
         },
         {
             type: "dropdown",
+            name: "vendor_id",
+            api: "/dropdown-vendors",
+            label: {
+                labelText: "product_in.vendor.label",
+            },
+            placeholder: "product_in.vendor.placeholder",
+        },
+        {
+            type: "dropdown",
             name: "expense.expense_type_id",
             api: "/dropdown-expense-types",
             label: {
                 labelText: "product_in.expense.expense_type.label",
             },
             placeholder: "product_in.expense.expense_type.placeholder",
-        },
-        {
-            type: "dropdown",
-            name: "expense.vendor_id",
-            api: "/dropdown-vendors",
-            label: {
-                labelText: "product_in.expense.vendor.label",
-            },
-            placeholder: "product_in.expense.vendor.placeholder",
         },
         {
             type: "dropdown",

@@ -47,13 +47,18 @@ const SerialListSchema = z.preprocess(
 );
 
 export const ProductMovementRowSchema = z.object({
-    id: z.coerce.number(),
+    /** Public uuid; used in the delete URL. */
+    id: z.string(),
     status: NullableTextSchema,
     quantity: z.coerce.number().nullable().optional(),
     quantity_remaining: z.coerce.number().nullable().optional(),
     unit_price: z.coerce.number().nullable().optional(),
     total_price: z.coerce.number().nullable().optional(),
     unit_sell_price: z.coerce.number().nullable().optional(),
+    vat: z.coerce.number().nullable().optional(),
+    discount: z.coerce.number().nullable().optional(),
+    voucher: NullableTextSchema,
+    invoice: z.object({ uuid: z.string(), trackID: NullableTextSchema }).nullable().optional(),
     note: NullableTextSchema,
     purchase_date: NullableTextSchema,
     out_date: NullableTextSchema,

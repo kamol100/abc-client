@@ -11,6 +11,8 @@ export type InputFieldProps = {
     label?: LabelProps;
     placeholder?: string;
     type?: string;
+    /** Passed to the input. Use "any" for number fields that accept decimals (meters, prices). */
+    step?: string | number;
     className?: string;
     control?: Control<FieldValues>;
     rules?: RegisterOptions;
@@ -32,6 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
     label,
     placeholder,
     type = "text",
+    step,
     className,
     control: controlProp,
     rules,
@@ -62,6 +65,7 @@ const InputField: React.FC<InputFieldProps> = ({
                             id={name}
                             placeholder={placeholder ? t(placeholder as string) : ""}
                             type={type}
+                            step={step}
                             value={readOnly ? defaultValue ?? value ?? "" : value ?? ""}
                             onChange={onChange}
                             onBlur={onBlur}

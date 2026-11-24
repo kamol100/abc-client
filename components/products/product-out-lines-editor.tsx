@@ -134,7 +134,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                     <div className="min-w-0">
                         <SelectDropdown
                             name={`product.${index}.product_id`}
-                            api="/dropdown-products"
+                            api="/dropdown-products?filter=stock"
                             isClearable={false}
                             label={{
                                 labelText: "product_out.line.product.label",
@@ -174,6 +174,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.quantity`}
                             label={{
                                 labelText: "product_out.line.quantity.label",
@@ -185,6 +186,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.unit_price`}
                             label={{
                                 labelText: "product_out.line.unit_price.label",
@@ -196,6 +198,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                     <div className="min-w-0">
                         <InputField
                             type="number"
+                            step="any"
                             name={`product.${index}.vat`}
                             label={{ labelText: "product_out.line.vat.label" }}
                             placeholder="product_out.line.vat.placeholder"
@@ -205,6 +208,7 @@ const ProductOutLineItem: FC<ProductOutLineItemProps> = ({
                         <InputField
                             reserveErrorSpace
                             type="number"
+                            step="any"
                             name={`product.${index}.discount`}
                             label={{ labelText: "product_out.line.discount.label" }}
                             placeholder="product_out.line.discount.placeholder"

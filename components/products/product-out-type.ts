@@ -65,6 +65,15 @@ export const ProductOutLineSchema = z
         fiber_meter_end: z.coerce.number().nullable().optional(),
     })
     .superRefine((line, ctx) => {
+        const gross = calculateProductOutLineTotal(line.quantity, line.unit_price, line.vat, 0);
+        if (toNumber(line.discount) > gross) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["discount"],
+                message: "product_out.errors.discount_max",
+            });
+        }
+
         if (line.has_serial !== 1) return;
 
         if (!toNumber(line.productin_id)) {

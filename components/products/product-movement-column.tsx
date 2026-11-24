@@ -3,14 +3,13 @@
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
-import { usePermissions } from "@/context/app-provider";
 import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { DeleteModal } from "@/components/delete-modal";
 import { Badge } from "@/components/ui/badge";
 import MyTooltip from "@/components/my-tooltip";
 import ProductSerialDialog from "@/components/products/product-serial-dialog";
+import ProductMovementDeleteAction from "@/components/products/product-movement-delete-action";
 import {
     ProductMovementRow,
 } from "@/components/products/product-movement-type";
@@ -30,14 +29,8 @@ export function useProductMovementColumns({
     mode,
 }: UseProductMovementColumnsOptions): ColumnDef<ProductMovementRow>[] {
     const { t } = useTranslation();
-    const { hasPermission } = usePermissions();
 
     return useMemo(() => {
-        const baseKey = mode === "in" ? "products-in" : "products-out";
-        const canDeletePermission =
-            mode === "in" ? "products-in.delete" : "products-out.delete";
-        const apiBase = mode === "in" ? "/products-in" : "/products-out";
-
         return [
             {
                 id: "product_code",
@@ -251,24 +244,12 @@ export function useProductMovementColumns({
                         title="common.actions"
                     />
                 ),
-                cell: ({ row }) => {
-                    const canDelete = hasPermission(canDeletePermission);
-                    if (!canDelete) return null;
-
-                    return (
-                        <div className="flex justify-end mr-2">
-                            <DeleteModal
-                                api_url={`${apiBase}/${row.original.id}`}
-                                keys={`products,${baseKey}`}
-                                confirmMessage="product_movement.actions.delete_confirmation"
-                                buttonText="common.confirm_delete"
-                            />
-                        </div>
-                    );
-                },
+                cell: ({ row }) => (
+                    <ProductMovementDeleteAction mode={mode} id={row.original.id} />
+                ),
                 enableSorting: false,
                 enableHiding: false,
             },
         ];
-    }, [hasPermission, mode, t]);
+    }, [mode, t]);
 }

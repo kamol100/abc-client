@@ -31,6 +31,7 @@ import ClientSessionResetDialog from "@/components/clients/client-session-reset-
 import TicketTable from "@/components/tickets/ticket-table";
 import PaymentTable from "@/components/payments/payment-table";
 import InvoiceTable from "@/components/invoices/invoice-table";
+import ClientProductTable from "@/components/products/client-product-table";
 import ClientOnuSection from "@/components/clients/client-onu-section";
 import { ClientIpPingButton } from "@/components/clients/client-router-info";
 import type { OnuSummary } from "@/components/onu/onu-type";
@@ -293,6 +294,14 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     <PaymentTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
                 </DeferredSection>
             </div>
+            {hasPermission("products-out.report") && (
+                <div className="border-t pt-4">
+                    <div className="text-md font-semibold mb-2">{t('client.products.title')}:</div>
+                    <DeferredSection>
+                        <ClientProductTable clientUuid={clientId} />
+                    </DeferredSection>
+                </div>
+            )}
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('ticket.title_plural')}:</div>
                 <DeferredSection>

@@ -137,11 +137,11 @@ const ProductInFormSchemaBase = z.object({
     }).min(1, { message: "product_in.errors.purchase_by_required" }),
     purchase_date: OptionalDateValueSchema.refine((value): boolean => value !== undefined, { message: "product_in.errors.date_required" }),
     voucher: z.string().nullable().optional(),
+    vendor_id: z.coerce.number().nullable().optional(),
     note: z.string().nullable().optional(),
     expense: z
         .object({
             expense_type_id: z.coerce.number().nullable().optional(),
-            vendor_id: z.coerce.number().nullable().optional(),
             fund_id: z.coerce.number().nullable().optional(),
             amount: z.coerce.number().min(0).default(0),
             note: z.string().nullable().optional(),
@@ -181,6 +181,7 @@ export const ProductInPayloadSchema = z.object({
     purchase_by: z.coerce.number().min(1),
     purchase_date: z.string().nullable().optional(),
     voucher: z.string().nullable().optional(),
+    vendor_id: z.number().nullable(),
     note: z.string().nullable().optional(),
     expense: ProductInPayloadExpenseSchema.nullable().optional(),
     product: z.array(ProductInPayloadLineSchema).min(1),
@@ -193,7 +194,6 @@ export const ProductInFormSchema = ProductInFormSchemaBase
         if (!values.expense) return;
 
         const hasOtherExpenseInput =
-            !!values.expense.vendor_id ||
             !!values.expense.fund_id ||
             !!normalizeText(values.expense.note) ||
             toNumber(values.expense.amount) > 0;
@@ -248,18 +248,20 @@ export const ProductInFormSchema = ProductInFormSchemaBase
             0,
         );
 
+        // The vendor belongs to the purchase, with or without an expense.
+        const vendorId = toNumber(values.vendor_id) > 0 ? toNumber(values.vendor_id) : null;
+
         const payload = {
             purchase_by: toNumber(values.purchase_by),
             purchase_date: toApiDateString(values.purchase_date) ?? null,
             voucher: normalizeText(values.voucher),
+            vendor_id: vendorId,
             note: normalizeText(values.note),
             expense:
                 values.expense && toNumber(values.expense.expense_type_id) > 0
                     ? {
                         expense_type_id: toNumber(values.expense.expense_type_id),
-                        vendor_id: values.expense.vendor_id
-                            ? toNumber(values.expense.vendor_id)
-                            : null,
+                        vendor_id: vendorId,
                         fund_id: values.expense.fund_id
                             ? toNumber(values.expense.fund_id)
                             : null,

@@ -1469,6 +1469,11 @@
         }
     },
     "client": {
+        "products": {
+            "title": "Products",
+            "total": "Products total",
+            "invoice": "Invoice"
+        },
         "settings": {
             "title": "Client Settings",
             "description": "Payment deadline, auto inactive, and whether client pages open in a new tab."
@@ -2974,6 +2979,10 @@
             "label": "Voucher",
             "placeholder": "Enter voucher"
         },
+        "vendor": {
+            "label": "Vendor",
+            "placeholder": "Select vendor"
+        },
         "note": {
             "label": "Note",
             "placeholder": "Enter note"
@@ -3167,7 +3176,8 @@
             "vat_min": "VAT cannot be negative",
             "discount_min": "Discount cannot be negative",
             "serial_required": "At least one serial must be selected",
-            "serial_count": "Selected serial count must match quantity"
+            "serial_count": "Selected serial count must match quantity",
+            "discount_max": "Discount cannot be more than the line amount"
         }
     },
     "product_serial": {
@@ -3221,6 +3231,8 @@
         },
         "actions": {
             "delete_confirmation": "Are you sure you want to delete this movement?",
+            "delete_in_confirmation": "Delete this stock-in? This is only allowed when none of it has been issued.",
+            "delete_out_confirmation": "Delete this stock-out? Its quantity and serials go back to stock.",
             "back_to_products": "Back to Products"
         }
     },

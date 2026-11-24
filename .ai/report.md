@@ -1,3 +1,31 @@
+## Client products on the client profile — 2026-11-24
+
+- The client profile has a new **Products** section (between Payments and Tickets), loaded when scrolled into view like the other sections. It lists what was issued to the client: out date, product and code, quantity, unit price, VAT, discount, total, serials, received by, and the invoice number when one was created. A chip above shows the total amount. Each row has delete for staff with `products-out.delete` (stock goes back to its lot).
+- New `components/products/client-product-table.tsx`; data comes from `products-out/reports?client_uuid=`. The section is hidden without `products-out.report`. Its query key starts with `products-out-reports`, so deleting a stock-out anywhere refreshes it.
+- New keys `client.products.title`, `total`, `invoice` in `en.json` and `bn.json`.
+
+Checks:
+- New `tests/unit/products/client-product-table.test.tsx` (3 tests). `client-view-ping-button.test.tsx` now mocks the new section like the other sections.
+- `scripts/ai/check`: typecheck passed; 897 passed plus the same 20 baseline failures.
+- Not checked in the browser.
+
+## Product stock fixes — 2026-11-24
+
+Frontend side of the inventory fixes (backend details are in `isp-backend/.ai/report.md`).
+
+- **Delete on report tables.** The stock-in and stock-out report tables now have an actions column. Delete is a shared `ProductMovementDeleteAction`, used by the per-product tables too. It checks `products-in.delete` / `products-out.delete`, has separate confirm text for in and out, and refreshes products, both movement lists and both reports.
+- **Row id type** in `ProductMovementRowSchema` is now the uuid string the API sends (it said number). Added `vat`, `discount`, `voucher` and `invoice` to the row type.
+- **Stock-out form.** The product dropdown uses `/dropdown-products?filter=stock`, so products with no stock are not listed. A discount larger than the line amount is caught before submit (`product_out.errors.discount_max`).
+- **Stock-in form.** Vendor moved out of the expense box into the main purchase fields (`vendor_id`), so it is saved without an expense; it is also copied into the expense when one is added.
+- **Decimals.** `InputField` takes a `step` prop; quantity, price, VAT and discount inputs in both line editors use `step="any"`, so the browser no longer blocks 150.5 m.
+- New keys in `en.json` and `bn.json`: `product_in.vendor.*`, `product_out.errors.discount_max`, `product_movement.actions.delete_in_confirmation`, `delete_out_confirmation`.
+
+Checks:
+- New tests: `tests/unit/products/product-stock-fixes.test.ts` (9) and `product-movement-delete-action.test.tsx` (4).
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 894 passed, plus the same 20 baseline failures.
+- Not checked in the browser. The backend migration must run first.
+
 ## Product out: default date and unit price from stock — 2026-11-24
 
 - When you create a product out, "Out date" now starts as today. The edit form keeps the saved date. (`components/products/product-out-form.tsx`)
