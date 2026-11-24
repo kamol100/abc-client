@@ -87,8 +87,9 @@ describe("ThemeBuilder", () => {
     await user.click(screen.getByRole("radio", { name: "themes.builder.backgrounds.strong" }));
     await user.click(screen.getByRole("radio", { name: "theme_customizer.appearance.shadow_none" }));
     await user.click(screen.getByRole("radio", { name: "themes.builder.font_weights.bold" }));
-    await user.click(screen.getByRole("radio", { name: "themes.builder.card_borders.full" }));
-    await user.click(screen.getByRole("radio", { name: "themes.builder.card_color_options.brand" }));
+    await user.click(screen.getByRole("button", { name: /themes\.builder\.card_borders\.full/ }));
+    await user.click(screen.getByRole("button", { name: /themes\.builder\.card_color_options\.brand/ }));
+    expect(screen.getByRole("button", { name: /themes\.builder\.card_borders\.full/ })).toHaveAttribute("aria-pressed", "true");
     await user.click(screen.getByRole("button", { name: /themes\.visibility\.shared/ }));
     await user.click(screen.getByRole("button", { name: "themes.builder.save" }));
 

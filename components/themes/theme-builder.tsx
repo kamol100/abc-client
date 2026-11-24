@@ -16,7 +16,7 @@ import {
   type ThemeRecordSettings,
 } from "@/types/theme-types";
 import { Check, Lock, Moon, Sun } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import {
   recordSettings,
@@ -39,7 +39,7 @@ export interface ThemeDraft {
 type ColorKey = "primary" | "secondary" | "accent";
 type OptionKey = Exclude<keyof ThemeRecordSettings, "palette" | "color" | "preset">;
 
-const OPTION_SECTIONS = ["shape", "text", "effects", "cards"] as const;
+const OPTION_SECTIONS = ["shape", "text", "effects"] as const;
 type OptionSection = (typeof OPTION_SECTIONS)[number];
 
 /** Single-choice option groups, shown as chips. Add the next theme option here. */
@@ -58,8 +58,6 @@ const OPTION_GROUPS: { section: OptionSection; key: OptionKey; values: readonly 
   { section: "effects", key: "gradientStyle", values: ["brand", "ocean", "sunset"], label: "themes.builder.gradient_style" },
   { section: "effects", key: "gradientAngle", values: ["90", "135", "180"], label: "themes.builder.gradient_angle" },
   { section: "effects", key: "navDrawerSide", values: ["left", "right"], label: "theme_customizer.mobile_drawer.label" },
-  { section: "cards", key: "cardBorder", values: THEME_CARD_BORDERS, label: "themes.builder.card_border" },
-  { section: "cards", key: "cardColors", values: THEME_CARD_COLORS, label: "themes.builder.card_colors" },
 ];
 
 function optionLabel(key: OptionKey, value: string, t: (key: string) => string): string {
@@ -84,10 +82,6 @@ function optionLabel(key: OptionKey, value: string, t: (key: string) => string):
       return `${value}°`;
     case "navDrawerSide":
       return t(`theme_customizer.mobile_drawer.${value}`);
-    case "cardBorder":
-      return t(`themes.builder.card_borders.${value}`);
-    case "cardColors":
-      return t(`themes.builder.card_color_options.${value}`);
     default:
       return value;
   }
@@ -114,6 +108,37 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+/** A clickable option with a small picture, a title and a one-line description. */
+function CardOption({
+  selected,
+  onSelect,
+  title,
+  description,
+  children,
+}: {
+  selected: boolean;
+  onSelect: () => void;
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onSelect}
+      className={cn(
+        "grid content-start gap-1.5 rounded-lg border bg-card p-2 text-left transition-shadow hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        selected && "border-foreground ring-1 ring-foreground",
+      )}
+    >
+      {children}
+      <span className="text-xs font-semibold">{title}</span>
+      <span className="text-[0.7rem] leading-snug text-muted-foreground">{description}</span>
+    </button>
+  );
+}
+
 /**
  * Create or edit a staff theme. Typed input is only the name; everything else is a
  * click. The live preview on the right uses the theme's own variables.
@@ -137,6 +162,7 @@ export function ThemeBuilder({
   const [nameError, setNameError] = useState<string | null>(null);
   const [previewDark, setPreviewDark] = useState(false);
   const palette = displayPalette(draft.settings);
+  const firstCardColor = draft.settings.cardColors === "brand" ? palette.primary : palette.charts[0];
   const systemNames = useMemo(() => systemThemes.map((theme) => theme.name.toLowerCase()), [systemThemes]);
 
   const sidebarChoices = useMemo(
@@ -331,6 +357,56 @@ export function ThemeBuilder({
               })}
             </div>
           </Field>
+        </Section>
+
+        <Section title={t("themes.builder.sections.cards")}>
+          <Field label={t("themes.builder.card_border")} hint={t("themes.builder.card_border_hint")}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(8.5rem,1fr))] gap-2" role="group" aria-label={t("themes.builder.card_border")}>
+              {THEME_CARD_BORDERS.map((value) => (
+                <CardOption
+                  key={value}
+                  selected={draft.settings.cardBorder === value}
+                  onSelect={() => setSettings({ cardBorder: value })}
+                  title={t(`themes.builder.card_borders.${value}`)}
+                  description={t(`themes.builder.card_border_descriptions.${value}`)}
+                >
+                  <span
+                    className={cn(
+                      "theme-card-option-mini block",
+                      value === "top" && "theme-card-option-mini-top",
+                      value === "full" && "theme-card-option-mini-full",
+                    )}
+                    // The theme's first card color is the data shown, so it can only be set inline.
+                    style={{ "--mini-tone": firstCardColor } as CSSProperties}
+                  />
+                </CardOption>
+              ))}
+            </div>
+          </Field>
+          <Field label={t("themes.builder.card_colors")} hint={t("themes.builder.card_colors_hint")}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(8.5rem,1fr))] gap-2" role="group" aria-label={t("themes.builder.card_colors")}>
+              {THEME_CARD_COLORS.map((value) => (
+                <CardOption
+                  key={value}
+                  selected={draft.settings.cardColors === value}
+                  onSelect={() => setSettings({ cardColors: value })}
+                  title={t(`themes.builder.card_color_options.${value}`)}
+                  description={t(`themes.builder.card_color_descriptions.${value}`)}
+                >
+                  <span className="theme-card-option-mini flex gap-[3px] p-1.5">
+                    {(value === "multi" ? palette.charts : palette.charts.map(() => palette.primary)).map((hex, index) => (
+                      // Card colors are the data itself.
+                      <i key={`${hex}-${index}`} className="block flex-1 rounded-[3px]" style={{ backgroundColor: hex }} />
+                    ))}
+                  </span>
+                </CardOption>
+              ))}
+            </div>
+          </Field>
+          <p className="text-xs text-muted-foreground">{t("themes.builder.cards_note")}</p>
+        </Section>
+
+        <Section title={t("themes.builder.sections.colors_more")}>
           <Field label={t("themes.builder.colors.background")}>
             <ToggleGroup
               type="single"
@@ -402,7 +478,8 @@ export function ThemeBuilder({
           </div>
         </Section>
 
-        <div className="sticky bottom-0 z-10 -mx-1 flex flex-wrap justify-end gap-2 border-t bg-background/95 px-1 py-3 backdrop-blur">
+        {/* The scroll area has p-4 / sm:p-6; the negative bottom pins the bar to the window edge instead of floating above that padding. */}
+        <div className="sticky -bottom-4 z-10 -mx-1 flex flex-wrap justify-end gap-2 border-t bg-background/95 px-1 py-3 backdrop-blur sm:-bottom-6">
           <MyButton type="button" action="reset" variant="outline" size="default" onClick={reset} title={t("themes.builder.reset")} />
           <MyButton type="button" action="cancel" variant="outline" size="default" onClick={onCancel} title={t("common.cancel")} />
           <MyButton type="submit" action="save" size="default" loading={isPending} disabled={isPending} title={t(editingId ? "themes.builder.save_changes" : "themes.builder.save")} />

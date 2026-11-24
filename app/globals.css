@@ -1414,7 +1414,27 @@ html[data-card-colors="brand"] {
 
 /* Smaller tile for the theme builder preview. */
 .dashboard-card-icon-sm {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 0.375rem;
+}
+
+/* Theme builder: the small pictures on the Dashboard cards options. --mini-tone is set per option. */
+.theme-card-option-mini {
+  height: 2.125rem;
+  border-radius: 0.375rem;
+  border: 1px solid hsl(var(--border) / var(--border-strength));
+  background-color: hsl(var(--muted));
+}
+
+.theme-card-option-mini-top {
+  box-shadow: inset 0 3px 0 var(--mini-tone);
+}
+
+.theme-card-option-mini-full {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(hsl(var(--muted)), hsl(var(--muted))) padding-box,
+    linear-gradient(180deg, var(--mini-tone), color-mix(in srgb, var(--mini-tone) 15%, hsl(var(--border))) 75%) border-box;
+  box-shadow: inset 0 2px 0 var(--mini-tone);
 }

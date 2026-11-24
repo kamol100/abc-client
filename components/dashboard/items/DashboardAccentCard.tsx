@@ -44,11 +44,11 @@ export function DashboardAccentCard({
 }
 
 /** The card's fixed icon, tinted with the card's theme color. */
-export function DashboardCardIcon({ accent }: { accent: DashboardCardAccent }) {
+export function DashboardCardIcon({ accent, compact = false }: { accent: DashboardCardAccent; compact?: boolean }) {
   const Icon = accent.icon;
   return (
-    <span className="dashboard-card-icon" aria-hidden="true">
-      <Icon className="h-5 w-5" />
+    <span className={cn("dashboard-card-icon", compact && "dashboard-card-icon-sm")} aria-hidden="true">
+      <Icon className={compact ? "size-3.5" : "h-5 w-5"} />
     </span>
   );
 }
@@ -66,6 +66,8 @@ export function DashboardStatCard({
   isLoading,
   isError,
   skeletonRows = 0,
+  compact = false,
+  className,
   children,
 }: {
   accent: DashboardCardAccent;
@@ -77,13 +79,16 @@ export function DashboardStatCard({
   isError: boolean;
   /** Detail rows to hold space for while loading. */
   skeletonRows?: number;
+  /** Smaller type and spacing, for the theme builder preview. */
+  compact?: boolean;
+  className?: string;
   children?: ReactNode;
 }) {
   const { t } = useTranslation();
 
   if (isError) {
     return (
-      <DashboardAccentCard accent={accent}>
+      <DashboardAccentCard accent={accent} className={className}>
         <div className="flex h-full min-h-[120px] items-center justify-center p-4">
           <p className="text-sm text-destructive">{t("common.failed_to_load_data")}</p>
         </div>
@@ -92,10 +97,16 @@ export function DashboardStatCard({
   }
 
   return (
-    <DashboardAccentCard accent={accent}>
-      <div className={cn("flex h-full flex-col gap-3 p-4", !isLoading && "animate-in fade-in duration-300")}>
-        <div className="flex min-w-0 items-center gap-3">
-          <DashboardCardIcon accent={accent} />
+    <DashboardAccentCard accent={accent} className={className}>
+      <div
+        className={cn(
+          "flex h-full flex-col",
+          compact ? "gap-2 p-2.5" : "gap-3 p-4",
+          !isLoading && "animate-in fade-in duration-300",
+        )}
+      >
+        <div className={cn("flex min-w-0 items-center", compact ? "gap-2" : "gap-3")}>
+          <DashboardCardIcon accent={accent} compact={compact} />
           {isLoading ? (
             <div className="grid min-w-0 flex-1">
               <span className="flex h-5 items-center">
@@ -107,8 +118,14 @@ export function DashboardStatCard({
             </div>
           ) : (
             <div className="grid min-w-0">
-              <p className="truncate text-sm text-muted-foreground">{label}</p>
-              <p className="truncate text-xl font-bold tracking-tight tabular-nums text-foreground" title={valueTitle}>
+              <p className={cn("truncate text-muted-foreground", compact ? "text-[0.7rem]" : "text-sm")}>{label}</p>
+              <p
+                className={cn(
+                  "truncate font-bold tracking-tight tabular-nums text-foreground",
+                  compact ? "text-base leading-6" : "text-xl",
+                )}
+                title={valueTitle}
+              >
                 {value}
               </p>
             </div>
@@ -125,16 +142,20 @@ export function DashboardStatCard({
                 ))}
               </div>
             )
-          : children && <div className="mt-auto grid gap-1 border-t border-dashed pt-2.5">{children}</div>}
+          : children && (
+              <div className={cn("mt-auto grid border-t border-dashed", compact ? "gap-0.5 pt-1.5" : "gap-1 pt-2.5")}>
+                {children}
+              </div>
+            )}
       </div>
     </DashboardAccentCard>
   );
 }
 
 /** One detail row: label on the left, value on the right. */
-export function DashboardStatRow({ label, value }: { label: ReactNode; value: ReactNode }) {
+export function DashboardStatRow({ label, value, className }: { label: ReactNode; value: ReactNode; className?: string }) {
   return (
-    <div className="flex items-center justify-between gap-3 text-xs">
+    <div className={cn("flex items-center justify-between gap-3 text-xs", className)}>
       <span className="min-w-0 truncate text-muted-foreground">{label}</span>
       <span className="shrink-0 font-medium tabular-nums text-foreground">{value}</span>
     </div>

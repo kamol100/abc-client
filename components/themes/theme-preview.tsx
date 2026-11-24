@@ -3,8 +3,9 @@
 import { previewCss } from "@/lib/theme/theme-palette";
 import { cn } from "@/lib/utils";
 import type { ThemeRecordSettings } from "@/types/theme-types";
-import { HandCoins, UserPlus, Users } from "lucide-react";
 import { useId } from "react";
+import { DashboardStatCard, DashboardStatRow } from "@/components/dashboard/items/DashboardAccentCard";
+import { DASHBOARD_CARD_ACCENTS } from "@/components/dashboard/dashboard-constants";
 import { useTranslation } from "react-i18next";
 import { displayPalette } from "@/components/themes/theme-presets";
 
@@ -20,11 +21,32 @@ const CHART_BG = [
   "bg-[hsl(var(--chart-4))]",
   "bg-[hsl(var(--chart-5))]",
 ] as const;
-/** Stat tiles drawn like the dashboard cards, so the card border and color options show here too. */
-const PREVIEW_TILES = [
-  { key: "active", value: "1,148", icon: Users, tone: "dashboard-tone-1" },
-  { key: "collected_today", value: "৳9,650", icon: HandCoins, tone: "dashboard-tone-2" },
-  { key: "new_month", value: "37", icon: UserPlus, tone: "dashboard-tone-3" },
+/** Sample dashboard cards, drawn with the dashboard's own card so the card options show here exactly. */
+const PREVIEW_CARDS = [
+  {
+    label: "dashboard.cards.total_clients",
+    value: "1,284",
+    accent: DASHBOARD_CARD_ACCENTS.client,
+    rows: [["dashboard.metrics.active", "1,102"], ["dashboard.metrics.inactive", "182"]],
+  },
+  {
+    label: "dashboard.cards.total_resellers",
+    value: "36",
+    accent: DASHBOARD_CARD_ACCENTS.reseller,
+    rows: [["dashboard.metrics.active", "31"], ["dashboard.metrics.inactive", "5"]],
+  },
+  {
+    label: "dashboard.cards.invoices",
+    value: "৳8,42,500",
+    accent: DASHBOARD_CARD_ACCENTS.invoice,
+    rows: [["dashboard.metrics.this_month", "৳4,32,000"], ["dashboard.metrics.last_month", "৳4,10,500"]],
+  },
+  {
+    label: "dashboard.cards.invoice_paid",
+    value: "৳6,95,300",
+    accent: DASHBOARD_CARD_ACCENTS.invoicePaid,
+    rows: [["dashboard.metrics.today", "৳18,400"], ["dashboard.metrics.this_month", "৳3,62,100"]],
+  },
 ] as const;
 const SAMPLE_CLIENTS = [
   { name: "Rahim Uddin", id: "rahim01", plan: "20 Mbps", status: "active" },
@@ -129,24 +151,22 @@ export function ThemePreview({
             <span className="rounded-full bg-accent px-2 py-0.5 font-medium text-accent-foreground">{t("themes.preview.online")} 1,036</span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            {PREVIEW_TILES.map(({ key, value, icon: Icon, tone }, index) => (
-              <div
-                key={key}
-                className={cn(
-                  "dashboard-accent-card flex min-w-0 items-center gap-2 overflow-hidden rounded-xl border bg-card p-2 shadow-[var(--shadow-card)]",
-                  tone,
-                  index === 2 && "hidden sm:flex",
-                )}
+          <div className="grid grid-cols-2 gap-2">
+            {PREVIEW_CARDS.map((card) => (
+              <DashboardStatCard
+                key={card.label}
+                compact
+                className="shadow-[var(--shadow-card)]"
+                accent={card.accent}
+                label={t(card.label)}
+                value={card.value}
+                isLoading={false}
+                isError={false}
               >
-                <span className="dashboard-card-icon dashboard-card-icon-sm">
-                  <Icon className="size-3.5" />
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-[0.7rem] text-muted-foreground">{t(`themes.preview.tiles.${key}`)}</p>
-                  <p className="text-base font-bold tabular-nums">{value}</p>
-                </div>
-              </div>
+                {card.rows.map(([label, value]) => (
+                  <DashboardStatRow key={label} label={t(label)} value={value} className="text-[0.65rem]" />
+                ))}
+              </DashboardStatCard>
             ))}
           </div>
 
