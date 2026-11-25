@@ -97,15 +97,48 @@ export interface OltAttentionItem {
     since: string | null;
 }
 
-export interface OltPonPort {
+export type PortState = "up" | "down" | "unknown" | null;
+
+/** Port monitoring fields: absent on older APIs, null until the OLT reports them. */
+interface PortReadings {
+    speed_mbps?: number | null;
+    in_bps?: number | null;
+    out_bps?: number | null;
+    last_change_at?: string | null;
+    /** Set while the link is down or the port is disabled. */
+    down_since?: string | null;
+}
+
+export interface OltPonPort extends PortReadings {
     id: number;
     port_index?: number;
     name: string;
-    admin_state?: "up" | "down" | "unknown" | null;
-    oper_state: "up" | "down" | "unknown" | null;
+    admin_state?: PortState;
+    oper_state: PortState;
     onu_total: number;
     onu_online: number;
     polled_at?: string | null;
+    tx_power_dbm?: number | null;
+    temperature_c?: number | null;
+    affected_clients?: number;
+}
+
+export interface OltUplinkPort extends PortReadings {
+    id: number;
+    port_index?: number;
+    name: string;
+    admin_state?: PortState;
+    oper_state: PortState;
+    polled_at?: string | null;
+}
+
+/** GET /olts/{id}/port-events?port_type=&port_id= (newest first, at most 100). */
+export interface OltPortEvent {
+    from_state: string | null;
+    to_state: string | null;
+    occurred_at: string;
+    /** How long the port stayed in `to_state`; null while it still is. */
+    duration_seconds: number | null;
 }
 
 export interface OltDetail {
@@ -130,6 +163,8 @@ export interface OltDetail {
     optical: { threshold_dbm: number; low: number; near_limit: number; too_strong: number };
     billing: { due_total: number; clients_with_due: number; expired: number; due_this_week: number };
     pon_ports: OltPonPort[];
+    /** Absent on older APIs; empty when the OLT reports no uplinks (or SNMP gives no interface counters). */
+    uplink_ports?: OltUplinkPort[];
     access: OltAccess;
     attention: OltAttentionItem[];
     /** How current the ONU/PON/optical numbers are (false while the OLT is down or not polled). */

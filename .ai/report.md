@@ -1,3 +1,42 @@
+## NOC: one card per down item — 2026-11-25
+
+Branch `feat/olt-port-monitoring` (stacked on the port work, commit 661920f, as the user chose).
+
+- `components/noc/noc-view.tsx`: the six count tiles, the down-device grid, the Ports down list, the map and the Open outages list are replaced by one list of cards. The header says "N down · X clients offline · U up · K unknown · Updated …". Filter chips with counts: All down, Devices, OLTs, PON ports, Uplinks. Maintenance banners and the not-polled notice stay. The map is gone (`noc-map-canvas.tsx` deleted). `noc-ports.tsx` now only holds `NotPolledNotice`.
+- `components/noc/noc-type.ts`: `nocDownItems(summary)` builds the cards from `down_devices`, `ports_down` and `open_outages` from the existing `GET monitoring/summary`. Each open outage is shown once. A device's own outage gives it ack/ticket state, downstream outages (`parent_device_id`) are listed under it as "Cut off behind this", port outages match by port type + id, and any other open outage (e.g. network unreachable) gets its own card. Sorted by clients, then longest down.
+- `components/noc/noc-down-card.tsx`: header button (aria-expanded) with type icon, name, type badge, meta, IP, Down for, Clients offline, ack/ticket status, chevron. Red border, or amber when acknowledged or ticketed. Open: Details list, a static "Check first" hint per type, what is cut off behind a device, and actions: Ping, Port history (the existing drawer), Open OLT page (`olts.show`), Directions (when the device has a location), Open ticket.
+- Not built, since there is no API for it: Acknowledge / Create ticket / SMS / Call buttons, the affected-clients list, the 24 h strip, "Back up in the last hour".
+- i18n: new `noc.*` keys in en and bn; unused `noc.{no_down_devices,ports_down,no_ports_down,map_label,no_open_outages,outage_started,badges.downstream}` removed (marketing still uses `noc.counts`, `noc.down_devices`, `noc.open_outages`). en/bn key sets identical (7756 each).
+
+UI test with full API data (2026-11-25): local DB seeded (Dhanmondi OLT-01 marked polled and up, its incident #120 and downstream #126 resolved for the test, EPON0/1 and GigaEthernet0/2 set down, incidents 127 PON down, 128 uplink down acknowledged, 129 network unreachable; restore script `noc-restore.php` in the session scratchpad). `GET monitoring/summary` then returned 6 down devices (1 in maintenance, 2 ticketed, 1 acknowledged), 1 PON + 1 uplink down, 1 network unreachable, 4 downstream outages (one two levels deep) and 2 of 3 OLTs not polled. The page showed 9 cards, "9 down · 123 clients offline · 1 up · 0 unknown", filter counts 9/5/1/1/1, and every card's name, type, meta, IP, down for, clients, ack/ticket status, details, hint, downstream list and actions matched the API (dates checked in +06:00). Port history opens; the not-polled notice lists both OLTs with reasons; Bangla renders; no horizontal scroll at 390px. Fixes from this pass: outages two or more levels down now join the top device's card (they showed as separate cards), and a card with no actions no longer draws an empty action bar. Tests: 60 passed. Typecheck: 52, same set.
+
+Checks: `npx vitest run tests/unit/noc tests/unit/olt`: 58 passed (new `tests/unit/noc/noc-down-card.test.tsx`, plus `nocDownItems` tests). `scripts/ai/typecheck`: 52 errors, the same pre-existing set. Browser on the local app (http://192.168.1.243:3000/noc, real local data, 8 down devices/OLTs): cards, filters and expand work at 1440px and 390px, no horizontal scroll, no page errors. Port cards could not be seen in the browser: no local OLT is polled, and the summary is fetched by a server action so it cannot be stubbed in the browser; the render test covers them.
+
+## OLT port monitoring (frontend) — 2026-11-23
+
+Built against the agreed API contract (backend in `isp-backend`, same branch name). All new fields are optional on the client; the UI renders when they are missing.
+
+- OLT page: the narrow "PON ports" side card is replaced by a full-width **Ports** card under the status cards (`olt-ports-section.tsx`). It has PON / Uplink tabs with counts, a "Show only problems" switch, a summary line ("14 up · 1 link down · 1 disabled") in a fixed one-line slot, and the stale-data note. PON columns: Port (link to `/onus?olt=&pon_port=` with `onus.access`, as before), Status badge (Up / Link down red / Disabled muted / Unknown), Down since or "Changed …" (absolute time on hover), ONUs online with the thin bar, Clients affected, Traffic in/out, Tx power, Temperature, History. Uplink columns: Port, Status, Down since / last change, Speed, Traffic with % of link speed. Name, status, down since, ONUs, clients and traffic sort client-side (asc → desc → API order). With no uplinks the tab shows "This OLT reports no uplink ports, or its SNMP access does not include interface counters." The table scrolls inside its own container at 390px.
+- History: a right-side `MyDrawer` (`olt-port-history.tsx`) loads `GET olts/{id}/port-events?port_type=&port_id=` with `useApiQuery`, shows from → to badges, when (relative + absolute), and "Lasted …" / "Still in this state". It has a skeleton loading state, an error state with retry, and "No changes recorded yet" when empty.
+- NOC: two more tiles, "PON ports down" and "Uplinks down" (red when > 0, "—" on an API without them). The grid is 2 / 3 / 6 columns. A **Ports down** section (`noc-ports.tsx`, only when the API sends `ports_down`) lists OLT (link with `olts.show`) · port, the port type, down for, ONUs on the port, clients, and an Acknowledged badge. When everything is up it says "All monitored ports are up." A `<details>` notice, "Port monitoring is off or out of date for N of M OLTs", expands to each OLT with a plain reason and its last poll time. Open outages show a "PON port down" / "Uplink down" badge for port incidents. The NOC list has no ack/ticket actions (badges and the ticket link only, keyed by outage id), so nothing there needed changing. The loading skeleton reserves the six tiles and the new section.
+- Types: `OltPonPort` gets optional readings, plus new `OltUplinkPort`, `OltPortEvent` and `OltDetail.uplink_ports?`. `DeviceOutage.type` gets `pon_port_down | uplink_down`. `NocSummary` moved to `components/noc/noc-type.ts`. Pure helpers are in `components/olt/olt-ports.ts` and `noc-type.ts`.
+- i18n: `olt.ports.*`, `monitoring.outage_type.{pon_port_down,uplink_down}`, `noc.{ports_down,no_ports_down,port_type,onus_on_port,not_polled.*,counts.pon_ports_down,counts.uplinks_down}` are in en and bn. en/bn key sets are identical (6074 each).
+- Help: a "Ports" section in `content/help/{en,bn}/olts/overview.md`. `npm run help:check`: ok (182 articles).
+
+Checks: `scripts/ai/typecheck` reports 52 errors before and after, the same pre-existing list (markdown-it, @tiptap, .next/types, lib/help, platform-support), so 0 are new. `npx vitest run tests/unit/olt tests/unit/noc`: 8 files, 53 tests passed (new: `tests/unit/olt/olt-ports.test.ts`, `tests/unit/noc/noc-type.test.ts`, 15 tests). Full `vitest run`: 851 passed, 21 failed in 16 files, the same failing set as the baseline (836 passed / 21 failed).
+
+Browser: the local API could not serve the real pages. `/user-settings` fails (missing `referral_sellers` table), so every dashboard page redirects to login. `olts/{id}`, `monitoring/summary` and `port-events` also fail (`olt_uplink_ports` / `olt_port_events` tables not migrated). Instead, a temporary page outside the dashboard layout, since removed, seeded the React Query cache with contract-shaped fixtures and rendered the real `OltView` and `NocView`. Checked at 1440px and 390px:
+- Ports tabs, problems filter and sort work.
+- The history drawer works, with events and empty.
+- The NOC tiles, Ports down list, expanded not-polled notice and outage badges render.
+- The "old API" fixtures render: no new fields, so "Uplink ports (0)" with the empty text, em dashes, and no Ports down section.
+- No horizontal page overflow at 390px (`scrollWidth` 390), including with the drawer open.
+- No page errors from the new code. There was only a harness hydration warning from its own `new Date()`.
+
+Not checked:
+- The real API, and the slow-load transition: the page skeleton reserves an `h-80` block for the Ports card.
+- Scroll position across drawer open/close: the harness page did not scroll the window.
+
 ## Form builder refactor: audit and plan (no code changed) — 2026-11-25
 
 Read-only audit of `components/form-wrapper/*`, `components/form/*`, `components/select-dropdown.tsx`, all 57 files that render `FormBuilder` / `AccordionFormBuilder` (64 sites), and the 29 files that call `useForm` directly.
@@ -343,6 +382,7 @@ On `/communication-queue` as vpc at 1440px, checked against database counts:
 Very fast scripted clicks on the range picker registered only the first day. Real pointer movement selected the range correctly on this page and on `/fund-transactions`, which uses the same `DatePicker`.
 
 `scripts/ai/typecheck` passed. `scripts/ai/test`: the same 20 baseline failures, everything else passed.
+||||||| 23184d7
 
 ## Table toolbar: focus ring cut off in the open filter row — 2026-11-23
 
