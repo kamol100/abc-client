@@ -25,8 +25,13 @@ export type FormBuilderProps = {
   gridGap?: string;
   schema: z.ZodType;
   api?: string;
-  method: "GET" | "POST" | "PUT";
-  mode: "create" | "edit";
+  /**
+   * The HTTP method of a create form. Defaults to POST. An edit form always sends
+   * PUT to `{api}/{id}`, whatever this says.
+   */
+  method?: "GET" | "POST" | "PUT";
+  /** Defaults to "create". */
+  mode?: "create" | "edit";
   queryKey?: string;
   successMessage?: string;
   data?: Record<string, unknown>;
@@ -60,7 +65,7 @@ const FormBuilder = ({
   gridGap = "gap-4",
   schema,
   api,
-  method,
+  method = "POST",
   mode = "create",
   data,
   queryKey,
