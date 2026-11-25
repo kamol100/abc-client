@@ -36,6 +36,11 @@ export type FilterFieldProps<Config extends FieldConfig = FieldConfig> = {
 export type FieldDefinition<Config extends FieldConfig = FieldConfig> = {
     /** The `type` values this definition handles. */
     types: readonly Config["type"][];
+    /**
+     * The user types free text into it. A table filter can apply such a field while
+     * the user types, and offers a Search button for the ones that do not.
+     */
+    isTextInput?: boolean;
     /** Draws the field in a form. */
     render: (props: FormFieldProps<Config>) => ReactNode;
     /**

@@ -14,12 +14,11 @@ import { geolocationField } from "@/components/form-builder/fields/geolocation";
 import { passwordField } from "@/components/form-builder/fields/password";
 import { radioField } from "@/components/form-builder/fields/radio";
 import { switchField } from "@/components/form-builder/fields/switch";
-import { telField, textField } from "@/components/form-builder/fields/text";
+import { textField } from "@/components/form-builder/fields/text";
 import { textareaField } from "@/components/form-builder/fields/textarea";
 
 const fieldDefinitions: FieldDefinition[] = [
     textField,
-    telField,
     passwordField,
     textareaField,
     dropdownField,

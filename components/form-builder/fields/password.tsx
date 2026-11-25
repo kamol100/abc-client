@@ -5,6 +5,7 @@ import type { TextFieldConfig } from "@/components/form-wrapper/form-builder-typ
 /** A password input with a show/hide button. */
 export const passwordField = defineField<TextFieldConfig & { type: "password" }>({
     types: ["password"],
+    isTextInput: true,
     render: ({ field, name }) => (
         <PasswordField
             name={name}

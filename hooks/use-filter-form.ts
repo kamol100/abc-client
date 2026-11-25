@@ -5,12 +5,12 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import type { FieldConfig, TextFieldConfig } from "@/components/form-wrapper/form-builder-type";
 
-const TEXT_TYPES = new Set(["text", "email", "number", "password"]);
 const DEBOUNCE_MS = 400;
 const MIN_WATCH_LENGTH = 3;
 
+/** A field the user types into. Which types those are is set in the field definitions. */
 function isTextField(field: FieldConfig): field is TextFieldConfig {
-  return TEXT_TYPES.has(field.type);
+  return fieldDefinitionOf(field.type)?.isTextInput === true;
 }
 
 function resolveWatchFields(

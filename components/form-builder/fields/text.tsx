@@ -5,21 +5,24 @@ import type { TextFieldConfig } from "@/components/form-wrapper/form-builder-typ
 
 type InputConfig = TextFieldConfig & { type: "text" | "email" | "number" | "tel" };
 
-const renderInput = ({ field, name }: { field: InputConfig; name: string }) => (
-    <InputField
-        name={name}
-        label={field.label}
-        placeholder={field.placeholder}
-        type={field.type}
-        disabled={field.disabled}
-        readOnly={field.readOnly}
-    />
-);
-
-/** One-line inputs. In a filter they get a clear button once they hold a value. */
-export const textField = defineField<TextFieldConfig & { type: "text" | "email" | "number" }>({
-    types: ["text", "email", "number"],
-    render: renderInput,
+/**
+ * One-line inputs: text, email, number, and tel (a Bangladeshi mobile number; the
+ * input itself removes a typed +88 on blur). In a filter they get a clear button
+ * once they hold a value.
+ */
+export const textField = defineField<InputConfig>({
+    types: ["text", "email", "number", "tel"],
+    isTextInput: true,
+    render: ({ field, name }) => (
+        <InputField
+            name={name}
+            label={field.label}
+            placeholder={field.placeholder}
+            type={field.type}
+            disabled={field.disabled}
+            readOnly={field.readOnly}
+        />
+    ),
     renderFilter: ({ field, value, onClear }) => (
         <div className="relative">
             <InputField
@@ -39,10 +42,4 @@ export const textField = defineField<TextFieldConfig & { type: "text" | "email" 
             ) : null}
         </div>
     ),
-});
-
-/** A Bangladeshi mobile number. The input itself removes a typed +88 on blur. */
-export const telField = defineField<TextFieldConfig & { type: "tel" }>({
-    types: ["tel"],
-    render: renderInput,
 });

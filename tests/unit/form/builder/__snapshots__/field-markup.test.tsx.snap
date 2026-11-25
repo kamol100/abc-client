@@ -8658,7 +8658,25 @@ exports[`field markup > FormFilter > every filter field type, in flexible rows 1
               </div>
               <div
                 class="w-full min-w-0 sm:w-auto sm:min-w-[12rem] sm:flex-1"
-              />
+              >
+                <div
+                  class="relative"
+                >
+                  <div
+                    class="flex flex-col gap-1 data-[state=error]:text-destructive"
+                  >
+                    <input
+                      autocomplete="tel"
+                      class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                      id="phone"
+                      inputmode="tel"
+                      placeholder="thing.phone"
+                      type="tel"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="flex w-full min-w-0 flex-wrap gap-3"
@@ -8971,7 +8989,25 @@ exports[`field markup > FormFilter > every filter field type, in one grid row 1`
                 </div>
               </div>
             </div>
-            <div />
+            <div>
+              <div
+                class="relative"
+              >
+                <div
+                  class="flex flex-col gap-1 data-[state=error]:text-destructive"
+                >
+                  <input
+                    autocomplete="tel"
+                    class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    id="phone"
+                    inputmode="tel"
+                    placeholder="thing.phone"
+                    type="tel"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
             <div>
               <div
                 class=""
