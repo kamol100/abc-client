@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import DatePicker from "@/components/form/DatePicker";
 import type { DatePickerValue } from "@/components/form/DatePicker";
 import { useFilterForm } from "@/hooks/use-filter-form";
@@ -13,6 +13,17 @@ vi.mock("react-i18next", () => ({
         i18n: { language: "en" },
     }),
 }));
+
+// The calendar opens on the current month. Hold the date in October 2026 so the
+// days these tests click are always on screen. Only Date is faked; timers stay real.
+beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date(2026, 9, 15, 12, 0, 0));
+});
+
+afterEach(() => {
+    vi.useRealTimers();
+});
 
 const dueDateField: FieldConfig = {
     type: "dateRange",
