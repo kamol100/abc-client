@@ -32,7 +32,8 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { usePermissions, useProfile, useSubscription } from "@/context/app-provider";
+import { usePermissions, useProfile, useSetting, useSubscription } from "@/context/app-provider";
+import { applyMenuLayout, parseMenuLayout } from "@/lib/menu/menu-layout";
 import { isMenuFeatureLocked } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 
@@ -449,7 +450,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.settings.title"),
       url: "#",
       icon: Settings,
-      permissions: ["company-settings.access"],
+      permissions: ["company-settings.access", "menu-layout.edit"],
       feature: "core",
       items: [
         { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
@@ -460,6 +461,7 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
         { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
         { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
         { title: t("menu.settings.invoice_print.title"), url: "/settings/invoice-print", permission: "company-settings.access" },
+        { title: t("menu.settings.menu_layout.title"), url: "/settings/menu", permission: "menu-layout.edit" },
       ],
     },
     {
@@ -556,23 +558,30 @@ export function selectMenuItems(menuConfig: MenuItemConfig[], access: MenuAccess
 
 // ─── Hook ─────────────────────────────────────────────────────────────
 
-export function useMenuItems(): NavMenuItem[] {
+/** The staff sidebar. withLayout false gives the default order and icons (the menu editor's baseline). */
+export function useMenuItems({ withLayout = true }: { withLayout?: boolean } = {}): NavMenuItem[] {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
   const { subscription } = useSubscription();
   const { profile } = useProfile();
   const isReseller = !!profile?.reseller;
   const isIndependentReferral = profile?.referral_seller_type === "independent";
+  // The order and icons a company or reseller admin saved (Settings → Sidebar menu). It
+  // arrives with /user-settings, so the sidebar paints in its saved order with no jump.
+  const savedLayout = useSetting("menu_layout");
 
   return useMemo(
     () =>
-      selectMenuItems(buildMenuConfig(t), {
-        hasPermission,
-        isReseller,
-        isIndependentReferral,
-        subscriptionState: subscription?.state,
-        disabledFeatures: subscription?.disabled_features,
-      }),
-    [t, hasPermission, subscription, isReseller, isIndependentReferral],
+      applyMenuLayout(
+        selectMenuItems(buildMenuConfig(t), {
+          hasPermission,
+          isReseller,
+          isIndependentReferral,
+          subscriptionState: subscription?.state,
+          disabledFeatures: subscription?.disabled_features,
+        }),
+        withLayout ? parseMenuLayout(savedLayout) : null,
+      ),
+    [t, hasPermission, subscription, isReseller, isIndependentReferral, savedLayout, withLayout],
   );
 }

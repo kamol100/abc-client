@@ -5405,6 +5405,9 @@
             },
             "invoice_print": {
                 "title": "Invoice Print"
+            },
+            "menu_layout": {
+                "title": "Sidebar menu"
             }
         },
         "noc": {
@@ -10076,5 +10079,63 @@
       "user_uuid": "Enter a valid admin account UUID.",
       "paid_at": "Payment date cannot be in the future."
     }
-  }
+  },
+    "menu_layout": {
+        "title": "Sidebar menu",
+        "description": "Set the menu order and icons for everyone in your company. Staff still only see the items their role allows.",
+        "description_reseller": "Set the menu order and icons for everyone in your reseller. Staff still only see the items their role allows.",
+        "status": {
+            "default": "Default menu",
+            "custom": "Custom menu",
+            "default_hint": "Everyone sees the standard order and icons.",
+            "saved_by": "Saved by {{name}} · {{date}} · applies to all staff",
+            "unsaved": "Unsaved changes"
+        },
+        "items_title": "Menu items",
+        "items_hint": "Drag the handle to sort. Sub-items sort inside their group.",
+        "keyboard_hint": "Keyboard: focus a handle, press Space to pick it up, arrow keys to move, Space to drop, Esc to cancel.",
+        "icon_hint": "Click an icon to change it.",
+        "preview_title": "Preview",
+        "preview_hint": "What staff will see",
+        "sub_count": "{{count}} items",
+        "icon_changed": "Icon changed",
+        "move": "Move {{name}}",
+        "move_in": "Move {{name}} in {{group}}",
+        "change_icon": "Change icon for {{name}}",
+        "show_sub": "Show {{name}} sub-items",
+        "hide_sub": "Hide {{name}} sub-items",
+        "icon_picker": {
+            "title": "Icon for “{{name}}”",
+            "search": "Search icons…",
+            "use_default": "Use default icon",
+            "empty": "No icon matches “{{query}}”.",
+            "count": "{{count}} icons"
+        },
+        "changes": {
+            "none": "No changes",
+            "moved": "Moved: {{count}}",
+            "icons": "Icons changed: {{count}}"
+        },
+        "actions": {
+            "reset": "Reset to default",
+            "discard": "Discard changes",
+            "save": "Save menu"
+        },
+        "reset_confirm": {
+            "title": "Reset to the default menu?",
+            "description": "Everyone in your company goes back to the standard order and icons. Your custom menu is removed.",
+            "description_reseller": "Everyone in your reseller goes back to the standard order and icons. Your custom menu is removed.",
+            "confirm": "Reset menu"
+        },
+        "saved": "Menu saved. Other staff see it on their next page load.",
+        "reset_done": "Menu reset to default",
+        "no_access": "You don't have permission to change the sidebar menu.",
+        "dnd": {
+            "instructions": "To pick up an item, press Space or Enter. Use the arrow keys to move it, then press Space or Enter to drop it, or Escape to cancel.",
+            "picked": "Picked up {{name}}.",
+            "moved": "{{name}} moved to position {{position}} of {{total}}.",
+            "dropped": "{{name}} dropped at position {{position}} of {{total}}.",
+            "cancelled": "Move cancelled. {{name}} is back in place."
+        }
+    }
 }

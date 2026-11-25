@@ -147,6 +147,7 @@ describe("admin menu order", () => {
       "/settings/olt",
       "/settings/notifications",
       "/settings/invoice-print",
+      "/settings/menu",
     ]);
     expect(urls(items).some((url) => url.startsWith("/client/"))).toBe(false);
   });
