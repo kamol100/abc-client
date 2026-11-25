@@ -4,11 +4,10 @@ import { useCallback, useState, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import { format, isAfter, isBefore, isSameDay } from "date-fns";
 import { CalendarIcon, X } from "lucide-react";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import type { DateRange, DayPickerLocale } from "react-day-picker";
 import { enUS, bn } from "react-day-picker/locale";
 import { useTranslation } from "react-i18next";
-import Label from "../label";
 import { MyButton } from "../my-button";
 import { Calendar } from "../ui/calendar";
 import { Input } from "../ui/input";
@@ -18,7 +17,7 @@ import {
     PopoverTrigger,
 } from "../ui/popover";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
-import FieldError from "./field-error";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 import { parseLanguage } from "@/lib/i18n/languages";
 
 export type DatePickerMode = "single" | "range";
@@ -205,8 +204,7 @@ const DatePicker = ({
     const { t, i18n } = useTranslation();
     const language = parseLanguage(i18n.language);
     const locale = language === "en" ? enUS : bn;
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
     const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
     const [open, setOpen] = useState(false);
     const [isChoosingRange, setIsChoosingRange] = useState(false);
@@ -307,8 +305,7 @@ const DatePicker = ({
     );
 
     return (
-        <div className={cn("flex flex-col gap-1", className)}>
-            {label && <Label htmlFor={name} label={label} />}
+        <FieldShell name={name} label={label} labelFor={name} className={cn("flex flex-col gap-1", className)}>
             <Controller
                 name={name}
                 control={control}
@@ -466,8 +463,7 @@ const DatePicker = ({
                     );
                 }}
             />
-            <FieldError name={name} />
-        </div>
+        </FieldShell>
     );
 };
 

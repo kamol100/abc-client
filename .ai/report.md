@@ -1,3 +1,29 @@
+## Form builder refactor, phase 4: field registry and shared field shell — 2026-11-25
+
+Branch `refactor-form-builder`. Structure only. The markup snapshots (every field type in a form and in a filter, empty, filled and with errors) and the payload snapshots for the 10 real forms are unchanged.
+
+- First, as its own commit: `tests/unit/form/builder/field-markup.test.tsx` (7 snapshots), recorded on the code before this phase.
+- New `components/form-builder/fields/`:
+  - `define-field.ts`: what a field type is. `render` (form), `readValue` (API record to form value), `renderFilter` and `toFilterParam` (table filter).
+  - One definition file per type: `text.tsx` (text, email, number, tel), `password.tsx`, `textarea.tsx`, `dropdown.tsx`, `radio.tsx`, `switch.tsx`, `checkbox.tsx`, `date.tsx` (date, dateRange), `geolocation.tsx`.
+  - `registry.ts`: the list of types, with the three steps to add one written at the top.
+  - `field-array.tsx`: the repeating-rows renderer, moved as it was.
+  - `field-shell.tsx`: `FieldShell` (label, control, error) and `useFieldControl`.
+- `components/form-builder/layout/visible-field.tsx`: `VisibleFormField`, moved. `form-builder.tsx` still exports it, so the 7 files that import it from there are untouched.
+- `components/form-builder/core/dates.ts`: the two date parsers.
+- `form-builder.tsx` (454 to 173 lines): the `switch` on field type is gone; it asks the registry.
+- `form-filter.tsx` (324 to 233 lines): its own second renderer is gone; it asks the registry for `renderFilter`.
+- `hooks/use-filter-form.ts`: date serialising moved into the date definitions (`toFilterParam`).
+- `core/values.ts`: per-type conversion moved into the definitions (`readValue`).
+- `components/form/input-field.tsx`, `textarea-field.tsx`, `radio-field.tsx`, `checkbox-field.tsx`, `switch.tsx`, `DatePicker.tsx` and `components/select-dropdown.tsx` now draw label and error through `FieldShell`. Their props and markup are the same.
+
+Kept as they are, on purpose: `tel` still has no filter version, the switch still shows no error, a single checkbox still does not translate its label, and the text-type list in `use-filter-form.ts` is still its own list. Those are behaviour changes and belong to phase 6.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1252 passed, the same 9 unrelated failures as before. No snapshot file changed.
+- Not checked in a browser. jsdom proves the HTML is the same, not that it looks the same, so a look at two or three forms and one table filter is still worth doing. Playwright not run.
+
 ## Form builder refactor, phase 3: `form-wrapper.tsx` split into hooks — 2026-11-25
 
 Branch `refactor-form-builder`. Structure only; the payload snapshots for the 10 real forms are unchanged.

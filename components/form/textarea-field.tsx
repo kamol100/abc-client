@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
-import Label from "../label";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
-import FieldError from "./field-error";
 import { useTranslation } from "react-i18next";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 
 type TextareaFieldProps = {
     name: string;
@@ -27,12 +26,15 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
     rules,
     disabled = false,
 }) => {
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
     const { t } = useTranslation();
     return (
-        <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}>
-            {label && <Label htmlFor={name} label={label} />}
+        <FieldShell
+            name={name}
+            label={label}
+            labelFor={name}
+            className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}
+        >
             <Controller
                 name={name}
                 control={control}
@@ -51,8 +53,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
                     />
                 )}
             />
-            <FieldError name={name} />
-        </div>
+        </FieldShell>
     );
 };
 

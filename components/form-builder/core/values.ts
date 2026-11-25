@@ -4,8 +4,8 @@
  *   API record  ->  toFormValues()  ->  applyFormFieldDefaults()  ->  form values
  *
  * The API returns dates as strings and related records as objects (`zone: { id, name }`).
- * The form needs `Date` objects and plain ids (`zone_id: 3`). Pure functions: no React,
- * no form state.
+ * The form needs `Date` objects and plain ids (`zone_id: 3`). How one field type is read
+ * is written in that type's definition, in `components/form-builder/fields/`.
  */
 import type {
     FieldArrayConfig,
@@ -17,67 +17,27 @@ import {
     shownFields,
     type FormSchema,
 } from "@/components/form-builder/core/form-schema";
+import { KEEP_VALUE } from "@/components/form-builder/fields/define-field";
+import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
 
 type FormValues = Record<string, unknown>;
-
-// --- Dates ---
-
-const parseDateValue = (value: unknown): Date | undefined => {
-    if (!value) return undefined;
-    if (value instanceof Date) return value;
-    if (typeof value === "string") return new Date(value);
-    return undefined;
-};
-
-const parseDateRangeValue = (value: unknown): { from: Date; to?: Date } | undefined => {
-    if (!value || typeof value !== "object") return undefined;
-    const range = value as { from?: unknown; to?: unknown };
-    const from = parseDateValue(range.from);
-    if (!from) return undefined;
-    return { from, to: parseDateValue(range.to) ?? undefined };
-};
 
 // --- One record (the form itself, or one row of a field array) ---
 
 /**
- * Converts the values of `fields` inside `data`. Every key of `data` is kept; a
- * converted value is written under the field name.
+ * Converts the values of `fields` inside `data`. Every key of `data` is kept. Each
+ * field type says how to read its own value (see `readValue` in its definition); the
+ * result is written under the field name.
  */
 const convertFieldValues = (data: FormValues, fields: FieldConfig[]): FormValues => {
     const formValues: FormValues = { ...data };
 
     fields.forEach((field) => {
-        if (field.type === "date") {
-            const parsed = parseDateValue(data[field.valueKey ?? field.name]);
-            if (parsed) formValues[field.name] = parsed;
-        }
-        if (field.type === "dateRange") {
-            const parsed = parseDateRangeValue(data[field.valueKey ?? field.name]);
-            if (parsed) formValues[field.name] = parsed;
-        }
-        if (field.type === "dropdown") {
-            const sourceValue = data[field.valueKey || field.name];
-            if (sourceValue === undefined || sourceValue === null) return;
+        const readValue = fieldDefinitionOf(field.type)?.readValue;
+        if (!readValue) return;
 
-            if (!field.valueMapping) {
-                formValues[field.name] = sourceValue;
-                return;
-            }
-
-            // The API sent the related record (or a list of them): keep only the id.
-            const { idKey = "id" } = field.valueMapping;
-            if (field.isMulti && Array.isArray(sourceValue)) {
-                formValues[field.name] = sourceValue.map((item: unknown) =>
-                    typeof item === "object" && item !== null
-                        ? (item as FormValues)[idKey]
-                        : item,
-                );
-            } else if (typeof sourceValue === "object" && !Array.isArray(sourceValue)) {
-                formValues[field.name] = (sourceValue as FormValues)[idKey];
-            } else {
-                formValues[field.name] = sourceValue;
-            }
-        }
+        const value = readValue(field, data);
+        if (value !== KEEP_VALUE) formValues[field.name] = value;
     });
 
     return formValues;

@@ -1,10 +1,9 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import Label from "../label";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
-import FieldError from "./field-error";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 
 type RadioOption = {
     label: string;
@@ -34,12 +33,10 @@ const RadioField: React.FC<RadioFieldProps> = ({
     rules,
 }) => {
     const { t } = useTranslation();
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
 
     return (
-        <div className={cn("flex flex-col gap-1", className)}>
-            {label && <Label label={label} />}
+        <FieldShell name={name} label={label} className={cn("flex flex-col gap-1", className)}>
             <Controller
                 name={name}
                 control={control}
@@ -80,8 +77,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
                     </RadioGroup>
                 )}
             />
-            <FieldError name={name} />
-        </div>
+        </FieldShell>
     );
 };
 

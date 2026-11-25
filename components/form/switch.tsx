@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
-import Label from "../label";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { Switch as ShadcnSwitch } from "../ui/switch";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 
 type SwitchProps = {
     name: string;
@@ -23,12 +23,10 @@ const Switch: React.FC<SwitchProps> = ({
     control: controlProp,
     rules,
 }) => {
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
 
     return (
-        <div className={cn("flex flex-row gap-1", className)}>
-            {label && <Label label={label} />}
+        <FieldShell name={name} label={label} hideError className={cn("flex flex-row gap-1", className)}>
             <Controller
                 name={name}
                 control={control}
@@ -45,7 +43,7 @@ const Switch: React.FC<SwitchProps> = ({
                     />
                 )}
             />
-        </div>
+        </FieldShell>
     );
 };
 

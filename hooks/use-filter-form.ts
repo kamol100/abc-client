@@ -1,4 +1,6 @@
-import { objectToQueryString, toApiDateString } from "@/lib/helper/helper";
+import { DROP_VALUE, KEEP_VALUE } from "@/components/form-builder/fields/define-field";
+import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
+import { objectToQueryString } from "@/lib/helper/helper";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import type { FieldConfig, TextFieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -23,14 +25,10 @@ function resolveWatchFields(
     .map((f) => f.name);
 }
 
-function formatDateValue(value: unknown): string | undefined {
-  if (value instanceof Date) return toApiDateString(value) ?? undefined;
-  if (typeof value !== "string") return undefined;
-  const trimmed = value.trim();
-  if (!trimmed) return undefined;
-  return toApiDateString(trimmed) ?? undefined;
-}
-
+/**
+ * The filter values as they go into the query string. Each field type says how its
+ * value is written (see `toFilterParam` in its definition); other values go as they are.
+ */
 function serializeFilterParams(
   params: FieldValues,
   formSchema: FieldConfig[],
@@ -41,28 +39,14 @@ function serializeFilterParams(
     const rawValue = serialized[field.name];
     if (!rawValue) return;
 
-    if (field.type === "date") {
-      const normalizedDate = formatDateValue(rawValue);
-      if (normalizedDate) serialized[field.name] = normalizedDate;
-      return;
-    }
+    const toFilterParam = fieldDefinitionOf(field.type)?.toFilterParam;
+    if (!toFilterParam) return;
 
-    if (field.type === "dateRange") {
-      if (typeof rawValue === "string") {
-        serialized[field.name] = rawValue;
-        return;
-      }
-      if (typeof rawValue === "object" && rawValue !== null) {
-        const from = formatDateValue((rawValue as { from?: unknown }).from);
-        const to = formatDateValue((rawValue as { to?: unknown }).to);
-        if (from && to) {
-          serialized[field.name] = `${from},${to}`;
-        } else if (from) {
-          serialized[field.name] = from;
-        } else {
-          delete serialized[field.name];
-        }
-      }
+    const param = toFilterParam(rawValue);
+    if (param === DROP_VALUE) {
+      delete serialized[field.name];
+    } else if (param !== KEEP_VALUE) {
+      serialized[field.name] = param;
     }
   });
 

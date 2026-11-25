@@ -22,8 +22,7 @@ import type {
   LabelProps,
   SelectOption,
 } from "./form-wrapper/form-builder-type";
-import FieldError from "./form/field-error";
-import Label from "./label";
+import { FieldShell } from "@/components/form-builder/fields/field-shell";
 
 function SelectDropdownIndicator(
   props: DropdownIndicatorProps<SelectOption, boolean, GroupBase<SelectOption>>,
@@ -199,13 +198,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   };
 
   return (
-    <div className="">
-      {label && (
-        <div className="mb-2">
-          <Label htmlFor={name} label={label} />
-        </div>
-      )}
-
+    <FieldShell name={name} label={label} labelFor={name} labelBoxClassName="mb-2" className="">
       <Controller
         name={name}
         control={control}
@@ -399,8 +392,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
         }}
       />
 
-      <FieldError name={name} />
-    </div>
+    </FieldShell>
   );
 };
 

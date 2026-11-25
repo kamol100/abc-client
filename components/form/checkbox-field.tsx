@@ -1,10 +1,9 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
-import Label from "../label";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
-import FieldError from "./field-error";
 import { useTranslation } from "react-i18next";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 
 type CheckboxOption = {
     label: string;
@@ -33,12 +32,15 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
     control: controlProp,
     rules,
 }) => {
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
     const { t } = useTranslation();
     return (
-        <div className={cn("flex flex-col gap-1", className)}>
-            {!single && label && <Label label={label} />}
+        <FieldShell
+            name={name}
+            label={label}
+            hideLabel={single}
+            className={cn("flex flex-col gap-1", className)}
+        >
             <Controller
                 name={name}
                 control={control}
@@ -99,8 +101,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                     );
                 }}
             />
-            <FieldError name={name} />
-        </div>
+        </FieldShell>
     );
 };
 

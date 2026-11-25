@@ -1,124 +1,23 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { FieldValues, useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
+import { FieldValues } from "react-hook-form";
 import { z } from "zod";
-import FormWrapper from "./form-wrapper";
-import CheckboxField from "../form/checkbox-field";
-import DatePicker from "../form/DatePicker";
-import InputField from "../form/input-field";
-import PasswordField from "../form/password-field";
-import RadioField from "../form/radio-field";
-import Switch from "../form/switch";
-import TextareaField from "../form/textarea-field";
-import GeolocationField from "../form/geolocation-field";
-import Label from "../label";
+import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/core/values";
+import { FieldArrayRenderer } from "@/components/form-builder/fields/field-array";
+import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
+import { VisibleFormField } from "@/components/form-builder/layout/visible-field";
 import {
   AccordionSection,
-  FieldArrayConfig,
   FieldConfig,
   FormFieldConfig,
   GRID_STYLES,
   HydratePolicy,
-  VisibleWhen,
 } from "@/components/form-wrapper/form-builder-type";
-import { hiddenFieldValue, isFieldVisible } from "@/components/form-builder/core/conditions";
-import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/core/values";
-import MyButton from "../my-button";
+import FormWrapper from "@/components/form-wrapper/form-wrapper";
 
-// --- Dynamic imports ---
-
-const SelectDropdown = dynamic(() => import("../select-dropdown"));
-
-// --- FieldArrayRenderer ---
-
-type FieldArrayRendererProps = {
-  config: FieldArrayConfig;
-  namePrefix?: string;
-  renderItemField: (field: FieldConfig, namePrefix: string) => ReactNode;
-};
-
-const FieldArrayRenderer = ({
-  config,
-  namePrefix = "",
-  renderItemField,
-}: FieldArrayRendererProps) => {
-  const { control } = useFormContext();
-  const fullName = namePrefix ? `${namePrefix}.${config.name}` : config.name;
-  const { fields, append, remove, move } = useFieldArray({ control, name: fullName });
-
-  const {
-    allowAppend = true,
-    allowRemove = true,
-    allowReorder = false,
-    minItems = 0,
-    maxItems,
-    itemFields,
-    defaultItem,
-    grids: itemGrids = 1,
-    gridGap: itemGridGap = "gap-4",
-    addButtonLabel = "Add",
-  } = config;
-
-  const canAppend = allowAppend && (maxItems === undefined || fields.length < maxItems);
-  const canRemove = allowRemove && fields.length > minItems;
-  const hasItemLabels = itemFields.some((field) => Boolean(field.label?.labelText));
-
-  return (
-    <div className={config.className ?? "col-span-full space-y-4"}>
-      {config.label && <Label label={config.label} />}
-
-      {fields.map((item, index) => (
-        <div key={item.id} className="relative flex items-start gap-3 border rounded-md p-3">
-          <div className={`grid min-w-0 flex-1 ${itemGridGap} ${GRID_STYLES[itemGrids]}`}>
-            {itemFields.map((itemField) => {
-              if (itemField.permission === false) return null;
-              return (
-                <div key={itemField.name}>
-                  {renderItemField(itemField, `${fullName}.${index}`)}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex shrink-0 flex-col gap-1">
-            {hasItemLabels ? <div className="mb-1 h-5 shrink-0" aria-hidden /> : null}
-            <div className="flex items-center gap-1">
-              {allowReorder && index > 0 && (
-                <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index - 1)}>
-                  <ArrowUp className="h-4 w-4" />
-                </MyButton>
-              )}
-              {allowReorder && index < fields.length - 1 && (
-                <MyButton type="button" variant="default" size="icon" onClick={() => move(index, index + 1)}>
-                  <ArrowDown className="h-4 w-4" />
-                </MyButton>
-              )}
-              {canRemove && (
-                <MyButton type="button" variant="outline" size="default" action="delete" onClick={() => remove(index)} />
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {canAppend && (
-        <MyButton
-          icon={true}
-          action="create"
-          title={addButtonLabel}
-          onClick={() => append({ ...defaultItem })}
-          className=" hover:bg-primary hover:text-primary-foreground"
-        >
-        </MyButton>
-      )}
-    </div>
-  );
-};
-
-// --- FormBuilder ---
+// Callers with a custom layout import this from here.
+export { VisibleFormField };
 
 export type FormBuilderProps = {
   formSchema: FormFieldConfig[] | AccordionSection[];
@@ -149,54 +48,6 @@ export type FormBuilderProps = {
   skipInvalidate?: boolean;
   onSubmitError?: (error: unknown, payload: FieldValues) => void;
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
-};
-
-const ConditionalFormField = ({
-  field,
-  visibleWhen,
-  children,
-}: {
-  field: FormFieldConfig;
-  visibleWhen: VisibleWhen;
-  children: ReactNode;
-}) => {
-  const { getValues, setValue } = useFormContext();
-  const watched = useWatch({ name: visibleWhen.field });
-  const visible = isFieldVisible(visibleWhen, watched);
-  const resetValue = hiddenFieldValue(visibleWhen);
-
-  useEffect(() => {
-    if (visible) return;
-    if (Object.is(getValues(field.name), resetValue)) return;
-    setValue(field.name, resetValue, {
-      shouldValidate: false,
-      shouldDirty: false,
-      shouldTouch: false,
-    });
-  }, [visible, field.name, resetValue, getValues, setValue]);
-
-  if (!visible) return null;
-
-  return <div className={field.className}>{children}</div>;
-};
-
-export const VisibleFormField = ({
-  field,
-  children,
-}: {
-  field: FormFieldConfig;
-  children: ReactNode;
-}) => {
-  if (field.permission === false) return null;
-  if (!field.visibleWhen) {
-    return <div className={field.className}>{children}</div>;
-  }
-
-  return (
-    <ConditionalFormField field={field} visibleWhen={field.visibleWhen}>
-      {children}
-    </ConditionalFormField>
-  );
 };
 
 const FormBuilder = ({
@@ -246,150 +97,18 @@ const FormBuilder = ({
     [formSchema]
   );
 
-  const renderStaticField = (f: FieldConfig, namePrefix = ""): ReactNode => {
-    const name = namePrefix ? `${namePrefix}.${f.name}` : f.name;
+  // Draws one field that holds a value. How each type is drawn lives in
+  // `components/form-builder/fields/`.
+  const renderStaticField = (field: FieldConfig, namePrefix = ""): ReactNode => {
+    const definition = fieldDefinitionOf(field.type);
+    if (!definition) return null;
 
-    switch (f.type) {
-      case "text":
-      case "email":
-      case "number":
-      case "tel":
-        return (
-          <InputField
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            type={f.type}
-            rules={f.rules}
-            disabled={f.disabled}
-            readOnly={f.readOnly}
-          />
-        );
-      case "password":
-        return (
-          <PasswordField
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            rules={f.rules}
-            disabled={f.disabled}
-          />
-        );
-      case "textarea":
-        return (
-          <TextareaField
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            rows={f.rows}
-            rules={f.rules}
-            disabled={f.disabled}
-          />
-        );
-      case "dropdown":
-        return (
-          <SelectDropdown
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            api={f.api}
-            options={f.options}
-            isMulti={f.isMulti}
-            isDisabled={f.isDisabled || f.disabled}
-            isLoading={f.isLoading}
-            isClearable={f.isClearable}
-            optionValueKey={f.valueMapping?.idKey}
-            rules={f.rules}
-            parentFieldName={f.dependsOn?.field}
-            buildApi={f.dependsOn?.buildApi}
-            resetOnParentChange={f.dependsOn?.resetOnChange}
-            populate={f.populate?.map((item) => ({
-              field: namePrefix ? `${namePrefix}.${item.field}` : item.field,
-              from: item.from,
-            }))}
-          />
-        );
-      case "radio":
-        return (
-          <RadioField
-            name={name}
-            label={f.label}
-            direction={f.direction}
-            defaultValue={f.defaultValue}
-            options={f.options}
-            rules={f.rules}
-          />
-        );
-      case "switch":
-        return (
-          <div className="flex items-center space-x-2">
-            <Switch
-              name={name}
-              label={f.label}
-              onValueChange={f.saveOnChange ? () => setSaveOnChange(true) : undefined}
-              rules={f.rules}
-              disabled={f.disabled}
-            />
-          </div>
-        );
-      case "checkbox":
-        return (
-          <CheckboxField
-            name={name}
-            label={f.label}
-            options={f.options}
-            direction={f.direction}
-            single={f.single}
-            rules={f.rules}
-          />
-        );
-      case "date":
-        return (
-          <DatePicker
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            mode="single"
-            required={f.required}
-            dateFormat={f.dateFormat}
-            closeOnSelectDate={f.closeOnSelectDate}
-            rules={f.rules}
-            disabled={f.disabled}
-          />
-        );
-      case "dateRange":
-        return (
-          <DatePicker
-            name={name}
-            label={f.label}
-            placeholder={f.placeholder}
-            mode="range"
-            required={f.required}
-            dateFormat={f.dateFormat}
-            rangeDateFormat={f.dateFormat}
-            closeOnSelectDate={f.closeOnSelectDate}
-            rules={f.rules}
-            disabled={f.disabled}
-          />
-        );
-      case "geolocation":
-        return (
-          <GeolocationField
-            latitudeName={namePrefix ? `${namePrefix}.${f.latitudeName}` : f.latitudeName}
-            longitudeName={namePrefix ? `${namePrefix}.${f.longitudeName}` : f.longitudeName}
-            latitudeLabel={f.latitudeLabel}
-            longitudeLabel={f.longitudeLabel}
-            latitudePlaceholder={f.latitudePlaceholder}
-            longitudePlaceholder={f.longitudePlaceholder}
-            getLocationLabel={f.getLocationLabel}
-            getLocationSuccess={f.getLocationSuccess}
-            getLocationError={f.getLocationError}
-            className={f.className}
-          />
-        );
-      default:
-        return null;
-    }
+    return definition.render({
+      field,
+      name: namePrefix ? `${namePrefix}.${field.name}` : field.name,
+      namePrefix,
+      requestSave: () => setSaveOnChange(true),
+    });
   };
 
   const renderField = (field: FormFieldConfig, namePrefix = ""): ReactNode => {

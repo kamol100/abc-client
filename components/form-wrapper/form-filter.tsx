@@ -3,25 +3,18 @@
 import { Form } from "@/components/ui/form";
 import { useFilterForm } from "@/hooks/use-filter-form";
 import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
 import { useState, useMemo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import DisplayCount from "@/components/display-count";
 import MyButton from "@/components/my-button";
-import InputField from "@/components/form/input-field";
-import DatePicker from "@/components/form/DatePicker";
-import { Close } from "@/components/icon";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
+import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
 import {
   FILTER_ITEM_CLASS,
   FILTER_ROW_CLASS,
   splitFilterFields,
   visibleFilterFields,
 } from "@/components/data-table/filter-layout";
-
-const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
-  loading: () => null,
-});
 
 type FormFilterProps = {
   formSchema: FieldConfig[];
@@ -50,76 +43,6 @@ type FormFilterProps = {
   /** Replaces the field grid's classes (columns and gap). Used by the filter panel. */
   fieldsClassName?: string;
 };
-
-function FilterTextField({
-  field,
-  onClear,
-  fieldValue,
-}: {
-  field: FieldConfig;
-  onClear: (name: string) => void;
-  fieldValue: string;
-}) {
-  return (
-    <div className="relative">
-      <InputField
-        name={field.name}
-        label={field.label}
-        placeholder={field.placeholder}
-        type={field.type}
-      />
-      {fieldValue && (
-        <button
-          type="button"
-          className="absolute top-1 right-0 cursor-pointer p-2 text-muted-foreground hover:text-foreground"
-          onClick={() => onClear(field.name)}
-        >
-          <Close />
-        </button>
-      )}
-    </div>
-  );
-}
-
-function FilterDropdownField({
-  field,
-  onValueChange,
-}: {
-  field: FieldConfig & { type: "dropdown" };
-  onValueChange: () => void;
-}) {
-  return (
-    <SelectDropdown
-      name={field.name}
-      label={field.label}
-      placeholder={field.placeholder}
-      api={field.api}
-      options={field.options}
-      isMulti={field.isMulti}
-      isDisabled={field.isDisabled}
-      isClearable={field.isClearable}
-      onValueChange={onValueChange}
-    />
-  );
-}
-
-function FilterDateField({
-  field,
-  onValueChange,
-}: {
-  field: FieldConfig & { type: "date" | "dateRange" };
-  onValueChange: () => void;
-}) {
-  return (
-    <DatePicker
-      name={field.name}
-      placeholder={field.placeholder}
-      mode={field.type === "dateRange" ? "range" : "single"}
-      closeOnSelectDate={field.closeOnSelectDate}
-      onValueChange={onValueChange}
-    />
-  );
-}
 
 const FormFilter = ({
   formSchema,
@@ -175,29 +98,15 @@ const FormFilter = ({
   // Nothing to show on the right (e.g. the filter panel): leave the slot out, so it adds no gap.
   const hasActions = showSearchButton || !hideTrigger || endAction != null;
 
-  const renderField = (field: FieldConfig) => {
-    if (field.type === "text" || field.type === "email" || field.type === "number") {
-      return (
-        <FilterTextField
-          field={field}
-          onClear={clearField}
-          fieldValue={form.watch(field.name) ?? ""}
-        />
-      );
-    }
-    if (field.type === "dropdown") {
-      return (
-        <FilterDropdownField
-          field={field}
-          onValueChange={triggerSubmit}
-        />
-      );
-    }
-    if (field.type === "date" || field.type === "dateRange") {
-      return <FilterDateField field={field} onValueChange={triggerSubmit} />;
-    }
-    return null;
-  };
+  // How each type is drawn in a filter lives in `components/form-builder/fields/`.
+  // A type with no filter version draws nothing.
+  const renderField = (field: FieldConfig) =>
+    fieldDefinitionOf(field.type)?.renderFilter?.({
+      field,
+      value: form.watch(field.name) ?? "",
+      onValueChange: triggerSubmit,
+      onClear: clearField,
+    }) ?? null;
 
   const fields = visibleFilterFields(formSchema);
   const rowCount = typeof filterRows === "number" && filterRows >= 1 ? Math.floor(filterRows) : undefined;

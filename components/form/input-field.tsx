@@ -1,11 +1,10 @@
-import { Control, Controller, FieldValues, RegisterOptions, useFormContext } from "react-hook-form";
+import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
-import FieldError from "@/components/form/field-error";
-import Label from "@/components/label";
 import { Input } from "@/components/ui/input";
 import { isBdMobile, normalizeBdMobile } from "@/lib/phone";
 import { cn } from "@/lib/utils";
+import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
 
 export type InputFieldProps = {
     name: string;
@@ -49,12 +48,18 @@ const InputField: React.FC<InputFieldProps> = ({
     prefix,
     suffix,
 }) => {
-    const { control: ctxControl } = useFormContext();
-    const control = controlProp ?? ctxControl;
+    const control = useFieldControl(controlProp);
     const { t } = useTranslation();
     return (
-        <div className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}>
-            {label && <Label htmlFor={name} label={label} suffix={labelSuffix} />}
+        <FieldShell
+            name={name}
+            label={label}
+            labelFor={name}
+            labelSuffix={labelSuffix}
+            className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}
+            errorMessageEllipsis={errorMessageEllipsis}
+            reserveErrorSpace={reserveErrorSpace}
+        >
             <Controller
                 name={name}
                 control={control}
@@ -114,8 +119,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     );
                 }}
             />
-            <FieldError name={name} errorMessageEllipsis={errorMessageEllipsis} reserveSpace={reserveErrorSpace} />
-        </div>
+        </FieldShell>
     );
 };
 
