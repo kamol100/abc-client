@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CircleAlert, CircleCheck, CircleDotDashed, type LucideIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
@@ -41,6 +42,12 @@ const STATUS_STYLES: Record<string, string> = {
     paid: "theme-badge-success",
     due: "theme-badge-danger",
     partial_paid: "theme-badge-warning",
+};
+
+const STATUS_ICONS: Record<string, LucideIcon> = {
+    paid: CircleCheck,
+    due: CircleAlert,
+    partial_paid: CircleDotDashed,
 };
 
 export const PaymentColumns: ColumnDef<PaymentRow>[] = [
@@ -156,8 +163,10 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
         ),
         cell: ({ row }) => {
             const status = row.original.status ?? "paid";
+            const StatusIcon = STATUS_ICONS[status];
             return (
-                <Badge className={cn(STATUS_STYLES[status])}>
+                <Badge className={cn("gap-1", STATUS_STYLES[status])}>
+                    {StatusIcon && <StatusIcon className="size-3 shrink-0" aria-hidden />}
                     <span className="capitalize">
                         {status.replace("_", " ")}
                     </span>
