@@ -90,6 +90,7 @@ export const FieldArrayRenderer = ({
 
       {canAppend && (
         <MyButton
+          type="button"
           icon={true}
           action="create"
           title={addButtonLabel}

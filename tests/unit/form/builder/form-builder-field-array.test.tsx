@@ -24,15 +24,6 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
 const anyValues = z.object({}).passthrough();
 
-/**
- * A schema that never passes. The Add button also submits the form (problem B1), and a
- * successful save resets the rows. Tests that only look at the rows use this schema so
- * the save is stopped by validation.
- */
-const neverValid = z.object({ required_and_missing: z.string() }).passthrough();
-
-type Props = Partial<ComponentProps<typeof FormBuilder>>;
-
 const items = (overrides: Partial<FieldArrayConfig> = {}): FieldArrayConfig => ({
     type: "fieldArray",
     name: "items",
@@ -157,7 +148,6 @@ describe("FormBuilder field array", () => {
         it("Add appends a copy of defaultItem", async () => {
             const { container } = renderFields([items({ defaultItem: { label: "New", value: "0" } })], {
                 data: twoRows,
-                schema: neverValid,
             });
             const user = userEvent.setup();
             await user.click(addButton());
@@ -180,7 +170,7 @@ describe("FormBuilder field array", () => {
         });
 
         it("hides the remove button at minItems, and shows it again above it", async () => {
-            const { container } = renderFields([items({ minItems: 2 })], { data: twoRows, schema: neverValid });
+            const { container } = renderFields([items({ minItems: 2 })], { data: twoRows });
             const user = userEvent.setup();
 
             expect(rowButtons(rows(container)[0])).toHaveLength(0);
@@ -189,7 +179,7 @@ describe("FormBuilder field array", () => {
         });
 
         it("hides the Add button at maxItems", async () => {
-            const { container } = renderFields([items({ maxItems: 3 })], { data: twoRows, schema: neverValid });
+            const { container } = renderFields([items({ maxItems: 3 })], { data: twoRows });
             const user = userEvent.setup();
             await user.click(addButton());
 
@@ -225,24 +215,11 @@ describe("FormBuilder field array", () => {
     // Known problems from the audit, written down as they behave today. The refactor
     // must change these tests in the same commit that fixes each problem.
     describe("known problems", () => {
-        it("B1: Add also submits the form, because the button has no type=\"button\"", async () => {
+        it("Add does not submit, because it sets type=\"button\"", async () => {
             const { container } = renderFields([items()], { data: twoRows });
             const user = userEvent.setup();
 
-            expect(addButton()).not.toHaveAttribute("type");
-            await user.click(addButton());
-
-            await waitFor(() => expect(writeRequests()).toHaveLength(1));
-            expect(writeRequests()[0].data).toEqual({
-                items: [...twoRows.items, { label: "", value: "" }],
-            });
-            // The save succeeded, so the form reset and the new row is gone again.
-            await waitFor(() => expect(rows(container)).toHaveLength(2));
-        });
-
-        it("B1: Add only adds the row when validation stops the save", async () => {
-            const { container } = renderFields([items()], { data: twoRows, schema: neverValid });
-            const user = userEvent.setup();
+            expect(addButton()).toHaveAttribute("type", "button");
             await user.click(addButton());
             await settle();
 
