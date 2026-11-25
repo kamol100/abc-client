@@ -1,0 +1,583 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`real form payloads > 'client' > create: starting values 1`] = `
+{
+  "billing_term": "prepaid",
+  "billing_type": "auto",
+  "connection_type": "1",
+  "invoice_day": "01",
+  "payment_deadline": "11",
+  "payment_term": "1",
+  "status": 1,
+  "type": "1",
+  "welcome_notification": "1",
+}
+`;
+
+exports[`real form payloads > 'client' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "adr_latitude": "23.7808",
+    "adr_longitude": "90.4219",
+    "billing_term": "prepaid",
+    "billing_type": "auto",
+    "cable_invoice": 0,
+    "cable_length": 23,
+    "cable_type": "UTP",
+    "connection_date": "2026-11-25",
+    "connection_mode": "1",
+    "connection_type": "1",
+    "current_address": "current_address 20",
+    "device_id": 117,
+    "discount": "discount 6",
+    "email": "user31@example.com",
+    "father_name": "father_name 29",
+    "fund": "fund 35",
+    "invoice_day": "01",
+    "ip_address": "ip_address 5",
+    "mac_address": "mac_address 27",
+    "name": "name 1",
+    "network_id": 115,
+    "nid_back": null,
+    "nid_front": null,
+    "note": "note 21",
+    "occupation": "occupation 30",
+    "package_id": 116,
+    "payment_deadline": 0,
+    "payment_term": 1,
+    "permanent_address": "permanent_address 32",
+    "phone": "01712345678",
+    "photo": null,
+    "pppoe_password": "pppoe_password 3",
+    "pppoe_username": "pppoe_username 2",
+    "reseller_id": null,
+    "status": 1,
+    "sub_zone_id": 114,
+    "termination_date": "2026-11-25",
+    "type": "1",
+    "upazila_id": 133,
+    "welcome_notification": 1,
+    "zone_id": 113,
+  },
+  "record": {
+    "adr_latitude": "23.7808",
+    "adr_longitude": "90.4219",
+    "billing_term": "prepaid",
+    "billing_type": "auto",
+    "cable_length": 23,
+    "cable_type": "UTP",
+    "connection_date": "2026-11-25",
+    "connection_mode": "1",
+    "connection_type": "1",
+    "current_address": "current_address 20",
+    "device": {
+      "id": 117,
+      "name": "device_id option",
+    },
+    "discount": "discount 6",
+    "email": "user31@example.com",
+    "father_name": "father_name 29",
+    "fund": "fund 35",
+    "id": 5,
+    "invoice_day": "01",
+    "ip_address": "ip_address 5",
+    "mac_address": "mac_address 27",
+    "name": "name 1",
+    "network": {
+      "id": 115,
+      "name": "network_id option",
+    },
+    "note": "note 21",
+    "occupation": "occupation 30",
+    "package": {
+      "id": 116,
+      "name": "package_id option",
+    },
+    "payment_deadline": "0",
+    "payment_term": "1",
+    "permanent_address": "permanent_address 32",
+    "phone": "01712345678",
+    "pppoe_password": "pppoe_password 3",
+    "pppoe_username": "pppoe_username 2",
+    "status": 1,
+    "sub_zone": {
+      "id": 114,
+      "name": "sub_zone_id option",
+    },
+    "termination_date": "2026-11-25",
+    "type": "1",
+    "upazila_id": 133,
+    "welcome_notification": "1",
+    "zone": {
+      "id": 113,
+      "name": "zone_id option",
+    },
+  },
+}
+`;
+
+exports[`real form payloads > 'device' > create: starting values 1`] = `
+{
+  "cli_password": null,
+  "cli_protocol": null,
+  "cli_username": null,
+  "snmp_community": null,
+}
+`;
+
+exports[`real form payloads > 'device' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "cli_password": "cli_password 8",
+    "cli_protocol": "telnet",
+    "cli_username": "cli_username 7",
+    "device_id": 104,
+    "device_ip": "device_ip 5",
+    "device_order": 16,
+    "device_type_id": 102,
+    "fiber_code": "fiber_code 15",
+    "input_port": "input_port 11",
+    "latitude": 13,
+    "longitude": 14,
+    "monitor_enabled": true,
+    "name": "name 3",
+    "network_id": 101,
+    "note": "note 19",
+    "snmp_community": "public",
+    "status": "active",
+    "total_port": "total_port 12",
+    "zone_id": 110,
+  },
+  "record": {
+    "cli_password": "cli_password 8",
+    "cli_protocol": "telnet",
+    "cli_username": "cli_username 7",
+    "device": {
+      "id": 104,
+      "name": "device_id option",
+    },
+    "device_ip": "device_ip 5",
+    "device_order": 16,
+    "device_type": {
+      "id": 102,
+      "name": "device_type_id option",
+    },
+    "fiber_code": "fiber_code 15",
+    "id": 5,
+    "input_port": "input_port 11",
+    "latitude": 13,
+    "longitude": 14,
+    "monitor_enabled": true,
+    "name": "name 3",
+    "network": {
+      "id": 101,
+      "name": "network_id option",
+    },
+    "note": "note 19",
+    "snmp_community": "public",
+    "status": "active",
+    "total_port": "total_port 12",
+    "zone": {
+      "id": 110,
+      "name": "zone_id option",
+    },
+  },
+}
+`;
+
+exports[`real form payloads > 'expense' > create: starting values 1`] = `{}`;
+
+exports[`real form payloads > 'expense' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "amount": 1,
+    "expense_date": "25-11-2026",
+    "expense_type_id": 104,
+    "fund_id": 103,
+    "note": "note 9",
+    "staff_id": 102,
+    "status": "pending",
+    "voucher": "voucher 6",
+    "zone_id": 105,
+  },
+  "record": {
+    "amount": 1,
+    "expenseType": {
+      "id": 104,
+      "name": "expense_type_id option",
+    },
+    "expense_date": "2026-11-25",
+    "fund": {
+      "id": 103,
+      "name": "fund_id option",
+    },
+    "id": 5,
+    "note": "note 9",
+    "staff": {
+      "id": 102,
+      "name": "staff_id option",
+    },
+    "status": "pending",
+    "voucher": "voucher 6",
+    "zone": {
+      "id": 105,
+      "name": "zone_id option",
+    },
+  },
+}
+`;
+
+exports[`real form payloads > 'package' > create: starting values 1`] = `{}`;
+
+exports[`real form payloads > 'package' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "bandwidth": "bandwidth 4",
+    "buying_price": 0,
+    "is_reseller_package": 0,
+    "mikrotik_profile": "10M-Profile",
+    "name": "name 3",
+    "network_id": 101,
+    "note": "note 6",
+    "price": 5,
+  },
+  "record": {
+    "bandwidth": "bandwidth 4",
+    "id": 5,
+    "mikrotik_profile": "10M-Profile",
+    "name": "name 3",
+    "network": {
+      "id": 101,
+      "name": "network_id option",
+    },
+    "note": "note 6",
+    "price": 5,
+  },
+}
+`;
+
+exports[`real form payloads > 'reseller' > create: starting values 1`] = `
+{
+  "auto_recharge": "1",
+  "billing_type": "prepaid",
+  "gender": "male",
+}
+`;
+
+exports[`real form payloads > 'reseller' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "agent_id": 117,
+    "auto_recharge": 1,
+    "billing_type": "postpaid",
+    "commission": 18,
+    "company": "company 6",
+    "company_address": "company_address 8",
+    "company_phone": "01712345678",
+    "count_commission": true,
+    "email": "email 25",
+    "father_name": "father_name 20",
+    "gender": "male",
+    "id": "5",
+    "join_date": "25-11-2026",
+    "mother_name": "mother_name 21",
+    "name": "name 1",
+    "network_id": 103,
+    "over_due_amount": 11,
+    "package_id": [
+      104,
+    ],
+    "permanent_address": "permanent_address 23",
+    "phone": "01712345678",
+    "prefix": "prefix 9",
+    "present_address": "present_address 22",
+    "serial_start_from": 16,
+    "social_media_account": "social_media_account 24",
+    "status": 1,
+    "terminate_hour": 14,
+    "terminate_minute": 15,
+    "zone_id": 105,
+  },
+  "record": {
+    "agent": {
+      "id": 117,
+      "name": "agent_id option",
+    },
+    "auto_recharge": 1,
+    "billing_type": "postpaid",
+    "commission": 18,
+    "company": "company 6",
+    "company_address": "company_address 8",
+    "company_phone": "01712345678",
+    "count_commission": true,
+    "email": "email 25",
+    "father_name": "father_name 20",
+    "gender": "male",
+    "id": "5",
+    "join_date": "2026-11-25",
+    "mother_name": "mother_name 21",
+    "name": "name 1",
+    "network": {
+      "id": 103,
+      "name": "network_id option",
+    },
+    "over_due_amount": 11,
+    "package": [
+      {
+        "id": 104,
+        "name": "package_id option",
+      },
+    ],
+    "permanent_address": "permanent_address 23",
+    "phone": "01712345678",
+    "prefix": "prefix 9",
+    "present_address": "present_address 22",
+    "serial_start_from": 16,
+    "social_media_account": "social_media_account 24",
+    "status": 1,
+    "terminate_hour": 14,
+    "terminate_minute": 15,
+    "zone": {
+      "id": 105,
+      "name": "zone_id option",
+    },
+  },
+}
+`;
+
+exports[`real form payloads > 'salary' > create: starting values 1`] = `
+{
+  "salary_deductions": [],
+  "salary_items": [],
+}
+`;
+
+exports[`real form payloads > 'salary' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "amount": 7,
+    "date": "2026-11-25",
+    "expense_type_id": 106,
+    "fund_id": 102,
+    "note": "note 10",
+    "salary_deductions": [
+      {
+        "deductions_label": "deductions_label 901",
+        "deductions_value": 902,
+      },
+    ],
+    "salary_items": [
+      {
+        "items_label": "items_label 801",
+        "items_value": 802,
+      },
+    ],
+    "salary_type": "monthly",
+    "staff_id": 103,
+    "status": "pending",
+  },
+  "record": {
+    "amount": 7,
+    "date": "2026-11-25",
+    "expenseType": {
+      "id": 106,
+      "name": "expense_type_id option",
+    },
+    "fund": {
+      "id": 102,
+      "name": "fund_id option",
+    },
+    "id": 5,
+    "note": "note 10",
+    "salary_deductions": [
+      {
+        "deductions_label": "deductions_label 901",
+        "deductions_value": 902,
+      },
+    ],
+    "salary_items": [
+      {
+        "items_label": "items_label 801",
+        "items_value": 802,
+      },
+    ],
+    "salary_type": "monthly",
+    "staff": {
+      "id": 103,
+      "name": "staff_id option",
+    },
+    "status": "pending",
+  },
+}
+`;
+
+exports[`real form payloads > 'staff' > create: starting values 1`] = `
+{
+  "gender": "male",
+  "marital_status": "unmarred",
+  "salary_generation_type": "auto",
+}
+`;
+
+exports[`real form payloads > 'staff' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "date_of_birth": "2026-11-25",
+    "designation": "designation 6",
+    "email": "user8@example.com",
+    "father_name": "father_name 13",
+    "gender": "male",
+    "job_experience": "job_experience 20",
+    "join_date": "2026-11-25",
+    "marital_status": "marred",
+    "mother_name": "mother_name 14",
+    "name": "name 1",
+    "password": "password 3",
+    "permanent_address": "permanent_address 19",
+    "phone": "01712345678",
+    "present_address": "present_address 18",
+    "roles_id": [
+      104,
+    ],
+    "salary_day": "01",
+    "salary_deductions": [
+      {
+        "deductions_label": "deductions_label 2301",
+        "deductions_value": 2302,
+      },
+    ],
+    "salary_generation_type": "auto",
+    "salary_items": [
+      {
+        "items_label": "items_label 2201",
+        "items_value": 2202,
+      },
+    ],
+    "social_media_address": "social_media_address 21",
+    "status": "active",
+    "username": "username 2",
+    "zone_ids": [
+      105,
+    ],
+  },
+  "record": {
+    "date_of_birth": "2026-11-25",
+    "designation": "designation 6",
+    "email": "user8@example.com",
+    "father_name": "father_name 13",
+    "gender": "male",
+    "id": 5,
+    "job_experience": "job_experience 20",
+    "join_date": "2026-11-25",
+    "marital_status": "marred",
+    "mother_name": "mother_name 14",
+    "name": "name 1",
+    "password": "password 3",
+    "permanent_address": "permanent_address 19",
+    "phone": "01712345678",
+    "present_address": "present_address 18",
+    "roles": [
+      {
+        "id": 104,
+        "name": "roles_id option",
+      },
+    ],
+    "salary_day": "01",
+    "salary_deductions": [
+      {
+        "deductions_label": "deductions_label 2301",
+        "deductions_value": 2302,
+      },
+    ],
+    "salary_generation_type": "auto",
+    "salary_items": [
+      {
+        "items_label": "items_label 2201",
+        "items_value": 2202,
+      },
+    ],
+    "social_media_address": "social_media_address 21",
+    "status": "active",
+    "username": "username 2",
+    "zones": [
+      {
+        "id": 105,
+        "name": "zone_ids option",
+      },
+    ],
+  },
+}
+`;
+
+exports[`real form payloads > 'tj-box' > create: starting values 1`] = `{}`;
+
+exports[`real form payloads > 'tj-box' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "address": "address 5",
+    "device_id": 103,
+    "latitude": 23.7808,
+    "longitude": 90.4219,
+    "name": "name 4",
+    "status": "active",
+    "zone_id": 102,
+  },
+  "record": {
+    "address": "address 5",
+    "device": {
+      "id": 103,
+      "name": "device_id option",
+    },
+    "id": 5,
+    "latitude": "23.7808",
+    "longitude": "90.4219",
+    "name": "name 4",
+    "status": "active",
+    "zone": {
+      "id": 102,
+      "name": "zone_id option",
+    },
+  },
+}
+`;
+
+exports[`real form payloads > 'user' > create: starting values 1`] = `{}`;
+
+exports[`real form payloads > 'user' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "email": "user@example.com",
+    "name": "name 1",
+    "status": 1,
+    "username": "username 2",
+  },
+  "record": {
+    "confirm": undefined,
+    "email": "user@example.com",
+    "id": 5,
+    "name": "name 1",
+    "password": undefined,
+    "status": 1,
+    "username": "username 2",
+  },
+}
+`;
+
+exports[`real form payloads > 'zone' > create: starting values 1`] = `{}`;
+
+exports[`real form payloads > 'zone' > edit: loads the record and sends it back unchanged 1`] = `
+{
+  "payload": {
+    "lat": 2,
+    "lon": 3,
+    "name": "name 1",
+    "name_bn": "",
+  },
+  "record": {
+    "id": 5,
+    "lat": 2,
+    "lon": 3,
+    "name": "name 1",
+  },
+}
+`;

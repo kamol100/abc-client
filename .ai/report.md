@@ -1,9 +1,40 @@
+## Form builder refactor, phases 0 and 1: tests that lock current behaviour — 2026-11-25
+
+Tests only. No file under `components/`, `hooks/`, `lib/` or `app/` changed.
+
+Phase 0:
+- `tests/unit/form/date-picker-range.test.tsx`, `date-picker-clear.test.tsx`, `filter-date-range-close.test.tsx`: the calendar opens on the current month, and these tests click days in October 2026. They now hold `Date` in October 2026 (`vi.useFakeTimers({ toFake: ["Date"] })`). All 11 pass again.
+
+Phase 1, new folder `tests/unit/form/builder/` (177 tests):
+- `harness.tsx`: shared helpers. The real builder, wrapper, fields, `useApiQuery` and `useApiMutation` run; only `useFetch` is faked, so a test sees the exact URL, method and payload.
+- `form-builder-submit.test.tsx` (33): request URL and method per mode, payload step order, success sequence, toasts, invalidation, dialog close, 422 errors, footer, repeat submits, `submitHoldMs`.
+- `form-builder-fields.test.tsx` (36): what each field type draws and stores, ids, layout, the `children` function, dropdown options from the API.
+- `form-builder-values.test.tsx` (25): how `data` becomes form values in edit and create, defaults, field-array rows.
+- `form-builder-hydration.test.tsx` (18): when the record is fetched, skeleton, failure and retry.
+- `form-builder-conditions.test.tsx` (17): `visibleWhen`, `dependsOn`, `populate`.
+- `form-builder-field-array.test.tsx` (20): rows, add, remove, reorder, limits.
+- `accordion-form-builder.test.tsx` (8).
+- `real-form-payloads.test.tsx` (20) with a snapshot file: for zone, expense, tj-box, package, device, user, salary, client, staff and reseller, the create starting values and the edit request, using the real field config and the real Zod schema. Structural refactor phases must leave this snapshot unchanged.
+
+Found while writing the tests:
+- B1 is real but narrower than the audit said: only the field-array Add button lacks `type="button"`. Clicking it submits the form; on a valid form the save succeeds and the reset removes the new row. Remove and reorder are fine.
+- B2 is real: in an edit form that loaded its record, a parent re-render with a rebuilt `formSchema` array resets typed values.
+- Tests named `B1:`, `B2:`, `B8:` describe the faulty behaviour as it is today. Each must be changed in the commit that fixes that problem.
+- The reseller Zod schema only accepts a string `id`.
+
+Not covered: invoice, product in and product out (their line editors need the full feature components; e2e only), the filter form with dropdowns, and anything about layout.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1233 passed, 9 failed. The 9 are the failures that were already there and are not form tests (client-dashboard-info, reseller-client-filter-schema, reseller-client-table x2, column-visibility-persistence x2, client-map-rows, menu-items, pay-content x2).
+- Not checked in a browser. Playwright not run.
+
 ## Form builder refactor: audit and plan (no code changed) — 2026-11-25
 
 Read-only audit of `components/form-wrapper/*`, `components/form/*`, `components/select-dropdown.tsx`, all 57 files that render `FormBuilder` / `AccordionFormBuilder` (64 sites), and the 29 files that call `useForm` directly.
 
 - Full report: https://claude.ai/artifact/SdJZFSZJkF7b35Fh8gQ9JA (problems with file references, proposed design, nine-phase migration plan, open questions).
-- Likely bugs found by reading, not yet reproduced: field-array Add/Remove buttons have no `type="button"`; the edit-loading effect can re-run `reset()` when `formSchema` is rebuilt; per-field `rules` never run under the Zod resolver; date conversion is copied per form in Zod.
+- Likely bugs found by reading, not yet reproduced: the field-array Add button has no `type="button"` (Remove is fine; corrected in phase 1); the edit-loading effect can re-run `reset()` when `formSchema` is rebuilt; per-field `rules` never run under the Zod resolver; date conversion is copied per form in Zod.
 - Plan: keep the public API, lock behaviour with tests first, then split into a field registry, form-free controls, and pure data functions; bug fixes in separate commits.
 
 Checks:
