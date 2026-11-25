@@ -11,7 +11,6 @@ export const textareaField = defineField<TextareaFieldConfig>({
             label={field.label}
             placeholder={field.placeholder}
             rows={field.rows}
-            rules={field.rules}
             disabled={field.disabled}
         />
     ),

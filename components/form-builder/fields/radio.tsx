@@ -12,7 +12,6 @@ export const radioField = defineField<RadioFieldConfig>({
             direction={field.direction}
             defaultValue={field.defaultValue}
             options={field.options}
-            rules={field.rules}
         />
     ),
 });

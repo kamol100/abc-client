@@ -401,13 +401,6 @@ describe("FormBuilder fields", () => {
 
             expect(await saveAndReadPayload(user)).toEqual({ days: [2, 1], agree: true });
         });
-
-        it("field `rules` do not run, because the Zod resolver replaces them", async () => {
-            renderFields([{ type: "text", name: "name", rules: { required: "name.required" } }]);
-
-            expect(await saveAndReadPayload()).toEqual({});
-            expect(screen.queryByText("name.required")).not.toBeInTheDocument();
-        });
     });
 
     describe("dropdown options from the API", () => {

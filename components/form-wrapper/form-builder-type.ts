@@ -1,5 +1,3 @@
-import type { RegisterOptions } from "react-hook-form";
-
 export type ValueMapping = {
     idKey: string;
     labelKey: string;
@@ -45,7 +43,6 @@ type BaseFieldConfig = {
     readOnly?: boolean;
     className?: string;
     order?: number;
-    rules?: RegisterOptions;
     visibleWhen?: VisibleWhen;
 };
 
@@ -105,7 +102,6 @@ export type DateFieldConfig = BaseFieldConfig & {
     type: "date";
     dateFormat?: string;
     valueKey?: string;
-    required?: boolean;
     closeOnSelectDate?: boolean;
 };
 
@@ -113,7 +109,6 @@ export type DateRangeFieldConfig = BaseFieldConfig & {
     type: "dateRange";
     dateFormat?: string;
     valueKey?: string;
-    required?: boolean;
     closeOnSelectDate?: boolean;
 };
 

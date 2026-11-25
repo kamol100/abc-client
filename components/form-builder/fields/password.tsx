@@ -10,7 +10,6 @@ export const passwordField = defineField<TextFieldConfig & { type: "password" }>
             name={name}
             label={field.label}
             placeholder={field.placeholder}
-            rules={field.rules}
             disabled={field.disabled}
         />
     ),

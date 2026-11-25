@@ -30,7 +30,6 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             isLoading={field.isLoading}
             isClearable={field.isClearable}
             optionValueKey={field.valueMapping?.idKey}
-            rules={field.rules}
             parentFieldName={
                 field.dependsOn ? resolveFieldPath(namePrefix, field.dependsOn.field) : undefined
             }

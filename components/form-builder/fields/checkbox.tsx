@@ -12,7 +12,6 @@ export const checkboxField = defineField<CheckboxFieldConfig>({
             options={field.options}
             direction={field.direction}
             single={field.single}
-            rules={field.rules}
         />
     ),
 });

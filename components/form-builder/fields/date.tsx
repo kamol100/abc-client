@@ -43,10 +43,8 @@ export const dateField = defineField<DateFieldConfig>({
             label={field.label}
             placeholder={field.placeholder}
             mode="single"
-            required={field.required}
             dateFormat={field.dateFormat}
             closeOnSelectDate={field.closeOnSelectDate}
-            rules={field.rules}
             disabled={field.disabled}
         />
     ),
@@ -65,11 +63,9 @@ export const dateRangeField = defineField<DateRangeFieldConfig>({
             label={field.label}
             placeholder={field.placeholder}
             mode="range"
-            required={field.required}
             dateFormat={field.dateFormat}
             rangeDateFormat={field.dateFormat}
             closeOnSelectDate={field.closeOnSelectDate}
-            rules={field.rules}
             disabled={field.disabled}
         />
     ),

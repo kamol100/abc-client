@@ -1,5 +1,4 @@
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
-import { invoiceNoteFitsMysqlText } from "@/components/invoices/invoice-type";
 import { INVOICE_PAYMENT_FUNDS_API } from "@/components/invoices/payment-fund-access";
 
 /** `fundLocked`: the user may only pay into their own fund (see paymentFundAccess). */
@@ -90,10 +89,6 @@ export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: bo
         label: { labelText: "invoice.note.label" },
         placeholder: "invoice.note.placeholder",
         rows: 2,
-        rules: {
-            validate: (value) =>
-                invoiceNoteFitsMysqlText(value) || "invoice.note.errors.max_bytes",
-        },
     },
 ];
 

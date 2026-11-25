@@ -11,7 +11,6 @@ const renderInput = ({ field, name }: { field: InputConfig; name: string }) => (
         label={field.label}
         placeholder={field.placeholder}
         type={field.type}
-        rules={field.rules}
         disabled={field.disabled}
         readOnly={field.readOnly}
     />

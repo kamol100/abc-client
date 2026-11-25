@@ -12,7 +12,6 @@ function SwitchField({ field, name }: { field: SwitchFieldConfig; name: string }
                 name={name}
                 label={field.label}
                 onValueChange={field.saveOnChange ? requestSave : undefined}
-                rules={field.rules}
                 disabled={field.disabled}
             />
         </div>

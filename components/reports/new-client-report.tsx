@@ -216,7 +216,6 @@ function dateRangeField(): FieldConfig {
         name: "date_range",
         label: { labelText: "new_client_report.date_range.label" },
         placeholder: "new_client_report.date_range.placeholder",
-        required: true,
     };
 }
 
