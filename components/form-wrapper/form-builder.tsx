@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
 import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/core/values";
@@ -78,8 +78,6 @@ const FormBuilder = ({
   onSubmitError,
   children,
 }: FormBuilderProps) => {
-  const [saveOnChange, setSaveOnChange] = useState(false);
-
   const transformedData = useMemo(() => {
     const base =
       mode === "edit" && data
@@ -107,7 +105,6 @@ const FormBuilder = ({
       field,
       name: namePrefix ? `${namePrefix}.${field.name}` : field.name,
       namePrefix,
-      requestSave: () => setSaveOnChange(true),
     });
   };
 
@@ -137,8 +134,6 @@ const FormBuilder = ({
       onClose={onClose}
       onSuccess={onSuccess}
       actionButton={actionButton}
-      saveOnChange={saveOnChange}
-      setSaveOnChange={setSaveOnChange}
       actionButtonClass={actionButtonClass}
       submitTitle={submitTitle}
       submitHoldMs={submitHoldMs}

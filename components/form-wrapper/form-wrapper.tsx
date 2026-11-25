@@ -1,8 +1,9 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useMemo, useRef } from "react";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
+import { FormActionsProvider } from "@/components/form-builder/core/form-actions";
 import { shownFields } from "@/components/form-builder/core/form-schema";
 import { useEntityForm } from "@/components/form-builder/core/use-entity-form";
 import { useEntityLoad } from "@/components/form-builder/core/use-entity-load";
@@ -39,8 +40,6 @@ type FormWrapperProps = {
     submitTitle?: string;
     /** Keep the submit button spinning at least this long after a valid submit, then close. */
     submitHoldMs?: number;
-    saveOnChange?: boolean;
-    setSaveOnChange?: (x: boolean) => void;
     actionButtonClass?: string;
     hydrateOnEdit?: HydratePolicy;
     formSchema?: FormFieldConfig[] | AccordionSection[];
@@ -77,8 +76,6 @@ export default function FormWrapper({
     actionButton = true,
     submitTitle,
     submitHoldMs,
-    saveOnChange: save = false,
-    setSaveOnChange = () => { },
     actionButtonClass = "justify-between",
     hydrateOnEdit = "ifNeeded",
     formSchema,
@@ -131,15 +128,13 @@ export default function FormWrapper({
         submitHoldMs,
     });
 
-    // Save on change: a field asks for a save by setting `saveOnChange`; the form
-    // answers by clicking its own hidden submit input.
-    const submitRef = useRef<HTMLInputElement>(null);
-    useEffect(() => {
-        if (save) {
-            submitRef.current?.click();
-            setSaveOnChange(false);
-        }
-    }, [save, setSaveOnChange]);
+    // Runs validation, then saves. The form's own submit and a field that asks for a
+    // save (a switch with `saveOnChange`) both go through this.
+    const submitForm = form.handleSubmit(submit.onSubmit);
+    // Kept in a ref so the actions object below stays the same between renders.
+    const submitFormRef = useRef(submitForm);
+    submitFormRef.current = submitForm;
+    const formActions = useMemo(() => ({ requestSave: () => void submitFormRef.current() }), []);
 
     const formContent = (
         <FormLoadState
@@ -159,35 +154,32 @@ export default function FormWrapper({
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(submit.onSubmit)}
-                className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
-            >
-                {fullPage ? (
-                    <div className="flex-1 min-h-0 overflow-y-auto">
-                        {formContent}
-                    </div>
-                ) : (
-                    formContent
-                )}
-                {showFooter && (
-                    <>
-                        <input type="submit" className="hidden" ref={submitRef} />
-                        {actionButton && (
-                            <FormFooter
-                                fullPage={fullPage}
-                                className={actionButtonClass}
-                                submitTitle={submitTitle}
-                                isSaving={submit.isSaving}
-                                onCancel={() => {
-                                    submit.cancelHold();
-                                    handleClose();
-                                }}
-                            />
-                        )}
-                    </>
-                )}
-            </form>
+            <FormActionsProvider value={formActions}>
+                <form
+                    onSubmit={submitForm}
+                    className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
+                >
+                    {fullPage ? (
+                        <div className="flex-1 min-h-0 overflow-y-auto">
+                            {formContent}
+                        </div>
+                    ) : (
+                        formContent
+                    )}
+                    {showFooter && actionButton && (
+                        <FormFooter
+                            fullPage={fullPage}
+                            className={actionButtonClass}
+                            submitTitle={submitTitle}
+                            isSaving={submit.isSaving}
+                            onCancel={() => {
+                                submit.cancelHold();
+                                handleClose();
+                            }}
+                        />
+                    )}
+                </form>
+            </FormActionsProvider>
         </Form>
     );
 }

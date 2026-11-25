@@ -361,6 +361,34 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ is_active: true });
         });
 
+        it("a switch with saveOnChange saves the form each time it is flipped", async () => {
+            renderFields([
+                { type: "text", name: "name" },
+                { type: "switch", name: "is_active", saveOnChange: true },
+            ], { resetOnSuccess: false });
+            const user = userEvent.setup();
+            await user.type(inputById("name"), "Router");
+            await user.click(screen.getByRole("switch"));
+
+            await waitFor(() => expect(writeRequests()).toHaveLength(1));
+            expect(writeRequests()[0].data).toEqual({ name: "Router", is_active: true });
+
+            await user.click(screen.getByRole("switch"));
+            await waitFor(() => expect(writeRequests()).toHaveLength(2));
+            expect(writeRequests()[1].data).toEqual({ name: "Router", is_active: false });
+        });
+
+        it("a switch with saveOnChange does not save an invalid form", async () => {
+            renderFields([{ type: "switch", name: "is_active", saveOnChange: true }], {
+                schema: z.object({ name: z.string({ required_error: "name.required" }) }).passthrough(),
+            });
+            const user = userEvent.setup();
+            await user.click(screen.getByRole("switch"));
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            expect(writeRequests()).toHaveLength(0);
+        });
+
         it("checkbox stores an array of values, and a single checkbox stores a boolean", async () => {
             renderFields([
                 { type: "checkbox", name: "days", options: statusOptions },

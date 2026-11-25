@@ -475,15 +475,33 @@ describe("FormBuilder submit", () => {
             finish();
         });
 
-        it("still sends a second request when Enter is pressed while saving, by default", async () => {
+        it("ignores Enter while saving, because the only submit button is disabled", async () => {
             const finish = slowApi();
             renderForm();
             const user = await typeNameAndSave();
             await waitFor(() => expect(writeRequests()).toHaveLength(1));
             await user.type(inputById("name"), "{Enter}");
+            await new Promise((resolve) => setTimeout(resolve, 50));
 
-            await waitFor(() => expect(writeRequests()).toHaveLength(2));
+            expect(writeRequests()).toHaveLength(1);
             finish();
+        });
+
+        it("Enter in a field saves the form", async () => {
+            renderForm();
+            const user = userEvent.setup();
+            await user.type(inputById("name"), "North{Enter}");
+
+            await waitFor(() => expect(writeRequests()).toHaveLength(1));
+        });
+
+        it("Enter does not save a form whose buttons are hidden with actionButton={false}", async () => {
+            renderForm({ actionButton: false });
+            const user = userEvent.setup();
+            await user.type(inputById("name"), "North{Enter}");
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
+            expect(writeRequests()).toHaveLength(0);
         });
 
         it("ignores Enter while saving when preventDuplicateSubmit is set", async () => {

@@ -850,10 +850,6 @@ exports[`field markup > AccordionFormBuilder: sections with a slot 1`] = `
         />
       </div>
     </div>
-    <input
-      class="hidden"
-      type="submit"
-    />
     <div
       class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
     >
@@ -2784,10 +2780,6 @@ exports[`field markup > FormBuilder: every field type, empty 1`] = `
         </div>
       </div>
     </div>
-    <input
-      class="hidden"
-      type="submit"
-    />
     <div
       class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
     >
@@ -5547,10 +5539,6 @@ exports[`field markup > FormBuilder: every field type, filled 1`] = `
         </div>
       </div>
     </div>
-    <input
-      class="hidden"
-      type="submit"
-    />
     <div
       class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
     >
@@ -8406,10 +8394,6 @@ exports[`field markup > FormBuilder: every field type, with a validation error 1
         </div>
       </div>
     </div>
-    <input
-      class="hidden"
-      type="submit"
-    />
     <div
       class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
     >

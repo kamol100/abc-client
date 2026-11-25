@@ -21,8 +21,6 @@ export type FormFieldProps<Config extends FieldConfig = FieldConfig> = {
     name: string;
     /** The path of the row the field sits in (`items.2`), or "" at the top level. */
     namePrefix: string;
-    /** Asks the form to save now. Used by a switch with `saveOnChange`. */
-    requestSave: () => void;
 };
 
 export type FilterFieldProps<Config extends FieldConfig = FieldConfig> = {
