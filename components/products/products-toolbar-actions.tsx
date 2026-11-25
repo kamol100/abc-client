@@ -7,15 +7,15 @@ import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import ProductForm from "@/components/products/product-form";
 
-const ProductsToolbarActions: FC = () => {
+/** Product in and out links, shown in the center of the products toolbar. */
+export const ProductMovementButtons: FC = () => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
 
-    const canCreateProduct = hasPermission("products.create");
     const canProductIn = hasPermission("products-in.create");
     const canProductOut = hasPermission("products-out.create");
 
-    if (!canCreateProduct && !canProductIn && !canProductOut) {
+    if (!canProductIn && !canProductOut) {
         return null;
     }
 
@@ -47,9 +47,15 @@ const ProductsToolbarActions: FC = () => {
                     <span className="hidden md:inline">{t("product_out.title")}</span>
                 </MyButton>
             )}
-            {canCreateProduct && <ProductForm />}
         </div>
     );
+};
+
+/** The add slot, after the filter button: the create-product dialog. */
+const ProductsToolbarActions: FC = () => {
+    const { hasPermission } = usePermissions();
+
+    return hasPermission("products.create") ? <ProductForm /> : null;
 };
 
 export default ProductsToolbarActions;

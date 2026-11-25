@@ -11,7 +11,7 @@ import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useProductColumns } from "@/components/products/product-column";
 import ProductFilterSchema from "@/components/products/product-filter-schema";
 import { ProductRow } from "@/components/products/product-type";
-import ProductsToolbarActions from "@/components/products/products-toolbar-actions";
+import ProductsToolbarActions, { ProductMovementButtons } from "@/components/products/products-toolbar-actions";
 
 const ProductTable: FC = () => {
     const { t } = useTranslation();
@@ -47,6 +47,15 @@ const ProductTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        center: [
+            {
+                key: "product-movement",
+                node: <ProductMovementButtons />,
+                show: hasPermission("products-in.create") || hasPermission("products-out.create"),
+                mobile: "actions",
+                inFilterRow: false,
+            },
+        ],
         end: [
             { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="product_code_prefix" /> },
         ],
@@ -60,18 +69,18 @@ const ProductTable: FC = () => {
 
     return (
         <>
-        <ProductBackgroundError failed={isError} retry={refetch} />
-        <DataTable
-            data={products}
-            columns={columns}
-            setFilter={setFilter}
-            toolbar={toolbar}
-            pagination={pagination}
-            setCurrentPage={setCurrentPage}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            queryKey="products"
-        />
+            <ProductBackgroundError failed={isError} retry={refetch} />
+            <DataTable
+                data={products}
+                columns={columns}
+                setFilter={setFilter}
+                toolbar={toolbar}
+                pagination={pagination}
+                setCurrentPage={setCurrentPage}
+                isLoading={isLoading}
+                isFetching={isFetching}
+                queryKey="products"
+            />
         </>
     );
 };

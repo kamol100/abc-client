@@ -108,6 +108,7 @@ export function DataTableToolbar<TData>({
   const centerItems = inSlot(center);
   const endItems = [...toActions, ...inSlot(end)];
   const filterRowItems = endItems.filter((item) => item.inFilterRow !== false);
+  const filterOpenCenterItems = centerItems.filter((item) => item.inFilterRow !== false);
   // The add slot (after the filter button) stays at the end of the open filter row too.
   const addNode = renderAdd(features.add);
   const filterRowEnd =
@@ -153,9 +154,9 @@ export function DataTableToolbar<TData>({
         !isMobile && filterOpen && filterOptions ? (
           <>
             {/* Center items (e.g. a running total) stay visible above the open filter. */}
-            {centerItems.length > 0 && (
+            {filterOpenCenterItems.length > 0 && (
               <div className="flex items-center justify-center gap-2" data-toolbar-slot="center">
-                {renderItems(centerItems)}
+                {renderItems(filterOpenCenterItems)}
               </div>
             )}
             <ToolbarFilterRow

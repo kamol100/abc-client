@@ -118,4 +118,32 @@ describe("toolbar action while filtering", () => {
     expect(open[0].closest("[data-filter-actions]")).not.toBeNull();
     expect(filterButton().compareDocumentPosition(open[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
+
+  it("hides a center item with inFilterRow false while the filter is open", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <TableLayoutProvider>
+        <DataTable
+          columns={columns}
+          data={[{ name: "client" }]}
+          setFilter={vi.fn()}
+          toolbar={{
+            center: [
+              { key: "links", inFilterRow: false, node: <button type="button">Page link</button> },
+              { key: "total", node: <span>Running total</span> },
+            ],
+            features: { filter: { filter, filter_row: 2 } },
+          }}
+        />
+      </TableLayoutProvider>,
+    );
+
+    expect(screen.getByRole("button", { name: "Page link" })).toBeVisible();
+
+    await user.click(filterButton());
+
+    expect(screen.queryByRole("button", { name: "Page link" })).toBeNull();
+    expect(screen.getByText("Running total")).toBeVisible();
+  });
 });
