@@ -7,7 +7,7 @@ import {
   HandCoins,
   Landmark,
   LifeBuoy,
-  Package,
+  PackageOpen,
   Receipt,
   UserCheck,
   Users,
@@ -49,7 +49,7 @@ export const DASHBOARD_CARD_ACCENTS = {
   expense: { icon: Receipt, tone: 2 },
   fund: { icon: Landmark, tone: 3 },
   ticket: { icon: LifeBuoy, tone: 4 },
-  productStock: { icon: Package, tone: 5 },
+  productStock: { icon: PackageOpen, tone: 5 },
 } as const satisfies Record<string, DashboardCardAccent>;
 
 export const CLIENT_DATE_FILTER_OPTIONS: ReadonlyArray<{ value: DashboardDateFilter; labelKey: string }> = [
