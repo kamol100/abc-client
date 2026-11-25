@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { Wallet } from "lucide-react";
 import { toast } from "react-toastify";
 import { BkashWalletForm } from "@/components/wallets/wallet-transaction";
 import { ClientWalletColumns } from "@/components/wallets/wallet-column";
@@ -38,18 +39,23 @@ const StatusNotice: FC<{
   </div>
 );
 
-const MyWalletBalanceCard: FC = () => {
+/** Balance chip for the toolbar center, the same style as the invoice report chips. */
+const MyWalletBalanceChip: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="rounded-md border bg-card px-4 py-3 min-w-[210px]">
-      <div className="text-xs text-muted-foreground">{t("wallet.my_balance")}</div>
-      <MyWallet
-        label={false}
-        className="mt-1"
-        amountClassName="text-xl"
-        loadingClassName="h-7 w-28"
-      />
+    <div className="flex h-9 items-center gap-2 whitespace-nowrap rounded-[var(--radius)] border border-border bg-background px-2.5">
+      <span className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Wallet className="size-4 shrink-0" aria-hidden />
+        {t("wallet.my_balance")}
+      </span>
+      <span className="flex h-5 min-w-16 items-center justify-end">
+        <MyWallet
+          label={false}
+          amountClassName="text-sm"
+          loadingClassName="h-4 w-16"
+        />
+      </span>
     </div>
   );
 };
@@ -103,11 +109,6 @@ export const MyWalletTable: FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <MyWalletBalanceCard />
-        <BkashWalletForm />
-      </div>
-
       {executeMutation.isPending && (
         <StatusNotice type="info" message={t("wallet.messages.processing_payment")} />
       )}
@@ -118,7 +119,10 @@ export const MyWalletTable: FC = () => {
         <StatusNotice type="success" message={t("wallet.messages.payment_success")} />
       )}
 
-      <TransactionsTable />
+      <TransactionsTable
+        toolbarCenter={[{ key: "balance", node: <MyWalletBalanceChip /> }]}
+        toolbarAdd={<BkashWalletForm />}
+      />
     </div>
   );
 };

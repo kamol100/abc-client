@@ -1,9 +1,9 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
-import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
+import type { DataTableToolbarConfig, ToolbarItem } from "@/components/data-table/toolbar/toolbar-config";
 import { TransactionsColumns } from "@/components/wallets/transactions-column";
 import {
   WalletTransactionRow,
@@ -14,9 +14,13 @@ import { useMyWallet } from "@/hooks/use-my-wallet";
 
 interface TransactionsTableProps {
   walletId?: string | number;
+  /** Toolbar center items, e.g. the balance chip on the my-wallet page. */
+  toolbarCenter?: ToolbarItem[];
+  /** Toolbar add slot (always last, on the right), e.g. the bKash recharge button. */
+  toolbarAdd?: ReactNode;
 }
 
-export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId }) => {
+export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId, toolbarCenter, toolbarAdd }) => {
   const { t } = useTranslation();
   const { wallet } = useMyWallet();
   const [filterValue, setFilter] = useState<string | null>(null);
@@ -53,8 +57,10 @@ export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId }) => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    center: toolbarCenter,
     features: {
       columns: true,
+      add: toolbarAdd,
     },
   };
 
