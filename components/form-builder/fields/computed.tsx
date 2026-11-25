@@ -19,6 +19,8 @@ function ComputedInput({ field, name, row }: Props & { row: Record<string, unkno
         setValue(name, value, { shouldDirty: false, shouldValidate: false });
     }, [name, value, getValues, setValue]);
 
+    if (field.display) return <>{field.display(value)}</>;
+
     return (
         <InputField
             type={field.inputType ?? "number"}

@@ -2,7 +2,11 @@
  * Rules that show or hide a field from the value of another field (`visibleWhen`).
  * Pure functions: no React, no form state.
  */
-import type { FieldRule, VisibleWhen } from "@/components/form-wrapper/form-builder-type";
+import type {
+    FieldCondition,
+    FieldRule,
+    VisibleWhen,
+} from "@/components/form-wrapper/form-builder-type";
 
 /** A value the user has filled in. `0` and `false` count as filled; an empty list does not. */
 export const hasFilledValue = (value: unknown): boolean => {
@@ -23,8 +27,24 @@ export function isRulePassing(rule: FieldRule, watchedValue: unknown): boolean {
     return watchedValue === rule.equals || String(watchedValue) === String(rule.equals);
 }
 
-/** Whether a field with this `visibleWhen` rule is shown. */
-export const isFieldVisible = (visibleWhen: VisibleWhen, watchedValue: unknown): boolean =>
+/** The single rules inside a condition, in order. */
+export function rulesOf(condition: FieldCondition): FieldRule[] {
+    if ("all" in condition) return condition.all;
+    if ("any" in condition) return condition.any;
+    return [condition];
+}
+
+/**
+ * Whether a condition passes. `watchedValues` holds the current value of each rule's
+ * field, in the order of `rulesOf(condition)`.
+ */
+export function isConditionPassing(condition: FieldCondition, watchedValues: unknown[]): boolean {
+    const results = rulesOf(condition).map((rule, index) => isRulePassing(rule, watchedValues[index]));
+    return "any" in condition ? results.some(Boolean) : results.every(Boolean);
+}
+
+/** Whether a field with a single-rule `visibleWhen` is shown. */
+export const isFieldVisible = (visibleWhen: FieldRule, watchedValue: unknown): boolean =>
     isRulePassing(visibleWhen, watchedValue);
 
 /** The value written into a field while it is hidden. */

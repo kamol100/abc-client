@@ -8,6 +8,7 @@ import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/
 import { FieldArrayRenderer } from "@/components/form-builder/fields/field-array";
 import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
 import { DisabledWhenField } from "@/components/form-builder/layout/disabled-when";
+import { FieldChangeEffectRunner } from "@/components/form-builder/layout/field-change-effect";
 import { VisibleFormField } from "@/components/form-builder/layout/visible-field";
 import {
   AccordionSection,
@@ -128,15 +129,23 @@ const FormBuilder = ({
     if (!definition) return null;
 
     const name = namePrefix ? `${namePrefix}.${field.name}` : field.name;
-    if (!field.disabledWhen) return definition.render({ field, name, namePrefix });
-
-    return (
+    const rendered = field.disabledWhen ? (
       <DisabledWhenField
         field={field}
         rule={field.disabledWhen}
         namePrefix={namePrefix}
         render={(current) => definition.render({ field: current, name, namePrefix })}
       />
+    ) : (
+      definition.render({ field, name, namePrefix })
+    );
+    if (!field.onChange) return rendered;
+
+    return (
+      <>
+        {rendered}
+        <FieldChangeEffectRunner name={name} namePrefix={namePrefix} effect={field.onChange} />
+      </>
     );
   };
 

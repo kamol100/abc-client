@@ -12,6 +12,7 @@ import {
   useWatch,
 } from "react-hook-form";
 import { SelectBox } from "@/components/controls/select-box";
+import { sameFormValue } from "@/components/form-builder/core/compare";
 import { useSelectOptions } from "@/components/controls/use-select-options";
 import { FieldShell, useFieldId } from "@/components/form-builder/fields/field-shell";
 import type {
@@ -37,21 +38,6 @@ const applyDropdownPopulate = (
   }
 };
 
-/** Equal as form values: ids compare as text (3 and "3"), lists item by item. */
-const sameValue = (left: unknown, right: unknown): boolean => {
-  if (Array.isArray(left) || Array.isArray(right)) {
-    return (
-      Array.isArray(left) &&
-      Array.isArray(right) &&
-      left.length === right.length &&
-      left.every((item, index) => String(item) === String(right[index]))
-    );
-  }
-  const isEmpty = (value: unknown) => value === undefined || value === null || value === "";
-  if (isEmpty(left) || isEmpty(right)) return isEmpty(left) && isEmpty(right);
-  return String(left) === String(right);
-};
-
 type SelectDropdownProps = {
   name: string;
   label?: LabelProps;
@@ -72,6 +58,8 @@ type SelectDropdownProps = {
   parentFieldName?: string;
   buildApi?: (parentValue: string | number) => string;
   resetOnParentChange?: boolean;
+  /** Whether the parent holds a value. Defaults to "anything but empty". */
+  isParentSet?: (parentValue: unknown) => boolean;
   populate?: DropdownPopulate[];
 };
 
@@ -101,6 +89,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   parentFieldName,
   buildApi,
   resetOnParentChange = true,
+  isParentSet,
   populate,
 }) => {
   const { control: ctxControl, setValue, getValues, formState } = useFormContext();
@@ -117,7 +106,9 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   });
   const parentValue = parentFieldName ? watchedParent : undefined;
   const hasDependency = !!parentFieldName && !!buildApi;
-  const parentHasValue = parentValue !== undefined && parentValue !== null && parentValue !== "";
+  const parentHasValue = isParentSet
+    ? isParentSet(parentValue)
+    : parentValue !== undefined && parentValue !== null && parentValue !== "";
 
   // With a parent, options come only from `buildApi`, and only once the parent is set.
   const api = useMemo(() => {
@@ -140,8 +131,8 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     // The form was just filled (an edit record arrived): parent and child both hold
     // the values they were filled with, so they belong together. Keep the child.
     const filledTogether =
-      sameValue(parentValue, get(defaultValues, parentFieldName)) &&
-      sameValue(getValues(name), get(defaultValues, name));
+      sameFormValue(parentValue, get(defaultValues, parentFieldName)) &&
+      sameFormValue(getValues(name), get(defaultValues, name));
     if (filledTogether) return;
 
     if (resetOnParentChange) {

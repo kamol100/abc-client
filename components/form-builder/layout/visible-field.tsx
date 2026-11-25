@@ -4,8 +4,9 @@ import { ReactNode, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import {
   hiddenFieldValue,
-  isFieldVisible,
+  isConditionPassing,
   resolveFieldPath,
+  rulesOf,
 } from "@/components/form-builder/core/conditions";
 import { FormFieldConfig, VisibleWhen } from "@/components/form-wrapper/form-builder-type";
 
@@ -26,8 +27,10 @@ const ConditionalFormField = ({
 }) => {
   const { getValues, setValue } = useFormContext();
   const name = resolveFieldPath(namePrefix, field.name);
-  const watched = useWatch({ name: resolveFieldPath(namePrefix, visibleWhen.field) });
-  const visible = isFieldVisible(visibleWhen, watched);
+  const watched = useWatch({
+    name: rulesOf(visibleWhen).map((rule) => resolveFieldPath(namePrefix, rule.field)),
+  });
+  const visible = isConditionPassing(visibleWhen, watched);
   const resetValue = hiddenFieldValue(visibleWhen);
 
   useEffect(() => {

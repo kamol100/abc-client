@@ -378,3 +378,281 @@ describe("field array as a table", () => {
         expect(fieldById("lines.0.amount")).toBeNull();
     });
 });
+
+describe("conditions on more than one field", () => {
+    beforeEach(() => {
+        stubBrowserApis();
+        mockApi();
+    });
+
+    it("visibleWhen all: shown only while every rule passes", async () => {
+        renderFields([
+            { type: "text", name: "kind" },
+            { type: "text", name: "plan" },
+            {
+                type: "text",
+                name: "extra",
+                visibleWhen: { all: [{ field: "kind", equals: "a" }, { field: "plan", equals: "b" }] },
+            },
+        ]);
+        const user = userEvent.setup();
+
+        await user.type(inputById("kind"), "a");
+        expect(fieldById("extra")).toBeNull();
+        await user.type(inputById("plan"), "b");
+        expect(fieldById("extra")).toBeInTheDocument();
+    });
+
+    it("visibleWhen any: shown while at least one rule passes, and reset when none does", async () => {
+        renderFields(
+            [
+                { type: "text", name: "status" },
+                {
+                    type: "text",
+                    name: "fund",
+                    visibleWhen: {
+                        any: [{ field: "status", equals: "paid" }, { field: "status", equals: "partial" }],
+                        resetValue: "",
+                    },
+                },
+            ],
+            { data: { status: "partial", fund: "cash" } },
+        );
+        const user = userEvent.setup();
+
+        expect(inputById("fund")).toHaveValue("cash");
+        await user.clear(inputById("status"));
+        await user.type(inputById("status"), "due");
+
+        expect(fieldById("fund")).toBeNull();
+        expect(await saveAndReadPayload(user)).toEqual({ status: "due", fund: "" });
+    });
+
+    it("disabledWhen any: disabled while at least one rule passes", () => {
+        renderFields(
+            [
+                {
+                    type: "text",
+                    name: "detail",
+                    disabledWhen: { any: [{ field: "locked", equals: 1 }, { field: "archived", equals: 1 }] },
+                },
+            ],
+            { data: { locked: 0, archived: 1 } },
+        );
+
+        expect(inputById("detail")).toBeDisabled();
+    });
+});
+
+describe("onChange effect", () => {
+    beforeEach(() => {
+        stubBrowserApis();
+        mockApi();
+    });
+
+    const fields: FormFieldConfig[] = [
+        { type: "text", name: "product", onChange: { set: { lot: null, serials: [] } } },
+        { type: "text", name: "lot" },
+    ];
+
+    it("writes the given values into other fields when the user changes the field", async () => {
+        renderFields(fields, { data: { product: "a", lot: "L1", serials: ["s1"] } });
+        const user = userEvent.setup();
+        await user.type(inputById("product"), "b");
+
+        await waitFor(() => expect(inputById("lot")).toHaveValue(""));
+        expect(await saveAndReadPayload(user)).toEqual({ product: "ab", lot: null, serials: [] });
+    });
+
+    it("does not fire when the form opens with values", async () => {
+        renderFields(fields, { data: { product: "a", lot: "L1", serials: ["s1"] } });
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        expect(await saveAndReadPayload()).toEqual({ product: "a", lot: "L1", serials: ["s1"] });
+    });
+
+    it("does not fire when an edit record arrives", async () => {
+        mockApi((request) =>
+            request.url === "/things/5"
+                ? { success: true, data: { id: 5, product: "a", lot: "L1", serials: ["s1"] } }
+                : undefined,
+        );
+        renderFields(fields, { mode: "edit", hydrateOnEdit: "always", data: { id: 5, product: "", lot: "" } });
+
+        await waitFor(() => expect(inputById("lot")).toHaveValue("L1"));
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        expect(inputById("lot")).toHaveValue("L1");
+    });
+
+    it("fires when the user changes the field away and back", async () => {
+        renderFields(fields, { data: { product: "a", lot: "L1" } });
+        const user = userEvent.setup();
+        await user.type(inputById("product"), "b");
+        await waitFor(() => expect(inputById("lot")).toHaveValue(""));
+        await user.type(inputById("lot"), "L2");
+        await user.type(inputById("product"), "{Backspace}");
+
+        await waitFor(() => expect(inputById("lot")).toHaveValue(""));
+    });
+
+    it("inside a row, changes the fields of that row only; a leading slash names a top-level field", async () => {
+        renderFields(
+            [
+                { type: "text", name: "note" },
+                {
+                    type: "fieldArray",
+                    name: "lines",
+                    defaultItem: {},
+                    itemFields: [
+                        { type: "text", name: "product", onChange: { set: { lot: null, "/note": "changed" } } },
+                        { type: "text", name: "lot" },
+                    ],
+                },
+            ],
+            { data: { note: "", lines: [{ product: "a", lot: "L1" }, { product: "b", lot: "L2" }] } },
+        );
+        const user = userEvent.setup();
+        await user.type(inputById("lines.1.product"), "x");
+
+        await waitFor(() => expect(inputById("lines.1.lot")).toHaveValue(""));
+        expect(inputById("lines.0.lot")).toHaveValue("L1");
+        expect(inputById("note")).toHaveValue("changed");
+    });
+});
+
+describe("field array with its own render", () => {
+    beforeEach(() => {
+        stubBrowserApis();
+        mockApi();
+    });
+
+    const lines: FieldArrayConfig = {
+        type: "fieldArray",
+        name: "lines",
+        minItems: 1,
+        maxItems: 3,
+        defaultItem: { name: "new", qty: 1 },
+        itemFields: [
+            { type: "text", name: "name", className: "name-cell" },
+            { type: "number", name: "qty", visibleWhen: { field: "name", when: (value) => value !== "hide" } },
+        ],
+        render: ({ rows, addRow, canAppend, canRemove }) => (
+            <section data-testid="custom-lines">
+                {canAppend && (
+                    <button type="button" onClick={addRow}>
+                        add line
+                    </button>
+                )}
+                {rows.map((row) => (
+                    <article key={row.key} data-path={row.path}>
+                        <span>row {row.index + 1}</span>
+                        {row.field("name")}
+                        {row.field("qty")}
+                        {row.field("not a field")}
+                        <button type="button" disabled={!canRemove} onClick={row.remove}>
+                            remove {row.index + 1}
+                        </button>
+                    </article>
+                ))}
+            </section>
+        ),
+    };
+
+    it("draws your markup, with the fields of itemFields placed by name", () => {
+        renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }] } });
+
+        const article = screen.getByText("row 1").parentElement as HTMLElement;
+        expect(article).toHaveAttribute("data-path", "lines.0");
+        expect(inputById("lines.0.name")).toHaveValue("A");
+        expect(inputById("lines.0.name").parentElement?.parentElement).toHaveClass("name-cell");
+        expect(inputById("lines.0.qty")).toHaveValue(2);
+    });
+
+    it("keeps the fields' rules working, per row", async () => {
+        renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }, { name: "hide", qty: 3 }] } });
+
+        expect(fieldById("lines.0.qty")).toBeInTheDocument();
+        expect(fieldById("lines.1.qty")).toBeNull();
+    });
+
+    it("adds and removes rows through addRow and row.remove, within minItems and maxItems", async () => {
+        renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }] } });
+        const user = userEvent.setup();
+
+        expect(screen.getByRole("button", { name: "remove 1" })).toBeDisabled();
+        await user.click(screen.getByRole("button", { name: "add line" }));
+        await user.click(screen.getByRole("button", { name: "add line" }));
+        expect(inputById("lines.2.name")).toHaveValue("new");
+        expect(screen.queryByRole("button", { name: "add line" })).not.toBeInTheDocument();
+
+        await user.click(screen.getByRole("button", { name: "remove 1" }));
+        expect(inputById("lines.0.name")).toHaveValue("new");
+        expect(fieldById("lines.2.name")).toBeNull();
+    });
+});
+
+describe("smaller field options", () => {
+    beforeEach(() => {
+        stubBrowserApis();
+        mockApi();
+    });
+
+    it("step and reserveErrorSpace reach a number input", () => {
+        const { container } = renderFields([
+            { type: "number", name: "price", step: "any", reserveErrorSpace: true },
+            { type: "number", name: "count" },
+        ]);
+
+        expect(inputById("price")).toHaveAttribute("step", "any");
+        expect(inputById("count")).not.toHaveAttribute("step");
+        expect(container.querySelectorAll(".min-h-\\[1\\.25rem\\]")).toHaveLength(1);
+    });
+
+    it("a computed field with `display` draws that in place of the input, and still stores the value", async () => {
+        renderFields(
+            [
+                { type: "number", name: "amount" },
+                {
+                    type: "computed",
+                    name: "double",
+                    compute: ({ row }) => number(row.amount) * 2,
+                    display: (value) => <output>twice: {value}</output>,
+                },
+            ],
+            { data: { amount: 4 } },
+        );
+
+        expect(screen.getByText("twice: 8")).toBeInTheDocument();
+        expect(fieldById("double")).toBeNull();
+        expect(await saveAndReadPayload()).toEqual({ amount: 4, double: 8 });
+    });
+
+    it("dependsOn.isSet decides when the parent counts as chosen", async () => {
+        mockApi((request) =>
+            request.url === "/dropdown-lots/3" ? { success: true, data: [{ id: 9, name: "Lot 9" }] } : undefined,
+        );
+        const fields = (productId: number): [FormFieldConfig[], Props] => [
+            [
+                {
+                    type: "dropdown",
+                    name: "lot_id",
+                    dependsOn: {
+                        field: "product_id",
+                        buildApi: (id) => `/dropdown-lots/${id}`,
+                        isSet: (value) => Number(value) > 0,
+                    },
+                },
+            ],
+            { data: { product_id: productId } },
+        ];
+
+        const none = renderFields(...fields(0));
+        await waitFor(() => expect(fieldById("lot_id")).toBeInTheDocument());
+        expect(fieldById("lot_id")?.closest(".basic-single")).toHaveClass("select--is-disabled");
+        expect(apiRequests("GET")).toHaveLength(0);
+        none.unmount();
+
+        renderFields(...fields(3));
+        await waitFor(() => expect(apiRequests("GET").map((request) => request.url)).toEqual(["/dropdown-lots/3"]));
+    });
+});

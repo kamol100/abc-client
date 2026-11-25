@@ -62,6 +62,7 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             }
             buildApi={field.dependsOn?.buildApi}
             resetOnParentChange={field.dependsOn?.resetOnChange}
+            isParentSet={field.dependsOn?.isSet}
             populate={field.populate?.map((item) => ({
                 field: resolveFieldPath(namePrefix, item.field),
                 from: item.from,

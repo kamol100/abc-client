@@ -42,14 +42,30 @@ export type FieldRule = {
     when?: (value: unknown) => boolean;
 };
 
-/** Shows a field only while its rule passes. With neither `equals` nor `when`: while the watched field is filled. */
-export type VisibleWhen = FieldRule & {
+/**
+ * One rule, or several: `{ all: [...] }` passes when every rule passes, `{ any: [...] }`
+ * when at least one does.
+ */
+export type FieldCondition = FieldRule | { all: FieldRule[] } | { any: FieldRule[] };
+
+/** Shows a field only while its condition passes. With neither `equals` nor `when`: while the watched field is filled. */
+export type VisibleWhen = FieldCondition & {
     /** The value written into the field while it is hidden. Defaults to null. */
     resetValue?: string | number | boolean | null;
 };
 
-/** Disables a field while its rule passes. */
-export type DisabledWhen = FieldRule;
+/** Disables a field while its condition passes. */
+export type DisabledWhen = FieldCondition;
+
+/**
+ * What to do when the user changes a field.
+ * `set`: write these values into other fields. Names follow the same rule as in a
+ * condition: a plain name is a field of the same row, `/name` a top-level field.
+ * Example: choosing another product clears the chosen lot and serials.
+ */
+export type FieldChangeEffect = {
+    set: Record<string, unknown>;
+};
 
 type BaseFieldConfig = {
     name: string;
@@ -63,6 +79,8 @@ type BaseFieldConfig = {
     visibleWhen?: VisibleWhen;
     /** Disables the field while the rule passes, e.g. until another field is chosen. */
     disabledWhen?: DisabledWhen;
+    /** Writes values into other fields when the user changes this one. */
+    onChange?: FieldChangeEffect;
 };
 
 export type TextFieldConfig = BaseFieldConfig & {
@@ -77,6 +95,10 @@ export type TextFieldConfig = BaseFieldConfig & {
     valueKey?: string;
     /** Cut a long error message to one line. Useful in narrow table columns. */
     errorEllipsis?: boolean;
+    /** For a number input: the step between values. Use "any" to allow decimals. */
+    step?: string | number;
+    /** Keep room for one line of error under this field, so its row never changes height. */
+    reserveErrorSpace?: boolean;
 };
 
 export type TextareaFieldConfig = BaseFieldConfig & {
@@ -88,6 +110,11 @@ export type DropdownDependsOn = {
     field: string;
     buildApi: (parentValue: string | number) => string;
     resetOnChange?: boolean;
+    /**
+     * Whether the parent holds a value. By default anything but empty counts; pass
+     * your own test when the parent uses a placeholder such as 0 for "nothing chosen".
+     */
+    isSet?: (parentValue: unknown) => boolean;
 };
 
 export type DropdownFieldConfig = BaseFieldConfig & {
@@ -169,6 +196,8 @@ export type ComputedFieldConfig = BaseFieldConfig & {
     compute: (scope: ComputeScope) => number | string | null;
     /** How the value is shown. Defaults to a number input. */
     inputType?: "number" | "text";
+    /** Draw the value yourself (e.g. as formatted money) in place of the read-only input. */
+    display?: (value: number | string | null) => ReactNode;
 };
 
 /** What a `custom` field's `render` function receives. */
@@ -234,11 +263,41 @@ export type FieldArrayConfig = {
     /** Keep room for one line of error under every row field, so rows never change height. */
     reserveErrorSpace?: boolean;
     /**
+     * Draw the rows yourself, for a layout neither cards nor `table` can give. The
+     * fields still come from `itemFields`: ask for one with `row.field("name")` and it
+     * arrives with its rules, value handling and error text.
+     */
+    render?: (props: FieldArrayRenderProps) => ReactNode;
+    /**
      * Draws the rows as a table: a heading with the Add button, a header row of column
      * names on wide screens, and one row per item. On a phone each row stacks its
      * fields under an "Item N" line. Without it, rows are drawn as cards.
      */
     table?: FieldArrayTable;
+};
+
+/** One row, as handed to a field array's own `render`. */
+export type FieldArrayRow = {
+    /** Stable React key of the row. */
+    key: string;
+    /** Position of the row, from 0. */
+    index: number;
+    /** Form path of the row, e.g. `product.2`. */
+    path: string;
+    /** Draws the row field with this name (from `itemFields`), or nothing if there is none. */
+    field: (name: string) => ReactNode;
+    /** Removes this row. */
+    remove: () => void;
+};
+
+export type FieldArrayRenderProps = {
+    rows: FieldArrayRow[];
+    /** Adds a row with `defaultItem`. */
+    addRow: () => void;
+    /** False once `maxItems` is reached. */
+    canAppend: boolean;
+    /** False at `minItems`. */
+    canRemove: boolean;
 };
 
 /** How wide a table column is, out of 12. */

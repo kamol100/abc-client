@@ -254,12 +254,54 @@ const FieldArrayTableRows = ({
   );
 };
 
+// --- Your own layout ---
+
+const FieldArrayCustomRows = ({
+  config,
+  render,
+  namePrefix = "",
+  renderItemField,
+}: FieldArrayRendererProps & { render: NonNullable<FieldArrayConfig["render"]> }) => {
+  const { fullName, rows, remove, addRow, canAppend, canRemove } =
+    useFieldArrayRows(config, namePrefix);
+  const fieldsByName = new Map(config.itemFields.map((field) => [field.name, field]));
+
+  return (
+    <>
+      {render({
+        addRow,
+        canAppend,
+        canRemove,
+        rows: rows.map((row, index) => {
+          const path = `${fullName}.${index}`;
+          return {
+            key: row.id,
+            index,
+            path,
+            remove: () => remove(index),
+            field: (name: string) => {
+              const field = fieldsByName.get(name);
+              if (!field) return null;
+              return (
+                <VisibleFormField key={name} field={field} namePrefix={path}>
+                  {renderItemField(field, path)}
+                </VisibleFormField>
+              );
+            },
+          };
+        }),
+      })}
+    </>
+  );
+};
+
+const renderRows = (props: FieldArrayRendererProps) => {
+  const { config } = props;
+  if (config.render) return <FieldArrayCustomRows {...props} render={config.render} />;
+  if (config.table) return <FieldArrayTableRows {...props} table={config.table} />;
+  return <FieldArrayCards {...props} />;
+};
+
 export const FieldArrayRenderer = (props: FieldArrayRendererProps) => (
-  <RowFieldOptions config={props.config}>
-    {props.config.table ? (
-      <FieldArrayTableRows {...props} table={props.config.table} />
-    ) : (
-      <FieldArrayCards {...props} />
-    )}
-  </RowFieldOptions>
+  <RowFieldOptions config={props.config}>{renderRows(props)}</RowFieldOptions>
 );
