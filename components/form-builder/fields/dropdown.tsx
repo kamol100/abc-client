@@ -1,13 +1,36 @@
-import dynamic from "next/dynamic";
+import { lazy, Suspense, type ComponentProps } from "react";
 import { resolveFieldPath } from "@/components/form-builder/core/conditions";
 import { defineField, KEEP_VALUE } from "@/components/form-builder/fields/define-field";
+import { FieldShell } from "@/components/form-builder/fields/field-shell";
 import type { DropdownFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// react-select is large, so it is loaded only when a form or a filter has a dropdown.
-const FormSelect = dynamic(() => import("@/components/select-dropdown"));
-const FilterSelect = dynamic(() => import("@/components/select-dropdown"), {
-    loading: () => null,
-});
+// react-select is large, so the dropdown's code is loaded when the first one is drawn.
+const LazySelectDropdown = lazy(() => import("@/components/select-dropdown"));
+
+/**
+ * The dropdown field. While its code loads, the label and a box of the same height
+ * are drawn in its place, so nothing moves when the real control arrives.
+ */
+function SelectDropdown(props: ComponentProps<typeof LazySelectDropdown>) {
+    return (
+        <Suspense
+            fallback={
+                <FieldShell
+                    name={props.name}
+                    label={props.label}
+                    labelFor={props.name}
+                    labelBoxClassName="mb-2"
+                    className=""
+                >
+                    <Skeleton className="h-9 w-full rounded-md" />
+                </FieldShell>
+            }
+        >
+            <LazySelectDropdown {...props} />
+        </Suspense>
+    );
+}
 
 /**
  * A select. Options come from `options` or from `api`.
@@ -19,7 +42,7 @@ const FilterSelect = dynamic(() => import("@/components/select-dropdown"), {
 export const dropdownField = defineField<DropdownFieldConfig>({
     types: ["dropdown"],
     render: ({ field, name, namePrefix }) => (
-        <FormSelect
+        <SelectDropdown
             name={name}
             label={field.label}
             placeholder={field.placeholder}
@@ -63,7 +86,7 @@ export const dropdownField = defineField<DropdownFieldConfig>({
         return sourceValue;
     },
     renderFilter: ({ field, onValueChange }) => (
-        <FilterSelect
+        <SelectDropdown
             name={field.name}
             label={field.label}
             placeholder={field.placeholder}
