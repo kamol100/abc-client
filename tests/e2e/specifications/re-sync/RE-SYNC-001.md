@@ -1,5 +1,7 @@
 # RE-SYNC-001 — Re Sync
 
+> Retired on 2026-11-25 by the project owner. This document is historical evidence for excluded scenarios; its legacy pages/APIs no longer exist. Use the [unified MikroTik sync workspace](../mikrotik-sync/README.md) for current work.
+
 - Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
 - Date: 2026-11-12.
 - Workflow: investigate → specify → review → implement → verify.

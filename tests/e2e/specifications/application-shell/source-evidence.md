@@ -48,7 +48,6 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `/impersonate/leave`
 - `/impersonate/leave-all`
 - `/impersonate/status`
-- `/import-client`
 - `/invoice-types`
 - `/invoices`
 - `/mikrotik-commands`
@@ -65,7 +64,6 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 - `/product-categories`
 - `/products`
 - `/products/reports`
-- `/re-sync`
 - `/reports/btrc`
 - `/reports/expenses`
 - `/reports/funds`

@@ -248,22 +248,6 @@
     "scenario_ids": []
   },
   {
-    "route": "/import-client/import/[id]",
-    "page": "app/(dashboard)/import-client/import/[id]/page.tsx",
-    "feature": "import-client",
-    "ticket": "import-client/IMPORT-CLIENT-001.md",
-    "status": "draft",
-    "scenario_ids": []
-  },
-  {
-    "route": "/import-client",
-    "page": "app/(dashboard)/import-client/page.tsx",
-    "feature": "import-client",
-    "ticket": "import-client/IMPORT-CLIENT-001.md",
-    "status": "draft",
-    "scenario_ids": []
-  },
-  {
     "route": "/invoice-types",
     "page": "app/(dashboard)/invoice-types/page.tsx",
     "feature": "invoice-types",
@@ -676,14 +660,6 @@
     "page": "app/(public)/pricing/page.tsx",
     "feature": "public-pricing",
     "ticket": "public-pricing/PUBLIC-PRICING-001.md",
-    "status": "draft",
-    "scenario_ids": []
-  },
-  {
-    "route": "/re-sync",
-    "page": "app/(dashboard)/re-sync/page.tsx",
-    "feature": "re-sync",
-    "ticket": "re-sync/RE-SYNC-001.md",
     "status": "draft",
     "scenario_ids": []
   },

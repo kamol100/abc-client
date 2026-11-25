@@ -143,8 +143,6 @@ describe("help headings and coverage", () => {
     expect(coverage.entries.every((entry) => entry.video_status === "not_configured")).toBe(true);
     expect(coverage.excluded.map((item) => item.route)).toEqual(expect.arrayContaining([
       "/tables",
-      "/import-client",
-      "/re-sync",
       "/setting/general",
     ]));
     expect(validateHelpCoverage({

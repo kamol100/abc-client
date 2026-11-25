@@ -1829,3 +1829,47 @@ No line-ending changes (41 files checked). Not committed.
   - create invoice with status Paid preselects "vp", unlocked;
   - no page errors.
   - The locked and bKash states could not be shown in the browser: no local user has `invoices.pay` without `invoices.change-fund` (vp-bill's role has no invoice permissions), and changing roles is a data change. The unit and feature tests cover those states.
+
+
+## Legacy MikroTik sync retirement analysis — 2026-11-25
+
+- Owner confirmed the legacy pair is ClientSync + SyncClient. Completed a source-level comparison against MikrotikSync across both repositories. No application changes or database/queue/router mutations were made; removal awaits the owner's approval.
+- Detailed report: [legacy-sync-retirement-review.md](/Users/kamol/Documents/www/isp-backend/docs/architecture/legacy-sync-retirement-review.md). Includes functional coverage, behavior differences, retirement inventory, dependencies to retain, access/queue/data/export migration prerequisites, and sequential acceptance tests.
+- Replacement covers the main workflows. Readiness defects found: profile resolution omits network_id; selecting every visible importable row promotes to company-wide bulk import without table filters. Additional dependencies: old role/feature mappings, queued numeric-ID jobs, no snapshot backfill, old company-export inserts, legacy demo seeds, and active marketing translation keys.
+- Verification: focused backend suites 73 passed (272 assertions); shared SID suite 12 passed (39 assertions); focused frontend sync-filter test 1 passed. Frontend scripts/ai/test ignores file arguments and ran the full suite: 20 tests failed plus an empty-suite error on unchanged application source. No browser e2e or live-state inspection.
+- Both trees started clean. Review artifacts only; no unrelated edits.
+
+
+## Unified sync preservation requirement — 2026-11-25
+
+- Owner clarified that the current MikrotikSync feature must remain functional while the legacy modules are retired. Added an explicit preservation boundary to the existing architecture review: retain the unified model/table/data/UUIDs, API contracts, frontend capabilities, permissions, and shared dependencies.
+- The two reported correctness defects already exist in the new implementation; they are separate from the legacy deletion. Recommended focused regression coverage and isolated fixes, followed by runtime cleanup and later schema retirement after queue/access/retention/export checks.
+- Planning clarification only. No application edits, deletion, database/router/queue mutations, or migration execution. Existing review artifacts were already present and retained. No tests rerun for these documentation-only changes.
+
+
+## Removed legacy sync application code; unified feature preserved — 2026-11-25
+
+Scope: the owner approved removing old legacy code first and explicitly deferred the two MikrotikSync bugs to another step.
+
+Changes:
+- Removed 35 backend files: ClientSync/SyncClient models, controllers, resources, requests, filters, old jobs/import service, factory/empty seeder, and legacy-only tests. Removed all 11 legacy API routes and both obsolete permission families from their registrations and feature mapping.
+- Removed 18 frontend files: both legacy component folders and their list/detail pages. Cleaned menu gates, breadcrumbs, English/Bangla legacy translations, and help inventory/catalog. Marketing preview now uses the existing unified translation keys.
+- Reworked Demo ClientSeeder's router snapshot to populate mikrotik_sync from simulator data without a router connection. Added demo assertions for UUIDs, company ownership, router-only, mismatched, and app-only snapshots. Ported shared SID/bulk-import coverage to the unified UUID importer. Added permission-updater coverage proving old grants are removed while current unified grants survive.
+- Retained 24 historical legacy acceptance scenarios as explicitly owner-approved exclusions, with retired tickets and reasons; removed their 3 page entries from the active route inventory. Updated current developer/architecture references and marked historical findings retired.
+- Confirmed no edits to the MikrotikSync model/services/jobs/controller/resources/requests/filters, its 8 route definitions, frontend module/pages, or current translations. Kept the shared package-sync job, independent clients.mikrotik.sync action, and shared client/billing services. The two reported new-system bugs remain unchanged.
+
+Verification:
+- Baseline focused backend: 64 passed, 409 assertions. Final: scripts/ai/backend-test tests/Feature/MikrotikSyncControllerTest.php tests/Feature/ClientSidSequenceTest.php tests/Feature/DemoSeederTest.php tests/Feature/ResellerOnboardingTest.php tests/Feature/UpdatePermissionCommandTest.php tests/Feature/CompanyImportExportApiTest.php — 65 passed, 415 assertions (SQLite in memory).
+- next typegen and scripts/ai/typecheck passed. Regenerating route types removed stale generated references to deleted pages.
+- Focused Vitest (mikrotik-sync-filter-schema, help/centre, menu-items): 28 passed, 1 failed. The same menu-items sidebar-order assertion failed before editing (referral placement); it is unrelated and left untouched.
+- node scripts/check-help-content.mjs passed (182 articles). Unified locale objects are byte-equivalent as parsed values to HEAD; all new marketing key references resolve in both languages.
+- scripts/ai/lint passed on all 9 surviving changed PHP files. scripts/ai/analyse --debug passed on the 5 changed production PHP files. Debug mode avoids the sandbox's denied PHPStan parallel TCP listener. Including the 4 existing Pest files reports 39 test-analysis errors (unrecognized helper functions/Pest-bound methods and existing model properties); the overall analysis including tests is not green.
+- Read-only scripts/ai/artisan route:list --json confirmed 0 legacy routes, 8 unified routes, and the shared client router action retained. Source checks found no legacy class references in active backend code or frontend feature/translation/help code.
+- The specification coverage checker still fails its pre-existing route-inventory equality check: both HEAD and the final tree have the same 4 unmapped help-management/settings-menu pages and 4 stale setting/* pages. This cleanup did not add to that discrepancy. All 24 retired scenarios retain explicit approval/reason metadata; no browser passing evidence was invented.
+- No browser e2e run, live router call, deployment, commit, or push.
+
+Operational boundary:
+- This is application-code retirement only. No migrations were edited/added/executed. Both legacy tables and saved data remain, along with historical creation migrations; no actual clients, financial records, queues, roles, plans, or permissions were mutated outside SQLite tests. Database retirement is still a separate step. Old exports continue to have their tables available.
+- Before deploying this code, an operator must finish or explicitly retire any pending/reserved/delayed/failed BulkImportSyncClientsJob payloads and restart workers; that class is now removed. Live queue state was not inspected.
+- The existing update:permission command can remove obsolete persisted permission rows/grants after the release; only its SQLite tests were run here. Current new-feature grants were not remapped or broadened.
+- Pre-existing edits were the earlier analysis entries in both .ai/report.md files and the untracked architecture review; preserved and updated with a status note. No unrelated application changes were present or modified.

@@ -180,7 +180,7 @@
   {
     "feature": "import-client",
     "ticket": "import-client/IMPORT-CLIENT-001.md",
-    "stage": "source-inventoried-draft",
+    "stage": "retired",
     "specs": [],
     "last_run": null
   },
@@ -435,7 +435,7 @@
   {
     "feature": "re-sync",
     "ticket": "re-sync/RE-SYNC-001.md",
-    "stage": "source-inventoried-draft",
+    "stage": "retired",
     "specs": [],
     "last_run": null
   },

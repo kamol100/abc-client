@@ -84,8 +84,6 @@ const ROUTE_TO_MENU_KEY: Record<string, string> = {
   "/client-wallets": "menu.wallets.client_wallets.title",
   "/users": "menu.users.title",
   "/companies": "menu.companies.title",
-  "/import-client": "menu.mikrotik_sync.import.title",
-  "/re-sync": "menu.mikrotik_sync.re_sync.title",
   "/mikrotik-sync": "menu.mikrotik_sync.unified.title",
   "/roles": "menu.role_permission.roles.title",
   "/permissions": "menu.role_permission.permissions.title",

@@ -52,7 +52,6 @@ Generated from static source inspection on 2026-11-12. Literal references can in
 
 ## Matching backend route declarations
 
-- POST `/mikrotik-sync` → `sync-clients.sync`; `SyncClientController::mikrotikSync`; `../isp-backend/routes/api.php:521`
 - GET `/mikrotik-sync` → `mikrotik-sync.access`; `MikrotikSyncController::index`; `../isp-backend/routes/api.php:534`
 - POST `/mikrotik-sync/load` → `mikrotik-sync.load`; `MikrotikSyncController::load`; `../isp-backend/routes/api.php:535`
 - POST `/mikrotik-sync/resolve-all` → `mikrotik-sync.all-sync`; `MikrotikSyncController::resolveAll`; `../isp-backend/routes/api.php:536`

@@ -182,8 +182,8 @@ export function BillingSample() {
 
 export function MikrotikSample() {
   const { t } = useTranslation();
-  const active = t("re_sync.filters.client_status_mikrotik.options.active");
-  const inactive = t("re_sync.filters.client_status_mikrotik.options.inactive");
+  const active = t("mikrotik_sync.filters.client_status_mikrotik.options.active");
+  const inactive = t("mikrotik_sync.filters.client_status_mikrotik.options.inactive");
   const rows = [
     { mt: "nasima.uttara", app: "nasima.uttara", mtProfile: "10M", appProfile: "20M", mtStatus: active, appStatus: active, diff: "profile" },
     { mt: "kamal.dhanmondi", app: "", mtProfile: "15M", appProfile: "", mtStatus: active, appStatus: "", diff: "app" },
@@ -194,23 +194,23 @@ export function MikrotikSample() {
   return (
     <div className="mkt-panel mkt-mod-s" role="img" aria-label={t("module_pages.mikrotik.sample_alt")}>
       <div className="mkt-mod-s__bar">
-        <span className="mkt-mod-s__title">{t("re_sync.title_plural")}</span>
+        <span className="mkt-mod-s__title">{t("mikrotik_sync.title_plural")}</span>
         <span className="mkt-mod-s__chips">
-          <span className="mkt-mod-s__chip">{t("re_sync.sync.network.label")}: CCR Mirpur</span>
-          <span className="mkt-mod-s__chip">{t("re_sync.sync.actions.load")}</span>
-          <span className="mkt-mod-s__chip mkt-mod-s__chip--ink">{t("re_sync.sync.actions.all_sync")}</span>
+          <span className="mkt-mod-s__chip">{t("mikrotik_sync.sync.network.label")}: CCR Mirpur</span>
+          <span className="mkt-mod-s__chip">{t("mikrotik_sync.sync.actions.load")}</span>
+          <span className="mkt-mod-s__chip mkt-mod-s__chip--ink">{t("mikrotik_sync.sync.actions.all_sync")}</span>
         </span>
       </div>
       <div className="mkt-mod-s__scroll">
         <table className="mkt-mod-s__table">
           <thead>
             <tr>
-              <th scope="col">{t("re_sync.table.client_in_mikrotik")}</th>
-              <th scope="col">{t("re_sync.table.client_in_app")}</th>
-              <th scope="col">{t("re_sync.table.mikrotik_profile")}</th>
-              <th scope="col">{t("re_sync.table.app_profile")}</th>
-              <th scope="col">{t("re_sync.table.client_status_mikrotik")}</th>
-              <th scope="col">{t("re_sync.table.client_status_app")}</th>
+              <th scope="col">{t("mikrotik_sync.table.client_in_mikrotik")}</th>
+              <th scope="col">{t("mikrotik_sync.table.client_in_app")}</th>
+              <th scope="col">{t("mikrotik_sync.table.mikrotik_profile")}</th>
+              <th scope="col">{t("mikrotik_sync.table.app_profile")}</th>
+              <th scope="col">{t("mikrotik_sync.table.client_status_mikrotik")}</th>
+              <th scope="col">{t("mikrotik_sync.table.client_status_app")}</th>
             </tr>
           </thead>
           <tbody>

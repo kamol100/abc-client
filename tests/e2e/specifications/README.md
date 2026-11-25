@@ -40,7 +40,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [fund-transactions](fund-transactions/FUND-TRANSACTIONS-001.md) — source-inventoried-draft
 - [funds](funds/FUNDS-001.md) — source-inventoried-draft
 - [histories](histories/HISTORIES-001.md) — source-inventoried-draft
-- [import-client](import-client/IMPORT-CLIENT-001.md) — source-inventoried-draft
+- [import-client](import-client/IMPORT-CLIENT-001.md) — retired; scenarios excluded by owner-approved removal
 - [invoice-types](invoice-types/INVOICE-TYPES-001.md) — source-inventoried-draft
 - [invoices](invoices/INVOICE-001-invoice-management.md) — detailed-draft
 - [legacy-settings](legacy-settings/LEGACY-SETTINGS-001.md) — source-inventoried-draft
@@ -72,7 +72,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [public-home](public-home/PUBLIC-HOME-001.md) — source-inventoried-draft
 - [public-payments](public-payments/PUBLIC-PAYMENTS-001.md) — source-inventoried-draft
 - [public-pricing](public-pricing/PUBLIC-PRICING-001.md) — source-inventoried-draft
-- [re-sync](re-sync/RE-SYNC-001.md) — source-inventoried-draft
+- [re-sync](re-sync/RE-SYNC-001.md) — retired; scenarios excluded by owner-approved removal
 - [reports-btrc](reports-btrc/REPORTS-BTRC-001.md) — source-inventoried-draft
 - [reports-expenses](reports-expenses/REPORTS-EXPENSES-001.md) — source-inventoried-draft
 - [reports-funds](reports-funds/REPORTS-FUNDS-001.md) — source-inventoried-draft

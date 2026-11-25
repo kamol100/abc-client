@@ -1,5 +1,7 @@
 # Source evidence — import-client
 
+> Retired on 2026-11-25 by the project owner. This document is historical evidence for excluded scenarios; its legacy pages/APIs no longer exist. Use the [unified MikroTik sync workspace](../mikrotik-sync/README.md) for current work.
+
 Generated from static source inspection on 2026-11-12. Literal references can include inactive paths, aliases and shared subfeatures. Confirm reachability/middleware and final payload before implementation.
 
 ## Frontend files

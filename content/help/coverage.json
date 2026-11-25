@@ -29,8 +29,6 @@
     "/help",
     "/help/*",
     "/histories",
-    "/import-client",
-    "/import-client/import/:id",
     "/invoice-types",
     "/invoices",
     "/invoices/client/:id",
@@ -64,7 +62,6 @@
     "/products/out",
     "/products/out/:id",
     "/products/reports",
-    "/re-sync",
     "/reports",
     "/reports/btrc",
     "/reports/expenses",
@@ -2845,18 +2842,6 @@
     {
       "route": "/help/*",
       "reason": "The catch-all renders one published article. Each article is authorized by its own policy. It is not a separate feature."
-    },
-    {
-      "route": "/import-client",
-      "reason": "Commented out of the staff menu in hooks/use-menu-items.ts. The current sync screen is /mikrotik-sync."
-    },
-    {
-      "route": "/import-client/import/:id",
-      "reason": "Legacy import detail. The menu item is commented out and the current flow is MikroTik sync."
-    },
-    {
-      "route": "/re-sync",
-      "reason": "Commented out of the staff menu. Replaced by /mikrotik-sync."
     },
     {
       "route": "/tables",
