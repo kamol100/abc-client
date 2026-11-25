@@ -1,3 +1,25 @@
+## Form builder refactor, phase 3: `form-wrapper.tsx` split into hooks — 2026-11-25
+
+Branch `refactor-form-builder`. Structure only; the payload snapshots for the 10 real forms are unchanged.
+
+- `form-wrapper.tsx` (372 to 194 lines, about 100 of them the props type) now only composes:
+  - `core/use-entity-form.ts`: creates the form with the Zod resolver.
+  - `core/use-entity-load.ts`: edit mode, decides whether to fetch `GET {api}/{id}`, fills the form, toasts a failure.
+  - `core/use-entity-submit.ts`: payload, request, success and failure handling. The submit-hold timer is its own small hook inside this file.
+  - `core/request.ts`: pure helpers for the load URL and the save URL and method.
+  - `layout/form-footer.tsx`: Cancel and Save buttons.
+  - `layout/form-load-state.tsx`: skeleton, load failure with retry, or the fields.
+- Props, defaults and the default export of `FormWrapper` are the same.
+
+One thing that is not purely structural: the two `console.log` calls in the wrapper are gone (audit item B9). One printed the loaded record on every render, the other printed validation errors. Nothing reads them.
+
+Kept as they are, for later phases: the hidden submit input and the `saveOnChange` effect (unused), the edit-load effect that depends on `transformToFormValues` (B2), top-level-only server errors (B5).
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1245 passed, the same 9 unrelated failures as before.
+- Not checked in a browser. Playwright not run.
+
 ## Form builder refactor, phase 2: pure data logic moved to `components/form-builder/core/` — 2026-11-25
 
 Structure only. No behaviour change intended, and the payload snapshots for the 10 real forms are unchanged.

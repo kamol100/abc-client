@@ -1,31 +1,22 @@
 "use client";
 
-import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import useApiMutation from "@/hooks/use-api-mutation";
-import { Form } from "@/components/ui/form";
-import { FormLoader } from "@/components/loader";
-import { parseApiError, serverFieldErrors } from "@/lib/helper/helper";
-import { shownFields, topLevelFieldNames } from "@/components/form-builder/core/form-schema";
-import { buildPayload, toFormData } from "@/components/form-builder/core/payload";
-import { isDataComplete } from "@/components/form-builder/core/values";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { ReactNode, useEffect, useRef } from "react";
+import { FieldValues } from "react-hook-form";
 import { z } from "zod";
-import MyButton from "@/components/my-button";
+import { shownFields } from "@/components/form-builder/core/form-schema";
+import { useEntityForm } from "@/components/form-builder/core/use-entity-form";
+import { useEntityLoad } from "@/components/form-builder/core/use-entity-load";
+import { useEntitySubmit } from "@/components/form-builder/core/use-entity-submit";
+import { FormFooter } from "@/components/form-builder/layout/form-footer";
+import { FormLoadState } from "@/components/form-builder/layout/form-load-state";
 import { useMyDialogClose } from "@/components/my-dialog";
+import { Form } from "@/components/ui/form";
+import { cn } from "@/lib/utils";
 import {
     AccordionSection,
     FormFieldConfig,
     HydratePolicy,
 } from "@/components/form-wrapper/form-builder-type";
-
-function stripLeadingSlash(str: string): string {
-    return str.startsWith("/") ? str.slice(1) : str;
-}
 
 // --- Props ---
 
@@ -102,188 +93,48 @@ export default function FormWrapper({
     grids = 1,
     fullPage = false,
 }: FormWrapperProps) {
+    // Closing: the caller's onClose, or the MyDialog this form sits in.
     const dialogClose = useMyDialogClose();
     const handleClose = onClose ?? dialogClose ?? (() => { });
-    const handleCloseRef = useRef(handleClose);
-    handleCloseRef.current = handleClose;
-    const { t } = useTranslation();
-    const submitRef = useRef<HTMLInputElement>(null);
-    const lastPayloadRef = useRef<FieldValues>({});
-    const submittingRef = useRef(false);
-    const submitStartedAtRef = useRef(0);
-    const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const mountedRef = useRef(true);
-    const [holdingSubmit, setHoldingSubmit] = useState(false);
 
-    useEffect(() => {
-        mountedRef.current = true;
-        return () => {
-            mountedRef.current = false;
-            if (holdTimerRef.current) {
-                clearTimeout(holdTimerRef.current);
-                holdTimerRef.current = null;
-            }
-        };
-    }, []);
+    const form = useEntityForm(schema, data);
 
-    const clearSubmitHold = () => {
-        if (holdTimerRef.current) {
-            clearTimeout(holdTimerRef.current);
-            holdTimerRef.current = null;
-        }
-        setHoldingSubmit(false);
-    };
-
-    const closeAfterHold = () => {
-        const holdMs = submitHoldMs ?? 0;
-        const elapsed = Date.now() - submitStartedAtRef.current;
-        const remaining = Math.max(0, holdMs - elapsed);
-        const finish = () => {
-            if (!mountedRef.current) return;
-            setHoldingSubmit(false);
-            handleCloseRef.current();
-        };
-
-        if (remaining === 0) {
-            finish();
-            return;
-        }
-
-        holdTimerRef.current = setTimeout(() => {
-            holdTimerRef.current = null;
-            finish();
-        }, remaining);
-    };
-
-    const entityId = (
-        data as Record<string, unknown> & { id?: string | number }
-    )?.id;
-
-    // --- Hydration decision ---
-    const shouldHydrate =
-        mode === "edit" &&
-        hydrateOnEdit !== "never" &&
-        !!entityId &&
-        !!api &&
-        (hydrateOnEdit === "always" || !isDataComplete(data, formSchema));
-
-    const detailUrl = api
-        ? `${stripLeadingSlash(api)}/${entityId}`
-        : "";
-
-    const {
-        data: detailResponse,
-        isLoading: isHydrationLoading,
-        isError: isHydrationError,
-        error: hydrationError,
-        refetch: retryHydration,
-    } = useApiQuery<ApiResponse<Record<string, unknown>>>({
-        queryKey: [queryKey, "detail", entityId],
-        url: detailUrl,
-        pagination: false,
-        enabled: shouldHydrate,
-        staleTime: 30_000,
+    const load = useEntityLoad({
+        form,
+        mode,
+        api,
+        data,
+        queryKey,
+        hydrateOnEdit,
+        formSchema,
+        transformToFormValues,
     });
 
-    console.log(detailResponse, 'detailResponse');
-
-    const isHydrating = shouldHydrate && isHydrationLoading;
-    const hydrationFailed = shouldHydrate && isHydrationError;
-
-    // --- Form setup ---
-    const form = useForm<FieldValues>({
-        resolver: zodResolver(
-            schema as unknown as Parameters<
-                typeof zodResolver<FieldValues, unknown, FieldValues>
-            >[0]
-        ),
-        mode: "onChange",
-        defaultValues: data as Record<string, unknown>,
-    });
-    const { handleSubmit, reset, setError } = form;
-
-    // --- Hydrate form values on fetch success ---
-    useEffect(() => {
-        if (!shouldHydrate || !detailResponse?.data) return;
-        const entityData = detailResponse.data as Record<string, unknown>;
-        const values = transformToFormValues
-            ? transformToFormValues(entityData)
-            : entityData;
-        reset(values);
-    }, [shouldHydrate, detailResponse, transformToFormValues, reset]);
-
-    // --- Hydration error toast ---
-    useEffect(() => {
-        if (hydrationFailed && hydrationError) {
-            toast.error(parseApiError(hydrationError));
-        }
-    }, [hydrationFailed, hydrationError]);
-
-    // --- Mutation ---
-    let apiRoute = `${api}`;
-    if (mode === "edit") {
-        apiRoute = `${api}/${entityId}`;
-    }
-
-    const mutationMethod = mode === "edit" ? "PUT" : (method === "GET" ? "POST" : method);
-
-    const { mutate: submitForm, isPending } = useApiMutation<
-        { data?: Record<string, unknown>; message?: string },
-        FieldValues | FormData
-    >({
-        url: apiRoute,
-        method: mutationMethod as "POST" | "PUT" | "DELETE",
-        invalidateKeys: skipInvalidate ? undefined : queryKey,
+    const submit = useEntitySubmit({
+        form,
+        api,
+        mode,
+        method,
+        data,
+        queryKey,
+        formSchema,
+        isFormData,
         successMessage,
-        onSuccess: (responseData) => {
-            submittingRef.current = false;
-            if (resetOnSuccess) reset();
-            if (!successMessage && responseData?.message) {
-                toast.success(t(String(responseData.message)));
-            }
-            onSuccess?.(responseData as Record<string, unknown> | undefined, lastPayloadRef.current);
-            closeAfterHold();
-        },
-        // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
-        onError: (error) => {
-            submittingRef.current = false;
-            clearSubmitHold();
-            const visible = topLevelFieldNames(formSchema);
-            Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
-                if (visible.has(field)) setError(field, { type: "server", message });
-            });
-            onSubmitError?.(error, lastPayloadRef.current);
-        },
+        onClose: handleClose,
+        onSuccess,
+        onSubmitError,
+        preparePayload,
+        transformPayload,
+        extraPayload,
+        preventDuplicateSubmit,
+        resetOnSuccess,
+        skipInvalidate,
+        submitHoldMs,
     });
 
-    const onSubmit = async (formValues: FieldValues) => {
-        if (!api || (preventDuplicateSubmit && (submittingRef.current || isPending || holdingSubmit))) return;
-        if (preventDuplicateSubmit) submittingRef.current = true;
-        try {
-            const prepared = preparePayload ? await preparePayload(formValues) : formValues;
-            if (prepared === false) {
-                submittingRef.current = false;
-                return;
-            }
-            const payload = buildPayload(prepared, { transformPayload, extraPayload });
-
-            lastPayloadRef.current = payload;
-            if (submitHoldMs && submitHoldMs > 0) {
-                submitStartedAtRef.current = Date.now();
-                setHoldingSubmit(true);
-            }
-            submitForm(isFormData ? toFormData(payload) : payload);
-        } catch (error) {
-            submittingRef.current = false;
-            throw error;
-        }
-    };
-
-    const onError = async (data: FieldValues) => {
-        console.log(data, 'error-data');
-    }
-
-    // --- Save on change ---
+    // Save on change: a field asks for a save by setting `saveOnChange`; the form
+    // answers by clicking its own hidden submit input.
+    const submitRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         if (save) {
             submitRef.current?.click();
@@ -291,71 +142,26 @@ export default function FormWrapper({
         }
     }, [save, setSaveOnChange]);
 
-    // --- Visible field count for skeleton ---
-    const visibleFieldCount = shownFields(formSchema).length;
-
-    const formContent = isHydrating ? (
-        <FormLoader
+    const formContent = (
+        <FormLoadState
+            isLoading={load.isLoading}
+            failed={load.failed}
             grids={grids}
-            fieldCount={visibleFieldCount || 4}
-        />
-    ) : hydrationFailed ? (
-        <div className="flex flex-col items-center gap-3 py-10 text-center">
-            <p className="text-sm font-medium text-destructive">
-                {t("common.failed_to_load_data")}
-            </p>
-            <div className="flex gap-2">
-                <MyButton action="cancel" onClick={handleClose}>
-                    {t("common.cancel")}
-                </MyButton>
-                <MyButton onClick={() => retryHydration()}>
-                    {t("common.refresh")}
-                </MyButton>
-            </div>
-        </div>
-    ) : (
-        children
+            fieldCount={shownFields(formSchema).length}
+            onCancel={handleClose}
+            onRetry={() => load.retry()}
+        >
+            {children}
+        </FormLoadState>
     );
 
-    const actionButtons = !isHydrating && !hydrationFailed && (
-        <>
-            <input type="submit" className="hidden" ref={submitRef} />
-            {actionButton && (
-                <div
-                    className={cn(
-                        "flex items-center gap-3 pt-4 mt-4 border-t bg-background",
-                        fullPage ? "shrink-0" : "sticky bottom-0",
-                        actionButtonClass
-                    )}
-                >
-                    <MyButton
-                        action="cancel"
-                        type="button"
-                        title={t("common.cancel")}
-                        size="default"
-                        onClick={() => {
-                            clearSubmitHold();
-                            handleClose();
-                        }}
-                    />
-                    <MyButton
-                        action="save"
-                        title={submitTitle ?? t("common.save")}
-                        icon={submitTitle ? false : undefined}
-                        size="default"
-                        type="submit"
-                        variant="default"
-                        loading={isPending || holdingSubmit}
-                    />
-                </div>
-            )}
-        </>
-    );
+    // No footer while the record is loading or failed to load.
+    const showFooter = !load.isLoading && !load.failed;
 
     return (
         <Form {...form}>
             <form
-                onSubmit={handleSubmit(onSubmit, onError)}
+                onSubmit={form.handleSubmit(submit.onSubmit)}
                 className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
             >
                 {fullPage ? (
@@ -365,7 +171,23 @@ export default function FormWrapper({
                 ) : (
                     formContent
                 )}
-                {actionButtons}
+                {showFooter && (
+                    <>
+                        <input type="submit" className="hidden" ref={submitRef} />
+                        {actionButton && (
+                            <FormFooter
+                                fullPage={fullPage}
+                                className={actionButtonClass}
+                                submitTitle={submitTitle}
+                                isSaving={submit.isSaving}
+                                onCancel={() => {
+                                    submit.cancelHold();
+                                    handleClose();
+                                }}
+                            />
+                        )}
+                    </>
+                )}
             </form>
         </Form>
     );
