@@ -1771,7 +1771,7 @@
             "server_information": "সার্ভার তথ্য",
             "copy": "কপি",
             "copy_success": "ক্লায়েন্ট তথ্য সফলভাবে কপি হয়েছে",
-            "username": "ইউজারনেম",
+            "username": "ক্লায়েন্ট আইডি",
             "address": "ঠিকানা",
             "balance": "ব্যালেন্স",
             "connection_type": "কানেকশন টাইপ",

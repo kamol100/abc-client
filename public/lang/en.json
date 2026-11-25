@@ -1771,7 +1771,7 @@
             "server_information": "Server Information",
             "copy": "Copy",
             "copy_success": "Client info copied successfully",
-            "username": "Username",
+            "username": "Client ID",
             "address": "Address",
             "balance": "Balance",
             "connection_type": "Connection Type",
