@@ -30,7 +30,7 @@ components/{feature}/{feature}-filter-schema.ts   # when the list is filtered
 app/(dashboard)/{feature}/page.tsx
 ```
 
-Full-page forms (staffs, clients) use `AccordionFormBuilder` and `create` / `edit/[id]` routes. Invoices place fields with `FormBuilder` `children`. Client-portal UI stays under `components/client-area/`.
+Full-page forms (staffs, clients) use `AccordionFormBuilder` and `create` / `edit/[id]` routes. Invoices place fields with `FormBuilder` `children`; their line items, and the stock in and out lines, are a `fieldArray` in the field config. Client-portal UI stays under `components/client-area/`.
 
 ## Data
 
@@ -43,7 +43,7 @@ List hook data: items at `data?.data?.data`, pagination at `data?.data?.paginati
 
 ## Forms and tables
 
-`FormBuilder` field types include text, number, dropdown, date, dateRange, fieldArray, and the rest declared on `FieldConfig`. Zod messages are i18n keys. Edit submits `PUT /{api}/{id}`. `queryKey` must match the table so the list invalidates.
+The form builder lives in `components/form-builder/` (guide: its `README.md`; `components/form-wrapper/` only re-exports it). `FormBuilder` field types include text, number, dropdown, date, dateRange, computed, custom, fieldArray, and the rest declared on `FieldConfig` in `types.ts`. Each type is one definition in `fields/`, read by both the builder and the table filter. Zod is the only validator and its messages are i18n keys. Edit submits `PUT /{api}/{id}`. `queryKey` must match the table so the list invalidates. Dropdown and date controls that work without a form are in `components/controls/`.
 
 Tables use TanStack Table through `DataTable`. Default page size follows the API (`item_per_page` on the backend). Include sorting and filtering when the twin screen has them.
 

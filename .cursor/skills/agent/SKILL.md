@@ -101,7 +101,9 @@ export type WidgetPayload = z.output<typeof WidgetFormSchema>;
 
 ## Forms
 
-Always go through `FormBuilder`. Field types: `text | email | password | number | textarea | dropdown | radio | switch | checkbox | date | dateRange | geolocation | fieldArray`.
+Always go through `FormBuilder`. Read `components/form-builder/README.md` first; every field option is documented in `components/form-builder/types.ts`.
+
+Field types: `text | email | password | number | tel | textarea | dropdown | radio | switch | checkbox | date | dateRange | geolocation | computed | custom | fieldArray`.
 
 **Dialog CRUD** (zones, expense-types, tags):
 
@@ -126,7 +128,13 @@ Always go through `FormBuilder`. Field types: `text | email | password | number 
 
 **Accordion full-page** (staffs, clients): `AccordionFormBuilder` + `fullPage` + `onClose={() => router.push("/widgets")}`.
 
-**Custom layout** (invoices): `FormBuilder` `children={(renderField) => …}` to place fields manually. Still pass `formSchema` + Zod `schema`.
+**Custom layout** (invoices): `FormBuilder` `children={(renderField) => …}` to place fields manually. Still pass `formSchema` + Zod `schema`, and wrap each field in `VisibleFormField` or `permission` and `visibleWhen` stop working.
+
+**Line items** (invoices, stock in and out): a `fieldArray` in the field config. Use `table` for a table of rows, or `render` with `row.field("name")` for a custom row layout. Do not hand-roll `useFieldArray`.
+
+**Fields that react to others:** `visibleWhen`, `disabledWhen`, `dependsOn`, `populate`, `onChange: { set }`, and `type: "computed"`. Inside a row a field name in a rule means the same row; `/name` means top level.
+
+**Outside a form** (a toolbar filter, a one-dropdown dialog): `SelectInput`, `DateInput` from `components/controls/` with plain state. Do not create a `useForm` only to host a field.
 
 FormBuilder / FormWrapper behavior you must not reimplement:
 
@@ -135,6 +143,11 @@ FormBuilder / FormWrapper behavior you must not reimplement:
 - `queryKey` invalidates the list query after save. It must match the table `queryKey`.
 - `dropdown` uses `api` + `valueMapping: { idKey, labelKey }`. Cascading selects use `dependsOn: { field, buildApi }`.
 - Hide a field with `permission: false` (also used to omit create-only fields on edit).
+- Zod is the only validator. There are no per-field `rules`. For a check against live data use the `validate` prop; to save yourself use `onSubmit`.
+- A field's DOM id is its name (`lines.0.amount` in a row). Tests rely on it.
+- Dates: the form holds a `Date`; convert in Zod with `optionalDateOnly` / `nullableDateOnly` from `lib/validations/date-fields.ts`.
+
+Form tests live in `tests/unit/form/builder/`. A changed payload snapshot means a form sends something different to the API: explain it before updating the snapshot.
 
 Shared helpers belong in `lib/helper/helper.ts` (`objectToQueryString`, `parseApiError`, `toNumber`, `toApiDateString`, …).
 

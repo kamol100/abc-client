@@ -34,7 +34,8 @@ Next.js 16+ App Router project using shadcn/ui, TypeScript, and TailwindCSS.
 ### `/components` - UI Components
 - `ui/` - shadcn/ui base components (button, input, dialog, etc.)
 - `form/` - Form field components (input-field, checkbox, radio, switch, textarea)
-- `form-wrapper/` - Form builder and wrapper utilities
+- `form-builder/` - The form builder (see its README.md); `form-wrapper/` only re-exports it for older imports
+- `controls/` - Dropdown and date controls that work without a form
 - `data-table/` - Data table with pagination, filtering, sorting
 - `table/` - Simplified table components
 - `clients/` - Client-specific components and schemas
