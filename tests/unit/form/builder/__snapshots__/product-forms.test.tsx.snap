@@ -1,0 +1,2149 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`stock forms > stock in > a fibre product: shows the cable fields and works the total from the metres 1`] = `
+<div
+  class="space-y-3"
+>
+  <div
+    class="flex items-center justify-between gap-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      product_in.lines.title
+    </h3>
+    <button
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+      data-theme-button="outline"
+    >
+      <svg
+        aria-hidden="true"
+        class="lucide lucide-plus"
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5 12h14"
+        />
+        <path
+          d="M12 5v14"
+        />
+      </svg>
+      <span
+        class="capitalize"
+      >
+        product_in.lines.add
+      </span>
+    </button>
+  </div>
+  <div
+    class="rounded-md border p-3 space-y-3"
+  >
+    <div
+      class="mb-1 flex items-center justify-between md:hidden"
+    >
+      <p
+        class="text-xs font-medium text-muted-foreground"
+      >
+        product_in.lines.item 1
+      </p>
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+        data-theme-button="outline"
+        disabled=""
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-trash2 lucide-trash-2"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 11v6"
+          />
+          <path
+            d="M14 11v6"
+          />
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+          />
+          <path
+            d="M3 6h18"
+          />
+          <path
+            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          />
+        </svg>
+        <span
+          class="capitalize"
+        >
+          product_in.lines.remove
+        </span>
+      </button>
+    </div>
+    <div
+      class="md:overflow-x-auto"
+    >
+      <div
+        class="grid grid-cols-1 gap-3 mb-1 ml-0.5 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_auto] md:min-w-[1080px]"
+      >
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.product_id"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_in.line.product.label
+                    </div>
+                    <div
+                      class="text-destructive ml-1"
+                    >
+                       *
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.product_id-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    Fiber cable
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.product_id"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 0; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.product_id"
+                type="hidden"
+                value="2"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.brand"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.brand.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.brand"
+              placeholder="product_in.line.brand.placeholder"
+              type="text"
+              value=""
+            />
+            <div
+              class="min-h-[1.25rem]"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.status"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_in.line.status.label
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.status-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    product_in.status.new
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.status"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.status"
+                type="hidden"
+                value="new"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.quantity"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.quantity.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.quantity"
+              placeholder="product_in.line.quantity.placeholder"
+              step="any"
+              type="number"
+              value="0"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.unit_price"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.unit_price.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.unit_price"
+              placeholder="product_in.line.unit_price.placeholder"
+              step="any"
+              type="number"
+              value="2"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.unit_sell_price"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.unit_sell_price.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.unit_sell_price"
+              placeholder="product_in.line.unit_sell_price.placeholder"
+              step="any"
+              type="number"
+              value="0"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.vat"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.vat.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.vat"
+              placeholder="product_in.line.vat.placeholder"
+              step="any"
+              type="number"
+              value="0"
+            />
+            <div
+              class="min-h-[1.25rem]"
+            />
+          </div>
+        </div>
+        <div
+          class="flex min-w-0 flex-col gap-1"
+        >
+          <p
+            class="text-sm font-medium"
+          >
+            product_in.line.total.label
+          </p>
+          <div
+            class="flex h-9 mt-1 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <span
+                class="sr-only"
+              >
+                BDT 100.00
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative inline-grid tabular-nums"
+              >
+                <span
+                  class="invisible select-none"
+                >
+                  100.00/-
+                </span>
+                <span
+                  class="absolute inset-0"
+                >
+                  100.00/-
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="hidden md:flex items-start justify-end pt-7"
+        >
+          <button
+            aria-label="product_in.lines.remove"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
+            data-theme-button="outline"
+            disabled=""
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-trash2 lucide-trash-2"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 11v6"
+              />
+              <path
+                d="M14 11v6"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+              />
+              <path
+                d="M3 6h18"
+              />
+              <path
+                d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-md border border-dashed p-3"
+    >
+      <div
+        class="flex flex-col gap-1 data-[state=error]:text-destructive"
+      >
+        <label
+          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+          for="product.0.fiberID"
+        >
+          <div
+            class="flex gap-2"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="capitalize undefined"
+              >
+                product_in.line.fiber.fiber_id.label
+              </div>
+            </div>
+          </div>
+        </label>
+        <input
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          id="product.0.fiberID"
+          placeholder="product_in.line.fiber.fiber_id.placeholder"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 data-[state=error]:text-destructive"
+      >
+        <label
+          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+          for="product.0.fiber_meter_start"
+        >
+          <div
+            class="flex gap-2"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="capitalize undefined"
+              >
+                product_in.line.fiber.meter_start.label
+              </div>
+            </div>
+          </div>
+        </label>
+        <input
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          id="product.0.fiber_meter_start"
+          placeholder="product_in.line.fiber.meter_start.placeholder"
+          type="number"
+          value="10"
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 data-[state=error]:text-destructive"
+      >
+        <label
+          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+          for="product.0.fiber_meter_end"
+        >
+          <div
+            class="flex gap-2"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="capitalize undefined"
+              >
+                product_in.line.fiber.meter_end.label
+              </div>
+            </div>
+          </div>
+        </label>
+        <input
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          id="product.0.fiber_meter_end"
+          placeholder="product_in.line.fiber.meter_end.placeholder"
+          type="number"
+          value="60"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`stock forms > stock in > a serial product: one serial input per unit, and the expense amount follows the total 1`] = `
+<div
+  class="space-y-3"
+>
+  <div
+    class="flex items-center justify-between gap-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      product_in.lines.title
+    </h3>
+    <button
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+      data-theme-button="outline"
+    >
+      <svg
+        aria-hidden="true"
+        class="lucide lucide-plus"
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5 12h14"
+        />
+        <path
+          d="M12 5v14"
+        />
+      </svg>
+      <span
+        class="capitalize"
+      >
+        product_in.lines.add
+      </span>
+    </button>
+  </div>
+  <div
+    class="rounded-md border p-3 space-y-3"
+  >
+    <div
+      class="mb-1 flex items-center justify-between md:hidden"
+    >
+      <p
+        class="text-xs font-medium text-muted-foreground"
+      >
+        product_in.lines.item 1
+      </p>
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+        data-theme-button="outline"
+        disabled=""
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-trash2 lucide-trash-2"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 11v6"
+          />
+          <path
+            d="M14 11v6"
+          />
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+          />
+          <path
+            d="M3 6h18"
+          />
+          <path
+            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          />
+        </svg>
+        <span
+          class="capitalize"
+        >
+          product_in.lines.remove
+        </span>
+      </button>
+    </div>
+    <div
+      class="md:overflow-x-auto"
+    >
+      <div
+        class="grid grid-cols-1 gap-3 mb-1 ml-0.5 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.5fr)_minmax(0,1fr)_auto] md:min-w-[1080px]"
+      >
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.product_id"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_in.line.product.label
+                    </div>
+                    <div
+                      class="text-destructive ml-1"
+                    >
+                       *
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.product_id-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    Router
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.product_id"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 0; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.product_id"
+                type="hidden"
+                value="1"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.brand"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.brand.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.brand"
+              placeholder="product_in.line.brand.placeholder"
+              type="text"
+              value=""
+            />
+            <div
+              class="min-h-[1.25rem]"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.status"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_in.line.status.label
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.status-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    product_in.status.new
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.status"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.status"
+                type="hidden"
+                value="new"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.quantity"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.quantity.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.quantity"
+              placeholder="product_in.line.quantity.placeholder"
+              step="any"
+              type="number"
+              value="2"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.unit_price"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.unit_price.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.unit_price"
+              placeholder="product_in.line.unit_price.placeholder"
+              step="any"
+              type="number"
+              value="100"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.unit_sell_price"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.unit_sell_price.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.unit_sell_price"
+              placeholder="product_in.line.unit_sell_price.placeholder"
+              step="any"
+              type="number"
+              value="0"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.vat"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_in.line.vat.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.vat"
+              placeholder="product_in.line.vat.placeholder"
+              step="any"
+              type="number"
+              value="5"
+            />
+            <div
+              class="min-h-[1.25rem]"
+            />
+          </div>
+        </div>
+        <div
+          class="flex min-w-0 flex-col gap-1"
+        >
+          <p
+            class="text-sm font-medium"
+          >
+            product_in.line.total.label
+          </p>
+          <div
+            class="flex h-9 mt-1 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <span
+                class="sr-only"
+              >
+                BDT 210.00
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative inline-grid tabular-nums"
+              >
+                <span
+                  class="invisible select-none"
+                >
+                  210.00/-
+                </span>
+                <span
+                  class="absolute inset-0"
+                >
+                  210.00/-
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="hidden md:flex items-start justify-end pt-7"
+        >
+          <button
+            aria-label="product_in.lines.remove"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
+            data-theme-button="outline"
+            disabled=""
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-trash2 lucide-trash-2"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 11v6"
+              />
+              <path
+                d="M14 11v6"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+              />
+              <path
+                d="M3 6h18"
+              />
+              <path
+                d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="rounded-md border border-dashed p-3"
+    >
+      <p
+        class="mb-3 text-sm font-medium"
+      >
+        product_in.line.serial.title
+      </p>
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-8 gap-3"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="product.0.serial.0"
+            placeholder="product_in.line.serial.placeholder 1"
+            type="text"
+            value="A-1"
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="product.0.serial.1"
+            placeholder="product_in.line.serial.placeholder 2"
+            type="text"
+            value="A-2"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`stock forms > stock in > a serial product: one serial input per unit, and the expense amount follows the total 2`] = `
+{
+  "data": {
+    "expense": {
+      "amount": 210,
+      "expense_type_id": 6,
+      "fund_id": 7,
+      "note": null,
+      "vendor_id": null,
+    },
+    "note": null,
+    "product": [
+      {
+        "brand": null,
+        "fiberID": null,
+        "fiber_meter_end": null,
+        "fiber_meter_start": null,
+        "has_serial": 1,
+        "product_category_id": 1,
+        "product_id": 1,
+        "quantity": 2,
+        "serial": [
+          "A-1",
+          "A-2",
+        ],
+        "status": "new",
+        "total_price": 210,
+        "unit_price": 100,
+        "unit_sell_price": 0,
+        "vat": 5,
+      },
+    ],
+    "purchase_by": 4,
+    "purchase_date": "2026-11-25",
+    "total_amount": 210,
+    "total_quantity": 2,
+    "vendor_id": null,
+    "voucher": null,
+  },
+  "method": "POST",
+  "url": "/products-in",
+}
+`;
+
+exports[`stock forms > stock out > a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 1`] = `
+<div
+  class="space-y-3"
+>
+  <div
+    class="flex items-center justify-between gap-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      product_out.lines.title
+    </h3>
+    <button
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+      data-theme-button="outline"
+    >
+      <svg
+        aria-hidden="true"
+        class="lucide lucide-plus"
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5 12h14"
+        />
+        <path
+          d="M12 5v14"
+        />
+      </svg>
+      <span
+        class="capitalize"
+      >
+        product_out.lines.add
+      </span>
+    </button>
+  </div>
+  <div
+    class="rounded-md border p-3 space-y-3"
+  >
+    <div
+      class="mb-1 flex items-center justify-between md:hidden"
+    >
+      <p
+        class="text-xs font-medium text-muted-foreground"
+      >
+        product_out.lines.item 1
+      </p>
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+        data-theme-button="outline"
+        disabled=""
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-trash2 lucide-trash-2"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 11v6"
+          />
+          <path
+            d="M14 11v6"
+          />
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+          />
+          <path
+            d="M3 6h18"
+          />
+          <path
+            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          />
+        </svg>
+        <span
+          class="capitalize"
+        >
+          product_out.lines.remove
+        </span>
+      </button>
+    </div>
+    <div
+      class="md:overflow-x-auto pl-0.5"
+    >
+      <div
+        class="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1.35fr)_minmax(0,0.5fr)_minmax(0,0.75fr)_minmax(0,0.5fr)_minmax(0,0.75fr)_minmax(0,0.75fr)_auto] md:min-w-[960px]"
+      >
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.product_id"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_out.line.product.label
+                    </div>
+                    <div
+                      class="text-destructive ml-1"
+                    >
+                       *
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.product_id-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    Router
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.product_id"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 0; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.product_id"
+                type="hidden"
+                value="1"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class=""
+          >
+            <div
+              class="mb-2"
+            >
+              <label
+                class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+                for="product.0.productin_id"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2"
+                  >
+                    <div
+                      class="capitalize undefined"
+                    >
+                      product_out.line.product_in.label
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div
+              class="basic-single css-b62m3t-container"
+            >
+              <span
+                class="css-1f43avz-a11yText-A11yText"
+                id="react-select-product.0.productin_id-live-region"
+              />
+              <span
+                aria-atomic="false"
+                aria-live="polite"
+                aria-relevant="additions text"
+                class="css-1f43avz-a11yText-A11yText"
+                role="log"
+              />
+              <div
+                class="select__control css-1b6qicy-control"
+              >
+                <div
+                  class="select__value-container select__value-container--has-value css-hz5xca"
+                >
+                  <div
+                    class="select__single-value css-1guz6uk-singleValue"
+                  >
+                    Lot 11
+                  </div>
+                  <div
+                    class="select__input-container css-1wopaui"
+                    data-value=""
+                  >
+                    <input
+                      aria-activedescendant=""
+                      aria-autocomplete="list"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      autocapitalize="none"
+                      autocomplete="off"
+                      autocorrect="off"
+                      class="select__input"
+                      id="product.0.productin_id"
+                      role="combobox"
+                      spellcheck="false"
+                      style="color: inherit; background: 0px center; opacity: 0; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
+                      tabindex="0"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="select__indicators css-1k4ddyq"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__clear-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-x size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18 6 6 18"
+                      />
+                      <path
+                        d="m6 6 12 12"
+                      />
+                    </svg>
+                  </div>
+                  <span
+                    class="select__indicator-separator css-1ubwhbt-indicatorSeparator"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="select__indicator select__dropdown-indicator css-z6gpxw-indicatorContainer"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-chevron-down size-4 shrink-0 text-current"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m6 9 6 6 6-6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <input
+                name="product.0.productin_id"
+                type="hidden"
+                value="11"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.quantity"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_out.line.quantity.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.quantity"
+              placeholder="product_out.line.quantity.placeholder"
+              step="any"
+              type="number"
+              value="2"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.unit_price"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_out.line.unit_price.label
+                  </div>
+                  <div
+                    class="text-destructive ml-1"
+                  >
+                     *
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.unit_price"
+              placeholder="product_out.line.unit_price.placeholder"
+              step="any"
+              type="number"
+              value="450"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.vat"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_out.line.vat.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.vat"
+              placeholder="product_out.line.vat.placeholder"
+              step="any"
+              type="number"
+              value="5"
+            />
+          </div>
+        </div>
+        <div
+          class="min-w-0"
+        >
+          <div
+            class="flex flex-col gap-1 data-[state=error]:text-destructive"
+          >
+            <label
+              class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+              for="product.0.discount"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="flex gap-2"
+                >
+                  <div
+                    class="capitalize undefined"
+                  >
+                    product_out.line.discount.label
+                  </div>
+                </div>
+              </div>
+            </label>
+            <input
+              class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+              id="product.0.discount"
+              placeholder="product_out.line.discount.placeholder"
+              step="any"
+              type="number"
+              value="0"
+            />
+            <div
+              class="min-h-[1.25rem]"
+            />
+          </div>
+        </div>
+        <div
+          class="flex min-w-0 flex-col gap-1"
+        >
+          <p
+            class="text-sm font-medium"
+          >
+            product_out.line.total.label
+          </p>
+          <div
+            class="flex h-9 mt-1 items-center justify-end rounded-md border bg-muted/40 px-3 text-sm font-semibold"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 whitespace-nowrap"
+            >
+              <span
+                class="sr-only"
+              >
+                BDT 945.00
+              </span>
+              <span
+                aria-hidden="true"
+                class="relative inline-grid tabular-nums"
+              >
+                <span
+                  class="invisible select-none"
+                >
+                  945.00/-
+                </span>
+                <span
+                  class="absolute inset-0"
+                >
+                  945.00/-
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="hidden md:flex items-start justify-end pt-7"
+        >
+          <button
+            aria-label="product_out.lines.remove"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
+            data-theme-button="outline"
+            disabled=""
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-trash2 lucide-trash-2"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 11v6"
+              />
+              <path
+                d="M14 11v6"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+              />
+              <path
+                d="M3 6h18"
+              />
+              <path
+                d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="rounded-md border border-dashed p-3 space-y-3"
+    >
+      <div
+        class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <input
+          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm sm:max-w-xs"
+          placeholder="product_out.serial.search_placeholder"
+          value=""
+        />
+        <p
+          class="text-xs text-muted-foreground"
+        >
+          product_out.serial.selected_count
+        </p>
+      </div>
+      <div
+        class="max-h-56 overflow-y-auto rounded-md border p-2"
+      >
+        <div
+          class="space-y-1 flex"
+        >
+          <label
+            class="flex items-center gap-2 rounded-sm px-2 py-1 hover:bg-muted cursor-pointer"
+          >
+            <button
+              aria-checked="true"
+              class="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+              data-state="checked"
+              role="checkbox"
+              type="button"
+              value="on"
+            >
+              <span
+                class="flex items-center justify-center text-current"
+                data-state="checked"
+                style="pointer-events: none;"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-check h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 6 9 17l-5-5"
+                  />
+                </svg>
+              </span>
+            </button>
+            <input
+              aria-hidden="true"
+              style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;"
+              tabindex="-1"
+              type="checkbox"
+              value="on"
+            />
+            <span
+              class="text-sm"
+            >
+              SN-101
+            </span>
+          </label>
+          <label
+            class="flex items-center gap-2 rounded-sm px-2 py-1 hover:bg-muted cursor-pointer"
+          >
+            <button
+              aria-checked="true"
+              class="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+              data-state="checked"
+              role="checkbox"
+              type="button"
+              value="on"
+            >
+              <span
+                class="flex items-center justify-center text-current"
+                data-state="checked"
+                style="pointer-events: none;"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="lucide lucide-check h-4 w-4"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 6 9 17l-5-5"
+                  />
+                </svg>
+              </span>
+            </button>
+            <input
+              aria-hidden="true"
+              style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;"
+              tabindex="-1"
+              type="checkbox"
+              value="on"
+            />
+            <span
+              class="text-sm"
+            >
+              SN-102
+            </span>
+          </label>
+          <label
+            class="flex items-center gap-2 rounded-sm px-2 py-1 hover:bg-muted cursor-pointer"
+          >
+            <button
+              aria-checked="false"
+              class="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+              data-state="unchecked"
+              role="checkbox"
+              type="button"
+              value="on"
+            />
+            <input
+              aria-hidden="true"
+              style="position: absolute; pointer-events: none; opacity: 0; margin: 0px; transform: translateX(-100%); width: 0px; height: 0px;"
+              tabindex="-1"
+              type="checkbox"
+              value="on"
+            />
+            <span
+              class="text-sm"
+            >
+              SN-103
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`stock forms > stock out > a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 2`] = `
+{
+  "data": {
+    "client_id": null,
+    "create_invoice": 0,
+    "note": null,
+    "out_date": "2026-11-25",
+    "product": [
+      {
+        "discount": 0,
+        "fiberID": null,
+        "fiber_meter_end": null,
+        "fiber_meter_start": null,
+        "has_serial": 1,
+        "product_category_id": 1,
+        "product_id": 1,
+        "productin_id": 11,
+        "quantity": 2,
+        "serial": [
+          "101",
+          "102",
+        ],
+        "total_price": 945,
+        "unit_price": 450,
+        "vat": 5,
+      },
+    ],
+    "received_by": 4,
+    "total_amount": 945,
+    "total_discount": 0,
+    "total_quantity": 2,
+  },
+  "method": "POST",
+  "url": "/products-out",
+}
+`;
