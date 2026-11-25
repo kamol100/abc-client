@@ -1,3 +1,36 @@
+## Form builder refactor, phase 6 (second batch): the remaining fixes — 2026-11-25
+
+Branch `refactor-form-builder`. One commit per item, each with tests. The payload snapshots for the 10 real forms did not change.
+
+| Commit | What changed |
+| --- | --- |
+| S7 | A dependent dropdown keeps its value when the loaded edit record fills its parent. It is still cleared when the user changes the parent, also away and back. |
+| S4 | A saved dropdown value that has no option is shown as the value itself once the options have loaded, so it no longer looks unset. A multi dropdown shows values in saved order. |
+| S10 | While the dropdown code loads, the label and a box of the control's height hold its place. |
+| Field options | Opt-in `idPrefix` (FormBuilder and FormFilter) and `reserveErrorSpace` (FormBuilder). Off unless set. |
+| Filters | A `tel` field can be used in a filter. The list of typed-text types comes from the field definitions (`isTextInput`). |
+| Row `valueKey` | The salary names left the shared row cleanup. `salary-form-schema.ts` and `staff-form-schema.ts` declare `valueKey: "label"` / `"value"` on their row fields. |
+| Date helper | `lib/validations/date-fields.ts` (`optionalDateOnly`, `nullableDateOnly`) replaces the copies in the staff, salary and company-subscription schemas. |
+| Props | `method` and `mode` are optional on `FormBuilder`. |
+
+Decided not to change, with the reason:
+- **Server-side dropdown search.** The 30 `dropdownList` endpoints in `isp-backend` return the whole list and take no search or limit parameter. This needs the API first. The frontend seam is ready: only `components/controls/use-select-options.ts` loads options.
+- **Number inputs and radios storing text.** Every Zod schema already coerces, and some fields that use a number input are validated as text (client `discount`). Changing the stored type would break those schemas for no gain.
+- **The client schema's own date helper.** It also treats the text "undefined" as empty, so it is not the same rule.
+- **Expense and reseller sending day-month-year.** That is what those endpoints are written for; changing it is an API change.
+- **`idPrefix` and `reserveErrorSpace` are not switched on anywhere.** Turning them on changes ids (e2e selectors) or spacing, so each screen should opt in with a look in the browser.
+- **The switch still shows no error text.** Its label and control sit in a row; an error line needs a layout decision.
+
+Behaviour changes a caller could notice:
+- A dropdown whose saved value has no option now shows that raw value (for example an id) instead of the placeholder.
+- The first dropdown drawn after page load shows a grey box for a moment where it used to show nothing.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1282 passed, the same 9 unrelated failures as before.
+- Markup snapshot change: a `tel` input now appears in the filter snapshots. Nothing else.
+- Not checked in a browser. Playwright not run.
+
 ## Form builder refactor, phase 6 (first batch): bug fixes — 2026-11-25
 
 Branch `refactor-form-builder`. Each fix is its own commit and changed or added the tests that describe it. Unlike phases 2 to 5, these change behaviour on purpose. The payload snapshots for the 10 real forms did not change.
