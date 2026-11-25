@@ -1,91 +1,21 @@
 "use client";
 
-import { useFetch } from "@/app/actions";
-import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
 import { FC, useEffect, useMemo, useRef } from "react";
 import { Control, Controller, FieldValues, RegisterOptions, UseFormSetValue, useFormContext } from "react-hook-form";
-import { ChevronDown, X } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import Select, {
-  components as selectComponents,
-  MultiValue,
-  SingleValue,
-} from "react-select";
-import type {
-  ClearIndicatorProps,
-  DropdownIndicatorProps,
-  GroupBase,
-} from "react-select";
+import { SelectBox } from "@/components/controls/select-box";
+import { useSelectOptions } from "@/components/controls/use-select-options";
+import { FieldShell } from "@/components/form-builder/fields/field-shell";
 import type {
   DropdownPopulate,
   LabelProps,
   SelectOption,
-} from "./form-wrapper/form-builder-type";
-import { FieldShell } from "@/components/form-builder/fields/field-shell";
+} from "@/components/form-wrapper/form-builder-type";
 
-function SelectDropdownIndicator(
-  props: DropdownIndicatorProps<SelectOption, boolean, GroupBase<SelectOption>>,
-) {
-  return (
-    <selectComponents.DropdownIndicator {...props}>
-      <ChevronDown
-        aria-hidden
-        className="size-4 shrink-0 text-current"
-        strokeWidth={2}
-      />
-    </selectComponents.DropdownIndicator>
-  );
-}
-
-function SelectClearIndicator(
-  props: ClearIndicatorProps<SelectOption, boolean, GroupBase<SelectOption>>,
-) {
-  return (
-    <selectComponents.ClearIndicator {...props}>
-      <X
-        aria-hidden
-        className="size-4 shrink-0 text-current"
-        strokeWidth={2}
-      />
-    </selectComponents.ClearIndicator>
-  );
-}
-
-const selectDropdownSelectComponents = {
-  DropdownIndicator: SelectDropdownIndicator,
-  ClearIndicator: SelectClearIndicator,
-};
-
-/** Theme `text-sm`. 0.875rem (14px) at the default `md` font size. */
-const dropdownFontSize = "var(--text-sm)";
-
-type DropdownApiItem = {
-  id: string | number;
-  name: string;
-  [key: string]: unknown;
-};
-
-const toSelectOption = (
-  item: DropdownApiItem,
-  translate: (value: string) => string,
-  optionValueKey = "id",
-): SelectOption | null => {
-  const rawValue = item[optionValueKey];
-  if (typeof rawValue !== "string" && typeof rawValue !== "number") return null;
-  if (typeof item.name !== "string") return null;
-
-  return {
-    value: rawValue,
-    label: translate(item.name),
-    meta: item,
-  };
-};
-
+/** Copies values from the chosen option's API record into other form fields. */
 const applyDropdownPopulate = (
   setValue: UseFormSetValue<FieldValues>,
   populate: DropdownPopulate[] | undefined,
-  selected: SingleValue<SelectOption>,
+  selected: SelectOption | null | undefined,
 ) => {
   if (!populate?.length || !selected?.meta) return;
 
@@ -119,6 +49,13 @@ type SelectDropdownProps = {
   populate?: DropdownPopulate[];
 };
 
+/**
+ * The dropdown as a form field: a `SelectBox` bound to React Hook Form, with a label
+ * and an error. It adds the two things only a form field can do:
+ *   - depend on another field (`parentFieldName` + `buildApi`): options load from an
+ *     endpoint built from the parent's value, and the choice is cleared when it changes;
+ *   - `populate`: copy values from the chosen record into other fields.
+ */
 const SelectDropdown: FC<SelectDropdownProps> = ({
   name,
   label,
@@ -139,18 +76,14 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   resetOnParentChange = true,
   populate,
 }) => {
-  const { t } = useTranslation();
   const { control: ctxControl, watch, setValue } = useFormContext();
   const control = controlProp ?? ctxControl;
-  const menuPortalTarget = useMemo(
-    () => (typeof window !== "undefined" ? document.body : null),
-    [],
-  );
 
   const parentValue = parentFieldName ? watch(parentFieldName) : undefined;
   const hasDependency = !!parentFieldName && !!buildApi;
   const parentHasValue = parentValue !== undefined && parentValue !== null && parentValue !== "";
 
+  // With a parent, options come only from `buildApi`, and only once the parent is set.
   const api = useMemo(() => {
     if (hasDependency && parentHasValue) {
       return buildApi(parentValue as string | number);
@@ -158,6 +91,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     return hasDependency ? undefined : staticApi;
   }, [hasDependency, parentHasValue, parentValue, buildApi, staticApi]);
 
+  // Clear this field when the parent changes to another value.
   const prevParentRef = useRef(parentValue);
   useEffect(() => {
     if (!hasDependency) return;
@@ -172,30 +106,12 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     }
   }, [parentValue, hasDependency, resetOnParentChange, name, isMulti, setValue]);
 
-  const { data: apiOptions, isLoading: isApiLoading } = useQuery({
-    queryKey: [`${name}-dropdown`, api, optionValueKey],
-    queryFn: async (): Promise<SelectOption[]> => {
-      const result = await useFetch({ url: api as string });
-      const items: unknown[] = Array.isArray(result?.data) ? result.data : [];
-      return items.flatMap((item: unknown) => {
-        if (!item || typeof item !== "object") return [];
-        const option = toSelectOption(item as DropdownApiItem, t, optionValueKey);
-        return option ? [option] : [];
-      });
-    },
-    enabled: !!api,
-    retry: 0,
+  const { options, isLoading: isApiLoading } = useSelectOptions({
+    name,
+    api,
+    staticOptions,
+    optionValueKey,
   });
-
-  const options = useMemo(() => {
-    if (api && apiOptions) return apiOptions;
-    return staticOptions ?? [];
-  }, [api, apiOptions, staticOptions]);
-
-  const isOptionMatch = (optionValue: string | number, fieldValue: unknown) => {
-    if (fieldValue === undefined || fieldValue === null || fieldValue === "") return false;
-    return String(optionValue) === String(fieldValue);
-  };
 
   return (
     <FieldShell name={name} label={label} labelFor={name} labelBoxClassName="mb-2" className="">
@@ -203,195 +119,26 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
         name={name}
         control={control}
         rules={rules}
-        render={({ field: { value, onChange }, fieldState: { error } }) => {
-          const selectedOption = (() => {
-            if (value === undefined || value === null || value === "")
-              return null;
-            if (isMulti && Array.isArray(value)) {
-              return options.filter((opt) =>
-                value.some((currentValue) => isOptionMatch(opt.value, currentValue))
-              );
-            }
-            return options.find((opt) => isOptionMatch(opt.value, value)) ?? null;
-          })();
-
-          return (
-            <Select<SelectOption, boolean>
-              inputId={name}
-              instanceId={name}
-              className={cn("basic-single")}
-              classNamePrefix="select"
-              components={selectDropdownSelectComponents}
-              menuPortalTarget={menuPortalTarget}
-              menuPosition="fixed"
-              isSearchable={isSearchable}
-              isClearable={isClearable}
-              isDisabled={isDisabled || (hasDependency && !parentHasValue)}
-              isLoading={isLoading || isApiLoading}
-              placeholder={t(placeholder)}
-              isMulti={isMulti}
-              name={name}
-              options={options}
-              value={selectedOption}
-              formatOptionLabel={(option) => t(option.label)}
-              onChange={(newValue) => {
-                if (isMulti) {
-                  const values = (newValue as MultiValue<SelectOption>).map(
-                    (o) => o.value,
-                  );
-                  onChange(values);
-                  onValueChange?.(values);
-                } else {
-                  const selected = newValue as SingleValue<SelectOption>;
-                  const val = selected?.value ?? null;
-                  onChange(val);
-                  onValueChange?.(val);
-                  applyDropdownPopulate(setValue, populate, selected);
-                }
-              }}
-              styles={{
-                control: (base, state) => ({
-                  ...base,
-                  minHeight: "var(--space-9)",
-                  borderRadius: "calc(var(--radius) - 2px)",
-                  borderColor: error
-                    ? `hsl(var(--destructive))`
-                    : state.isFocused
-                      ? `hsl(var(--ring))`
-                      : `hsl(var(--input))`,
-                  boxShadow: state.isFocused
-                    ? error
-                      ? `0 0 0 1px hsl(var(--destructive))`
-                      : `0 0 0 1px hsl(var(--ring))`
-                    : "none",
-                  backgroundColor: "transparent",
-                  color: `hsl(var(--foreground))`,
-                  fontSize: dropdownFontSize,
-                  transition: "colors 200ms ease",
-                  "&:hover": {
-                    borderColor: error
-                      ? `hsl(var(--destructive))`
-                      : state.isFocused
-                        ? `hsl(var(--ring))`
-                        : `hsl(var(--input))`,
-                  },
-                }),
-                valueContainer: (base) => ({
-                  ...base,
-                  padding: `var(--space-0_5) var(--space-2)`,
-                }),
-                input: (base) => ({
-                  ...base,
-                  margin: 0,
-                  padding: 0,
-                }),
-                placeholder: (base) => ({
-                  ...base,
-                  color: `hsl(var(--muted-foreground))`,
-                  fontSize: dropdownFontSize,
-                  opacity: 1,
-                }),
-                singleValue: (base) => ({
-                  ...base,
-                  color: `hsl(var(--foreground))`,
-                  fontSize: dropdownFontSize,
-                }),
-                multiValue: (base) => ({
-                  ...base,
-                  backgroundColor: `hsl(var(--primary) / 0.1)`,
-                }),
-                multiValueLabel: (base) => ({
-                  ...base,
-                  color: `hsl(var(--foreground))`,
-                  fontSize: dropdownFontSize,
-                  padding: `var(--space-0_5) var(--space-1)`,
-                }),
-                multiValueRemove: (base) => ({
-                  ...base,
-                  color: `hsl(var(--foreground))`,
-                  padding: `0 var(--space-1)`,
-                  "&:hover": {
-                    backgroundColor: `hsl(var(--destructive))`,
-                    color: `hsl(var(--destructive-foreground))`,
-                  },
-                }),
-                indicatorsContainer: (base) => ({
-                  ...base,
-                  padding: `0 var(--space-1)`,
-                }),
-                dropdownIndicator: (base) => ({
-                  ...base,
-                  padding: `var(--space-1) var(--space-2)`,
-                  color: `hsl(var(--muted-foreground))`,
-                  "&:hover": {
-                    color: `hsl(var(--foreground))`,
-                  },
-                }),
-                clearIndicator: (base) => ({
-                  ...base,
-                  padding: `var(--space-1) var(--space-2)`,
-                  color: `hsl(var(--muted-foreground))`,
-                  "&:hover": {
-                    color: `hsl(var(--foreground))`,
-                  },
-                }),
-                menu: (base) => ({
-                  ...base,
-                  borderRadius: "calc(var(--radius) - 2px)",
-                  border: `1px solid hsl(var(--border))`,
-                  fontSize: dropdownFontSize,
-                  overflow: "hidden",
-                  zIndex: 9999,
-                }),
-                menuPortal: (base) => ({
-                  ...base,
-                  zIndex: 9999,
-                  pointerEvents: "auto" as const,
-                }),
-                menuList: (base) => ({
-                  ...base,
-                  padding: `var(--space-1) 0`,
-                  backgroundColor: `hsl(var(--popover))`,
-                }),
-                option: (base, state) => ({
-                  ...base,
-                  fontSize: dropdownFontSize,
-                  padding: `var(--space-2) var(--space-3)`,
-                  backgroundColor: state.isSelected
-                    ? `hsl(var(--primary))`
-                    : state.isFocused
-                      ? `hsl(var(--primary) / 0.1)`
-                      : `hsl(var(--popover))`,
-                  color: state.isSelected
-                    ? `hsl(var(--primary-foreground))`
-                    : `hsl(var(--foreground))`,
-                  "&:active": {
-                    backgroundColor: `hsl(var(--primary))`,
-                    color: `hsl(var(--primary-foreground))`,
-                  },
-                }),
-              }}
-              theme={(theme) => ({
-                ...theme,
-                colors: {
-                  ...theme.colors,
-                  primary: `hsl(var(--primary))`,
-                  primary75: `hsl(var(--primary) / 0.75)`,
-                  primary50: `hsl(var(--primary) / 0.5)`,
-                  primary25: `hsl(var(--primary) / 0.1)`,
-                  neutral0: `hsl(var(--popover))`,
-                  neutral5: `hsl(var(--popover))`,
-                  neutral10: `hsl(var(--input))`,
-                  neutral20: `hsl(var(--input))`,
-                  neutral30: `hsl(var(--border))`,
-                  neutral80: `hsl(var(--foreground))`,
-                },
-              })}
-            />
-          );
-        }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <SelectBox
+            id={name}
+            value={value}
+            options={options}
+            isMulti={isMulti}
+            isSearchable={isSearchable}
+            isClearable={isClearable}
+            isDisabled={isDisabled || (hasDependency && !parentHasValue)}
+            isLoading={isLoading || isApiLoading}
+            placeholder={placeholder}
+            hasError={Boolean(error)}
+            onChange={(nextValue, selected) => {
+              onChange(nextValue);
+              onValueChange?.(nextValue);
+              if (!isMulti) applyDropdownPopulate(setValue, populate, selected);
+            }}
+          />
+        )}
       />
-
     </FieldShell>
   );
 };

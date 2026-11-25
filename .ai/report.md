@@ -1,3 +1,31 @@
+## Form builder refactor, phase 5: form-free dropdown and date controls — 2026-11-25
+
+Branch `refactor-form-builder`. Structure only. The markup snapshots and the payload snapshots are unchanged; react-select and its `select__*` class names stay.
+
+New `components/controls/`. Nothing in it uses React Hook Form:
+- `select-box.tsx`: `SelectBox`, the dropdown as `value` + `onChange`.
+- `select-styles.ts`: the react-select style objects and theme, built once (they were rebuilt on every render inside the component).
+- `use-select-options.ts`: loads options from a `/dropdown-...` endpoint, or uses the static list.
+- `date-input.tsx`: `DateInput`, one date, with the optional time row.
+- `date-range-input.tsx`: `DateRangeInput`, the two-click range with hover preview and Apply.
+- `date-popover.tsx`: the button, clear button and popover both date controls share.
+- `date-format.ts`: pure helpers for parsing and showing picker values.
+
+The form fields are now thin bindings:
+- `components/select-dropdown.tsx` (407 to 146 lines): `SelectBox` + React Hook Form + `dependsOn` + `populate`.
+- `components/form/DatePicker.tsx` (474 to 126 lines): picks `DateInput` or `DateRangeInput` by `mode`. It still exports `formatDatePickerDisplay`, `hasSelectedDateRange` and the value types.
+
+Different from the plan: two date controls and a shared popover, not three controls. Date + time is the `showTime` option of `DateInput`, because it shares all of its code with the single date.
+
+New `tests/unit/form/builder/controls.test.tsx` (7 tests): the three controls work with no form around them.
+
+Kept as they are, for phase 6: the dropdown still loads the whole list, still labels options by `name` only, still uses raw `useQuery` with `retry: 0`, still watches its parent with `watch()`, and `SelectDropdown` itself still needs a form around it. The date picker keeps its English default placeholder and `MM/dd/yyyy`.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1259 passed, the same 9 unrelated failures as before. No snapshot file changed, which includes the generated react-select style classes.
+- Not checked in a browser. Playwright not run: the saved login expired on 19 Nov. This phase is the one the plan wanted the e2e suites for (expenses, invoices, staffs, resellers, networks), so they should run before this branch is merged.
+
 ## Form builder refactor, phase 4: field registry and shared field shell — 2026-11-25
 
 Branch `refactor-form-builder`. Structure only. The markup snapshots (every field type in a form and in a filter, empty, filled and with errors) and the payload snapshots for the 10 real forms are unchanged.
