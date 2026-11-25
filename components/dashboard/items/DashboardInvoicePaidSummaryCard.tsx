@@ -34,7 +34,7 @@ export default function DashboardInvoicePaidSummaryCard({
     <DashboardStatCard
       accent={accent}
       label={t("dashboard.cards.invoice_paid")}
-      value={<DisplayCount amount={data.total_paid_amount} translation={false} />}
+      value={<DisplayCount amount={data.total_paid_amount} translation={false} formatCurrency />}
       isLoading={isLoading || isRefreshing}
       isError={isError}
       skeletonRows={METRICS.length}
@@ -43,7 +43,7 @@ export default function DashboardInvoicePaidSummaryCard({
         <DashboardStatRow
           key={key}
           label={t(labelKey)}
-          value={<DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} />}
+          value={<DisplayCount amount={toNumber(data[key] as string) ?? 0} translation={false} formatCurrency />}
         />
       ))}
     </DashboardStatCard>
