@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { resolveFieldPath } from "@/components/form-builder/core/conditions";
 import { defineField, KEEP_VALUE } from "@/components/form-builder/fields/define-field";
 import type { DropdownFieldConfig } from "@/components/form-wrapper/form-builder-type";
 
@@ -30,11 +31,13 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             isClearable={field.isClearable}
             optionValueKey={field.valueMapping?.idKey}
             rules={field.rules}
-            parentFieldName={field.dependsOn?.field}
+            parentFieldName={
+                field.dependsOn ? resolveFieldPath(namePrefix, field.dependsOn.field) : undefined
+            }
             buildApi={field.dependsOn?.buildApi}
             resetOnParentChange={field.dependsOn?.resetOnChange}
             populate={field.populate?.map((item) => ({
-                field: namePrefix ? `${namePrefix}.${item.field}` : item.field,
+                field: resolveFieldPath(namePrefix, item.field),
                 from: item.from,
             }))}
         />

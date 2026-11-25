@@ -2,7 +2,11 @@
 
 import { ReactNode, useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { hiddenFieldValue, isFieldVisible } from "@/components/form-builder/core/conditions";
+import {
+  hiddenFieldValue,
+  isFieldVisible,
+  resolveFieldPath,
+} from "@/components/form-builder/core/conditions";
 import { FormFieldConfig, VisibleWhen } from "@/components/form-wrapper/form-builder-type";
 
 /**
@@ -12,37 +16,48 @@ import { FormFieldConfig, VisibleWhen } from "@/components/form-wrapper/form-bui
 const ConditionalFormField = ({
   field,
   visibleWhen,
+  namePrefix,
   children,
 }: {
   field: FormFieldConfig;
   visibleWhen: VisibleWhen;
+  namePrefix?: string;
   children: ReactNode;
 }) => {
   const { getValues, setValue } = useFormContext();
-  const watched = useWatch({ name: visibleWhen.field });
+  const name = resolveFieldPath(namePrefix, field.name);
+  const watched = useWatch({ name: resolveFieldPath(namePrefix, visibleWhen.field) });
   const visible = isFieldVisible(visibleWhen, watched);
   const resetValue = hiddenFieldValue(visibleWhen);
 
   useEffect(() => {
     if (visible) return;
-    if (Object.is(getValues(field.name), resetValue)) return;
-    setValue(field.name, resetValue, {
+    if (Object.is(getValues(name), resetValue)) return;
+    setValue(name, resetValue, {
       shouldValidate: false,
       shouldDirty: false,
       shouldTouch: false,
     });
-  }, [visible, field.name, resetValue, getValues, setValue]);
+  }, [visible, name, resetValue, getValues, setValue]);
 
   if (!visible) return null;
 
   return <div className={field.className}>{children}</div>;
 };
 
+/**
+ * The wrapper around every field: applies `permission`, `className` and `visibleWhen`.
+ * Inside a row of a field array, pass the row's path as `namePrefix` so the rule
+ * reads and resets the fields of that row.
+ */
 export const VisibleFormField = ({
   field,
+  namePrefix,
   children,
 }: {
   field: FormFieldConfig;
+  /** The path of the row the field sits in (`items.2`). Leave out at the top level. */
+  namePrefix?: string;
   children: ReactNode;
 }) => {
   if (field.permission === false) return null;
@@ -51,7 +66,7 @@ export const VisibleFormField = ({
   }
 
   return (
-    <ConditionalFormField field={field} visibleWhen={field.visibleWhen}>
+    <ConditionalFormField field={field} visibleWhen={field.visibleWhen} namePrefix={namePrefix}>
       {children}
     </ConditionalFormField>
   );

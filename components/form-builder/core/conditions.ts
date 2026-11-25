@@ -28,3 +28,15 @@ export function isFieldVisible(visibleWhen: VisibleWhen, watchedValue: unknown):
 
 /** The value written into a field while it is hidden. */
 export const hiddenFieldValue = (visibleWhen: VisibleWhen) => visibleWhen.resetValue ?? null;
+
+/**
+ * The full form path of a field that a rule names.
+ *
+ * Inside a row of a field array, a plain name means the field in the same row:
+ * `product_id` in row `lines.2` is `lines.2.product_id`. A leading `/` means a
+ * top-level field: `/status` is `status`. Outside a row both forms mean the same.
+ */
+export function resolveFieldPath(rowPath: string | undefined, fieldName: string): string {
+    if (fieldName.startsWith("/")) return fieldName.slice(1);
+    return rowPath ? `${rowPath}.${fieldName}` : fieldName;
+}

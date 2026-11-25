@@ -214,9 +214,7 @@ describe("FormBuilder field array", () => {
         });
     });
 
-    // Known problems from the audit, written down as they behave today. The refactor
-    // must change these tests in the same commit that fixes each problem.
-    describe("known problems", () => {
+    describe("row buttons do not submit the form", () => {
         it("Add does not submit, because it sets type=\"button\"", async () => {
             const { container } = renderFields([items()], { data: twoRows });
             const user = userEvent.setup();
@@ -253,14 +251,16 @@ describe("FormBuilder field array", () => {
             expect(labels(container)).toEqual(["Bonus", "Basic"]);
             expect(writeRequests()).toHaveLength(0);
         });
+    });
 
-        it("B8: visibleWhen on a row field is ignored; the field is always drawn", () => {
+    describe("rules inside a row", () => {
+        it("visibleWhen reads the field of the same row", async () => {
             renderFields(
                 [
                     items({
                         itemFields: [
                             { type: "text", name: "label" },
-                            { type: "text", name: "extra", visibleWhen: { field: "label", equals: "never" } },
+                            { type: "text", name: "extra", visibleWhen: { field: "label", equals: "Basic" } },
                         ],
                     }),
                 ],
@@ -268,41 +268,99 @@ describe("FormBuilder field array", () => {
             );
 
             expect(fieldById("items.0.extra")).toBeInTheDocument();
+            expect(fieldById("items.1.extra")).toBeNull();
+
+            const user = userEvent.setup();
+            await user.type(inputById("items.0.label"), "x");
+            expect(fieldById("items.0.extra")).toBeNull();
         });
 
-        it("B8: dependsOn on a row field watches the top-level field of that name, not the row's field", async () => {
+        it("visibleWhen resets the hidden field of that row only", async () => {
+            renderFields(
+                [
+                    items({
+                        itemFields: [
+                            { type: "text", name: "label" },
+                            { type: "text", name: "extra", visibleWhen: { field: "label", equals: "Basic" } },
+                        ],
+                    }),
+                ],
+                { data: { items: [{ label: "Basic", extra: "kept" }, { label: "Bonus", extra: "cleared" }] } },
+            );
+            const user = userEvent.setup();
+            await user.click(screen.getByRole("button", { name: "common.save" }));
+
+            await waitFor(() => expect(writeRequests()).toHaveLength(1));
+            expect(writeRequests()[0].data).toEqual({
+                items: [{ label: "Basic", extra: "kept" }, { label: "Bonus", extra: null }],
+            });
+        });
+
+        it("visibleWhen with a leading slash reads a top-level field", () => {
+            renderFields(
+                [
+                    { type: "text", name: "kind" },
+                    items({
+                        itemFields: [
+                            { type: "text", name: "label" },
+                            { type: "text", name: "extra", visibleWhen: { field: "/kind", equals: "detailed" } },
+                        ],
+                    }),
+                ],
+                { data: { kind: "detailed", ...twoRows } },
+            );
+
+            expect(fieldById("items.0.extra")).toBeInTheDocument();
+            expect(fieldById("items.1.extra")).toBeInTheDocument();
+        });
+
+        it("puts the row field's className on its cell", () => {
+            renderFields(
+                [items({ itemFields: [{ type: "text", name: "label", className: "col-span-2" }] })],
+                { data: twoRows },
+            );
+
+            expect(inputById("items.0.label").parentElement?.parentElement).toHaveClass("col-span-2");
+        });
+
+        it("dependsOn watches the parent field of the same row", async () => {
             mockApi((request) => {
-                if (request.url === "/dropdown-products") return { success: true, data: [{ id: 1, name: "Router" }] };
+                if (request.url === "/dropdown-products") {
+                    return { success: true, data: [{ id: 1, name: "Router" }, { id: 2, name: "Cable" }] };
+                }
                 if (request.url === "/dropdown-lots/1") return { success: true, data: [{ id: 9, name: "Lot 9" }] };
+                if (request.url === "/dropdown-lots/2") return { success: true, data: [{ id: 7, name: "Lot 7" }] };
                 return undefined;
             });
-            const lines: FieldArrayConfig = {
-                type: "fieldArray",
-                name: "lines",
-                defaultItem: {},
-                itemFields: [
-                    { type: "dropdown", name: "product_id", api: "/dropdown-products" },
+            renderFields(
+                [
                     {
-                        type: "dropdown",
-                        name: "lot_id",
-                        dependsOn: { field: "product_id", buildApi: (id) => `/dropdown-lots/${id}` },
+                        type: "fieldArray",
+                        name: "lines",
+                        defaultItem: {},
+                        itemFields: [
+                            { type: "dropdown", name: "product_id", api: "/dropdown-products" },
+                            {
+                                type: "dropdown",
+                                name: "lot_id",
+                                dependsOn: { field: "product_id", buildApi: (id) => `/dropdown-lots/${id}` },
+                            },
+                        ],
                     },
                 ],
-            };
-
-            // The row has a product, but there is no top-level product_id: the lot stays disabled.
-            const rowOnly = renderFields([lines], { data: { lines: [{ product_id: 1 }] } });
-            await screen.findByText("Router");
-            expect(fieldById("lines.0.lot_id")?.closest(".basic-single")).toHaveClass("select--is-disabled");
-            expect(apiRequests("GET").map((request) => request.url)).not.toContain("/dropdown-lots/1");
-            rowOnly.unmount();
-
-            // A top-level product_id enables the lot of every row, whatever the row's own product is.
-            renderFields([lines], { data: { product_id: 1, lines: [{ product_id: null }] } });
-            await waitFor(() =>
-                expect(apiRequests("GET").map((request) => request.url)).toContain("/dropdown-lots/1"),
+                // A top-level product_id must not matter to the rows.
+                { data: { product_id: 2, lines: [{ product_id: 1, lot_id: 9 }, { product_id: null }] } },
             );
-            expect(fieldById("lines.0.lot_id")?.closest(".basic-single")).not.toHaveClass("select--is-disabled");
+
+            expect(await screen.findByText("Lot 9")).toBeInTheDocument();
+            const lot = (row: number) => fieldById(`lines.${row}.lot_id`)?.closest(".basic-single");
+            expect(lot(0)).not.toHaveClass("select--is-disabled");
+            expect(lot(1)).toHaveClass("select--is-disabled");
+
+            const lotRequests = apiRequests("GET")
+                .map((request) => request.url)
+                .filter((url) => url.startsWith("/dropdown-lots"));
+            expect(lotRequests).toEqual(["/dropdown-lots/1"]);
         });
     });
 

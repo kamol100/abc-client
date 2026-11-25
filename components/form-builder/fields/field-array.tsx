@@ -5,6 +5,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import Label from "@/components/label";
 import MyButton from "@/components/my-button";
+import { VisibleFormField } from "@/components/form-builder/layout/visible-field";
 import {
   FieldArrayConfig,
   FieldConfig,
@@ -57,14 +58,15 @@ export const FieldArrayRenderer = ({
       {fields.map((item, index) => (
         <div key={item.id} className="relative flex items-start gap-3 border rounded-md p-3">
           <div className={`grid min-w-0 flex-1 ${itemGridGap} ${GRID_STYLES[itemGrids]}`}>
-            {itemFields.map((itemField) => {
-              if (itemField.permission === false) return null;
-              return (
-                <div key={itemField.name}>
-                  {renderItemField(itemField, `${fullName}.${index}`)}
-                </div>
-              );
-            })}
+            {itemFields.map((itemField) => (
+              <VisibleFormField
+                key={itemField.name}
+                field={itemField}
+                namePrefix={`${fullName}.${index}`}
+              >
+                {renderItemField(itemField, `${fullName}.${index}`)}
+              </VisibleFormField>
+            ))}
           </div>
 
           <div className="flex shrink-0 flex-col gap-1">
