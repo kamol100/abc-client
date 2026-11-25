@@ -29,7 +29,9 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             isDisabled={field.isDisabled || field.disabled}
             isLoading={field.isLoading}
             isClearable={field.isClearable}
+            isSearchable={field.isSearchable}
             optionValueKey={field.valueMapping?.idKey}
+            optionLabelKey={field.valueMapping?.labelKey}
             parentFieldName={
                 field.dependsOn ? resolveFieldPath(namePrefix, field.dependsOn.field) : undefined
             }
@@ -70,6 +72,7 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             isMulti={field.isMulti}
             isDisabled={field.isDisabled}
             isClearable={field.isClearable}
+            isSearchable={field.isSearchable}
             onValueChange={onValueChange}
         />
     ),

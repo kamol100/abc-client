@@ -48,7 +48,7 @@ type DatePickerProps = {
 const DatePicker = ({
     name,
     label,
-    placeholder = "Pick a date",
+    placeholder = "common.pick_date",
     mode = "single",
     className,
     disabled = false,

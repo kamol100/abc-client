@@ -1,7 +1,15 @@
 "use client";
 
 import { FC, useEffect, useMemo, useRef } from "react";
-import { Control, Controller, FieldValues, RegisterOptions, UseFormSetValue, useFormContext } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  RegisterOptions,
+  UseFormSetValue,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { SelectBox } from "@/components/controls/select-box";
 import { useSelectOptions } from "@/components/controls/use-select-options";
 import { FieldShell } from "@/components/form-builder/fields/field-shell";
@@ -40,6 +48,8 @@ type SelectDropdownProps = {
   isSearchable?: boolean;
   placeholder?: string;
   optionValueKey?: string;
+  /** Which key of an API record is the option label. Defaults to `name`. */
+  optionLabelKey?: string;
   onValueChange?: (value: unknown) => void;
   control?: Control<FieldValues>;
   rules?: RegisterOptions;
@@ -68,6 +78,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   isSearchable = true,
   placeholder = "common.select_option",
   optionValueKey = "id",
+  optionLabelKey = "name",
   onValueChange,
   control: controlProp,
   rules,
@@ -76,10 +87,16 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   resetOnParentChange = true,
   populate,
 }) => {
-  const { control: ctxControl, watch, setValue } = useFormContext();
+  const { control: ctxControl, setValue } = useFormContext();
   const control = controlProp ?? ctxControl;
 
-  const parentValue = parentFieldName ? watch(parentFieldName) : undefined;
+  // Subscribes to the parent field only, so other fields do not re-render this one.
+  const watchedParent = useWatch({
+    control,
+    name: parentFieldName ?? "",
+    disabled: !parentFieldName,
+  });
+  const parentValue = parentFieldName ? watchedParent : undefined;
   const hasDependency = !!parentFieldName && !!buildApi;
   const parentHasValue = parentValue !== undefined && parentValue !== null && parentValue !== "";
 
@@ -106,11 +123,12 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     }
   }, [parentValue, hasDependency, resetOnParentChange, name, isMulti, setValue]);
 
-  const { options, isLoading: isApiLoading } = useSelectOptions({
+  const { options, isLoading: isApiLoading, loadFailed, reload } = useSelectOptions({
     name,
     api,
     staticOptions,
     optionValueKey,
+    optionLabelKey,
   });
 
   return (
@@ -131,6 +149,8 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
             isLoading={isLoading || isApiLoading}
             placeholder={placeholder}
             hasError={Boolean(error)}
+            loadFailed={loadFailed}
+            onReload={reload}
             onChange={(nextValue, selected) => {
               onChange(nextValue);
               onValueChange?.(nextValue);

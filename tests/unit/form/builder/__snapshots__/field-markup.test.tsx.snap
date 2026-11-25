@@ -2509,7 +2509,7 @@ exports[`field markup > FormBuilder: every field type, empty 1`] = `
               <span
                 class="min-w-0 truncate"
               >
-                Pick a date
+                common.pick_date
               </span>
             </button>
           </div>

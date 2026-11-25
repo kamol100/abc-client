@@ -418,14 +418,14 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ zone_id: 4 });
         });
 
-        it("uses valueMapping.idKey as the option value and ignores labelKey", async () => {
+        it("uses valueMapping.idKey as the option value and labelKey as the label", async () => {
             mockApi((request) =>
                 request.url === "/dropdown-funds"
                     ? {
                           success: true,
                           data: [
                               { id: 1, uuid: "f-1", name: "Cash", title: "Cash title" },
-                              { id: 2, uuid: "f-2", title: "No name, so it is dropped" },
+                              { id: 2, uuid: "f-2", name: "No title, so it is dropped" },
                           ],
                       }
                     : undefined,
@@ -441,12 +441,50 @@ describe("FormBuilder fields", () => {
             const user = userEvent.setup();
             await user.click(await screen.findByRole("combobox"));
 
-            expect(await screen.findByText("Cash")).toBeInTheDocument();
-            expect(screen.queryByText("Cash title")).not.toBeInTheDocument();
-            expect(screen.queryByText("No name, so it is dropped")).not.toBeInTheDocument();
+            expect(await screen.findByText("Cash title")).toBeInTheDocument();
+            expect(screen.queryByText("Cash")).not.toBeInTheDocument();
+            expect(screen.queryByText("No title, so it is dropped")).not.toBeInTheDocument();
 
-            await user.click(screen.getByText("Cash"));
+            await user.click(screen.getByText("Cash title"));
             expect(await saveAndReadPayload(user)).toEqual({ fund_uuid: "f-1" });
+        });
+
+        it("says so in the menu when the options fail to load, and tries again when it is opened", async () => {
+            mockApi((request) =>
+                request.url === "/dropdown-zones" ? { success: false, message: "boom", status: 500 } : undefined,
+            );
+            renderFields([{ type: "dropdown", name: "zone_id", api: "/dropdown-zones" }]);
+            const user = userEvent.setup();
+            await user.click(await screen.findByRole("combobox"));
+            expect(await screen.findByText("common.failed_to_load_data")).toBeInTheDocument();
+
+            mockApi((request) =>
+                request.url === "/dropdown-zones" ? { success: true, data: [{ id: 3, name: "North" }] } : undefined,
+            );
+            await user.keyboard("{Escape}");
+            await user.click(screen.getByRole("combobox"));
+
+            expect(await screen.findByText("North")).toBeInTheDocument();
+        });
+
+        it("says \"no options\" in the app language for an empty list", async () => {
+            renderFields([{ type: "dropdown", name: "zone_id", options: [] }]);
+            const user = userEvent.setup();
+            await user.click(await screen.findByRole("combobox"));
+
+            expect(await screen.findByText("common.no_options")).toBeInTheDocument();
+        });
+
+        it("turns typing off with isSearchable false", async () => {
+            renderFields([
+                { type: "dropdown", name: "plain", options: statusOptions },
+                { type: "dropdown", name: "fixed", options: statusOptions, isSearchable: false },
+            ]);
+
+            await waitFor(() => expect(fieldById("fixed")).toBeInTheDocument());
+            // react-select swaps the text input for one that takes no typing.
+            expect(fieldById("plain")).toHaveAttribute("type", "text");
+            expect(fieldById("fixed")).toHaveAttribute("inputmode", "none");
         });
     });
 });

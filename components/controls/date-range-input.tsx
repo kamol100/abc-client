@@ -84,7 +84,7 @@ export function DateRangeInput({
     value,
     onChange,
     onClear,
-    placeholder = "Pick a date",
+    placeholder = "common.pick_date",
     disabled = false,
     hasError = false,
     rangeDateFormat = "MM/dd/yyyy - MM/dd/yyyy",

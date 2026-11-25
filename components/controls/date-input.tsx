@@ -46,7 +46,7 @@ export function DateInput({
     value,
     onChange,
     onClear,
-    placeholder = "Pick a date",
+    placeholder = "common.pick_date",
     disabled = false,
     hasError = false,
     dateFormat = "MM/dd/yyyy",

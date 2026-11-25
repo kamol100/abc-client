@@ -75,6 +75,8 @@
         "value": "মান",
         "total": "মোট",
         "select_option": "অপশন নির্বাচন করুন",
+        "no_options": "কোনো অপশন নেই",
+        "pick_date": "তারিখ নির্বাচন করুন",
         "failed_to_load_data": "ডাটা লোড করতে ব্যর্থ",
         "request_failed": "রিকুয়েস্ট ব্যর্থ",
         "confirm_delete": "মুছে ফেলা নিশ্চিত করুন",

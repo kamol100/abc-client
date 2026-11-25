@@ -75,6 +75,8 @@
         "value": "Value",
         "total": "Total",
         "select_option": "Select option",
+        "no_options": "No options",
+        "pick_date": "Pick a date",
         "failed_to_load_data": "Failed to load data",
         "request_failed": "Request failed",
         "confirm_delete": "Confirm Delete",

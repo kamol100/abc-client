@@ -70,6 +70,10 @@ type SelectBoxProps = {
     placeholder?: string;
     /** Draws the red error border. */
     hasError?: boolean;
+    /** The options could not be loaded: the open menu says so instead of "No options". */
+    loadFailed?: boolean;
+    /** Called when the menu opens after a failed load, to try again. */
+    onReload?: () => void;
 };
 
 /** A value matches an option when they are equal as text, so "2" selects the option 2. */
@@ -94,6 +98,8 @@ export function SelectBox({
     isSearchable = true,
     placeholder = "common.select_option",
     hasError = false,
+    loadFailed = false,
+    onReload,
 }: SelectBoxProps) {
     const { t } = useTranslation();
 
@@ -132,6 +138,9 @@ export function SelectBox({
             options={options}
             value={selectedOption}
             formatOptionLabel={(option) => t(option.label)}
+            noOptionsMessage={() => t(loadFailed ? "common.failed_to_load_data" : "common.no_options")}
+            loadingMessage={() => t("common.loading")}
+            onMenuOpen={loadFailed ? onReload : undefined}
             onChange={(newValue) => {
                 if (isMulti) {
                     onChange((newValue as MultiValue<SelectOption>).map((option) => option.value));
