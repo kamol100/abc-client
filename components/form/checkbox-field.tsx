@@ -56,7 +56,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                     className={cn(fieldError && "border-destructive")}
                                 />
                                 <label htmlFor={name} className="text-sm text-foreground cursor-pointer">
-                                    {label?.labelText}
+                                    {label?.labelText ? t(label.labelText) : null}
                                 </label>
                             </div>
                         );

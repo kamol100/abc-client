@@ -1991,7 +1991,7 @@ exports[`field markup > FormBuilder: every field type, empty 1`] = `
           >
             <label
               class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-              for="thing.switch"
+              for="switch-switch"
             >
               <div
                 class="flex gap-2"
@@ -4024,7 +4024,7 @@ exports[`field markup > FormBuilder: every field type, filled 1`] = `
           >
             <label
               class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-              for="thing.switch"
+              for="switch-switch"
             >
               <div
                 class="flex gap-2"
@@ -6837,7 +6837,7 @@ exports[`field markup > FormBuilder: every field type, with a validation error 1
           >
             <label
               class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-              for="thing.switch"
+              for="switch-switch"
             >
               <div
                 class="flex gap-2"

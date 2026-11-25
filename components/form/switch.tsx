@@ -26,7 +26,13 @@ const Switch: React.FC<SwitchProps> = ({
     const control = useFieldControl(controlProp);
 
     return (
-        <FieldShell name={name} label={label} hideError className={cn("flex flex-row gap-1", className)}>
+        <FieldShell
+            name={name}
+            label={label}
+            labelFor={`switch-${name}`}
+            hideError
+            className={cn("flex flex-row gap-1", className)}
+        >
             <Controller
                 name={name}
                 control={control}

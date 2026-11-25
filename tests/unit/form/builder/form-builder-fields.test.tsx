@@ -120,7 +120,15 @@ describe("FormBuilder fields", () => {
             renderFields([{ type: "switch", name: "is_active", label: { labelText: "thing.active" } }]);
 
             expect(screen.getByRole("switch")).toHaveAttribute("id", "switch-is_active");
-            expect(screen.getByText("thing.active")).toBeInTheDocument();
+            expect(screen.getByText("thing.active").closest("label")).toHaveAttribute("for", "switch-is_active");
+        });
+
+        it("switch: clicking the label flips it", async () => {
+            renderFields([{ type: "switch", name: "is_active", label: { labelText: "thing.active" } }]);
+            const user = userEvent.setup();
+            await user.click(screen.getByText("thing.active"));
+
+            expect(screen.getByRole("switch")).toBeChecked();
         });
 
         it("checkbox: one checkbox per option, or a single one with id name", () => {
