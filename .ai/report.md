@@ -1,3 +1,36 @@
+## Form builder refactor, phase 6 (first batch): bug fixes — 2026-11-25
+
+Branch `refactor-form-builder`. Each fix is its own commit and changed or added the tests that describe it. Unlike phases 2 to 5, these change behaviour on purpose. The payload snapshots for the 10 real forms did not change.
+
+| Commit | What changed for the user |
+| --- | --- |
+| B1 | The Add button of repeating rows no longer submits the form. |
+| B2 | An edit form keeps what was typed when its parent re-renders. It refills only when the API returns a record. |
+| B5 | A server validation message shows under a field inside a row (`items.0.qty`) and under latitude and longitude, not only as a toast. |
+| B6 | An edit form with a location field no longer refetches a record it already has. |
+| B7 | A dropdown or radio default on a row field fills the rows, not a stray top-level value. |
+| B8 | `visibleWhen` and `dependsOn` work inside rows, per row. `/name` refers to a top-level field. Row fields get their `className`. |
+| Save on change | The hidden submit input is gone; a switch with `saveOnChange` asks the form through `useFormActions()`. Enter no longer saves a form with `actionButton={false}`, and is ignored while a save is in flight. |
+| B3 | `rules` and date `required` are removed from the field config. They never ran under the Zod resolver. Invoice note and new-client report keep the same checks in Zod. |
+| B4 | A date-only API value is read as that local day by the builder too, like the calendar. |
+| Dropdown | `valueMapping.labelKey` and `isSearchable` are honoured; a failed options request says so and retries on open; "No options" and "Loading" are translated; a dependent dropdown subscribes only to its parent. The date picker's default placeholder is `common.pick_date`. |
+| Fields | Clicking a switch label toggles it. A single checkbox translates its label. |
+
+New translation keys in `en.json` and `bn.json`: `common.no_options`, `common.pick_date`.
+
+Behaviour changes a caller could notice:
+- `isSearchable: false` now takes effect in `company-wallet-form-schema.ts`, `agent-transaction-form-schema.ts`, `sms-template-form-schema.ts` and two filter schemas. They asked for it but used to get a searchable dropdown.
+- `mikrotik-sync-import-form.tsx` hides its buttons with `actionButton={canImport}`. Enter used to submit it anyway through the hidden input; it no longer does.
+- An options endpoint that answers `success: false` now counts as a failure, not an empty list.
+
+Not done yet in phase 6: server-side search for long dropdowns, showing a saved value that is not in the options, clearing a child dropdown on parent change during edit load (S7; no clean rule found yet), a placeholder while the dropdown code loads, number and radio values stored as text, duplicate ids when two forms share a field name, reserved error space, `tel` in filters, the salary names in shared row cleanup, and the per-form Zod date helpers (three copies, two formats). A custom submit handler and file upload are new features and belong to phase 7.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1272 passed, the same 9 unrelated failures as before.
+- Markup snapshot changes, each checked line by line: `type="button"` on Add; the hidden submit input removed; `common.pick_date` in place of "Pick a date"; the switch label's `for`.
+- Not checked in a browser. Playwright not run.
+
 ## Form builder refactor, phase 5: form-free dropdown and date controls — 2026-11-25
 
 Branch `refactor-form-builder`. Structure only. The markup snapshots and the payload snapshots are unchanged; react-select and its `select__*` class names stay.
