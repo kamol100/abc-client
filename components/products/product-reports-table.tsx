@@ -275,6 +275,7 @@ const ProductReportsTable: FC<ProductReportsTableProps> = ({
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "product_reports",
         features: {
             columns: true,
             filter: toolbarOptions,

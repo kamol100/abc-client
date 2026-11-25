@@ -48,6 +48,7 @@ export default function OnuTable({ filterValue, tableToolBar = true, showOlt = t
 
     const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
         title: toolbarTitle,
+        page: "onus",
         features: {
             columns: true,
             filter: toolbarOptions,

@@ -1,6 +1,7 @@
 /** Option lists used by dropdown settings. Labels are translation keys or plain numbers. */
 
 import type { SettingOption } from "@/components/settings/registry/define";
+import { FILTER_POSITIONS } from "@/components/data-table/toolbar/list-pages";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -47,3 +48,9 @@ export const MONITOR_INTERVAL_OPTIONS: SettingOption[] = [0, 1, 2, 5, 10, 15, 30
 /** Failed checks in a row before a device is marked down. */
 export const MONITOR_FAIL_THRESHOLD_OPTIONS: SettingOption[] = range(1, 10)
   .map((count) => ({ value: count, label: `settings.options.monitor_fail_threshold_${count}` }));
+
+/** Where a list page's desktop filter opens. */
+export const FILTER_POSITION_OPTIONS: SettingOption[] = FILTER_POSITIONS.map((position) => ({
+  value: position,
+  label: `settings.options.filter_position_${position}`,
+}));

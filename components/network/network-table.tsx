@@ -41,6 +41,7 @@ const NetworkTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "networks",
     features: {
       columns: true,
       filter: { filter: NetworkFilterSchema() },

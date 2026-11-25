@@ -16,7 +16,7 @@ import {
   isDashboardItemVisible,
   type DashboardVisibilitySettingKey,
 } from "@/components/dashboard/dashboard-visibility";
-import { number, select, text, toggle, type SettingDefinition, type ToggleSetting } from "@/components/settings/registry/define";
+import { number, select, text, toggle, type SelectSetting, type SettingDefinition, type ToggleSetting } from "@/components/settings/registry/define";
 import {
   CLIENT_AUTO_INACTIVE_TIME_OPTIONS,
   CLIENT_AUTO_INACTIVE_TIME_RANGE,
@@ -29,7 +29,15 @@ import {
   REMINDER_CHANNEL_OPTIONS,
   REMINDER_DAY_OPTIONS,
   SMS_SCHEDULE_OPTIONS,
+  FILTER_POSITION_OPTIONS,
 } from "@/components/settings/registry/options";
+import {
+  DEFAULT_FILTER_POSITION,
+  LIST_PAGE_IDS,
+  filterPositionKey,
+  toFilterPosition,
+  type FilterPositionSettingKey,
+} from "@/components/data-table/toolbar/list-pages";
 
 /** One "show on dashboard" switch per dashboard card. On until turned off; hidden without the card's permission. */
 const dashboardSettings = Object.fromEntries(
@@ -38,6 +46,21 @@ const dashboardSettings = Object.fromEntries(
     toggle({ default: true, permission: item.permission, read: isDashboardItemVisible }),
   ]),
 ) as Record<DashboardVisibilitySettingKey, ToggleSetting>;
+
+/** One "filter position" per list page (inline in the toolbar, or a panel below it). */
+const filterPositionSettings = Object.fromEntries(
+  LIST_PAGE_IDS.map((page) => [
+    filterPositionKey(page),
+    select({
+      options: FILTER_POSITION_OPTIONS,
+      default: DEFAULT_FILTER_POSITION,
+      strict: true,
+      read: toFilterPosition,
+      label: "settings.fields.filter_position.label",
+      description: "settings.fields.filter_position.description",
+    }),
+  ]),
+) as Record<FilterPositionSettingKey, SelectSetting>;
 
 export const SETTINGS = {
   // ── General: ID prefixes ───────────────────────────────────────────
@@ -104,6 +127,9 @@ export const SETTINGS = {
 
   // ── Dashboard cards ────────────────────────────────────────────────
   ...dashboardSettings,
+
+  // ── List pages: where the desktop filter opens ─────────────────────
+  ...filterPositionSettings,
 } satisfies Record<string, SettingDefinition>;
 
 export type SettingKey = keyof typeof SETTINGS;
@@ -113,6 +139,11 @@ export const SETTING_KEYS = Object.keys(SETTINGS) as SettingKey[];
 /** The definition of one setting. */
 export function fieldOf(key: SettingKey): SettingDefinition {
   return SETTINGS[key];
+}
+
+/** Translation key of a setting's label. */
+export function settingLabelKey(key: SettingKey): string {
+  return SETTINGS[key].label ?? `settings.fields.${key}.label`;
 }
 
 export function isSettingKey(key: string): key is SettingKey {

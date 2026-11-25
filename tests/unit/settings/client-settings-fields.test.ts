@@ -11,20 +11,20 @@ const CLIENT_SETTINGS_FIELDS = [
 ] as const;
 
 describe("client settings fields", () => {
-    it("keeps the client fields from general settings in that order", () => {
-        expect(sectionKeys("clients")).toEqual([...CLIENT_SETTINGS_FIELDS]);
+    it("keeps the client fields from general settings in that order, then the filter position", () => {
+        expect(sectionKeys("list_clients")).toEqual([...CLIENT_SETTINGS_FIELDS, "filter_position_clients"]);
         expect(sectionKeys("general")).toEqual(expect.arrayContaining([...CLIENT_SETTINGS_FIELDS]));
-        expect(sectionKeys("clients")).not.toContain("invoice_prefix");
+        expect(sectionKeys("list_clients")).not.toContain("invoice_prefix");
     });
 
     it.each([
-        "invoice_prefix",
-        "pid_prefix",
-        "expense_id_prefix",
-        "product_code_prefix",
-        "ticket_code_prefix",
-    ] as const)("keeps %s available from general settings and its own dialog", (key) => {
+        ["invoice_prefix", "list_invoices", "filter_position_invoices"],
+        ["pid_prefix", "list_payments", "filter_position_payments"],
+        ["expense_id_prefix", "list_expenses", "filter_position_expenses"],
+        ["product_code_prefix", "list_products", "filter_position_products"],
+        ["ticket_code_prefix", "list_tickets", "filter_position_tickets"],
+    ] as const)("keeps %s available from general settings and its list's ⚙ dialog", (key, section, position) => {
         expect(sectionKeys("general")).toContain(key);
-        expect(sectionKeys(key)).toEqual([key]);
+        expect(sectionKeys(section)).toEqual([key, position]);
     });
 });

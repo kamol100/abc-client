@@ -38,6 +38,7 @@ const MikrotikPackagesTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "mikrotik_packages",
     features: {
       filter: { filter: MikrotikPackageFilterSchema(), showFilter: true },
       add: MikrotikPackagesToolbarActions,

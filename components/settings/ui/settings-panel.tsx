@@ -20,7 +20,7 @@ import { isSmsSendingSetting, smsSettingsLocked } from "@/components/sms-sent/sm
 import { readSetting } from "@/components/settings/core/values";
 import { useSaveSetting } from "@/components/settings/core/use-save-setting";
 import { visibleSettingKeys } from "@/components/settings/core/visibility";
-import { fieldOf, type SettingKey } from "@/components/settings/registry/fields";
+import { fieldOf, settingLabelKey, type SettingKey } from "@/components/settings/registry/fields";
 import { SECTIONS, type SectionName, type SettingsSection } from "@/components/settings/registry/sections";
 import { SettingControl } from "@/components/settings/ui/setting-controls";
 
@@ -90,7 +90,7 @@ function SettingRow({ settingKey, children }: { settingKey: SettingKey; children
       className="flex min-h-14 flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
     >
       <div className="min-w-0">
-        <p className="text-sm font-medium">{t(`settings.fields.${settingKey}.label`)}</p>
+        <p className="text-sm font-medium">{t(settingLabelKey(settingKey))}</p>
         {description && <p className="mt-0.5 text-xs text-muted-foreground">{t(description)}</p>}
       </div>
       <div className="flex min-w-0 justify-end">{children}</div>

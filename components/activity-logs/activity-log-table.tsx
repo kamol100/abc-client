@@ -67,6 +67,7 @@ const ActivityLogTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "activity_logs",
         features: {
             columns: true,
             filter: toolbarOptions,

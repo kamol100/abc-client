@@ -4,7 +4,6 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import ExpenseFilterSchema from "@/components/expenses/expense-filter-schema";
 import ExpenseForm from "@/components/expenses/expense-form";
 import { ExpenseColumns } from "@/components/expenses/expense-column";
@@ -54,9 +53,7 @@ const ExpenseTable: FC<ExpenseTableProps> = ({
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
         center: [{ key: "totals", node: <ExpenseReports reports={reports} isLoading={isLoading} /> }],
-        end: [
-            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="expense_id_prefix" /> },
-        ],
+        page: "expenses",
         features: {
             columns: true,
             filter: toolbarOptions,

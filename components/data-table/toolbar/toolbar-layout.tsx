@@ -26,6 +26,11 @@ type ToolbarLayoutProps = {
   expanded?: ReactNode;
   /** Full-width row under everything (mobile simple search). */
   below?: ReactNode;
+  /** Desktop only: the filter panel under the toolbar (panel position). */
+  panel?: ReactNode;
+  panelOpen?: boolean;
+  /** id of the panel region, for the filter button's aria-controls. */
+  panelId?: string;
 };
 
 /**
@@ -38,6 +43,7 @@ type ToolbarLayoutProps = {
  * narrower than its content.
  * Mobile: page size + end actions, then center, start, and each "row" item on
  * its own full-width row. Empty rows are not rendered.
+ * Panel: under the desktop toolbar, collapsed to zero height while closed.
  */
 export function ToolbarLayout({
   isMobile,
@@ -49,6 +55,9 @@ export function ToolbarLayout({
   mobileRows = [],
   expanded,
   below,
+  panel,
+  panelOpen = false,
+  panelId,
 }: ToolbarLayoutProps) {
   if (isMobile) {
     const actionsOnOwnRow = mobileActions === "row";
@@ -99,39 +108,80 @@ export function ToolbarLayout({
     );
   }
 
+  const panelSlot = panel ? <ToolbarPanel id={panelId} open={panelOpen}>{panel}</ToolbarPanel> : null;
+
   if (!center) {
     return (
-      <div className={cn("flex flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="desktop">
-        <div className="flex justify-end">
-          <div className="flex w-full flex-1 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
-            {start}
+      <div className={TOOLBAR_ROOT} data-toolbar-layout="desktop">
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-end">
+            <div className="flex w-full flex-1 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
+              {start}
+            </div>
+            <div className="ml-3 flex items-center gap-2" data-toolbar-slot="end">
+              {end}
+            </div>
           </div>
-          <div className="ml-3 flex items-center gap-2" data-toolbar-slot="end">
-            {end}
-          </div>
+          {below && <div className="w-full">{below}</div>}
         </div>
-        {below && <div className="w-full">{below}</div>}
+        {panelSlot}
       </div>
     );
   }
 
   return (
-    <div className={cn("flex flex-col gap-2", TOOLBAR_ROOT)} data-toolbar-layout="desktop-centered">
-      <div className="grid grid-cols-[minmax(max-content,1fr)_auto_minmax(max-content,1fr)] items-center gap-3">
-        <div className="flex min-h-9 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
-          {start}
-        </div>
-        <div className="flex items-center justify-center gap-2" data-toolbar-slot="center">
-          {center}
-        </div>
-        <div className="flex justify-end">
-          {/* Content-sized, so a child's ml-auto cannot split the group. */}
-          <div className="flex items-center gap-2" data-toolbar-slot="end">
-            {end}
+    <div className={TOOLBAR_ROOT} data-toolbar-layout="desktop-centered">
+      <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-[minmax(max-content,1fr)_auto_minmax(max-content,1fr)] items-center gap-3">
+          <div className="flex min-h-9 flex-wrap items-center gap-x-2" data-toolbar-slot="start">
+            {start}
+          </div>
+          <div className="flex items-center justify-center gap-2" data-toolbar-slot="center">
+            {center}
+          </div>
+          <div className="flex justify-end">
+            {/* Content-sized, so a child's ml-auto cannot split the group. */}
+            <div className="flex items-center gap-2" data-toolbar-slot="end">
+              {end}
+            </div>
           </div>
         </div>
+        {below && <div className="w-full">{below}</div>}
       </div>
-      {below && <div className="w-full">{below}</div>}
+      {panelSlot}
+    </div>
+  );
+}
+
+/**
+ * Opens and closes by animating the row height (0fr ↔ 1fr) with a fade and a
+ * small slide, so the table moves down smoothly instead of jumping. Closed, it
+ * takes no space and its fields leave the tab order. The gap above the panel is
+ * inside the animated area, so the closed toolbar is exactly as tall as before.
+ */
+function ToolbarPanel({ id, open, children }: { id?: string; open: boolean; children: ReactNode }) {
+  return (
+    <div
+      id={id}
+      role="region"
+      data-toolbar-panel={open ? "open" : "closed"}
+      aria-hidden={!open}
+      inert={!open}
+      className={cn(
+        "grid transition-[grid-template-rows,opacity] duration-200 ease-out motion-reduce:transition-none",
+        open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+      )}
+    >
+      <div className="min-h-0 overflow-hidden">
+        <div
+          className={cn(
+            "pt-2 transition-transform duration-200 ease-out motion-reduce:transition-none",
+            open ? "translate-y-0" : "-translate-y-2",
+          )}
+        >
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

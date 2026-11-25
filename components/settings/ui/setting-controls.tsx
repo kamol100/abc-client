@@ -16,7 +16,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import type { NumberSetting, SelectSetting, SettingDefinition, SettingValue, TextSetting } from "@/components/settings/registry/define";
 import { validateSetting } from "@/components/settings/core/values";
-import type { SettingKey } from "@/components/settings/registry/fields";
+import { settingLabelKey, type SettingKey } from "@/components/settings/registry/fields";
 
 type ControlProps = {
   settingKey: SettingKey;
@@ -48,7 +48,7 @@ function ToggleControl({ settingKey, value, saving, disabled, save }: ControlPro
         id={`switch-${settingKey}`}
         checked={checked}
         disabled={disabled || saving}
-        aria-label={t(`settings.fields.${settingKey}.label`)}
+        aria-label={t(settingLabelKey(settingKey))}
         onCheckedChange={async (next) => {
           setChecked(next);
           if (!(await save(next))) setChecked(!next);
@@ -76,7 +76,7 @@ function SelectControl({ settingKey, field, value, saving, disabled, save }: Con
           if (!(await save(next))) setSelected(previous);
         }}
       >
-        <SelectTrigger className="w-full sm:w-56" aria-label={t(`settings.fields.${settingKey}.label`)}>
+        <SelectTrigger className="w-full sm:w-56" aria-label={t(settingLabelKey(settingKey))}>
           <SelectValue
             placeholder={t(`settings.fields.${settingKey}.placeholder`, { defaultValue: t("settings.common.not_set") })}
           />
@@ -98,7 +98,7 @@ function TextControl({ settingKey, field, value, saving, disabled, save }: Contr
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const label = t(`settings.fields.${settingKey}.label`);
+  const label = t(settingLabelKey(settingKey));
 
   if (!editing) {
     const shown = String(value ?? "").trim();

@@ -3201,6 +3201,7 @@
         }
     },
     "product_movement": {
+        "title": "Product Movement",
         "in_details_title": "Product In Details",
         "out_details_title": "Product Out Details",
         "summary": {
@@ -5311,6 +5312,7 @@
             "prefix_description": "Used at the start of new IDs."
         },
         "groups": {
+            "filter": "Filter",
             "id_prefixes": "ID prefixes",
             "clients": "Clients",
             "sms_client_events": "Client events",
@@ -5321,6 +5323,9 @@
             "number": "Enter a number."
         },
         "sections": {
+            "list_page": {
+                "description": "Settings for this list."
+            },
             "olt": {
                 "title": "OLT Polling Settings",
                 "description": "Read PON ports and ONUs from OLTs with saved SNMP access. Polling is off by default; the low-power threshold colours ONU signal levels and triggers the Telegram alert."
@@ -5360,6 +5365,8 @@
             }
         },
         "options": {
+            "filter_position_inline": "In the toolbar",
+            "filter_position_below": "Below the toolbar",
             "olt_poll_interval_0": "Off",
             "olt_poll_interval_5": "Every 5 minutes",
             "olt_poll_interval_15": "Every 15 minutes",
@@ -5415,6 +5422,10 @@
             "monitor_fail_threshold_10": "10 failed checks in a row"
         },
         "fields": {
+            "filter_position": {
+                "label": "Filter position",
+                "description": "Where the filter opens on a computer when you press the filter button."
+            },
             "olt_poll_interval": {
                 "label": "Poll OLTs automatically",
                 "placeholder": "Select how often"

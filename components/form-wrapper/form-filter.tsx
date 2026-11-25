@@ -47,6 +47,8 @@ type FormFilterProps = {
    * tall as the closed toolbar and the table below does not jump.
    */
   flush?: boolean;
+  /** Replaces the field grid's classes (columns and gap). Used by the filter panel. */
+  fieldsClassName?: string;
 };
 
 function FilterTextField({
@@ -136,6 +138,7 @@ const FormFilter = ({
   resultCount,
   endAction,
   flush = false,
+  fieldsClassName,
 }: FormFilterProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(forceOpen);
@@ -169,6 +172,8 @@ const FormFilter = ({
   };
 
   const showSearchButton = searchButton && hasManualSearchFields && (isOpen || forceOpen);
+  // Nothing to show on the right (e.g. the filter panel): leave the slot out, so it adds no gap.
+  const hasActions = showSearchButton || !hideTrigger || endAction != null;
 
   const renderField = (field: FieldConfig) => {
     if (field.type === "text" || field.type === "email" || field.type === "number") {
@@ -216,7 +221,7 @@ const FormFilter = ({
     }
 
     return (
-      <div className={cn("w-full grid ", gridGap, GRID_STYLES[grids])}>
+      <div className={fieldsClassName ?? cn("w-full grid ", gridGap, GRID_STYLES[grids])}>
         {formSchema.map((field, index) => {
           if (field.permission === false) return null;
           return (
@@ -259,6 +264,7 @@ const FormFilter = ({
           </div>
         </div>
       )}
+      {hasActions && (
       <div className="shrink-0 self-start">
         <div
           className="flex flex-row-reverse justify-between gap-2 md:flex-row lg:flex-row"
@@ -293,6 +299,7 @@ const FormFilter = ({
           {endAction}
         </div>
       </div>
+      )}
 
     </div>
   );

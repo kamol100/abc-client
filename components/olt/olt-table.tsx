@@ -4,7 +4,6 @@ import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { SettingsButton } from "@/components/settings/ui/settings-button";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { useOltColumns } from "./olt-column";
@@ -37,9 +36,7 @@ const OltTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
-        end: [
-            { key: "settings-section-button", inFilterRow: false, node: <SettingsButton section="olt" /> },
-        ],
+        page: "olts",
         features: {
             columns: true,
             filter: { filter: OLT_FILTER },

@@ -49,6 +49,7 @@ const CommunicationQueueArchiveTable: FC = () => {
       ? t("communication_queue.archive.title_count", { count: pagination.total })
       : t("communication_queue.archive.title"),
     // `add` sits after the filter button, open or closed.
+    page: "communication_queue_archive",
     features: {
       columns: true,
       filter: filterOptions,

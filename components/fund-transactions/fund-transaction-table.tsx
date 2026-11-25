@@ -104,6 +104,7 @@ const FundTransactionTable: FC<FundTransactionTableProps> = ({
         node: <FundTransactionReports totals={typeTotals} isLoading={isLoading} />,
       },
     ],
+    page: "fund_transactions",
     features: {
       columns: true,
       filter: toolbarOptions,

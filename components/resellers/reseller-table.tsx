@@ -58,6 +58,7 @@ const ResellerTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "resellers",
         features: {
             columns: true,
             filter: toolbarOptions,

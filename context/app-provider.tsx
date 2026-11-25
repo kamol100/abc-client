@@ -34,6 +34,14 @@ export function useSettings(): SettingsContextValue {
   return ctx;
 }
 
+/**
+ * Company settings, or null outside <AppProvider> (isolated component tests).
+ * For shared building blocks such as the table toolbar; screens use useSettings.
+ */
+export function useOptionalSettings(): Settings | null {
+  return useContext(SettingsContext)?.settings ?? null;
+}
+
 export function useSetting<K extends keyof Settings>(key: K): Settings[K] {
   const { settings } = useSettings();
   return settings[key];

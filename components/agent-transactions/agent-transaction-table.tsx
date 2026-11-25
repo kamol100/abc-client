@@ -83,6 +83,7 @@ const AgentTransactionTable: FC<AgentTransactionTableProps> = ({
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "agent_transactions",
     features: {
       columns: true,
       filter: toolbarOptions,

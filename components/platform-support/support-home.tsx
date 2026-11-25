@@ -140,6 +140,7 @@ export default function SupportHome({
 
     const toolbar: DataTableToolbarConfig = {
         title: t(kind === "issue" ? "platform_support.issues" : "platform_support.chats"),
+        page: null,  // Not a company list page: inline filter, no ⚙.
         features: {
             filter: { filter: supportFilterSchema(activeScope, kind) },
         },

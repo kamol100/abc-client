@@ -1,5 +1,6 @@
 import { createElement, isValidElement, type ComponentType, type ReactNode } from "react";
 import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
+import type { ListPageId } from "@/components/data-table/toolbar/list-pages";
 
 /**
  * How a page item behaves below the mobile breakpoint.
@@ -39,7 +40,8 @@ export type ToolbarFilterFeature = DataTableToolbarOptions & {
 
 /**
  * Built-in toolbar features. Their place and order are fixed for every table:
- * page `end` items → columns → layout toggle → filter → add.
+ * page `end` items → ⚙ settings (from `page`) → columns → layout toggle →
+ * filter reset → filter → add.
  * A table can switch them on or off, never move them.
  */
 export type ToolbarFeatures = {
@@ -47,7 +49,10 @@ export type ToolbarFeatures = {
   columns?: boolean;
   /** Fixed/full table layout toggle. Default true. */
   layoutToggle?: boolean;
-  /** Filter row on desktop, bottom sheet (or simple search) on mobile. */
+  /**
+   * Desktop: the filter row (inline) or the panel under the toolbar, as the
+   * page's company setting says. Mobile: bottom sheet (or simple search).
+   */
   filter?: ToolbarFilterFeature;
   /**
    * Create button or dialog trigger. Always last. Accepts an element
@@ -56,7 +61,7 @@ export type ToolbarFeatures = {
   add?: ReactNode | ComponentType;
 };
 
-export type DataTableToolbarConfig = {
+type ToolbarConfigBase = {
   /** Always at the start; hidden on mobile. */
   title?: ReactNode;
   titleClassName?: string;
@@ -69,6 +74,19 @@ export type DataTableToolbarConfig = {
   /** Mobile: "row" puts the action buttons on their own row under page size. Default "inline". */
   mobileActions?: "inline" | "row";
 };
+
+/**
+ * `page` is the company list page this table is (see list-pages.ts). It adds the
+ * page's ⚙ settings dialog and picks where the desktop filter opens. A table
+ * with a filter must name it, or pass `null` when it is not a company list page
+ * (client area, dashboard cards, platform screens): the filter then opens
+ * inline and there is no ⚙.
+ */
+export type DataTableToolbarConfig = ToolbarConfigBase &
+  (
+    | { features?: ToolbarFeatures & { filter?: undefined }; page?: ListPageId }
+    | { features: ToolbarFeatures & { filter: ToolbarFilterFeature }; page: ListPageId | null }
+  );
 
 /** Items that render on this device: shown, not hidden on mobile, and not empty. */
 export function visibleItems(items: ToolbarItem[] | undefined, isMobile: boolean): ToolbarItem[] {

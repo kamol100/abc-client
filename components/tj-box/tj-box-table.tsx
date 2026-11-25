@@ -45,6 +45,7 @@ const TjBoxTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "tj_boxes",
         features: {
             columns: true,
             filter: toolbarOptions,

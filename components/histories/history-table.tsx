@@ -53,6 +53,7 @@ const HistoryTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "histories",
         features: {
             columns: true,
             filter: toolbarOptions,

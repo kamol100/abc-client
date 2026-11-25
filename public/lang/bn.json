@@ -3201,6 +3201,7 @@
         }
     },
     "product_movement": {
+        "title": "প্রোডাক্ট মুভমেন্ট",
         "in_details_title": "প্রোডাক্ট ইন ডিটেইলস",
         "out_details_title": "প্রোডাক্ট আউট ডিটেইলস",
         "summary": {
@@ -5311,6 +5312,7 @@
             "prefix_description": "নতুন আইডির শুরুতে ব্যবহৃত হয়।"
         },
         "groups": {
+            "filter": "ফিল্টার",
             "id_prefixes": "আইডি প্রিফিক্স",
             "clients": "ক্লায়েন্ট",
             "sms_client_events": "ক্লায়েন্ট ইভেন্ট",
@@ -5321,6 +5323,9 @@
             "number": "একটি সংখ্যা লিখুন।"
         },
         "sections": {
+            "list_page": {
+                "description": "এই তালিকার সেটিংস।"
+            },
             "olt": {
                 "title": "ওএলটি পোলিং সেটিংস",
                 "description": "সংরক্ষিত SNMP অ্যাক্সেসসহ ওএলটি থেকে PON পোর্ট ও ওএনইউ পড়ুন। পোলিং ডিফল্টভাবে বন্ধ থাকে; লো-পাওয়ার থ্রেশহোল্ড দিয়ে ওএনইউ সিগন্যালের রং ও টেলিগ্রাম অ্যালার্ট ঠিক হয়।"
@@ -5360,6 +5365,8 @@
             }
         },
         "options": {
+            "filter_position_inline": "টুলবারের ভেতরে",
+            "filter_position_below": "টুলবারের নিচে",
             "olt_poll_interval_0": "বন্ধ",
             "olt_poll_interval_5": "প্রতি ৫ মিনিটে",
             "olt_poll_interval_15": "প্রতি ১৫ মিনিটে",
@@ -5415,6 +5422,10 @@
             "monitor_fail_threshold_10": "পরপর ১০টি ব্যর্থ চেক"
         },
         "fields": {
+            "filter_position": {
+                "label": "ফিল্টারের অবস্থান",
+                "description": "কম্পিউটারে ফিল্টার বাটন চাপলে ফিল্টার কোথায় খুলবে।"
+            },
             "olt_poll_interval": {
                 "label": "স্বয়ংক্রিয়ভাবে ওএলটি পোল করুন",
                 "placeholder": "কত পরপর তা নির্বাচন করুন"

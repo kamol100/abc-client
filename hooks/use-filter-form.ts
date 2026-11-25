@@ -14,7 +14,9 @@ function isTextField(field: FieldConfig): field is TextFieldConfig {
 function resolveWatchFields(
   formSchema: FieldConfig[],
   watchFieldsProp?: string[],
+  autoApply = false,
 ): string[] {
+  if (autoApply) return formSchema.filter(isTextField).map((f) => f.name);
   if (watchFieldsProp) return watchFieldsProp;
   return formSchema
     .filter((f): f is TextFieldConfig => isTextField(f) && !!f.watchForFilter)
@@ -77,6 +79,11 @@ type UseFilterFormOptions = {
    * its query with the same values (see `objectToQueryString`).
    */
   defaultValues?: FieldValues;
+  /**
+   * Every text field applies as you type (debounced), like dropdowns and dates
+   * already do, so the form needs no Search button. Used by the filter panel.
+   */
+  autoApply?: boolean;
 };
 
 export function useFilterForm({
@@ -85,14 +92,15 @@ export function useFilterForm({
   watchFields: watchFieldsProp,
   defaultFilter,
   defaultValues,
+  autoApply = false,
 }: UseFilterFormOptions) {
   const form = useForm<FieldValues>({ defaultValues });
   const { watch, setValue, handleSubmit } = form;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const resolvedWatchFields = useMemo(
-    () => resolveWatchFields(formSchema, watchFieldsProp),
-    [formSchema, watchFieldsProp],
+    () => resolveWatchFields(formSchema, watchFieldsProp, autoApply),
+    [formSchema, watchFieldsProp, autoApply],
   );
 
   const textFieldNames = useMemo(

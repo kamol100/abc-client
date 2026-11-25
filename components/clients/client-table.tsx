@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { SettingsButton } from "@/components/settings/ui/settings-button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePermissions } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
@@ -103,7 +102,7 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
         start: [
             { key: "activity", node: <ClientCount />, show: !isResellerReport, mobile: "row" },
         ],
-        end: [{ key: "settings", inFilterRow: false, node: <SettingsButton section="clients" /> }],
+        page: "clients",
         features: {
             columns: true,
             filter: {

@@ -9,6 +9,11 @@
 export type SettingOption = { value: string | number; label: string };
 
 type Common = {
+  /**
+   * Translation key for the label. Default `settings.fields.<key>.label`; set it
+   * when many keys share one label (e.g. one filter position per list page).
+   */
+  label?: string;
   /** Translation key for an optional help line under the label. */
   description?: string;
   /** Only users with this permission see the setting. */

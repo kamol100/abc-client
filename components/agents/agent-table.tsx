@@ -39,6 +39,7 @@ const AgentTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "agents",
         features: {
             columns: true,
             filter: { filter: AgentFilterSchema() },

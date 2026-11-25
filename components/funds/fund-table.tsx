@@ -91,6 +91,7 @@ const FundTable: FC<FundTableProps> = ({
         ),
       },
     ],
+    page: "funds",
     features: {
       columns: true,
       filter: toolbarOptions,

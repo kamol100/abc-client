@@ -148,6 +148,7 @@ const MikrotikSyncTable: FC = () => {
           />
         ) : null },
     ],
+    page: "mikrotik_sync",
     features: {
       columns: true,
       filter: toolbarOptions,

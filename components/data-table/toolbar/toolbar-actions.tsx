@@ -14,6 +14,10 @@ type ToolbarActionsProps<TData> = {
   items: ToolbarItem[];
   columns: boolean;
   layoutToggle: boolean;
+  /** The list page's ⚙ settings dialog button. */
+  settings?: ReactNode;
+  /** Filter reset (panel position, while open). Right before the filter control. */
+  filterReset?: ReactNode;
   /** Filter control for this device (desktop trigger, drawer, simple search). */
   filter?: ReactNode;
   add?: ReactNode;
@@ -21,9 +25,19 @@ type ToolbarActionsProps<TData> = {
 
 /**
  * Right slot. Built-in features always follow the page's items, in this
- * order: page items, columns, fixed/full layout, filter, add.
+ * order: page items, ⚙ settings, columns, fixed/full layout, filter reset,
+ * filter, add.
  */
-export function ToolbarActions<TData>({ table, items, columns, layoutToggle, filter, add }: ToolbarActionsProps<TData>) {
+export function ToolbarActions<TData>({
+  table,
+  items,
+  columns,
+  layoutToggle,
+  settings,
+  filterReset,
+  filter,
+  add,
+}: ToolbarActionsProps<TData>) {
   const { isFixed, toggleMode } = useTableLayoutMode();
 
   return (
@@ -31,6 +45,7 @@ export function ToolbarActions<TData>({ table, items, columns, layoutToggle, fil
       {items.map((item) => (
         <Fragment key={item.key}>{item.node}</Fragment>
       ))}
+      {settings}
       {columns && <DataTableViewOptions table={table} />}
       {layoutToggle && (
         <MyButton
@@ -43,6 +58,7 @@ export function ToolbarActions<TData>({ table, items, columns, layoutToggle, fil
           {isFixed ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
         </MyButton>
       )}
+      {filterReset}
       {filter}
       {add}
     </>

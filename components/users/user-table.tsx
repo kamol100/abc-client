@@ -41,6 +41,7 @@ const UserTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "users",
     features: {
       columns: true,
       filter: toolbarOptions,

@@ -76,6 +76,7 @@ const CommunicationQueueTable: FC = () => {
       // Before the filter button (closed), and in the open filter row.
       { key: "archive", inFilterRow: false, show: hasPermission("communication-queue.archive"), node: <CommunicationQueueArchiveDialog /> },
     ],
+    page: "communication_queue",
     features: {
       columns: true,
       filter: toolbarOptions,

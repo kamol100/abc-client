@@ -1,11 +1,19 @@
 "use client";
 
-import { Fragment, useState, type ReactNode } from "react";
+import { Fragment, useId, useState, type ReactNode } from "react";
 import type { Table } from "@tanstack/react-table";
 import ChangePagination from "@/components/change-pagination";
 import FormFilter from "@/components/form-wrapper/form-filter";
 import { useSidebar } from "@/components/ui/sidebar";
+import { SettingsButton } from "@/components/settings/ui/settings-button";
+import { useOptionalSettings } from "@/context/app-provider";
 import { useFilterForm } from "@/hooks/use-filter-form";
+import {
+  filterPositionKey,
+  listSettingsSection,
+  toFilterPosition,
+  type FilterPosition,
+} from "@/components/data-table/toolbar/list-pages";
 import {
   renderAdd,
   visibleItems,
@@ -17,6 +25,8 @@ import { ToolbarStart, hasToolbarStart } from "@/components/data-table/toolbar/t
 import { ToolbarActions } from "@/components/data-table/toolbar/toolbar-actions";
 import {
   ToolbarFilterDrawer,
+  ToolbarFilterPanel,
+  ToolbarFilterReset,
   ToolbarFilterRow,
   ToolbarFilterTrigger,
   ToolbarSimpleSearchTrigger,
@@ -46,16 +56,26 @@ export function DataTableToolbar<TData>({
   resultCount,
 }: DataTableToolbarProps<TData>) {
   const { isMobile } = useSidebar();
+  const settings = useOptionalSettings();
+  const panelId = useId();
   const [filterOpen, setFilterOpen] = useState(false);
   const isFiltered = table.getState().columnFilters.length > 0;
   const features = config.features ?? {};
   const filter = features.filter;
+  const page = config.page ?? null;
+
+  // The list page's company setting picks where the desktop filter opens. Mobile always uses the sheet.
+  const position: FilterPosition =
+    page && !isMobile ? toFilterPosition(settings?.[filterPositionKey(page)]) : "inline";
+  const usePanel = position === "below" && Boolean(filter?.filter);
 
   const filterHook = useFilterForm({
     formSchema: filter?.filter || [],
     setFilter,
     watchFields: filter?.watchFields,
     defaultValues: filter?.defaultValues,
+    // The panel has no Search button, so every field applies as it changes.
+    autoApply: usePanel,
   });
   const simple = useMobileSimpleSearch({
     enabled: Boolean(filter?.simpleSearch) && isMobile,
@@ -64,7 +84,7 @@ export function DataTableToolbar<TData>({
 
   const resetFilter = filterHook.resetFilter;
 
-  // Closing the desktop filter row clears an active filter, as it does today.
+  // Closing the desktop filter (row or panel) clears an active filter, as it does today.
   const handleFilterOpenChange = (open: boolean) => {
     if (!open && changedFromDefaults(filterHook.form.getValues(), filter?.defaultValues)) resetFilter();
     setFilterOpen(open);
@@ -72,7 +92,10 @@ export function DataTableToolbar<TData>({
 
   const filterOptions = filter?.filter ? { ...filter, filter: filter.filter } : null;
 
+  const filterChanged = changedFromDefaults(filterHook.form.watch(), filter?.defaultValues);
+
   let filterControl: ReactNode = null;
+  let filterReset: ReactNode = null;
   if (filterOptions) {
     if (isMobile && simple.active) {
       filterControl = <ToolbarSimpleSearchTrigger pinned={simple.pinned} onToggle={simple.toggle} />;
@@ -87,8 +110,17 @@ export function DataTableToolbar<TData>({
           onReset={resetFilter}
         />
       );
+    } else if (usePanel) {
+      filterControl = (
+        <ToolbarFilterTrigger
+          open={filterOpen}
+          controls={panelId}
+          onClick={() => handleFilterOpenChange(!filterOpen)}
+        />
+      );
+      if (filterOpen) filterReset = <ToolbarFilterReset onReset={resetFilter} active={filterChanged} />;
     } else {
-      filterControl = <ToolbarFilterTrigger onOpen={() => handleFilterOpenChange(true)} />;
+      filterControl = <ToolbarFilterTrigger onClick={() => handleFilterOpenChange(true)} />;
     }
   }
 
@@ -143,6 +175,8 @@ export function DataTableToolbar<TData>({
           items={endItems.filter((item) => !item.onlyInFilterRow)}
           columns={features.columns ?? false}
           layoutToggle={features.layoutToggle ?? true}
+          settings={page ? <SettingsButton section={listSettingsSection(page)} /> : null}
+          filterReset={filterReset}
           filter={filterControl}
           add={addNode}
         />
@@ -151,7 +185,7 @@ export function DataTableToolbar<TData>({
       mobileRows={mobileRows}
       mobileActions={config.mobileActions}
       expanded={
-        !isMobile && filterOpen && filterOptions ? (
+        !isMobile && !usePanel && filterOpen && filterOptions ? (
           <>
             {/* Center items (e.g. a running total) stay visible above the open filter. */}
             {filterOpenCenterItems.length > 0 && (
@@ -170,6 +204,13 @@ export function DataTableToolbar<TData>({
           </>
         ) : undefined
       }
+      panel={
+        !isMobile && usePanel && filterOptions ? (
+          <ToolbarFilterPanel options={filterOptions} filterHook={filterHook} setFilter={setFilter} />
+        ) : undefined
+      }
+      panelOpen={filterOpen}
+      panelId={panelId}
       below={
         isMobile && simple.visible ? (
           <FormFilter

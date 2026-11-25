@@ -158,6 +158,7 @@ function renderTable(simpleSearch?: boolean) {
                 columns={columns}
                 data={[]}
                 toolbar={{
+                    page: null,
                     features: {
                         filter: {
                             filter: ClientFilterSchema(),

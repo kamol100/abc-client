@@ -45,6 +45,7 @@ const ClientInvoicesTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: null,  // Not a company list page: inline filter, no ⚙.
     features: {
       filter: toolbarOptions,
     },

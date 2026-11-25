@@ -4,7 +4,6 @@ import { FC, useMemo, useState } from "react";
 import useApiQuery, { PaginatedApiResponse } from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import { TicketColumns } from "./ticket-column";
 import { TicketRow } from "./ticket-type";
 import { useTranslation } from "react-i18next";
@@ -50,9 +49,7 @@ const TicketTable: FC<TicketTableProps> = ({ clientId, filterValue, tableToolBar
 
     const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
         title: toolbarTitle,
-        end: [
-            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="ticket_code_prefix" /> },
-        ],
+        page: "tickets",
         features: {
             columns: true,
             filter: toolbarOptions,

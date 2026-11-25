@@ -40,6 +40,7 @@ const VendorTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "vendors",
         features: {
             columns: true,
             filter: toolbarOptions,

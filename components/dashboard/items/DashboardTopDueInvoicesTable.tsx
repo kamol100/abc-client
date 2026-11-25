@@ -41,6 +41,7 @@ export default function DashboardTopDueInvoicesTable({
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: null,  // Not a company list page: inline filter, no ⚙.
     features: {
       columns: true,
       layoutToggle: false,

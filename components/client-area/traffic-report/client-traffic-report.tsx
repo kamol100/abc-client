@@ -347,6 +347,7 @@ export default function ClientTrafficReport() {
   }
 
   const toolbar: DataTableToolbarConfig = {
+    page: null,  // Not a company list page: inline filter, no ⚙.
     features: {
       columns: true,
       filter: toolbarOptions,

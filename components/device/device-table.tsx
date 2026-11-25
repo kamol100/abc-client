@@ -42,6 +42,7 @@ const DeviceTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "devices",
     features: {
       columns: true,
       filter: { filter: DeviceFilterSchema() },

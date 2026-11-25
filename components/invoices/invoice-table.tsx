@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
-import { PrefixSettingsButton } from "@/components/settings/ui/settings-button";
 import MyButton from "@/components/my-button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { usePermissions } from "@/context/app-provider";
@@ -93,9 +92,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
         center: reportsToolbar
             ? [{ key: "totals", node: <InvoiceReports reports={reports} isLoading={isLoading} layout="toolbar" /> }]
             : undefined,
-        end: [
-            { key: "prefix-settings-button", inFilterRow: false, node: <PrefixSettingsButton field="invoice_prefix" /> },
-        ],
+        page: "invoices",
         features: {
             columns: true,
             filter: toolbarOptions,

@@ -36,6 +36,7 @@ const ArchivedClientTable: FC = () => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "archived_clients",
         features: {
             columns: true,
             filter: { filter: ClientFilterSchema() },

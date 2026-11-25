@@ -62,6 +62,7 @@ const ClientInvoiceTable: FC<Props> = ({ clientId }) => {
 
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        page: "client_invoices",
         features: {
             filter: toolbarOptions,
             add: BackButton,

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
 import { SETTING_KEYS } from "@/components/settings/registry/fields";
 import { SECTIONS, sectionKeys, type SectionName } from "@/components/settings/registry/sections";
+import { LIST_PAGES, LIST_PAGE_IDS, filterPositionKey, listSettingsSection } from "@/components/data-table/toolbar/list-pages";
 
 const PREFIXES = ["invoice_prefix", "pid_prefix", "expense_id_prefix", "product_code_prefix", "ticket_code_prefix"];
 const CLIENT = [
@@ -13,8 +14,24 @@ const CLIENT = [
   "create_invoice_billing_type_auto",
 ];
 
+// Each list page's ⚙ dialog: its own settings, then where its filter opens.
+const LIST_EXTRA: Record<string, string[]> = {
+  clients: CLIENT,
+  invoices: ["invoice_prefix"],
+  payments: ["pid_prefix"],
+  expenses: ["expense_id_prefix"],
+  products: ["product_code_prefix"],
+  tickets: ["ticket_code_prefix"],
+  olts: ["olt_poll_interval", "onu_rx_power_low_dbm"],
+  telegram: ["telegram_bot_token"],
+};
+const LIST_EXPECTED = Object.fromEntries(
+  LIST_PAGE_IDS.map((page) => [listSettingsSection(page), [...(LIST_EXTRA[page] ?? []), filterPositionKey(page)]]),
+);
+
 // Order on each page and dialog, as shown before the registry refactor.
-const EXPECTED: Record<SectionName, string[]> = {
+const EXPECTED = {
+  ...LIST_EXPECTED,
   general: [...PREFIXES, ...CLIENT],
   dashboard: DASHBOARD_VISIBILITY_ITEMS.map((item) => item.settingKey),
   sms: [
@@ -36,13 +53,7 @@ const EXPECTED: Record<SectionName, string[]> = {
   monitoring: ["device_monitor_interval", "device_monitor_fail_threshold"],
   olt: ["olt_poll_interval", "onu_rx_power_low_dbm"],
   telegram: ["telegram_bot_token"],
-  clients: CLIENT,
-  invoice_prefix: ["invoice_prefix"],
-  pid_prefix: ["pid_prefix"],
-  expense_id_prefix: ["expense_id_prefix"],
-  product_code_prefix: ["product_code_prefix"],
-  ticket_code_prefix: ["ticket_code_prefix"],
-};
+} as Record<SectionName, string[]>;
 
 describe("settings sections", () => {
   it.each(Object.keys(SECTIONS) as SectionName[])("%s shows its settings in order", (name) => {
@@ -54,11 +65,11 @@ describe("settings sections", () => {
     expect(SETTING_KEYS.filter((key) => !placed.has(key))).toEqual(["auto_inactive_reseller_client_termination_date"]);
   });
 
-  it("uses a prefix dialog title and description per prefix", () => {
-    for (const key of PREFIXES) {
-      const section = SECTIONS[key as SectionName];
-      expect(section.title).toBe(`settings.fields.${key}.label`);
-      expect(section.description).toBe("settings.common.prefix_description");
+  it("titles each list page's ⚙ dialog with the page title", () => {
+    for (const page of LIST_PAGE_IDS) {
+      const section = SECTIONS[listSettingsSection(page)];
+      expect(section.title).toBe(LIST_PAGES[page]);
+      expect(section.description).toBe("settings.sections.list_page.description");
     }
   });
 });

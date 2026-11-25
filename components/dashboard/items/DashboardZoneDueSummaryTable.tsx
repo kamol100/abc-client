@@ -44,6 +44,7 @@ export default function DashboardZoneDueSummaryTable({
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: null,  // Not a company list page: inline filter, no ⚙.
     features: {
       columns: true,
       layoutToggle: false,

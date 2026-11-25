@@ -68,6 +68,7 @@ describe("toolbar action while filtering", () => {
           setFilter={vi.fn()}
           toolbar={{
             end: [{ key: "import", node: <button type="button">Import selected</button> }],
+            page: null,
             features: { filter: { filter, filter_row: 2 } },
           }}
         />
@@ -99,6 +100,7 @@ describe("toolbar action while filtering", () => {
           data={[{ name: "client" }]}
           setFilter={vi.fn()}
           toolbar={{
+            page: null,
             features: { filter: { filter, filter_row: 2 }, add: bulk },
           }}
         />
@@ -133,6 +135,7 @@ describe("toolbar action while filtering", () => {
               { key: "links", inFilterRow: false, node: <button type="button">Page link</button> },
               { key: "total", node: <span>Running total</span> },
             ],
+            page: null,
             features: { filter: { filter, filter_row: 2 } },
           }}
         />

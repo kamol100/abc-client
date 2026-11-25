@@ -62,6 +62,7 @@ const CommunicationLogTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
+    page: "communication_logs",
     features: {
       columns: true,
       filter: toolbarOptions,

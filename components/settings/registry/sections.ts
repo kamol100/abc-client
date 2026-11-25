@@ -9,6 +9,14 @@
 
 import { DASHBOARD_VISIBILITY_ITEMS } from "@/components/dashboard/dashboard-visibility";
 import type { SettingKey } from "@/components/settings/registry/fields";
+import {
+  LIST_PAGES,
+  LIST_PAGE_IDS,
+  filterPositionKey,
+  listSettingsSection,
+  type ListPageId,
+  type ListSettingsSectionName,
+} from "@/components/data-table/toolbar/list-pages";
 
 export type SettingsGroup = {
   /** Optional heading above the group (translation key). */
@@ -42,8 +50,6 @@ const PREFIX_KEYS = [
   "product_code_prefix",
   "ticket_code_prefix",
 ] as const satisfies readonly SettingKey[];
-
-export type PrefixKey = (typeof PREFIX_KEYS)[number];
 
 const SMS_SECTION: SettingsSection = {
   title: "settings.sections.sms.title",
@@ -88,12 +94,36 @@ const TELEGRAM_SECTION: SettingsSection = {
   groups: [{ keys: ["telegram_bot_token"] }],
 };
 
-/** One-setting dialog for an ID prefix, opened from that list's toolbar. */
-const prefixDialog = (key: PrefixKey): SettingsSection => ({
-  title: `settings.fields.${key}.label`,
-  description: "settings.common.prefix_description",
-  groups: [{ keys: [key] }],
-});
+/**
+ * The page's own settings, shown above the filter setting in its ⚙ dialog.
+ * A page not listed here has only the filter setting.
+ */
+const LIST_PAGE_GROUPS: Partial<Record<ListPageId, SettingsGroup[]>> = {
+  clients: [{ keys: CLIENT_KEYS }],
+  invoices: [{ keys: ["invoice_prefix"] }],
+  payments: [{ keys: ["pid_prefix"] }],
+  expenses: [{ keys: ["expense_id_prefix"] }],
+  products: [{ keys: ["product_code_prefix"] }],
+  tickets: [{ keys: ["ticket_code_prefix"] }],
+  olts: OLT_SECTION.groups,
+  telegram: TELEGRAM_SECTION.groups,
+};
+
+/** The ⚙ dialog of a list page: its own settings, then where its filter opens. */
+function listSection(page: ListPageId): SettingsSection {
+  return {
+    title: LIST_PAGES[page],
+    description: "settings.sections.list_page.description",
+    groups: [
+      ...(LIST_PAGE_GROUPS[page] ?? []),
+      { title: "settings.groups.filter", keys: [filterPositionKey(page)] },
+    ],
+  };
+}
+
+const LIST_SECTIONS = Object.fromEntries(
+  LIST_PAGE_IDS.map((page) => [listSettingsSection(page), listSection(page)]),
+) as Record<ListSettingsSectionName, SettingsSection>;
 
 export const SECTIONS = {
   // ── Settings pages ─────────────────────────────────────────────────
@@ -125,17 +155,8 @@ export const SECTIONS = {
   olt: OLT_SECTION,
   telegram: TELEGRAM_SECTION,
 
-  // ── ⚙ dialogs on list pages ────────────────────────────────────────
-  clients: {
-    title: "client.settings.title",
-    description: "client.settings.description",
-    groups: [{ keys: CLIENT_KEYS }],
-  },
-  invoice_prefix: prefixDialog("invoice_prefix"),
-  pid_prefix: prefixDialog("pid_prefix"),
-  expense_id_prefix: prefixDialog("expense_id_prefix"),
-  product_code_prefix: prefixDialog("product_code_prefix"),
-  ticket_code_prefix: prefixDialog("ticket_code_prefix"),
+  // ── ⚙ dialogs on list pages (one per LIST_PAGES id) ─────────────────
+  ...LIST_SECTIONS,
 } satisfies Record<string, SettingsSection>;
 
 export type SectionName = keyof typeof SECTIONS;

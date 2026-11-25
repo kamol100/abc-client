@@ -52,6 +52,7 @@ export function NotificationTable() {
         title: pagination?.total
             ? `${t("notifications.title")} (${pagination.total})`
             : t("notifications.title"),
+        page: "notifications",
         features: {
             columns: true,
             filter: toolbarOptions,

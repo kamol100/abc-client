@@ -1,3 +1,44 @@
+## Form builder refactor: audit and plan (no code changed) — 2026-11-25
+
+Read-only audit of `components/form-wrapper/*`, `components/form/*`, `components/select-dropdown.tsx`, all 57 files that render `FormBuilder` / `AccordionFormBuilder` (64 sites), and the 29 files that call `useForm` directly.
+
+- Full report: https://claude.ai/artifact/SdJZFSZJkF7b35Fh8gQ9JA (problems with file references, proposed design, nine-phase migration plan, open questions).
+- Likely bugs found by reading, not yet reproduced: field-array Add/Remove buttons have no `type="button"`; the edit-loading effect can re-run `reset()` when `formSchema` is rebuilt; per-field `rules` never run under the Zod resolver; date conversion is copied per form in Zod.
+- Plan: keep the public API, lock behaviour with tests first, then split into a field registry, form-free controls, and pure data functions; bug fixes in separate commits.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1045 passed, 20 failed. 11 failures are date picker / date filter tests that look for "October 21st, 2026" and broke when the month changed.
+- Not checked in a browser. Playwright not run.
+- Working tree already had 55 modified files (data-table toolbar, `form-filter.tsx`, tables) before this task; not touched.
+
+## List filters: per-page "filter position" setting (inline or panel below the toolbar) — 2026-11-25
+
+Stage 1 of 2. Stage 2 (mobile simple search on every list, which needs a backend `any` search per list) is not done yet.
+
+- New `components/data-table/toolbar/list-pages.ts`: the 31 company list pages with a filter (id → title key), `filterPositionKey`, `listSettingsSection`, `toFilterPosition`.
+- Settings registry:
+  - one company setting `filter_position_<page>` per list page (`inline` default, or `below`), all sharing the label `settings.fields.filter_position.label` through a new `label` option on setting definitions, read via `settingLabelKey`
+  - one ⚙ section `list_<page>` per page: the page's own settings (prefix, client settings, OLT, Telegram), then the filter position
+  - the old one-off sections `clients`, `invoice_prefix`, `pid_prefix`, `expense_id_prefix`, `product_code_prefix`, `ticket_code_prefix` and `PrefixSettingsButton` are gone; those keys are still on the General settings page
+- Toolbar:
+  - `DataTableToolbarConfig.page` is now required by the type when `features.filter` is set (`null` = not a company list page). Client-area, dashboard-card and platform-support tables pass `null`.
+  - The ⚙ button is a built-in feature (after page `end` items, before columns). The eight hand-made ⚙ buttons were removed from their tables.
+  - `below`: the toolbar stays, and the filter button toggles a panel under it (`ToolbarPanel` in `toolbar-layout.tsx`), which animates its row height 0fr↔1fr with a fade and slide (no motion with reduced-motion). Closed, it takes no space and is `inert`.
+  - The panel has no labels and no Search button: `useFilterForm({ autoApply })` makes every text field apply as you type (400ms debounce, 3+ characters, or Enter). Dropdowns and dates already applied on change.
+  - A reset button (`ToolbarFilterReset`) sits right before the filter toggle while the panel is open. Closing the panel clears the filter, the same as closing the inline row.
+  - The grid is compact: 1 to 5 columns by width, `gap-2`, `p-2.5`.
+  - `inline` and mobile (sheet or simple search) are unchanged.
+- `SettingsButton` loads `SettingsPanel` lazily, with a placeholder the size of the section's rows, so tables no longer pull the settings panel (and next-auth) into every page.
+- `useOptionalSettings()` in `app-provider.tsx` (null outside the provider) for the toolbar.
+- `FormFilter`: `fieldsClassName`, and no empty action slot when there are no buttons.
+- New keys in `en.json` and `bn.json`: `settings.fields.filter_position.{label,description}`, `settings.options.filter_position_{inline,below}`, `settings.groups.filter`, `settings.sections.list_page.description`, `product_movement.title`.
+
+Checks:
+- New `tests/unit/data-table/toolbar-filter-panel.test.tsx` (7) and `list-pages.test.ts` (3). Updated the settings section, client settings field and settings golden-value tests, and added `page: null` to the toolbar test configs.
+- `scripts/ai/typecheck` passed. `scripts/ai/test`: the same 20 failures as before this change (compared on a stashed tree), everything else passed.
+- Not checked in a browser: the e2e default login (`vp`) is rejected by the local database (`CredentialsSignin`), and the saved Playwright login has expired. Still to check: panel animation and table movement, the ⚙ dialog's select saving and switching the toolbar live, 1024px and dark mode, and phone width.
+
 ## Phone numbers: one Bangladeshi mobile format in every form — 2026-11-25
 
 Matches the API change (isp-backend `App\Services\Phone\BangladeshMobile`, same day). Numbers are saved as `01[3-9]XXXXXXXX`; a typed `+88` / `88` / `880` is removed, not rejected.

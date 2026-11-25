@@ -96,6 +96,7 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
                 node: <ProductReportsSummary reports={reports} isLoading={isLoading} />,
             },
         ],
+        page: "product_movements",
         features: {
             columns: true,
             filter: toolbarOptions,

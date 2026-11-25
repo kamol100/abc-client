@@ -18,18 +18,70 @@ type BaseProps = {
   resultCount?: number;
 };
 
-/** Desktop, closed: just the button that opens the filter row. */
-export function ToolbarFilterTrigger({ onOpen }: { onOpen: () => void }) {
+/**
+ * Desktop filter button. Inline position: shown while closed, opens the row.
+ * Panel position: always shown, toggles the panel (filled while open).
+ */
+export function ToolbarFilterTrigger({
+  onClick,
+  open = false,
+  controls,
+}: {
+  onClick: () => void;
+  /** Panel position only: the panel is open. */
+  open?: boolean;
+  /** Panel position only: id of the panel it opens. */
+  controls?: string;
+}) {
   const { t } = useTranslation();
   return (
     <MyButton
       action="filter"
       size="icon"
-      variant="outline"
+      variant={open ? "default" : "outline"}
       className="shrink-0"
       aria-label={t("common.filter")}
-      onClick={onOpen}
+      aria-expanded={controls ? open : undefined}
+      aria-controls={controls}
+      onClick={onClick}
     />
+  );
+}
+
+/** Panel position: clears the filter. Sits right before the filter button while the panel is open. */
+export function ToolbarFilterReset({ onReset, active }: { onReset: () => void; active: boolean }) {
+  const { t } = useTranslation();
+  return (
+    <MyButton
+      action="reset"
+      size="icon"
+      variant={active ? "default" : "outline"}
+      className="shrink-0"
+      aria-label={t("common.reset")}
+      onClick={onReset}
+    />
+  );
+}
+
+/**
+ * Desktop, panel position: the filter fields in a compact grid under the
+ * toolbar. No labels and no Search button: every field applies as it changes
+ * (the form hook runs with `autoApply`).
+ */
+export function ToolbarFilterPanel({ options, filterHook, setFilter }: BaseProps) {
+  return (
+    <div className="rounded-lg border border-border bg-muted/40 p-2.5">
+      <FormFilter
+        formSchema={options.filter}
+        setFilter={setFilter}
+        watchFields={options.watchFields}
+        forceOpen
+        hideTrigger
+        className="w-full"
+        fieldsClassName="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+        formHook={filterHook}
+      />
+    </div>
   );
 }
 

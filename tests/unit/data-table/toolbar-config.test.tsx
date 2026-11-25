@@ -69,6 +69,7 @@ describe("DataTable toolbar config", () => {
       title: "Clients (3)",
       start: [{ key: "info", node: <span>Online 2</span> }],
       end: [{ key: "settings", node: <button type="button">Settings</button> }],
+      page: null,
       features: { columns: true, filter: { filter }, add: AddButton },
     });
 
@@ -145,7 +146,7 @@ describe("DataTable toolbar config", () => {
 
   it("clears an active filter when the desktop filter row is closed", async () => {
     const user = userEvent.setup();
-    const { setFilter } = renderTable({ features: { filter: { filter } } });
+    const { setFilter } = renderTable({ page: null, features: { filter: { filter } } });
 
     await user.click(screen.getByRole("button", { name: "common.filter" }));
     await user.type(screen.getByPlaceholderText("client.placeholder"), "ada");
