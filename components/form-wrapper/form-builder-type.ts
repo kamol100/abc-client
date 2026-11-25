@@ -50,6 +50,12 @@ export type TextFieldConfig = BaseFieldConfig & {
     /** "tel": a Bangladeshi mobile number; phone keypad, and a typed +88 is removed on blur. */
     type: "text" | "email" | "password" | "number" | "tel";
     watchForFilter?: boolean;
+    /**
+     * Inside a field array: the key the API uses for this value when it differs from
+     * `name`. It is read when the row has no value under `name`. Example: salary rows
+     * are saved as `{ label, value }` but edited as `items_label` / `items_value`.
+     */
+    valueKey?: string;
 };
 
 export type TextareaFieldConfig = BaseFieldConfig & {

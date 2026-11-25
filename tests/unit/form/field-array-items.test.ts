@@ -2,14 +2,15 @@ import { describe, expect, it } from "vitest";
 import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { normalizeFieldArrayItems } from "@/components/form-wrapper/form-field-defaults";
 
+// The API saves a row as { label, value }; the form edits it under these names.
 const salaryItemFields: FieldConfig[] = [
-  { type: "text", name: "items_label" },
-  { type: "number", name: "items_value" },
+  { type: "text", name: "items_label", valueKey: "label" },
+  { type: "number", name: "items_value", valueKey: "value" },
 ];
 
 const deductionFields: FieldConfig[] = [
-  { type: "text", name: "deductions_label" },
-  { type: "number", name: "deductions_value" },
+  { type: "text", name: "deductions_label", valueKey: "label" },
+  { type: "number", name: "deductions_value", valueKey: "value" },
 ];
 
 describe("normalizeFieldArrayItems", () => {

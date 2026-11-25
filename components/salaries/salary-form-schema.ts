@@ -79,12 +79,14 @@ export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
         {
           type: "text",
           name: "items_label",
+          valueKey: "label",
           label: { labelText: "common.label" },
           placeholder: "common.label",
         },
         {
           type: "number",
           name: "items_value",
+          valueKey: "value",
           label: { labelText: "common.value" },
           placeholder: "0",
         },
@@ -102,12 +104,14 @@ export const SalaryFormFieldSchema = (): FormFieldConfig[] => {
         {
           type: "text",
           name: "deductions_label",
+          valueKey: "label",
           label: { labelText: "common.label" },
           placeholder: "common.label",
         },
         {
           type: "number",
           name: "deductions_value",
+          valueKey: "value",
           label: { labelText: "common.value" },
           placeholder: "0",
         },

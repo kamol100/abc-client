@@ -45,17 +45,6 @@ const convertFieldValues = (data: FormValues, fields: FieldConfig[]): FormValues
 
 // --- Field array rows ---
 
-/**
- * Salary rows are saved as `{ label, value }` but edited as `items_label` / `items_value`
- * (and the same for deductions). Known debt: feature names in shared code.
- */
-const FIELD_ARRAY_ALIASES: Record<string, string[]> = {
-    items_label: ["label"],
-    deductions_label: ["label"],
-    items_value: ["value"],
-    deductions_value: ["value"],
-};
-
 export const isBlankFieldArrayValue = (value: unknown): boolean => {
     if (value == null) return true;
     if (typeof value === "string") return value.trim() === "";
@@ -63,12 +52,21 @@ export const isBlankFieldArrayValue = (value: unknown): boolean => {
     return false;
 };
 
-const readFieldArrayValue = (record: FormValues, name: string): unknown => {
-    if (!isBlankFieldArrayValue(record[name])) return record[name];
-    for (const alias of FIELD_ARRAY_ALIASES[name] ?? []) {
-        if (!isBlankFieldArrayValue(record[alias])) return record[alias];
+/**
+ * The value of a row field. A text field may name a second key (`valueKey`) that the
+ * API uses for the same value; it is read when the field's own key is blank.
+ */
+const readFieldArrayValue = (record: FormValues, field: FieldConfig): unknown => {
+    const ownValue = record[field.name];
+    if (!isBlankFieldArrayValue(ownValue)) return ownValue;
+
+    // Dropdowns and dates read their `valueKey` themselves (see their definitions).
+    const readsItself = Boolean(fieldDefinitionOf(field.type)?.readValue);
+    const apiKey = "valueKey" in field ? field.valueKey : undefined;
+    if (apiKey && !readsItself && !isBlankFieldArrayValue(record[apiKey])) {
+        return record[apiKey];
     }
-    return record[name];
+    return ownValue;
 };
 
 /** Cleans the rows of a field array: drops non-object rows and, when asked, blank rows. */
@@ -81,7 +79,7 @@ export const normalizeFieldArrayItems = (
         if (!item || typeof item !== "object") return [];
         const record = { ...(item as FormValues) };
         for (const field of itemFields) {
-            record[field.name] = readFieldArrayValue(record, field.name);
+            record[field.name] = readFieldArrayValue(record, field);
         }
         const isBlank = itemFields.every((field) => isBlankFieldArrayValue(record[field.name]));
         if (options?.omitBlank && isBlank) return [];

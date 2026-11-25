@@ -368,7 +368,7 @@ describe("FormBuilder: turning data into form values", () => {
             expect(line.product_id).toBe(8);
         });
 
-        it("edit: reads the salary names items_label / items_value from label / value", async () => {
+        it("edit: a row text field reads its value from valueKey when its own key is blank", async () => {
             const values = await startingValues(
                 [
                     {
@@ -376,8 +376,8 @@ describe("FormBuilder: turning data into form values", () => {
                         name: "salary_items",
                         defaultItem: {},
                         itemFields: [
-                            { type: "text", name: "items_label" },
-                            { type: "number", name: "items_value" },
+                            { type: "text", name: "items_label", valueKey: "label" },
+                            { type: "number", name: "items_value", valueKey: "value" },
                         ],
                     },
                 ],
