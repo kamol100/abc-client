@@ -1,3 +1,25 @@
+## Form builder refactor, phase 8: cleanup, one home, standalone controls, docs — 2026-11-25
+
+Branch `refactor-form-builder`.
+
+- **Dead code deleted** (no importer in app, components, hooks, lib or tests): `components/input-field.tsx`, `components/calendar-date-picker.tsx`, `components/sms/sms-send-form.tsx` and `sms-send-type.ts`, the second `BkashWalletForm` in `wallets/reseller-recharge.tsx`, and the `input_filter` branch of the table toolbar.
+- **One home.** `form-builder.tsx`, `form-wrapper.tsx`, `accordion-form-builder.tsx`, `form-filter.tsx` and the types (`types.ts`) moved into `components/form-builder/`. The files in `components/form-wrapper/` are one-line re-exports, so no caller changed.
+- **`SelectInput`** (`components/controls/select-input.tsx`): the dropdown with its label and options, for use outside a form.
+- **Four screens no longer create a form to host one field:** the change-package dialog, the switch-reseller dialog, the referral status filter (all `SelectInput` + `useState`), and the queue restore options (`DateInput`). `tests/unit/clients/client-switch-dialog.test.tsx` now mocks `SelectInput`.
+- **Docs.** New `components/form-builder/README.md`, a guide for someone new to the builder. `.cursor/skills/agent/SKILL.md`, `.ai/architecture.md` and `.cursor/rules/project-structure.mdc` updated.
+
+Deliberately not done:
+- **The six small hand-written forms with "no real blocker"** (two ticket reply forms, MikroTik sync and command, the platform SMS source, client wallet recharge) stay as they are. Each is under 100 lines and works; on the builder its footer would look different (border, sticky bar, Cancel button), and that needs a browser to judge. Convert them when they are next touched.
+- **Four more "form to host a field" cases** stay: `plan-feature-matrix.tsx`, `feature-permission-editor.tsx`, the fund-transaction receiver picker and the SMS send filter. Their tests mock the form field, or the field takes part in validation.
+- **A generic file field** (see phase 7).
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1338 passed, the same 9 unrelated failures as before.
+- Not checked in a browser. Playwright not run.
+
+Whole branch against `master`: 116 files changed. Before merging: a browser pass over a dialog form, a full-page form, the invoice and both stock forms and one table filter, and the Playwright suites (clients, invoices, expenses, staffs, resellers, networks, products), which need a renewed login.
+
 ## Form builder refactor, phase 7 (part 2): the stock forms moved, remaining dynamic features — 2026-11-25
 
 Branch `refactor-form-builder`.
