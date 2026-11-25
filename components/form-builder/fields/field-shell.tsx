@@ -4,7 +4,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import { Control, FieldValues, useFormContext } from "react-hook-form";
 import FieldError from "@/components/form/field-error";
 import Label from "@/components/label";
-import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 
 /** Settings one form gives to all of its fields. */
 export type FieldOptions = {

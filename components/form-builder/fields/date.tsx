@@ -9,7 +9,7 @@ import {
 import type {
     DateFieldConfig,
     DateRangeFieldConfig,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 import { toApiDateString } from "@/lib/helper/helper";
 
 /** A date as the API's date-only text, or undefined when it is not a date. */

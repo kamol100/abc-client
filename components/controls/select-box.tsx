@@ -14,7 +14,7 @@ import type {
     GroupBase,
 } from "react-select";
 import { selectStyles, selectTheme } from "@/components/controls/select-styles";
-import type { SelectOption } from "@/components/form-wrapper/form-builder-type";
+import type { SelectOption } from "@/components/form-builder/types";
 import { cn } from "@/lib/utils";
 
 function SelectDropdownIndicator(

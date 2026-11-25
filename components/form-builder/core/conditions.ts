@@ -6,7 +6,7 @@ import type {
     FieldCondition,
     FieldRule,
     VisibleWhen,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 
 /** A value the user has filled in. `0` and `false` count as filled; an empty list does not. */
 export const hasFilledValue = (value: unknown): boolean => {

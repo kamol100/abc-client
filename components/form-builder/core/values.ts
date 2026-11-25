@@ -11,7 +11,7 @@ import type {
     FieldArrayConfig,
     FieldConfig,
     FormFieldConfig,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 import {
     flattenFormSchema,
     shownFields,

@@ -2,7 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
+import { GRID_STYLES } from "@/components/form-builder/types";
 
 export type FormLoaderProps = {
     /** Number of grid columns (1–8). Uses same grid breakpoints as form builder. */

@@ -9,7 +9,7 @@ import InputField from "@/components/form/input-field";
 import MyTooltip from "@/components/my-tooltip";
 import { getCurrentGeolocation, getGeolocationErrorKey } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
-import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 
 type GeolocationFieldProps = {
     latitudeName: string;

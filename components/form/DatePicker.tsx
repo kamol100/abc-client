@@ -6,7 +6,7 @@ import { DateInput } from "@/components/controls/date-input";
 import { DateRangeInput } from "@/components/controls/date-range-input";
 import type { DatePickerMode, DatePickerValue } from "@/components/controls/date-format";
 import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
-import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 import { cn } from "@/lib/utils";
 
 export { formatDatePickerDisplay, hasSelectedDateRange } from "@/components/controls/date-format";

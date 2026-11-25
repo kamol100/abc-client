@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { get, useFormContext, useWatch } from "react-hook-form";
 import { sameFormValue } from "@/components/form-builder/core/compare";
 import { resolveFieldPath } from "@/components/form-builder/core/conditions";
-import type { FieldChangeEffect } from "@/components/form-wrapper/form-builder-type";
+import type { FieldChangeEffect } from "@/components/form-builder/types";
 
 type FieldChangeEffectProps = {
     /** Full form path of the field being watched. */

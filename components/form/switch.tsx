@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { Switch as ShadcnSwitch } from "../ui/switch";
-import type { LabelProps } from "../form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 
 type SwitchProps = {

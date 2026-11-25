@@ -3,7 +3,7 @@ import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
 import { objectToQueryString } from "@/lib/helper/helper";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import type { FieldConfig, TextFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { FieldConfig, TextFieldConfig } from "@/components/form-builder/types";
 
 const DEBOUNCE_MS = 400;
 const MIN_WATCH_LENGTH = 3;

@@ -7,7 +7,7 @@ import {
     resolveFieldPath,
     rulesOf,
 } from "@/components/form-builder/core/conditions";
-import type { DisabledWhen, FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { DisabledWhen, FieldConfig } from "@/components/form-builder/types";
 
 type DisabledWhenFieldProps = {
     field: FieldConfig;

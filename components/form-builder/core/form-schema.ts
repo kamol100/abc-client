@@ -9,7 +9,7 @@ import type {
     AccordionSection,
     FieldConfig,
     FormFieldConfig,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 
 export type FormSchema = FormFieldConfig[] | AccordionSection[];
 

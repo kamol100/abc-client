@@ -1,7 +1,7 @@
 import Switch from "@/components/form/switch";
 import { useFormActions } from "@/components/form-builder/core/form-actions";
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { SwitchFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { SwitchFieldConfig } from "@/components/form-builder/types";
 
 function SwitchField({ field, name }: { field: SwitchFieldConfig; name: string }) {
     const { requestSave } = useFormActions();

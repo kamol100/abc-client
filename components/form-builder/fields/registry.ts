@@ -2,7 +2,7 @@
  * The list of field types the form builder knows.
  *
  * To add a field type:
- *   1. Add its config type to `FieldConfig` in `form-wrapper/form-builder-type.ts`.
+ *   1. Add its config type to `FieldConfig` in `components/form-builder/types.ts`.
  *   2. Write a definition file in this folder (copy `textarea.tsx` for a simple one).
  *   3. Add it to `fieldDefinitions` below.
  */

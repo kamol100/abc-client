@@ -17,7 +17,7 @@ import {
   FieldArrayTable,
   FieldConfig,
   GRID_STYLES,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 import { cn } from "@/lib/utils";
 
 /**

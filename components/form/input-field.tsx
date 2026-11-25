@@ -1,6 +1,6 @@
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 import { Input } from "@/components/ui/input";
 import { isBdMobile, normalizeBdMobile } from "@/lib/phone";
 import { cn } from "@/lib/utils";

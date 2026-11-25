@@ -1,7 +1,7 @@
 import { Close } from "@/components/icon";
 import InputField from "@/components/form/input-field";
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { TextFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { TextFieldConfig } from "@/components/form-builder/types";
 
 type InputConfig = TextFieldConfig & { type: "text" | "email" | "number" | "tel" };
 

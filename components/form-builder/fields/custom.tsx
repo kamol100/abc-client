@@ -1,5 +1,5 @@
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { CustomFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { CustomFieldConfig } from "@/components/form-builder/types";
 
 /**
  * Your own component in a field's place. Use it when no built-in type fits:

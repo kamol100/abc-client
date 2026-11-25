@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
-import type { LabelProps } from "../form-wrapper/form-builder-type";
+import type { LabelProps } from "@/components/form-builder/types";
 import { useTranslation } from "react-i18next";
 import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 

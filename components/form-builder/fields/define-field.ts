@@ -6,7 +6,7 @@
  * a new field type is one new file in this folder plus one line in `registry.ts`.
  */
 import type { ReactNode } from "react";
-import type { FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { FieldConfig } from "@/components/form-builder/types";
 
 /** Returned by `readValue` or `toFilterParam` to say "leave the value as it is". */
 export const KEEP_VALUE = Symbol("keep value");

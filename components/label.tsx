@@ -5,7 +5,7 @@ import MyTooltip from "@/components/my-tooltip";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { InfoQuestion } from "./icon";
-import { LabelProps } from "./form-wrapper/form-builder-type";
+import { LabelProps } from "@/components/form-builder/types";
 
 type props = {
   label?: LabelProps;

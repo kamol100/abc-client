@@ -19,7 +19,7 @@ import type {
   DropdownPopulate,
   LabelProps,
   SelectOption,
-} from "@/components/form-wrapper/form-builder-type";
+} from "@/components/form-builder/types";
 
 /** Copies values from the chosen option's API record into other form fields. */
 const applyDropdownPopulate = (

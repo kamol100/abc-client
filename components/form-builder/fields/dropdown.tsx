@@ -2,7 +2,7 @@ import { lazy, Suspense, type ComponentProps } from "react";
 import { resolveFieldPath } from "@/components/form-builder/core/conditions";
 import { defineField, KEEP_VALUE } from "@/components/form-builder/fields/define-field";
 import { FieldShell, useFieldId } from "@/components/form-builder/fields/field-shell";
-import type { DropdownFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { DropdownFieldConfig } from "@/components/form-builder/types";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // react-select is large, so the dropdown's code is loaded when the first one is drawn.

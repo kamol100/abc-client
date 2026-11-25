@@ -8,7 +8,7 @@ import {
   resolveFieldPath,
   rulesOf,
 } from "@/components/form-builder/core/conditions";
-import { FormFieldConfig, VisibleWhen } from "@/components/form-wrapper/form-builder-type";
+import { FormFieldConfig, VisibleWhen } from "@/components/form-builder/types";
 
 /**
  * Shows a field only while its `visibleWhen` rule passes. While hidden, the field is

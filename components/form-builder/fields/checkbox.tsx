@@ -1,6 +1,6 @@
 import CheckboxField from "@/components/form/checkbox-field";
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { CheckboxFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { CheckboxFieldConfig } from "@/components/form-builder/types";
 
 /** Several choices from a list, or one yes/no box with `single`. */
 export const checkboxField = defineField<CheckboxFieldConfig>({

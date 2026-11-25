@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import type { FormSchema } from "@/components/form-builder/core/form-schema";
 import { detailUrlOf, entityIdOf } from "@/components/form-builder/core/request";
 import { isDataComplete } from "@/components/form-builder/core/values";
-import type { HydratePolicy } from "@/components/form-wrapper/form-builder-type";
+import type { HydratePolicy } from "@/components/form-builder/types";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { parseApiError } from "@/lib/helper/helper";
 

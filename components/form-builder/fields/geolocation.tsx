@@ -1,6 +1,6 @@
 import GeolocationField from "@/components/form/geolocation-field";
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { GeolocationFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { GeolocationFieldConfig } from "@/components/form-builder/types";
 
 /**
  * Latitude and longitude inputs with a "use my location" button. It holds two values,

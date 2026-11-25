@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import InputField from "@/components/form/input-field";
 import { defineField, type FormFieldProps } from "@/components/form-builder/fields/define-field";
-import type { ComputedFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { ComputedFieldConfig } from "@/components/form-builder/types";
 
 type Props = FormFieldProps<ComputedFieldConfig>;
 

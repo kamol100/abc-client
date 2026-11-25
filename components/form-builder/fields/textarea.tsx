@@ -1,6 +1,6 @@
 import TextareaField from "@/components/form/textarea-field";
 import { defineField } from "@/components/form-builder/fields/define-field";
-import type { TextareaFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import type { TextareaFieldConfig } from "@/components/form-builder/types";
 
 /** A multi-line text input. */
 export const textareaField = defineField<TextareaFieldConfig>({

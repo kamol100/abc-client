@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "@/app/actions";
-import type { SelectOption } from "@/components/form-wrapper/form-builder-type";
+import type { SelectOption } from "@/components/form-builder/types";
 
 type DropdownApiItem = {
     id: string | number;

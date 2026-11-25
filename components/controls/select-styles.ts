@@ -5,7 +5,7 @@
  * are used here as CSS variables.
  */
 import type { StylesConfig, ThemeConfig } from "react-select";
-import type { SelectOption } from "@/components/form-wrapper/form-builder-type";
+import type { SelectOption } from "@/components/form-builder/types";
 
 /** Theme `text-sm`. 0.875rem (14px) at the default `md` font size. */
 const dropdownFontSize = "var(--text-sm)";
