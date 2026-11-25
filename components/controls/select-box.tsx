@@ -109,14 +109,26 @@ export function SelectBox({
         [],
     );
 
+    // A value with no option (the related record was removed or made inactive) is
+    // shown as the value itself, so the user can see that something is set. Not while
+    // the options are still loading, when "no option yet" is normal.
+    const optionFor = (current: unknown): SelectOption | null => {
+        const match = options.find((option) => isOptionMatch(option.value, current));
+        if (match) return match;
+        if (isLoading) return null;
+        if (typeof current !== "string" && typeof current !== "number") return null;
+        return current === "" ? null : { value: current, label: String(current) };
+    };
+
     const selectedOption = (() => {
         if (value === undefined || value === null || value === "") return null;
         if (isMulti && Array.isArray(value)) {
-            return options.filter((option) =>
-                value.some((currentValue) => isOptionMatch(option.value, currentValue)),
-            );
+            return value.flatMap((current) => {
+                const option = optionFor(current);
+                return option ? [option] : [];
+            });
         }
-        return options.find((option) => isOptionMatch(option.value, value)) ?? null;
+        return optionFor(value);
     })();
 
     return (

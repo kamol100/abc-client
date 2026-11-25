@@ -341,16 +341,49 @@ describe("FormBuilder fields", () => {
             expect(await screen.findByText("status.inactive")).toBeInTheDocument();
         });
 
-        it("dropdown shows nothing for a saved value that is not in the options, but keeps it", async () => {
+        it("dropdown shows a saved value that has no option as the value itself, and keeps it", async () => {
             const { container } = renderFields(
                 [{ type: "dropdown", name: "status", options: statusOptions, placeholder: "pick" }],
                 { data: { status: 99 } },
             );
             const user = userEvent.setup();
 
+            await waitFor(() => expect(container.querySelector(".select__single-value")).toHaveTextContent("99"));
+            expect(await saveAndReadPayload(user)).toEqual({ status: 99 });
+        });
+
+        it("dropdown shows nothing for a missing option while its options are loading", async () => {
+            let release: (value: unknown) => void = () => {};
+            mockApi((request) =>
+                request.url === "/dropdown-zones"
+                    ? new Promise((resolve) => {
+                          release = resolve;
+                      })
+                    : undefined,
+            );
+            const { container } = renderFields(
+                [{ type: "dropdown", name: "zone_id", api: "/dropdown-zones", placeholder: "pick" }],
+                { data: { zone_id: 3 } },
+            );
+
             expect(await screen.findByText("pick")).toBeInTheDocument();
             expect(container.querySelector(".select__single-value")).toBeNull();
-            expect(await saveAndReadPayload(user)).toEqual({ status: 99 });
+
+            release({ success: true, data: [{ id: 3, name: "North" }] });
+            expect(await screen.findByText("North")).toBeInTheDocument();
+        });
+
+        it("a multi dropdown keeps the order of the saved values and shows a missing one as itself", async () => {
+            const { container } = renderFields(
+                [{ type: "dropdown", name: "tags", options: statusOptions, isMulti: true }],
+                { data: { tags: [2, 99, 1] } },
+            );
+
+            await waitFor(() =>
+                expect(
+                    Array.from(container.querySelectorAll(".select__multi-value__label")).map((node) => node.textContent),
+                ).toEqual(["status.inactive", "99", "status.active"]),
+            );
         });
 
         it("radio stores the option value as a string, even for a number option", async () => {
