@@ -79,7 +79,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadlin
           placeholder: "client.pppoe_password.placeholder",
         },
         {
-          type: "text",
+          type: "tel",
           name: "phone",
           label: { labelText: "client.phone.label", mandatory: true },
           placeholder: "client.phone.placeholder",

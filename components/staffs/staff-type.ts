@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { normalizeDateOnlyInput } from "@/lib/helper/helper";
+import { requiredBdMobile } from "@/lib/phone";
 
 const RoleRefSchema = z.object({
   id: z.coerce.number(),
@@ -76,9 +77,7 @@ export const StaffFormSchema = z.object({
   roles_id: z.array(z.coerce.number()).default([]),
   zone_ids: z.array(z.coerce.number()).default([]),
   designation: z.string().nullable().optional().default(""),
-  phone: z.string().min(11, {
-    message: "staff.phone.errors.min",
-  }),
+  phone: requiredBdMobile("common.phone_required"),
   email: z.string().nullable().optional().default(""),
   date_of_birth: dateOnlyField.nullable().optional(),
   join_date: dateOnlyField.nullable().optional(),

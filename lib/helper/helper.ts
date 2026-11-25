@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from "date-fns";
 import { bn, enUS } from "date-fns/locale";
+import { isBdMobile, normalizeBdMobile } from "@/lib/phone";
 
 export function copyWithCommand(value: string): boolean {
     const previousFocus = document.activeElement;
@@ -289,24 +290,11 @@ export function apiErrorText(
 }
 
 /**
- * Bangladesh mobile: local `01[3-9]XXXXXXXX`, intl `8801[3-9]XXXXXXXX`, or 10 digits `1[3-9]XXXXXXXX`.
- * Accepts optional `+`, `00` prefix, and common separators.
+ * Bangladesh mobile, typed in any common form (01…, +880…, 880…, with spaces or dashes).
+ * See `normalizeBdMobile` in `@/lib/phone` for the saved form.
  */
 export function isBangladeshMobile(value: string): boolean {
-    const d = value.replace(/[\s\-().]/g, "");
-    if (!/^\+?\d+$/.test(d)) return false;
-    let n = d.startsWith("+") ? d.slice(1) : d;
-    if (n.startsWith("00")) n = n.slice(2);
-    if (n.length === 13 && n.startsWith("880")) {
-        return /^8801[3-9]\d{8}$/.test(n);
-    }
-    if (n.length === 11) {
-        return /^01[3-9]\d{8}$/.test(n);
-    }
-    if (n.length === 10) {
-        return /^1[3-9]\d{8}$/.test(n);
-    }
-    return false;
+    return isBdMobile(normalizeBdMobile(value));
 }
 
 const HOSTNAME_LABEL = /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|xn--[a-z0-9-]+)$/i;

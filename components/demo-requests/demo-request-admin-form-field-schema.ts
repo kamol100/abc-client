@@ -48,13 +48,13 @@ const DemoRequestAdminFormFieldSchema = (): FieldConfig[] => {
             placeholder: "admin_demo_request.fields.website.placeholder",
         },
         {
-            type: "text",
+            type: "tel",
             name: "phone",
             label: { labelText: "admin_demo_request.fields.phone.label", mandatory: true },
             placeholder: "demo_request.fields.phone.placeholder",
         },
         {
-            type: "text",
+            type: "tel",
             name: "whatsapp",
             label: { labelText: "admin_demo_request.fields.whatsapp.label", mandatory: true },
             placeholder: "demo_request.fields.whatsapp.placeholder",

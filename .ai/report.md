@@ -1,3 +1,31 @@
+## Phone numbers: one Bangladeshi mobile format in every form — 2026-11-25
+
+Matches the API change (isp-backend `App\Services\Phone\BangladeshMobile`, same day). Numbers are saved as `01[3-9]XXXXXXXX`; a typed `+88` / `88` / `880` is removed, not rejected.
+
+- New `lib/phone.ts`:
+  - `BD_MOBILE_REGEX`, `normalizeBdMobile`, `isBdMobile`
+  - zod rules `requiredBdMobile` and `optionalBdMobile`, which normalize and then check
+  - `isBangladeshMobile` in `lib/helper/helper.ts` now uses it
+- FormBuilder field type `"tel"`. `InputField` with `type="tel"` gets the phone keypad (`inputMode`, `autoComplete`), and on blur a number typed with +88 is rewritten to `01…`. The `/pay` lookup field already used `type="tel"`, so it gets this too.
+- Phone fields now `tel` with the rule:
+  - client (now required; the label already said so)
+  - reseller phone and company phone
+  - staff
+  - agent
+  - vendor
+  - company
+  - company profile phone
+  - demo request phone and WhatsApp (admin and public form)
+  - MikroTik import
+- Company profile support phone: country code removed for mobiles, any other number (096 hotline) still allowed.
+- New keys `common.phone_required` and `common.phone_bd_mobile_invalid` in `en.json` and `bn.json`. The phone placeholders now read "Ex: 01712345678" / "যেমন: 01712345678".
+
+Checks:
+- New `tests/unit/lib/phone.test.ts`. `tests/unit/clients/client-payload.test.ts` fixtures now have a phone, plus a test for required, invalid and +88 removal.
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: the same 20 failures as before this change, everything else passed.
+- Not checked in a browser.
+
 ## Permission group list did not scroll on phones — 2026-11-25
 
 - Cause: the page area (`PageContainer`, fixed table layout) is a fixed-height flex column. The panel root has `overflow-hidden`, so as a flex item its minimum height is 0 and it shrank to the space left. On phones the list has no height of its own, so it was cut off and nothing scrolled. Desktop was fine because the panes have a fixed `md:` height.

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { normalizeBdMobile, requiredBdMobile } from "@/lib/phone";
 
 export const CompanyProfileRowSchema = z
   .object({
@@ -23,13 +24,16 @@ export const CompanyProfileFormSchema = z.object({
     })
     .trim()
     .min(2, { message: "company_profile.name.errors.min" }),
-  phone: z.string().trim().optional().or(z.literal("")),
-  support_phone: z
-    .string()
-    .trim()
-    .max(255, { message: "company_profile.support_phone.errors.max" })
-    .optional()
-    .or(z.literal("")),
+  phone: requiredBdMobile("common.phone_required"),
+  // Often a 096… hotline, so any number is accepted; a mobile number still loses its +88.
+  support_phone: z.preprocess(
+    (value) => (typeof value === "string" ? normalizeBdMobile(value) ?? "" : value),
+    z
+      .string()
+      .max(255, { message: "company_profile.support_phone.errors.max" })
+      .optional()
+      .or(z.literal("")),
+  ),
   email: z
     .string()
     .trim()

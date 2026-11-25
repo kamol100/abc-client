@@ -85,7 +85,7 @@ export const StaffFormSchema = ({ mode = "create" }: Props): AccordionSection[] 
           placeholder: "staff.designation.placeholder",
         },
         {
-          type: "text",
+          type: "tel",
           name: "phone",
           label: { labelText: "staff.phone.label", mandatory: true },
           placeholder: "staff.phone.placeholder",

@@ -13,7 +13,7 @@ const CompanyProfileFormFieldSchema = (
     placeholder: "company_profile.name.placeholder",
   },
   {
-    type: "text",
+    type: "tel",
     name: "phone",
     label: {
       labelText: "company_profile.phone.label",
@@ -23,7 +23,7 @@ const CompanyProfileFormFieldSchema = (
   ...(options.includeSupportPhone
     ? [
         {
-          type: "text" as const,
+          type: "tel" as const,
           name: "support_phone",
           label: {
             labelText: "company_profile.support_phone.label",

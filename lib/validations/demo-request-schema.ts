@@ -1,4 +1,4 @@
-import { isBangladeshMobile } from "@/lib/helper/helper";
+import { requiredBdMobile } from "@/lib/phone";
 import { z } from "zod";
 
 const TEXT_MAX = 200;
@@ -29,11 +29,10 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
         .string()
         .trim()
         .max(2000, err("demo_request.fields.website.errors.max")),
-      phone: z
-        .string()
-        .trim()
-        .min(1, err("demo_request.fields.phone.errors.required"))
-        .refine(isBangladeshMobile, err("demo_request.fields.phone.errors.invalid")),
+      phone: requiredBdMobile(
+        err("demo_request.fields.phone.errors.required"),
+        err("demo_request.fields.phone.errors.invalid"),
+      ),
       user_count: z
         .string()
         .trim()
@@ -42,11 +41,10 @@ export function buildDemoRequestSchema(err: (key: string) => string) {
           (s) => s.length === 0 || /^\d{1,12}$/.test(s),
           err("demo_request.fields.user_count.errors.invalid")
         ),
-      whatsapp: z
-        .string()
-        .trim()
-        .min(1, err("demo_request.fields.whatsapp.errors.required"))
-        .refine(isBangladeshMobile, err("demo_request.fields.whatsapp.errors.invalid")),
+      whatsapp: requiredBdMobile(
+        err("demo_request.fields.whatsapp.errors.required"),
+        err("demo_request.fields.whatsapp.errors.invalid"),
+      ),
       office_address: z
         .string()
         .trim()

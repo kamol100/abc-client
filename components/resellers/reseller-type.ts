@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { WalletResourceRowSchema } from "@/components/wallets/wallet-type";
 import { toApiDateString } from "@/lib/helper/helper";
+import { optionalBdMobile, requiredBdMobile } from "@/lib/phone";
 
 const UserRefSchema = z.object({
     id: z.coerce.number().optional(),
@@ -107,17 +108,14 @@ const ResellerFormBaseSchema = z
         }).min(2, { message: "reseller.name.errors.min" }),
         username: z.string().nullable().optional(),
         password: z.string().nullable().optional(),
-        phone: z.string({
-            required_error: "reseller.phone.errors.required",
-            invalid_type_error: "reseller.phone.errors.required",
-        }).min(11, { message: "reseller.phone.errors.min" }),
+        phone: requiredBdMobile("reseller.phone.errors.required"),
         network_id: z.coerce.number({
             invalid_type_error: "reseller.network.errors.required",
         }).min(1, { message: "reseller.network.errors.required" }),
         zone_id: z.coerce.number().nullable().optional(),
         package_id: z.array(z.coerce.number()).default([]),
         company: z.string().nullable().optional().default(""),
-        company_phone: z.string().nullable().optional().default(""),
+        company_phone: optionalBdMobile().optional(),
         company_address: z.string().nullable().optional().default(""),
         prefix: z.string().nullable().optional().default(""),
         status: z.coerce.number().default(1),

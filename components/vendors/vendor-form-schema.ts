@@ -9,7 +9,7 @@ const VendorFormFieldSchema = (): FieldConfig[] => {
             placeholder: "vendor.name.placeholder",
         },
         {
-            type: "text",
+            type: "tel",
             name: "phone",
             label: { labelText: "vendor.phone.label", mandatory: true },
             placeholder: "vendor.phone.placeholder",

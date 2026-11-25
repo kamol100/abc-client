@@ -368,6 +368,7 @@ const FormBuilder = ({
       case "text":
       case "email":
       case "number":
+      case "tel":
         return (
           <InputField
             name={name}

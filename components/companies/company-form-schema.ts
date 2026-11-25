@@ -9,7 +9,7 @@ export const CompanyFormFieldSchema = (mode: "create" | "edit"): FieldConfig[] =
             placeholder: "company.name.placeholder",
         },
         {
-            type: "text" as const,
+            type: "tel" as const,
             name: "phone",
             label: { labelText: "company.phone.label", mandatory: true },
             placeholder: "company.phone.placeholder",

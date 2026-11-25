@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { InvoiceTypeRefSchema } from "@/components/invoices/invoice-type";
 import { normalizeDateOnlyInput } from "@/lib/helper/helper";
+import { requiredBdMobile } from "@/lib/phone";
 
 const isBlankClientValue = (value: unknown): boolean =>
     value === undefined ||
@@ -121,7 +122,7 @@ export const ClientFormSchema = z.object({
     name: z.string({
         required_error: "client.name.errors.required",
     }).min(2, { message: "client.name.errors.min" }),
-    phone: nullableText,
+    phone: requiredBdMobile("common.phone_required"),
     email: nullableText,
     pppoe_username: z.string({
         required_error: "client.pppoe_username.errors.required",

@@ -1,4 +1,4 @@
-import { isBangladeshMobile } from "@/lib/helper/helper";
+import { requiredBdMobile } from "@/lib/phone";
 import { z } from "zod";
 
 const TEXT_MAX = 200;
@@ -29,7 +29,7 @@ const optionalUserCount = z
     );
 
 const requiredPhone = (requiredMessage: string, invalidMessage: string) =>
-    z.string().trim().min(1, requiredMessage).refine(isBangladeshMobile, invalidMessage);
+    requiredBdMobile(requiredMessage, invalidMessage);
 
 const SUBDOMAIN = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.){2,}[a-z]{2,}$/i;
 

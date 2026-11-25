@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { requiredBdMobile } from "@/lib/phone";
 
 const WalletRefSchema = z.object({
     id: z.coerce.number().optional(),
@@ -48,10 +49,7 @@ const baseCompanyFormSchema = {
         required_error: "company.domain.errors.required",
         invalid_type_error: "company.domain.errors.required",
     }).min(2, { message: "company.domain.errors.min" }),
-    phone: z.string({
-        required_error: "company.phone.errors.required",
-        invalid_type_error: "company.phone.errors.required",
-    }).min(11, { message: "company.phone.errors.min" }),
+    phone: requiredBdMobile("company.phone.errors.required"),
     email: z.string().email({ message: "company.email.errors.invalid" }).nullable().optional().or(z.literal("")),
     address: z.string().nullable().optional().default(""),
     status: z.string({

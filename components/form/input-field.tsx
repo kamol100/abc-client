@@ -4,6 +4,7 @@ import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
 import FieldError from "@/components/form/field-error";
 import Label from "@/components/label";
 import { Input } from "@/components/ui/input";
+import { isBdMobile, normalizeBdMobile } from "@/lib/phone";
 import { cn } from "@/lib/utils";
 
 export type InputFieldProps = {
@@ -60,15 +61,26 @@ const InputField: React.FC<InputFieldProps> = ({
                 rules={rules}
                 defaultValue={defaultValue}
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => {
+                    const isTel = type === "tel";
+                    // A mobile number typed with +88 / 880 shows (and is saved) as 01XXXXXXXXX.
+                    const handleBlur = () => {
+                        if (isTel && typeof value === "string") {
+                            const local = normalizeBdMobile(value);
+                            if (isBdMobile(local) && local !== value) onChange(local);
+                        }
+                        onBlur();
+                    };
                     const input = (
                         <Input
                             id={name}
                             placeholder={placeholder ? t(placeholder as string) : ""}
                             type={type}
+                            inputMode={isTel ? "tel" : undefined}
+                            autoComplete={isTel ? "tel" : undefined}
                             step={step}
                             value={readOnly ? defaultValue ?? value ?? "" : value ?? ""}
                             onChange={onChange}
-                            onBlur={onBlur}
+                            onBlur={handleBlur}
                             onFocus={onFocus}
                             ref={ref}
                             readOnly={readOnly}

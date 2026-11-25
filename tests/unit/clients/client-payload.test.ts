@@ -118,6 +118,7 @@ describe("client update payload", () => {
     it("accepts the leaked string markers and coerces integer columns", () => {
         const payload = clientPayload({
             name: "testuser02",
+            phone: "+8801677217129",
             pppoe_username: "testuser02",
             pppoe_password: "dev-pass-02",
             network_id: "8",
@@ -148,6 +149,7 @@ describe("client update payload", () => {
     it("keeps payment deadline 0 and an assigned reseller", () => {
         const payload = clientPayload({
             name: "testuser02",
+            phone: "+8801677217129",
             pppoe_username: "testuser02",
             pppoe_password: "dev-pass-02",
             network_id: 8,
@@ -169,6 +171,7 @@ describe("client create and edit billing defaults", () => {
     it("submits create defaults and keeps an edited billing choice", () => {
         const created = clientPayload({
             name: "testuser02",
+            phone: "+8801677217129",
             pppoe_username: "testuser02",
             pppoe_password: "dev-pass-02",
             network_id: 8,
@@ -190,6 +193,7 @@ describe("client create and edit billing defaults", () => {
 
         const edited = clientPayload({
             name: "testuser02",
+            phone: "+8801677217129",
             pppoe_username: "testuser02",
             pppoe_password: "dev-pass-02",
             network_id: 8,
@@ -211,6 +215,7 @@ describe("client create and edit billing defaults", () => {
     it("keeps a missing edit billing value null", () => {
         const payload = clientPayload({
             name: "testuser02",
+            phone: "+8801677217129",
             pppoe_username: "testuser02",
             pppoe_password: "dev-pass-02",
             network_id: 8,
@@ -242,5 +247,25 @@ describe("sanitizeServerActionPayload", () => {
             reseller_id: null,
             nested: { device_id: null },
         });
+    });
+});
+
+describe("client phone", () => {
+    it("is required and saved without the +88 country code", () => {
+        const base = {
+            name: "testuser02",
+            pppoe_username: "testuser02",
+            pppoe_password: "dev-pass-02",
+            network_id: 8,
+            package_id: 19,
+        };
+
+        expect(clientPayload({ ...base, phone: "+880 1677-217129" }).phone).toBe("01677217129");
+
+        const missing = ClientFormSchema.safeParse({ ...base, phone: "" });
+        expect(missing.error?.issues.find((issue) => issue.path[0] === "phone")?.message).toBe("common.phone_required");
+
+        const invalid = ClientFormSchema.safeParse({ ...base, phone: "01212345678" });
+        expect(invalid.error?.issues.find((issue) => issue.path[0] === "phone")?.message).toBe("common.phone_bd_mobile_invalid");
     });
 });

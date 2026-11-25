@@ -1,5 +1,7 @@
 {
     "common": {
+        "phone_bd_mobile_invalid": "Enter a valid mobile number, for example 01712345678",
+        "phone_required": "Phone number is required",
         "optional": "Optional",
         "delete_reason": {
             "label": "Reason for deleting",
@@ -1046,7 +1048,7 @@
         },
         "phone": {
             "label": "Phone Number",
-            "placeholder": "Enter phone number",
+            "placeholder": "Ex: 01712345678",
             "errors": {
                 "min": "Phone number must be at least 11 digits"
             }
@@ -1247,7 +1249,7 @@
         },
         "phone": {
             "label": "Phone",
-            "placeholder": "Enter phone number",
+            "placeholder": "Ex: 01712345678",
             "errors": {
                 "required": "Phone is required",
                 "min": "Phone must be at least 11 digits"
@@ -1285,7 +1287,7 @@
         },
         "phone": {
             "label": "Phone Number",
-            "placeholder": "Enter phone number",
+            "placeholder": "Ex: 01712345678",
             "errors": {
                 "required": "Phone is required",
                 "min": "Phone must be at least 11 digits"
@@ -1369,7 +1371,7 @@
         },
         "phone": {
             "label": "Phone Number",
-            "placeholder": "Enter phone number"
+            "placeholder": "Ex: 01712345678"
         },
         "support_phone": {
             "label": "Support Phone",
@@ -1497,7 +1499,7 @@
         },
         "phone": {
             "label": "Phone Number",
-            "placeholder": "Ex: 016772171..."
+            "placeholder": "Ex: 01712345678"
         },
         "pppoe_username": {
             "label": "PPPoE ID",
@@ -3309,7 +3311,7 @@
         },
         "phone": {
             "label": "Phone",
-            "placeholder": "Enter phone number",
+            "placeholder": "Ex: 01712345678",
             "errors": {
                 "invalid": "Phone must be a string",
                 "max": "Phone must be at most 255 characters"
@@ -4120,7 +4122,7 @@
         },
         "phone": {
             "label": "Phone Number",
-            "placeholder": "Enter phone number",
+            "placeholder": "Ex: 01712345678",
             "errors": {
                 "required": "Phone number is required",
                 "min": "Phone number must be at least 11 digits"
@@ -4147,7 +4149,7 @@
         },
         "company_phone": {
             "label": "Company Phone",
-            "placeholder": "Enter company phone"
+            "placeholder": "Ex: 01712345678"
         },
         "company_address": {
             "label": "Company Address",

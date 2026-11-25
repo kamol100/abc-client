@@ -50,7 +50,8 @@ type BaseFieldConfig = {
 };
 
 export type TextFieldConfig = BaseFieldConfig & {
-    type: "text" | "email" | "password" | "number";
+    /** "tel": a Bangladeshi mobile number; phone keypad, and a typed +88 is removed on blur. */
+    type: "text" | "email" | "password" | "number" | "tel";
     watchForFilter?: boolean;
 };
 

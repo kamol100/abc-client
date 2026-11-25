@@ -54,7 +54,7 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props =
                     ]
                     : []),
                 {
-                    type: "text",
+                    type: "tel",
                     name: "phone",
                     label: { labelText: "reseller.phone.label", mandatory: true },
                     placeholder: "reseller.phone.placeholder",
@@ -96,7 +96,7 @@ export const ResellerFormFieldSchema = ({ mode = "create", resellerId }: Props =
                     placeholder: "reseller.company.placeholder",
                 },
                 {
-                    type: "text",
+                    type: "tel",
                     name: "company_phone",
                     label: { labelText: "reseller.company_phone.label" },
                     placeholder: "reseller.company_phone.placeholder",

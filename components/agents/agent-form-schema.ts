@@ -9,7 +9,7 @@ export const AgentFormFieldSchema = (): FieldConfig[] => {
             placeholder: "agent.name.placeholder",
         },
         {
-            type: "text",
+            type: "tel",
             name: "phone",
             label: { labelText: "agent.phone.label" },
             placeholder: "agent.phone.placeholder",

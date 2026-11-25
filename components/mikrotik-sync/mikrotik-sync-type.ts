@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { optionalBdMobile } from "@/lib/phone";
 
 export const MikrotikSyncResellerSchema = z
   .object({
@@ -56,7 +57,7 @@ export const MikrotikSyncImportSchema = z.object({
       required_error: "client.name.errors.required",
     })
     .min(2, { message: "client.name.errors.min" }),
-  phone: z.string().nullable().optional(),
+  phone: optionalBdMobile().optional(),
   email: z.string().nullable().optional(),
   pppoe_username: z.string().min(1, {
     message: "client.pppoe_username.errors.required",

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { optionalBdMobile } from "@/lib/phone";
 
 export const AgentRowSchema = z
     .object({
@@ -22,11 +23,7 @@ export const AgentFormSchema = z.object({
         })
         .min(2, { message: "agent.name.errors.min" })
         .max(255, { message: "agent.name.errors.max" }),
-    phone: z
-        .string({ invalid_type_error: "agent.phone.errors.invalid" })
-        .max(255, { message: "agent.phone.errors.max" })
-        .nullable()
-        .optional(),
+    phone: optionalBdMobile().optional(),
     commission: z.coerce
         .number({
             required_error: "agent.commission.errors.required",
