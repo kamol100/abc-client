@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useId } from "react";
 import { format } from "date-fns";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import DatePicker from "@/components/form/DatePicker";
-import { Form } from "@/components/ui/form";
+import { DateInput } from "@/components/controls/date-input";
+import FieldLabel from "@/components/label";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -32,11 +31,10 @@ export const restorePayload = (value: RestoreOptionsValue) =>
 export const isRestoreOptionsValid = (value: RestoreOptionsValue) =>
   value.mode === "keep" || (value.sendAt instanceof Date && !Number.isNaN(value.sendAt.getTime()));
 
-type SendAtForm = { send_at: Date | null };
 
 /**
  * Restore choices: keep the old status, or queue it again as pending at a send time
- * (DatePicker with time, defaults to now). The time only applies to pending.
+ * (a date and time, defaults to now). The time only applies to pending.
  */
 export function CommunicationQueueRestoreOptions({
   value,
@@ -47,18 +45,6 @@ export function CommunicationQueueRestoreOptions({
 }) {
   const { t } = useTranslation();
   const id = useId();
-  // DatePicker is a form field, so the send time lives in a small form of its own.
-  const form = useForm<SendAtForm>({ defaultValues: { send_at: value.sendAt } });
-  const latest = useRef({ value, onChange });
-  latest.current = { value, onChange };
-
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      const sendAt = values.send_at instanceof Date ? values.send_at : null;
-      latest.current.onChange({ ...latest.current.value, sendAt });
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   return (
     <div className="grid gap-4">
@@ -84,16 +70,19 @@ export function CommunicationQueueRestoreOptions({
         </RadioGroup>
       </fieldset>
       <div className="grid gap-1">
-        <Form {...form}>
-          <DatePicker
-            name="send_at"
-            label={{ labelText: "communication_queue.restore.send_at" }}
+        <div className="flex flex-col gap-1">
+          <FieldLabel htmlFor="send_at" label={{ labelText: "communication_queue.restore.send_at" }} />
+          <DateInput
+            id="send_at"
+            value={value.sendAt}
+            onChange={(sendAt) => onChange({ ...value, sendAt: sendAt ?? null })}
+            onClear={() => onChange({ ...value, sendAt: null })}
             placeholder="communication_queue.restore.send_at"
             showTime
             clearable={false}
             disabled={value.mode !== "pending"}
           />
-        </Form>
+        </div>
         {/* Fixed line so switching the mode does not move the buttons. */}
         <p className="min-h-5 text-xs text-muted-foreground">
           {value.mode === "pending"

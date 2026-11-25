@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Copy } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -9,7 +8,7 @@ import { toast } from "react-toastify";
 import Card from "@/components/card";
 import { DataTable } from "@/components/data-table/data-table";
 import MyButton from "@/components/my-button";
-import SelectDropdown from "@/components/select-dropdown";
+import { SelectInput } from "@/components/controls/select-input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReferralDenied, ReferralQueryError } from "@/components/referrals/referral-detail";
 import { ReferralCaptureForm } from "@/components/referrals/referral-form";
@@ -80,8 +79,7 @@ export default function ReferralTable({ platform = false }: { platform?: boolean
   const { hasPermission } = usePermissions();
   const endpoint = platform ? "platform-referrals" : "referrals";
   const allowed = hasPermission(`${endpoint}.access`);
-  const statusForm = useForm<{ status: string | null }>({ defaultValues: { status: "" } });
-  const status = useWatch({ control: statusForm.control, name: "status" });
+  const [status, setStatus] = useState<string | null>(null);
   const params = useMemo(() => status ? { status } : undefined, [status]);
   const query = useApiQuery<ReferralList>({ url: endpoint, queryKey: [endpoint], params, enabled: allowed });
   const result = query.data?.data;
@@ -110,17 +108,17 @@ export default function ReferralTable({ platform = false }: { platform?: boolean
         <div className="mb-3 flex min-h-10 flex-wrap items-center justify-between gap-2">
           <h2 className="font-semibold">{t("referral.list")}</h2>
           <div className="flex flex-wrap items-center gap-2">
-            <FormProvider {...statusForm}>
-              <div className="w-44 max-w-full">
-                <label htmlFor="status" className="sr-only">{t("referral.filter_status")}</label>
-                <SelectDropdown
-                  name="status"
-                  placeholder="referral.all_statuses"
-                  options={referralStatuses.map((value) => ({ value, label: `referral.status.${value}` }))}
-                  isSearchable={false}
-                />
-              </div>
-            </FormProvider>
+            <div className="w-44 max-w-full">
+              <label htmlFor="status" className="sr-only">{t("referral.filter_status")}</label>
+              <SelectInput
+                id="status"
+                value={status}
+                onChange={(value) => setStatus(typeof value === "string" ? value : null)}
+                placeholder="referral.all_statuses"
+                options={referralStatuses.map((value) => ({ value, label: `referral.status.${value}` }))}
+                isSearchable={false}
+              />
+            </div>
             {canAdd && <ReferralCaptureForm assisted={platform} />}
             {query.isLoading && addPermission && <Skeleton className="h-8 w-28" />}
           </div>

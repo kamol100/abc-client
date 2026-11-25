@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type ReactNode } from "react";
-import { useFormContext } from "react-hook-form";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ClientSwitchDialog from "@/components/clients/client-switch-dialog";
 import { ClientRow } from "@/components/clients/client-type";
@@ -27,11 +26,10 @@ vi.mock("@/hooks/use-api-mutation", () => ({
     },
 }));
 
-vi.mock("@/components/select-dropdown", () => ({
-    default: function MockResellerSelect() {
-        const { setValue } = useFormContext();
+vi.mock("@/components/controls/select-input", () => ({
+    SelectInput: function MockResellerSelect({ onChange }: { onChange: (value: number) => void }) {
         return (
-            <button type="button" onClick={() => setValue("reseller_id", 7)}>
+            <button type="button" onClick={() => onChange(7)}>
                 pick-reseller
             </button>
         );

@@ -3,16 +3,15 @@
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import SelectDropdown from "@/components/select-dropdown";
+import { SelectInput } from "@/components/controls/select-input";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Package } from "lucide-react";
-import { FC, ReactNode } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FC, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ClientRow, getClientId } from "./client-type";
 
-interface ChangePackageForm {
-    package_id: number | null;
+interface ChangePackagePayload {
+    package_id: string | number;
 }
 
 interface ClientChangePackageDialogProps {
@@ -32,11 +31,10 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
 
     const clientId = getClientId(client) ?? "";
 
-    const form = useForm<ChangePackageForm>({
-        defaultValues: { package_id: client.package_id ?? null },
-    });
+    const currentPackageId = client.package_id ?? null;
+    const [packageId, setPackageId] = useState<string | number | null>(currentPackageId);
 
-    const { mutateAsync, isPending } = useApiMutation<unknown, ChangePackageForm>({
+    const { mutateAsync, isPending } = useApiMutation<unknown, ChangePackagePayload>({
         url: `/clients-change-package/${clientId}`,
         method: "PUT",
         invalidateKeys: "clients",
@@ -44,14 +42,13 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
     });
 
     const handleSubmit = async (close: () => void) => {
-        const data = form.getValues();
-        if (!data.package_id) return;
-        await mutateAsync(data);
+        if (!packageId) return;
+        await mutateAsync({ package_id: packageId });
         close();
     };
 
     const handleOpenChange = (value: boolean) => {
-        if (!value) form.reset({ package_id: client.package_id ?? null });
+        if (!value) setPackageId(currentPackageId);
         onOpenChange?.(value);
     };
 
@@ -77,7 +74,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                         variant="default"
                         size="default"
                         onClick={() => handleSubmit(close)}
-                        disabled={loading || !form.watch("package_id")}
+                        disabled={loading || !packageId}
                         loading={loading}
                         title={t("common.confirm")}
                     />
@@ -120,14 +117,14 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                     </p>
                 </div>
 
-                <FormProvider {...form}>
-                    <SelectDropdown
-                        name="package_id"
-                        label={{ labelText: t("client.package.label") }}
-                        api="/dropdown-network-packages"
-                        placeholder="client.package.placeholder"
-                    />
-                </FormProvider>
+                <SelectInput
+                    id="package_id"
+                    value={packageId}
+                    onChange={(value) => setPackageId(Array.isArray(value) ? null : value)}
+                    label={{ labelText: t("client.package.label") }}
+                    api="/dropdown-network-packages"
+                    placeholder="client.package.placeholder"
+                />
             </div>
         </MyDialog>
     );

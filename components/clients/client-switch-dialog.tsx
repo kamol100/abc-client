@@ -2,18 +2,13 @@
 
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
-import SelectDropdown from "@/components/select-dropdown";
+import { SelectInput } from "@/components/controls/select-input";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { ArrowRightLeft } from "lucide-react";
-import { FC } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-interface SwitchResellerForm {
-    reseller_id: number | string | null;
-}
 
 interface ClientSwitchDialogProps {
     client: ClientRow;
@@ -40,9 +35,7 @@ const ClientSwitchDialog: FC<ClientSwitchDialogProps> = ({
     const { t } = useTranslation();
     const clientId = getClientId(client) ?? "";
 
-    const form = useForm<SwitchResellerForm>({
-        defaultValues: { reseller_id: null },
-    });
+    const [chosenReseller, setChosenReseller] = useState<number | string | null>(null);
 
     const { mutateAsync, isPending } = useApiMutation<unknown, { reseller_id: number }>({
         url: `/clients/${clientId}/switch-reseller`,
@@ -52,7 +45,7 @@ const ClientSwitchDialog: FC<ClientSwitchDialogProps> = ({
         defaultErrorMessage: "client.switch_reseller.failed",
     });
 
-    const resellerId = selectedResellerId(form.watch("reseller_id"));
+    const resellerId = selectedResellerId(chosenReseller);
 
     const handleSubmit = async (close: () => void) => {
         if (resellerId === null) return;
@@ -61,7 +54,7 @@ const ClientSwitchDialog: FC<ClientSwitchDialogProps> = ({
     };
 
     const handleOpenChange = (value: boolean) => {
-        if (!value) form.reset({ reseller_id: null });
+        if (!value) setChosenReseller(null);
         onOpenChange(value);
     };
 
@@ -130,17 +123,17 @@ const ClientSwitchDialog: FC<ClientSwitchDialogProps> = ({
                     </p>
                 </div>
                 <div className="my-2">
-                    <FormProvider {...form}>
-                        <div className="mb-1">
-                            <SelectDropdown
-                                name="reseller_id"
-                                label={{ labelText: t("client.switch_reseller.reseller.label") }}
-                                api="/dropdown-resellers/company"
-                                placeholder="client.switch_reseller.reseller.placeholder"
-                                isClearable
-                            />
-                        </div>
-                    </FormProvider>
+                    <div className="mb-1">
+                        <SelectInput
+                            id="reseller_id"
+                            value={chosenReseller}
+                            onChange={(value) => setChosenReseller(Array.isArray(value) ? null : value)}
+                            label={{ labelText: t("client.switch_reseller.reseller.label") }}
+                            api="/dropdown-resellers/company"
+                            placeholder="client.switch_reseller.reseller.placeholder"
+                            isClearable
+                        />
+                    </div>
                 </div>
             </div>
         </MyDialog>
