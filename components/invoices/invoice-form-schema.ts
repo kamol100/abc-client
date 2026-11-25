@@ -1,5 +1,83 @@
 import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { INVOICE_PAYMENT_FUNDS_API } from "@/components/invoices/payment-fund-access";
+import { toNumber } from "@/lib/helper/helper";
+
+/** A new invoice line, before the user fills it in. */
+export const defaultInvoiceLine = {
+    description: "",
+    amount: 0,
+    quantity: 1,
+    discount: 0,
+    order: 0,
+    total_amount: 0,
+    uuid: null,
+};
+
+/**
+ * The invoice's line items: a table of rows the user can add to and remove from.
+ * The line total is worked out from amount and quantity; the line discount is not
+ * part of it (the totals box takes it off the sum).
+ */
+const invoiceLinesField: FormFieldConfig = {
+    type: "fieldArray",
+    name: "lines",
+    minItems: 1,
+    defaultItem: defaultInvoiceLine,
+    addButtonLabel: "invoice.lines.add",
+    reserveErrorSpace: true,
+    table: {
+        title: "invoice.lines.title",
+        rowLabel: "invoice.lines.item",
+        removeLabel: "invoice.lines.remove",
+        columns: {
+            description: 4,
+            amount: 2,
+            quantity: 1,
+            discount: 2,
+            total_amount: { span: 2, align: "right" },
+        },
+    },
+    itemFields: [
+        {
+            type: "text",
+            name: "description",
+            label: { labelText: "invoice.line.description.label", mandatory: true },
+            placeholder: "invoice.line.description.placeholder",
+        },
+        {
+            type: "number",
+            name: "amount",
+            label: { labelText: "invoice.line.amount.label", mandatory: true },
+            placeholder: "invoice.line.amount.placeholder",
+            errorEllipsis: true,
+        },
+        {
+            type: "number",
+            name: "quantity",
+            label: { labelText: "invoice.line.quantity.label", mandatory: true },
+            placeholder: "invoice.line.quantity.placeholder",
+            errorEllipsis: true,
+        },
+        {
+            type: "number",
+            name: "discount",
+            label: { labelText: "invoice.line.discount.label" },
+            placeholder: "invoice.line.discount.placeholder",
+            errorEllipsis: true,
+        },
+        {
+            type: "computed",
+            name: "total_amount",
+            label: { labelText: "invoice.line.total.label" },
+            placeholder: "invoice.line.total.placeholder",
+            compute: ({ row }) => lineTotal(row),
+        },
+    ],
+};
+
+const lineTotal = (line: Record<string, unknown>): number =>
+    toNumber(line.amount as number | string | null | undefined) *
+    toNumber(line.quantity as number | string | null | undefined);
 
 /** `fundLocked`: the user may only pay into their own fund (see paymentFundAccess). */
 export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: boolean } = {}): FormFieldConfig[] => [
@@ -90,6 +168,7 @@ export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: bo
         placeholder: "invoice.note.placeholder",
         rows: 2,
     },
+    invoiceLinesField,
 ];
 
 export default InvoiceFormFieldSchema;

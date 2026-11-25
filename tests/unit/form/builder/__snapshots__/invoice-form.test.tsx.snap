@@ -15,6 +15,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
     <button
       class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 rounded-md px-3 text-xs"
       data-theme-button="default"
+      type="button"
     >
       <svg
         aria-hidden="true"
@@ -91,6 +92,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
         data-theme-button="outline"
+        type="button"
       >
         <svg
           aria-hidden="true"
@@ -341,6 +343,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
             aria-label="invoice.lines.remove"
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
             data-theme-button="outline"
+            type="button"
           >
             <svg
               aria-hidden="true"
@@ -394,6 +397,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
         data-theme-button="outline"
+        type="button"
       >
         <svg
           aria-hidden="true"
@@ -644,6 +648,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
             aria-label="invoice.lines.remove"
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
             data-theme-button="outline"
+            type="button"
           >
             <svg
               aria-hidden="true"

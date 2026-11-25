@@ -6,10 +6,9 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
-import InvoiceLinesEditor from "@/components/invoices/invoice-lines-editor";
 import InvoiceTotals from "@/components/invoices/invoice-totals";
 import { cn } from "@/lib/utils";
-import InvoiceFormFieldSchema from "@/components/invoices/invoice-form-schema";
+import InvoiceFormFieldSchema, { defaultInvoiceLine } from "@/components/invoices/invoice-form-schema";
 import { paymentFundAccess, type PaymentFundAccess } from "@/components/invoices/payment-fund-access";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import { InvoiceFormSchema, InvoiceFormState } from "@/components/invoices/invoice-type";
@@ -32,16 +31,6 @@ type ContentProps = {
     fundAccess: PaymentFundAccess;
 };
 
-const defaultLine = {
-    description: "",
-    amount: 0,
-    quantity: 1,
-    discount: 0,
-    order: 0,
-    total_amount: 0,
-    uuid: null,
-};
-
 const defaultValues: Record<string, unknown> = {
     invoice_type_id: 0,
     client_id: 0,
@@ -52,7 +41,7 @@ const defaultValues: Record<string, unknown> = {
     payment_date: undefined,
     confirmation_sms: 0,
     note: "",
-    lines: [{ ...defaultLine }],
+    lines: [{ ...defaultInvoiceLine }],
 };
 
 const InvoiceFormContent: FC<ContentProps> = ({
@@ -137,7 +126,7 @@ const InvoiceFormContent: FC<ContentProps> = ({
                     )}
                 </div>
 
-                <InvoiceLinesEditor />
+                {field("lines")}
 
                 <div className={cn("grid grid-cols-1 gap-4", embedded ? "lg:grid-cols-3" : "xl:grid-cols-3")}>
                     <div className={embedded ? "lg:col-span-2" : "xl:col-span-2"}>
