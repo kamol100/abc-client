@@ -15,6 +15,7 @@ exports[`stock forms > stock in > a fibre product: shows the cable fields and wo
     <button
       class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
       data-theme-button="outline"
+      type="button"
     >
       <svg
         aria-hidden="true"
@@ -58,6 +59,7 @@ exports[`stock forms > stock in > a fibre product: shows the cable fields and wo
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
         data-theme-button="outline"
         disabled=""
+        type="button"
       >
         <svg
           aria-hidden="true"
@@ -564,6 +566,7 @@ exports[`stock forms > stock in > a fibre product: shows the cable fields and wo
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
             data-theme-button="outline"
             disabled=""
+            type="button"
           >
             <svg
               aria-hidden="true"
@@ -601,92 +604,98 @@ exports[`stock forms > stock in > a fibre product: shows the cable fields and wo
     <div
       class="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-md border border-dashed p-3"
     >
-      <div
-        class="flex flex-col gap-1 data-[state=error]:text-destructive"
-      >
-        <label
-          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-          for="product.0.fiberID"
+      <div>
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
         >
-          <div
-            class="flex gap-2"
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="product.0.fiberID"
           >
             <div
               class="flex gap-2"
             >
               <div
-                class="capitalize undefined"
+                class="flex gap-2"
               >
-                product_in.line.fiber.fiber_id.label
+                <div
+                  class="capitalize undefined"
+                >
+                  product_in.line.fiber.fiber_id.label
+                </div>
               </div>
             </div>
-          </div>
-        </label>
-        <input
-          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-          id="product.0.fiberID"
-          placeholder="product_in.line.fiber.fiber_id.placeholder"
-          type="text"
-          value=""
-        />
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="product.0.fiberID"
+            placeholder="product_in.line.fiber.fiber_id.placeholder"
+            type="text"
+            value=""
+          />
+        </div>
       </div>
-      <div
-        class="flex flex-col gap-1 data-[state=error]:text-destructive"
-      >
-        <label
-          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-          for="product.0.fiber_meter_start"
+      <div>
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
         >
-          <div
-            class="flex gap-2"
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="product.0.fiber_meter_start"
           >
             <div
               class="flex gap-2"
             >
               <div
-                class="capitalize undefined"
+                class="flex gap-2"
               >
-                product_in.line.fiber.meter_start.label
+                <div
+                  class="capitalize undefined"
+                >
+                  product_in.line.fiber.meter_start.label
+                </div>
               </div>
             </div>
-          </div>
-        </label>
-        <input
-          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-          id="product.0.fiber_meter_start"
-          placeholder="product_in.line.fiber.meter_start.placeholder"
-          type="number"
-          value="10"
-        />
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="product.0.fiber_meter_start"
+            placeholder="product_in.line.fiber.meter_start.placeholder"
+            type="number"
+            value="10"
+          />
+        </div>
       </div>
-      <div
-        class="flex flex-col gap-1 data-[state=error]:text-destructive"
-      >
-        <label
-          class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
-          for="product.0.fiber_meter_end"
+      <div>
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
         >
-          <div
-            class="flex gap-2"
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="product.0.fiber_meter_end"
           >
             <div
               class="flex gap-2"
             >
               <div
-                class="capitalize undefined"
+                class="flex gap-2"
               >
-                product_in.line.fiber.meter_end.label
+                <div
+                  class="capitalize undefined"
+                >
+                  product_in.line.fiber.meter_end.label
+                </div>
               </div>
             </div>
-          </div>
-        </label>
-        <input
-          class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-          id="product.0.fiber_meter_end"
-          placeholder="product_in.line.fiber.meter_end.placeholder"
-          type="number"
-          value="60"
-        />
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="product.0.fiber_meter_end"
+            placeholder="product_in.line.fiber.meter_end.placeholder"
+            type="number"
+            value="60"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -708,6 +717,7 @@ exports[`stock forms > stock in > a serial product: one serial input per unit, a
     <button
       class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
       data-theme-button="outline"
+      type="button"
     >
       <svg
         aria-hidden="true"
@@ -751,6 +761,7 @@ exports[`stock forms > stock in > a serial product: one serial input per unit, a
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
         data-theme-button="outline"
         disabled=""
+        type="button"
       >
         <svg
           aria-hidden="true"
@@ -1257,6 +1268,7 @@ exports[`stock forms > stock in > a serial product: one serial input per unit, a
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
             data-theme-button="outline"
             disabled=""
+            type="button"
           >
             <svg
               aria-hidden="true"

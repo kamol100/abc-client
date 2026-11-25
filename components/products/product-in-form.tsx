@@ -8,7 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
-import ProductInLinesEditor from "@/components/products/product-in-lines-editor";
+import { defaultProductInLine } from "@/components/products/product-in-lines";
 import ProductInFormFieldSchema from "@/components/products/product-in-form-schema";
 import {
     ProductInFormSchema,
@@ -40,24 +40,7 @@ const defaultValues: ProductInFormState = {
         amount: 0,
         note: "",
     },
-    product: [
-        {
-            product_id: 0,
-            product_category_id: 1,
-            brand: null,
-            status: "new",
-            quantity: 0,
-            unit_price: 0,
-            unit_sell_price: 0,
-            vat: 0,
-            total_price: 0,
-            has_serial: 0,
-            serial: [],
-            fiberID: null,
-            fiber_meter_start: null,
-            fiber_meter_end: null,
-        },
-    ],
+    product: [{ ...defaultProductInLine }],
 };
 
 const ProductInTotals: FC = () => {
@@ -137,7 +120,7 @@ const ProductInFormContent: FC<ProductInContentProps> = ({
                     <div>{field("expense.note")}</div>
                 </div>
 
-                <ProductInLinesEditor />
+                {field("product")}
                 <ProductInTotals />
             </div>
         </div>

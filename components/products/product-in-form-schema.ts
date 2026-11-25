@@ -1,6 +1,7 @@
-import { FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { productInLinesField } from "@/components/products/product-in-lines";
 
-export const ProductInFormFieldSchema = (): FieldConfig[] => {
+export const ProductInFormFieldSchema = (): FormFieldConfig[] => {
     return [
         {
             type: "dropdown",
@@ -83,6 +84,7 @@ export const ProductInFormFieldSchema = (): FieldConfig[] => {
             },
             placeholder: "product_in.expense.expense_note.placeholder",
         },
+        productInLinesField,
     ];
 };
 
