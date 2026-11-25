@@ -4,7 +4,6 @@ import {
     flattenFieldConfigs,
     flattenFormSchema,
     shownFields,
-    topLevelFieldNames,
 } from "@/components/form-builder/core/form-schema";
 import { buildPayload, toFormData } from "@/components/form-builder/core/payload";
 import { isDataComplete, toFormValues } from "@/components/form-builder/core/values";
@@ -43,9 +42,6 @@ describe("form-schema", () => {
         expect(shownFields(sections).map((field) => field.name)).toEqual(["name", "items"]);
     });
 
-    it("topLevelFieldNames includes every top-level name, shown or not", () => {
-        expect([...topLevelFieldNames(sections)]).toEqual(["name", "secret", "images", "items"]);
-    });
 });
 
 describe("conditions", () => {

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { topLevelFieldNames, type FormSchema } from "@/components/form-builder/core/form-schema";
 import { buildPayload, toFormData } from "@/components/form-builder/core/payload";
 import { entityIdOf, saveRequestOf } from "@/components/form-builder/core/request";
 import useApiMutation from "@/hooks/use-api-mutation";
@@ -17,7 +16,6 @@ type EntitySubmitOptions = {
     method: "GET" | "POST" | "PUT";
     data?: Record<string, unknown>;
     queryKey: string;
-    formSchema?: FormSchema;
     isFormData: boolean;
     successMessage?: string;
     /** Closes the form: the caller's `onClose`, or the surrounding dialog. */
@@ -109,7 +107,6 @@ export function useEntitySubmit({
     method,
     data,
     queryKey,
-    formSchema,
     isFormData,
     successMessage,
     onClose,
@@ -149,12 +146,14 @@ export function useEntitySubmit({
             hold.closeWhenDone();
         },
         // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
+        // Laravel names a nested value the way the form does (`items.0.qty`), so the
+        // message lands under the right row. A name with no field on screen shows
+        // nowhere but the toast, and is cleared by the next validation.
         onError: (error) => {
             submittingRef.current = false;
             hold.cancel();
-            const knownFields = topLevelFieldNames(formSchema);
             Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
-                if (knownFields.has(field)) setError(field, { type: "server", message });
+                setError(field, { type: "server", message });
             });
             onSubmitError?.(error, lastPayloadRef.current);
         },

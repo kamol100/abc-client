@@ -24,6 +24,8 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
 const anyValues = z.object({}).passthrough();
 
+type Props = Partial<ComponentProps<typeof FormBuilder>>;
+
 const items = (overrides: Partial<FieldArrayConfig> = {}): FieldArrayConfig => ({
     type: "fieldArray",
     name: "items",

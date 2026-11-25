@@ -45,7 +45,3 @@ const isShownField = (field: FormFieldConfig): boolean =>
 /** The fields the user can see and fill. */
 export const shownFields = (formSchema?: FormSchema): FormFieldConfig[] =>
     flattenFormSchema(formSchema).filter(isShownField);
-
-/** The names of the top-level fields. A server error is shown only under one of these. */
-export const topLevelFieldNames = (formSchema?: FormSchema): Set<string> =>
-    new Set(flattenFormSchema(formSchema).map((field) => field.name));

@@ -117,7 +117,6 @@ export default function FormWrapper({
         method,
         data,
         queryKey,
-        formSchema,
         isFormData,
         successMessage,
         onClose: handleClose,

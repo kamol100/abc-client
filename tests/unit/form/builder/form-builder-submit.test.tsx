@@ -359,19 +359,49 @@ describe("FormBuilder submit", () => {
             expect(await screen.findByText("zone.name.taken")).toBeInTheDocument();
         });
 
-        it("drops a 422 message for a field that is not a top-level name in formSchema", async () => {
-            failWith({
-                message: "invalid",
-                status: 422,
-                errors: { "items.0.qty": ["qty.invalid"], unknown_field: ["unknown.invalid"] },
+        it("shows a 422 message under a field inside a row", async () => {
+            failWith({ message: "invalid", status: 422, errors: { "items.0.qty": ["qty.invalid"] } });
+            renderForm({
+                formSchema: [
+                    ...fields,
+                    {
+                        type: "fieldArray",
+                        name: "items",
+                        defaultItem: {},
+                        itemFields: [{ type: "number", name: "qty" }],
+                    },
+                ],
+                data: { items: [{ qty: 1 }] },
             });
-            const onSubmitError = vi.fn();
-            renderForm({ onSubmitError });
             await typeNameAndSave();
 
+            expect(await screen.findByText("qty.invalid")).toBeInTheDocument();
+        });
+
+        it("shows a 422 message under a geolocation input", async () => {
+            failWith({ message: "invalid", status: 422, errors: { latitude: ["latitude.range"] } });
+            renderForm({
+                formSchema: [
+                    ...fields,
+                    { type: "geolocation", name: "location", latitudeName: "latitude", longitudeName: "longitude" },
+                ],
+            });
+            await typeNameAndSave();
+
+            expect(await screen.findByText("latitude.range")).toBeInTheDocument();
+        });
+
+        it("ignores a 422 message for a name with no field, and lets the next save go through", async () => {
+            failWith({ message: "invalid", status: 422, errors: { unknown_field: ["unknown.invalid"] } });
+            const onSubmitError = vi.fn();
+            renderForm({ onSubmitError });
+            const user = await typeNameAndSave();
             await waitFor(() => expect(onSubmitError).toHaveBeenCalled());
-            expect(screen.queryByText("qty.invalid")).not.toBeInTheDocument();
             expect(screen.queryByText("unknown.invalid")).not.toBeInTheDocument();
+
+            mockApi();
+            await user.click(screen.getByRole("button", { name: "common.save" }));
+            await waitFor(() => expect(writeRequests()).toHaveLength(1));
         });
     });
 
