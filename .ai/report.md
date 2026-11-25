@@ -1,3 +1,12 @@
+## Permission group list did not scroll on phones — 2026-11-25
+
+- Cause: the page area (`PageContainer`, fixed table layout) is a fixed-height flex column. The panel root has `overflow-hidden`, so as a flex item its minimum height is 0 and it shrank to the space left. On phones the list has no height of its own, so it was cut off and nothing scrolled. Desktop was fine because the panes have a fixed `md:` height.
+- Fix: `shrink-0` on the panel frame and its skeleton (`PANEL_FRAME` in `permission-groups-panel.tsx`). The panel keeps its full height and the page area scrolls it. Applies to `/permissions` and the user and reseller pages.
+
+Checks:
+- `scripts/ai/typecheck` passed; permission tests 25 passed.
+- Not verified in a browser: the saved Playwright login (`playwright/.auth/user.json`, from Nov 19) has expired and redirects to `/admin`. jsdom has no layout, so a unit test cannot cover this.
+
 ## Permission pages on phones: bottom sheet per group — 2026-11-25
 
 - Below 768px (`useIsMobile`, the same breakpoint as the panel's two columns), `PermissionGroupsPanel` shows only the group list, at full height with taller rows and 36px pin buttons. Tapping a group opens a bottom sheet (`MyDrawer`, large) titled with the group name, holding a "Whole group" checkbox, the granted count and the group's permissions. Desktop is unchanged.

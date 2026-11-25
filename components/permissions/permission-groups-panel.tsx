@@ -39,6 +39,14 @@ type Props = {
   groupIcon: (group: string) => LucideIcon;
 };
 
+/**
+ * shrink-0: the page area is a fixed-height flex column, and a clipped (overflow-hidden)
+ * child would shrink to fit it. On phones the list has no height of its own, so it
+ * would be cut off with nothing to scroll; this lets the page area scroll it instead.
+ */
+const PANEL_FRAME =
+  "grid shrink-0 overflow-hidden rounded-[var(--radius)] border bg-card md:grid-cols-[18rem_minmax(0,1fr)]";
+
 /** Same frame height on both panes, so switching groups never moves the page. */
 const PANE_HEIGHT = "md:h-[calc(100dvh-15rem)] md:min-h-[26rem]";
 
@@ -90,7 +98,7 @@ const PermissionGroupsPanel: FC<Props> = ({
     name === GENERAL_GROUP ? t("permission.general_group") : groupDisplayName(name);
 
   return (
-    <div className="grid overflow-hidden rounded-[var(--radius)] border bg-card md:grid-cols-[18rem_minmax(0,1fr)]">
+    <div className={cn(PANEL_FRAME)}>
       <aside className={cn("flex min-h-0 flex-col md:border-r", PANE_HEIGHT)}>
         <div className="border-b p-2">
           <label className="relative block">
@@ -314,7 +322,7 @@ const GroupPermissions: FC<GroupPermissionsProps> = ({
 
 /** Matches the panel's two panes so the page does not jump when permissions arrive. */
 export const PermissionGroupsPanelSkeleton: FC = () => (
-  <div className="grid overflow-hidden rounded-[var(--radius)] border bg-card md:grid-cols-[18rem_minmax(0,1fr)]">
+  <div className={cn(PANEL_FRAME)}>
     <div className={cn("flex flex-col md:border-r", PANE_HEIGHT)}>
       <div className="border-b p-2">
         <Skeleton className="h-9 w-full" />
