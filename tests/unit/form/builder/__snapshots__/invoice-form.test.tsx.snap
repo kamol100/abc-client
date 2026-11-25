@@ -1,0 +1,730 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
+<div
+  class="space-y-3"
+>
+  <div
+    class="flex items-center justify-between gap-2"
+  >
+    <h3
+      class="text-sm font-semibold"
+    >
+      invoice.lines.title
+    </h3>
+    <button
+      class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 rounded-md px-3 text-xs"
+      data-theme-button="default"
+    >
+      <svg
+        aria-hidden="true"
+        class="lucide lucide-plus"
+        fill="none"
+        height="24"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5 12h14"
+        />
+        <path
+          d="M12 5v14"
+        />
+      </svg>
+      <span
+        class="capitalize"
+      >
+        invoice.lines.add
+      </span>
+    </button>
+  </div>
+  <div
+    class="hidden md:grid grid-cols-12 gap-3 rounded-md border bg-muted/50 px-3 py-2 text-xs font-medium text-muted-foreground"
+  >
+    <span
+      class="col-span-4"
+    >
+      invoice.line.description.label
+    </span>
+    <span
+      class="col-span-2"
+    >
+      invoice.line.amount.label
+    </span>
+    <span
+      class="col-span-1"
+    >
+      invoice.line.quantity.label
+    </span>
+    <span
+      class="col-span-2"
+    >
+      invoice.line.discount.label
+    </span>
+    <span
+      class="col-span-2 text-right"
+    >
+      invoice.line.total.label
+    </span>
+    <span
+      class="col-span-1 text-right"
+    >
+      common.actions
+    </span>
+  </div>
+  <div
+    class="rounded-md border p-3"
+  >
+    <div
+      class="mb-3 flex items-center justify-between md:hidden"
+    >
+      <p
+        class="text-xs font-medium text-muted-foreground"
+      >
+        invoice.lines.item 1
+      </p>
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+        data-theme-button="outline"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-trash2 lucide-trash-2"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 11v6"
+          />
+          <path
+            d="M14 11v6"
+          />
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+          />
+          <path
+            d="M3 6h18"
+          />
+          <path
+            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          />
+        </svg>
+        <span
+          class="capitalize"
+        >
+          invoice.lines.remove
+        </span>
+      </button>
+    </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-12 gap-3 md:items-start"
+    >
+      <div
+        class="md:col-span-4"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.0.description"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.description.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.0.description"
+            placeholder="invoice.line.description.placeholder"
+            type="text"
+            value="Internet 10 Mbps"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.0.amount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.amount.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.0.amount"
+            placeholder="invoice.line.amount.placeholder"
+            type="number"
+            value="500"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-1"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.0.quantity"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.quantity.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.0.quantity"
+            placeholder="invoice.line.quantity.placeholder"
+            type="number"
+            value="2"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.0.discount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.discount.label
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.0.discount"
+            placeholder="invoice.line.discount.placeholder"
+            type="number"
+            value="5"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.0.total_amount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.total.label
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.0.total_amount"
+            placeholder="invoice.line.total.placeholder"
+            readonly=""
+            type="number"
+            value="1000"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-1 flex flex-col gap-1 min-h-full"
+      >
+        <div
+          aria-hidden="true"
+          class="hidden md:block min-h-6 shrink-0"
+        />
+        <div
+          class="hidden md:flex shrink-0"
+        >
+          <button
+            aria-label="invoice.lines.remove"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+            data-theme-button="outline"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-trash2 lucide-trash-2"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 11v6"
+              />
+              <path
+                d="M14 11v6"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+              />
+              <path
+                d="M3 6h18"
+              />
+              <path
+                d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          aria-hidden="true"
+          class="min-h-[1.25rem] hidden md:block shrink-0"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="rounded-md border p-3"
+  >
+    <div
+      class="mb-3 flex items-center justify-between md:hidden"
+    >
+      <p
+        class="text-xs font-medium text-muted-foreground"
+      >
+        invoice.lines.item 2
+      </p>
+      <button
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+        data-theme-button="outline"
+      >
+        <svg
+          aria-hidden="true"
+          class="lucide lucide-trash2 lucide-trash-2"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 11v6"
+          />
+          <path
+            d="M14 11v6"
+          />
+          <path
+            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+          />
+          <path
+            d="M3 6h18"
+          />
+          <path
+            d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+          />
+        </svg>
+        <span
+          class="capitalize"
+        >
+          invoice.lines.remove
+        </span>
+      </button>
+    </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-12 gap-3 md:items-start"
+    >
+      <div
+        class="md:col-span-4"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.1.description"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.description.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.1.description"
+            placeholder="invoice.line.description.placeholder"
+            type="text"
+            value="Router rent"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.1.amount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.amount.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.1.amount"
+            placeholder="invoice.line.amount.placeholder"
+            type="number"
+            value="100"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-1"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.1.quantity"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.quantity.label
+                </div>
+                <div
+                  class="text-destructive ml-1"
+                >
+                   *
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.1.quantity"
+            placeholder="invoice.line.quantity.placeholder"
+            type="number"
+            value="1"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.1.discount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.discount.label
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.1.discount"
+            placeholder="invoice.line.discount.placeholder"
+            type="number"
+            value="0"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-2"
+      >
+        <div
+          class="flex flex-col gap-1 data-[state=error]:text-destructive"
+        >
+          <label
+            class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm mb-1 font-medium text-foreground"
+            for="lines.1.total_amount"
+          >
+            <div
+              class="flex gap-2"
+            >
+              <div
+                class="flex gap-2"
+              >
+                <div
+                  class="capitalize undefined"
+                >
+                  invoice.line.total.label
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            id="lines.1.total_amount"
+            placeholder="invoice.line.total.placeholder"
+            readonly=""
+            type="number"
+            value="100"
+          />
+          <div
+            class="min-h-[1.25rem]"
+          />
+        </div>
+      </div>
+      <div
+        class="md:col-span-1 flex flex-col gap-1 min-h-full"
+      >
+        <div
+          aria-hidden="true"
+          class="hidden md:block min-h-6 shrink-0"
+        />
+        <div
+          class="hidden md:flex shrink-0"
+        >
+          <button
+            aria-label="invoice.lines.remove"
+            class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
+            data-theme-button="outline"
+          >
+            <svg
+              aria-hidden="true"
+              class="lucide lucide-trash2 lucide-trash-2"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 11v6"
+              />
+              <path
+                d="M14 11v6"
+              />
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+              />
+              <path
+                d="M3 6h18"
+              />
+              <path
+                d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          aria-hidden="true"
+          class="min-h-[1.25rem] hidden md:block shrink-0"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`invoice form > edit: sends the record back with its lines 1`] = `
+{
+  "data": {
+    "after_discount_amount": 1085,
+    "client_id": 9,
+    "confirmation_sms": 0,
+    "create_date": "20-11-2026",
+    "discount": 10,
+    "due_date": "30-11-2026",
+    "fund_id": null,
+    "invoice_type_id": 2,
+    "line_total_discount": 5,
+    "lines": [
+      {
+        "amount": 500,
+        "description": "Internet 10 Mbps",
+        "discount": 5,
+        "order": 0,
+        "quantity": 2,
+        "total_amount": 1000,
+        "uuid": "l-1",
+      },
+      {
+        "amount": 100,
+        "description": "Router rent",
+        "discount": 0,
+        "order": 1,
+        "quantity": 1,
+        "total_amount": 100,
+        "uuid": "l-2",
+      },
+    ],
+    "note": "November",
+    "partial_amount": 0,
+    "payment_date": null,
+    "status": "due",
+    "total_amount": 1100,
+  },
+  "method": "PUT",
+  "url": "/invoices/5",
+}
+`;
