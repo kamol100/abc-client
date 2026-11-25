@@ -1,3 +1,24 @@
+## Permissions page redesign: group list + detail, group search, pins — 2026-11-25
+
+Option B from the prototype (https://claude.ai/artifact/2sRBU1ERqUdKnkLPSSKpoR). Design only: granting and revoking work as before.
+
+- `/permissions` (`permission-form.tsx`) now has one header card (title, role select, an All / Granted / Not granted filter, a granted count) and a two-pane panel, `permission-groups-panel.tsx`.
+  - Left: a search box for group names, then every group with a granted/total count and a progress bar. Pinned groups come first.
+  - Right: the chosen group's permissions as checkboxes, each with its action name and route name, plus the group checkbox.
+  - Both panes have a fixed height on desktop and scroll inside, so changing group does not move the page. A matching skeleton (`PermissionGroupsPanelSkeleton`) shows while permissions load.
+- Unchanged behaviour: the same role select, `role-permissions/{id}`, and `/permission-add` / `/permission-remove` with one permission or a whole group. The group checkbox is checked only when the whole group is granted, as before (the shared checkbox has no partly checked state). While a role's permissions load, the checkboxes are disabled instead of hidden.
+- Pins: a pin button on each group. A new pin goes to the top. Pins are saved per user in the `meta` table (`pinned_permission_groups` on the user) through the existing `PUT /staff-account/settings`, and read from `GET /staff-account` (`use-pinned-permission-groups.ts`). A pin shows at once and rolls back with a toast if the save fails. Without a staff profile the endpoint returns 404, so the pin buttons are hidden.
+- New `permission-groups.ts` (grouping, pin order, search and show filters, labels).
+- New keys under `permission` (`groups`, `search_groups`, `no_group_match`, `select_group`, `granted`, `granted_of`, `show.*`, `pin.*`) in `en.json` and `bn.json`.
+- Each group in the list, and the open group's title, shows the icon of its sidebar menu item (`permission-group-icons.ts`). It reads the menu config, and an icon an admin picked in Settings → Sidebar menu wins. A group the menu item lists itself beats one only used by a sub-item (funds → Funds, not Reports). A few groups with no menu item borrow a related one (stock in/out → Products, SMS gateway → SMS, departments → Staff); anything else gets a key icon. All 70 current groups have a menu icon.
+- `permission-entity-form.tsx` (user and reseller permissions) still uses the old card grid.
+
+Checks:
+- New tests in `tests/unit/permissions/` (22, including group icons): helpers, the panel (search, pins, grant and revoke callbacks, disabled state), and the pin hook (save order, rollback, no staff profile).
+- `scripts/ai/typecheck` passed. `scripts/ai/test`: same 20 baseline failures, everything else passed.
+- Backend: `StaffAccountTest` 18 passed (5 new), Pint and PHPStan clean on the changed files.
+- Not checked in the browser.
+
 ## Mobile sidebar drawer latency — 2026-11-24
 
 What I measured with Playwright as vp, on a Pixel 7 profile with CPU slowed 4–6×:

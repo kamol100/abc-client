@@ -3511,6 +3511,23 @@
         }
     },
     "permission": {
+        "groups": "Permission groups",
+        "search_groups": "Search groups",
+        "no_group_match": "No group matches your search.",
+        "select_group": "Choose a group to see its permissions.",
+        "granted": "Granted",
+        "granted_of": "{{granted}} of {{total}} granted",
+        "show": {
+            "label": "Show",
+            "all": "All",
+            "granted": "Granted",
+            "not_granted": "Not granted"
+        },
+        "pin": {
+            "pin": "Pin to top",
+            "unpin": "Unpin",
+            "failed": "Could not save your pinned groups."
+        },
         "title_plural": "Permissions",
         "description": "Manage role-wise permission assignments.",
         "group": "Group",
