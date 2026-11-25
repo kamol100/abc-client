@@ -3,9 +3,6 @@
 import { Fragment, type ReactNode } from "react";
 import type { Table } from "@tanstack/react-table";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import InputField from "@/components/form/input-field";
 import MyButton from "@/components/my-button";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import type { DataTableToolbarOptions } from "@/components/data-table/data-table-toolbar-options";
@@ -32,7 +29,6 @@ export function ToolbarStart<TData>({
   items,
   isMobile,
 }: ToolbarStartProps<TData>) {
-  const labelForm = useForm<Record<string, string>>();
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -41,11 +37,6 @@ export function ToolbarStart<TData>({
       {items.map((item) => (
         <Fragment key={item.key}>{item.node}</Fragment>
       ))}
-      {filter?.input_filter && (
-        <Form {...labelForm}>
-          <InputField placeholder="Filter labels..." name="" />
-        </Form>
-      )}
       {filter?.columns?.map((column) => {
         const tableColumn = table.getColumn(column);
         return tableColumn ? (
@@ -82,7 +73,6 @@ export function hasToolbarStart(
   return Boolean(
     (title && !isMobile) ||
       items.length > 0 ||
-      filter?.input_filter ||
       (filter?.columns?.length ?? 0) > 0 ||
       isFiltered,
   );

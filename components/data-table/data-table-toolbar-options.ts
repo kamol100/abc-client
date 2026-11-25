@@ -15,6 +15,5 @@ export type DataTableToolbarOptions = {
      */
     defaultValues?: Record<string, string | number>;
     columns?: string[];
-    input_filter?: boolean;
     showFilter?: boolean;
 };
