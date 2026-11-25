@@ -265,9 +265,8 @@ describe("FormBuilder edit loading", () => {
             expect(inputById("name")).toHaveValue("North edited");
         });
 
-        // Known problem B2 in the audit. Most callers build formSchema inline, so this
-        // is the common case. The refactor must change this test when it fixes B2.
-        it("B2: throws away typed values when the parent re-renders with a new formSchema array", async () => {
+        // Most callers build formSchema inline, so this is the common case.
+        it("keeps typed values when the parent re-renders with a new formSchema array", async () => {
             function Host() {
                 const [count, setCount] = useState(0);
                 return (
@@ -294,8 +293,19 @@ describe("FormBuilder edit loading", () => {
             await user.type(inputById("name"), " edited");
             expect(inputById("name")).toHaveValue("North edited");
             await user.click(screen.getByRole("button", { name: /rerender/ }));
+            await settle();
 
+            expect(inputById("name")).toHaveValue("North edited");
+        });
+
+        it("fills the form again when a refetch returns a changed record", async () => {
+            const view = renderEdit();
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
+
+            serveZone({ id: 5, name: "Renamed", note: "main zone" });
+            await view.client.invalidateQueries({ queryKey: ["zones"] });
+
+            await waitFor(() => expect(inputById("name")).toHaveValue("Renamed"));
         });
     });
 

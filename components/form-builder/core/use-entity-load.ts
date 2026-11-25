@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { toast } from "react-toastify";
 import type { FormSchema } from "@/components/form-builder/core/form-schema";
@@ -63,12 +63,19 @@ export function useEntityLoad({
     const failed = shouldLoad && isError;
     const { reset } = form;
 
-    // Fill the form once the record arrives.
+    // The latest converter, kept in a ref so that a new function on each render (most
+    // callers rebuild their field list inline) does not count as "the record changed".
+    const toFormValuesRef = useRef(transformToFormValues);
+    toFormValuesRef.current = transformToFormValues;
+
+    // Fill the form when a record arrives. This runs again only for a new answer from
+    // the API, so a re-render of the parent never throws away what the user typed.
     useEffect(() => {
         if (!shouldLoad || !detailResponse?.data) return;
         const record = detailResponse.data as Record<string, unknown>;
-        reset(transformToFormValues ? transformToFormValues(record) : record);
-    }, [shouldLoad, detailResponse, transformToFormValues, reset]);
+        const toFormValues = toFormValuesRef.current;
+        reset(toFormValues ? toFormValues(record) : record);
+    }, [shouldLoad, detailResponse, reset]);
 
     useEffect(() => {
         if (failed && error) {
