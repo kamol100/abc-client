@@ -13,7 +13,6 @@ import type {
     FormFieldConfig,
 } from "@/components/form-wrapper/form-builder-type";
 import {
-    flattenFieldConfigs,
     flattenFormSchema,
     shownFields,
     type FormSchema,
@@ -129,18 +128,15 @@ export const toFormValues = (data: FormValues, formSchema: FormSchema): FormValu
 const isEmptyDefaultValue = (value: unknown): boolean =>
     value === undefined || value === null || value === "";
 
-/**
- * Fills empty fields with the `defaultValue` from the field config. Dropdown defaults
- * always apply; radio defaults only when `options.radios` is set (create mode).
- */
-export function applyFormFieldDefaults(
-    values: FormValues | undefined,
-    formSchema: FormSchema,
+/** Fills the empty values of `fields` inside one record (the form, or one row). */
+const fillDefaults = (
+    record: FormValues,
+    fields: FieldConfig[],
     options?: { radios?: boolean },
-): FormValues {
-    const next: FormValues = { ...(values ?? {}) };
+): FormValues => {
+    const next: FormValues = { ...record };
 
-    for (const field of flattenFieldConfigs(formSchema)) {
+    for (const field of fields) {
         const fillsRadio = options?.radios === true && field.type === "radio";
         if (field.type !== "dropdown" && !fillsRadio) continue;
         if (!("defaultValue" in field) || field.defaultValue == null) continue;
@@ -148,6 +144,39 @@ export function applyFormFieldDefaults(
         next[field.name] = field.defaultValue;
     }
 
+    return next;
+};
+
+/**
+ * Fills empty fields with the `defaultValue` from the field config. Dropdown defaults
+ * always apply; radio defaults only when `options.radios` is set (create mode).
+ * Fields inside a field array are filled in each of its rows.
+ */
+export function applyFormFieldDefaults(
+    values: FormValues | undefined,
+    formSchema: FormSchema,
+    options?: { radios?: boolean },
+): FormValues {
+    const topLevelFields: FieldConfig[] = [];
+    const arrayFields: FieldArrayConfig[] = [];
+    for (const field of flattenFormSchema(formSchema)) {
+        if (field.type === "fieldArray") {
+            arrayFields.push(field);
+        } else if (field.type !== "slot") {
+            topLevelFields.push(field);
+        }
+    }
+
+    const next = fillDefaults(values ?? {}, topLevelFields, options);
+    for (const field of arrayFields) {
+        const rows = next[field.name];
+        if (!Array.isArray(rows)) continue;
+        next[field.name] = rows.map((row) =>
+            row && typeof row === "object"
+                ? fillDefaults(row as FormValues, field.itemFields, options)
+                : row,
+        );
+    }
     return next;
 }
 

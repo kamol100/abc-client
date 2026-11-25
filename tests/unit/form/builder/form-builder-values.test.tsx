@@ -378,7 +378,7 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.items).toEqual([]);
         });
 
-        it("writes a dropdown default from inside a row to the top level, not into the row", async () => {
+        it("fills a dropdown default inside each row, and not at the top level", async () => {
             const values = await startingValues(
                 [
                     {
@@ -388,11 +388,11 @@ describe("FormBuilder: turning data into form values", () => {
                         itemFields: [{ type: "dropdown", name: "unit", defaultValue: "pcs", options: [] }],
                     },
                 ],
-                { data: { id: 5, lines: [{ unit: null }] } },
+                { data: { id: 5, lines: [{ unit: null }, { unit: "box" }] } },
             );
 
-            expect(values.unit).toBe("pcs");
-            expect(values.lines).toEqual([{ unit: null }]);
+            expect("unit" in values).toBe(false);
+            expect(values.lines).toEqual([{ unit: "pcs" }, { unit: "box" }]);
         });
     });
 });
