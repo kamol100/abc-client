@@ -17864,6 +17864,111 @@
         "source_state": "ba297fda460533090e092d32739b6fe467b06453 + RF-008 source hashes",
         "artifact": ".ai/features/referrals/evidence/RF-008.json"
       }
+    },
+    {
+      "id": "FT033-13",
+      "feature": "mikrotik-sync",
+      "priority": "P1",
+      "description": "Filtered selection must not import an unselected client on another network.",
+      "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
+          "title": "FT033-13 filtered selection imports only the visible client"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Headed Chromium, real Next/Laravel on registered CP/MK fixture hosts, disposable SQLite, desktop and 390px mobile, controlled external services.",
+        "command": "MKS_E2E_SLOW_MO=450 node scripts/run-mikrotik-sync-e2e.mjs --headed",
+        "timestamp": "2026-11-25T18:21:07.855059+06:00",
+        "source_state": {
+          "frontend": "5660c485108294a01b0078177e7629337f2436b6",
+          "backend": "bb9602077f20e4e4d86c15df33f245ee69c25013",
+          "worktree": "Count labels and company-wide eligible count added on top of the uncommitted bug fixes/reproduction harness.",
+          "files_sha256": {
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-bulk-dialog.tsx": "30174a669ba64c9aa25152d141f41cbf8caa5127048f2f536dcc65d90de27762",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-table.tsx": "3c0abc6c3039bfd604231c6996348fcbf702eb3c08f1f24d27fb161af02070eb",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-type.ts": "b840042cbf28b0b8dc589724dc98d1795f5f07dca08fb07936e9724108794aeb",
+            "shadcn-client/tests/e2e/mikrotik-sync/bugs.spec.ts": "cce2302c64df7115f5b5603a005f521bc7846fa68f15fd0cdb08b9585f5ca1ea",
+            "isp-backend/app/Models/MikrotikSync.php": "391731d3a32716796530a948a17cf16ddcb7b5ede1a37e67558361ca847ceb02",
+            "isp-backend/app/Http/Resources/MikrotikSyncCollection.php": "5f6947bd0c7c61fd342947f68c32a3e286ab6c377e0845bb1a5eed0c3604dbde"
+          }
+        },
+        "artifact": "playwright-report/mikrotik-sync-counts-20261125/results.json"
+      }
+    },
+    {
+      "id": "FT033-14",
+      "feature": "mikrotik-sync",
+      "priority": "P1",
+      "description": "Resolution must select the package on the client network when profiles share a name.",
+      "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
+          "title": "FT033-14 resolve selects the package belonging to the client's router"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Headed Chromium, real Next/Laravel on registered CP/MK fixture hosts, disposable SQLite, desktop and 390px mobile, controlled external services.",
+        "command": "MKS_E2E_SLOW_MO=450 node scripts/run-mikrotik-sync-e2e.mjs --headed",
+        "timestamp": "2026-11-25T18:21:07.855059+06:00",
+        "source_state": {
+          "frontend": "5660c485108294a01b0078177e7629337f2436b6",
+          "backend": "bb9602077f20e4e4d86c15df33f245ee69c25013",
+          "worktree": "Count labels and company-wide eligible count added on top of the uncommitted bug fixes/reproduction harness.",
+          "files_sha256": {
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-bulk-dialog.tsx": "30174a669ba64c9aa25152d141f41cbf8caa5127048f2f536dcc65d90de27762",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-table.tsx": "3c0abc6c3039bfd604231c6996348fcbf702eb3c08f1f24d27fb161af02070eb",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-type.ts": "b840042cbf28b0b8dc589724dc98d1795f5f07dca08fb07936e9724108794aeb",
+            "shadcn-client/tests/e2e/mikrotik-sync/bugs.spec.ts": "cce2302c64df7115f5b5603a005f521bc7846fa68f15fd0cdb08b9585f5ca1ea",
+            "isp-backend/app/Models/MikrotikSync.php": "391731d3a32716796530a948a17cf16ddcb7b5ede1a37e67558361ca847ceb02",
+            "isp-backend/app/Http/Resources/MikrotikSyncCollection.php": "5f6947bd0c7c61fd342947f68c32a3e286ab6c377e0845bb1a5eed0c3604dbde"
+          }
+        },
+        "artifact": "playwright-report/mikrotik-sync-counts-20261125/results.json"
+      }
+    },
+    {
+      "id": "FT033-15",
+      "feature": "mikrotik-sync",
+      "priority": "P1",
+      "description": "Whole-company import is an explicit scope choice, defaults to selected rows, fits mobile, and preserves the other company.",
+      "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
+      "review": "approved",
+      "status": "passing",
+      "test_refs": [
+        {
+          "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
+          "title": "FT033-15 whole-company import requires an explicit scope choice and fits mobile"
+        }
+      ],
+      "last_run": {
+        "result": "passed",
+        "environment": "Headed Chromium, real Next/Laravel on registered CP/MK fixture hosts, disposable SQLite, desktop and 390px mobile, controlled external services.",
+        "command": "MKS_E2E_SLOW_MO=450 node scripts/run-mikrotik-sync-e2e.mjs --headed",
+        "timestamp": "2026-11-25T18:21:07.855059+06:00",
+        "source_state": {
+          "frontend": "5660c485108294a01b0078177e7629337f2436b6",
+          "backend": "bb9602077f20e4e4d86c15df33f245ee69c25013",
+          "worktree": "Count labels and company-wide eligible count added on top of the uncommitted bug fixes/reproduction harness.",
+          "files_sha256": {
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-bulk-dialog.tsx": "30174a669ba64c9aa25152d141f41cbf8caa5127048f2f536dcc65d90de27762",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-table.tsx": "3c0abc6c3039bfd604231c6996348fcbf702eb3c08f1f24d27fb161af02070eb",
+            "shadcn-client/components/mikrotik-sync/mikrotik-sync-type.ts": "b840042cbf28b0b8dc589724dc98d1795f5f07dca08fb07936e9724108794aeb",
+            "shadcn-client/tests/e2e/mikrotik-sync/bugs.spec.ts": "cce2302c64df7115f5b5603a005f521bc7846fa68f15fd0cdb08b9585f5ca1ea",
+            "isp-backend/app/Models/MikrotikSync.php": "391731d3a32716796530a948a17cf16ddcb7b5ede1a37e67558361ca847ceb02",
+            "isp-backend/app/Http/Resources/MikrotikSyncCollection.php": "5f6947bd0c7c61fd342947f68c32a3e286ab6c377e0845bb1a5eed0c3604dbde"
+          }
+        },
+        "artifact": "playwright-report/mikrotik-sync-counts-20261125/results.json"
+      }
     }
   ]
 }

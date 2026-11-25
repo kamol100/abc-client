@@ -1,5 +1,7 @@
 # Source evidence — mikrotik-sync
 
+Browser reproduction update (2026-11-25): FT033-13 and FT033-14 exercise the current list, bulk-import, individual-resolve, and client-list routes against the real Laravel handlers. Test harness: `tests/e2e/mikrotik-sync/bugs.spec.ts`, `scripts/run-mikrotik-sync-e2e.mjs`, and sibling backend `tests/Browser/MikrotikSyncFixture.php`. Queue execution and external services are controlled inside a disposable SQLite fixture. Historical failure evidence is in evidence/run.json; the fixes and explicit company-scope/mobile regression pass in evidence/fixed-run.json. Broader acceptance coverage is still pending.
+
 Generated from static source inspection on 2026-11-12. Literal references can include inactive paths, aliases and shared subfeatures. Confirm reachability/middleware and final payload before implementation.
 
 ## Frontend files

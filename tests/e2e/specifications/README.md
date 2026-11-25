@@ -46,7 +46,7 @@ No scenario is marked implemented or passing by this documentation task. Existin
 - [legacy-settings](legacy-settings/LEGACY-SETTINGS-001.md) — source-inventoried-draft
 - [mikrotik-commands](mikrotik-commands/MIKROTIK-COMMANDS-001.md) — source-inventoried-draft
 - [mikrotik-packages](mikrotik-packages/MIKROTIK-PACKAGES-001.md) — source-inventoried-draft
-- [mikrotik-sync](mikrotik-sync/MIKROTIK-SYNC-001.md) — source-inventoried-draft
+- [mikrotik-sync](mikrotik-sync/MIKROTIK-SYNC-001.md) — 3 targeted regressions passing; broader acceptance remains pending
 - [my-wallets](my-wallets/MY-WALLETS-001.md) — source-inventoried-draft
 - [networks](networks/NETWORK-001-network-management.md) — detailed-draft
 - [noc](noc/NOC-001.md) — source-inventoried-draft

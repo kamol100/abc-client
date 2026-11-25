@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
@@ -8,6 +9,7 @@ import { MyDialog, useMyDialogClose } from "@/components/my-dialog";
 
 const MikrotikSyncBulkSchema = z
   .object({
+    import_scope: z.enum(["selected", "company"]),
     import_as: z.enum(["own", "reseller"]),
     reseller_id: z.number().nullable().optional(),
   })
@@ -21,8 +23,19 @@ const MikrotikSyncBulkSchema = z
     }
   });
 
-function MikrotikSyncBulkFieldSchema(): FormFieldConfig[] {
+function MikrotikSyncBulkFieldSchema(selectedLabel: string, companyLabel: string): FormFieldConfig[] {
   return [
+    {
+      type: "radio",
+      name: "import_scope",
+      label: { labelText: "mikrotik_sync.bulk.scope.label" },
+      direction: "col",
+      defaultValue: "selected",
+      options: [
+        { label: selectedLabel, value: "selected" },
+        { label: companyLabel, value: "company" },
+      ],
+    },
     {
       type: "radio",
       name: "import_as",
@@ -49,23 +62,27 @@ function MikrotikSyncBulkFieldSchema(): FormFieldConfig[] {
 
 type MikrotikSyncBulkDialogProps = {
   trigger: ReactNode;
-  allImport: boolean;
   importIds: string[];
+  unimportedCount: number;
   onImported: () => void;
 };
 
 function MikrotikSyncBulkForm({
-  allImport,
   importIds,
+  unimportedCount,
   onImported,
 }: Omit<MikrotikSyncBulkDialogProps, "trigger">) {
   const closeDialog = useMyDialogClose();
+  const { t } = useTranslation();
 
   return (
     <FormBuilder
-      formSchema={MikrotikSyncBulkFieldSchema()}
+      formSchema={MikrotikSyncBulkFieldSchema(
+        t("mikrotik_sync.bulk.scope.options.selected", { count: importIds.length }),
+        t("mikrotik_sync.bulk.scope.options.company", { count: unimportedCount }),
+      )}
       schema={MikrotikSyncBulkSchema}
-      data={{ import_as: "own", reseller_id: null }}
+      data={{ import_scope: "selected", import_as: "own", reseller_id: null }}
       api="/mikrotik-sync/bulk-import"
       mode="create"
       method="POST"
@@ -79,8 +96,8 @@ function MikrotikSyncBulkForm({
         closeDialog?.();
       }}
       transformPayload={(values) => ({
-        import_id: allImport ? [] : importIds,
-        all_import: allImport,
+        import_id: values.import_scope === "company" ? [] : importIds,
+        all_import: values.import_scope === "company",
         reseller_id:
           values.import_as === "reseller" && typeof values.reseller_id === "number"
             ? values.reseller_id
@@ -92,8 +109,8 @@ function MikrotikSyncBulkForm({
 
 export default function MikrotikSyncBulkDialog({
   trigger,
-  allImport,
   importIds,
+  unimportedCount,
   onImported,
 }: MikrotikSyncBulkDialogProps) {
   return (
@@ -104,8 +121,8 @@ export default function MikrotikSyncBulkDialog({
       trigger={trigger}
     >
       <MikrotikSyncBulkForm
-        allImport={allImport}
         importIds={importIds}
+        unimportedCount={unimportedCount}
         onImported={onImported}
       />
     </MyDialog>

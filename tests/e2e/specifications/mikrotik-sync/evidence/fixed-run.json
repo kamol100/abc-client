@@ -1,0 +1,69 @@
+{
+  "result": "passed",
+  "environment": "Headed Chromium on registered CP/MK hosts with ephemeral ports; real Next/Laravel; disposable SQLite :memory:; desktop and 390px mobile; fake external services and serial real bulk-job handlers.",
+  "command": "MKS_E2E_SLOW_MO=450 node scripts/run-mikrotik-sync-e2e.mjs --headed",
+  "timestamp": "2026-11-25T17:58:19.306162+06:00",
+  "source_state": {
+    "frontend": "5660c485108294a01b0078177e7629337f2436b6",
+    "backend": "bb9602077f20e4e4d86c15df33f245ee69c25013",
+    "worktree": "Uncommitted two-bug fix plus the existing reproduction harness.",
+    "files_sha256": {
+      "shadcn-client/components/mikrotik-sync/mikrotik-sync-table.tsx": "4356b95a32b20bee44b15d25c8be1dbcbaad82679e72a24d32712168b27fe2cb",
+      "shadcn-client/components/mikrotik-sync/mikrotik-sync-bulk-dialog.tsx": "50fa7ef02c825751aad6ad93598cfa8dd2106ab2bed062b3704bbbd4059827e4",
+      "shadcn-client/tests/e2e/mikrotik-sync/bugs.spec.ts": "93d42539831ca3649fbbd7e2b921481db1f0576cf30b273857173de97ea0ef6b",
+      "isp-backend/app/Services/MikrotikSync/MikrotikSyncService.php": "51272bfefde93b8dcb6588c4de7ca709e27503f0a9cd7521e2ef756fb810e3d7",
+      "isp-backend/tests/Browser/MikrotikSyncFixture.php": "50e87d04953ef7a35ca552f89c6851fde6d88772b14379560f7de44c9164f485"
+    }
+  },
+  "artifact": "playwright-report/mikrotik-sync-fixed-20261125/results.json",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "id": "FT033-13",
+      "title": "FT033-13 filtered selection imports only the visible client",
+      "result": "passed",
+      "evidence": {
+        "expectedNames": [
+          "visible-only-client"
+        ],
+        "actualNames": [
+          "visible-only-client"
+        ],
+        "submitted": [
+          {
+            "all_import": false,
+            "import_id": [
+              "a34f40b9-ff12-45e9-92cc-ee0ce0a2d92d"
+            ],
+            "queuedUuids": [
+              "a34f40b9-ff12-45e9-92cc-ee0ce0a2d92d"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "FT033-15",
+      "title": "FT033-15 whole-company import requires an explicit scope choice and fits mobile",
+      "result": "passed"
+    },
+    {
+      "id": "FT033-14",
+      "title": "FT033-14 resolve selects the package belonging to the client's router",
+      "result": "passed",
+      "evidence": {
+        "expectedPackageId": 4,
+        "expectedPackageName": "Router B Gold - correct",
+        "actualPackageId": 4,
+        "actualPackageName": "Router B Gold - correct",
+        "clientNetworkId": 4,
+        "packageNetworkId": 4
+      }
+    }
+  ],
+  "previous_failure_evidence": "run.json"
+}

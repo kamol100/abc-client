@@ -37,6 +37,7 @@ export const MikrotikSyncListSchema = z
     pagination: z.custom<Pagination>().optional(),
     match_count: z.coerce.number().default(0),
     not_match_count: z.coerce.number().default(0),
+    unimported_count: z.coerce.number().default(0),
     summary: z.string().nullable().optional(),
   })
   .passthrough();

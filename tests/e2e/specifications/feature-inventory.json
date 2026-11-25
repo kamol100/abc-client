@@ -228,9 +228,15 @@
   {
     "feature": "mikrotik-sync",
     "ticket": "mikrotik-sync/MIKROTIK-SYNC-001.md",
-    "stage": "source-inventoried-draft",
-    "specs": [],
-    "last_run": null
+    "stage": "targeted-regressions-passing",
+    "specs": [
+      "tests/e2e/mikrotik-sync/bugs.spec.ts"
+    ],
+    "last_run": {
+      "result": "passed",
+      "timestamp": "2026-11-25T18:21:07.855059+06:00",
+      "artifact": "playwright-report/mikrotik-sync-counts-20261125/results.json"
+    }
   },
   {
     "feature": "my-wallets",

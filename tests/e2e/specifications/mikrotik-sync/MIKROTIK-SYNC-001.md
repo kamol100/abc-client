@@ -1,6 +1,6 @@
 # MIKROTIK-SYNC-001 — Mikrotik Sync
 
-- Status: Source-inventoried draft; business and detailed backend review pending; no tests implemented.
+- Status: Both reproduced bugs fixed; 3 focused Playwright regressions pass. Broader acceptance scenarios remain drafts.
 - Date: 2026-11-12.
 - Workflow: investigate → specify → review → implement → verify.
 - Scope routes: `/mikrotik-sync/import/[id]`, `/mikrotik-sync`
@@ -35,6 +35,19 @@ For money/stock/subscription/permissions/identity changes, approve independently
 - FT033-11 [P1, pending review]: Rapid submission/retry and interrupted session do not duplicate side effects or record them under a subsequent user. For read-only features assert no mutations are offered rather than fabricate an action.
 - FT033-12 [P2, pending review]: Representative mobile width, keyboard, English/Bangla and light/dark checks keep actual primary controls usable; inspect exported/printed artifacts where present instead of treating screenshot existence as correctness.
 
+## Owner-requested bug reproductions (2026-11-25)
+
+These tests use the real UI/server actions and Laravel controller/service/job path in a disposable SQLite fixture. The original red run is retained in run.json. Both fixes now pass the same correctness assertions; fixed-run.json records the passing run. These focused results do not establish full feature acceptance.
+
+- FT033-13 [P1, approved for reproduction]: Given CP has visible-only-client on Router A and hidden-do-not-import on Router B, and search shows only the first row, when the operator selects that row and imports as own client, then exactly visible-only-client must be persisted. The hidden client must remain absent and MK's sentinel must be unchanged. Inspect the submitted all_import/import_id payload and actual queued UUIDs independently of the UI count.
+- FT033-14 [P1, approved for reproduction]: Given MK has two packages with profile shared-gold, Router A Gold (BDT 3,000) inserted before Router B Gold (BDT 800), and router-b-client belongs to Router B, when its mismatch is resolved through Individual Sync, then its package must be Router B Gold and its package network must equal the client's network. Show the resulting package on /clients and independently inspect persisted IDs.
+
+Executable tests: `tests/e2e/mikrotik-sync/bugs.spec.ts`. Run: `MKS_E2E_SLOW_MO=650 npm run test:e2e:mikrotik-sync -- --headed`. Registered hosts are CP/MK with ephemeral fixture ports and generated credentials; no existing local records or real routers are used. Videos and sanitized evidence accompany the actual run. The root runner includes this fixture automatically.
+
+- FT033-15 [P1, approved regression]: Given remaining unimported CP rows, when the operator opens the bulk dialog on a 390px viewport, then Selected clients only must be the default. Choosing All unimported clients in this company explicitly submits all_import=true and no UUID list, imports eligible CP rows, preserves MK data, and keeps the dialog inside the viewport.
+
+Fix behavior: profile lookup now constrains company, reseller, and network for individual/bulk resolution. Normal import always sends selected UUIDs and its count reflects those UUIDs. Filter changes clear selection. Whole-company import remains available through the explicit scope choice; it intentionally covers the company rather than the active filter. Scope labels exist in English and Bangla.
+
 ## AI implementation handoff / done criteria
 
 Review exact feature fields, source-linked backend contracts and domain decisions first. Split multi-surface/financial cases into independent Given/When/Then tests and expand the coverage register before coding. Do not count generic draft cases as implemented coverage. Shared prerequisites: strict login assertion, validation-safe submit helper, persona sessions, isolated fixture cleanup and controlled integrations. Preserve existing uncommitted work.
@@ -43,4 +56,6 @@ Use semantic locators scoped to correct row/dialog and exact UUID/relation types
 
 Each case needs reviewed expected values, linked spec/test title, executed run evidence and final status. Blocked/skipped/failing cases remain uncovered. Document backend contract/security gaps separately. Run appropriate checks and record environment/commands/results/artifacts and .ai/report.md. No installs/push/deploy without required approval.
 
-Current verification: source inventory and documentation checks only; no application/test/runtime changes or test runs.
+Current verification: 3 headed Playwright cases passed with 0 failed/0 skipped on 2026-11-25. [Passing evidence](evidence/fixed-run.json) includes selected UUID payloads and the corrected Router B package/network IDs; [historical failure evidence](evidence/run.json) is retained. Focused backend tests: 44 passed (204 assertions); frontend unit tests: 3 passed. Typecheck, Pint, and production-service PHPStan passed. Desktop before/after and mobile dialog screenshots were inspected; loading submission was exercised through the existing 15-second hold. No existing local records or routers were mutated.
+
+Count-label update (2026-11-25): both scope options append their live counts. Selected count comes from explicit UUIDs; company count comes from the list API unimported_count, matching company-wide queue eligibility independently of active filters. [Latest count-label evidence](evidence/count-run.json): all 3 browser checks pass, including desktop 1 selected / 2 company and mobile counts. The API count is covered for tenant isolation, eligible reseller rows, imported/linked exclusions, and parity with queued rows.

@@ -4746,6 +4746,13 @@
             "individual_sync": "Individual Sync"
         },
         "bulk": {
+            "scope": {
+                "label": "Import scope",
+                "options": {
+                    "selected": "Selected clients only ({{count}})",
+                    "company": "All unimported clients in this company ({{count}})"
+                }
+            },
             "title": "Import clients",
             "description": "Choose how the selected clients should be imported.",
             "import_as": {

@@ -27,6 +27,7 @@
     "test:e2e:platform-support": "playwright test --config=playwright.platform-support.config.ts",
     "test:e2e:referrals": "node scripts/run-referral-e2e.mjs",
     "test:e2e:fund-reports": "node scripts/run-fund-reports-e2e.mjs",
+    "test:e2e:mikrotik-sync": "node scripts/run-mikrotik-sync-e2e.mjs",
     "test:e2e:products": "node scripts/run-products-e2e.mjs"
   },
   "dependencies": {

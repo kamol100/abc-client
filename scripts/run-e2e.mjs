@@ -8,6 +8,7 @@ const require = createRequire(import.meta.url);
 const cli = require.resolve("@playwright/test/cli");
 const args = process.argv.slice(2);
 const fixtureRunners = {
+  "playwright.mikrotik-sync.config.ts": "scripts/run-mikrotik-sync-e2e.mjs",
   "playwright.referrals.config.ts": "scripts/run-referral-e2e.mjs",
   "playwright.fund-reports.config.ts": "scripts/run-fund-reports-e2e.mjs",
   "playwright.products.config.ts": "scripts/run-products-e2e.mjs",

@@ -1,0 +1,61 @@
+{
+  "result": "failed",
+  "purpose": "Reproduce both current defects; final assertions express correct behavior.",
+  "environment": "Headed Chromium; cp.isp.test and mk.isp.test ephemeral ports; real Next/Laravel; SQLite :memory:; generated personas; router/notifications/HTTP controlled; serial real bulk-job handlers.",
+  "command": "MKS_E2E_SLOW_MO=650 node scripts/run-mikrotik-sync-e2e.mjs --headed",
+  "timestamp": "2026-11-25T17:44:22.815351+06:00",
+  "source_state": {
+    "frontend": "5660c485108294a01b0078177e7629337f2436b6",
+    "backend": "bb9602077f20e4e4d86c15df33f245ee69c25013",
+    "test_sha256": "6eac5d654ad22ee67157dc0fe9aea4a528f98477f8d494b467585c2a0bffda6f",
+    "fixture_sha256": "50e87d04953ef7a35ca552f89c6851fde6d88772b14379560f7de44c9164f485",
+    "runtime_changes": "none; test runner, fixtures, specs, and documentation only",
+    "observed_fixture_sha256": "ac2f8fd57412fc3597ca94899506fb3a972a2cdcceb23d6212da6c0e1f9714b2"
+  },
+  "artifact": "playwright-report/mikrotik-sync-reproduction-20261125-final/results.json",
+  "summary": {
+    "failed": 2,
+    "passed": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "id": "FT033-13",
+      "title": "FT033-13 filtered selection imports only the visible client",
+      "result": "failed",
+      "evidence": {
+        "expectedNames": [
+          "visible-only-client"
+        ],
+        "actualNames": [
+          "hidden-do-not-import",
+          "visible-only-client"
+        ],
+        "submitted": [
+          {
+            "all_import": true,
+            "import_id": [],
+            "queuedUuids": [
+              "a34f3bd8-2133-4d05-b008-a6ffc6199c34",
+              "a34f3bd8-215b-4eba-9db0-8d0d9c60348a"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "FT033-14",
+      "title": "FT033-14 resolve selects the package belonging to the client's router",
+      "result": "failed",
+      "evidence": {
+        "expectedPackageId": 4,
+        "expectedPackageName": "Router B Gold - correct",
+        "actualPackageId": 3,
+        "actualPackageName": "Router A Gold - wrong",
+        "clientNetworkId": 4,
+        "packageNetworkId": 3
+      }
+    }
+  ],
+  "fixture_note": "After the observed run, the fixture storage accessor changed from $this->app to the equivalent app() helper and an unnecessary PHPDoc was removed for PHPStan. The current fixture passed an isolated initialization/lifetime smoke check. Application code, job execution, test actions, and correctness assertions were unchanged."
+}
