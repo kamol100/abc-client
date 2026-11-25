@@ -25,6 +25,8 @@ import Logo from "@/components/logo";
 import { ChevronsUpDown, Loader2 } from "lucide-react";
 
 import { TenantSwitcher, resolveScope, scopeLabelKeyMap } from "@/components/tenant-switcher";
+import { keepIfSame } from "@/lib/helper/keep-if-same";
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { settings, setSettings } = useSettings();
   const { setProfile } = useProfile();
@@ -47,10 +49,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   React.useEffect(() => {
     if (settingsResponse?.data) {
-      setSettings(settingsResponse.data.settings);
-      setProfile(settingsResponse.data.profile);
-      setPermissions(settingsResponse.data.permissions);
-      setSubscription(settingsResponse.data.subscription ?? null);
+      setSettings(keepIfSame(settingsResponse.data.settings));
+      setProfile(keepIfSame(settingsResponse.data.profile));
+      setPermissions(keepIfSame(settingsResponse.data.permissions));
+      setSubscription(keepIfSame(settingsResponse.data.subscription ?? null));
     }
   }, [settingsResponse, setSettings, setProfile, setPermissions, setSubscription]);
 

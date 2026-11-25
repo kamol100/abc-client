@@ -1,3 +1,46 @@
+## Mobile sidebar drawer latency — 2026-11-24
+
+What I measured with Playwright as vp, on a Pixel 7 profile with CPU slowed 4–6×:
+- Warm page: the drawer opened in about 0.4–0.7 s. Each open fired 3 server actions from `TenantSwitcher`: the tenant list refetch, and the impersonation status check twice. Next.js runs server actions one at a time, so these queued behind the page's own.
+- Every 30 s, the `/user-settings` refetch in `AppSidebar` replaced settings, profile, permissions and subscription with equal copies. That re-rendered the whole app: a 0.56 s long task at 6× CPU, on every page.
+- Wake after sleep (page frozen and offline for 60–75 s, including a code change during the sleep): no full reload, Fast Refresh applied, drawer open in 0.7–0.85 s.
+- Cold reload, which is what mobile browsers do after discarding a tab idle for 30–60 min: on `next dev`, 5.8–9 MB of JS, and the menu works only after 2.5–3.9 s, with the drawer open at 3.2–5.9 s. A real phone also shows the browser's saved screenshot meanwhile, and `next dev` may recompile the page after idle, so about 10 s is plausible there.
+- Production build, same slow profile, login page (the saved dev login isn't accepted by the production server): usable after 1.45 s with 1.4 MB of JS, against 3.0–3.2 s and 5.8 MB on dev.
+
+Changes:
+- `TenantSwitcher`: the tenant list has `staleTime` 5 min, and the impersonation status is checked once per page load (module flag). Drawer opens now fire no requests (measured: none on three opens).
+- `AppSidebar`: the refetched data goes through `keepIfSame` (new `lib/helper/keep-if-same.ts`), so equal data no longer re-renders the app. Measured: no long task after the 30 s refetch.
+
+Checks:
+- New `tests/unit/lib/keep-if-same.test.ts` (2).
+- `scripts/ai/typecheck` passed. Unit tests: same 20 baseline failures, rest pass.
+- I made a production build (`next build`) only to measure, then stopped its server. The build output is in `.next/` beside `.next/dev` (gitignored).
+- Not tested on a real phone. The remaining idle-time delay is the dev server (unminified JS, recompiles after idle). Test on a production build to confirm.
+
+## Sidebar menu customizer — 2026-11-24
+
+- New page **Settings → Sidebar menu** (`/settings/menu`, `components/settings/menu-layout/*`). An admin with `menu-layout.edit` sets the sidebar order and icons for everyone in the company. A reseller admin sets it for their own reseller. Staff can't change it.
+  - Drag and drop with `@dnd-kit` (new dependencies, approved: `@dnd-kit/core` 6.3.1, `@dnd-kit/sortable` 10.0.0, `@dnd-kit/utilities` 3.2.2, added with pnpm). Top-level items sort among themselves, and sub-items sort inside their own group. It works with the keyboard (Space to pick up, arrow keys, Space to drop, Esc), with translated screen-reader announcements.
+  - Icon picker: 70 icons with search, plus "Use default icon".
+  - Live sidebar preview, a status line (default or custom, who saved it and when, unsaved changes), and Reset to default (with confirmation), Discard changes and Save menu.
+  - Labels aren't editable (out of scope by request), so translations are unchanged.
+- The sidebar (`useMenuItems`) applies the saved layout from `settings.menu_layout`, which `/user-settings` already returns. It paints in the saved order on first load with no shift. Items added to the app later go right after the item that comes before them by default (`orderBySavedKeys`). Permissions and subscription locks still decide what each user sees.
+- After a save or reset, the editor updates the settings context, so the admin's own sidebar changes immediately. Other staff get it on their next page load.
+- Saving keeps saved items the admin can't see (`withHiddenItems`).
+- The Settings group in the menu config also opens for `menu-layout.edit`, and has a new "Sidebar menu" link.
+- New `lib/menu/menu-icons.ts` (must match the backend `MenuLayoutRules::ICONS`) and `lib/menu/menu-layout.ts`.
+- New keys `menu.settings.menu_layout.title` and a `menu_layout.*` block in `en.json` and `bn.json`.
+
+Checks:
+- New `tests/unit/menu/menu-layout.test.ts` (9) and `tests/unit/settings/menu-layout-settings.test.tsx` (3). `menu-items.test.ts` now expects the `/settings/menu` link (that test was already failing on `/referrals` order).
+- `scripts/ai/typecheck` passed. Unit tests: 923 passed, plus the same 20 baseline failures (checked on two runs).
+- Live local API: `GET /menu-layout` returns 200 with the default menu for vp.
+- After `update:permission` (run by the human), browser checks with Playwright as vp:
+  - **Button bar:** it used to stop 16px short of the left, right and bottom edges, inside the page area's padding. The page root now takes that padding (`-m-4 p-4`) and the bar spans it (`-mx-4 -mb-4`, sticky `-bottom-4`). Measured gaps: 0px on the left, right and bottom, in both table layouts (`fixed`, `full`), at 1440px and 390px, and at the top, middle and end of the scroll.
+  - **Hydration warning on /settings/menu:** dnd-kit's generated accessibility id differed between server and client. Fixed with a stable `useId` passed to `DndContext`. The saved-at time span has `suppressHydrationWarning`, because time zones can differ between server and browser. The console is clean after the fix.
+  - Drag and drop, the icon picker, and save and reset are not yet exercised in the browser.
+- `package-lock.json` was not updated (pnpm is the package manager in use).
+
 ## Dashboard card accents and icons — 2026-11-24
 
 - Two new theme options, saved with each theme: `cardBorder` (`off`, `top`, `full`) and `cardColors` (`multi`, `brand`). They are in a new **Dashboard cards** section of the theme builder, and the builder preview's stat tiles show them. Themes saved before this read as Off and Multicolor.

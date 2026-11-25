@@ -55,6 +55,9 @@ export function resolveScope(roles?: string[]): ScopeLevel {
   return "reseller";
 }
 
+/** Set after the first impersonation status check in this page load (see TenantSwitcher). */
+let impersonationStatusChecked = false;
+
 export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: boolean) => React.ReactNode }) {
   const { isMobile } = useSidebar();
   const { update: updateSession } = useSession();
@@ -90,12 +93,17 @@ export function TenantSwitcher({ renderTrigger }: { renderTrigger: (switching: b
     url: apiUrl,
     pagination: false,
     enabled: scope !== "reseller",
+    // The mobile drawer mounts this on every open; reuse the list instead of refetching each time.
+    staleTime: 5 * 60_000,
   });
 
   const tenants = data?.data ?? [];
 
-  // Check impersonation status on mount
+  // Check impersonation status once per page load. The mobile drawer remounts this on
+  // every open, and each check was another server action queued behind the page's own.
   React.useEffect(() => {
+    if (impersonationStatusChecked) return;
+    impersonationStatusChecked = true;
     async function checkStatus() {
       try {
         const res = await useFetch({ url: "/impersonate/status" });
