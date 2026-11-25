@@ -233,6 +233,49 @@ describe("FormBuilder fields", () => {
         });
     });
 
+    describe("form-wide field options", () => {
+        const fields: FormFieldConfig[] = [
+            { type: "text", name: "name", label: { labelText: "thing.name" } },
+            { type: "textarea", name: "note" },
+            { type: "dropdown", name: "status", options: statusOptions },
+            { type: "radio", name: "kind", options: statusOptions },
+            { type: "checkbox", name: "days", options: statusOptions },
+            { type: "checkbox", name: "agree", single: true },
+            { type: "switch", name: "is_active" },
+            { type: "date", name: "paid_at" },
+        ];
+
+        it("idPrefix goes in front of every field id and its label target", async () => {
+            renderFields(fields, { idPrefix: "edit" });
+
+            await waitFor(() => expect(fieldById("edit-status")).toHaveAttribute("role", "combobox"));
+            for (const id of [
+                "edit-name", "edit-note", "edit-kind-1", "edit-days-2", "edit-agree", "switch-edit-is_active", "edit-paid_at",
+            ]) {
+                expect(fieldById(id)).toBeInTheDocument();
+            }
+            expect(fieldById("name")).toBeNull();
+            expect(screen.getByText("thing.name").closest("label")).toHaveAttribute("for", "edit-name");
+        });
+
+        it("idPrefix does not change what is sent", async () => {
+            renderFields(fields, { idPrefix: "edit" });
+            const user = userEvent.setup();
+            await user.type(inputById("edit-name"), "Router");
+
+            expect(await saveAndReadPayload(user)).toEqual({ name: "Router" });
+        });
+
+        it("reserveErrorSpace keeps a line free under each field before any error shows", () => {
+            const plain = renderFields([{ type: "text", name: "name" }]);
+            expect(plain.container.querySelector(".min-h-\\[1\\.25rem\\]")).toBeNull();
+            plain.unmount();
+
+            const reserved = renderFields([{ type: "text", name: "name" }], { reserveErrorSpace: true });
+            expect(reserved.container.querySelector(".min-h-\\[1\\.25rem\\]")).toBeInTheDocument();
+        });
+    });
+
     describe("custom layout with the children function", () => {
         const fields: FormFieldConfig[] = [
             { type: "text", name: "first" },

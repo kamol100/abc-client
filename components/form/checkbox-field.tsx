@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import { useTranslation } from "react-i18next";
-import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 
 type CheckboxOption = {
     label: string;
@@ -33,6 +33,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
     rules,
 }) => {
     const control = useFieldControl(controlProp);
+    const id = useFieldId(name);
     const { t } = useTranslation();
     return (
         <FieldShell
@@ -50,12 +51,12 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                         return (
                             <div className="flex items-center space-x-2">
                                 <Checkbox
-                                    id={name}
+                                    id={id}
                                     checked={!!value}
                                     onCheckedChange={onChange}
                                     className={cn(fieldError && "border-destructive")}
                                 />
-                                <label htmlFor={name} className="text-sm text-foreground cursor-pointer">
+                                <label htmlFor={id} className="text-sm text-foreground cursor-pointer">
                                     {label?.labelText ? t(label.labelText) : null}
                                 </label>
                             </div>
@@ -73,7 +74,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                 return (
                                     <div key={idx} className="flex items-center space-x-2">
                                         <Checkbox
-                                            id={`${name}-${opt.value}`}
+                                            id={`${id}-${opt.value}`}
                                             checked={checked}
                                             onCheckedChange={(isChecked) => {
                                                 if (isChecked) {
@@ -86,7 +87,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
                                             className={cn(fieldError && "border-destructive")}
                                         />
                                         <label
-                                            htmlFor={`${name}-${opt.value}`}
+                                            htmlFor={`${id}-${opt.value}`}
                                             className={cn(
                                                 "text-sm text-foreground cursor-pointer",
                                                 opt.disabled && "opacity-50 cursor-not-allowed"

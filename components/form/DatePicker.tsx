@@ -5,7 +5,7 @@ import type { DayPickerLocale } from "react-day-picker";
 import { DateInput } from "@/components/controls/date-input";
 import { DateRangeInput } from "@/components/controls/date-range-input";
 import type { DatePickerMode, DatePickerValue } from "@/components/controls/date-format";
-import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
 import { cn } from "@/lib/utils";
 
@@ -65,10 +65,11 @@ const DatePicker = ({
     timeFormat = "hh:mm a",
 }: DatePickerProps) => {
     const control = useFieldControl(controlProp);
+    const id = useFieldId(name);
     const rules = rulesProp ?? (required ? { required: "This field is required" } : undefined);
 
     return (
-        <FieldShell name={name} label={label} labelFor={name} className={cn("flex flex-col gap-1", className)}>
+        <FieldShell name={name} label={label} labelFor={id} className={cn("flex flex-col gap-1", className)}>
             <Controller
                 name={name}
                 control={control}
@@ -85,7 +86,7 @@ const DatePicker = ({
 
                     return mode === "range" ? (
                         <DateRangeInput
-                            id={name}
+                            id={id}
                             value={value}
                             onChange={handleChange}
                             onClear={handleClear}
@@ -101,7 +102,7 @@ const DatePicker = ({
                         />
                     ) : (
                         <DateInput
-                            id={name}
+                            id={id}
                             value={value}
                             onChange={handleChange}
                             onClear={handleClear}

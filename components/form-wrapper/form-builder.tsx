@@ -47,6 +47,10 @@ export type FormBuilderProps = {
   resetOnSuccess?: boolean;
   skipInvalidate?: boolean;
   onSubmitError?: (error: unknown, payload: FieldValues) => void;
+  /** Put in front of every field id. Set it when another form on the page has the same field names. */
+  idPrefix?: string;
+  /** Keep room for one line of error under every field, so fields never move when an error shows. */
+  reserveErrorSpace?: boolean;
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
 };
 
@@ -76,6 +80,8 @@ const FormBuilder = ({
   resetOnSuccess,
   skipInvalidate,
   onSubmitError,
+  idPrefix,
+  reserveErrorSpace,
   children,
 }: FormBuilderProps) => {
   const transformedData = useMemo(() => {
@@ -147,6 +153,8 @@ const FormBuilder = ({
       resetOnSuccess={resetOnSuccess}
       skipInvalidate={skipInvalidate}
       onSubmitError={onSubmitError}
+      idPrefix={idPrefix}
+      reserveErrorSpace={reserveErrorSpace}
       grids={grids}
       fullPage={fullPage}
     >

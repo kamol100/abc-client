@@ -8,6 +8,7 @@ import { shownFields } from "@/components/form-builder/core/form-schema";
 import { useEntityForm } from "@/components/form-builder/core/use-entity-form";
 import { useEntityLoad } from "@/components/form-builder/core/use-entity-load";
 import { useEntitySubmit } from "@/components/form-builder/core/use-entity-submit";
+import { FieldOptionsProvider } from "@/components/form-builder/fields/field-shell";
 import { FormFooter } from "@/components/form-builder/layout/form-footer";
 import { FormLoadState } from "@/components/form-builder/layout/form-load-state";
 import { useMyDialogClose } from "@/components/my-dialog";
@@ -59,6 +60,10 @@ type FormWrapperProps = {
     onSubmitError?: (error: unknown, payload: FieldValues) => void;
     grids?: number;
     fullPage?: boolean;
+    /** Put in front of every field id. Set it when another form on the page has the same field names. */
+    idPrefix?: string;
+    /** Keep room for one line of error under every field, so fields never move when an error shows. */
+    reserveErrorSpace?: boolean;
 };
 
 export default function FormWrapper({
@@ -89,6 +94,8 @@ export default function FormWrapper({
     onSubmitError,
     grids = 1,
     fullPage = false,
+    idPrefix,
+    reserveErrorSpace,
 }: FormWrapperProps) {
     // Closing: the caller's onClose, or the MyDialog this form sits in.
     const dialogClose = useMyDialogClose();
@@ -136,6 +143,11 @@ export default function FormWrapper({
     submitFormRef.current = submitForm;
     const formActions = useMemo(() => ({ requestSave: () => void submitFormRef.current() }), []);
 
+    const fieldOptions = useMemo(
+        () => ({ idPrefix, reserveErrorSpace }),
+        [idPrefix, reserveErrorSpace],
+    );
+
     const formContent = (
         <FormLoadState
             isLoading={load.isLoading}
@@ -154,32 +166,34 @@ export default function FormWrapper({
 
     return (
         <Form {...form}>
-            <FormActionsProvider value={formActions}>
-                <form
-                    onSubmit={submitForm}
-                    className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
-                >
-                    {fullPage ? (
-                        <div className="flex-1 min-h-0 overflow-y-auto">
-                            {formContent}
-                        </div>
-                    ) : (
-                        formContent
-                    )}
-                    {showFooter && actionButton && (
-                        <FormFooter
-                            fullPage={fullPage}
-                            className={actionButtonClass}
-                            submitTitle={submitTitle}
-                            isSaving={submit.isSaving}
-                            onCancel={() => {
-                                submit.cancelHold();
-                                handleClose();
-                            }}
-                        />
-                    )}
-                </form>
-            </FormActionsProvider>
+            <FieldOptionsProvider value={fieldOptions}>
+                <FormActionsProvider value={formActions}>
+                    <form
+                        onSubmit={submitForm}
+                        className={cn(fullPage && "flex flex-col flex-1 min-h-0")}
+                    >
+                        {fullPage ? (
+                            <div className="flex-1 min-h-0 overflow-y-auto">
+                                {formContent}
+                            </div>
+                        ) : (
+                            formContent
+                        )}
+                        {showFooter && actionButton && (
+                            <FormFooter
+                                fullPage={fullPage}
+                                className={actionButtonClass}
+                                submitTitle={submitTitle}
+                                isSaving={submit.isSaving}
+                                onCancel={() => {
+                                    submit.cancelHold();
+                                    handleClose();
+                                }}
+                            />
+                        )}
+                    </form>
+                </FormActionsProvider>
+            </FieldOptionsProvider>
         </Form>
     );
 }

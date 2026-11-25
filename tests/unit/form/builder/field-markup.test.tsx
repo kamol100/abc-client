@@ -255,3 +255,28 @@ describe("field markup", () => {
         });
     });
 });
+
+describe("FormFilter idPrefix", () => {
+    beforeEach(() => {
+        stubBrowserApis();
+        mockApi();
+    });
+
+    it("keeps filter ids apart from a form with the same field names", () => {
+        renderWithClient(
+            <>
+                <FormFilter formSchema={[{ type: "text", name: "name" }]} forceOpen hideTrigger idPrefix="filter" />
+                <FormBuilder
+                    formSchema={[{ type: "text", name: "name" }]}
+                    schema={z.object({}).passthrough()}
+                    api="/things"
+                    method="POST"
+                    mode="create"
+                />
+            </>,
+        );
+
+        expect(document.querySelectorAll("#name")).toHaveLength(1);
+        expect(fieldById("filter-name")).toBeInTheDocument();
+    });
+});

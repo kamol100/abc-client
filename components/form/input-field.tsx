@@ -4,7 +4,7 @@ import type { LabelProps } from "@/components/form-wrapper/form-builder-type";
 import { Input } from "@/components/ui/input";
 import { isBdMobile, normalizeBdMobile } from "@/lib/phone";
 import { cn } from "@/lib/utils";
-import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 
 export type InputFieldProps = {
     name: string;
@@ -42,19 +42,20 @@ const InputField: React.FC<InputFieldProps> = ({
     disabled = false,
     defaultValue,
     errorMessageEllipsis = false,
-    reserveErrorSpace = false,
+    reserveErrorSpace,
     onFocus,
     labelSuffix,
     prefix,
     suffix,
 }) => {
     const control = useFieldControl(controlProp);
+    const id = useFieldId(name);
     const { t } = useTranslation();
     return (
         <FieldShell
             name={name}
             label={label}
-            labelFor={name}
+            labelFor={id}
             labelSuffix={labelSuffix}
             className={cn("flex flex-col gap-1 data-[state=error]:text-destructive", className)}
             errorMessageEllipsis={errorMessageEllipsis}
@@ -77,7 +78,7 @@ const InputField: React.FC<InputFieldProps> = ({
                     };
                     const input = (
                         <Input
-                            id={name}
+                            id={id}
                             placeholder={placeholder ? t(placeholder as string) : ""}
                             type={type}
                             inputMode={isTel ? "tel" : undefined}

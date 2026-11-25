@@ -13,7 +13,7 @@ import {
 } from "react-hook-form";
 import { SelectBox } from "@/components/controls/select-box";
 import { useSelectOptions } from "@/components/controls/use-select-options";
-import { FieldShell } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldId } from "@/components/form-builder/fields/field-shell";
 import type {
   DropdownPopulate,
   LabelProps,
@@ -105,6 +105,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
 }) => {
   const { control: ctxControl, setValue, getValues, formState } = useFormContext();
   const control = controlProp ?? ctxControl;
+  const id = useFieldId(name);
   // The values the form was last filled with (on mount, or when an edit form loaded its record).
   const { defaultValues } = formState;
 
@@ -157,14 +158,14 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   });
 
   return (
-    <FieldShell name={name} label={label} labelFor={name} labelBoxClassName="mb-2" className="">
+    <FieldShell name={name} label={label} labelFor={id} labelBoxClassName="mb-2" className="">
       <Controller
         name={name}
         control={control}
         rules={rules}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <SelectBox
-            id={name}
+            id={id}
             value={value}
             options={options}
             isMulti={isMulti}

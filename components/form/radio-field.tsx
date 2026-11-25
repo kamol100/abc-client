@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
-import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 
 type RadioOption = {
     label: string;
@@ -34,6 +34,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
 }) => {
     const { t } = useTranslation();
     const control = useFieldControl(controlProp);
+    const id = useFieldId(name);
 
     return (
         <FieldShell name={name} label={label} className={cn("flex flex-col gap-1", className)}>
@@ -56,7 +57,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
                             <div key={idx} className="flex items-center space-x-2">
                                 <RadioGroupItem
                                     value={String(opt.value)}
-                                    id={`${name}-${opt.value}`}
+                                    id={`${id}-${opt.value}`}
                                     disabled={opt.disabled}
                                     className={cn(
                                         fieldError && "border-destructive",
@@ -64,7 +65,7 @@ const RadioField: React.FC<RadioFieldProps> = ({
                                     )}
                                 />
                                 <label
-                                    htmlFor={`${name}-${opt.value}`}
+                                    htmlFor={`${id}-${opt.value}`}
                                     className={cn(
                                         "text-sm text-foreground cursor-pointer",
                                         opt.disabled && "opacity-50 cursor-not-allowed"

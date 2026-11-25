@@ -1,7 +1,7 @@
 import { lazy, Suspense, type ComponentProps } from "react";
 import { resolveFieldPath } from "@/components/form-builder/core/conditions";
 import { defineField, KEEP_VALUE } from "@/components/form-builder/fields/define-field";
-import { FieldShell } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldId } from "@/components/form-builder/fields/field-shell";
 import type { DropdownFieldConfig } from "@/components/form-wrapper/form-builder-type";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -13,13 +13,15 @@ const LazySelectDropdown = lazy(() => import("@/components/select-dropdown"));
  * are drawn in its place, so nothing moves when the real control arrives.
  */
 function SelectDropdown(props: ComponentProps<typeof LazySelectDropdown>) {
+    const id = useFieldId(props.name);
+
     return (
         <Suspense
             fallback={
                 <FieldShell
                     name={props.name}
                     label={props.label}
-                    labelFor={props.name}
+                    labelFor={id}
                     labelBoxClassName="mb-2"
                     className=""
                 >

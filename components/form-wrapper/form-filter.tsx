@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import DisplayCount from "@/components/display-count";
 import MyButton from "@/components/my-button";
 import { FieldConfig, GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
+import { FieldOptionsProvider } from "@/components/form-builder/fields/field-shell";
 import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
 import {
   FILTER_ITEM_CLASS,
@@ -42,6 +43,8 @@ type FormFilterProps = {
   flush?: boolean;
   /** Replaces the field grid's classes (columns and gap). Used by the filter panel. */
   fieldsClassName?: string;
+  /** Put in front of every field id. Set it when a form on the page has the same field names. */
+  idPrefix?: string;
 };
 
 const FormFilter = ({
@@ -62,6 +65,7 @@ const FormFilter = ({
   endAction,
   flush = false,
   fieldsClassName,
+  idPrefix,
 }: FormFilterProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(forceOpen);
@@ -75,6 +79,8 @@ const FormFilter = ({
     submitFilter,
     resetFilter,
   } = formHook || internalHook;
+
+  const fieldOptions = useMemo(() => ({ idPrefix }), [idPrefix]);
 
   const values = form.watch();
   const isFilterActive = useMemo(() => {
@@ -163,12 +169,14 @@ const FormFilter = ({
           )}
           <div className="min-w-0 flex-1">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(submitFilter)}
-                className={cn("flex w-full", rowCount != null && "min-w-0")}
-              >
-                {renderFilterFields()}
-              </form>
+              <FieldOptionsProvider value={fieldOptions}>
+                <form
+                  onSubmit={form.handleSubmit(submitFilter)}
+                  className={cn("flex w-full", rowCount != null && "min-w-0")}
+                >
+                  {renderFilterFields()}
+                </form>
+              </FieldOptionsProvider>
             </Form>
           </div>
         </div>

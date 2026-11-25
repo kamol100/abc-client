@@ -3,7 +3,7 @@ import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-fo
 import { Textarea } from "../ui/textarea";
 import type { LabelProps } from "../form-wrapper/form-builder-type";
 import { useTranslation } from "react-i18next";
-import { FieldShell, useFieldControl } from "@/components/form-builder/fields/field-shell";
+import { FieldShell, useFieldControl, useFieldId } from "@/components/form-builder/fields/field-shell";
 
 type TextareaFieldProps = {
     name: string;
@@ -27,12 +27,13 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
     disabled = false,
 }) => {
     const control = useFieldControl(controlProp);
+    const id = useFieldId(name);
     const { t } = useTranslation();
     return (
         <FieldShell
             name={name}
             label={label}
-            labelFor={name}
+            labelFor={id}
             className={cn("flex flex-col gap-1 data-[state=error]:text-destructive dark:data-[state=error]:text-destructive", className)}
         >
             <Controller
@@ -41,7 +42,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
                 rules={rules}
                 render={({ field: { value, onChange, onBlur, ref }, fieldState: { error } }) => (
                     <Textarea
-                        id={name}
+                        id={id}
                         placeholder={placeholder ? t(placeholder as string) : ""}
                         value={value ?? ""}
                         onChange={onChange}
