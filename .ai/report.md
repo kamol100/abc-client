@@ -1,3 +1,23 @@
+## Form builder refactor, phase 2: pure data logic moved to `components/form-builder/core/` — 2026-11-25
+
+Structure only. No behaviour change intended, and the payload snapshots for the 10 real forms are unchanged.
+
+- New `components/form-builder/core/`, pure functions with no React:
+  - `form-schema.ts`: read a field config (`flattenFormSchema`, `flattenFieldConfigs`, `shownFields`, `topLevelFieldNames`). Replaces two copies of the same flatten function.
+  - `values.ts`: API record to form values (`toFormValues`), defaults (`applyFormFieldDefaults`), row cleanup (`normalizeFieldArrayItems`), `isDataComplete`.
+  - `payload.ts`: form values to request body (`buildPayload`, `toFormData`).
+  - `conditions.ts`: `visibleWhen` rules (`isFieldVisible`, `hiddenFieldValue`, `hasFilledValue`).
+- `form-builder.tsx` (569 to 454 lines) and `form-wrapper.tsx` (417 to 372 lines) now call these.
+- `form-wrapper/form-field-defaults.ts` only re-exports the old names, so existing imports still work.
+- New `tests/unit/form/builder/core.test.ts` (13 tests) for the pure functions.
+
+Not done on purpose: the salary field names in `FIELD_ARRAY_ALIASES` moved as they are (marked as debt), and no bug was fixed. Bug fixes are phase 6.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test` after the move, before adding `core.test.ts`: 1233 passed, the same 9 unrelated failures as before. Then the form, client-schema, expense and reseller suites with `core.test.ts`: 276 passed.
+- Not checked in a browser. Playwright not run.
+
 ## Form builder refactor, phases 0 and 1: tests that lock current behaviour — 2026-11-25
 
 Tests only. No file under `components/`, `hooks/`, `lib/` or `app/` changed.

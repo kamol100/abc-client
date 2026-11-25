@@ -24,114 +24,9 @@ import {
   HydratePolicy,
   VisibleWhen,
 } from "@/components/form-wrapper/form-builder-type";
-import {
-  applyFormFieldDefaults,
-  flattenFormSchema,
-  normalizeFieldArrayItems,
-} from "./form-field-defaults";
+import { hiddenFieldValue, isFieldVisible } from "@/components/form-builder/core/conditions";
+import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/core/values";
 import MyButton from "../my-button";
-
-// --- Date helpers ---
-
-const parseDateForForm = (v: unknown): Date | undefined => {
-  if (!v) return undefined;
-  if (v instanceof Date) return v;
-  if (typeof v === "string") return new Date(v);
-  return undefined;
-};
-
-const parseDateRangeForForm = (v: unknown): { from: Date; to?: Date } | undefined => {
-  if (!v || typeof v !== "object") return undefined;
-  const obj = v as { from?: unknown; to?: unknown };
-  const from = parseDateForForm(obj.from);
-  if (!from) return undefined;
-  return { from, to: parseDateForForm(obj.to) ?? undefined };
-};
-
-// --- Data transform helpers ---
-
-const transformFieldValues = (
-  data: Record<string, unknown>,
-  fields: FieldConfig[]
-): Record<string, unknown> => {
-  const formValues: Record<string, unknown> = { ...data };
-
-  fields.forEach((field) => {
-    if (field.type === "date") {
-      const key = field.valueKey ?? field.name;
-      const parsed = parseDateForForm(data[key]);
-      if (parsed) formValues[field.name] = parsed;
-    }
-    if (field.type === "dateRange") {
-      const key = field.valueKey ?? field.name;
-      const parsed = parseDateRangeForForm(data[key]);
-      if (parsed) formValues[field.name] = parsed;
-    }
-    if (field.type === "dropdown") {
-      const sourceKey = field.valueKey || field.name;
-      const sourceValue = data[sourceKey];
-
-      if (sourceValue !== undefined && sourceValue !== null) {
-        if (field.valueMapping) {
-          const { idKey = "id" } = field.valueMapping;
-          if (field.isMulti && Array.isArray(sourceValue)) {
-            formValues[field.name] = sourceValue.map(
-              (item: unknown) =>
-                typeof item === "object" && item !== null
-                  ? (item as Record<string, unknown>)[idKey]
-                  : item
-            );
-          } else if (typeof sourceValue === "object" && !Array.isArray(sourceValue)) {
-            formValues[field.name] = (sourceValue as Record<string, unknown>)[idKey];
-          } else {
-            formValues[field.name] = sourceValue;
-          }
-        } else {
-          formValues[field.name] = sourceValue;
-        }
-      }
-    }
-  });
-
-  return formValues;
-};
-
-const transformDataToFormValues = (
-  data: Record<string, unknown>,
-  formSchema: FormFieldConfig[] | AccordionSection[]
-): Record<string, unknown> => {
-  if (!data) return {};
-  const allFields = flattenFormSchema(formSchema);
-  const staticFields: FieldConfig[] = [];
-  const arrayFields: FieldArrayConfig[] = [];
-
-  for (const field of allFields) {
-    if (field.type === "fieldArray") {
-      arrayFields.push(field);
-    } else if (field.type !== "slot") {
-      staticFields.push(field);
-    }
-  }
-
-  const formValues = transformFieldValues(data, staticFields);
-
-  for (const arrField of arrayFields) {
-    const rawArray = data[arrField.name];
-    if (Array.isArray(rawArray)) {
-      formValues[arrField.name] = normalizeFieldArrayItems(rawArray, arrField.itemFields, {
-        omitBlank: arrField.omitBlankItems,
-      }).map((item) => transformFieldValues(item, arrField.itemFields));
-    } else {
-      const minItems = arrField.minItems ?? 0;
-      formValues[arrField.name] =
-        minItems > 0
-          ? Array.from({ length: minItems }, () => ({ ...arrField.defaultItem }))
-          : [];
-    }
-  }
-
-  return formValues;
-};
 
 // --- Dynamic imports ---
 
@@ -256,12 +151,6 @@ export type FormBuilderProps = {
   children?: (renderField: (field: FormFieldConfig) => ReactNode) => ReactNode;
 };
 
-const hasFilledValue = (value: unknown): boolean => {
-  if (value === null || value === undefined || value === "") return false;
-  if (Array.isArray(value)) return value.length > 0;
-  return true;
-};
-
 const ConditionalFormField = ({
   field,
   visibleWhen,
@@ -273,12 +162,8 @@ const ConditionalFormField = ({
 }) => {
   const { getValues, setValue } = useFormContext();
   const watched = useWatch({ name: visibleWhen.field });
-  const visible = visibleWhen.when
-    ? visibleWhen.when(watched)
-    : visibleWhen.equals === undefined
-      ? hasFilledValue(watched)
-      : watched === visibleWhen.equals || String(watched) === String(visibleWhen.equals);
-  const resetValue = visibleWhen.resetValue ?? null;
+  const visible = isFieldVisible(visibleWhen, watched);
+  const resetValue = hiddenFieldValue(visibleWhen);
 
   useEffect(() => {
     if (visible) return;
@@ -347,7 +232,7 @@ const FormBuilder = ({
   const transformedData = useMemo(() => {
     const base =
       mode === "edit" && data
-        ? transformDataToFormValues(data, formSchema)
+        ? toFormValues(data, formSchema)
         : data;
     return applyFormFieldDefaults(base, formSchema, { radios: mode === "create" });
   }, [data, mode, formSchema]);
@@ -355,7 +240,7 @@ const FormBuilder = ({
   const transformCallback = useCallback(
     (rawData: Record<string, unknown>) =>
       applyFormFieldDefaults(
-        transformDataToFormValues(rawData, formSchema),
+        toFormValues(rawData, formSchema),
         formSchema
       ),
     [formSchema]

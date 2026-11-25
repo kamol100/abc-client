@@ -5,7 +5,9 @@ import useApiMutation from "@/hooks/use-api-mutation";
 import { Form } from "@/components/ui/form";
 import { FormLoader } from "@/components/loader";
 import { parseApiError, serverFieldErrors } from "@/lib/helper/helper";
-import { sanitizeServerActionPayload } from "@/lib/helper/server-action-payload";
+import { shownFields, topLevelFieldNames } from "@/components/form-builder/core/form-schema";
+import { buildPayload, toFormData } from "@/components/form-builder/core/payload";
+import { isDataComplete } from "@/components/form-builder/core/values";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -20,36 +22,6 @@ import {
     FormFieldConfig,
     HydratePolicy,
 } from "@/components/form-wrapper/form-builder-type";
-
-// --- Hydration helpers ---
-
-function flattenFields(
-    formSchema?: FormFieldConfig[] | AccordionSection[]
-): FormFieldConfig[] {
-    if (!formSchema?.length) return [];
-    if ("form" in formSchema[0]) {
-        return (formSchema as AccordionSection[]).flatMap((s) => s.form);
-    }
-    return formSchema as FormFieldConfig[];
-}
-
-function getSourceKey(field: FormFieldConfig): string {
-    if (field.type === "fieldArray") return field.name;
-    if ("valueKey" in field && field.valueKey) return field.valueKey;
-    return field.name;
-}
-
-function isDataComplete(
-    data: Record<string, unknown> | undefined,
-    formSchema?: FormFieldConfig[] | AccordionSection[]
-): boolean {
-    if (!data) return false;
-    if (!formSchema) return true;
-    const fields = flattenFields(formSchema);
-    return fields
-        .filter((field) => field.permission !== false && field.type !== "slot")
-        .every((field) => getSourceKey(field) in data);
-}
 
 function stripLeadingSlash(str: string): string {
     return str.startsWith("/") ? str.slice(1) : str;
@@ -276,7 +248,7 @@ export default function FormWrapper({
         onError: (error) => {
             submittingRef.current = false;
             clearSubmitHold();
-            const visible = new Set(flattenFields(formSchema).map((field) => field.name));
+            const visible = topLevelFieldNames(formSchema);
             Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
                 if (visible.has(field)) setError(field, { type: "server", message });
             });
@@ -293,29 +265,14 @@ export default function FormWrapper({
                 submittingRef.current = false;
                 return;
             }
-            const transformedValues = transformPayload
-                ? transformPayload(prepared)
-                : prepared;
-            const mergedPayload =
-                extraPayload && Object.keys(extraPayload).length > 0
-                    ? ({ ...transformedValues, ...extraPayload } as FieldValues)
-                    : transformedValues;
-            const payload = sanitizeServerActionPayload(mergedPayload);
+            const payload = buildPayload(prepared, { transformPayload, extraPayload });
 
             lastPayloadRef.current = payload;
             if (submitHoldMs && submitHoldMs > 0) {
                 submitStartedAtRef.current = Date.now();
                 setHoldingSubmit(true);
             }
-            if (isFormData) {
-                const fd = new FormData();
-                Object.entries(payload).forEach(([key, value]) => {
-                    fd.append(key, value as string);
-                });
-                submitForm(fd);
-            } else {
-                submitForm(payload);
-            }
+            submitForm(isFormData ? toFormData(payload) : payload);
         } catch (error) {
             submittingRef.current = false;
             throw error;
@@ -335,9 +292,7 @@ export default function FormWrapper({
     }, [save, setSaveOnChange]);
 
     // --- Visible field count for skeleton ---
-    const visibleFieldCount = flattenFields(formSchema).filter(
-        (field) => field.permission !== false && field.type !== "slot"
-    ).length;
+    const visibleFieldCount = shownFields(formSchema).length;
 
     const formContent = isHydrating ? (
         <FormLoader
