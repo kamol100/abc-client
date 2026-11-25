@@ -265,6 +265,46 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ network_id: 2, package_id: 11 });
     });
 
+    it("keeps the child when an edit record arrives and fills an empty parent", async () => {
+        mockApi((request) => {
+            if (request.url === "/dropdown-networks") return { success: true, data: networks };
+            if (request.url in packagesByNetwork) return { success: true, data: packagesByNetwork[request.url] };
+            if (request.url === "/things/5") {
+                return { success: true, data: { id: 5, network_id: 1, package_id: 11 } };
+            }
+            return undefined;
+        });
+        // The list row has the keys but no values, so the parent goes from null to 1.
+        renderFields(fields(), {
+            mode: "edit",
+            hydrateOnEdit: "always",
+            data: { id: 5, network_id: null, package_id: null },
+        });
+
+        expect(await screen.findByText("A 10 Mbps")).toBeInTheDocument();
+        expect(await saveAndReadPayload()).toEqual({ id: 5, network_id: 1, package_id: 11 });
+    });
+
+    it("still clears the child when the user changes the parent of a loaded record", async () => {
+        renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
+        const user = userEvent.setup();
+        await screen.findByText("A 10 Mbps");
+        await pickOption(user, "network_id", "Network B");
+
+        expect(await saveAndReadPayload(user)).toEqual({ id: 5, network_id: 2, package_id: null });
+    });
+
+    it("clears the child when the user changes the parent away and back", async () => {
+        renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
+        const user = userEvent.setup();
+        await screen.findByText("A 10 Mbps");
+        await pickOption(user, "network_id", "Network B");
+        await pickOption(user, "package_id", "B 20 Mbps");
+        await pickOption(user, "network_id", "Network A");
+
+        expect(await saveAndReadPayload(user)).toEqual({ id: 5, network_id: 1, package_id: null });
+    });
+
     it("keeps a saved child value when the form opens with both values", async () => {
         renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
 

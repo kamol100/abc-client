@@ -7,6 +7,7 @@ import {
   FieldValues,
   RegisterOptions,
   UseFormSetValue,
+  get,
   useFormContext,
   useWatch,
 } from "react-hook-form";
@@ -34,6 +35,21 @@ const applyDropdownPopulate = (
       shouldValidate: true,
     });
   }
+};
+
+/** Equal as form values: ids compare as text (3 and "3"), lists item by item. */
+const sameValue = (left: unknown, right: unknown): boolean => {
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return (
+      Array.isArray(left) &&
+      Array.isArray(right) &&
+      left.length === right.length &&
+      left.every((item, index) => String(item) === String(right[index]))
+    );
+  }
+  const isEmpty = (value: unknown) => value === undefined || value === null || value === "";
+  if (isEmpty(left) || isEmpty(right)) return isEmpty(left) && isEmpty(right);
+  return String(left) === String(right);
 };
 
 type SelectDropdownProps = {
@@ -87,8 +103,10 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   resetOnParentChange = true,
   populate,
 }) => {
-  const { control: ctxControl, setValue } = useFormContext();
+  const { control: ctxControl, setValue, getValues, formState } = useFormContext();
   const control = controlProp ?? ctxControl;
+  // The values the form was last filled with (on mount, or when an edit form loaded its record).
+  const { defaultValues } = formState;
 
   // Subscribes to the parent field only, so other fields do not re-render this one.
   const watchedParent = useWatch({
@@ -108,20 +126,27 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     return hasDependency ? undefined : staticApi;
   }, [hasDependency, parentHasValue, parentValue, buildApi, staticApi]);
 
-  // Clear this field when the parent changes to another value.
+  // Clear this field when the user changes the parent to another value.
   const prevParentRef = useRef(parentValue);
   useEffect(() => {
-    if (!hasDependency) return;
+    if (!hasDependency || !parentFieldName) return;
     const prevParent = prevParentRef.current;
     prevParentRef.current = parentValue;
 
     if (prevParent === undefined) return;
     if (String(prevParent) === String(parentValue)) return;
 
+    // The form was just filled (an edit record arrived): parent and child both hold
+    // the values they were filled with, so they belong together. Keep the child.
+    const filledTogether =
+      sameValue(parentValue, get(defaultValues, parentFieldName)) &&
+      sameValue(getValues(name), get(defaultValues, name));
+    if (filledTogether) return;
+
     if (resetOnParentChange) {
       setValue(name, isMulti ? [] : null, { shouldValidate: true });
     }
-  }, [parentValue, hasDependency, resetOnParentChange, name, isMulti, setValue]);
+  }, [parentValue, hasDependency, parentFieldName, resetOnParentChange, name, isMulti, setValue, getValues, defaultValues]);
 
   const { options, isLoading: isApiLoading, loadFailed, reload } = useSelectOptions({
     name,
