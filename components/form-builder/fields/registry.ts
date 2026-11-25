@@ -7,6 +7,8 @@
  *   3. Add it to `fieldDefinitions` below.
  */
 import { checkboxField } from "@/components/form-builder/fields/checkbox";
+import { computedField } from "@/components/form-builder/fields/computed";
+import { customField } from "@/components/form-builder/fields/custom";
 import { dateField, dateRangeField } from "@/components/form-builder/fields/date";
 import type { FieldDefinition } from "@/components/form-builder/fields/define-field";
 import { dropdownField } from "@/components/form-builder/fields/dropdown";
@@ -28,6 +30,8 @@ const fieldDefinitions: FieldDefinition[] = [
     dateField,
     dateRangeField,
     geolocationField,
+    computedField,
+    customField,
 ];
 
 const definitionByType = new Map<string, FieldDefinition>(

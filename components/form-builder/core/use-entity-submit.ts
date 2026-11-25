@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { buildPayload, toFormData } from "@/components/form-builder/core/payload";
 import { entityIdOf, saveRequestOf } from "@/components/form-builder/core/request";
 import useApiMutation from "@/hooks/use-api-mutation";
-import { serverFieldErrors } from "@/lib/helper/helper";
+import { apiErrorText, serverFieldErrors } from "@/lib/helper/helper";
 
 type EntitySubmitOptions = {
     form: UseFormReturn<FieldValues>;
@@ -29,7 +29,27 @@ type EntitySubmitOptions = {
     resetOnSuccess: boolean;
     skipInvalidate: boolean;
     submitHoldMs?: number;
+    /** A check against live data, after Zod passed. Returns messages by field name to stop the save. */
+    validate?: FormValidate;
+    /** Saves the form itself, in place of the request to `api`. */
+    customSave?: FormCustomSave;
 };
+
+/**
+ * Runs after Zod validation and before anything is sent. Return an object of
+ * `{ fieldName: message }` to stop the save and show the messages under those fields;
+ * return nothing to go on. Use it for checks Zod cannot do, e.g. against a balance.
+ */
+export type FormValidate = (
+    values: FieldValues,
+) => Promise<Record<string, string> | void> | Record<string, string> | void;
+
+/**
+ * Saves the form in place of the builder's own request. It gets the finished payload
+ * and the raw form values. What it returns is passed to `onSuccess`; if it throws,
+ * the form stays open, the error is toasted and `onSubmitError` runs.
+ */
+export type FormCustomSave = (payload: FieldValues, values: FieldValues) => Promise<unknown> | unknown;
 
 /**
  * Keeps the submit button busy for at least `holdMs` after a submit starts, then closes
@@ -119,8 +139,11 @@ export function useEntitySubmit({
     resetOnSuccess,
     skipInvalidate,
     submitHoldMs,
+    validate,
+    customSave,
 }: EntitySubmitOptions) {
     const { t } = useTranslation();
+    const [customSaving, setCustomSaving] = useState(false);
     const { reset, setError } = form;
     const lastPayloadRef = useRef<FieldValues>({});
     const submittingRef = useRef(false);
@@ -137,34 +160,71 @@ export function useEntitySubmit({
         invalidateKeys: skipInvalidate ? undefined : queryKey,
         successMessage,
         onSuccess: (responseData) => {
-            submittingRef.current = false;
-            if (resetOnSuccess) reset();
             if (!successMessage && responseData?.message) {
                 toast.success(t(String(responseData.message)));
             }
-            onSuccess?.(responseData as Record<string, unknown> | undefined, lastPayloadRef.current);
-            hold.closeWhenDone();
+            handleSaved(responseData as Record<string, unknown> | undefined);
         },
-        // 422 field errors (Laravel `errors`) also show under the field, next to the toast.
-        // Laravel names a nested value the way the form does (`items.0.qty`), so the
-        // message lands under the right row. A name with no field on screen shows
-        // nowhere but the toast, and is cleared by the next validation.
-        onError: (error) => {
-            submittingRef.current = false;
-            hold.cancel();
-            Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
-                setError(field, { type: "server", message });
-            });
-            onSubmitError?.(error, lastPayloadRef.current);
-        },
+        onError: (error) => handleSaveFailed(error),
     });
+
+    /** The save went through: reset, tell the caller, close. */
+    function handleSaved(response: Record<string, unknown> | undefined) {
+        submittingRef.current = false;
+        if (resetOnSuccess) reset();
+        onSuccess?.(response, lastPayloadRef.current);
+        hold.closeWhenDone();
+    }
+
+    /**
+     * The save failed: keep the values and show the server's messages.
+     *
+     * 422 field errors (Laravel `errors`) show under the field, next to the toast.
+     * Laravel names a nested value the way the form does (`items.0.qty`), so the
+     * message lands under the right row. A name with no field on screen shows nowhere
+     * but the toast, and is cleared by the next validation.
+     */
+    function handleSaveFailed(error: unknown) {
+        submittingRef.current = false;
+        hold.cancel();
+        Object.entries(serverFieldErrors(error)).forEach(([field, message]) => {
+            setError(field, { type: "server", message });
+        });
+        onSubmitError?.(error, lastPayloadRef.current);
+    }
+
+    /** Saves through the caller's own function in place of the request to `api`. */
+    async function saveWithCustomHandler(payload: FieldValues, formValues: FieldValues) {
+        if (!customSave) return;
+        setCustomSaving(true);
+        try {
+            const response = await customSave(payload, formValues);
+            if (successMessage) toast.success(t(successMessage));
+            handleSaved(response as Record<string, unknown> | undefined);
+        } catch (error) {
+            toast.error(apiErrorText(error, t));
+            handleSaveFailed(error);
+        } finally {
+            setCustomSaving(false);
+        }
+    }
 
     /** Runs after Zod validation passed. */
     const onSubmit = async (formValues: FieldValues) => {
-        const alreadySaving = submittingRef.current || isPending || hold.holding;
-        if (!api || (preventDuplicateSubmit && alreadySaving)) return;
+        const alreadySaving = submittingRef.current || isPending || customSaving || hold.holding;
+        // A form with neither an `api` nor its own save has nowhere to send to.
+        if ((!api && !customSave) || (preventDuplicateSubmit && alreadySaving)) return;
         if (preventDuplicateSubmit) submittingRef.current = true;
         try {
+            const fieldErrors = validate ? await validate(formValues) : undefined;
+            if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+                Object.entries(fieldErrors).forEach(([field, message]) => {
+                    setError(field, { type: "validate", message });
+                });
+                submittingRef.current = false;
+                return;
+            }
+
             const prepared = preparePayload ? await preparePayload(formValues) : formValues;
             if (prepared === false) {
                 submittingRef.current = false;
@@ -174,6 +234,10 @@ export function useEntitySubmit({
 
             lastPayloadRef.current = payload;
             hold.start();
+            if (customSave) {
+                await saveWithCustomHandler(payload, formValues);
+                return;
+            }
             sendRequest(isFormData ? toFormData(payload) : payload);
         } catch (error) {
             submittingRef.current = false;
@@ -184,7 +248,7 @@ export function useEntitySubmit({
     return {
         onSubmit,
         /** True while the request is in flight or the submit hold is running. */
-        isSaving: isPending || hold.holding,
+        isSaving: isPending || customSaving || hold.holding,
         cancelHold: hold.cancel,
     };
 }

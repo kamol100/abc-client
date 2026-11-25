@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type ValueMapping = {
     idKey: string;
     labelKey: string;
@@ -26,13 +28,28 @@ export type DropdownPopulate = {
     from: string;
 };
 
-export type VisibleWhen = {
+/**
+ * A test on the value of another field.
+ *
+ * `field` is the field to watch. Inside a row of a field array a plain name means the
+ * field in the same row; a leading slash (`/status`) means a top-level field.
+ */
+export type FieldRule = {
     field: string;
+    /** Passes while the watched value equals this (compared as text too, so 1 matches "1"). */
     equals?: string | number | boolean;
-    resetValue?: string | number | boolean | null;
-    /** Custom visibility test on the watched value; takes precedence over `equals`. */
+    /** Your own test on the watched value. Used first when given. */
     when?: (value: unknown) => boolean;
 };
+
+/** Shows a field only while its rule passes. With neither `equals` nor `when`: while the watched field is filled. */
+export type VisibleWhen = FieldRule & {
+    /** The value written into the field while it is hidden. Defaults to null. */
+    resetValue?: string | number | boolean | null;
+};
+
+/** Disables a field while its rule passes. */
+export type DisabledWhen = FieldRule;
 
 type BaseFieldConfig = {
     name: string;
@@ -44,6 +61,8 @@ type BaseFieldConfig = {
     className?: string;
     order?: number;
     visibleWhen?: VisibleWhen;
+    /** Disables the field while the rule passes, e.g. until another field is chosen. */
+    disabledWhen?: DisabledWhen;
 };
 
 export type TextFieldConfig = BaseFieldConfig & {
@@ -56,6 +75,8 @@ export type TextFieldConfig = BaseFieldConfig & {
      * are saved as `{ label, value }` but edited as `items_label` / `items_value`.
      */
     valueKey?: string;
+    /** Cut a long error message to one line. Useful in narrow table columns. */
+    errorEllipsis?: boolean;
 };
 
 export type TextareaFieldConfig = BaseFieldConfig & {
@@ -131,6 +152,48 @@ export type GeolocationFieldConfig = BaseFieldConfig & {
     getLocationError?: string;
 };
 
+/** The current values a `compute` function reads. */
+export type ComputeScope = {
+    /** The row the field sits in, or the whole form for a top-level field. */
+    row: Record<string, unknown>;
+    /** Reads the whole form. Changes outside the row do not trigger a recompute. */
+    getFormValues: () => Record<string, unknown>;
+};
+
+/**
+ * A read-only value worked out from other fields, e.g. `amount * quantity`. It is kept
+ * in the form like any other value, so Zod sees it and it is sent with the payload.
+ */
+export type ComputedFieldConfig = BaseFieldConfig & {
+    type: "computed";
+    compute: (scope: ComputeScope) => number | string | null;
+    /** How the value is shown. Defaults to a number input. */
+    inputType?: "number" | "text";
+};
+
+/** What a `custom` field's `render` function receives. */
+export type CustomFieldRenderProps = {
+    /** The full form path of the field, e.g. `lines.2.serial` inside a row. */
+    name: string;
+    /** The path of the row the field sits in (`lines.2`), or "" at the top level. */
+    namePrefix: string;
+};
+
+/**
+ * Your own component in a field's place, for anything the built-in types do not cover.
+ * It gets the same wrapper as every field (`className`, `permission`, `visibleWhen`),
+ * and can read and write the form with `useFormContext()`.
+ */
+export type CustomFieldConfig = BaseFieldConfig & {
+    type: "custom";
+    render: (props: CustomFieldRenderProps) => ReactNode;
+    /**
+     * The keys of the API record this field needs. An edit form fetches its record
+     * when one is missing. Leave out for a field that holds no value.
+     */
+    sourceKeys?: string[];
+};
+
 export type SlotFieldConfig = BaseFieldConfig & {
     type: "slot";
     slot: string;
@@ -145,7 +208,9 @@ export type FieldConfig =
     | CheckboxFieldConfig
     | DateFieldConfig
     | DateRangeFieldConfig
-    | GeolocationFieldConfig;
+    | GeolocationFieldConfig
+    | ComputedFieldConfig
+    | CustomFieldConfig;
 
 export type FieldArrayConfig = {
     type: "fieldArray";
@@ -166,6 +231,30 @@ export type FieldArrayConfig = {
     grids?: number;
     gridGap?: string;
     addButtonLabel?: string;
+    /** Keep room for one line of error under every row field, so rows never change height. */
+    reserveErrorSpace?: boolean;
+    /**
+     * Draws the rows as a table: a heading with the Add button, a header row of column
+     * names on wide screens, and one row per item. On a phone each row stacks its
+     * fields under an "Item N" line. Without it, rows are drawn as cards.
+     */
+    table?: FieldArrayTable;
+};
+
+/** How wide a table column is, out of 12. */
+export type FieldArrayColumn = number | { span: number; align?: "right" };
+
+export type FieldArrayTable = {
+    /** Heading above the rows (translation key). */
+    title: string;
+    /** Width of each row field by its `name`, out of 12. With the actions column they should add up to 12. */
+    columns: Record<string, FieldArrayColumn>;
+    /** Width of the column that holds the remove button. Defaults to 1. */
+    actionsSpan?: number;
+    /** "Item N" line shown above a row on a phone (translation key that takes `index`). */
+    rowLabel: string;
+    /** Name of the remove button (translation key). */
+    removeLabel: string;
 };
 
 export type FormFieldConfig = FieldConfig | FieldArrayConfig | SlotFieldConfig;

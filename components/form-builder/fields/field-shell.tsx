@@ -18,7 +18,7 @@ export type FieldOptions = {
     reserveErrorSpace?: boolean;
 };
 
-const FieldOptionsContext = createContext<FieldOptions>({});
+export const FieldOptionsContext = createContext<FieldOptions>({});
 
 export const FieldOptionsProvider = FieldOptionsContext.Provider;
 

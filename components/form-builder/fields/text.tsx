@@ -21,6 +21,7 @@ export const textField = defineField<InputConfig>({
             type={field.type}
             disabled={field.disabled}
             readOnly={field.readOnly}
+            errorMessageEllipsis={field.errorEllipsis}
         />
     ),
     renderFilter: ({ field, value, onClear }) => (

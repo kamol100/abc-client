@@ -405,6 +405,108 @@ describe("FormBuilder submit", () => {
         });
     });
 
+    describe("validate", () => {
+        it("stops the save and shows the returned messages under their fields", async () => {
+            const validate = vi.fn(async () => ({ name: "zone.name.taken" }));
+            renderForm({ validate });
+            await typeNameAndSave();
+
+            expect(await screen.findByText("zone.name.taken")).toBeInTheDocument();
+            expect(validate).toHaveBeenCalledWith({ name: "North" });
+            expect(writeRequests()).toHaveLength(0);
+            expect(inputById("name")).toHaveValue("North");
+        });
+
+        it("lets the save go on when it returns nothing, and can be tried again after a message", async () => {
+            let taken = true;
+            renderForm({ validate: () => (taken ? { name: "zone.name.taken" } : undefined) });
+            const user = await typeNameAndSave();
+            expect(await screen.findByText("zone.name.taken")).toBeInTheDocument();
+
+            taken = false;
+            await user.click(screen.getByRole("button", { name: "common.save" }));
+
+            await waitFor(() => expect(writeRequests()).toHaveLength(1));
+        });
+
+        it("does not run when Zod validation fails", async () => {
+            const validate = vi.fn();
+            renderForm({ validate });
+            const user = userEvent.setup();
+            await user.click(screen.getByRole("button", { name: "common.save" }));
+
+            await screen.findByText("zone.name.required");
+            expect(validate).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("onSubmit (the caller saves)", () => {
+        it("calls onSubmit with the payload and the form values, and sends no request", async () => {
+            const onSubmit = vi.fn(async () => ({ id: 77 }));
+            renderForm({ api: undefined, onSubmit, extraPayload: { extra: 1 } });
+            await typeNameAndSave();
+
+            await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
+            expect(onSubmit).toHaveBeenCalledWith({ name: "North", extra: 1 }, { name: "North" });
+            expect(writeRequests()).toHaveLength(0);
+        });
+
+        it("then runs the same success steps: reset, onSuccess with what it returned, close", async () => {
+            const onSuccess = vi.fn();
+            const onClose = vi.fn();
+            renderForm({
+                api: undefined,
+                onSubmit: async () => ({ id: 77 }),
+                onSuccess,
+                onClose,
+                successMessage: "zone.create_success",
+            });
+            await typeNameAndSave();
+
+            await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+            expect(onSuccess).toHaveBeenCalledWith({ id: 77 }, { name: "North" });
+            expect(toast.success).toHaveBeenCalledWith("zone.create_success");
+            expect(inputById("name")).toHaveValue("");
+        });
+
+        it("keeps the form open when it throws, toasts the error and shows field messages", async () => {
+            const onClose = vi.fn();
+            const onSubmitError = vi.fn();
+            const failure = { message: "zone.save_failed", errors: { name: ["zone.name.taken"] } };
+            renderForm({
+                api: undefined,
+                onSubmit: async () => {
+                    throw failure;
+                },
+                onClose,
+                onSubmitError,
+            });
+            await typeNameAndSave();
+
+            expect(await screen.findByText("zone.name.taken")).toBeInTheDocument();
+            expect(toast.error).toHaveBeenCalledWith("zone.save_failed");
+            expect(onSubmitError).toHaveBeenCalledWith(failure, { name: "North" });
+            expect(onClose).not.toHaveBeenCalled();
+            expect(inputById("name")).toHaveValue("North");
+        });
+
+        it("shows the Save button as busy while it runs", async () => {
+            let finish: (value: unknown) => void = () => {};
+            renderForm({
+                api: undefined,
+                onSubmit: () =>
+                    new Promise((resolve) => {
+                        finish = resolve;
+                    }),
+            });
+            await typeNameAndSave();
+
+            await waitFor(() => expect(screen.getByRole("button", { name: "common.save" })).toBeDisabled());
+            finish({});
+            await waitFor(() => expect(screen.getByRole("button", { name: "common.save" })).toBeEnabled());
+        });
+    });
+
     describe("footer", () => {
         it("renders Cancel first and a real submit button", () => {
             const { container } = renderForm();

@@ -3,9 +3,11 @@
 import { ReactNode, useCallback, useMemo } from "react";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
+import type { FormCustomSave, FormValidate } from "@/components/form-builder/core/use-entity-submit";
 import { applyFormFieldDefaults, toFormValues } from "@/components/form-builder/core/values";
 import { FieldArrayRenderer } from "@/components/form-builder/fields/field-array";
 import { fieldDefinitionOf } from "@/components/form-builder/fields/registry";
+import { DisabledWhenField } from "@/components/form-builder/layout/disabled-when";
 import { VisibleFormField } from "@/components/form-builder/layout/visible-field";
 import {
   AccordionSection,
@@ -52,6 +54,17 @@ export type FormBuilderProps = {
   resetOnSuccess?: boolean;
   skipInvalidate?: boolean;
   onSubmitError?: (error: unknown, payload: FieldValues) => void;
+  /**
+   * A check against live data, after Zod passed and before anything is sent. Return
+   * `{ fieldName: message }` to stop the save and show the messages under those fields.
+   */
+  validate?: FormValidate;
+  /**
+   * Save the form yourself, in place of the request to `api`. It gets the finished
+   * payload and the raw form values. What it returns is passed to `onSuccess`; if it
+   * throws, the form stays open. With `onSubmit`, `api` is not needed.
+   */
+  onSubmit?: FormCustomSave;
   /** Put in front of every field id. Set it when another form on the page has the same field names. */
   idPrefix?: string;
   /** Keep room for one line of error under every field, so fields never move when an error shows. */
@@ -87,6 +100,8 @@ const FormBuilder = ({
   onSubmitError,
   idPrefix,
   reserveErrorSpace,
+  validate,
+  onSubmit,
   children,
 }: FormBuilderProps) => {
   const transformedData = useMemo(() => {
@@ -112,11 +127,17 @@ const FormBuilder = ({
     const definition = fieldDefinitionOf(field.type);
     if (!definition) return null;
 
-    return definition.render({
-      field,
-      name: namePrefix ? `${namePrefix}.${field.name}` : field.name,
-      namePrefix,
-    });
+    const name = namePrefix ? `${namePrefix}.${field.name}` : field.name;
+    if (!field.disabledWhen) return definition.render({ field, name, namePrefix });
+
+    return (
+      <DisabledWhenField
+        field={field}
+        rule={field.disabledWhen}
+        namePrefix={namePrefix}
+        render={(current) => definition.render({ field: current, name, namePrefix })}
+      />
+    );
   };
 
   const renderField = (field: FormFieldConfig, namePrefix = ""): ReactNode => {
@@ -159,6 +180,8 @@ const FormBuilder = ({
       skipInvalidate={skipInvalidate}
       onSubmitError={onSubmitError}
       idPrefix={idPrefix}
+      validate={validate}
+      onSubmit={onSubmit}
       reserveErrorSpace={reserveErrorSpace}
       grids={grids}
       fullPage={fullPage}
