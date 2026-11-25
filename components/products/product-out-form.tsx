@@ -8,7 +8,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import FormBuilder from "@/components/form-wrapper/form-builder";
 import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
-import ProductOutLinesEditor from "@/components/products/product-out-lines-editor";
+import { defaultProductOutLine } from "@/components/products/product-out-lines";
 import ProductOutFormFieldSchema from "@/components/products/product-out-form-schema";
 import { resolveProductInProductId } from "@/components/products/product-in-type";
 import {
@@ -34,23 +34,7 @@ const defaultValues: ProductOutFormState = {
     client_id: null,
     create_invoice: 0,
     note: "",
-    product: [
-        {
-            product_id: 0,
-            productin_id: null,
-            product_category_id: 1,
-            quantity: 1,
-            unit_price: 0,
-            vat: 0,
-            discount: 0,
-            total_price: 0,
-            has_serial: 0,
-            serial: [],
-            fiberID: null,
-            fiber_meter_start: null,
-            fiber_meter_end: null,
-        },
-    ],
+    product: [{ ...defaultProductOutLine }],
 };
 
 const ProductOutTotals: FC = () => {
@@ -127,7 +111,7 @@ const ProductOutFormContent: FC<ProductOutContentProps> = ({
                 </div>
                 <div>{field("create_invoice")}</div>
 
-                <ProductOutLinesEditor />
+                {field("product")}
                 <ProductOutTotals />
                 <div>{field("note")}</div>
             </div>

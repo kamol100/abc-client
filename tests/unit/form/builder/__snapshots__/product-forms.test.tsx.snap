@@ -1389,6 +1389,7 @@ exports[`stock forms > stock out > a serial product: loads its details, fills th
     <button
       class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
       data-theme-button="outline"
+      type="button"
     >
       <svg
         aria-hidden="true"
@@ -1432,6 +1433,7 @@ exports[`stock forms > stock out > a serial product: loads its details, fills th
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-8 rounded-md px-3 text-xs hover:bg-primary hover:text-primary-foreground"
         data-theme-button="outline"
         disabled=""
+        type="button"
       >
         <svg
           aria-hidden="true"
@@ -1927,6 +1929,7 @@ exports[`stock forms > stock out > a serial product: loads its details, fills th
             class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 w-9 hover:bg-primary hover:text-primary-foreground"
             data-theme-button="outline"
             disabled=""
+            type="button"
           >
             <svg
               aria-hidden="true"

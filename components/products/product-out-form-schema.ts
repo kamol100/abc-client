@@ -1,6 +1,7 @@
-import { FieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { FormFieldConfig } from "@/components/form-wrapper/form-builder-type";
+import { productOutLinesField } from "@/components/products/product-out-lines";
 
-export const ProductOutFormFieldSchema = (): FieldConfig[] => {
+export const ProductOutFormFieldSchema = (): FormFieldConfig[] => {
     return [
         {
             type: "date",
@@ -47,6 +48,7 @@ export const ProductOutFormFieldSchema = (): FieldConfig[] => {
             },
             placeholder: "product_out.note.placeholder",
         },
+        productOutLinesField,
     ];
 };
 
