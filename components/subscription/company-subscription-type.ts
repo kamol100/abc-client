@@ -1,10 +1,5 @@
-import { normalizeDateOnlyInput } from "@/lib/helper/helper";
+import { nullableDateOnly } from "@/lib/validations/date-fields";
 import { z } from "zod";
-
-const optionalDate = z.preprocess((value) => {
-  const normalized = normalizeDateOnlyInput(value);
-  return typeof normalized === "string" ? normalized : null;
-}, z.string().nullable());
 
 export const SUBSCRIPTION_STATUSES = ["trialing", "active", "past_due", "canceled", "expired"] as const;
 
@@ -37,8 +32,8 @@ export const CompanySubscriptionFormSchema = z.object({
   status: z.enum(SUBSCRIPTION_STATUSES).default("active"),
   trial_days: z.coerce.number().min(0).optional().default(0),
   grace_days: z.coerce.number().min(0).optional().default(0),
-  starts_at: optionalDate,
-  ends_at: optionalDate,
+  starts_at: nullableDateOnly,
+  ends_at: nullableDateOnly,
 });
 
 export type CompanySubscriptionFormInput = z.input<typeof CompanySubscriptionFormSchema>;

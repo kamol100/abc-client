@@ -1,6 +1,5 @@
-import { normalizeDateOnlyInput } from "@/lib/helper/helper";
+import { optionalDateOnly } from "@/lib/validations/date-fields";
 import { z } from "zod";
-const dateOnlyField = z.preprocess(normalizeDateOnlyInput, z.string().optional());
 
 const StaffRefSchema = z.object({
   id: z.coerce.number(),
@@ -37,7 +36,7 @@ export const SalaryRowSchema = z.object({
   id: z.coerce.number(),
   staff_id: z.coerce.number(),
   staff: StaffRefSchema.nullable().optional(),
-  date: dateOnlyField.nullable().optional(),
+  date: optionalDateOnly.nullable().optional(),
   amount: z.coerce.number(),
   salary_items: z.array(SalaryItemSchema).nullable().optional(),
   salary_deductions: z.array(SalaryDeductionSchema).nullable().optional(),
@@ -57,7 +56,7 @@ export const SalaryFormSchema = z.object({
     required_error: "salary.staff.errors.required",
     invalid_type_error: "salary.staff.errors.required",
   }).min(1, { message: "salary.staff.errors.required" }),
-  date: dateOnlyField.nullable().optional(),
+  date: optionalDateOnly.nullable().optional(),
   amount: z.coerce.number({
     required_error: "salary.amount.errors.required",
     invalid_type_error: "salary.amount.errors.required",

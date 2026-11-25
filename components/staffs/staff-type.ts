@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { normalizeDateOnlyInput } from "@/lib/helper/helper";
+import { optionalDateOnly } from "@/lib/validations/date-fields";
 import { requiredBdMobile } from "@/lib/phone";
 
 const RoleRefSchema = z.object({
@@ -12,7 +12,6 @@ const ZoneRefSchema = z.object({
   name: z.string(),
 });
 
-const dateOnlyField = z.preprocess(normalizeDateOnlyInput, z.string().optional());
 const UserRefSchema = z.object({
   uuid: z.string().optional(),
   username: z.string().optional(),
@@ -41,8 +40,8 @@ export const StaffRowSchema = z.object({
   designation: z.string().nullable().optional(),
   phone: z.string().nullable().optional(),
   email: z.string().nullable().optional(),
-  date_of_birth: dateOnlyField.nullable().optional(),
-  join_date: dateOnlyField.nullable().optional(),
+  date_of_birth: optionalDateOnly.nullable().optional(),
+  join_date: optionalDateOnly.nullable().optional(),
   gender: z.string().nullable().optional(),
   marital_status: z.string().nullable().optional(),
   blood_group: z.string().nullable().optional(),
@@ -79,8 +78,8 @@ export const StaffFormSchema = z.object({
   designation: z.string().nullable().optional().default(""),
   phone: requiredBdMobile("common.phone_required"),
   email: z.string().nullable().optional().default(""),
-  date_of_birth: dateOnlyField.nullable().optional(),
-  join_date: dateOnlyField.nullable().optional(),
+  date_of_birth: optionalDateOnly.nullable().optional(),
+  join_date: optionalDateOnly.nullable().optional(),
   salary_day: z.string().default("07"),
   salary_generation_type: z.string().default("auto"),
   father_name: z.string().nullable().optional().default(""),
