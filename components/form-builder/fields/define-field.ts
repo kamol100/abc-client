@@ -46,6 +46,12 @@ export type FieldDefinition<Config extends FieldConfig = FieldConfig> = {
      * leave the record's own value. Types without it use the record's value as it is.
      */
     readValue?: (field: Config, record: Record<string, unknown>) => unknown;
+    /**
+     * The keys of an API record this field needs, for types that do not read the key
+     * named by `valueKey` or `name`. Used to decide whether an edit form must fetch
+     * its record again.
+     */
+    sourceKeys?: (field: Config) => string[];
     /** Draws the field in a table filter. Types without it are not drawn in filters. */
     renderFilter?: (props: FilterFieldProps<Config>) => ReactNode;
     /**

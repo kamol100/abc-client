@@ -10,6 +10,7 @@
 import type {
     FieldArrayConfig,
     FieldConfig,
+    FormFieldConfig,
 } from "@/components/form-wrapper/form-builder-type";
 import {
     flattenFieldConfigs,
@@ -152,11 +153,14 @@ export function applyFormFieldDefaults(
 
 // --- Does the record already hold everything the form shows? ---
 
-/** The key of the API record that a field reads its value from. */
-const sourceKeyOf = (field: ReturnType<typeof flattenFormSchema>[number]): string => {
-    if (field.type === "fieldArray") return field.name;
-    if ("valueKey" in field && field.valueKey) return field.valueKey;
-    return field.name;
+/** The keys of the API record that a field reads its value from. */
+const sourceKeysOf = (field: FormFieldConfig): string[] => {
+    if (field.type === "fieldArray" || field.type === "slot") return [field.name];
+
+    const ownKeys = fieldDefinitionOf(field.type)?.sourceKeys?.(field);
+    if (ownKeys) return ownKeys;
+    if ("valueKey" in field && field.valueKey) return [field.valueKey];
+    return [field.name];
 };
 
 /**
@@ -166,5 +170,7 @@ const sourceKeyOf = (field: ReturnType<typeof flattenFormSchema>[number]): strin
 export function isDataComplete(data: FormValues | undefined, formSchema?: FormSchema): boolean {
     if (!data) return false;
     if (!formSchema) return true;
-    return shownFields(formSchema).every((field) => sourceKeyOf(field) in data);
+    return shownFields(formSchema).every((field) =>
+        sourceKeysOf(field).every((key) => key in data),
+    );
 }

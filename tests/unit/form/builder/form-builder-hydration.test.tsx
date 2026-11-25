@@ -123,15 +123,20 @@ describe("FormBuilder edit loading", () => {
             expect(detailRequests()).toHaveLength(0);
         });
 
-        it("always fetches for a geolocation field, because its own name is never a data key", async () => {
-            renderEdit({
-                formSchema: [
-                    { type: "text", name: "name" },
-                    { type: "geolocation", name: "location", latitudeName: "latitude", longitudeName: "longitude" },
-                ],
+        it("for a geolocation field, looks for its latitude and longitude keys", async () => {
+            const formSchema: FormFieldConfig[] = [
+                { type: "text", name: "name" },
+                { type: "geolocation", name: "location", latitudeName: "latitude", longitudeName: "longitude" },
+            ];
+            const complete = renderEdit({
+                formSchema,
                 data: { id: 5, name: "From row", latitude: "23.7", longitude: "90.4" },
             });
+            await settle();
+            expect(detailRequests()).toHaveLength(0);
+            complete.unmount();
 
+            renderEdit({ formSchema, data: { id: 5, name: "From row", latitude: "23.7" } });
             await waitFor(() => expect(detailRequests()).toHaveLength(1));
         });
 

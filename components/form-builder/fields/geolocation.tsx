@@ -8,6 +8,7 @@ import type { GeolocationFieldConfig } from "@/components/form-wrapper/form-buil
  */
 export const geolocationField = defineField<GeolocationFieldConfig>({
     types: ["geolocation"],
+    sourceKeys: (field) => [field.latitudeName, field.longitudeName],
     render: ({ field, namePrefix }) => (
         <GeolocationField
             latitudeName={namePrefix ? `${namePrefix}.${field.latitudeName}` : field.latitudeName}
