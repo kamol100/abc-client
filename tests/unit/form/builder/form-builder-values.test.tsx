@@ -16,6 +16,15 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
 const anyValues = z.object({}).passthrough();
 
+/** Year, month (1-12), day, hour and minute of a date in local time. */
+const localParts = (date: Date) => [
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+];
+
 type Props = Partial<ComponentProps<typeof FormBuilder>>;
 
 /**
@@ -57,13 +66,21 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values).toEqual({ id: 5, name: "North", created_at: "2026-01-01", zone: { id: 1 } });
         });
 
-        it("date: turns a date-only string into a Date at UTC midnight", async () => {
+        it("date: turns a date-only string into that day at local midnight", async () => {
             const values = await startingValues([{ type: "date", name: "paid_at" }], {
                 data: { id: 5, paid_at: "2026-11-25" },
             });
 
             expect(values.paid_at).toBeInstanceOf(Date);
-            expect((values.paid_at as Date).toISOString()).toBe("2026-11-25T00:00:00.000Z");
+            expect(localParts(values.paid_at as Date)).toEqual([2026, 11, 25, 0, 0]);
+        });
+
+        it("date: leaves a value that is not a date as it is", async () => {
+            const values = await startingValues([{ type: "date", name: "paid_at" }], {
+                data: { id: 5, paid_at: "not a date" },
+            });
+
+            expect(values.paid_at).toBe("not a date");
         });
 
         it("date: reads from valueKey and keeps the source key too", async () => {
@@ -89,8 +106,8 @@ describe("FormBuilder: turning data into form values", () => {
             });
 
             const period = values.period as { from: Date; to: Date };
-            expect(period.from.toISOString()).toBe("2026-11-01T00:00:00.000Z");
-            expect(period.to.toISOString()).toBe("2026-11-30T00:00:00.000Z");
+            expect(localParts(period.from)).toEqual([2026, 11, 1, 0, 0]);
+            expect(localParts(period.to)).toEqual([2026, 11, 30, 0, 0]);
         });
 
         it("dropdown: with valueKey and valueMapping, takes the id out of the related object", async () => {
@@ -347,7 +364,7 @@ describe("FormBuilder: turning data into form values", () => {
             );
 
             const [line] = values.lines as Array<Record<string, unknown>>;
-            expect((line.due as Date).toISOString()).toBe("2026-11-25T00:00:00.000Z");
+            expect(localParts(line.due as Date)).toEqual([2026, 11, 25, 0, 0]);
             expect(line.product_id).toBe(8);
         });
 

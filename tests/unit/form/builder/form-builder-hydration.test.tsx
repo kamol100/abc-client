@@ -232,7 +232,8 @@ describe("FormBuilder edit loading", () => {
             await waitFor(() => expect(writeRequests()).toHaveLength(1));
 
             const data = writeRequests()[0].data as Record<string, unknown>;
-            expect((data.opened_at as Date).toISOString()).toBe("2026-11-25T00:00:00.000Z");
+            const openedAt = data.opened_at as Date;
+            expect([openedAt.getFullYear(), openedAt.getMonth() + 1, openedAt.getDate(), openedAt.getHours()]).toEqual([2026, 11, 25, 0]);
             expect(data.manager_id).toBe(9);
             expect(data.status).toBe("active");
             expect(data.kind).toBeNull();

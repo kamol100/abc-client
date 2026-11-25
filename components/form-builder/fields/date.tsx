@@ -1,5 +1,5 @@
 import DatePicker from "@/components/form/DatePicker";
-import { parseDateRangeValue, parseDateValue } from "@/components/form-builder/core/dates";
+import { parseDateRange, parseSingleDate } from "@/components/controls/date-format";
 import {
     defineField,
     DROP_VALUE,
@@ -34,7 +34,10 @@ const renderDateFilter = ({
     />
 );
 
-/** One date. The API sends a string; the form holds a `Date`. */
+/**
+ * One date. The API sends a string; the form holds a `Date`. A date-only string
+ * ("2026-11-25") becomes that day at local midnight, the same way the calendar reads it.
+ */
 export const dateField = defineField<DateFieldConfig>({
     types: ["date"],
     render: ({ field, name }) => (
@@ -49,7 +52,7 @@ export const dateField = defineField<DateFieldConfig>({
         />
     ),
     readValue: (field, record) =>
-        parseDateValue(record[field.valueKey ?? field.name]) ?? KEEP_VALUE,
+        parseSingleDate(record[field.valueKey ?? field.name]) ?? KEEP_VALUE,
     renderFilter: renderDateFilter,
     toFilterParam: (value) => toDateParam(value) ?? KEEP_VALUE,
 });
@@ -70,7 +73,7 @@ export const dateRangeField = defineField<DateRangeFieldConfig>({
         />
     ),
     readValue: (field, record) =>
-        parseDateRangeValue(record[field.valueKey ?? field.name]) ?? KEEP_VALUE,
+        parseDateRange(record[field.valueKey ?? field.name]) ?? KEEP_VALUE,
     renderFilter: renderDateFilter,
     toFilterParam: (value) => {
         if (typeof value === "string") return KEEP_VALUE;
