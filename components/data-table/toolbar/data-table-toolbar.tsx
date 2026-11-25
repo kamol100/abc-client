@@ -108,6 +108,15 @@ export function DataTableToolbar<TData>({
   const centerItems = inSlot(center);
   const endItems = [...toActions, ...inSlot(end)];
   const filterRowItems = endItems.filter((item) => item.inFilterRow !== false);
+  // The add slot (after the filter button) stays at the end of the open filter row too.
+  const addNode = renderAdd(features.add);
+  const filterRowEnd =
+    filterRowItems.length > 0 || addNode ? (
+      <>
+        {renderItems(filterRowItems)}
+        {addNode}
+      </>
+    ) : undefined;
   const showStart = hasToolbarStart(filter, config.title, startItems, isMobile, isFiltered);
 
   return (
@@ -134,7 +143,7 @@ export function DataTableToolbar<TData>({
           columns={features.columns ?? false}
           layoutToggle={features.layoutToggle ?? true}
           filter={filterControl}
-          add={renderAdd(features.add)}
+          add={addNode}
         />
       }
       mobileLead={<ChangePagination queryKey={queryKey} />}
@@ -155,7 +164,7 @@ export function DataTableToolbar<TData>({
               setFilter={setFilter}
               resultCount={resultCount}
               onOpenChange={handleFilterOpenChange}
-              endAction={filterRowItems.length > 0 ? renderItems(filterRowItems) : undefined}
+              endAction={filterRowEnd}
             />
           </>
         ) : undefined

@@ -48,8 +48,7 @@ const CommunicationQueueArchiveTable: FC = () => {
     title: pagination?.total
       ? t("communication_queue.archive.title_count", { count: pagination.total })
       : t("communication_queue.archive.title"),
-    // After the filter button in both states, like the queue's bulk buttons.
-    end: [{ key: "bulk-actions", onlyInFilterRow: true, node: bulkActions }],
+    // `add` sits after the filter button, open or closed.
     features: {
       columns: true,
       filter: filterOptions,

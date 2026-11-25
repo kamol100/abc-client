@@ -25,9 +25,8 @@ export type ToolbarItem = {
    */
   inFilterRow?: boolean;
   /**
-   * Desktop: an `end` item that shows only in the open filter row, after the filter
-   * button. Pair it with the same node in `features.add` to keep it after the
-   * filter button in both states. Default false.
+   * Desktop: an `end` item that shows only in the open filter row. Default false.
+   * Not needed for `features.add`, which already shows in both states.
    */
   onlyInFilterRow?: boolean;
 };

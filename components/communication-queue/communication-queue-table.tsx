@@ -71,12 +71,10 @@ const CommunicationQueueTable: FC = () => {
 
   const toolbar: DataTableToolbarConfig = {
     title: toolbarTitle,
-    // The bulk buttons sit after the filter button: in `add` while the filter is
-    // closed, and in the open filter row (which replaces the actions row).
+    // The bulk buttons sit in `add`, after the filter button, open or closed.
     end: [
       // Before the filter button (closed), and in the open filter row.
       { key: "archive", inFilterRow: false, show: hasPermission("communication-queue.archive"), node: <CommunicationQueueArchiveDialog /> },
-      { key: "bulk-actions", onlyInFilterRow: true, node: bulkActions },
     ],
     features: {
       columns: true,
