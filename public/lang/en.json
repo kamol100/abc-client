@@ -7802,8 +7802,6 @@
     },
     "noc": {
         "title": "NOC",
-        "ports_down": "Ports down",
-        "no_ports_down": "All monitored ports are up.",
         "no_ports_monitored": "No OLT ports are being monitored yet. Turn on polling for an OLT to see its ports here.",
         "port_type": {
             "pon": "PON port",
@@ -7834,20 +7832,62 @@
         "maintenance_reason": "Planned maintenance on {{target}} until {{until}}: {{reason}}",
         "maintenance_all": "all devices",
         "down_devices": "Down devices",
-        "no_down_devices": "All monitored devices are reachable.",
         "down_for": "Down for {{duration}}",
         "clients": "{{count}} clients",
         "directions": "Directions",
-        "map_label": "Map of down devices",
         "open_outages": "Open outages",
-        "no_open_outages": "No open outages.",
-        "outage_started": "Started {{ago}} ago · {{count}} clients",
         "ticket": "Ticket {{number}}",
         "badges": {
             "maintenance": "Maintenance",
-            "downstream": "Downstream",
             "acknowledged": "Acknowledged"
-        }
+        },
+        "summary_down": "{{count}} down · {{clients}} clients offline",
+        "summary_states": "{{up}} up · {{unknown}} unknown",
+        "all_up": "Everything monitored is up.",
+        "filter_label": "Filter by type",
+        "filter": {
+            "all": "All down",
+            "device": "Devices",
+            "olt": "OLTs",
+            "pon": "PON ports",
+            "uplink": "Uplinks"
+        },
+        "filter_empty": "Nothing of this type is down.",
+        "down_now": "Down right now",
+        "kind": {
+            "device": "Device down",
+            "olt": "OLT down",
+            "pon": "PON port down",
+            "uplink": "Uplink down"
+        },
+        "down_for_label": "Down for",
+        "clients_label": "Clients offline",
+        "not_acknowledged": "Not acknowledged",
+        "details": "Details",
+        "fields": {
+            "ip": "IP",
+            "type": "Type",
+            "network": "Network",
+            "zone": "Zone",
+            "down_since": "Down since",
+            "olt": "OLT",
+            "port": "Port",
+            "onus": "ONUs on port",
+            "started": "Started"
+        },
+        "check_first": "Check first:",
+        "hints": {
+            "device": "Is there power at the site (load-shedding, IPS or UPS battery)? If power is fine, restart the device.",
+            "olt": "If the switch before the OLT still answers, check the OLT's power and the cable to that switch.",
+            "pon": "If every ONU lost light at once, walk the feeder fiber to the splitter. If ONUs reported power off, it is likely a power cut in the area.",
+            "uplink": "Check the SFP and patch cord on both ends. Clients may still be online through another uplink.",
+            "outage": "Check the link between the app server and this network, and the router's API or ping access."
+        },
+        "behind": "Cut off behind this ({{count}})",
+        "behind_none": "Nothing else is down behind this.",
+        "port_history": "Port history",
+        "open_olt": "Open OLT page",
+        "open_ticket": "Open ticket {{number}}"
     },
     "subscription": {
         "title": "Subscription",
