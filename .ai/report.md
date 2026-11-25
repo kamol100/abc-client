@@ -1,3 +1,15 @@
+## User and reseller permission pages use the new layout — 2026-11-25
+
+- `permission-entity-form.tsx` (`/permissions/{id}?type=user|reseller`) now uses the same `PermissionGroupsPanel` as `/permissions`: group search, pins (shared with `/permissions`, same user meta), sidebar menu icons, and the All / Granted / Not granted filter with a granted count.
+- The header card keeps the back button (now with a "Back" label and tooltip, new key `permission.back` in `en.json` and `bn.json`), the title and the user/reseller badge.
+- The badge shows the name too, e.g. "reseller: Karim" or "user: Rahim" (long names are cut off, full name in the tooltip). The name comes from a new `name` field in the `reseller-permissions` / `user-permissions` responses.
+- Behaviour is unchanged: the same `user-permissions` / `reseller-permissions` load and `/permission-add` / `/permission-remove` with the entity's role. With no role the checkboxes stay disabled and the "Select a role first" message shows.
+
+Checks:
+- New `tests/unit/permissions/permission-entity-form.test.tsx` (2): grant one permission and revoke a group, both with the entity's role.
+- `scripts/ai/typecheck` passed. `scripts/ai/test`: same 20 baseline failures, everything else passed.
+- Not checked in the browser.
+
 ## Permissions page redesign: group list + detail, group search, pins — 2026-11-25
 
 Option B from the prototype (https://claude.ai/artifact/2sRBU1ERqUdKnkLPSSKpoR). Design only: granting and revoking work as before.

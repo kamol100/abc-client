@@ -3511,6 +3511,7 @@
         }
     },
     "permission": {
+        "back": "Back",
         "groups": "Permission groups",
         "search_groups": "Search groups",
         "no_group_match": "No group matches your search.",
