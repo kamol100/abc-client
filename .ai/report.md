@@ -1,3 +1,32 @@
+## Form builder refactor, phase 7 (part 1): dynamic features, invoice lines moved — 2026-11-25
+
+Branch `refactor-form-builder`.
+
+New in the builder, all optional, so existing forms are unchanged:
+
+| Feature | What it is |
+| --- | --- |
+| `type: "computed"` | A read-only value worked out from the row (or the form), e.g. `amount * quantity`. Kept in form state, so Zod and the payload see it. |
+| `type: "custom"` | Your own component in a field's place, with the usual wrapper (`className`, `permission`, `visibleWhen`) and its form path. Replaces most reasons to use `slot` or the `children` function. |
+| `disabledWhen` | Disables a field while a rule on another field passes. Row-scoped like `visibleWhen`. |
+| `FieldArrayConfig.table` | Rows as a table: heading with the Add button, a header row of column names, column widths out of 12, and a stacked phone layout with "Item N". Remove is disabled (not hidden) at `minItems`. |
+| `FieldArrayConfig.reserveErrorSpace` | Keeps a line free under every row field. |
+| `errorEllipsis` | One-line error text for narrow columns. |
+| `FormBuilder validate` | A check against live data after Zod; return `{ field: message }` to stop the save. |
+| `FormBuilder onSubmit` | The caller saves in place of the request to `api`; the same success and failure steps follow. |
+
+Invoice lines:
+- `components/invoices/invoice-lines-editor.tsx` (172 lines) is deleted. The lines are a `fieldArray` in `invoice-form-schema.ts`, and `invoice-form.tsx` places it with `field("lines")`.
+- Guard tests in `tests/unit/form/builder/invoice-form.test.tsx` were recorded on the old editor first. After the move the lines markup differs only by `type="button"` on the Add and four remove buttons (they were submit buttons), and the edit payload snapshot is identical.
+- Because the lines are now in the form schema, a server error for `lines.0.amount` shows under that field.
+
+Not done yet in phase 7: file upload, rows inside rows, a per-row fetch, clear-siblings-on-change, conditions on more than one field, and moving the product out and product in line editors, which need those.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1314 passed, the same 9 unrelated failures as before.
+- Not checked in a browser. Playwright not run; `invoices/forms.spec.ts` (IV-F02 to IV-F11) covers these lines and should run before merge.
+
 ## Form builder refactor, phase 6 (second batch): the remaining fixes — 2026-11-25
 
 Branch `refactor-form-builder`. One commit per item, each with tests. The payload snapshots for the 10 real forms did not change.
