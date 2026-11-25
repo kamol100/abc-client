@@ -1502,11 +1502,11 @@
             "placeholder": "Ex: 01712345678"
         },
         "pppoe_username": {
-            "label": "PPPoE ID",
+            "label": "Client ID",
             "next_sid": "SID:{{sid}}",
-            "placeholder": "Enter PPPoE ID",
+            "placeholder": "Enter client ID",
             "errors": {
-                "required": "PPPoE ID is required"
+                "required": "Client ID is required"
             }
         },
         "pppoe_password": {
@@ -2180,7 +2180,7 @@
             "phone": "Phone",
             "client_id": "ID",
             "client": "Client",
-            "pppoe_id": "P-ID",
+            "pppoe_id": "Client ID",
             "client_phone": "Client Phone",
             "invoice_id": "Invoice ID",
             "date": "Date",
@@ -3449,7 +3449,7 @@
         "empty_value": "—",
         "client_summary": {
             "name": "Client Name",
-            "pppoe_username": "PPPoE Username",
+            "pppoe_username": "Client ID",
             "phone": "Phone Number",
             "address": "Address",
             "package": "Package Name",

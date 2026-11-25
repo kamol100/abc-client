@@ -50,7 +50,7 @@ const ClientBasicView: FC<Props> = ({ client }) => {
     const textToCopy = [
         `Name: ${client?.name ?? ""}`,
         `Phone: ${client?.phone ?? ""}`,
-        `UserId: ${client?.pppoe_username ?? ""}`,
+        `Client ID: ${client?.pppoe_username ?? ""}`,
         `Password: ${client?.pppoe_password ?? ""}`,
         `Zone: ${client?.zone?.name ?? ""}`,
         `Address: ${client?.current_address ?? ""}`,

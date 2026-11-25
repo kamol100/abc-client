@@ -1502,11 +1502,11 @@
             "placeholder": "যেমন: 01712345678"
         },
         "pppoe_username": {
-            "label": "পিপিপিওই আইডি",
+            "label": "ক্লায়েন্ট আইডি",
             "next_sid": "এসআইডি:{{sid}}",
-            "placeholder": "পিপিপিওই আইডি দিন",
+            "placeholder": "ক্লায়েন্ট আইডি দিন",
             "errors": {
-                "required": "পিপিপিওই আইডি আবশ্যক"
+                "required": "ক্লায়েন্ট আইডি আবশ্যক"
             }
         },
         "pppoe_password": {
@@ -2180,7 +2180,7 @@
             "phone": "ফোন",
             "client_id": "আইডি",
             "client": "ক্লায়েন্ট",
-            "pppoe_id": "P-ID",
+            "pppoe_id": "ক্লায়েন্ট আইডি",
             "client_phone": "ক্লায়েন্ট ফোন",
             "invoice_id": "আইডি",
             "date": "তারিখ",
@@ -3449,7 +3449,7 @@
         "empty_value": "—",
         "client_summary": {
             "name": "ক্লায়েন্টের নাম",
-            "pppoe_username": "পিপিপিওই ইউজারনেম",
+            "pppoe_username": "ক্লায়েন্ট আইডি",
             "phone": "ফোন নম্বর",
             "address": "ঠিকানা",
             "package": "প্যাকেজের নাম",
