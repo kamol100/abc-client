@@ -3511,6 +3511,7 @@
         }
     },
     "permission": {
+        "whole_group": "Whole group",
         "back": "Back",
         "groups": "Permission groups",
         "search_groups": "Search groups",

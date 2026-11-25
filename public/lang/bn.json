@@ -3511,6 +3511,7 @@
         }
     },
     "permission": {
+        "whole_group": "পুরো গ্রুপ",
         "back": "ফিরে যান",
         "groups": "পারমিশন গ্রুপ",
         "search_groups": "গ্রুপ খুঁজুন",

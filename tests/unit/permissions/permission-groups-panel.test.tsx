@@ -1,10 +1,12 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { KeyRound } from "lucide-react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import PermissionGroupsPanel from "@/components/permissions/permission-groups-panel";
 import { buildPermissionGroups } from "@/components/permissions/permission-groups";
 
+const viewport = vi.hoisted(() => ({ mobile: false }));
+vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => viewport.mobile }));
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: Record<string, unknown>) =>
@@ -108,5 +110,38 @@ describe("PermissionGroupsPanel", () => {
   it("keeps permissions read-only while disabled", () => {
     renderPanel({ disabled: true });
     expect(screen.getByRole("checkbox", { name: /clients\.access/ })).toBeDisabled();
+  });
+
+  describe("on a phone", () => {
+    beforeEach(() => {
+      viewport.mobile = true;
+      // The drawer library drags with pointer capture, which jsdom does not have.
+      Element.prototype.setPointerCapture ??= () => {};
+      Element.prototype.releasePointerCapture ??= () => {};
+      Element.prototype.hasPointerCapture ??= () => false;
+    });
+    afterEach(() => {
+      viewport.mobile = false;
+    });
+
+    it("opens the tapped group's permissions in a bottom sheet", async () => {
+      const user = userEvent.setup();
+      const props = renderPanel();
+
+      expect(screen.queryByRole("dialog")).toBeNull();
+      await user.click(within(groupList()).getByText("invoices"));
+
+      const sheet = await screen.findByRole("dialog");
+      expect(within(sheet).getByText("invoices.delete")).toBeInTheDocument();
+
+      await user.click(within(sheet).getByRole("checkbox", { name: /invoices\.delete/ }));
+      expect(props.onTogglePermission).toHaveBeenCalledWith("invoices.delete", true);
+
+      await user.click(within(sheet).getByRole("checkbox", { name: "permission.whole_group" }));
+      expect(props.onToggleGroup).toHaveBeenCalledWith(
+        [{ name: "invoices.access" }, { name: "invoices.delete" }],
+        true,
+      );
+    });
   });
 });

@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { Pin, PinOff, Search, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
+import { MyDrawer } from "@/components/my-drawer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,8 +18,10 @@ import {
   permissionActionName,
   type PermissionGroup,
   type PermissionShowFilter,
+  type VisiblePermissionGroup,
 } from "@/components/permissions/permission-groups";
 import type { PermissionRow } from "@/components/permissions/permission-type";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -71,14 +74,24 @@ const PermissionGroupsPanel: FC<Props> = ({
   // The chosen group, or the first one the search and filter leave.
   const current = visible.find((group) => group.name === active) ?? visible[0];
 
-  const CurrentIcon = current ? groupIcon(current.name) : null;
+  // Phones: the list fills the panel and a tapped group opens in a bottom sheet.
+  const isMobile = useIsMobile();
+  const [sheetGroup, setSheetGroup] = useState<string | null>(null);
+  const sheet = useMemo((): VisiblePermissionGroup | null => {
+    if (!sheetGroup) return null;
+    const shown = visible.find((group) => group.name === sheetGroup);
+    if (shown) return shown;
+    // The filter can drop the open group (e.g. Not granted after granting it all): keep it open, empty.
+    const group = groups.find((item) => item.name === sheetGroup);
+    return group ? { ...group, visible: [] } : null;
+  }, [sheetGroup, visible, groups]);
 
   const label = (name: string) =>
     name === GENERAL_GROUP ? t("permission.general_group") : groupDisplayName(name);
 
   return (
     <div className="grid overflow-hidden rounded-[var(--radius)] border bg-card md:grid-cols-[18rem_minmax(0,1fr)]">
-      <aside className={cn("flex min-h-0 flex-col border-b md:border-b-0 md:border-r", PANE_HEIGHT)}>
+      <aside className={cn("flex min-h-0 flex-col md:border-r", PANE_HEIGHT)}>
         <div className="border-b p-2">
           <label className="relative block">
             <span className="sr-only">{t("permission.search_groups")}</span>
@@ -97,7 +110,7 @@ const PermissionGroupsPanel: FC<Props> = ({
           </label>
         </div>
 
-        <nav aria-label={t("permission.groups")} className="max-h-64 flex-1 overflow-y-auto md:max-h-none">
+        <nav aria-label={t("permission.groups")} className="flex-1 md:overflow-y-auto">
           {visible.length === 0 ? (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">{t("permission.no_group_match")}</p>
           ) : (
@@ -118,9 +131,12 @@ const PermissionGroupsPanel: FC<Props> = ({
                   >
                     <button
                       type="button"
-                      onClick={() => setActive(group.name)}
+                      onClick={() => {
+                        setActive(group.name);
+                        if (isMobile) setSheetGroup(group.name);
+                      }}
                       aria-current={isCurrent ? "true" : undefined}
-                      className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1.5 px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                      className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 gap-y-1.5 px-3 py-3 text-left md:py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
                     >
                       <span className="flex min-w-0 items-center gap-2">
                         <GroupIcon
@@ -149,7 +165,7 @@ const PermissionGroupsPanel: FC<Props> = ({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className={cn("size-7 shrink-0", isPinned ? "text-primary" : "text-muted-foreground")}
+                        className={cn("size-9 shrink-0 md:size-7", isPinned ? "text-primary" : "text-muted-foreground")}
                         onClick={() => onTogglePin(group.name)}
                         disabled={pinDisabled}
                         aria-pressed={isPinned}
@@ -167,74 +183,131 @@ const PermissionGroupsPanel: FC<Props> = ({
         </nav>
       </aside>
 
-      <section className={cn("min-w-0 overflow-y-auto p-4", PANE_HEIGHT)}>
+      <section className={cn("hidden min-w-0 overflow-y-auto p-4 md:block", PANE_HEIGHT)}>
         {current ? (
-          <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <Checkbox
-                id={`permission-group-${current.name}`}
-                checked={
-                  current.permissions.length > 0 &&
-                  grantedCount(current, selectedSet) === current.permissions.length
-                }
-                onCheckedChange={(value) => onToggleGroup(current.permissions, value === true)}
-                disabled={disabled}
-              />
-              <label
-                htmlFor={`permission-group-${current.name}`}
-                className="flex cursor-pointer items-center gap-2 text-lg font-semibold capitalize"
-              >
-                {CurrentIcon && <CurrentIcon className="size-5 shrink-0 text-primary" aria-hidden />}
-                {label(current.name)}
-              </label>
-              <span className="text-sm tabular-nums text-muted-foreground">
-                {t("permission.granted_of", {
-                  granted: grantedCount(current, selectedSet),
-                  total: current.permissions.length,
-                })}
-              </span>
-            </div>
-
-            {current.visible.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{t("permission.empty_permissions")}</p>
-            ) : (
-              <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-                {current.visible.map((permission) => {
-                  const checkboxId = `permission-${permission.name}`;
-                  return (
-                    <li key={permission.name}>
-                      <label
-                        htmlFor={checkboxId}
-                        className={cn(
-                          "flex h-full items-center gap-3 rounded-[var(--radius)] border px-3 py-2.5",
-                          disabled ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-accent",
-                        )}
-                      >
-                        <Checkbox
-                          id={checkboxId}
-                          checked={selectedSet.has(permission.name)}
-                          onCheckedChange={(value) => onTogglePermission(permission.name, value === true)}
-                          disabled={disabled}
-                        />
-                        <span className="min-w-0">
-                          <span className="block text-sm font-medium capitalize">
-                            {permissionActionName(current.name, permission.name)}
-                          </span>
-                          <span className="block break-all font-mono text-xs text-muted-foreground">
-                            {permission.name}
-                          </span>
-                        </span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
+          <GroupPermissions
+            group={current}
+            idPrefix="pane"
+            heading={label(current.name)}
+            icon={groupIcon(current.name)}
+            selected={selectedSet}
+            disabled={disabled}
+            onTogglePermission={onTogglePermission}
+            onToggleGroup={onToggleGroup}
+          />
         ) : (
           <p className="text-sm text-muted-foreground">{t("permission.select_group")}</p>
         )}
       </section>
+
+      {isMobile && (
+        <MyDrawer
+          open={sheet !== null}
+          onOpenChange={(open) => !open && setSheetGroup(null)}
+          side="bottom"
+          size="lg"
+          showCloseButton
+          title={sheet ? label(sheet.name) : ""}
+        >
+          {sheet && (
+            <GroupPermissions
+              group={sheet}
+              idPrefix="sheet"
+              heading={t("permission.whole_group")}
+              icon={groupIcon(sheet.name)}
+              selected={selectedSet}
+              disabled={disabled}
+              onTogglePermission={onTogglePermission}
+              onToggleGroup={onToggleGroup}
+            />
+          )}
+        </MyDrawer>
+      )}
+    </div>
+  );
+};
+
+type GroupPermissionsProps = {
+  group: VisiblePermissionGroup;
+  /** Keeps checkbox ids unique between the desktop pane and the phone sheet. */
+  idPrefix: string;
+  heading: string;
+  icon: LucideIcon;
+  selected: ReadonlySet<string>;
+  disabled: boolean;
+  onTogglePermission: (name: string, checked: boolean) => void;
+  onToggleGroup: (permissions: PermissionRow[], checked: boolean) => void;
+};
+
+/** The group checkbox and the group's permissions: the desktop pane and the phone sheet. */
+const GroupPermissions: FC<GroupPermissionsProps> = ({
+  group,
+  idPrefix,
+  heading,
+  icon: Icon,
+  selected,
+  disabled,
+  onTogglePermission,
+  onToggleGroup,
+}) => {
+  const { t } = useTranslation();
+  const granted = grantedCount(group, selected);
+  const total = group.permissions.length;
+  const groupId = `permission-${idPrefix}-group-${group.name}`;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Checkbox
+          id={groupId}
+          checked={total > 0 && granted === total}
+          onCheckedChange={(value) => onToggleGroup(group.permissions, value === true)}
+          disabled={disabled}
+        />
+        <label htmlFor={groupId} className="flex cursor-pointer items-center gap-2 text-lg font-semibold capitalize">
+          <Icon className="size-5 shrink-0 text-primary" aria-hidden />
+          {heading}
+        </label>
+        <span className="text-sm tabular-nums text-muted-foreground">
+          {t("permission.granted_of", { granted, total })}
+        </span>
+      </div>
+
+      {group.visible.length === 0 ? (
+        <p className="text-sm text-muted-foreground">{t("permission.empty_permissions")}</p>
+      ) : (
+        <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+          {group.visible.map((permission) => {
+            const checkboxId = `permission-${idPrefix}-${permission.name}`;
+            return (
+              <li key={permission.name}>
+                <label
+                  htmlFor={checkboxId}
+                  className={cn(
+                    "flex h-full items-center gap-3 rounded-[var(--radius)] border px-3 py-2.5",
+                    disabled ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:bg-accent",
+                  )}
+                >
+                  <Checkbox
+                    id={checkboxId}
+                    checked={selected.has(permission.name)}
+                    onCheckedChange={(value) => onTogglePermission(permission.name, value === true)}
+                    disabled={disabled}
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-medium capitalize">
+                      {permissionActionName(group.name, permission.name)}
+                    </span>
+                    <span className="block break-all font-mono text-xs text-muted-foreground">
+                      {permission.name}
+                    </span>
+                  </span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };
@@ -242,11 +315,11 @@ const PermissionGroupsPanel: FC<Props> = ({
 /** Matches the panel's two panes so the page does not jump when permissions arrive. */
 export const PermissionGroupsPanelSkeleton: FC = () => (
   <div className="grid overflow-hidden rounded-[var(--radius)] border bg-card md:grid-cols-[18rem_minmax(0,1fr)]">
-    <div className={cn("flex flex-col border-b md:border-b-0 md:border-r", PANE_HEIGHT)}>
+    <div className={cn("flex flex-col md:border-r", PANE_HEIGHT)}>
       <div className="border-b p-2">
         <Skeleton className="h-9 w-full" />
       </div>
-      <div className="max-h-64 flex-1 space-y-4 overflow-hidden p-3 md:max-h-none">
+      <div className="flex-1 space-y-4 overflow-hidden p-3">
         {Array.from({ length: 8 }).map((_, index) => (
           <div key={index} className="space-y-2">
             <Skeleton className="h-4 w-2/3" />
@@ -255,7 +328,7 @@ export const PermissionGroupsPanelSkeleton: FC = () => (
         ))}
       </div>
     </div>
-    <div className={cn("space-y-4 p-4", PANE_HEIGHT)}>
+    <div className={cn("hidden space-y-4 p-4 md:block", PANE_HEIGHT)}>
       <Skeleton className="h-6 w-48" />
       <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 6 }).map((_, index) => (

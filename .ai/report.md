@@ -1,3 +1,17 @@
+## Permission pages on phones: bottom sheet per group — 2026-11-25
+
+- Below 768px (`useIsMobile`, the same breakpoint as the panel's two columns), `PermissionGroupsPanel` shows only the group list, at full height with taller rows and 36px pin buttons. Tapping a group opens a bottom sheet (`MyDrawer`, large) titled with the group name, holding a "Whole group" checkbox, the granted count and the group's permissions. Desktop is unchanged.
+- The pane and the sheet share one `GroupPermissions` piece; checkbox ids carry a `pane` / `sheet` prefix so they never clash.
+- If the filter hides the open group (Not granted, then granting all of it), the sheet stays open and shows the empty message.
+- Applies to `/permissions` and the user and reseller permission pages. Granting and revoking are unchanged.
+- The skeleton matches: list only on phones.
+- New key `permission.whole_group` in `en.json` and `bn.json`.
+
+Checks:
+- New phone test in `permission-groups-panel.test.tsx`: tapping a group opens the sheet, and one permission and the whole group toggle through the same callbacks. The panel and page tests mock `useIsMobile`.
+- `scripts/ai/typecheck` passed. `scripts/ai/test`: same 20 baseline failures, everything else passed.
+- Not checked on a phone or in a browser.
+
 ## User and reseller permission pages use the new layout — 2026-11-25
 
 - `permission-entity-form.tsx` (`/permissions/{id}?type=user|reseller`) now uses the same `PermissionGroupsPanel` as `/permissions`: group search, pins (shared with `/permissions`, same user meta), sidebar menu icons, and the All / Granted / Not granted filter with a granted count.
