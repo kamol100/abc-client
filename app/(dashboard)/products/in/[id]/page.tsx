@@ -18,11 +18,6 @@ export default async function ProductInDetailsPage({ params }: Props) {
             mode="in"
             productId={id}
             backUrl="/products"
-            leading={
-                <h1 className="text-xl font-semibold">
-                    {t("product_movement.in_details_title")}
-                </h1>
-            }
         />
     );
 }

@@ -2,7 +2,7 @@
 
 import { usePermissions } from "@/context/app-provider";
 import ProductFeedback, { ProductBackgroundError } from "@/components/products/product-feedback";
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import useApiQuery from "@/hooks/use-api-query";
@@ -20,14 +20,12 @@ type ProductMovementTableProps = {
     mode: ProductMovementMode;
     productId: string;
     backUrl?: string;
-    leading?: ReactNode;
 };
 
 const ProductMovementTable: FC<ProductMovementTableProps> = ({
     mode,
     productId,
     backUrl,
-    leading,
 }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
@@ -75,36 +73,39 @@ const ProductMovementTable: FC<ProductMovementTableProps> = ({
     if (!allowed) return <ProductFeedback denied />;
     if (isError && !data) return <ProductFeedback retry={() => void refetch()} />;
 
+    const BackButton = () => (
+        <MyButton
+            action="cancel"
+            icon={false}
+            variant="outline"
+            size="icon"
+            className="h-9 w-9"
+            url={backUrl}
+            tooltip={t("product_movement.actions.back_to_products")}
+            aria-label={t("product_movement.actions.back_to_products")}
+        >
+            <ArrowLeft className="h-4 w-4" />
+        </MyButton>
+    );
+
     const toolbar: DataTableToolbarConfig = {
         title: toolbarTitle,
+        center: [
+            {
+                key: "totals",
+                node: <ProductReportsSummary reports={reports} isLoading={isLoading} />,
+            },
+        ],
         features: {
             columns: true,
             filter: toolbarOptions,
+            add: backUrl ? BackButton : undefined,
         },
     };
 
     return (
         <div className="space-y-4">
             <ProductBackgroundError failed={isError} retry={refetch} />
-            <div className="flex flex-wrap items-center justify-between gap-3">
-                {leading}
-                <div className="ml-auto flex items-center gap-2">
-                    <ProductReportsSummary reports={reports} isLoading={isLoading} />
-                    {backUrl ? (
-                        <MyButton
-                            action="cancel"
-                            icon={false}
-                            variant="default"
-                            size="icon"
-                            url={backUrl}
-                            tooltip={t("product_movement.actions.back_to_products")}
-                            aria-label={t("product_movement.actions.back_to_products")}
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                        </MyButton>
-                    ) : null}
-                </div>
-            </div>
 
             <DataTable
                 data={rows}

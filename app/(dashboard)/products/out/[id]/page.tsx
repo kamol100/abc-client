@@ -18,11 +18,6 @@ export default async function ProductOutDetailsPage({ params }: Props) {
             mode="out"
             productId={id}
             backUrl="/products"
-            leading={
-                <h1 className="text-xl font-semibold">
-                    {t("product_movement.out_details_title")}
-                </h1>
-            }
         />
     );
 }
