@@ -1,3 +1,41 @@
+## Form builder refactor, phase 7 (part 2): the stock forms moved, remaining dynamic features — 2026-11-25
+
+Branch `refactor-form-builder`.
+
+New in the builder, all optional:
+
+| Feature | What it is |
+| --- | --- |
+| `FieldArrayConfig.render` | Draw the rows yourself, for a layout cards and `table` cannot give. Fields still come from `itemFields` through `row.field("name")`, with their rules, value handling and errors. |
+| `onChange: { set: {...} }` | When the user changes a field, write values into other fields (row-scoped; `/name` for top level). It does not fire when the form is filled on open or when an edit record arrives. |
+| `{ all: [...] }` / `{ any: [...] }` | `visibleWhen` and `disabledWhen` on more than one field. |
+| `dependsOn.isSet` | Says when the parent counts as chosen, for a parent that uses 0 for "none". |
+| `step`, `reserveErrorSpace` | On text and number fields. |
+| `display` on a computed field | Draw the value yourself (e.g. as money) in place of the read-only input. |
+
+Stock forms:
+- `product-out-lines-editor.tsx` (333 lines) and `product-in-lines-editor.tsx` (424 lines) are deleted.
+- `product-out-lines.tsx` and `product-in-lines.tsx` declare the lines as a `fieldArray` and hold the row layout. `use-product-line-detail.ts` is the product lookup both shared as a copy before.
+- `product-out-form-schema.ts` and `product-in-form-schema.ts` include the lines; the forms place them with `field("product")`.
+- No hand-written `useFieldArray` is left outside the form builder.
+
+How the move was checked: `tests/unit/form/builder/product-forms.test.tsx` (10 tests, 5 snapshots) was recorded on the old editors first: serial product, lot dependency and price fill, serial limit, product change clearing, fibre metres, serial inputs per unit, expense amount, add and remove, and the saved payload of each form. After the move:
+- Every behaviour test passes unchanged.
+- Both payload snapshots are identical.
+- Markup differs only by `type="button"` on the Add and remove buttons (they were submit buttons) and, in stock in, a plain `<div>` around each of the three fibre fields.
+
+Because the lines are now in the form schema, a server error for a line field shows under that field.
+
+Left out on purpose:
+- **File upload.** The five existing file inputs upload through their own endpoints, apart from the form's save. A generic file field needs a decision on that flow, so it belongs with the screens that would use it (phase 8).
+- **Rows inside rows as a config option.** The one case (a serial input per unit) is 20 lines inside the stock-in row layout; a general nested array was not needed.
+- **A declarative per-row fetch.** The product lookup is a small hook used by both stock forms.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1338 passed, the same 9 unrelated failures as before.
+- Not checked in a browser. Playwright not run; `products/products.spec.ts` (FT051) and `invoices/forms.spec.ts` cover these forms and should run before merge.
+
 ## Form builder refactor, phase 7 (part 1): dynamic features, invoice lines moved — 2026-11-25
 
 Branch `refactor-form-builder`.
