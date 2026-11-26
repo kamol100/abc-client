@@ -16,8 +16,8 @@ const ResellerPackageTable: FC<Props> = ({ packages }) => {
     const columns = useResellerPackageColumns();
 
     return (
-        <Card>
-            <div className="border-b bg-muted/40 px-3 py-2.5">
+        <Card className="overflow-hidden rounded-xl">
+            <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                 <h2 className="text-base font-semibold">{t("reseller.view.package_information")}</h2>
             </div>
             <div className="p-3">

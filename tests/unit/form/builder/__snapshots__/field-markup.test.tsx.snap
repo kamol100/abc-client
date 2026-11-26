@@ -6,11 +6,11 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
     class=""
   >
     <div
-      class="w-full border rounded-md bg-muted"
+      class="w-full overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow"
       data-orientation="vertical"
     >
       <div
-        class="w-full [&:not(:last-child)]:border-b decoration-transparent bg-muted"
+        class="w-full border-border [&:not(:last-child)]:border-b"
         data-orientation="vertical"
         data-state="open"
       >
@@ -22,7 +22,7 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
           <button
             aria-controls="generated-id"
             aria-expanded="true"
-            class="flex flex-1 items-center justify-between transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180 px-3 font-semibold text-lg capitalize py-2"
+            class="flex flex-1 items-center justify-between transition-all text-left [&[data-state=open]>svg]:rotate-180 bg-[hsl(var(--table-header))] px-3 py-2.5 text-base font-semibold capitalize text-foreground hover:no-underline data-[state=open]:border-b data-[state=open]:border-border"
             data-orientation="vertical"
             data-radix-collection-item=""
             data-state="open"
@@ -59,7 +59,7 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
           style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); transition-duration: 0s; animation-name: none;"
         >
           <div
-            class="grid gap-4 m-auto grid-cols-1 sm:grid-cols-2 w-full bg-background p-3 rounded-md"
+            class="grid gap-4 m-auto grid-cols-1 sm:grid-cols-2 w-full bg-card p-3"
           >
             <div>
               <div
@@ -799,7 +799,7 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
         </div>
       </div>
       <div
-        class="w-full [&:not(:last-child)]:border-b decoration-transparent bg-muted"
+        class="w-full border-border [&:not(:last-child)]:border-b"
         data-orientation="vertical"
         data-state="closed"
       >
@@ -811,7 +811,7 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
           <button
             aria-controls="generated-id"
             aria-expanded="false"
-            class="flex flex-1 items-center justify-between transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180 px-3 font-semibold text-lg capitalize py-2"
+            class="flex flex-1 items-center justify-between transition-all text-left [&[data-state=open]>svg]:rotate-180 bg-[hsl(var(--table-header))] px-3 py-2.5 text-base font-semibold capitalize text-foreground hover:no-underline data-[state=open]:border-b data-[state=open]:border-border"
             data-orientation="vertical"
             data-radix-collection-item=""
             data-state="closed"
@@ -851,7 +851,7 @@ exports[`field markup > Form field markup: AccordionFormBuilder: sections with a
       </div>
     </div>
     <div
-      class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
+      class="flex items-center gap-3 pt-4 mt-4 border-t border-border sticky bottom-0 bg-background justify-between"
     >
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 px-4 py-2 hover:bg-primary hover:text-primary-foreground"
@@ -2781,7 +2781,7 @@ exports[`field markup > Form field markup: FormBuilder: every field type, empty 
       </div>
     </div>
     <div
-      class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
+      class="flex items-center gap-3 pt-4 mt-4 border-t border-border sticky bottom-0 bg-background justify-between"
     >
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 px-4 py-2 hover:bg-primary hover:text-primary-foreground"
@@ -5540,7 +5540,7 @@ exports[`field markup > Form field markup: FormBuilder: every field type, filled
       </div>
     </div>
     <div
-      class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
+      class="flex items-center gap-3 pt-4 mt-4 border-t border-border sticky bottom-0 bg-background justify-between"
     >
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 px-4 py-2 hover:bg-primary hover:text-primary-foreground"
@@ -8395,7 +8395,7 @@ exports[`field markup > Form field markup: FormBuilder: every field type, with a
       </div>
     </div>
     <div
-      class="flex items-center gap-3 pt-4 mt-4 border-t bg-background sticky bottom-0 justify-between"
+      class="flex items-center gap-3 pt-4 mt-4 border-t border-border sticky bottom-0 bg-background justify-between"
     >
       <button
         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm h-9 px-4 py-2 hover:bg-primary hover:text-primary-foreground"

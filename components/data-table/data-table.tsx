@@ -144,94 +144,97 @@ export function DataTable<TData, TValue>({
         </div>
       )}
 
+      {/* One themed surface for the rows and the pagination footer. */}
       <div
-        data-table-scroll-container
         className={cn(
-          "rounded-md border border-border",
-          isFixed ? "flex flex-col flex-1 min-h-0 overflow-auto" : "flex flex-col"
+          "flex flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow",
+          isFixed && "flex-1 min-h-0"
         )}
       >
-        {showSkeleton ? (
-          <DataTableSkeleton
-            rows={pagination.pageSize}
-            columns={visibleColumnCount}
-          />
-        ) : (
-          <Table>
-            <TableHeader
-              className={cn(
-                "bg-muted/90 backdrop-blur-xs",
-                isFixed && "sticky top-0 z-10"
-              )}
-            >
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className={header.column.columnDef.meta?.className}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody tabIndex={0}>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={cell.column.columnDef.meta?.className}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    {t("data_table.no_results")}
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
-      </div>
-
-      {paginationData && (
         <div
+          data-table-scroll-container
           className={cn(
-            "shrink-0 py-3 bg-background",
-            isFixed && "sticky bottom-0"
+            "flex flex-col",
+            isFixed && "flex-1 min-h-0 overflow-auto"
           )}
         >
-          <DataTablePagination
-            pagination={paginationData}
-            setCurrentPage={setCurrentPage}
-            queryKey={queryKey}
-          />
+          {showSkeleton ? (
+            <DataTableSkeleton
+              rows={pagination.pageSize}
+              columns={visibleColumnCount}
+            />
+          ) : (
+            <Table>
+              <TableHeader
+                className={cn(
+                  "bg-[hsl(var(--table-header)/0.9)] backdrop-blur-xs",
+                  isFixed && "sticky top-0 z-10"
+                )}
+              >
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className={header.column.columnDef.meta?.className}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody tabIndex={0}>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          className={cell.column.columnDef.meta?.className}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      {t("data_table.no_results")}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
         </div>
-      )}
+
+        {paginationData && (
+          <div className="shrink-0 border-t border-border bg-[hsl(var(--table-header))] px-3 py-2.5">
+            <DataTablePagination
+              pagination={paginationData}
+              setCurrentPage={setCurrentPage}
+              queryKey={queryKey}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

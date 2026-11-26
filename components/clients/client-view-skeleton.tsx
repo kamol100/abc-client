@@ -40,8 +40,8 @@ export default function ClientViewSkeleton({ showTables = true }: { showTables?:
             {/* Basic view: 3 cards in grid */}
             <div className="w-full">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <Card>
-                        <div className="flex items-center justify-between border-b bg-muted/40 px-3 py-2.5">
+                    <Card className="overflow-hidden rounded-xl">
+                        <div className="flex items-center justify-between border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                             <Skeleton className="h-5 w-40" />
                             <Skeleton className="h-8 w-8 rounded-md" />
                         </div>
@@ -51,8 +51,8 @@ export default function ClientViewSkeleton({ showTables = true }: { showTables?:
                             ))}
                         </div>
                     </Card>
-                    <Card>
-                        <div className="border-b bg-muted/40 px-3 py-2.5">
+                    <Card className="overflow-hidden rounded-xl">
+                        <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                             <Skeleton className="h-5 w-44" />
                         </div>
                         <div className="space-y-0 px-3 py-3">
@@ -61,8 +61,8 @@ export default function ClientViewSkeleton({ showTables = true }: { showTables?:
                             ))}
                         </div>
                     </Card>
-                    <Card>
-                        <div className="border-b bg-muted/40 px-3 py-2.5">
+                    <Card className="overflow-hidden rounded-xl">
+                        <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                             <Skeleton className="h-5 w-40" />
                         </div>
                         <div className="space-y-0 px-3 py-3">

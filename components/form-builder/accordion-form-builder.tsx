@@ -34,23 +34,30 @@ const AccordionFormBuilder = ({
           type="single"
           defaultValue={formSchema[0]?.name}
           collapsible
-          className={cn("w-full border rounded-md bg-muted", accordionClass)}
+          className={cn(
+            "w-full overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow",
+            accordionClass
+          )}
         >
           {formSchema.map((section) => (
             <AccordionItem
               value={section.name}
               key={section.name}
-              className="w-full [&:not(:last-child)]:border-b decoration-transparent bg-muted"
+              className="w-full border-border [&:not(:last-child)]:border-b"
             >
               <AccordionTrigger
-                className={cn("px-3 font-semibold text-lg capitalize py-2", accordionTitleClass)}
+                className={cn(
+                  "bg-[hsl(var(--table-header))] px-3 py-2.5 text-base font-semibold capitalize text-foreground hover:no-underline",
+                  "data-[state=open]:border-b data-[state=open]:border-border",
+                  accordionTitleClass
+                )}
               >
                 {t(section.name)}
               </AccordionTrigger>
               <AccordionContent
                 className={cn(
                   `grid ${gridGap} m-auto ${GRID_STYLES[grids]} w-full`,
-                  "bg-background p-3 rounded-md",
+                  "bg-card p-3",
                   accordionBodyClass
                 )}
               >

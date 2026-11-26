@@ -21,8 +21,10 @@ export function FormFooter({ fullPage, className, submitTitle, isSaving, onCance
     return (
         <div
             className={cn(
-                "flex items-center gap-3 pt-4 mt-4 border-t bg-background",
-                fullPage ? "shrink-0" : "sticky bottom-0",
+                "flex items-center gap-3 pt-4 mt-4 border-t border-border",
+                // A full-page footer sits on the themed page canvas, so it stays transparent;
+                // a dialog or drawer footer sticks over scrolling fields and needs the panel colour.
+                fullPage ? "shrink-0" : "sticky bottom-0 bg-background",
                 className
             )}
         >

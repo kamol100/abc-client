@@ -54,8 +54,8 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
 
     return (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <Card>
-                <div className="border-b bg-muted/40 px-3 py-2.5">
+            <Card className="overflow-hidden rounded-xl">
+                <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                     <h2 className="text-base font-semibold">{t("reseller.view.profile_information")}</h2>
                 </div>
                 <div className="px-3 py-3">
@@ -72,8 +72,8 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                 </div>
             </Card>
 
-            <Card>
-                <div className="border-b bg-muted/40 px-3 py-2.5">
+            <Card className="overflow-hidden rounded-xl">
+                <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                     <h2 className="text-base font-semibold">{t("reseller.view.account_information")}</h2>
                 </div>
                 <div className="px-3 py-3">
@@ -101,8 +101,8 @@ const ResellerBasicView: FC<Props> = ({ reseller }) => {
                 </div>
             </Card>
 
-            <Card>
-                <div className="border-b bg-muted/40 px-3 py-2.5">
+            <Card className="overflow-hidden rounded-xl">
+                <div className="border-b bg-[hsl(var(--table-header))] px-3 py-2.5">
                     <h2 className="text-base font-semibold">{t("reseller.view.additional_information")}</h2>
                 </div>
                 <div className="px-3 py-3">
