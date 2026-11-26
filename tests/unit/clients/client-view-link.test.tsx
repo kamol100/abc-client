@@ -1,9 +1,14 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ClientViewLink from "@/components/clients/view-mode/client-view-link";
-import { takeClientViewOpenedInApp } from "@/components/clients/view-mode/client-view-overlay-history";
+import {
+    getClientViewOpening,
+    setClientViewOpening,
+    takeClientViewOpenedInApp,
+} from "@/components/clients/view-mode/client-view-overlay-history";
+import { useClientViewOpening } from "@/components/clients/view-mode/use-client-view-opening";
 
 const nav = vi.hoisted(() => ({ pathname: "/clients" }));
 const settings = vi.hoisted(() => ({ value: {} as Record<string, unknown> }));
@@ -44,6 +49,7 @@ describe("ClientViewLink", () => {
         window.history.replaceState(null, "", "/clients?page=2");
         takeClientViewOpenedInApp();
         preloadClientView.mockReset();
+        act(() => setClientViewOpening(null));
         pushState?.mockRestore();
         pushState = vi.spyOn(window.history, "pushState").mockImplementation(() => undefined);
     });
@@ -137,6 +143,47 @@ describe("ClientViewLink", () => {
         fireEvent.focus(link);
 
         expect(preloadClientView).toHaveBeenCalledTimes(times);
+    });
+
+    // মডাল/ড্রয়ার মোডে ক্লিকের পর থেকে ভিউ খোলা পর্যন্ত সেই ক্লায়েন্টের আইকন স্পিনার দেখায় (opening অবস্থা), অন্য ক্লায়েন্টের নয় কি না যাচাই করি।
+    it.each(["modal", "drawer"])(
+        "Client view link (%s): a click marks that client as opening until the overlay is shown",
+        (mode) => {
+            settings.value = { client_view_open_mode: mode };
+            function Icon({ id }: { id: string }) {
+                return <span>{useClientViewOpening(id) ? `spinner ${id}` : `eye ${id}`}</span>;
+            }
+            render(
+                <>
+                    <ClientViewLink clientId="c-1">Kamal</ClientViewLink>
+                    <Icon id="c-1" />
+                    <Icon id="c-2" />
+                </>,
+                { wrapper: Wrapper },
+            );
+            const link = screen.getByRole("link", { name: "Kamal" });
+
+            act(() => {
+                click(link);
+            });
+
+            expect(screen.getByText("spinner c-1")).toBeInTheDocument();
+            expect(screen.getByText("eye c-2")).toBeInTheDocument();
+            expect(link).toHaveAttribute("aria-busy", "true");
+
+            // The overlay calls this when it is on screen.
+            act(() => setClientViewOpening(null));
+
+            expect(screen.getByText("eye c-1")).toBeInTheDocument();
+            expect(link).not.toHaveAttribute("aria-busy");
+        },
+    );
+
+    // একই পেজ বা নতুন ট্যাব মোডে ক্লিকে কোনো স্পিনার অবস্থা শুরু হয় না কি না যাচাই করি।
+    it.each(["page", "new_tab"])("Client view link (%s): a click starts no opening state", (mode) => {
+        settings.value = { client_view_open_mode: mode };
+        click(renderLink());
+        expect(getClientViewOpening()).toBeNull();
     });
 });
 

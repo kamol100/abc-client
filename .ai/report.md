@@ -1,3 +1,26 @@
+## Client view modal / drawer: closing animation — 2026-11-27
+
+Branch `master`. Uncommitted (together with the eye-icon spinner entry below).
+
+- The overlay used to be removed as soon as `view_client` left the URL, so closing had no animation. `client-view-overlay-host.tsx` now keeps the shown client for the length of the exit animation and passes `open={false}`; `client-view-overlay.tsx` reports the end with `onExited` after `OVERLAY_EXIT_MS` (220 ms, a timer so it also ends with reduced motion).
+- Drawer: slides out to the right (the reverse of how it enters). Modal: fades and shrinks out. The backdrop fades. Same for every way of closing: X, backdrop, Esc, browser Back, and "Open full page".
+- Opening another client during the exit animation shows that client, open.
+- Tests: two host cases (kept while closing, reopened during closing) and one overlay case (`onExited` only when closing).
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1463 passed, 9 failed, the same 9 as before. Not checked in a browser; the animation itself can only be judged there.
+
+## Client list: eye icon shows a spinner while the modal / drawer opens — 2026-11-27
+
+Branch `master`. Uncommitted.
+
+- `view-mode/client-view-overlay-history.ts`: an "opening client" value with subscribe / get / set. `ClientViewLink` sets it on a plain click in modal and drawer modes; `ClientViewOverlay` clears it once it is on screen; a 10 s timeout clears it if the overlay never appears.
+- New hook `view-mode/use-client-view-opening.ts`. `client-row-actions.tsx` uses it to show `Loader2` (same 16 px size, so nothing moves) instead of the eye until the view is shown. The spinner also shows when the same client was opened from its Client ID link or the menu's "View".
+- `ClientViewLink` sets `aria-busy` on itself while opening.
+- Same page and New tab modes: no spinner (the browser shows its own loading).
+- Tests: opening state per mode and per client in `client-view-link.test.tsx`; cleared by the overlay in `client-view-overlay.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1460 passed, 9 failed, the same 9 as before. Not checked in a browser.
+
 ## Client view modal / drawer: Pay dialog freeze, instant open, loading line — 2026-11-27
 
 Branch `master`. Uncommitted. Fixes from testing the modal / drawer on production.

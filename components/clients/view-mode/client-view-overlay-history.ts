@@ -16,3 +16,33 @@ export function takeClientViewOpenedInApp(): boolean {
     openedInApp = false;
     return value;
 }
+
+/*
+ * The client whose modal / drawer is being opened: set by the click, cleared when the overlay is on
+ * screen. Lets the clicked control show a spinner in between (useClientViewOpening).
+ */
+let openingClientId: string | null = null;
+let openingTimer: ReturnType<typeof setTimeout> | null = null;
+const openingListeners = new Set<() => void>();
+
+/** If the overlay never appears (e.g. navigation failed), the spinner must not stay forever. */
+const OPENING_TIMEOUT_MS = 10_000;
+
+export function setClientViewOpening(clientId: string | null): void {
+    if (openingTimer) clearTimeout(openingTimer);
+    openingTimer = clientId ? setTimeout(() => setClientViewOpening(null), OPENING_TIMEOUT_MS) : null;
+    if (openingClientId === clientId) return;
+    openingClientId = clientId;
+    openingListeners.forEach((listener) => listener());
+}
+
+export function getClientViewOpening(): string | null {
+    return openingClientId;
+}
+
+export function subscribeClientViewOpening(listener: () => void): () => void {
+    openingListeners.add(listener);
+    return () => {
+        openingListeners.delete(listener);
+    };
+}

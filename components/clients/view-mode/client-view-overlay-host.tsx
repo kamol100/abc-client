@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePermissions } from "@/context/app-provider";
 import {
@@ -28,6 +28,11 @@ export default function ClientViewOverlayHost() {
     const { hasPermission } = usePermissions();
     const clientId = searchParams.get(CLIENT_VIEW_PARAM)?.trim() || null;
     const overlay = isOverlayMode(mode);
+    // The client on screen. It outlives the URL parameter by the closing animation, so the drawer can
+    // slide out (and the modal fade out) however it was closed: X, backdrop, Esc or the Back button.
+    const [shownId, setShownId] = useState<string | null>(clientId);
+    if (clientId && clientId !== shownId) setShownId(clientId);
+    const handleExited = useCallback(() => setShownId(null), []);
 
     useEffect(() => {
         if (clientId && !overlay) router.replace(clientViewPageHref(clientId));
@@ -38,7 +43,7 @@ export default function ClientViewOverlayHost() {
         if (!clientId) takeClientViewOpenedInApp();
     }, [clientId]);
 
-    if (!clientId || !isOverlayMode(mode) || !hasPermission("clients.show")) return null;
+    if (!shownId || !isOverlayMode(mode) || !hasPermission("clients.show")) return null;
 
     const currentUrlWith = (id: string | null) => withClientViewParam(pathname, window.location.search, id);
 
@@ -50,14 +55,16 @@ export default function ClientViewOverlayHost() {
 
     return (
         <ClientViewOverlay
-            clientId={clientId}
+            clientId={shownId}
             mode={mode}
+            open={Boolean(clientId)}
+            onExited={handleExited}
             onClose={close}
             // replace: Back still closes the overlay instead of stepping back through clients.
             onNavigate={(id) => window.history.replaceState(null, "", currentUrlWith(id))}
             onOpenFullPage={() => {
                 takeClientViewOpenedInApp();
-                router.push(clientViewPageHref(clientId));
+                router.push(clientViewPageHref(shownId));
             }}
         />
     );

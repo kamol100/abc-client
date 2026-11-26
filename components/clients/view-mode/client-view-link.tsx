@@ -6,7 +6,11 @@ import { usePathname } from "next/navigation";
 import { useClientDetailPrefetch } from "@/components/clients/client-detail-query";
 import { clientViewPageHref, isOverlayMode, withClientViewParam } from "@/components/clients/view-mode/client-view-mode";
 import { preloadClientView } from "@/components/clients/view-mode/client-view-lazy";
-import { markClientViewOpenedInApp } from "@/components/clients/view-mode/client-view-overlay-history";
+import {
+    markClientViewOpenedInApp,
+    setClientViewOpening,
+} from "@/components/clients/view-mode/client-view-overlay-history";
+import { useClientViewOpening } from "@/components/clients/view-mode/use-client-view-opening";
 import { useClientViewMode } from "@/components/clients/view-mode/use-client-view-mode";
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "target"> & {
@@ -32,6 +36,7 @@ const ClientViewLink = forwardRef<HTMLAnchorElement, Props>(function ClientViewL
     const mode = useClientViewMode();
     const pathname = usePathname();
     const prefetch = useClientDetailPrefetch(clientId, mode !== "new_tab");
+    const opening = useClientViewOpening(clientId);
 
     const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
         onClick?.(event);
@@ -40,6 +45,7 @@ const ClientViewLink = forwardRef<HTMLAnchorElement, Props>(function ClientViewL
         if (pathname === clientViewPageHref(clientId)) return;
         event.preventDefault();
         markClientViewOpenedInApp();
+        setClientViewOpening(clientId);
         // Native pushState syncs with useSearchParams without a server round trip (router.push would
         // refetch the page underneath before the overlay could show). Back still closes it.
         window.history.pushState(null, "", withClientViewParam(pathname, window.location.search, clientId));
@@ -52,6 +58,7 @@ const ClientViewLink = forwardRef<HTMLAnchorElement, Props>(function ClientViewL
             target={mode === "new_tab" ? "_blank" : undefined}
             rel={mode === "new_tab" ? "noopener noreferrer" : undefined}
             {...props}
+            aria-busy={opening || undefined}
             onClick={handleClick}
             onPointerEnter={(event) => {
                 onPointerEnter?.(event);

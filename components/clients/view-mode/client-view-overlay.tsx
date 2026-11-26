@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import { DialogOverlay, DialogPortal } from "@/components/ui/dialog";
 import { LazyClientView } from "@/components/clients/view-mode/client-view-lazy";
+import { setClientViewOpening } from "@/components/clients/view-mode/client-view-overlay-history";
 import { useClientDetail, useClientDetailPrefetch } from "@/components/clients/client-detail-query";
 import { findClientListContext } from "@/components/clients/client-list-cache";
 import { cn } from "@/lib/utils";
@@ -15,11 +16,17 @@ import { cn } from "@/lib/utils";
 type Props = {
     clientId: string;
     mode: "modal" | "drawer";
+    /** False while the closing animation plays; `onExited` is called when it is over. Default: open. */
+    open?: boolean;
+    onExited?: () => void;
     onClose: () => void;
     /** Show another client in the same overlay (Previous / Next). */
     onNavigate: (clientId: string) => void;
     onOpenFullPage: () => void;
 };
+
+/** Length of the closing animation (`duration-200` on the panel), plus a little margin. */
+export const OVERLAY_EXIT_MS = 220;
 
 const PANEL_CLASSES: Record<Props["mode"], string> = {
     // Full screen on phones; a large centered window from md up.
@@ -27,11 +34,13 @@ const PANEL_CLASSES: Record<Props["mode"], string> = {
         "left-1/2 top-1/2 h-[100dvh] w-screen -translate-x-1/2 -translate-y-1/2",
         "md:h-[min(88vh,920px)] md:w-[min(1440px,calc(100vw-2rem))] md:rounded-xl md:border",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
     ),
     // Full screen on phones; a right-side panel from md up, the list still visible on its left.
     drawer: cn(
         "inset-y-0 right-0 h-full w-screen md:w-[min(1240px,92vw)] md:border-l",
         "data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
+        "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right",
     ),
 };
 
@@ -41,7 +50,15 @@ const PANEL_CLASSES: Record<Props["mode"], string> = {
  * The top bar shows who is open, Previous / Next within the list page it was opened from, and
  * "Open full page".
  */
-export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate, onOpenFullPage }: Props) {
+export default function ClientViewOverlay({
+    clientId,
+    mode,
+    open = true,
+    onExited,
+    onClose,
+    onNavigate,
+    onOpenFullPage,
+}: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const { data, isFetching } = useClientDetail(clientId);
@@ -55,6 +72,19 @@ export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate,
     const prefetchPrevious = useClientDetailPrefetch(previousId, Boolean(previousId));
     const prefetchNext = useClientDetailPrefetch(nextId, Boolean(nextId));
 
+    // The frame is on screen: the control that opened it can stop its spinner.
+    useEffect(() => {
+        setClientViewOpening(null);
+    }, [clientId]);
+
+    // Closing: Radix keeps the panel mounted while its exit animation plays; tell the host when it is
+    // over. A timer, not animationend, so it also ends with reduced motion or no CSS animation.
+    useEffect(() => {
+        if (open || !onExited) return;
+        const timer = setTimeout(onExited, OVERLAY_EXIT_MS);
+        return () => clearTimeout(timer);
+    }, [open, onExited]);
+
     // Previous / Next keep the overlay open: start the next client at the top.
     useEffect(() => {
         if (scrollRoot) scrollRoot.scrollTop = 0;
@@ -67,7 +97,7 @@ export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate,
         : "";
 
     return (
-        <DialogPrimitive.Root open onOpenChange={(open) => !open && onClose()}>
+        <DialogPrimitive.Root open={open} onOpenChange={(next) => !next && open && onClose()}>
             <DialogPortal>
                 <DialogOverlay className={mode === "drawer" ? "bg-black/30" : "bg-black/50"} />
                 <DialogPrimitive.Content

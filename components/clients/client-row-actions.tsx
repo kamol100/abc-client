@@ -22,6 +22,7 @@ import {
     CreditCard,
     Edit,
     Eye,
+    Loader2,
     FilePlus,
     FileText,
     Lock,
@@ -47,6 +48,7 @@ import ClientSessionResetDialog from "@/components/clients/client-session-reset-
 import ClientSmsDialog from "@/components/clients/client-sms";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import ClientViewLink from "@/components/clients/view-mode/client-view-link";
+import { useClientViewOpening } from "@/components/clients/view-mode/use-client-view-opening";
 import dynamic from "next/dynamic";
 import { ResellerRechargeDialog } from "@/components/wallets/reseller-recharge";
 import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
@@ -113,6 +115,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     });
 
     const isLocked = client.is_locked === true;
+    // Modal / drawer: the eye shows a spinner from the click until the view is on screen.
+    const viewOpening = useClientViewOpening(clientId);
 
     const handleDelete = async (close: () => void) => {
         await deleteClient();
@@ -250,7 +254,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 <MyTooltip content="client.actions.view" placement="top" delay={0}>
                     <MyButton variant="ghost" size="icon" className="h-8 w-8 p-0" asChild>
                         <ClientViewLink clientId={clientId} aria-label={t("client.actions.view")}>
-                            <Eye className="h-4 w-4" />
+                            {viewOpening ? <Loader2 className="h-4 w-4 animate-spin" /> : <Eye className="h-4 w-4" />}
                         </ClientViewLink>
                     </MyButton>
                 </MyTooltip>

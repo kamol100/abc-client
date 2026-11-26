@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ClientViewOverlayHost from "@/components/clients/view-mode/client-view-overlay-host";
 import {
@@ -30,12 +30,16 @@ vi.mock("@/components/clients/view-mode/client-view-overlay", () => ({
     default: (props: {
         clientId: string;
         mode: string;
+        open: boolean;
+        onExited: () => void;
         onClose: () => void;
         onNavigate: (id: string) => void;
         onOpenFullPage: () => void;
     }) => (
         <div data-testid="overlay">
             <span>{`${props.mode}:${props.clientId}`}</span>
+            <span>{props.open ? "state:open" : "state:closing"}</span>
+            <button type="button" onClick={props.onExited}>exited</button>
             <button type="button" onClick={props.onClose}>close</button>
             <button type="button" onClick={() => props.onNavigate("c-9")}>next</button>
             <button type="button" onClick={props.onOpenFullPage}>full</button>
@@ -46,7 +50,7 @@ vi.mock("@/components/clients/view-mode/client-view-overlay", () => ({
 function openAt(search: string) {
     nav.search = search;
     window.history.replaceState(null, "", `/clients${search}`);
-    render(<ClientViewOverlayHost />);
+    return render(<ClientViewOverlayHost />);
 }
 
 describe("ClientViewOverlayHost", () => {
@@ -133,4 +137,36 @@ describe("ClientViewOverlayHost", () => {
         expect(replaceState).toHaveBeenCalledWith(null, "", "/clients?page=2&view_client=c-9");
         expect(nav.push).toHaveBeenCalledWith("/clients/view/c-1");
     });
+
+    // URL থেকে view_client সরে গেলে (X, ব্যাকড্রপ, Esc বা Back) বন্ধ হওয়ার অ্যানিমেশনের জন্য ওভারলে থাকে, অ্যানিমেশন শেষে সরে যায় কি না যাচাই করি।
+    it("Client overlay host: keeps the overlay for its closing animation after view_client leaves the URL, then removes it", async () => {
+        const view = openAt("?page=2&view_client=c-1");
+        expect(await screen.findByText("state:open")).toBeInTheDocument();
+
+        nav.search = "?page=2";
+        view.rerender(<ClientViewOverlayHost />);
+
+        expect(screen.getByText("modal:c-1")).toBeInTheDocument();
+        expect(screen.getByText("state:closing")).toBeInTheDocument();
+
+        act(() => screen.getByRole("button", { name: "exited" }).click());
+
+        expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
+    });
+
+    // বন্ধ হওয়ার অ্যানিমেশন চলাকালে অন্য ক্লায়েন্ট খুললে ওভারলে নতুন ক্লায়েন্ট নিয়ে আবার খোলা অবস্থায় আসে কি না যাচাই করি।
+    it("Client overlay host: opening another client during the closing animation shows that client, open", async () => {
+        const view = openAt("?view_client=c-1");
+        await screen.findByText("state:open");
+        nav.search = "";
+        view.rerender(<ClientViewOverlayHost />);
+        expect(screen.getByText("state:closing")).toBeInTheDocument();
+
+        nav.search = "?view_client=c-2";
+        view.rerender(<ClientViewOverlayHost />);
+
+        expect(screen.getByText("modal:c-2")).toBeInTheDocument();
+        expect(screen.getByText("state:open")).toBeInTheDocument();
+    });
 });
+

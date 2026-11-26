@@ -4,7 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MyDialog } from "@/components/my-dialog";
-import ClientViewOverlay from "@/components/clients/view-mode/client-view-overlay";
+import ClientViewOverlay, { OVERLAY_EXIT_MS } from "@/components/clients/view-mode/client-view-overlay";
+import { getClientViewOpening, setClientViewOpening } from "@/components/clients/view-mode/client-view-overlay-history";
 
 const useFetch = vi.hoisted(() => vi.fn());
 
@@ -147,4 +148,40 @@ describe("ClientViewOverlay", () => {
 
         await waitFor(() => expect(screen.queryByRole("progressbar")).not.toBeInTheDocument());
     });
+
+    // মডাল/ড্রয়ার পর্দায় এলে "opening" অবস্থা শেষ হয়, ফলে চোখের আইকনের স্পিনার থামে কি না যাচাই করি।
+    it("Client view overlay: once shown, it ends the opening state that drives the eye icon's spinner", async () => {
+        setClientViewOpening("c-2");
+        setup({ clientId: "c-2" });
+
+        await waitFor(() => expect(getClientViewOpening()).toBeNull());
+    });
+
+    // বন্ধ অবস্থায় (open=false) অ্যানিমেশনের সময় পেরোলে onExited ডাকা হয়, খোলা অবস্থায় ডাকা হয় না কি না যাচাই করি।
+    it("Client view overlay: when closing, reports the end of its exit animation; never while open", async () => {
+        const onExited = vi.fn();
+        const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+        const overlay = (open: boolean) => (
+            <QueryClientProvider client={queryClient}>
+                <ClientViewOverlay
+                    clientId="c-2"
+                    mode="drawer"
+                    open={open}
+                    onExited={onExited}
+                    onClose={vi.fn()}
+                    onNavigate={vi.fn()}
+                    onOpenFullPage={vi.fn()}
+                />
+            </QueryClientProvider>
+        );
+        const view = render(overlay(true));
+        await screen.findByText("view of c-2");
+        await new Promise((resolve) => setTimeout(resolve, OVERLAY_EXIT_MS + 50));
+        expect(onExited).not.toHaveBeenCalled();
+
+        view.rerender(overlay(false));
+
+        await waitFor(() => expect(onExited).toHaveBeenCalledTimes(1));
+    });
 });
+
