@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import Card from "@/components/card";
 import DisplayCount from "@/components/display-count";
 import MyButton from "@/components/my-button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -30,6 +29,7 @@ import OltAttention from "./olt-attention";
 import OltClientsTable from "./olt-clients-table";
 import type { PollWait } from "./olt-poll";
 import OltPollButton from "./olt-poll-button";
+import OltPortsSection from "./olt-ports-section";
 import { useOltAccessTest } from "./use-olt-access-test";
 import { OltDetail } from "./olt-type";
 
@@ -119,6 +119,8 @@ const OltView: FC<Props> = ({ oltId, autoTest = false }) => {
                         <Skeleton key={key} className="h-40" />
                     ))}
                 </div>
+                {/* Ports card: header, summary and a few rows. */}
+                <Skeleton className="h-80 w-full" />
                 <Skeleton className="h-72 w-full" />
             </div>
         );
@@ -324,57 +326,17 @@ const OltView: FC<Props> = ({ oltId, autoTest = false }) => {
                 />
             </div>
 
+            <OltPortsSection
+                oltId={oltId}
+                ponPorts={detail.pon_ports}
+                uplinkPorts={detail.uplink_ports ?? []}
+                staleNote={staleNote}
+                canListOnus={canListOnus}
+            />
+
             <div className="grid items-start gap-4 lg:grid-cols-3">
                 <OltAttention items={detail.attention} className="lg:col-span-2" />
                 <div className="flex min-w-0 flex-col gap-4">
-                    <Card className="overflow-hidden">
-                        <div className="border-b bg-muted/60 px-3.5 py-2.5">
-                            <h2 className="text-sm font-semibold">{t("olt.pon_ports.title")}</h2>
-                            <StaleNote note={staleNote} />
-                        </div>
-                        <div className="flex flex-col gap-2.5 px-3.5 py-2.5">
-                            {detail.pon_ports.length === 0 && (
-                                <p className="py-4 text-center text-sm text-muted-foreground">{t("olt.pon_ports.empty")}</p>
-                            )}
-                            {detail.pon_ports.map((port) => {
-                                const adminDown = port.admin_state === "down";
-                                const linkDown = adminDown || port.oper_state === "down";
-                                const pct = port.onu_total ? Math.round((port.onu_online / port.onu_total) * 100) : 0;
-                                const online = t("olt.pon_ports.online", { online: port.onu_online, total: port.onu_total });
-                                const text = linkDown
-                                    ? `${t(adminDown ? "olt.pon_ports.admin_down" : "olt.pon_ports.link_down")} · ${port.onu_total ? online : t("olt.pon_ports.no_onus")}`
-                                    : online;
-                                return (
-                                    <div key={port.id} className="flex flex-col gap-1">
-                                        <div className="flex justify-between gap-2 text-sm">
-                                            {canListOnus ? (
-                                                <Link
-                                                    href={`/onus?olt=${oltId}&pon_port=${port.id}`}
-                                                    className="font-semibold hover:underline"
-                                                    title={t("olt.pon_ports.view_onus", { port: port.name })}
-                                                >
-                                                    {port.name}
-                                                </Link>
-                                            ) : (
-                                                <span className="font-semibold">{port.name}</span>
-                                            )}
-                                            <span className={cn("tabular-nums", linkDown ? RED : "text-muted-foreground")}>{text}</span>
-                                        </div>
-                                        <div
-                                            role="progressbar"
-                                            aria-label={`${port.name}: ${text}`}
-                                            aria-valuemin={0}
-                                            aria-valuemax={100}
-                                            aria-valuenow={pct}
-                                            className="h-2 overflow-hidden rounded-full bg-muted"
-                                        >
-                                            <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </Card>
                     <OltAccessPanel
                         oltId={oltId}
                         access={access}

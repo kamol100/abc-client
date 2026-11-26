@@ -7448,6 +7448,50 @@
             "admin_down": "নিষ্ক্রিয়",
             "view_onus": "{{port}}-এর ওএনইউ দেখুন"
         },
+        "ports": {
+            "title": "পোর্ট",
+            "tabs": {
+                "pon": "PON পোর্ট ({{count}})",
+                "uplink": "Uplink পোর্ট ({{count}})"
+            },
+            "problems_only": "শুধু সমস্যাগুলো দেখান",
+            "status": {
+                "up": "আপ",
+                "link_down": "লিংক ডাউন",
+                "disabled": "নিষ্ক্রিয়",
+                "unknown": "অজানা"
+            },
+            "summary": {
+                "up": "{{count}}টি আপ",
+                "link_down": "{{count}}টির লিংক ডাউন",
+                "disabled": "{{count}}টি নিষ্ক্রিয়",
+                "unknown": "{{count}}টি অজানা"
+            },
+            "columns": {
+                "port": "পোর্ট",
+                "status": "অবস্থা",
+                "down_since": "কখন থেকে ডাউন / শেষ পরিবর্তন",
+                "onus": "ONU",
+                "clients": "ক্ষতিগ্রস্ত ক্লায়েন্ট",
+                "traffic": "ট্রাফিক ইন / আউট",
+                "speed": "স্পিড",
+                "tx_power": "Tx পাওয়ার",
+                "temperature": "তাপমাত্রা",
+                "history": "ইতিহাস"
+            },
+            "changed": "পরিবর্তন: {{time}}",
+            "pct_of_speed": "লিংক স্পিডের {{in}}% / {{out}}%",
+            "history_aria": "{{port}}-এর ইতিহাস দেখুন",
+            "empty_uplink": "এই OLT কোনো Uplink পোর্ট জানায় না, অথবা এর SNMP অ্যাক্সেসে ইন্টারফেস কাউন্টার নেই।",
+            "no_problems": "কোনো পোর্ট ডাউন বা নিষ্ক্রিয় নেই।",
+            "history": {
+                "title": "পোর্টের ইতিহাস",
+                "to": "পরিবর্তিত হয়ে",
+                "lasted": "স্থায়ী ছিল {{duration}}",
+                "ongoing": "এখনও এই অবস্থায় আছে",
+                "empty": "এখনও কোনো পরিবর্তন রেকর্ড হয়নি"
+            }
+        },
         "access": {
             "where": {
                 "title": "এই তথ্যগুলো কোথায় পাবেন?",
@@ -7793,7 +7837,9 @@
         },
         "outage_type": {
             "device_down": "ডিভাইস ডাউন",
-            "router_unreachable": "নেটওয়ার্কে পৌঁছানো যাচ্ছে না"
+            "router_unreachable": "নেটওয়ার্কে পৌঁছানো যাচ্ছে না",
+            "pon_port_down": "PON পোর্ট ডাউন",
+            "uplink_down": "Uplink ডাউন"
         },
         "checks": {
             "title": "চেক",
@@ -7825,32 +7871,92 @@
     },
     "noc": {
         "title": "এনওসি",
+        "no_ports_monitored": "এখনো কোনো OLT-এর পোর্ট মনিটর করা হচ্ছে না। এখানে পোর্ট দেখতে কোনো OLT-এর পোলিং চালু করুন।",
+        "port_type": {
+            "pon": "PON পোর্ট",
+            "uplink": "Uplink পোর্ট"
+        },
+        "onus_on_port": "পোর্টে {{count}}টি ONU",
+        "not_polled": {
+            "summary": "{{total}}টি OLT-এর মধ্যে {{count}}টিতে পোর্ট মনিটরিং বন্ধ বা পুরোনো",
+            "last_polled": "শেষ পোল: {{time}}",
+            "reasons": {
+                "polling_off": "পোলিং বন্ধ",
+                "no_access": "কোনো SNMP অ্যাক্সেস সেভ করা নেই",
+                "stale": "ডেটা পুরোনো হয়ে গেছে",
+                "failing": "পোলিং ব্যর্থ হচ্ছে"
+            }
+        },
         "updated": "হালনাগাদ {{time}} · প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
         "refreshes": "প্রতি ৩০ সেকেন্ডে রিফ্রেশ হয়",
         "counts": {
             "down": "ডাউন",
             "unknown": "অজানা",
             "up": "আপ",
-            "open_outages": "চলমান আউটেজ"
+            "open_outages": "চলমান আউটেজ",
+            "pon_ports_down": "ডাউন PON পোর্ট",
+            "uplinks_down": "ডাউন Uplink"
         },
         "maintenance": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত",
         "maintenance_reason": "{{target}}-এ পরিকল্পিত রক্ষণাবেক্ষণ {{until}} পর্যন্ত: {{reason}}",
         "maintenance_all": "সব ডিভাইস",
         "down_devices": "ডাউন ডিভাইস",
-        "no_down_devices": "মনিটর করা সব ডিভাইসে পৌঁছানো যাচ্ছে।",
         "down_for": "{{duration}} ধরে ডাউন",
         "clients": "{{count}} ক্লায়েন্ট",
         "directions": "দিকনির্দেশনা",
-        "map_label": "ডাউন ডিভাইসের মানচিত্র",
         "open_outages": "চলমান আউটেজ",
-        "no_open_outages": "কোনো চলমান আউটেজ নেই।",
-        "outage_started": "{{ago}} আগে শুরু · {{count}} ক্লায়েন্ট",
         "ticket": "টিকেট {{number}}",
         "badges": {
             "maintenance": "রক্ষণাবেক্ষণ",
-            "downstream": "ডাউনস্ট্রিম",
             "acknowledged": "স্বীকৃত"
-        }
+        },
+        "summary_down": "{{count}}টি ডাউন · {{clients}} জন গ্রাহক অফলাইন",
+        "summary_states": "{{up}}টি আপ · {{unknown}}টি অজানা",
+        "all_up": "মনিটর করা সবকিছু আপ আছে।",
+        "filter_label": "ধরন অনুযায়ী ফিল্টার",
+        "filter": {
+            "all": "সব ডাউন",
+            "device": "ডিভাইস",
+            "olt": "OLT",
+            "pon": "PON পোর্ট",
+            "uplink": "আপলিংক"
+        },
+        "filter_empty": "এই ধরনের কিছু ডাউন নেই।",
+        "down_now": "এখন ডাউন",
+        "kind": {
+            "device": "ডিভাইস ডাউন",
+            "olt": "OLT ডাউন",
+            "pon": "PON পোর্ট ডাউন",
+            "uplink": "আপলিংক ডাউন"
+        },
+        "down_for_label": "ডাউন আছে",
+        "clients_label": "অফলাইন গ্রাহক",
+        "not_acknowledged": "স্বীকার করা হয়নি",
+        "details": "বিস্তারিত",
+        "fields": {
+            "ip": "IP",
+            "type": "ধরন",
+            "network": "নেটওয়ার্ক",
+            "zone": "জোন",
+            "down_since": "ডাউন হয়েছে",
+            "olt": "OLT",
+            "port": "পোর্ট",
+            "onus": "পোর্টে ONU",
+            "started": "শুরু"
+        },
+        "check_first": "আগে দেখুন:",
+        "hints": {
+            "device": "সাইটে বিদ্যুৎ আছে কি (লোডশেডিং, IPS বা UPS ব্যাটারি)? বিদ্যুৎ ঠিক থাকলে ডিভাইসটি রিস্টার্ট করুন।",
+            "olt": "OLT-এর আগের সুইচ সাড়া দিলে OLT-এর বিদ্যুৎ ও ওই সুইচের কেবল দেখুন।",
+            "pon": "সব ONU একসাথে লাইট হারালে স্প্লিটার পর্যন্ত ফিডার ফাইবার দেখুন। ONU পাওয়ার অফ জানালে সম্ভবত এলাকায় বিদ্যুৎ নেই।",
+            "uplink": "দুই প্রান্তের SFP ও প্যাচ কর্ড দেখুন। অন্য আপলিংক দিয়ে গ্রাহক অনলাইন থাকতে পারেন।",
+            "outage": "অ্যাপ সার্ভার ও এই নেটওয়ার্কের সংযোগ এবং রাউটারের API বা পিং অ্যাক্সেস দেখুন।"
+        },
+        "behind": "এর পেছনে বিচ্ছিন্ন ({{count}})",
+        "behind_none": "এর পেছনে আর কিছু ডাউন নেই।",
+        "port_history": "পোর্টের ইতিহাস",
+        "open_olt": "OLT পেজ খুলুন",
+        "open_ticket": "টিকিট {{number}} খুলুন"
     },
     "subscription": {
         "title": "সাবস্ক্রিপশন",

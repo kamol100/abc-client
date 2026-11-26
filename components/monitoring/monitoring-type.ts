@@ -23,7 +23,7 @@ export interface DeviceOutage {
     started_at: string;
     resolved_at: string | null;
     duration_seconds: number | null;
-    type: "device_down" | "router_unreachable";
+    type: "device_down" | "router_unreachable" | "pon_port_down" | "uplink_down";
     affected_clients: number | null;
     acknowledged_by: string | null;
     acknowledged_at: string | null;
