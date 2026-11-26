@@ -16,6 +16,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { findClientInListCache } from "@/components/clients/client-list-cache";
+import { clientDetailQueryKey } from "@/components/clients/client-detail-query";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
@@ -77,7 +78,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const canSwitchClient = hasPermission("clients.switch.reseller") && !isResellerUser;
     const queryClient = useQueryClient();
     const { data, isLoading, isPlaceholderData } = useApiQuery<ApiResponse<ClientRow>>({
-        queryKey: ["clients", "detail", clientId],
+        queryKey: clientDetailQueryKey(clientId),
         url: `clients/${clientId}`,
         pagination: false,
         // Opened from the client list: show the row already loaded there while the full record loads.

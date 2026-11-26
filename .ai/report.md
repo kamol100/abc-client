@@ -1,3 +1,17 @@
+## Client view: prefetch the detail on hover — 2026-11-26
+
+Branch `master`. Builds on the two entries below.
+
+- **New `components/clients/client-detail-query.ts`:** `clientDetailQueryKey`, `fetchClientDetail` (same URL and error handling as the view's `useApiQuery`), and `useClientDetailPrefetch(clientId, enabled)`. It returns pointer and focus handlers for a view link. Resting on the link for 150 ms, or focusing it, prefetches the detail into the view's cache entry. Leaving sooner cancels it. A detail loaded in the last 30 s is not requested again, and a failed response is not cached.
+- **Wired to:** the eye icon and the "View" menu item in `client-row-actions.tsx`, and the client ID link in `client-name-phone-cell.tsx`. `client-view.tsx` uses `clientDetailQueryKey`.
+- **Off when "open client view in new tab" is on.** A new tab has its own cache, so the request would be wasted. The router info and usage calls (live MikroTik) are never prefetched.
+- **Tests:** new `tests/unit/clients/client-detail-prefetch.test.tsx` (5 tests). `client-name-phone-cell.test.tsx` now renders the cell in a `QueryClientProvider`, as the app does; its assertions are unchanged. `vitest.setup.ts`: if a test does not mock `@/app/actions`, `apiGet` returns a failed response instead of failing to import next-auth.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1396 passed, 9 failed, the same 9 as before today's changes.
+- Not checked in a browser. Check: with the new-tab setting off, rest on the eye icon (Network tab: one `/api/proxy/v1/clients/{id}`), then click; the view should render fully at once. Moving the pointer quickly down the table should send no requests.
+
 ## Default staleTime, and the client view starts from the list row — 2026-11-26
 
 Branch `master`. Builds on the read proxy entry below.

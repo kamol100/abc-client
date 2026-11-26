@@ -46,6 +46,7 @@ import ClientLockDialog, { useCanLockClients } from "@/components/clients/client
 import ClientSessionResetDialog from "@/components/clients/client-session-reset-dialog";
 import ClientSmsDialog from "@/components/clients/client-sms";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
+import { useClientDetailPrefetch } from "@/components/clients/client-detail-query";
 import dynamic from "next/dynamic";
 import { ResellerRechargeDialog } from "@/components/wallets/reseller-recharge";
 import { ClientWalletRechargeDialog } from "@/components/wallets/wallet-transaction";
@@ -112,6 +113,8 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
     });
 
     const isLocked = client.is_locked === true;
+    // A new tab has its own cache, so prefetching only helps when the view opens in this tab.
+    const prefetchView = useClientDetailPrefetch(clientId, hasPermission("clients.show") && !client_view_open_on_new_tab);
 
     const handleDelete = async (close: () => void) => {
         await deleteClient();
@@ -128,7 +131,11 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             <DataTableRowActions row={row}>
                 {hasPermission("clients.show") && (
                     <DropdownMenuItem className="cursor-pointer" asChild>
-                        <Link target={client_view_open_on_new_tab ? "_blank" : "_self"} href={`/clients/view/${clientId}`}>
+                        <Link
+                            target={client_view_open_on_new_tab ? "_blank" : "_self"}
+                            href={`/clients/view/${clientId}`}
+                            {...prefetchView}
+                        >
                             <Eye className="mr-2 h-4 w-4" />
                             {t("client.actions.view")}
                         </Link>
@@ -252,6 +259,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                             target={client_view_open_on_new_tab ? "_blank" : "_self"}
                             href={`/clients/view/${clientId}`}
                             aria-label={t("client.actions.view")}
+                            {...prefetchView}
                         >
                             <Eye className="h-4 w-4" />
                         </Link>

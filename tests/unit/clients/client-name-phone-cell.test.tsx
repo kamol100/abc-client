@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { toast } from "react-toastify";
 import ClientBasicView from "@/components/clients/basic-view";
@@ -40,6 +42,11 @@ vi.mock("@/context/app-provider", () => ({
     }),
 }));
 
+// The view link prefetches the client detail, so the cell needs a query client, as in the app.
+function QueryWrapper({ children }: { children: ReactNode }) {
+    return <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>;
+}
+
 const client = (phone: string | null): ClientRow => ({
     status: 1,
     name: "Kamal",
@@ -50,7 +57,7 @@ const client = (phone: string | null): ClientRow => ({
 describe("ClientNamePhoneCell WhatsApp link", () => {
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens WhatsApp with a local Bangladesh number»।
     it("Client identity and contact links: opens WhatsApp with a local Bangladesh number", () => {
-        render(<ClientNamePhoneCell client={client("01712345678")} />);
+        render(<ClientNamePhoneCell client={client("01712345678")} />, { wrapper: QueryWrapper });
 
         const link = screen.getByRole("link", { name: "client.whatsapp" });
         expect(link).toHaveAttribute("href", "https://wa.me/8801712345678");
@@ -59,7 +66,7 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
 
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps an international number and drops the plus»।
     it("Client identity and contact links: keeps an international number and drops the plus", () => {
-        render(<ClientNamePhoneCell client={client("+8801712345678")} />);
+        render(<ClientNamePhoneCell client={client("+8801712345678")} />, { wrapper: QueryWrapper });
 
         expect(screen.getByRole("link", { name: "client.whatsapp" })).toHaveAttribute(
             "href",
@@ -69,7 +76,7 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
 
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the icon when there is no phone number»।
     it("Client identity and contact links: hides the icon when there is no phone number", () => {
-        render(<ClientNamePhoneCell client={client(null)} />);
+        render(<ClientNamePhoneCell client={client(null)} />, { wrapper: QueryWrapper });
 
         expect(screen.queryByRole("link", { name: "client.whatsapp" })).not.toBeInTheDocument();
         expect(screen.queryByRole("button", { name: "client.copy_phone" })).not.toBeInTheDocument();
@@ -78,7 +85,7 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
 
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the copy icon when the phone is blank»।
     it("Client identity and contact links: hides the copy icon when the phone is blank", () => {
-        render(<ClientNamePhoneCell client={client("   ")} />);
+        render(<ClientNamePhoneCell client={client("   ")} />, { wrapper: QueryWrapper });
 
         expect(screen.queryByRole("button", { name: "client.copy_phone" })).not.toBeInTheDocument();
     });
@@ -89,7 +96,7 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         vi.stubGlobal("navigator", { clipboard: { writeText } });
         Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => true });
 
-        render(<ClientNamePhoneCell client={client(" 01712345678 ")} />);
+        render(<ClientNamePhoneCell client={client(" 01712345678 ")} />, { wrapper: QueryWrapper });
         fireEvent.click(screen.getByRole("button", { name: "client.copy_phone" }));
         await vi.waitFor(() => expect(writeText).toHaveBeenCalled());
 
@@ -117,7 +124,7 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         vi.mocked(toast.success).mockClear();
         vi.mocked(toast.error).mockClear();
 
-        render(<ClientNamePhoneCell client={client("01712345678")} />);
+        render(<ClientNamePhoneCell client={client("01712345678")} />, { wrapper: QueryWrapper });
         fireEvent.click(screen.getByRole("button", { name: "client.copy_phone" }));
 
         expect(document.querySelector("textarea")).toBeNull();
@@ -137,7 +144,7 @@ describe("ClientNamePhoneCell view link", () => {
     it("Client identity and contact links: opens the client details page from the username", () => {
         permissions.allowed = true;
         permissions.newTab = false;
-        render(<ClientNamePhoneCell client={viewable} />);
+        render(<ClientNamePhoneCell client={viewable} />, { wrapper: QueryWrapper });
 
         const link = screen.getByRole("link", { name: "kamal01" });
         expect(link).toHaveAttribute("href", "/clients/view/client-uuid");
@@ -147,7 +154,7 @@ describe("ClientNamePhoneCell view link", () => {
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।
     it("Client identity and contact links: opens the details page in a new tab when that setting is on", () => {
         permissions.newTab = true;
-        render(<ClientNamePhoneCell client={viewable} />);
+        render(<ClientNamePhoneCell client={viewable} />, { wrapper: QueryWrapper });
 
         expect(screen.getByRole("link", { name: "kamal01" })).toHaveAttribute("target", "_blank");
         permissions.newTab = false;
@@ -156,7 +163,7 @@ describe("ClientNamePhoneCell view link", () => {
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the username as text without view permission»।
     it("Client identity and contact links: keeps the username as text without view permission", () => {
         permissions.allowed = false;
-        render(<ClientNamePhoneCell client={viewable} />);
+        render(<ClientNamePhoneCell client={viewable} />, { wrapper: QueryWrapper });
 
         expect(screen.queryByRole("link", { name: "kamal01" })).not.toBeInTheDocument();
         expect(screen.getByText("kamal01")).toBeInTheDocument();
@@ -165,7 +172,7 @@ describe("ClientNamePhoneCell view link", () => {
 
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not link when the details page is turned off»।
     it("Client identity and contact links: does not link when the details page is turned off", () => {
-        render(<ClientNamePhoneCell client={viewable} linkToView={false} />);
+        render(<ClientNamePhoneCell client={viewable} linkToView={false} />, { wrapper: QueryWrapper });
 
         expect(screen.queryByRole("link", { name: "kamal01" })).not.toBeInTheDocument();
     });
