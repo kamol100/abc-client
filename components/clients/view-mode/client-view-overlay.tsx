@@ -25,12 +25,12 @@ const PANEL_CLASSES: Record<Props["mode"], string> = {
     // Full screen on phones; a large centered window from md up.
     modal: cn(
         "left-1/2 top-1/2 h-[100dvh] w-screen -translate-x-1/2 -translate-y-1/2",
-        "md:h-[min(88vh,920px)] md:w-[min(1240px,calc(100vw-3rem))] md:rounded-xl md:border",
+        "md:h-[min(88vh,920px)] md:w-[min(1440px,calc(100vw-2rem))] md:rounded-xl md:border",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
     ),
     // Full screen on phones; a right-side panel from md up, the list still visible on its left.
     drawer: cn(
-        "inset-y-0 right-0 h-full w-screen md:w-[min(1060px,86vw)] md:border-l",
+        "inset-y-0 right-0 h-full w-screen md:w-[min(1240px,92vw)] md:border-l",
         "data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
     ),
 };
