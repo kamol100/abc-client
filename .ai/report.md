@@ -1,3 +1,19 @@
+## Reads go through a Route Handler, so pages load their queries in parallel — 2026-11-26
+
+Branch `master`.
+
+- **Why.** `useApiQuery` fetched through the `useFetch` Server Action. Next runs Server Actions one at a time per tab, so a page with many queries (the client view: details, router info, usage, SMS status, then each table) loaded them in a queue.
+- **New `app/api/proxy/[...path]/route.ts`** (GET only). It reads the token with `auth()` as `useFetch` does and passes the request to `{NEXTAPI_URL}/api/{version}/…`, returning the API status and body unchanged. No session gives 401 without calling the API. The path must start with a version like `v1`, and `.`, `..` or empty segments give 404 (`lib/api/api-proxy-url.ts`).
+- **New `lib/api/api-get.ts`.** Calls the proxy from the browser and returns the same envelope as `useFetch`, including `{ success: false, status: 500 }` when the network fails or the body is not JSON.
+- **`hooks/use-api-query.ts`** uses `apiGet` instead of `useFetch`. Query keys, retries, error handling and the subscription check are unchanged.
+- **Not changed:** `useApiMutation` and the other direct `useFetch` callers (32 files) still use the Server Action. Writes are rare per page; reads were the queue.
+- **Tests.** `vitest.setup.ts` points `apiGet` at the (mocked) `useFetch`, so the existing tests that mock `@/app/actions` keep working. New: `tests/unit/lib/api-proxy.test.ts`, `tests/unit/lib/api-proxy-route.test.ts` (14 tests).
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1386 passed, 9 failed. The 9 are the same ones that fail before this change (client dashboard info, reseller client filter and table, column visibility, client map rows, menu order, public pay page).
+- Dev server (`localhost:3000`): `/api/proxy/v1/clients` without a session returns the 401 JSON. A logged-in request was not tested; check the client view page in a browser (Network tab: `/api/proxy/v1/...` requests should overlap instead of running one after another).
+
 ## Invoice form: empty Invoice type and Client show the placeholder — 2026-11-26
 
 Branch `master`.

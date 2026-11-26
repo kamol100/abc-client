@@ -1,6 +1,6 @@
 "use client";
 
-import { useFetch } from "@/app/actions";
+import { apiGet } from "@/lib/api/api-get";
 import { apiRequestError } from "@/lib/api/api-request-error";
 import { objectToQueryString, subscriptionDenialCode } from "@/lib/helper/helper";
 import {
@@ -72,10 +72,11 @@ export default function useApiQuery<TData = unknown>({
   const query = useQuery<TData, Error>({
     queryKey: fullQueryKey,
     queryFn: async (): Promise<TData> => {
-      const response = await useFetch({
+      // Route Handler, not the useFetch Server Action: Server Actions run one at a time per tab.
+      const response = (await apiGet({
         url: buildUrl(),
         ...(version && { version }),
-      });
+      })) as { success?: boolean } | null;
       if (!response?.success) {
         if (subscriptionDenialCode(response)) {
           void queryClient.invalidateQueries({ queryKey: ["settings"] });
