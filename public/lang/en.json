@@ -1943,7 +1943,48 @@
             "unavailable": "Image could not be loaded"
         }
     },
+    "reseller_bill": {
+        "title": "My Bills",
+        "paid": "Paid",
+        "due": "Due",
+        "pay": {
+            "title": "Pay from wallet",
+            "submit": "Pay",
+            "success": "Bill paid from wallet",
+            "amount": {
+                "label": "Amount",
+                "placeholder": "Leave empty to pay the full due",
+                "errors": {
+                    "min": "Amount must be greater than 0",
+                    "max": "Amount cannot be more than the due",
+                    "whole": "A part payment must be a whole amount"
+                }
+            },
+            "note": {
+                "label": "Note",
+                "placeholder": "Enter note",
+                "errors": {
+                    "max": "Note cannot be longer than 255 characters"
+                }
+            }
+        }
+    },
     "invoice": {
+        "bill_to": {
+            "type": {
+                "label": "Bill to",
+                "placeholder": "Select who is billed",
+                "client": "Client",
+                "reseller": "Reseller"
+            },
+            "reseller": {
+                "label": "Reseller",
+                "placeholder": "Select reseller",
+                "errors": {
+                    "required": "Reseller is required"
+                }
+            }
+        },
         "title_plural": "Invoices",
         "client_invoices": "Client Invoices",
         "create": {
@@ -5005,6 +5046,9 @@
             "title": "Tickets"
         },
         "invoice": {
+            "my_bills": {
+                "title": "My Bills"
+            },
             "title": "Invoice",
             "type": {
                 "title": "Invoice Type"

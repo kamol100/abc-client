@@ -64,7 +64,7 @@ const InvoiceRowActions: FC<InvoiceRowActionsProps> = ({ invoice, queryKey = "in
                                 url: `/invoice-due/${invoice?.id}`,
                             });
                             const invoicesDue = await data?.data?.invoiceDue;
-                            setInvoiceDue(invoicesDue);
+                            setInvoiceDue(Array.isArray(invoicesDue) ? invoicesDue : []);
                             setPayOpen(true);
                             setLoading(false);
                         }}

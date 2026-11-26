@@ -54,6 +54,21 @@ const FundRefSchema = z.object({
     name: z.string().nullable().optional(),
 });
 
+/** Who an invoice is billed to. `company` is a subscription invoice and is never created by hand. */
+export const InvoiceBillToTypeSchema = z.enum(["client", "reseller", "company"]);
+export type InvoiceBillToType = z.infer<typeof InvoiceBillToTypeSchema>;
+
+/** The party an invoice is billed to, as the API returns it. */
+const BillToRefSchema = z.object({
+    type: z.string().nullable().optional(),
+    id: z.coerce.number().nullable().optional(),
+    uuid: z.string().nullable().optional(),
+    name: z.string().nullable().optional(),
+    phone: z.string().nullable().optional(),
+    address: z.string().nullable().optional(),
+});
+
+export type BillToRef = z.infer<typeof BillToRefSchema>;
 export type ClientRef = z.infer<typeof ClientRefSchema>;
 export type ZoneRef = z.infer<typeof ZoneRefSchema>;
 export type InvoiceTypeRef = z.infer<typeof InvoiceTypeRefSchema>;
@@ -97,6 +112,8 @@ export const InvoiceRowSchema = z.object({
     confirmation_sms: z.coerce.number().nullable().optional(),
     note: z.string().nullable().optional(),
     client: ClientRefSchema.nullable().optional(),
+    bill_to_type: z.string().nullable().optional(),
+    bill_to: BillToRefSchema.nullable().optional(),
     zone: ZoneRefSchema.nullable().optional(),
     invoice_type: InvoiceTypeRefSchema.nullable().optional(),
     fund: FundRefSchema.nullable().optional(),
@@ -132,10 +149,17 @@ const InvoiceFormSchemaBase = z.object({
         required_error: "invoice.invoice_type.errors.required",
         invalid_type_error: "invoice.invoice_type.errors.required",
     }).min(1, { message: "invoice.invoice_type.errors.required" }),
-    client_id: z.coerce.number({
-        required_error: "invoice.client.errors.required",
-        invalid_type_error: "invoice.client.errors.required",
-    }).min(1, { message: "invoice.client.errors.required" }),
+    // Empty means a client invoice, which is every invoice made before this field existed.
+    bill_to_type: z.preprocess(
+        (value) => (value === "reseller" ? "reseller" : "client"),
+        z.enum(["client", "reseller"]),
+    ),
+    // The reseller, when the invoice is billed to one.
+    bill_to_id: z.coerce.number().nullable().optional(),
+    client_id: z.preprocess(
+        (value) => (value === null || value === undefined || value === "" ? 0 : value),
+        z.coerce.number({ invalid_type_error: "invoice.client.errors.required" }),
+    ),
     discount: z.coerce.number().min(0).default(0),
     status: InvoiceStatusSchema.default("due"),
     partial_amount: z.coerce.number().min(0).optional().default(0),
@@ -150,6 +174,22 @@ const InvoiceFormSchemaBase = z.object({
 
 export const InvoiceFormSchema = InvoiceFormSchemaBase
     .superRefine((values, ctx) => {
+        if (values.bill_to_type === "reseller") {
+            if (toNumber(values.bill_to_id) < 1) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: ["bill_to_id"],
+                    message: "invoice.bill_to.reseller.errors.required",
+                });
+            }
+        } else if (toNumber(values.client_id) < 1) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ["client_id"],
+                message: "invoice.client.errors.required",
+            });
+        }
+
         if ((values.status === "paid" || values.status === "partial_paid") && !values.fund_id) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
@@ -189,12 +229,17 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
             };
         });
         const totals = calculateInvoiceTotals(normalizedLines, values.discount);
+        const forReseller = values.bill_to_type === "reseller";
+        // A client invoice is sent exactly as before; the payer fields go only with a reseller invoice.
+        const payer = forReseller
+            ? { client_id: null, bill_to_type: "reseller" as const, bill_to_id: toNumber(values.bill_to_id) }
+            : { client_id: toNumber(values.client_id) };
 
         return {
             create_date: toApiDateString(values.create_date, "dmy") ?? "",
             due_date: toApiDateString(values.due_date, "dmy") ?? "",
             invoice_type_id: toNumber(values.invoice_type_id),
-            client_id: toNumber(values.client_id),
+            ...payer,
             discount: toNumber(values.discount),
             status: values.status,
             partial_amount:
@@ -207,7 +252,8 @@ export const InvoiceFormSchema = InvoiceFormSchemaBase
                 values.status === "paid" || values.status === "partial_paid"
                     ? toApiDateString(values.payment_date, "dmy")
                     : null,
-            confirmation_sms: toNumber(values.confirmation_sms),
+            // The confirmation SMS goes to a client; a reseller invoice has none.
+            confirmation_sms: forReseller ? 0 : toNumber(values.confirmation_sms),
             note: values.note ?? "",
             lines: normalizedLines,
             total_amount: totals.sub_total,

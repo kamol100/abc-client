@@ -20,6 +20,18 @@ const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     partial_paid: "warning",
 };
 
+/** The reseller an invoice is billed to, marked so it is not read as a client. */
+function InvoiceResellerName({ name }: { name: string }) {
+    const { t } = useTranslation();
+
+    return (
+        <span className="text-sm">
+            {name || "—"}{" "}
+            <span className="text-xs text-muted-foreground">({t("invoice.bill_to.type.reseller")})</span>
+        </span>
+    );
+}
+
 function InvoiceClientName({ client }: { client: InvoiceRow["client"] }) {
     const { hasPermission } = usePermissions();
     const { settings } = useSettings();
@@ -91,7 +103,12 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                 header: ({ column }) => (
                     <DataTableColumnHeader column={column} title="invoice.client.label" />
                 ),
-                cell: ({ row }) => <InvoiceClientName client={row.original.client} />,
+                cell: ({ row }) =>
+                    row.original.bill_to_type === "reseller" ? (
+                        <InvoiceResellerName name={row.original.bill_to?.name?.trim() ?? ""} />
+                    ) : (
+                        <InvoiceClientName client={row.original.client} />
+                    ),
                 enableSorting: false,
             },
             {

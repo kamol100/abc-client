@@ -1,3 +1,21 @@
+## Invoices: bill a reseller, and "My bills" for resellers — 2026-11-26
+
+Branch `refactor-form-builder`. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- **Invoice form** (`/invoices/create`): new "Bill to" select, Client or Reseller. Reseller swaps the client field for a reseller dropdown (`/dropdown-resellers`) in the same grid cell and hides the confirmation SMS without moving the note. A client invoice sends the same payload as before; the payer fields are only sent for a reseller. The client dialog on the client page is unchanged. On edit the payer cannot be changed.
+- **Invoice list, view and print**: a reseller invoice shows the reseller's name (marked "Reseller") in the client column and as the customer.
+- **Pay button**: no longer throws when the due-invoice lookup returns nothing.
+- **My bills** (`/my-bills`, `components/reseller-bills/`): the invoices billed to the signed-in reseller, with totals, a view, and "Pay from wallet" (full or part). The menu link is under Invoice, for reseller accounts with `reseller-invoices.access`; pay needs `reseller-invoices.pay`.
+- `InvoiceViewDialog` has `fetchDetail` (default true) so a bill can be shown from its row.
+- New keys in `en.json` and `bn.json`: `invoice.bill_to.*`, `menu.invoice.my_bills.title`, `reseller_bill.*`.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1350 passed, 9 failed. 12 new tests pass (`tests/unit/invoices/invoice-bill-to.test.ts`, `tests/unit/menu/menu-my-bills.test.ts`). The 9 failures are in client dashboard info, reseller client filter and table, column visibility, client map rows, menu order (`/referrals` position) and the public pay page; none is in a file this change touched except the menu config, where the failing assertion is the top-level order.
+- Not checked in a browser, so the layout rules in `UI-update.mdc` are not verified. Playwright not run.
+
+Unrelated changes already in the working tree (not mine, left alone): about 260 files under `tests/`, `AGENTS.md`, `.cursor/rules/test-naming.mdc`, one placeholder in each language file, `playwright/.auth/user.json`.
+
 ## Form builder refactor, phase 8: cleanup, one home, standalone controls, docs — 2026-11-25
 
 Branch `refactor-form-builder`.

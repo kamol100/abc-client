@@ -33,6 +33,8 @@ type ContentProps = {
 
 const defaultValues: Record<string, unknown> = {
     invoice_type_id: 0,
+    bill_to_type: "client",
+    bill_to_id: null,
     client_id: 0,
     discount: 0,
     status: "due",
@@ -57,6 +59,10 @@ const InvoiceFormContent: FC<ContentProps> = ({
 
     const status = watch("status");
     const fundId = watch("fund_id");
+    const forReseller = watch("bill_to_type") === "reseller";
+    // The payer is chosen when the invoice is made, on the full page only: the
+    // dialog is opened for one client, and a saved invoice keeps its payer.
+    const canChoosePayer = mode === "create" && !hideClient;
     const paying = status === "paid" || status === "partial_paid";
     const { assignedFundId, lockFund, showUnassignedWarning } = fundAccess;
 
@@ -107,7 +113,8 @@ const InvoiceFormContent: FC<ContentProps> = ({
                     {field("create_date")}
                     {field("due_date")}
                     {field("invoice_type_id")}
-                    {!hideClient && field("client_id")}
+                    {canChoosePayer && field("bill_to_type")}
+                    {forReseller ? field("bill_to_id") : !hideClient && field("client_id")}
                     {field("discount")}
                     {field("status")}
                     {status === "partial_paid" && field("partial_amount")}
@@ -130,7 +137,10 @@ const InvoiceFormContent: FC<ContentProps> = ({
 
                 <div className={cn("grid grid-cols-1 gap-4", embedded ? "lg:grid-cols-3" : "xl:grid-cols-3")}>
                     <div className={embedded ? "lg:col-span-2" : "xl:col-span-2"}>
-                        {field("confirmation_sms")}
+                        {/* A reseller invoice sends no client SMS. The row keeps its height so the note does not jump. */}
+                        <div className={cn(forReseller && "invisible")} aria-hidden={forReseller || undefined}>
+                            {field("confirmation_sms")}
+                        </div>
                         <div className="mt-4">{field("note")}</div>
                     </div>
                     <InvoiceTotals />
@@ -155,7 +165,10 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
         canChangeFund: hasPermission("invoices.change-fund"),
         canUseBkashFund: hasPermission("invoices.bkash-fund-access"),
     });
-    const formSchema = InvoiceFormFieldSchema({ fundLocked: fundAccess.lockFund });
+    const formSchema = InvoiceFormFieldSchema({
+        fundLocked: fundAccess.lockFund,
+        resellerLocked: mode === "edit",
+    });
     const embedded = clientId !== undefined;
     const formData = useMemo(() => {
         if (mode === "edit") return data;

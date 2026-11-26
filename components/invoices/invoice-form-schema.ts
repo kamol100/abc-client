@@ -79,8 +79,14 @@ const lineTotal = (line: Record<string, unknown>): number =>
     toNumber(line.amount as number | string | null | undefined) *
     toNumber(line.quantity as number | string | null | undefined);
 
-/** `fundLocked`: the user may only pay into their own fund (see paymentFundAccess). */
-export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: boolean } = {}): FormFieldConfig[] => [
+/**
+ * `fundLocked`: the user may only pay into their own fund (see paymentFundAccess).
+ * `resellerLocked`: the reseller an invoice is billed to cannot be changed (edit).
+ */
+export const InvoiceFormFieldSchema = ({
+    fundLocked = false,
+    resellerLocked = false,
+}: { fundLocked?: boolean; resellerLocked?: boolean } = {}): FormFieldConfig[] => [
     {
         type: "date",
         name: "create_date",
@@ -100,6 +106,26 @@ export const InvoiceFormFieldSchema = ({ fundLocked = false }: { fundLocked?: bo
         placeholder: "invoice.invoice_type.placeholder",
         api: "/dropdown-invoice-types",
         valueKey: "invoice_type",
+        valueMapping: { idKey: "id", labelKey: "name" },
+    },
+    {
+        type: "dropdown",
+        name: "bill_to_type",
+        label: { labelText: "invoice.bill_to.type.label", mandatory: true },
+        placeholder: "invoice.bill_to.type.placeholder",
+        options: [
+            { value: "client", label: "invoice.bill_to.type.client" },
+            { value: "reseller", label: "invoice.bill_to.type.reseller" },
+        ],
+    },
+    {
+        type: "dropdown",
+        name: "bill_to_id",
+        label: { labelText: "invoice.bill_to.reseller.label", mandatory: true },
+        placeholder: "invoice.bill_to.reseller.placeholder",
+        api: "/dropdown-resellers",
+        isDisabled: resellerLocked,
+        valueKey: "bill_to",
         valueMapping: { idKey: "id", labelKey: "name" },
     },
     {

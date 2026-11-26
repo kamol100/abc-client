@@ -47,6 +47,8 @@ interface MenuSubItemConfig {
   requiresAny?: string[];
   /** Subscription lock for this child when the parent group covers more than one feature. */
   feature?: string;
+  /** Shown to reseller accounts only, e.g. the bills a reseller owes. */
+  resellerOnly?: boolean;
 }
 
 interface MenuItemConfig {
@@ -159,10 +161,11 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.invoice.title"),
       url: "#",
       icon: FileText,
-      permissions: ["invoices.access", "invoice-types.access", "payments.access"],
+      permissions: ["invoices.access", "invoice-types.access", "payments.access", "reseller-invoices.access"],
       feature: "billing",
       items: [
         { title: t("menu.invoice.title"), url: "/invoices", permission: "invoices.access" },
+        { title: t("menu.invoice.my_bills.title"), url: "/my-bills", permission: "reseller-invoices.access", resellerOnly: true },
         { title: t("menu.payments.title"), url: "/payments", permission: "payments.access" },
         { title: t("menu.invoice.type.title"), url: "/invoice-types", permission: "invoice-types.access" },
       ],
@@ -505,6 +508,7 @@ function childIsLocked(access: MenuAccess, feature?: string): boolean {
 }
 
 function childIsPermitted(access: MenuAccess, sub: MenuSubItemConfig): boolean {
+  if (sub.resellerOnly && !access.isReseller) return false;
   if (!access.hasPermission(sub.permission)) return false;
   if (!sub.requiresAny) return true;
   return sub.requiresAny.some((permission) => access.hasPermission(permission));

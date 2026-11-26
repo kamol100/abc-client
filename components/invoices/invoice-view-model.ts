@@ -135,6 +135,10 @@ export const buildInvoiceViewModel = (
 
     const client = isRecord(source.client) ? source.client : null;
     const reseller = isRecord(source.reseller) ? source.reseller : null;
+    // A reseller invoice has no client: the reseller it is billed to is the customer.
+    const billedReseller = isRecord(source.bill_to) && source.bill_to.type === "reseller" ? source.bill_to : null;
+    // Sent with a reseller's own bills: the company or parent reseller that issued the invoice.
+    const issuer = isRecord(source.issuer) ? source.issuer : null;
     const zone = isRecord(source.zone) ? source.zone : null;
     const invoiceType = isRecord(source.invoice_type) ? source.invoice_type : null;
     const fund = isRecord(source.fund) ? source.fund : null;
@@ -182,21 +186,24 @@ export const buildInvoiceViewModel = (
         status: readString(source, "status"),
         note: readNote(source),
         merchantName: firstString(
+            readString(issuer, "name"),
             readString(reseller, "company"),
             readString(settings, "company"),
             readString(reseller, "name"),
         ),
-        merchantAddress: firstString(readString(reseller, "company_address"), settingsAddress),
-        merchantPhone: firstString(
+        merchantAddress: issuer
+            ? readString(issuer, "address")
+            : firstString(readString(reseller, "company_address"), settingsAddress),
+        merchantPhone: issuer ? readString(issuer, "phone") : firstString(
             readString(reseller, "company_phone"),
             settingsPhone,
             readString(reseller, "phone"),
         ),
         merchantLogoUrl: logoUrl,
-        customerName: readString(client, "name"),
+        customerName: firstString(readString(client, "name"), readString(billedReseller, "name")),
         customerCode: readString(client, "sid"),
-        customerAddress: readString(client, "current_address"),
-        customerPhone: readString(client, "phone"),
+        customerAddress: firstString(readString(client, "current_address"), readString(billedReseller, "address")),
+        customerPhone: firstString(readString(client, "phone"), readString(billedReseller, "phone")),
         customerZone: readString(zone, "name"),
         lines,
         totalQuantity: lines.reduce((sum, line) => sum + line.quantity, 0),

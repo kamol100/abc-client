@@ -16,6 +16,8 @@ import { InvoiceViewDocument } from "@/components/invoices/invoice-view-document
 type InvoiceViewDialogProps = {
     invoiceKey: string;
     fallback?: InvoiceRow;
+    /** False shows `fallback` as it is, for an invoice the user cannot open through /invoices. */
+    fetchDetail?: boolean;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 };
@@ -23,6 +25,7 @@ type InvoiceViewDialogProps = {
 const InvoiceViewDialog: FC<InvoiceViewDialogProps> = ({
     invoiceKey,
     fallback,
+    fetchDetail = true,
     open,
     onOpenChange,
 }) => {
@@ -31,7 +34,7 @@ const InvoiceViewDialog: FC<InvoiceViewDialogProps> = ({
     const profile = useSafeProfile()?.profile;
     const logoUrl = resolveApiAssetUrl(profile?.reseller?.logo || profile?.company?.logo);
     const sheetRef = useRef<HTMLDivElement | null>(null);
-    const canFetch = open && invoiceKey.length > 0;
+    const canFetch = fetchDetail && open && invoiceKey.length > 0;
 
     const {
         data: detailResponse,
