@@ -1,3 +1,12 @@
+## Invoice form: empty Invoice type and Client show the placeholder — 2026-11-26
+
+Branch `master`.
+
+- `components/invoices/invoice-form.tsx`: the create defaults for `invoice_type_id` and `client_id` were `0`, which the dropdown drew as "0". They are now `null`, so the placeholder shows.
+- Validation is unchanged: an empty value still gives the "required" error for both fields (`null` is read as 0 by the schema).
+- `scripts/ai/typecheck`: passes. Invoice unit tests (`tests/unit/invoices`, `tests/unit/form/builder/invoice-form.test.tsx`): 76 passed. Full unit suite not rerun.
+- Not checked in a browser.
+
 ## Invoices: bill a reseller, and "My bills" for resellers — 2026-11-26
 
 Branch `refactor-form-builder`. Backend part: `isp-backend/.ai/report.md`, same date.

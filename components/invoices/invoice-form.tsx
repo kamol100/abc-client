@@ -32,10 +32,10 @@ type ContentProps = {
 };
 
 const defaultValues: Record<string, unknown> = {
-    invoice_type_id: 0,
+    invoice_type_id: null,
     bill_to_type: "client",
     bill_to_id: null,
-    client_id: 0,
+    client_id: null,
     discount: 0,
     status: "due",
     partial_amount: 0,
