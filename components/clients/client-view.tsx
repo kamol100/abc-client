@@ -13,10 +13,8 @@ import {
     RotateCcw,
     Ticket,
 } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
-import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
-import { findClientInListCache } from "@/components/clients/client-list-cache";
-import { clientDetailQueryKey } from "@/components/clients/client-detail-query";
+import { useClientDetail } from "@/components/clients/client-detail-query";
+import { cn } from "@/lib/utils";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
@@ -46,10 +44,14 @@ const ClientInvoiceCreateDialog = dynamic(() => import("@/components/clients/cli
 
 interface Props {
     clientId: string;
+    /** "overlay": inside the modal / drawer, whose top bar replaces the back button. */
+    variant?: "page" | "overlay";
+    /** The element that scrolls the view when it is not the window (the modal / drawer body). */
+    scrollRoot?: Element | null;
 }
 
-function DeferredSection({ children }: { children: ReactNode }) {
-    const { ref, inView } = useInView({ rootMargin: "640px", triggerOnce: true });
+function DeferredSection({ children, scrollRoot }: { children: ReactNode; scrollRoot?: Element | null }) {
+    const { ref, inView } = useInView({ root: scrollRoot ?? null, rootMargin: "640px", triggerOnce: true });
 
     return (
         <div ref={ref}>
@@ -58,7 +60,7 @@ function DeferredSection({ children }: { children: ReactNode }) {
     );
 }
 
-const ClientView: FC<Props> = ({ clientId }) => {
+const ClientView: FC<Props> = ({ clientId, variant = "page", scrollRoot = null }) => {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
     const { profile } = useProfile();
@@ -76,17 +78,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const [switchOpen, setSwitchOpen] = useState(false);
     const canAddMap = hasPermission("clients.map.add");
     const canSwitchClient = hasPermission("clients.switch.reseller") && !isResellerUser;
-    const queryClient = useQueryClient();
-    const { data, isLoading, isPlaceholderData } = useApiQuery<ApiResponse<ClientRow>>({
-        queryKey: clientDetailQueryKey(clientId),
-        url: `clients/${clientId}`,
-        pagination: false,
-        // Opened from the client list: show the row already loaded there while the full record loads.
-        placeholderData: () => {
-            const row = findClientInListCache(queryClient, clientId);
-            return row ? { success: true, data: row } : undefined;
-        },
-    });
+    const { data, isLoading, isPlaceholderData } = useClientDetail(clientId);
 
     const client = data?.data;
     // The list row lacks detail-only fields; actions wait for the full record.
@@ -98,14 +90,16 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const isLocked = client?.is_locked === true;
 
     return (
-        <div className="space-y-6 overflow-auto pr-3">
-            {!client ? <ClientViewSkeleton showTables={false} /> : (
+        <div className={cn("space-y-6", variant === "page" && "overflow-auto pr-3")}>
+            {!client ? <ClientViewSkeleton showTables={false} variant={variant} /> : (
                 <>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                         <div className="flex items-center gap-3">
-                            <MyButton variant="default" size="icon" url="/clients">
-                                <ArrowLeft className="h-4 w-4" />
-                            </MyButton>
+                            {variant === "page" && (
+                                <MyButton variant="default" size="icon" url="/clients">
+                                    <ArrowLeft className="h-4 w-4" />
+                                </MyButton>
+                            )}
                             <h1 className="text-lg font-semibold">{t("client.view_title")}</h1>
                             <Badge variant={isActive ? "default" : "destructive"}>
                                 {isActive ? t("common.active") : t("common.inactive")}
@@ -300,33 +294,33 @@ const ClientView: FC<Props> = ({ clientId }) => {
             )}
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
-                <DeferredSection>
+                <DeferredSection scrollRoot={scrollRoot}>
                     <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={true} />
                 </DeferredSection>
             </div>
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('payment.title_plural')}:</div>
-                <DeferredSection>
+                <DeferredSection scrollRoot={scrollRoot}>
                     <PaymentTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
                 </DeferredSection>
             </div>
             {hasPermission("products-out.report") && (
                 <div className="border-t pt-4">
                     <div className="text-md font-semibold mb-2">{t('client.products.title')}:</div>
-                    <DeferredSection>
+                    <DeferredSection scrollRoot={scrollRoot}>
                         <ClientProductTable clientUuid={clientId} />
                     </DeferredSection>
                 </div>
             )}
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('ticket.title_plural')}:</div>
-                <DeferredSection>
+                <DeferredSection scrollRoot={scrollRoot}>
                     <TicketTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} />
                 </DeferredSection>
             </div>
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('client.history.title')}:</div>
-                <DeferredSection>
+                <DeferredSection scrollRoot={scrollRoot}>
                     <ClientHistory clientId={clientId} />
                 </DeferredSection>
             </div>

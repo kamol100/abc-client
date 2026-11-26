@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import type { ApiResponse } from "@/hooks/use-api-query";
+import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
+import { findClientInListCache } from "@/components/clients/client-list-cache";
 import { apiGet } from "@/lib/api/api-get";
 import { apiRequestError } from "@/lib/api/api-request-error";
 import type { ClientRow } from "@/components/clients/client-type";
@@ -17,6 +18,24 @@ export async function fetchClientDetail(clientId: string): Promise<ApiResponse<C
     const response = (await apiGet({ url: `/clients/${clientId}` })) as ApiResponse<ClientRow> | null;
     if (!response?.success) throw apiRequestError(response);
     return response;
+}
+
+/**
+ * The client detail used by the client view (page, modal and drawer) and the overlay's top bar.
+ * Opened from a client list, the row already loaded there shows at once (`isPlaceholderData`) while the
+ * full record loads; the row lacks detail-only fields, so callers hold actions until it arrives.
+ */
+export function useClientDetail(clientId: string) {
+    const queryClient = useQueryClient();
+    return useApiQuery<ApiResponse<ClientRow>>({
+        queryKey: clientDetailQueryKey(clientId),
+        url: `clients/${clientId}`,
+        pagination: false,
+        placeholderData: () => {
+            const row = findClientInListCache(queryClient, clientId);
+            return row ? { success: true, data: row } : undefined;
+        },
+    });
 }
 
 /** Long enough that moving the pointer across the table does not fire a request per row. */

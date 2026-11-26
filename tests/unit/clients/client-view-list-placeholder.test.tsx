@@ -183,4 +183,28 @@ describe("ClientView opened from the client list", () => {
         expect(await screen.findByText("secret-pw")).toBeInTheDocument();
         expect(screen.getAllByText("Kamal Hossain").length).toBeGreaterThan(0);
     });
+
+    // মডাল/ড্রয়ারের ভিতরে (overlay) ভিউতে ফেরার তীর থাকে না, কারণ উপরের বারে বন্ধ বোতাম আছে কি না যাচাই করি।
+    it("Client view inside the modal or drawer: has no back-to-list arrow and keeps the action buttons", async () => {
+        render(
+            <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+                <ClientView clientId="client-1" variant="overlay" />
+            </QueryClientProvider>
+        );
+        resolveDetail({ success: true, data: detail });
+
+        expect(await screen.findByText("secret-pw")).toBeInTheDocument();
+        expect(document.querySelector('a[href="/clients"]')).toBeNull();
+        expect(screen.getByRole("button", { name: "client.actions.change_package" })).toBeEnabled();
+    });
+
+    // পুরো পেজে আগের মতো তালিকায় ফেরার তীর থাকে কি না যাচাই করি।
+    it("Client view full page: keeps the back-to-list arrow", async () => {
+        renderView(new QueryClient({ defaultOptions: { queries: { retry: false } } }));
+        resolveDetail({ success: true, data: detail });
+
+        expect(await screen.findByText("secret-pw")).toBeInTheDocument();
+        expect(document.querySelector('a[href="/clients"]')).not.toBeNull();
+    });
 });
+

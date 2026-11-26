@@ -3,6 +3,7 @@
 import Card from "@/components/card";
 import { DataTableSkeleton } from "@/components/data-table/data-table-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 /**
  * Skeleton loader that mirrors the Client View page layout:
@@ -12,7 +13,14 @@ import { Skeleton } from "@/components/ui/skeleton";
  * - Ticket table section
  * - Client history table section
  */
-export default function ClientViewSkeleton({ showTables = true }: { showTables?: boolean }) {
+export default function ClientViewSkeleton({
+    showTables = true,
+    variant = "page",
+}: {
+    showTables?: boolean;
+    /** "overlay": no back button and no own scroll, as in ClientView. */
+    variant?: "page" | "overlay";
+}) {
     const infoRow = (
         <div className="flex items-start gap-2 py-1.5 text-sm">
             <Skeleton className="h-4 w-24 shrink-0" />
@@ -22,11 +30,11 @@ export default function ClientViewSkeleton({ showTables = true }: { showTables?:
     );
 
     return (
-        <div className="space-y-6 overflow-auto pr-3">
+        <div className={cn("space-y-6", variant === "page" && "overflow-auto pr-3")}>
             {/* Header: back button + title + badge + action buttons */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-3">
-                    <Skeleton className="h-9 w-9 shrink-0 rounded-md" />
+                    {variant === "page" && <Skeleton className="h-9 w-9 shrink-0 rounded-md" />}
                     <Skeleton className="h-6 w-36" />
                     <Skeleton className="h-5 w-14 rounded-full" />
                 </div>

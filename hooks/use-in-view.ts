@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UseInViewOptions {
+    /** Scroll container to measure against (e.g. a modal body). Default: the viewport. */
+    root?: Element | null;
     rootMargin?: string;
     threshold?: number | number[];
     triggerOnce?: boolean;
 }
 
 export default function useInView({
+    root = null,
     rootMargin = "0px",
     threshold = 0,
     triggerOnce = false,
@@ -46,12 +49,12 @@ export default function useInView({
                         observerRef.current = null;
                     }
                 },
-                { rootMargin, threshold }
+                { root, rootMargin, threshold }
             );
 
             observerRef.current.observe(node);
         },
-        [rootMargin, threshold, triggerOnce]
+        [root, rootMargin, threshold, triggerOnce]
     );
 
     useEffect(() => {

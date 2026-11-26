@@ -22,3 +22,28 @@ export function findClientInListCache(queryClient: QueryClient, clientId: string
     }
     return undefined;
 }
+
+/** The client ids of a cached list page, in table order, and where `clientId` sits in it. */
+export type ClientListContext = { ids: string[]; index: number };
+
+/**
+ * The list page a client was opened from, for Previous / Next in the client overlay. When several cached
+ * pages hold the client, the most recently loaded one wins. Undefined when no cached list holds it
+ * (e.g. opened from an invoice), and Previous / Next are then hidden.
+ */
+export function findClientListContext(queryClient: QueryClient, clientId: string): ClientListContext | undefined {
+    let best: (ClientListContext & { updatedAt: number }) | undefined;
+    for (const queryKey of CLIENT_LIST_KEYS) {
+        for (const query of queryClient.getQueryCache().findAll({ queryKey })) {
+            const rows = (query.state.data as PaginatedApiResponse<ClientRow> | undefined)?.data?.data;
+            if (!Array.isArray(rows)) continue;
+            const ids = rows.map((row) => getClientId(row)).filter((id): id is string => Boolean(id));
+            const index = ids.indexOf(clientId);
+            if (index === -1) continue;
+            if (!best || query.state.dataUpdatedAt > best.updatedAt) {
+                best = { ids, index, updatedAt: query.state.dataUpdatedAt };
+            }
+        }
+    }
+    return best ? { ids: best.ids, index: best.index } : undefined;
+}
