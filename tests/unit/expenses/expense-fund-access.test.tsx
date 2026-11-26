@@ -31,7 +31,8 @@ const fundField = (mode: "create" | "edit", fundAccess: ExpenseFundAccess) => {
 };
 
 describe("expenseFundAccess", () => {
-    it("lets an admin choose any fund while creating, and defaults their own fund", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets an admin choose any fund while creating, and defaults their own fund»।
+    it("Expense fund access: lets an admin choose any fund while creating, and defaults their own fund", () => {
         expect(expenseFundAccess({
             mode: "create",
             roles: ["Admin"],
@@ -62,7 +63,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("lets a staff member with expenses.fund.update choose any fund", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets a staff member with expenses.fund.update choose any fund»।
+    it("Expense fund access: lets a staff member with expenses.fund.update choose any fund", () => {
         expect(expenseFundAccess({
             mode: "create",
             roles: ["Staff"],
@@ -78,7 +80,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("locks a staff member to their own fund when they cannot update it", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks a staff member to their own fund when they cannot update it»।
+    it("Expense fund access: locks a staff member to their own fund when they cannot update it", () => {
         expect(expenseFundAccess({
             mode: "create",
             roles: ["Staff"],
@@ -95,7 +98,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("blocks create when a staff member has no fund and cannot update it", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks create when a staff member has no fund and cannot update it»।
+    it("Expense fund access: blocks create when a staff member has no fund and cannot update it", () => {
         expect(expenseFundAccess({
             mode: "create",
             roles: ["Manager"],
@@ -110,7 +114,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("lets expenses.edit change the fund while editing, without expenses.fund.update", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets expenses.edit change the fund while editing, without expenses.fund.update»।
+    it("Expense fund access: lets expenses.edit change the fund while editing, without expenses.fund.update", () => {
         expect(expenseFundAccess({
             mode: "edit",
             roles: ["Staff"],
@@ -125,7 +130,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("blocks editing without expenses.edit", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks editing without expenses.edit»।
+    it("Expense fund access: blocks editing without expenses.edit", () => {
         expect(expenseFundAccess({
             mode: "edit",
             roles: ["Admin"],
@@ -140,7 +146,8 @@ describe("expenseFundAccess", () => {
         });
     });
 
-    it("does not warn while the profile is still incomplete", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not warn while the profile is still incomplete»।
+    it("Expense fund access: does not warn while the profile is still incomplete", () => {
         expect(expenseFundAccess({
             mode: "create",
             roles: undefined,
@@ -156,7 +163,8 @@ describe("expenseFundAccess", () => {
 });
 
 describe("expense fund field", () => {
-    it("selects and disables the assigned fund on create", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «selects and disables the assigned fund on create»।
+    it("Expense fund access: selects and disables the assigned fund on create", () => {
         const access = expenseFundAccess({
             mode: "create",
             roles: ["Staff"],
@@ -173,7 +181,8 @@ describe("expense fund field", () => {
         expect(applyFormFieldDefaults({}, [field]).fund_id).toBe(4);
     });
 
-    it("keeps the fund list open on edit and does not replace the saved fund", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the fund list open on edit and does not replace the saved fund»।
+    it("Expense fund access: keeps the fund list open on edit and does not replace the saved fund", () => {
         const access = expenseFundAccess({
             mode: "edit",
             roles: ["Staff"],
@@ -198,11 +207,13 @@ describe("expenseSubmitSchema", () => {
         fund_id: 4,
     };
 
-    it("accepts a fund when the user is allowed to submit", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a fund when the user is allowed to submit»।
+    it("Expense fund access: accepts a fund when the user is allowed to submit", () => {
         expect(expenseSubmitSchema(false).parse(payload)).toMatchObject({ fund_id: 4 });
     });
 
-    it("rejects submission when the user has no fund access", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects submission when the user has no fund access»।
+    it("Expense fund access: rejects submission when the user has no fund access", () => {
         const parsed = expenseSubmitSchema(true).safeParse(payload);
 
         expect(parsed.success).toBe(false);

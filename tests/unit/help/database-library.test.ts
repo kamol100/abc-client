@@ -19,7 +19,8 @@ const article = {
 beforeEach(() => vi.resetAllMocks());
 
 describe("database-backed Help", () => {
-  it("renders localized database content through article, context and search responses", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders localized database content through article, context and search responses»।
+  it("Database-backed help articles: renders localized database content through article, context and search responses", async () => {
     vi.mocked(useFetch).mockResolvedValue({ success: true, status: 200, data: [article] });
     const deps = await loadDatabaseHelp("bn");
     expect(useFetch).toHaveBeenCalledWith({ url: "help-library?locale=bn" });
@@ -38,13 +39,15 @@ describe("database-backed Help", () => {
     expect(loadHelpActor).not.toHaveBeenCalled();
   });
 
-  it("opens published articles at generated hyphenated URLs", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens published articles at generated hyphenated URLs»।
+  it("Database-backed help articles: opens published articles at generated hyphenated URLs", async () => {
     const created = { ...article, id: "example-video-2", slug: "example-video-2" };
     vi.mocked(useFetch).mockResolvedValue({ success: true, status: 200, data: [created] });
     expect(await loadHelpArticle(created.slug)).toMatchObject({ id: created.id, title: created.title });
   });
 
-  it("uses static Help before seed completion and fails closed for authorization errors", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses static Help before seed completion and fails closed for authorization errors»।
+  it("Database-backed help articles: uses static Help before seed completion and fails closed for authorization errors", async () => {
     vi.mocked(loadHelpActor).mockResolvedValue({
       principal: "staff", permissions: [], subscriptionState: null, disabledFeatures: [], readOnlyFeatures: [],
     });

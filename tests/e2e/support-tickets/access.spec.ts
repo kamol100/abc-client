@@ -11,7 +11,8 @@ import {
 const UNKNOWN_TICKET = "00000000-0000-4000-8000-000000000001";
 
 test.describe("support ticket access", () => {
-  test("ST-A01 anonymous staff list and detail require login", async ({ browser, baseURL }) => {
+  // লগইন ছাড়া টিকিটের তালিকা ও বিস্তারিত পেজ খুললে স্টাফ লগইন চায় কি না দেখি।
+  test("ST-A01 Ticket list and details while signed out: require staff login", async ({ browser, baseURL }) => {
     const context = await browser.newContext({
       baseURL,
       locale: "en-US",
@@ -34,7 +35,8 @@ test.describe("support ticket access", () => {
     }
   });
 
-  test("ST-A03 another company cannot read or change a known ticket UUID", async ({ browser, staff }) => {
+  // অন্য কোম্পানির সাপোর্ট টিকিট পড়া বা বদলানো যায় না কি না যাচাই করি।
+  test("ST-A03 Ticket privacy: prevent another company from reading or changing a support ticket", async ({ browser, staff }) => {
     const mk = await authenticate(browser, "mk");
     try {
       await withOwnedTicket(staff, async (ticket) => {
@@ -80,7 +82,8 @@ test.describe("support ticket access", () => {
     }
   });
 
-  test("ST-A03 a foreign client id cannot replace the ticket client", async ({ browser, staff }) => {
+  // টিকিটের ক্লায়েন্টের জায়গায় অন্য কোম্পানির ক্লায়েন্ট বসানো আটকে দেয় কি না দেখি।
+  test("ST-A03 Ticket client ownership: reject replacing the client with another company's client", async ({ browser, staff }) => {
     const mk = await authenticate(browser, "mk");
     try {
       await withOwnedTicket(staff, async (ticket) => {
@@ -101,7 +104,8 @@ test.describe("support ticket access", () => {
     }
   });
 
-  test("ST-A05 logout and browser back do not restore the ticket list", async ({ page, staff }) => {
+  // লগআউটের পর ব্রাউজারে Back দিলেও টিকিটের তালিকা ফিরে আসে না কি না দেখি।
+  test("ST-A05 Ticket list after logout: keep it inaccessible after browser back", async ({ page, staff }) => {
     await withOwnedTicket(staff, async (ticket) => {
       await page.goto("/tickets");
       await expect(page.getByText(ticket.ticket_code, { exact: true })).toBeVisible();

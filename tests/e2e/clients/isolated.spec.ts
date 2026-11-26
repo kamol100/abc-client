@@ -2,11 +2,17 @@ import { randomUUID } from "node:crypto";
 import { test, expect, openClientCreate, clientId, requirePermissions } from "@/tests/e2e/clients/fixtures";
 import { isolatedFixtures } from "@/tests/e2e/clients/environment";
 
-// This project fails preflight rather than silently skipping without an isolated fake-backed fixture.
-test.beforeEach(async ({ staff }) => { isolatedFixtures(staff.tenant); });
+// আলাদা পরীক্ষার ডেটাবেস ও নকল রাউটার/নোটিফিকেশন fixture না থাকলে কোনো ক্লায়েন্ট পরিবর্তনের আগেই টেস্ট থামাই।
+// E2E_CLIENT_MUTATIONS=1 ও E2E_CLIENT_FIXTURE_FILE না থাকলে এটি সেটআপের ব্যর্থতা, অ্যাপের ত্রুটির প্রমাণ নয়।
+test.beforeEach(async ({ staff }) => {
+  await test.step("Check setup: isolated database and fake router/notification fixtures are required before changing clients", async () => {
+    isolatedFixtures(staff.tenant);
+  });
+});
 
 
-test("CL-F04 edit hydrates owned UUID and persists name while preserving billing", async ({ page, staff, ownedClient }) => {
+// পরীক্ষার নিজস্ব ক্লায়েন্টের পুরোনো নাম লোড হয়, নতুন নাম সেভ হয় এবং বিলিং সেটিংস বদলায় না কি না যাচাই করি।
+test("CL-F04 Edit client: load the saved name and save a new name without changing billing (isolated fixtures required)", async ({ page, staff, ownedClient }) => {
   const id = clientId(ownedClient);
   const updated = `E2E updated ${randomUUID()}`;
   await page.goto(`/clients/edit/${id}`);
@@ -23,7 +29,8 @@ test("CL-F04 edit hydrates owned UUID and persists name while preserving billing
   expect(saved.payment_deadline).toBe(ownedClient.payment_deadline);
 });
 
-test("CL-F08 cancel edit preserves original saved values", async ({ page, staff, ownedClient }) => {
+// পরীক্ষার ক্লায়েন্টের নাম বদলে Cancel করলে তালিকায় ফিরে আসে এবং ডেটাবেসে আগের নামই থাকে কি না দেখি।
+test("CL-F08 Cancel client edit: discard the entered name and keep the saved name (isolated fixtures required)", async ({ page, staff, ownedClient }) => {
   const id = clientId(ownedClient);
   await page.goto(`/clients/edit/${id}`);
   await expect(page.locator("#name")).toHaveValue(ownedClient.name);
@@ -33,7 +40,8 @@ test("CL-F08 cancel edit preserves original saved values", async ({ page, staff,
   expect((await staff.detail(id)).name).toBe(ownedClient.name);
 });
 
-test("CL-F10 clearing optional IP persists blank without string markers", async ({ page, staff, ownedClient }) => {
+// ঐচ্ছিক IP মুছে সেভ করলে পুনরায় ফর্মে ফাঁকা থাকে এবং API-তে ফাঁকা বা null আসে, 'null'/'undefined' লেখা নয়—তা দেখি।
+test("CL-F10 Clear optional IP address: save an empty value and keep it empty when reopened (isolated fixtures required)", async ({ page, staff, ownedClient }) => {
   const id = clientId(ownedClient);
   await page.goto(`/clients/edit/${id}`);
   await expect(page.locator("#name")).toHaveValue(ownedClient.name);
@@ -46,7 +54,8 @@ test("CL-F10 clearing optional IP persists blank without string markers", async 
   expect(value == null || value === "").toBe(true);
 });
 
- test("CL-F01 creates client through UI and persists network/package identity", async ({ page, staff }) => {
+ // ফর্ম দিয়ে পরীক্ষার ক্লায়েন্ট তৈরি করে নাম, নেটওয়ার্ক ও প্যাকেজ সেভ হয়েছে কি না দেখি; শেষে শুধু নিজের তৈরি ডেটা পরিষ্কার করি।
+ test("CL-F01 Create client: save the name, network, and package and show the client after reload (isolated fixtures required)", async ({ page, staff }) => {
    const fixture = isolatedFixtures(staff.tenant);
    requirePermissions(staff, "clients.create", "clients.delete", "archived-clients.delete");
    const username = `e2e-${randomUUID()}`;

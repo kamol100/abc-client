@@ -34,19 +34,22 @@ describe("LoginForm", () => {
     toastMock.mockReset();
   });
 
-  it("shows the company name on the divider when it is set", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the company name on the divider when it is set»।
+  it("Staff login form: shows the company name on the divider when it is set", async () => {
     render(<LoginForm companyName="Acme ISP" />);
 
     expect(await screen.findByText("Acme ISP")).toBeInTheDocument();
   });
 
-  it("falls back to the credentials label when the company name is empty", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «falls back to the credentials label when the company name is empty»।
+  it("Staff login form: falls back to the credentials label when the company name is empty", async () => {
     render(<LoginForm companyName="   " />);
 
     expect(await screen.findByText("login.continue_with_credentials")).toBeInTheDocument();
   });
 
-  it("renders the credential fields", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders the credential fields»।
+  it("Staff login form: renders the credential fields", async () => {
     render(<LoginForm />);
 
     expect(await screen.findByText("login.title")).toBeInTheDocument();
@@ -58,7 +61,8 @@ describe("LoginForm", () => {
     );
   });
 
-  it("submits credentials through next-auth signIn", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits credentials through next-auth signIn»।
+  it("Staff login form: submits credentials through next-auth signIn", async () => {
     const user = userEvent.setup();
     searchParamState.set("callbackUrl", "/tickets");
     signInMock.mockResolvedValueOnce({});
@@ -85,7 +89,8 @@ describe("LoginForm", () => {
     });
   });
 
-  it("shows invalid credentials toast from auth error query", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows invalid credentials toast from auth error query»।
+  it("Staff login form: shows invalid credentials toast from auth error query", async () => {
     searchParamState.set("error", "CredentialsSignin");
 
     render(<LoginForm />);
@@ -98,7 +103,8 @@ describe("LoginForm", () => {
     });
   });
 
-  it("shows the locked account message when login returns the locked code", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the locked account message when login returns the locked code»।
+  it("Staff login form: shows the locked account message when login returns the locked code", async () => {
     searchParamState.set("error", "CredentialsSignin");
     searchParamState.set("code", "account_locked");
 

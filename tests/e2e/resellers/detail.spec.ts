@@ -14,7 +14,8 @@ const ClientPageSchema = z.object({
   pagination: z.object({ total: z.coerce.number() }).passthrough(),
 });
 
-test("RS-P01 detail opens the selected reseller and edit returns to that UUID", async ({ page, staff }) => {
+// নির্বাচিত রিসেলারের বিস্তারিত ও এডিট একই অ্যাকাউন্টের হয় কি না যাচাই করি।
+test("RS-P01 Reseller details: open the selected reseller and edit the same account", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.show", "resellers.edit");
   const reseller = await sample(staff);
   await page.goto("/resellers");
@@ -36,7 +37,8 @@ test("RS-P01 detail opens the selected reseller and edit returns to that UUID", 
   await expect(resellerRow(page, reseller)).toBeVisible();
 });
 
-test("RS-P04 clients tab matches the selected reseller and clears when another reseller opens", async ({ page, staff }) => {
+// ক্লায়েন্ট ট্যাবে সঠিক রিসেলারের তথ্য আসে এবং রিসেলার বদলালে পুরোনো তথ্য সরে যায় কি না দেখি।
+test("RS-P04 Reseller clients tab: show that reseller's clients and replace them when switching resellers", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.show", "resellers.client");
   const listed = await resellers(staff);
   const rows = listed.pagination.total_pages > 1
@@ -70,7 +72,8 @@ test("RS-P04 clients tab matches the selected reseller and clears when another r
   if (exclusive?.name) await expect(page.getByText(exclusive.name, { exact: true })).toHaveCount(0);
 });
 
-test("RS-P05 package and profile tabs stay usable for the open reseller", async ({ page, staff }) => {
+// নির্বাচিত রিসেলারের প্যাকেজ ও প্রোফাইল ট্যাব ব্যবহার করা যায় কি না দেখি।
+test("RS-P05 Reseller detail tabs: keep package and profile information available for the selected reseller", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.show");
   const reseller = await resellerDetail(staff, (await sample(staff)).id);
   await page.goto(`/resellers/view/${reseller.id}`);

@@ -55,7 +55,8 @@ function renderBuilder(initial: Partial<ThemeDraft> = {}, onSaved = vi.fn()) {
 describe("ThemeBuilder", () => {
   beforeEach(() => useFetch.mockReset());
 
-  it("has one typed field, the name, and asks for it before saving", async () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «has one typed field, the name, and asks for it before saving»।
+  it("Theme builder: has one typed field, the name, and asks for it before saving", async () => {
     const user = userEvent.setup();
     renderBuilder();
 
@@ -66,7 +67,8 @@ describe("ThemeBuilder", () => {
     expect(useFetch).not.toHaveBeenCalled();
   });
 
-  it("refuses an ISPTIK theme name", async () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «refuses an ISPTIK theme name»।
+  it("Theme builder: refuses an ISPTIK theme name", async () => {
     const user = userEvent.setup();
     renderBuilder();
 
@@ -77,7 +79,8 @@ describe("ThemeBuilder", () => {
     expect(useFetch).not.toHaveBeenCalled();
   });
 
-  it("builds the theme from clicks: a preset becomes colorful and dark mode is regenerated", async () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds the theme from clicks: a preset becomes colorful and dark mode is regenerated»।
+  it("Theme builder: builds the theme from clicks: a preset becomes colorful and dark mode is regenerated", async () => {
     const user = userEvent.setup();
     useFetch.mockResolvedValue({ success: true, data: { id: "new" } });
     const onSaved = renderBuilder();
@@ -109,7 +112,8 @@ describe("ThemeBuilder", () => {
     await waitFor(() => expect(onSaved).toHaveBeenCalledWith({ id: "new" }, true));
   });
 
-  it("keeps an ISPTIK theme's hand-tuned dark colors when only chart colors change", async () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps an ISPTIK theme's hand-tuned dark colors when only chart colors change»।
+  it("Theme builder: keeps an ISPTIK theme's hand-tuned dark colors when only chart colors change", async () => {
     const user = userEvent.setup();
     useFetch.mockResolvedValue({ success: true, data: { id: "new" } });
     renderBuilder();

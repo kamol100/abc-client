@@ -66,7 +66,8 @@ describe("FormBuilder edit loading", () => {
     });
 
     describe("when the record is fetched", () => {
-        it("fetches GET api/{id} when data only has the id, and fills the form", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fetches GET api/{id} when data only has the id, and fills the form»।
+        it("Load saved form values: fetches GET api/{id} when data only has the id, and fills the form", async () => {
             renderEdit();
 
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
@@ -74,14 +75,16 @@ describe("FormBuilder edit loading", () => {
             expect(detailRequests()).toHaveLength(1);
         });
 
-        it("accepts an api without a leading slash", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts an api without a leading slash»।
+        it("Load saved form values: accepts an api without a leading slash", async () => {
             renderEdit({ api: "zones" });
 
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
             expect(detailRequests()).toHaveLength(1);
         });
 
-        it("does not fetch when data already has a key for every field", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not fetch when data already has a key for every field»।
+        it("Load saved form values: does not fetch when data already has a key for every field", async () => {
             renderEdit({ data: { id: 5, name: "From row", note: null } });
             await settle();
 
@@ -89,14 +92,16 @@ describe("FormBuilder edit loading", () => {
             expect(inputById("name")).toHaveValue("From row");
         });
 
-        it("fetches when one field's key is missing from data", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fetches when one field's key is missing from data»।
+        it("Load saved form values: fetches when one field's key is missing from data", async () => {
             renderEdit({ data: { id: 5, name: "From row" } });
 
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
             expect(detailRequests()).toHaveLength(1);
         });
 
-        it("looks for valueKey, not the field name, when deciding", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «looks for valueKey, not the field name, when deciding»।
+        it("Load saved form values: looks for valueKey, not the field name, when deciding", async () => {
             renderEdit({
                 formSchema: [
                     { type: "text", name: "name" },
@@ -109,7 +114,8 @@ describe("FormBuilder edit loading", () => {
             expect(detailRequests()).toHaveLength(0);
         });
 
-        it("ignores fields with permission false and slot fields when deciding", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores fields with permission false and slot fields when deciding»।
+        it("Load saved form values: ignores fields with permission false and slot fields when deciding", async () => {
             renderEdit({
                 formSchema: [
                     { type: "text", name: "name" },
@@ -123,7 +129,8 @@ describe("FormBuilder edit loading", () => {
             expect(detailRequests()).toHaveLength(0);
         });
 
-        it("for a geolocation field, looks for its latitude and longitude keys", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «for a geolocation field, looks for its latitude and longitude keys»।
+        it("Load saved form values: for a geolocation field, looks for its latitude and longitude keys", async () => {
             const formSchema: FormFieldConfig[] = [
                 { type: "text", name: "name" },
                 { type: "geolocation", name: "location", latitudeName: "latitude", longitudeName: "longitude" },
@@ -140,7 +147,8 @@ describe("FormBuilder edit loading", () => {
             await waitFor(() => expect(detailRequests()).toHaveLength(1));
         });
 
-        it("never fetches with hydrateOnEdit=\"never\"", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «never fetches with hydrateOnEdit="never"»।
+        it("Load saved form values: never fetches with hydrateOnEdit=\"never\"", async () => {
             renderEdit({ hydrateOnEdit: "never" });
             await settle();
 
@@ -148,14 +156,16 @@ describe("FormBuilder edit loading", () => {
             expect(inputById("name")).toHaveValue("");
         });
 
-        it("always fetches with hydrateOnEdit=\"always\", even when data is complete", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «always fetches with hydrateOnEdit="always", even when data is complete»।
+        it("Load saved form values: always fetches with hydrateOnEdit=\"always\", even when data is complete", async () => {
             renderEdit({ hydrateOnEdit: "always", data: { id: 5, name: "From row", note: "row note" } });
 
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
             expect(detailRequests()).toHaveLength(1);
         });
 
-        it("does not fetch in create mode, without an id, or without an api", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not fetch in create mode, without an id, or without an api»।
+        it("Load saved form values: does not fetch in create mode, without an id, or without an api", async () => {
             const create = renderEdit({ mode: "create" });
             await settle();
             create.unmount();
@@ -172,7 +182,8 @@ describe("FormBuilder edit loading", () => {
     });
 
     describe("while and after loading", () => {
-        it("shows a skeleton with no fields and no buttons while loading", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a skeleton with no fields and no buttons while loading»।
+        it("Load saved form values: shows a skeleton with no fields and no buttons while loading", async () => {
             let release: (value: unknown) => void = () => {};
             mockApi((request) =>
                 request.url === "/zones/5"
@@ -193,7 +204,8 @@ describe("FormBuilder edit loading", () => {
             expect(screen.getByRole("button", { name: "common.save" })).toBeInTheDocument();
         });
 
-        it("replaces the starting values with the fetched record", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «replaces the starting values with the fetched record»।
+        it("Load saved form values: replaces the starting values with the fetched record", async () => {
             renderEdit({ data: { id: 5, only_in_row: "x" } });
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
 
@@ -203,7 +215,8 @@ describe("FormBuilder edit loading", () => {
             expect(writeRequests()[0]).toEqual({ url: "/zones/5", method: "PUT", data: zoneRecord });
         });
 
-        it("converts the fetched record like edit data: dates, related ids, dropdown defaults", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «converts the fetched record like edit data: dates, related ids, dropdown defaults»।
+        it("Load saved form values: converts the fetched record like edit data: dates, related ids, dropdown defaults", async () => {
             serveZone({
                 id: 5,
                 opened_at: "2026-11-25",
@@ -239,7 +252,8 @@ describe("FormBuilder edit loading", () => {
             expect(data.kind).toBeNull();
         });
 
-        it("keeps typed values when the builder re-renders with the same formSchema array", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps typed values when the builder re-renders with the same formSchema array»।
+        it("Load saved form values: keeps typed values when the builder re-renders with the same formSchema array", async () => {
             const stableFields = nameAndNote();
             function Host() {
                 const [count, setCount] = useState(0);
@@ -272,7 +286,8 @@ describe("FormBuilder edit loading", () => {
         });
 
         // Most callers build formSchema inline, so this is the common case.
-        it("keeps typed values when the parent re-renders with a new formSchema array", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps typed values when the parent re-renders with a new formSchema array»।
+        it("Load saved form values: keeps typed values when the parent re-renders with a new formSchema array", async () => {
             function Host() {
                 const [count, setCount] = useState(0);
                 return (
@@ -304,7 +319,8 @@ describe("FormBuilder edit loading", () => {
             expect(inputById("name")).toHaveValue("North edited");
         });
 
-        it("fills the form again when a refetch returns a changed record", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills the form again when a refetch returns a changed record»।
+        it("Load saved form values: fills the form again when a refetch returns a changed record", async () => {
             const view = renderEdit();
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
 
@@ -321,7 +337,8 @@ describe("FormBuilder edit loading", () => {
                 request.url === "/zones/5" ? { success: false, message: "zone.not_found", status: 404 } : undefined,
             );
 
-        it("shows the failure text with Cancel and Refresh, and a toast, after two retries", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the failure text with Cancel and Refresh, and a toast, after two retries»।
+        it("Load saved form values: shows the failure text with Cancel and Refresh, and a toast, after two retries", async () => {
             failDetail();
             renderEdit();
 
@@ -332,7 +349,8 @@ describe("FormBuilder edit loading", () => {
             expect(toast.error).toHaveBeenCalledWith("zone.not_found");
         });
 
-        it("Refresh fetches again and shows the form when it works", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «Refresh fetches again and shows the form when it works»।
+        it("Load saved form values: fetch the saved record again and show the form after a successful refresh", async () => {
             failDetail();
             renderEdit();
             await screen.findByText("common.failed_to_load_data");
@@ -344,7 +362,8 @@ describe("FormBuilder edit loading", () => {
             await waitFor(() => expect(inputById("name")).toHaveValue("North"));
         });
 
-        it("Cancel calls onClose", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «Cancel calls onClose»।
+        it("Load saved form values: Cancel calls onClose", async () => {
             failDetail();
             const onClose = vi.fn();
             renderEdit({ onClose });

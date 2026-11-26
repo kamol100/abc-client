@@ -79,7 +79,8 @@ describe("persisted column visibility", () => {
     localStorage.clear();
   });
 
-  it("restores a hidden column after refresh and keeps another page unchanged", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «restores a hidden column after refresh and keeps another page unchanged»।
+  it("Column visibility persistence: restores a hidden column after refresh and keeps another page unchanged", () => {
     writeStoredColumnVisibility(clientsKey, { email: false });
     writeStoredColumnVisibility(columnVisibilityStorageKey("/invoices", "invoices"), {
       name: false,
@@ -100,7 +101,8 @@ describe("persisted column visibility", () => {
     );
   });
 
-  it("saves a column when it is shown again", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves a column when it is shown again»।
+  it("Column visibility persistence: saves a column when it is shown again", async () => {
     const user = userEvent.setup();
     writeStoredColumnVisibility(clientsKey, { email: false });
     renderClientsTable();
@@ -112,7 +114,8 @@ describe("persisted column visibility", () => {
     expect(JSON.parse(localStorage.getItem(clientsKey) ?? "{}")).toMatchObject({ email: true });
   });
 
-  it("ignores stored visibility when the column toggle is off", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores stored visibility when the column toggle is off»।
+  it("Column visibility persistence: ignores stored visibility when the column toggle is off", () => {
     writeStoredColumnVisibility(clientsKey, { email: false });
     renderClientsTable(false);
 
@@ -120,7 +123,8 @@ describe("persisted column visibility", () => {
     expect(localStorage.getItem(clientsKey)).toContain('"email":false');
   });
 
-  it("falls back to the default visibility for corrupt or outdated storage", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «falls back to the default visibility for corrupt or outdated storage»।
+  it("Column visibility persistence: falls back to the default visibility for corrupt or outdated storage", () => {
     const { result, unmount } = renderHook(() =>
       usePersistedColumnVisibility({
         enabled: true,
@@ -167,7 +171,8 @@ describe("persisted column visibility", () => {
     expect(fallback.result.current.columnVisibility).toEqual({ email: false });
   });
 
-  it("keeps two tables on different pages from sharing visibility", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps two tables on different pages from sharing visibility»।
+  it("Column visibility persistence: keeps two tables on different pages from sharing visibility", () => {
     const clients = renderHook(() =>
       usePersistedColumnVisibility({
         enabled: true,

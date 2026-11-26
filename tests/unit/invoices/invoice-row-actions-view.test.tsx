@@ -44,7 +44,8 @@ const dueInvoice = {
 } as InvoiceRow;
 
 describe("InvoiceRowActions view", () => {
-    it("opens the invoice view without starting a payment", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the invoice view without starting a payment»।
+    it("Invoice row actions view: opens the invoice view without starting a payment", async () => {
         const user = userEvent.setup();
         useFetch.mockReset();
 
@@ -57,7 +58,8 @@ describe("InvoiceRowActions view", () => {
         expect(screen.getByRole("button", { name: "invoice.actions.pay" })).toBeInTheDocument();
     });
 
-    it("keeps view available after the invoice is paid", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps view available after the invoice is paid»।
+    it("Invoice row actions view: keeps view available after the invoice is paid", () => {
         render(<InvoiceRowActions invoice={{ ...dueInvoice, status: "paid" }} />);
 
         expect(screen.getByRole("button", { name: "invoice.actions.view" })).toBeInTheDocument();

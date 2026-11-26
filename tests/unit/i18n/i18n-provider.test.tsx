@@ -10,12 +10,14 @@ function MenuLabel() {
 }
 
 describe("createI18n", () => {
-  it("translates each instance with its own language", () => {
+  // ভাষা ও অনুবাদ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «translates each instance with its own language»।
+  it("Translation provider: translates each instance with its own language", () => {
     expect(createI18n("en").t("common.menu")).toBe("Menu");
     expect(createI18n("bn").t("common.menu")).toBe("মেনু");
   });
 
-  it("renders the requested language on the server after an English render", () => {
+  // ভাষা ও অনুবাদ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders the requested language on the server after an English render»।
+  it("Translation provider: renders the requested language on the server after an English render", () => {
     const englishHtml = renderToString(
       <I18nProvider initialLanguage="en">
         <MenuLabel />

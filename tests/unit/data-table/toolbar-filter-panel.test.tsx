@@ -81,13 +81,15 @@ afterEach(() => {
 });
 
 describe("toolbar filter position", () => {
-  it("adds the list page's ⚙ before the built-ins", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds the list page's ⚙ before the built-ins»।
+  it("Toolbar filter panel: adds the list page's ⚙ before the built-ins", () => {
     renderTable(invoices);
 
     expect(endLabels()).toEqual(["invoice.title_plural", "Switch to full layout", "common.filter"]);
   });
 
-  it("opens inline (replacing the toolbar) when the page has no setting", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens inline (replacing the toolbar) when the page has no setting»।
+  it("Toolbar filter panel: opens inline (replacing the toolbar) when the page has no setting", async () => {
     const user = userEvent.setup();
     renderTable(invoices);
 
@@ -98,7 +100,8 @@ describe("toolbar filter position", () => {
     expect(panelState()).toBeNull();
   });
 
-  it("keeps the toolbar and opens the panel under it when the setting is 'below'", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the toolbar and opens the panel under it when the setting is 'below'»।
+  it("Toolbar filter panel: keeps the toolbar and opens the panel under it when the setting is 'below'", async () => {
     const user = userEvent.setup();
     companySettings = { filter_position_invoices: "below" };
     renderTable(invoices);
@@ -118,7 +121,8 @@ describe("toolbar filter position", () => {
     expect(screen.queryByRole("button", { name: "common.search" })).toBeNull();
   });
 
-  it("applies text as you type in the panel, and clears it when the panel closes", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies text as you type in the panel, and clears it when the panel closes»।
+  it("Toolbar filter panel: applies text as you type in the panel, and clears it when the panel closes", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     companySettings = { filter_position_invoices: "below" };
@@ -136,7 +140,8 @@ describe("toolbar filter position", () => {
     expect(setFilter).toHaveBeenLastCalledWith("");
   });
 
-  it("resets from the reset button without closing the panel", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets from the reset button without closing the panel»।
+  it("Toolbar filter panel: resets from the reset button without closing the panel", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     companySettings = { filter_position_invoices: "below" };
@@ -153,7 +158,8 @@ describe("toolbar filter position", () => {
     expect(panelState()).toBe("open");
   });
 
-  it("ignores the setting for tables that are not a company list page", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores the setting for tables that are not a company list page»।
+  it("Toolbar filter panel: ignores the setting for tables that are not a company list page", async () => {
     const user = userEvent.setup();
     companySettings = { filter_position_invoices: "below" };
     renderTable({ title: "Top dues", page: null, features: { filter: { filter } } });
@@ -163,7 +169,8 @@ describe("toolbar filter position", () => {
     expect(document.querySelector('[data-toolbar-layout="expanded"]')).not.toBeNull();
   });
 
-  it("keeps the bottom sheet on phones whatever the setting", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the bottom sheet on phones whatever the setting»।
+  it("Toolbar filter panel: keeps the bottom sheet on phones whatever the setting", () => {
     isMobile = true;
     companySettings = { filter_position_invoices: "below" };
     renderTable(invoices);

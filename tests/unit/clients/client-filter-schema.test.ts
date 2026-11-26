@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
 
 describe("ClientFilterSchema", () => {
-    it("filters by the billing_type query the API expects", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «filters by the billing_type query the API expects»।
+    it("Client filter schema: filters by the billing_type query the API expects", () => {
         const billingType = ClientFilterSchema().find((field) => field.name.trim() === "billing_type");
 
         expect(billingType).toMatchObject({

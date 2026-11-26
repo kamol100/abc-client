@@ -1,6 +1,7 @@
 import { expect, requirePermissions, test } from "@/tests/e2e/platform-support/fixtures";
 
-test("PS-E14 published help renders, switches language, and hides an unknown slug", async ({ page, staff }) => {
+// প্রকাশিত হেল্প লেখা দেখা যায়, ভাষা বদলায় এবং অজানা আর্টিকেল দেখায় না কি না দেখি।
+test("PS-E14 Help articles: show published content, switch language, and hide unknown articles", async ({ page, staff }) => {
   requirePermissions(staff, "platform-support.access");
   await page.goto("/help");
   await expect(page.getByRole("heading", { name: "Help", exact: true })).toBeVisible();
@@ -33,7 +34,8 @@ test("PS-E14 published help renders, switches language, and hides an unknown slu
   await expect(page.getByRole("heading", { name: "Getting started", exact: true })).toHaveCount(0);
 });
 
-test("PS-E15 tenant help hides the platform guide and page context stays off", async ({ page, staff }) => {
+// কোম্পানির হেল্পে প্ল্যাটফর্মের নিজস্ব গাইড লুকায় এবং পেজ কনটেক্সট বন্ধ থাকে কি না দেখি।
+test("PS-E15 Company help: hide the platform-only guide and keep page context disabled", async ({ page, staff }) => {
   requirePermissions(staff, "platform-support.access");
   if (staff.profile.permissions.includes("platform-support-admin.access")) {
     throw new Error("Selected company persona includes platform-support-admin.access, so it cannot prove a tenant guide hide.");

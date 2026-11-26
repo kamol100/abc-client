@@ -12,7 +12,8 @@ import {
   type Network,
 } from "@/tests/e2e/networks/fixtures";
 
-test("NW-A01 anonymous networks redirects to the same-host staff login", async ({ browser, baseURL }) => {
+// লগইন ছাড়া নেটওয়ার্কের তালিকা খুললে একই টেন্যান্টের স্টাফ লগইনে পাঠায় কি না দেখি।
+test("NW-A01 Network list while signed out: redirect to staff login on the same tenant", async ({ browser, baseURL }) => {
   const context = await browser.newContext({
     baseURL,
     locale: "en-US",
@@ -33,7 +34,8 @@ test("NW-A01 anonymous networks redirects to the same-host staff login", async (
   }
 });
 
-test("NW-A04 another company cannot read probe update delete or list a known network", async ({ browser, page, staff }) => {
+// অন্য কোম্পানির নেটওয়ার্ক পড়া, পরীক্ষা, পরিবর্তন, ডিলিট বা তালিকায় পাওয়া আটকে দেয় কি না দেখি।
+test("NW-A04 Network privacy: block another company from reading, probing, changing, or deleting a network", async ({ browser, page, staff }) => {
   const other = await authenticate(browser, staff.tenant === "cp" ? "mk" : "cp");
   try {
     const ownList = await networks(staff);
@@ -101,7 +103,8 @@ async function expectDenied(actor: Awaited<ReturnType<typeof authenticate>>, net
   expect([403, 404]).toContain(removed.status);
 }
 
-test("NW-A07 logout back and reload drop the network list and the other company stays separate", async ({ browser, page, staff }) => {
+// লগআউটের পর পুরোনো নেটওয়ার্ক তালিকা ফেরে না এবং অন্য কোম্পানির তথ্য আলাদা থাকে কি না দেখি।
+test("NW-A07 Network access after logout: block back and reload, and keep the next company separate", async ({ browser, page, staff }) => {
   const listed = await openNetworks(page, staff);
   const own = listed.data[0];
   if (!own) throw new Error("Logout isolation needs a visible network.");

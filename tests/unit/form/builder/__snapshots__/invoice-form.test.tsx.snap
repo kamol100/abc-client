@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
+exports[`invoice form > Invoice form: edit: draws the saved lines, and their markup 1`] = `
 <div
   class="space-y-3"
 >
@@ -691,7 +691,7 @@ exports[`invoice form > edit: draws the saved lines, and their markup 1`] = `
 </div>
 `;
 
-exports[`invoice form > edit: sends the record back with its lines 1`] = `
+exports[`invoice form > Invoice form: edit: sends the record back with its lines 1`] = `
 {
   "data": {
     "after_discount_amount": 1085,

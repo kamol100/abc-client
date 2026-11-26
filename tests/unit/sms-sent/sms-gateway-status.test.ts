@@ -23,7 +23,8 @@ const quote = (overrides: Partial<SmsSendQuote> = {}): SmsSendQuote => ({
 });
 
 describe("sms gateway billing and settings", () => {
-  it("confirms a private quote without wallet balance", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «confirms a private quote without wallet balance»।
+  it("SMS gateway status: confirms a private quote without wallet balance", () => {
     const provider = quote({ billing_mode: "provider", balance: null, sufficient: true });
 
     expect(smsQuoteUsesWallet(provider)).toBe(false);
@@ -32,7 +33,8 @@ describe("sms gateway billing and settings", () => {
     expect(canConfirmSmsSend(quote({ sufficient: false }), "test")).toBe(true);
   });
 
-  it("locks sms sending settings until the gateway is active", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks sms sending settings until the gateway is active»।
+  it("SMS gateway status: locks sms sending settings until the gateway is active", () => {
     expect(isSmsSendingSetting("sms_after_client_create")).toBe(true);
     expect(isSmsSendingSetting("invoice_due_reminder_channel")).toBe(false);
     expect(smsSettingsLocked(undefined)).toBe(true);
@@ -40,7 +42,8 @@ describe("sms gateway billing and settings", () => {
     expect(isSmsGatewayActive({ configured: true, provider: "isptik", status: "active", name: null, masked_send_url: null, masked_balance_url: null, rate: 0.35, billing_mode: "wallet", platform_rate: 0.35, wallet_required: true })).toBe(true);
   });
 
-  it("reads a private provider balance only from a configured url and a 202 amount", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads a private provider balance only from a configured url and a 202 amount»।
+  it("SMS gateway status: reads a private provider balance only from a configured url and a 202 amount", () => {
     const privateGateway = {
       configured: true,
       provider: "private",

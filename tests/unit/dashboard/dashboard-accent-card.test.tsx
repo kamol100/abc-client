@@ -22,7 +22,8 @@ function cardOf(text: string): HTMLElement {
 }
 
 describe("dashboard card accents", () => {
-  it("gives a card its theme color slot and a decorative icon", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «gives a card its theme color slot and a decorative icon»।
+  it("Dashboard accent card: gives a card its theme color slot and a decorative icon", () => {
     render(<DashboardInvoiceSummaryCard data={invoices} isLoading={false} isRefreshing={false} isError={false} />);
 
     const card = cardOf("dashboard.cards.invoices");
@@ -30,7 +31,8 @@ describe("dashboard card accents", () => {
     expect(card.querySelector(".dashboard-card-icon")).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("keeps the icon while loading, so the header does not move when data arrives", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the icon while loading, so the header does not move when data arrives»।
+  it("Dashboard accent card: keeps the icon while loading, so the header does not move when data arrives", () => {
     const { container } = render(
       <DashboardInvoiceSummaryCard
         data={invoices}
@@ -45,7 +47,8 @@ describe("dashboard card accents", () => {
     expect(container.querySelector(".dashboard-card-icon")).toBeInTheDocument();
   });
 
-  it("leaves metric cards on other screens plain when they pass no accent", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves metric cards on other screens plain when they pass no accent»।
+  it("Dashboard accent card: leaves metric cards on other screens plain when they pass no accent", () => {
     const { container } = render(<DashboardMetricCard title="OLT" value="4" />);
 
     expect(container.querySelector("[data-dashboard-card]")).toBeNull();
@@ -54,7 +57,8 @@ describe("dashboard card accents", () => {
 });
 
 describe("dashboard stat card layout", () => {
-  it("shows the label, the big value and the detail rows, and sums tickets for the big number", async () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the label, the big value and the detail rows, and sums tickets for the big number»।
+  it("Dashboard accent card: shows the label, the big value and the detail rows, and sums tickets for the big number", async () => {
     const { default: DashboardSupportTicketCard } = await import("@/components/dashboard/items/DashboardSupportTicketCard");
     render(
       <DashboardSupportTicketCard
@@ -71,7 +75,8 @@ describe("dashboard stat card layout", () => {
     expect(card.querySelector(".border-dashed")).toBeInTheDocument();
   });
 
-  it("holds the row space while loading", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «holds the row space while loading»।
+  it("Dashboard accent card: holds the row space while loading", () => {
     const { container } = render(
       <DashboardInvoiceSummaryCard data={invoices} isLoading isRefreshing={false} isError={false} />,
     );

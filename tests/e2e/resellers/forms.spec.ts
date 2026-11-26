@@ -31,7 +31,8 @@ async function fillInput(page: Page, selector: string, value: string) {
   }).toPass();
 }
 
-test("RS-F02 missing name credentials phone and network stay on the form and create nothing", async ({ page, staff }) => {
+// রিসেলারের আবশ্যক নাম, লগইন, ফোন বা নেটওয়ার্ক না থাকলে ত্রুটি দেখায় ও সেভ হয় না কি না দেখি।
+test("RS-F02 Invalid reseller details: reject missing name, login details, phone, or network without saving", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.access", "resellers.create");
   const before = await resellers(staff);
   await page.goto("/resellers");
@@ -62,7 +63,8 @@ test("RS-F02 missing name credentials phone and network stay on the form and cre
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("RS-F03 a duplicate company username is rejected and the draft is not created", async ({ page, staff }) => {
+// কোম্পানিতে একই ইউজারনেম থাকলে নতুন রিসেলার তৈরি আটকে দেয় কি না দেখি।
+test("RS-F03 Duplicate reseller username: reject the request without creating another account", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.create", "resellers.access");
   const existing = await sample(staff);
   const username = existing.user?.username;
@@ -85,7 +87,8 @@ test("RS-F03 a duplicate company username is rejected and the draft is not creat
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged", async ({ page, staff }) => {
+// রিসেলার এডিটে আগের তথ্য আসে এবং Cancel করলে সেটি বদলায় না কি না দেখি।
+test("RS-F05 Edit reseller: load saved details and preserve them when cancelled", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.edit", "resellers.show");
   const reseller = await resellerDetail(staff, (await sample(staff)).id);
   await page.goto(`/resellers/edit/${reseller.id}`);
@@ -108,7 +111,8 @@ test("RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged", a
   expect(after.commission ?? null).toBe(reseller.commission ?? null);
 });
 
-test("RS-F06 cancel create stores no reseller", async ({ page, staff }) => {
+// নতুন রিসেলার ফর্ম বাতিল করলে কোনো অ্যাকাউন্ট তৈরি হয় না কি না দেখি।
+test("RS-F06 Cancel new reseller: return without creating an account", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.create", "resellers.access");
   const before = await resellers(staff);
   const name = `E2E RS ${randomUUID()}`;
@@ -121,7 +125,8 @@ test("RS-F06 cancel create stores no reseller", async ({ page, staff }) => {
   expect((await resellers(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("RS-F07 an agent requires a nonnegative whole-number commission and creates nothing", async ({ page, staff }) => {
+// এজেন্টের কমিশন শূন্য বা ধনাত্মক পূর্ণসংখ্যা হতে হয় এবং ভুল মানে তৈরি হয় না কি না দেখি।
+test("RS-F07 Agent commission: require a nonnegative whole number and reject invalid enrollment", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.create", "resellers.access");
   const agent = uniqueChoice(choices(await staff.get("dropdown-agents")), "agent");
   const network = uniqueChoice(choices(await staff.get("dropdown-networks")), "network");

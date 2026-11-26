@@ -56,16 +56,19 @@ const EXPECTED = {
 } as Record<SectionName, string[]>;
 
 describe("settings sections", () => {
-  it.each(Object.keys(SECTIONS) as SectionName[])("%s shows its settings in order", (name) => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «%s shows its settings in order»।
+  it.each(Object.keys(SECTIONS) as SectionName[])("Settings section fields: %s shows its settings in order", (name) => {
     expect(sectionKeys(name)).toEqual(EXPECTED[name]);
   });
 
-  it("places every setting somewhere, except the per-reseller one", () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «places every setting somewhere, except the per-reseller one»।
+  it("Settings section fields: places every setting somewhere, except the per-reseller one", () => {
     const placed = new Set((Object.keys(SECTIONS) as SectionName[]).flatMap(sectionKeys));
     expect(SETTING_KEYS.filter((key) => !placed.has(key))).toEqual(["auto_inactive_reseller_client_termination_date"]);
   });
 
-  it("titles each list page's ⚙ dialog with the page title", () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «titles each list page's ⚙ dialog with the page title»।
+  it("Settings section fields: titles each list page's ⚙ dialog with the page title", () => {
     for (const page of LIST_PAGE_IDS) {
       const section = SECTIONS[listSettingsSection(page)];
       expect(section.title).toBe(LIST_PAGES[page]);

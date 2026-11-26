@@ -42,13 +42,15 @@ function renderActions() {
 }
 
 describe("FeatureColumns", () => {
-  it("lists name, key, permission count, and actions", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists name, key, permission count, and actions»।
+  it("Subscription feature columns: lists name, key, permission count, and actions", () => {
     const keys = FeatureColumns.map((column) => ("accessorKey" in column ? column.accessorKey : column.id));
 
     expect(keys).toEqual(["name", "key", "permissions_count", "actions"]);
   });
 
-  it("hides feature actions without permission", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides feature actions without permission»।
+  it("Subscription feature columns: hides feature actions without permission", () => {
     allowed.names = new Set();
     renderActions();
 
@@ -57,7 +59,8 @@ describe("FeatureColumns", () => {
     expect(screen.queryByRole("button", { name: "delete" })).not.toBeInTheDocument();
   });
 
-  it("shows permission, edit, and delete actions when allowed", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows permission, edit, and delete actions when allowed»।
+  it("Subscription feature columns: shows permission, edit, and delete actions when allowed", () => {
     allowed.names = new Set(["features.permissions", "features.edit", "features.delete"]);
     renderActions();
 

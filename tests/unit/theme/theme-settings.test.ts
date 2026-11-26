@@ -11,7 +11,8 @@ import {
 } from "@/lib/theme/theme-settings";
 
 describe("theme settings", () => {
-  it("converts hex colors to HSL channels and back", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «converts hex colors to HSL channels and back»।
+  it("Theme settings: converts hex colors to HSL channels and back", () => {
     const channels = hexToHslChannels("#0f766e");
     expect(channels).toBe("175.3 77.4% 26.1%");
     expect(hslChannelsToHex(channels ?? "")).toBe("#0f766e");
@@ -19,7 +20,8 @@ describe("theme settings", () => {
     expect(rgbStringToHex("rgb(15, 118, 110)")).toBe("#0f766e");
   });
 
-  it("keeps saved color cookies when newer prefs are absent", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps saved color cookies when newer prefs are absent»।
+  it("Theme settings: keeps saved color cookies when newer prefs are absent", () => {
     const { settings, mode } = readThemeSettings({
       themeColor: "blue",
       density: "compact",
@@ -36,7 +38,8 @@ describe("theme settings", () => {
     expect(mode).toBe("light");
   });
 
-  it("lets theme prefs override legacy cookies without filling missing fields", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets theme prefs override legacy cookies without filling missing fields»।
+  it("Theme settings: lets theme prefs override legacy cookies without filling missing fields", () => {
     const { settings } = readThemeSettings({
       themeColor: "blue",
       themePrefs: JSON.stringify({ preset: "jomuna", gradients: "on", font: "plex" }),
@@ -49,7 +52,8 @@ describe("theme settings", () => {
     expect(settings.radius).toBe(DEFAULT_THEME_SETTINGS.radius);
   });
 
-  it("reads a saved Namuna preset as Jomuna", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads a saved Namuna preset as Jomuna»।
+  it("Theme settings: reads a saved Namuna preset as Jomuna", () => {
     const { settings } = readThemeSettings({
       themePrefs: JSON.stringify({ preset: "namuna", gradients: "on" }),
     });
@@ -58,7 +62,8 @@ describe("theme settings", () => {
     expect(settings.gradients).toBe("on");
   });
 
-  it("ignores invalid preference payloads", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores invalid preference payloads»।
+  it("Theme settings: ignores invalid preference payloads", () => {
     const { settings } = readThemeSettings({
       themeColor: "green",
       themePrefs: "{",
@@ -68,7 +73,8 @@ describe("theme settings", () => {
     expect(settings.preset).toBe("default");
   });
 
-  it("applies a preset bundle without changing navigation choices", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies a preset bundle without changing navigation choices»।
+  it("Theme settings: applies a preset bundle without changing navigation choices", () => {
     const next = settingsWithPreset(
       { ...DEFAULT_THEME_SETTINGS, color: "blue", density: "large", navDrawerSide: "left" },
       "jomuna",
@@ -83,7 +89,8 @@ describe("theme settings", () => {
     expect(next.navDrawerSide).toBe("left");
   });
 
-  it("turns a primary override into foreground and ring tokens", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «turns a primary override into foreground and ring tokens»।
+  it("Theme settings: turns a primary override into foreground and ring tokens", () => {
     const variables = themeOverrideVariables({ primary: "175.3 77.4% 26.1%" });
     expect(variables["--primary"]).toBe("175.3 77.4% 26.1%");
     expect(variables["--primary-foreground"]).toBe("0 0% 98%");
@@ -91,18 +98,21 @@ describe("theme settings", () => {
     expect(variables["--sidebar-primary"]).toBe("175.3 77.4% 26.1%");
   });
 
-  it("uses dark text on a light background override", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses dark text on a light background override»।
+  it("Theme settings: uses dark text on a light background override", () => {
     const variables = themeOverrideVariables({ background: "0 0% 100%" });
     expect(variables["--background"]).toBe("0 0% 100%");
     expect(variables["--foreground"]).toBe("240 10% 3.9%");
     expect(variables["--card"]).toBe("0 0% 100%");
   });
 
-  it("drops invalid override channels", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops invalid override channels»।
+  it("Theme settings: drops invalid override channels", () => {
     expect(themeOverrideVariables({ primary: "red" })).toEqual({});
   });
 
-  it("accepts the previous theme payload and fills new defaults", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts the previous theme payload and fills new defaults»।
+  it("Theme settings: accepts the previous theme payload and fills new defaults", () => {
     const parsed = themeSettingsSchema.parse({
       color: "pink",
       density: "comfortable",

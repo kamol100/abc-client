@@ -17,7 +17,8 @@ import {
   withOwnedStaff,
 } from "@/tests/e2e/staffs/fixtures";
 
-test("FT090-01 locking is refused because the plan omits staff status, and login stays available", async ({ page, request, staff }) => {
+// প্ল্যানে স্টাফ স্ট্যাটাস বদলের সুবিধা না থাকলে লক হয় না এবং লগইন চালু থাকে কি না দেখি।
+test("FT090-01 Staff locking without plan access: reject the lock and keep login available", async ({ page, request, staff }) => {
   requirePermissions(staff, "staffs.edit", "staffs.access");
   const host = tenantHost(staff);
   await withOwnedStaff(staff, async (owned) => {
@@ -42,7 +43,8 @@ test("FT090-01 locking is refused because the plan omits staff status, and login
   });
 });
 
-test("FT090-01 locking the signed-in account is refused and the status stays active", async ({ page, staff }) => {
+// নিজের লগইন করা স্টাফ অ্যাকাউন্ট লক করতে দেয় না এবং সক্রিয় রাখে কি না দেখি।
+test("FT090-01 Lock your own staff account: reject the request and keep the account active", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.edit", "staffs.access");
   const actor = await actorProfile(staff);
   if (!actor.staff?.id) throw new Error("Own-account lock needs the signed-in user to have a staff row.");
@@ -65,7 +67,8 @@ test("FT090-01 locking the signed-in account is refused and the status stays act
   expect((await staff.call("user-settings")).status).toBe(200);
 });
 
-test("FT090-02 a short password is rejected and cancel leaves the password working", async ({ page, request, staff }) => {
+// ছোট পাসওয়ার্ডে রিসেট আটকে দেয় এবং বাতিলের পর আগের পাসওয়ার্ড চলে কি না দেখি।
+test("FT090-02 Staff password too short: reject the reset and retain the working password after cancel", async ({ page, request, staff }) => {
   requirePermissions(staff, "staffs.edit");
   const host = tenantHost(staff);
   await withOwnedStaff(staff, async (owned) => {
@@ -85,7 +88,8 @@ test("FT090-02 a short password is rejected and cancel leaves the password worki
   });
 });
 
-test("FT090-02 a valid reset is refused because the plan omits it, and the original password still works", async ({ page, request, staff }) => {
+// প্ল্যানে অনুমতি না থাকলে সঠিক পাসওয়ার্ড দিয়েও রিসেট হয় না এবং পুরোনোটি চলে কি না দেখি।
+test("FT090-02 Password reset without plan access: reject the reset and retain the original password", async ({ page, request, staff }) => {
   requirePermissions(staff, "staffs.edit", "staffs.show");
   const host = tenantHost(staff);
   const actor = await actorProfile(staff);
@@ -120,7 +124,8 @@ test("FT090-02 a valid reset is refused because the plan omits it, and the origi
   });
 });
 
-test("FT090-03 impersonation enters the staff identity and leave returns the actor", async ({ page, staff }) => {
+// স্টাফে সুইচ করলে সঠিক পরিচয়ে ঢোকে এবং বের হলে আগের ব্যবহারকারী ফিরে আসে কি না দেখি।
+test("FT090-03 Switch to a staff account: enter that identity and return to the original user on leave", async ({ page, staff }) => {
   requirePermissions(staff, "impersonate.staff", "staffs.access");
   const actor = await actorProfile(staff);
   await withOwnedStaff(staff, async (owned) => {
@@ -163,7 +168,8 @@ test("FT090-03 impersonation enters the staff identity and leave returns the act
   });
 });
 
-test("FT090-11 cancel delete leaves the staff in place", async ({ page, staff }) => {
+// স্টাফ অ্যাকাউন্টের ডিলিট বাতিল করলে অ্যাকাউন্টটি থেকে যায় কি না দেখি।
+test("FT090-11 Cancel staff deletion: keep the staff account", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.delete", "staffs.show");
   const actor = await actorProfile(staff);
   const listed = await staffList(staff);

@@ -22,7 +22,8 @@ describe("bKash return target", () => {
     sessionStorage.clear();
   });
 
-  it("maps payment pages to allowlisted destinations", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps payment pages to allowlisted destinations»।
+  it("bKash return: maps payment pages to allowlisted destinations", () => {
     expect(bkashReturnTargetFromPath("/pay")).toBe("pay");
     expect(bkashReturnTargetFromPath("/pay/short-link")).toBe("pay");
     expect(bkashReturnTargetFromPath("/client/dashboard")).toBe("client-dashboard");
@@ -31,7 +32,8 @@ describe("bKash return target", () => {
     expect(bkashReturnTargetFromPath("/client/payments")).toBe("pay");
   });
 
-  it("accepts only known return keys", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts only known return keys»।
+  it("bKash return: accepts only known return keys", () => {
     expect(resolveBkashReturnTarget("client-dashboard", null)).toBe("client-dashboard");
     expect(resolveBkashReturnTarget("client-invoices", "pay")).toBe("client-invoices");
     expect(resolveBkashReturnTarget(null, "client-invoices")).toBe("client-invoices");
@@ -45,7 +47,8 @@ describe("bKash return target", () => {
     expect(bkashPaymentSuccessPath("pay")).toBe("/pay?payment=success");
   });
 
-  it("keeps the callback on this origin and puts the return key in the query", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the callback on this origin and puts the return key in the query»।
+  it("bKash return: keeps the callback on this origin and puts the return key in the query", () => {
     expect(buildBkashCallbackUrl("https://isp.test", "client 1", "client-invoices")).toBe(
       "https://isp.test/pay/bkash-callback?pid=client+1&return=client-invoices",
     );
@@ -54,14 +57,16 @@ describe("bKash return target", () => {
     ).toBe("https://isp.test/pay/bkash-callback?pid=client-1&return=pay");
   });
 
-  it("remembers an allowlisted target until the callback clears it", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «remembers an allowlisted target until the callback clears it»।
+  it("bKash return: remembers an allowlisted target until the callback clears it", () => {
     rememberBkashReturnTarget("client-dashboard");
     expect(readBkashReturnTarget()).toBe("client-dashboard");
     clearBkashReturnTarget();
     expect(readBkashReturnTarget()).toBeNull();
   });
 
-  it("sends the dashboard return key when payment starts", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends the dashboard return key when payment starts»।
+  it("bKash return: sends the dashboard return key when payment starts", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       json: async () => ({ success: true, data: { bkashURL: "https://bkash.example/checkout" } }),
     });

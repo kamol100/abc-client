@@ -22,7 +22,8 @@ const formValues = SmsSentFormSchema.parse({
 const filterValues = SmsSentClientFilterSchema.parse({});
 
 describe("sms send mode payload", () => {
-  it("defaults the payload mode to live", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «defaults the payload mode to live»।
+  it("SMS sent type: defaults the payload mode to live", () => {
     const payload = buildSmsSentPayload({
       formValues,
       filterValues,
@@ -37,7 +38,8 @@ describe("sms send mode payload", () => {
     }).mode).toBe("live");
   });
 
-  it("passes test mode through and rejects any other mode", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «passes test mode through and rejects any other mode»।
+  it("SMS sent type: passes test mode through and rejects any other mode", () => {
     const payload = buildSmsSentPayload({
       formValues,
       filterValues,
@@ -57,7 +59,8 @@ describe("sms send mode payload", () => {
 });
 
 describe("invoice due client list", () => {
-  it("asks for due invoices only for invoice due and reminder templates", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks for due invoices only for invoice due and reminder templates»।
+  it("SMS sent type: asks for due invoices only for invoice due and reminder templates", () => {
     expect(isInvoiceDueSmsTemplate("invoice_due")).toBe(true);
     expect(isInvoiceDueSmsTemplate("invoice_due_reminder")).toBe(true);
     expect(isInvoiceDueSmsTemplate("custom_client")).toBe(false);
@@ -87,20 +90,23 @@ describe("canConfirmSmsSend", () => {
     timezone: "Asia/Dhaka",
   };
 
-  it("requires enough wallet balance for live sends only", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires enough wallet balance for live sends only»।
+  it("SMS sent type: requires enough wallet balance for live sends only", () => {
     expect(canConfirmSmsSend(quote, "live")).toBe(false);
     expect(canConfirmSmsSend({ ...quote, sufficient: true }, "live")).toBe(true);
     expect(canConfirmSmsSend(quote, "test")).toBe(true);
   });
 
-  it("refuses when nothing would be sent", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «refuses when nothing would be sent»।
+  it("SMS sent type: refuses when nothing would be sent", () => {
     expect(canConfirmSmsSend({ ...quote, recipients: 0, sufficient: true }, "live")).toBe(false);
     expect(canConfirmSmsSend({ ...quote, recipients: 0 }, "test")).toBe(false);
   });
 });
 
 describe("custom sms recipients", () => {
-  it("sends custom client templates to selected clients and custom other templates to a phone", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends custom client templates to selected clients and custom other templates to a phone»।
+  it("SMS sent type: sends custom client templates to selected clients and custom other templates to a phone", () => {
     const withTemplate = SmsSentFormSchema.parse({
       phone: "01700000000",
       sms_body: "Notice",

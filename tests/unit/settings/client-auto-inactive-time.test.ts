@@ -7,7 +7,8 @@ import { fieldOf } from "@/components/settings/registry/fields";
 import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("client auto inactive time setting", () => {
-    it("offers hours 00 through 23 on general settings and defaults to 12", () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «offers hours 00 through 23 on general settings and defaults to 12»।
+    it("Client auto inactive time: offers hours 00 through 23 on general settings and defaults to 12", () => {
         expect(sectionKeys("general")).toContain("auto_inactive_client_time");
         const field = fieldOf("auto_inactive_client_time");
 
@@ -31,7 +32,8 @@ describe("client auto inactive time setting", () => {
         expect(clientAutoInactiveTimeSetting(24)).toBe(12);
     });
 
-    it("saves the selected hour as a number", () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves the selected hour as a number»।
+    it("Client auto inactive time: saves the selected hour as a number", () => {
         expect(toSettingsPayloadValue("auto_inactive_client_time", 12)).toBe(12);
         expect(toSettingsPayloadValue("auto_inactive_client_time", "07")).toBe(7);
         expect(toSettingsPayloadValue("auto_inactive_client_time", 0)).toBe(0);

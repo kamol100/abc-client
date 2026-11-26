@@ -125,7 +125,8 @@ describe("stock forms", () => {
     });
 
     describe("stock out", () => {
-        it("starts with one line, the lot disabled, and no request for a lot list", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «starts with one line, the lot disabled, and no request for a lot list»।
+        it("Stock movement forms: starts with one line, the lot disabled, and no request for a lot list", async () => {
             renderWithClient(<ProductOutForm />);
 
             await waitFor(() => expect(fieldById("product.0.productin_id")).toBeInTheDocument());
@@ -135,7 +136,8 @@ describe("stock forms", () => {
             expect(urls().filter((url) => url.startsWith("/get-product"))).toEqual([]);
         });
 
-        it("a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity»।
+        it("Stock movement forms: a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity", async () => {
             renderWithClient(<ProductOutForm />);
             const user = userEvent.setup();
 
@@ -162,7 +164,8 @@ describe("stock forms", () => {
             expect(writeRequests()[0]).toMatchSnapshot();
         });
 
-        it("changing the product clears the lot and the serials", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «changing the product clears the lot and the serials»।
+        it("Stock movement forms: changing the product clears the lot and the serials", async () => {
             renderWithClient(<ProductOutForm />);
             const user = userEvent.setup();
             await pick(user, "product.0.product_id", "Router");
@@ -177,7 +180,8 @@ describe("stock forms", () => {
             expect(inputById("product.0.unit_price")).toHaveValue(20);
         });
 
-        it("lowering the quantity drops the extra serials", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lowering the quantity drops the extra serials»।
+        it("Stock movement forms: lowering the quantity drops the extra serials", async () => {
             renderWithClient(<ProductOutForm />);
             const user = userEvent.setup();
             await pick(user, "product.0.product_id", "Router");
@@ -196,7 +200,8 @@ describe("stock forms", () => {
             );
         });
 
-        it("adds and removes lines, and cannot remove the last one", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds and removes lines, and cannot remove the last one»।
+        it("Stock movement forms: adds and removes lines, and cannot remove the last one", async () => {
             renderWithClient(<ProductOutForm />);
             const user = userEvent.setup();
             await waitFor(() => expect(fieldById("product.0.product_id")).toBeInTheDocument());
@@ -214,7 +219,8 @@ describe("stock forms", () => {
     });
 
     describe("stock in", () => {
-        it("a serial product: one serial input per unit, and the expense amount follows the total", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a serial product: one serial input per unit, and the expense amount follows the total»।
+        it("Stock movement forms: a serial product: one serial input per unit, and the expense amount follows the total", async () => {
             renderWithClient(<ProductInForm />);
             const user = userEvent.setup();
 
@@ -247,7 +253,8 @@ describe("stock forms", () => {
             expect(writeRequests()[0]).toMatchSnapshot();
         });
 
-        it("lowering the quantity removes the extra serial inputs and keeps the first ones", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lowering the quantity removes the extra serial inputs and keeps the first ones»।
+        it("Stock movement forms: lowering the quantity removes the extra serial inputs and keeps the first ones", async () => {
             renderWithClient(<ProductInForm />);
             const user = userEvent.setup();
             await pick(user, "product.0.product_id", "Router");
@@ -261,7 +268,8 @@ describe("stock forms", () => {
             expect(inputById("product.0.serial.0")).toHaveValue("A-1");
         });
 
-        it("a fibre product: shows the cable fields and works the total from the metres", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a fibre product: shows the cable fields and works the total from the metres»।
+        it("Stock movement forms: Fibre product: show cable fields and calculate the total from the length in metres", async () => {
             renderWithClient(<ProductInForm />);
             const user = userEvent.setup();
             await pick(user, "product.0.product_id", "Fiber cable");
@@ -276,7 +284,8 @@ describe("stock forms", () => {
             expect(stableDom(linesBlock("product_in.lines.title"))).toMatchSnapshot();
         });
 
-        it("changing the product clears what belonged to the old one", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «changing the product clears what belonged to the old one»।
+        it("Stock movement forms: changing the product clears what belonged to the old one", async () => {
             renderWithClient(<ProductInForm />);
             const user = userEvent.setup();
             await pick(user, "product.0.product_id", "Fiber cable");
@@ -291,7 +300,8 @@ describe("stock forms", () => {
             expect(inputById("product.0.fiberID")).toHaveValue("");
         });
 
-        it("adds and removes lines, and cannot remove the last one", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds and removes lines, and cannot remove the last one»।
+        it("Stock movement forms: adds and removes lines, and cannot remove the last one", async () => {
             renderWithClient(<ProductInForm />);
             const user = userEvent.setup();
             await waitFor(() => expect(fieldById("product.0.product_id")).toBeInTheDocument());

@@ -8,7 +8,8 @@ const PNG = Buffer.from(
   "base64",
 );
 
-test("PS-E06 a disposable browser send stores one synthetic image through the app proxy", async ({ browser }) => {
+// আলাদা পরীক্ষার পরিবেশে ব্রাউজার ও অ্যাপ প্রক্সি দিয়ে একটি কৃত্রিম ছবি সেভ হয় কি না দেখি।
+test("PS-E06 Support image attachment: save one test image through the browser and app proxy", async ({ browser }) => {
   const fixture = loadDisposableSupportFixture();
   const tenant = process.env.E2E_TENANT === "mk" ? "mk" : "cp";
   const session = await authenticate(browser, tenant);

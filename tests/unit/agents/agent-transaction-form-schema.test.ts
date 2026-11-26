@@ -3,7 +3,8 @@ import { AgentTransactionFormFieldSchema } from "@/components/agent-transactions
 import { createAgentTransactionFormSchema } from "@/components/agent-transactions/agent-transaction-type";
 
 describe("AgentTransactionFormFieldSchema", () => {
-  it("includes type, amount, and description", () => {
+  // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «includes type, amount, and description»।
+  it("Agent transaction form schema: includes type, amount, and description", () => {
     const names = AgentTransactionFormFieldSchema().map((field) => field.name);
 
     expect(names).toEqual(["transaction_type", "amount", "description"]);
@@ -13,7 +14,8 @@ describe("AgentTransactionFormFieldSchema", () => {
 describe("createAgentTransactionFormSchema", () => {
   const schema = createAgentTransactionFormSchema(() => 20);
 
-  it("accepts an add commission payload", () => {
+  // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts an add commission payload»।
+  it("Agent transaction form schema: accepts an add commission payload", () => {
     const parsed = schema.parse({
       amount: "12.5",
       description: "Manual",
@@ -27,7 +29,8 @@ describe("createAgentTransactionFormSchema", () => {
     });
   });
 
-  it("rejects a withdrawal above the available balance", () => {
+  // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects a withdrawal above the available balance»।
+  it("Agent transaction form schema: rejects a withdrawal above the available balance", () => {
     const result = schema.safeParse({
       amount: 20.01,
       transaction_type: "withdrawal",
@@ -41,7 +44,8 @@ describe("createAgentTransactionFormSchema", () => {
     }
   });
 
-  it("accepts a withdrawal equal to the available balance", () => {
+  // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a withdrawal equal to the available balance»।
+  it("Agent transaction form schema: accepts a withdrawal equal to the available balance", () => {
     const parsed = schema.parse({
       amount: 20,
       transaction_type: "withdrawal",
@@ -52,7 +56,8 @@ describe("createAgentTransactionFormSchema", () => {
     expect(parsed.description).toBeNull();
   });
 
-  it("rejects zero and negative amounts", () => {
+  // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects zero and negative amounts»।
+  it("Agent transaction form schema: rejects zero and negative amounts", () => {
     expect(schema.safeParse({ amount: 0, transaction_type: "commission" }).success).toBe(false);
     expect(schema.safeParse({ amount: -3, transaction_type: "commission" }).success).toBe(false);
   });

@@ -8,7 +8,8 @@ import {
 import { ResellerClientRechargeFormSchema } from "@/components/wallets/wallet-type";
 
 describe("calculateRechargeCost", () => {
-    it("charges buying price divided by 30 for each day", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «charges buying price divided by 30 for each day»।
+    it("Reseller recharge cost: charges buying price divided by 30 for each day", () => {
         expect(calculateRechargeCost(60, 1)).toBe(2);
         expect(calculateRechargeCost(60, 5)).toBe(10);
         expect(calculateRechargeCost(60, 10)).toBe(20);
@@ -16,12 +17,14 @@ describe("calculateRechargeCost", () => {
         expect(calculateRechargeCost(60, 30)).toBe(60);
     });
 
-    it("rounds a fractional daily cost to currency cents", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rounds a fractional daily cost to currency cents»।
+    it("Reseller recharge cost: rounds a fractional daily cost to currency cents", () => {
         expect(calculateRechargeCost(100, 1)).toBe(3.33);
         expect(calculateRechargeCost("60", "1.5")).toBe(3);
     });
 
-    it("returns null for missing or invalid buying price and days", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns null for missing or invalid buying price and days»।
+    it("Reseller recharge cost: returns null for missing or invalid buying price and days", () => {
         expect(calculateRechargeCost(null, 1)).toBeNull();
         expect(calculateRechargeCost(undefined, 1)).toBeNull();
         expect(calculateRechargeCost("", 1)).toBeNull();
@@ -38,12 +41,14 @@ describe("calculateRechargeCost", () => {
 });
 
 describe("calculateClientRechargeBalance", () => {
-    it("converts days into the package price amount the api expects", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «converts days into the package price amount the api expects»।
+    it("Reseller recharge cost: converts days into the package price amount the api expects", () => {
         expect(calculateClientRechargeBalance(60, 30)).toBe(60);
         expect(calculateClientRechargeBalance(100, 1)).toBe(3.33);
     });
 
-    it("returns null when the package price cannot be used", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns null when the package price cannot be used»।
+    it("Reseller recharge cost: returns null when the package price cannot be used", () => {
         expect(calculateClientRechargeBalance(null, 1)).toBeNull();
         expect(calculateClientRechargeBalance(0, 5)).toBeNull();
         expect(calculateClientRechargeBalance(90, "")).toBeNull();
@@ -51,12 +56,14 @@ describe("calculateClientRechargeBalance", () => {
 });
 
 describe("hasSufficientWalletBalance", () => {
-    it("allows a cost that is within the wallet balance", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows a cost that is within the wallet balance»।
+    it("Reseller recharge cost: allows a cost that is within the wallet balance", () => {
         expect(hasSufficientWalletBalance(10, 10)).toBe(true);
         expect(hasSufficientWalletBalance(10, 10.004)).toBe(true);
     });
 
-    it("blocks a cost above the wallet balance and invalid amounts", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks a cost above the wallet balance and invalid amounts»।
+    it("Reseller recharge cost: blocks a cost above the wallet balance and invalid amounts", () => {
         expect(hasSufficientWalletBalance(10.01, 10)).toBe(false);
         expect(hasSufficientWalletBalance(null, 100)).toBe(false);
         expect(hasSufficientWalletBalance(10, null)).toBe(false);
@@ -65,7 +72,8 @@ describe("hasSufficientWalletBalance", () => {
 });
 
 describe("ResellerClientRechargeFormSchema", () => {
-    it("accepts a positive day count", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a positive day count»।
+    it("Reseller recharge cost: accepts a positive day count", () => {
         const parsed = ResellerClientRechargeFormSchema.safeParse({
             clientUuid: "client-1",
             days: "5",
@@ -75,7 +83,8 @@ describe("ResellerClientRechargeFormSchema", () => {
         expect(parsePositiveAmount("5")).toBe(5);
     });
 
-    it("rejects empty, zero, negative, and non-numeric days", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects empty, zero, negative, and non-numeric days»।
+    it("Reseller recharge cost: rejects empty, zero, negative, and non-numeric days", () => {
         expect(
             ResellerClientRechargeFormSchema.safeParse({
                 clientUuid: "client-1",

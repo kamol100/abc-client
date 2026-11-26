@@ -30,14 +30,16 @@ describe("usePackageColumns", () => {
     profileState.reseller = null;
   });
 
-  it("hides buying_price when the signed-in user is not a reseller", () => {
+  // প্যাকেজের তথ্য যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides buying_price when the signed-in user is not a reseller»।
+  it("Package column: hides buying_price when the signed-in user is not a reseller", () => {
     const { result } = renderHook(() => usePackageColumns("client"));
 
     expect(accessorKeys(result.current)).not.toContain("buying_price");
     expect(accessorKeys(result.current)).toContain("price");
   });
 
-  it("shows buying_price when the signed-in user is a reseller", () => {
+  // প্যাকেজের তথ্য যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows buying_price when the signed-in user is a reseller»।
+  it("Package column: shows buying_price when the signed-in user is a reseller", () => {
     profileState.reseller = { uuid: "reseller-1", name: "North Reseller" };
 
     const { result } = renderHook(() => usePackageColumns("client"));

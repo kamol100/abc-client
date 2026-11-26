@@ -37,7 +37,8 @@ const novemberStart = new Date(2026, 10, 1);
 const novemberThird = new Date(2026, 10, 3);
 
 describe("newClientReportSearch", () => {
-    it("always sends the local calendar dates and omits All", () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «always sends the local calendar dates and omits All»।
+    it("New client report: always sends the local calendar dates and omits All", () => {
         const dates = {
             date_range: { from: novemberStart, to: novemberThird },
         };
@@ -58,7 +59,8 @@ describe("newClientReportSearch", () => {
         expect(format(novemberStart, "yyyy-MM-dd")).toBe("2026-11-01");
     });
 
-    it("drops zone_id for the with-resellers scope", () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops zone_id for the with-resellers scope»।
+    it("New client report: drops zone_id for the with-resellers scope", () => {
         const dates = {
             date_range: { from: novemberStart, to: novemberThird },
         };
@@ -76,7 +78,8 @@ describe("newClientReportSearch", () => {
 });
 
 describe("currentMonthDateRange", () => {
-    it("uses the first day of the current month through today", () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the first day of the current month through today»।
+    it("New client report: uses the first day of the current month through today", () => {
         vi.useFakeTimers();
         vi.setSystemTime(new Date(2026, 10, 3, 9, 15, 0));
 
@@ -101,7 +104,8 @@ describe("NewClientReports download", () => {
         vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     });
 
-    it("opens the pdf in a new tab for the current month through today", async () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the pdf in a new tab for the current month through today»।
+    it("New client report: opens the pdf in a new tab for the current month through today", async () => {
         vi.useFakeTimers({ toFake: ["Date"] });
         vi.setSystemTime(new Date(2026, 10, 3, 9, 15, 0));
         const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });

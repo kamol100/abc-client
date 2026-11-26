@@ -20,7 +20,8 @@ describe("getHighAccuracyGeolocation", () => {
         });
     }
 
-    it("returns the browser fix from a high-accuracy request", async () => {
+    // সাধারণ সহায়ক ফাংশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns the browser fix from a high-accuracy request»।
+    it("High accuracy geolocation: returns the browser fix from a high-accuracy request", async () => {
         installGeolocation();
         getCurrentPosition.mockImplementation((success: PositionCallback) => {
             success({ coords: { latitude: 23.5, longitude: 90.25 } } as GeolocationPosition);
@@ -37,7 +38,8 @@ describe("getHighAccuracyGeolocation", () => {
         });
     });
 
-    it("does not fall back to a low-accuracy fix when GPS fails", async () => {
+    // সাধারণ সহায়ক ফাংশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not fall back to a low-accuracy fix when GPS fails»।
+    it("High accuracy geolocation: does not fall back to a low-accuracy fix when GPS fails", async () => {
         installGeolocation();
         getCurrentPosition.mockImplementation((_success: PositionCallback, error: PositionErrorCallback) => {
             error({ code: 2 } as GeolocationPositionError);
@@ -47,7 +49,8 @@ describe("getHighAccuracyGeolocation", () => {
         expect(getCurrentPosition).toHaveBeenCalledTimes(1);
     });
 
-    it("rejects when the browser has no geolocation API", async () => {
+    // সাধারণ সহায়ক ফাংশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects when the browser has no geolocation API»।
+    it("High accuracy geolocation: rejects when the browser has no geolocation API", async () => {
         Object.defineProperty(window, "isSecureContext", { configurable: true, value: true });
         Object.defineProperty(navigator, "geolocation", { configurable: true, value: undefined });
 

@@ -54,7 +54,8 @@ describe("platform support launcher", () => {
         })));
     });
 
-    it("opens one help button without tickets or notification access", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens one help button without tickets or notification access»।
+    it("Support launcher: opens one help button without tickets or notification access", async () => {
         const user = userEvent.setup();
         render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);
 
@@ -67,7 +68,8 @@ describe("platform support launcher", () => {
         expect(screen.getByTestId("help-centre-link")).toHaveAttribute("href", "/help");
     });
 
-    it("keeps requests available without showing actions that create a conversation", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps requests available without showing actions that create a conversation»।
+    it("Support launcher: keeps requests available without showing actions that create a conversation", async () => {
         access.names = ["platform-support.access"];
         const user = userEvent.setup();
         render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);
@@ -77,7 +79,8 @@ describe("platform support launcher", () => {
         expect(screen.queryByTestId("platform-support-chat")).not.toBeInTheDocument();
     });
 
-    it("keeps Help available when platform support is not granted", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps Help available when platform support is not granted»।
+    it("Support launcher: keeps Help available when platform support is not granted", async () => {
         const user = userEvent.setup();
         access.names = ["tickets.access", "notifications.access"];
         render(<SupportRuntime><div>Staff page</div><SupportLauncher /></SupportRuntime>);

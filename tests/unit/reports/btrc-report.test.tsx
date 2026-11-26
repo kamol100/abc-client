@@ -58,14 +58,16 @@ function renderReports() {
 }
 
 describe("btrcReportSearch", () => {
-    it("omits All so the report is not restricted to one record", () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «omits All so the report is not restricted to one record»।
+    it("BTRC report: omits All so the report is not restricted to one record", () => {
         expect(btrcReportSearch({ zone_id: "all", status: "all" })).toBe("");
         expect(btrcReportSearch({ reseller_id: "all" })).toBe("");
         expect(btrcReportSearch({ scope: "own", zone_id: 2, status: "active" })).toBe("zone_id=2&status=active");
         expect(btrcReportSearch({ reseller_id: 9 })).toBe("reseller_id=9");
     });
 
-    it("sends the reseller-inclusive scope and drops zone", () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends the reseller-inclusive scope and drops zone»।
+    it("BTRC report: sends the reseller-inclusive scope and drops zone", () => {
         expect(btrcReportSearch({ scope: "with_resellers", zone_id: 2, status: "all" })).toBe("scope=with_resellers");
         expect(btrcReportSearch({ scope: "with_resellers", zone_id: 2, status: "inactive" })).toBe(
             "scope=with_resellers&status=inactive",
@@ -88,7 +90,8 @@ describe("BtrcReports", () => {
         vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     });
 
-    it("renders the client and reseller report sections with download buttons", async () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders the client and reseller report sections with download buttons»।
+    it("BTRC report: renders the client and reseller report sections with download buttons", async () => {
         renderReports();
 
         expect(screen.getByRole("heading", { name: "btrc.title" })).toBeInTheDocument();
@@ -99,7 +102,8 @@ describe("BtrcReports", () => {
         expect(screen.getAllByRole("button", { name: "btrc.download" })).toHaveLength(2);
     });
 
-    it("shows the zone filter for own clients and keeps that download on the existing request", async () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the zone filter for own clients and keeps that download on the existing request»।
+    it("BTRC report: shows the zone filter for own clients and keeps that download on the existing request", async () => {
         const user = userEvent.setup();
         const fetchMock = vi.fn(async () => new Response(new Blob(["rows"]), {
             status: 200,
@@ -120,7 +124,8 @@ describe("BtrcReports", () => {
         expect(fetchMock).toHaveBeenCalledWith("/api/reports/btrc/clients");
     });
 
-    it("downloads both reports and keeps All filters off the request", async () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «downloads both reports and keeps All filters off the request»।
+    it("BTRC report: downloads both reports and keeps All filters off the request", async () => {
         const user = userEvent.setup();
         const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
             const url = String(input);
@@ -145,7 +150,8 @@ describe("BtrcReports", () => {
         expect(toast.error).not.toHaveBeenCalled();
     });
 
-    it("shows an error and does not start a second download while one is in progress", async () => {
+    // রিপোর্টের তথ্য ও ফিল্টার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an error and does not start a second download while one is in progress»।
+    it("BTRC report: shows an error and does not start a second download while one is in progress", async () => {
         const user = userEvent.setup();
         let release: (() => void) | undefined;
         const gate = new Promise<void>((resolve) => {

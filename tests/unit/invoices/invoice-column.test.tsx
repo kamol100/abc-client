@@ -49,7 +49,8 @@ const renderClientCell = (client: InvoiceRow["client"]) => {
 };
 
 describe("invoice client column", () => {
-    it("links the client name to the details page", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «links the client name to the details page»।
+    it("Invoice column: links the client name to the details page", () => {
         permissions.allowed = true;
         permissions.newTab = false;
 
@@ -64,7 +65,8 @@ describe("invoice client column", () => {
         expect(link).toHaveAttribute("target", "_self");
     });
 
-    it("opens the details page in a new tab when that setting is on", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।
+    it("Invoice column: opens the details page in a new tab when that setting is on", () => {
         permissions.allowed = true;
         permissions.newTab = 1;
 
@@ -77,7 +79,8 @@ describe("invoice client column", () => {
         expect(view?.getByRole("link", { name: "Kamal" })).toHaveAttribute("target", "_blank");
     });
 
-    it("shows the name as text without view permission", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the name as text without view permission»।
+    it("Invoice column: shows the name as text without view permission", () => {
         permissions.allowed = false;
 
         const view = renderClientCell({
@@ -90,7 +93,8 @@ describe("invoice client column", () => {
         expect(view?.getByText("Kamal")).toBeInTheDocument();
     });
 
-    it("shows a dash when the invoice has no client", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a dash when the invoice has no client»।
+    it("Invoice column: shows a dash when the invoice has no client", () => {
         permissions.allowed = true;
 
         const view = renderClientCell(null);

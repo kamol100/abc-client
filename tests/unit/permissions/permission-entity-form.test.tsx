@@ -44,7 +44,8 @@ describe("PermissionEntityForm", () => {
     });
   });
 
-  it("shows the group panel and grants through the entity's role as before", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the group panel and grants through the entity's role as before»।
+  it("Permission entity form: shows the group panel and grants through the entity's role as before", async () => {
     const user = userEvent.setup();
     renderForm();
 
@@ -67,7 +68,8 @@ describe("PermissionEntityForm", () => {
     expect(within(nav).getAllByRole("listitem")).toHaveLength(2);
   });
 
-  it("revokes a whole group with the group checkbox", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «revokes a whole group with the group checkbox»।
+  it("Permission entity form: revokes a whole group with the group checkbox", async () => {
     const user = userEvent.setup();
     renderForm();
 

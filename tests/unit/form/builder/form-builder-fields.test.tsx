@@ -58,8 +58,9 @@ describe("FormBuilder fields", () => {
     });
 
     describe("what each type draws", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «%s: an input whose id is the field name, with label and placeholder»।
         it.each(["text", "email", "number", "tel"] as const)(
-            "%s: an input whose id is the field name, with label and placeholder",
+            "Form field rendering: %s: an input whose id is the field name, with label and placeholder",
             (type) => {
                 renderFields([
                     { type, name: "value", label: { labelText: "thing.value" }, placeholder: "thing.value.hint" },
@@ -72,13 +73,15 @@ describe("FormBuilder fields", () => {
             },
         );
 
-        it("tel: uses the phone keypad", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «tel: uses the phone keypad»।
+        it("Form field rendering: tel: uses the phone keypad", () => {
             renderFields([{ type: "tel", name: "phone" }]);
 
             expect(inputById("phone")).toHaveAttribute("inputmode", "tel");
         });
 
-        it("password: a password input with a show/hide button", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «password: a password input with a show/hide button»।
+        it("Form field rendering: password: a password input with a show/hide button", async () => {
             renderFields([{ type: "password", name: "password" }]);
             const user = userEvent.setup();
 
@@ -87,7 +90,8 @@ describe("FormBuilder fields", () => {
             expect(inputById("password")).toHaveAttribute("type", "text");
         });
 
-        it("textarea: a textarea with the given rows (4 by default)", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «textarea: a textarea with the given rows (4 by default)»।
+        it("Form field rendering: textarea: a textarea with the given rows (4 by default)", () => {
             renderFields([
                 { type: "textarea", name: "note" },
                 { type: "textarea", name: "long_note", rows: 8 },
@@ -98,7 +102,8 @@ describe("FormBuilder fields", () => {
             expect(fieldById("long_note")).toHaveAttribute("rows", "8");
         });
 
-        it("dropdown: a react-select whose input id is the field name", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: a react-select whose input id is the field name»।
+        it("Form field rendering: dropdown: a react-select whose input id is the field name", async () => {
             const { container } = renderFields([
                 { type: "dropdown", name: "status", options: statusOptions, placeholder: "thing.status.hint" },
             ]);
@@ -108,7 +113,8 @@ describe("FormBuilder fields", () => {
             expect(screen.getByText("thing.status.hint")).toBeInTheDocument();
         });
 
-        it("radio: one radio per option, with id name-value", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «radio: one radio per option, with id name-value»।
+        it("Form field rendering: radio: one radio per option, with id name-value", () => {
             renderFields([{ type: "radio", name: "kind", options: statusOptions }]);
 
             expect(screen.getAllByRole("radio")).toHaveLength(2);
@@ -116,14 +122,16 @@ describe("FormBuilder fields", () => {
             expect(screen.getByText("status.inactive")).toHaveAttribute("for", "kind-2");
         });
 
-        it("switch: a switch with id switch-name", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switch: a switch with id switch-name»।
+        it("Form field rendering: switch: a switch with id switch-name", () => {
             renderFields([{ type: "switch", name: "is_active", label: { labelText: "thing.active" } }]);
 
             expect(screen.getByRole("switch")).toHaveAttribute("id", "switch-is_active");
             expect(screen.getByText("thing.active").closest("label")).toHaveAttribute("for", "switch-is_active");
         });
 
-        it("switch: clicking the label flips it", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switch: clicking the label flips it»।
+        it("Form field rendering: switch: clicking the label flips it", async () => {
             renderFields([{ type: "switch", name: "is_active", label: { labelText: "thing.active" } }]);
             const user = userEvent.setup();
             await user.click(screen.getByText("thing.active"));
@@ -131,7 +139,8 @@ describe("FormBuilder fields", () => {
             expect(screen.getByRole("switch")).toBeChecked();
         });
 
-        it("checkbox: one checkbox per option, or a single one with id name", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «checkbox: one checkbox per option, or a single one with id name»।
+        it("Form field rendering: checkbox: one checkbox per option, or a single one with id name", () => {
             renderFields([
                 { type: "checkbox", name: "days", options: statusOptions },
                 { type: "checkbox", name: "agree", single: true, label: { labelText: "thing.agree" } },
@@ -143,7 +152,8 @@ describe("FormBuilder fields", () => {
             expect(screen.getByText("thing.agree")).toHaveAttribute("for", "agree");
         });
 
-        it("date and dateRange: a button with id name that shows the placeholder", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date and dateRange: a button with id name that shows the placeholder»।
+        it("Form field rendering: date and dateRange: a button with id name that shows the placeholder", () => {
             renderFields([
                 { type: "date", name: "paid_at", placeholder: "thing.paid_at.hint" },
                 { type: "dateRange", name: "period", placeholder: "thing.period.hint" },
@@ -154,13 +164,15 @@ describe("FormBuilder fields", () => {
             expect(fieldById("period")).toHaveTextContent("thing.period.hint");
         });
 
-        it("date: shows a saved date month-first (MM/dd/yyyy) by default", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date: shows a saved date month-first (MM/dd/yyyy) by default»।
+        it("Form field rendering: date: shows a saved date month-first (MM/dd/yyyy) by default", () => {
             renderFields([{ type: "date", name: "paid_at" }], { data: { paid_at: new Date(2026, 10, 25) } });
 
             expect(fieldById("paid_at")).toHaveTextContent("11/25/2026");
         });
 
-        it("geolocation: two inputs named by latitudeName and longitudeName", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «geolocation: two inputs named by latitudeName and longitudeName»।
+        it("Form field rendering: geolocation: two inputs named by latitudeName and longitudeName", () => {
             renderFields([
                 {
                     type: "geolocation",
@@ -179,7 +191,8 @@ describe("FormBuilder fields", () => {
     });
 
     describe("layout and visibility", () => {
-        it("draws fields in schema order inside a grid with the column classes for `grids`", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws fields in schema order inside a grid with the column classes for `grids`»।
+        it("Form field rendering: draws fields in schema order inside a grid with the column classes for `grids`", () => {
             const { container } = renderFields(
                 [
                     { type: "text", name: "first" },
@@ -196,13 +209,15 @@ describe("FormBuilder fields", () => {
             ]);
         });
 
-        it("puts the field className on the wrapper around the field", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts the field className on the wrapper around the field»।
+        it("Form field rendering: puts the field className on the wrapper around the field", () => {
             renderFields([{ type: "text", name: "note", className: "col-span-full" }]);
 
             expect(inputById("note").parentElement?.parentElement).toHaveClass("col-span-full");
         });
 
-        it("leaves out a field with permission false", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves out a field with permission false»।
+        it("Form field rendering: leaves out a field with permission false", () => {
             renderFields([
                 { type: "text", name: "shown" },
                 { type: "text", name: "secret", permission: false },
@@ -212,7 +227,8 @@ describe("FormBuilder fields", () => {
             expect(fieldById("secret")).toBeNull();
         });
 
-        it("draws an empty wrapper for a slot field in the plain builder", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws an empty wrapper for a slot field in the plain builder»।
+        it("Form field rendering: draws an empty wrapper for a slot field in the plain builder", () => {
             const { container } = renderFields([
                 { type: "slot", name: "images", slot: "images", className: "slot-wrapper" },
             ]);
@@ -222,7 +238,8 @@ describe("FormBuilder fields", () => {
             expect(wrapper).toBeEmptyDOMElement();
         });
 
-        it("passes disabled and readOnly to a text input", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «passes disabled and readOnly to a text input»।
+        it("Form field rendering: passes disabled and readOnly to a text input", () => {
             renderFields([
                 { type: "text", name: "locked", disabled: true },
                 { type: "text", name: "fixed", readOnly: true },
@@ -245,7 +262,8 @@ describe("FormBuilder fields", () => {
             { type: "date", name: "paid_at" },
         ];
 
-        it("idPrefix goes in front of every field id and its label target", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «idPrefix goes in front of every field id and its label target»।
+        it("Form field rendering: idPrefix goes in front of every field id and its label target", async () => {
             renderFields(fields, { idPrefix: "edit" });
 
             await waitFor(() => expect(fieldById("edit-status")).toHaveAttribute("role", "combobox"));
@@ -258,7 +276,8 @@ describe("FormBuilder fields", () => {
             expect(screen.getByText("thing.name").closest("label")).toHaveAttribute("for", "edit-name");
         });
 
-        it("idPrefix does not change what is sent", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «idPrefix does not change what is sent»।
+        it("Form field rendering: idPrefix does not change what is sent", async () => {
             renderFields(fields, { idPrefix: "edit" });
             const user = userEvent.setup();
             await user.type(inputById("edit-name"), "Router");
@@ -266,7 +285,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ name: "Router" });
         });
 
-        it("reserveErrorSpace keeps a line free under each field before any error shows", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reserveErrorSpace keeps a line free under each field before any error shows»।
+        it("Form field rendering: reserveErrorSpace keeps a line free under each field before any error shows", () => {
             const plain = renderFields([{ type: "text", name: "name" }]);
             expect(plain.container.querySelector(".min-h-\\[1\\.25rem\\]")).toBeNull();
             plain.unmount();
@@ -283,7 +303,8 @@ describe("FormBuilder fields", () => {
             { type: "text", name: "second", className: "ignored-class" },
         ];
 
-        it("draws only what the function returns, with no default grid", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws only what the function returns, with no default grid»।
+        it("Form field rendering: draws only what the function returns, with no default grid", () => {
             const { container } = renderFields(fields, {
                 children: (renderField) => <section data-testid="custom">{renderField(fields[2])}</section>,
             });
@@ -293,7 +314,8 @@ describe("FormBuilder fields", () => {
             expect(container.querySelector(".grid")).toBeNull();
         });
 
-        it("does not apply permission or className; the caller must do that", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not apply permission or className; the caller must do that»।
+        it("Form field rendering: does not apply permission or className; the caller must do that", () => {
             const { container } = renderFields(fields, {
                 children: (renderField) => <>{fields.map((field) => <div key={field.name}>{renderField(field)}</div>)}</>,
             });
@@ -302,7 +324,8 @@ describe("FormBuilder fields", () => {
             expect(container.querySelector(".ignored-class")).toBeNull();
         });
 
-        it("still submits through the builder", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «still submits through the builder»।
+        it("Form field rendering: still submits through the builder", async () => {
             renderFields(fields, { children: (renderField) => renderField(fields[0]) });
             const user = userEvent.setup();
             await user.type(inputById("first"), "A");
@@ -312,7 +335,8 @@ describe("FormBuilder fields", () => {
     });
 
     describe("what each type stores", () => {
-        it("text stores a string and number stores a string too", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «text stores a string and number stores a string too»।
+        it("Form field rendering: text stores a string and number stores a string too", async () => {
             renderFields([
                 { type: "text", name: "name" },
                 { type: "number", name: "amount" },
@@ -324,7 +348,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ name: "Router", amount: "12" });
         });
 
-        it("tel removes a typed +88 on blur", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «tel removes a typed +88 on blur»।
+        it("Form field rendering: tel removes a typed +88 on blur", async () => {
             renderFields([{ type: "tel", name: "phone" }]);
             const user = userEvent.setup();
             await user.type(inputById("phone"), "+8801712345678");
@@ -333,7 +358,8 @@ describe("FormBuilder fields", () => {
             expect(inputById("phone")).toHaveValue("01712345678");
         });
 
-        it("an untouched field is not in the payload", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «an untouched field is not in the payload»।
+        it("Form field rendering: an untouched field is not in the payload", async () => {
             renderFields([
                 { type: "text", name: "name" },
                 { type: "textarea", name: "note" },
@@ -344,7 +370,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ name: "A" });
         });
 
-        it("dropdown stores the option value, and null after clear", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown stores the option value, and null after clear»।
+        it("Form field rendering: dropdown stores the option value, and null after clear", async () => {
             const { container } = renderFields([{ type: "dropdown", name: "status", options: statusOptions }]);
             const user = userEvent.setup();
             await user.click(await screen.findByRole("combobox"));
@@ -355,7 +382,8 @@ describe("FormBuilder fields", () => {
             expect(writeRequests()[0].data).toEqual({ status: 2 });
         });
 
-        it("dropdown clear stores null", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown clear stores null»।
+        it("Form field rendering: dropdown clear stores null", async () => {
             const { container } = renderFields([{ type: "dropdown", name: "status", options: statusOptions }], {
                 data: { status: 1 },
                 resetOnSuccess: false,
@@ -367,7 +395,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ status: null });
         });
 
-        it("a multi dropdown stores an array of values", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a multi dropdown stores an array of values»।
+        it("Form field rendering: a multi dropdown stores an array of values", async () => {
             renderFields([{ type: "dropdown", name: "tags", options: statusOptions, isMulti: true }]);
             const user = userEvent.setup();
             await user.click(await screen.findByRole("combobox"));
@@ -378,13 +407,15 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ tags: [1, 2] });
         });
 
-        it("dropdown matches a saved value to an option as a string (\"2\" selects 2)", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown matches a saved value to an option as a string ("2" selects 2)»।
+        it("Form field rendering: dropdown matches a saved value to an option as a string (\"2\" selects 2)", async () => {
             renderFields([{ type: "dropdown", name: "status", options: statusOptions }], { data: { status: "2" } });
 
             expect(await screen.findByText("status.inactive")).toBeInTheDocument();
         });
 
-        it("dropdown shows a saved value that has no option as the value itself, and keeps it", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown shows a saved value that has no option as the value itself, and keeps it»।
+        it("Form field rendering: dropdown shows a saved value that has no option as the value itself, and keeps it", async () => {
             const { container } = renderFields(
                 [{ type: "dropdown", name: "status", options: statusOptions, placeholder: "pick" }],
                 { data: { status: 99 } },
@@ -395,7 +426,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ status: 99 });
         });
 
-        it("dropdown shows nothing for a missing option while its options are loading", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown shows nothing for a missing option while its options are loading»।
+        it("Form field rendering: dropdown shows nothing for a missing option while its options are loading", async () => {
             let release: (value: unknown) => void = () => {};
             mockApi((request) =>
                 request.url === "/dropdown-zones"
@@ -416,7 +448,8 @@ describe("FormBuilder fields", () => {
             expect(await screen.findByText("North")).toBeInTheDocument();
         });
 
-        it("a multi dropdown keeps the order of the saved values and shows a missing one as itself", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a multi dropdown keeps the order of the saved values and shows a missing one as itself»।
+        it("Form field rendering: a multi dropdown keeps the order of the saved values and shows a missing one as itself", async () => {
             const { container } = renderFields(
                 [{ type: "dropdown", name: "tags", options: statusOptions, isMulti: true }],
                 { data: { tags: [2, 99, 1] } },
@@ -429,7 +462,8 @@ describe("FormBuilder fields", () => {
             );
         });
 
-        it("radio stores the option value as a string, even for a number option", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «radio stores the option value as a string, even for a number option»।
+        it("Form field rendering: radio stores the option value as a string, even for a number option", async () => {
             renderFields([{ type: "radio", name: "kind", options: statusOptions }]);
             const user = userEvent.setup();
             await user.click(fieldById("kind-2") as HTMLElement);
@@ -437,7 +471,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ kind: "2" });
         });
 
-        it("switch stores true or false", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switch stores true or false»।
+        it("Form field rendering: switch stores true or false", async () => {
             renderFields([{ type: "switch", name: "is_active" }]);
             const user = userEvent.setup();
             await user.click(screen.getByRole("switch"));
@@ -445,7 +480,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ is_active: true });
         });
 
-        it("a switch with saveOnChange saves the form each time it is flipped", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a switch with saveOnChange saves the form each time it is flipped»।
+        it("Form field rendering: a switch with saveOnChange saves the form each time it is flipped", async () => {
             renderFields([
                 { type: "text", name: "name" },
                 { type: "switch", name: "is_active", saveOnChange: true },
@@ -462,7 +498,8 @@ describe("FormBuilder fields", () => {
             expect(writeRequests()[1].data).toEqual({ name: "Router", is_active: false });
         });
 
-        it("a switch with saveOnChange does not save an invalid form", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a switch with saveOnChange does not save an invalid form»।
+        it("Form field rendering: a switch with saveOnChange does not save an invalid form", async () => {
             renderFields([{ type: "switch", name: "is_active", saveOnChange: true }], {
                 schema: z.object({ name: z.string({ required_error: "name.required" }) }).passthrough(),
             });
@@ -473,7 +510,8 @@ describe("FormBuilder fields", () => {
             expect(writeRequests()).toHaveLength(0);
         });
 
-        it("checkbox stores an array of values, and a single checkbox stores a boolean", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «checkbox stores an array of values, and a single checkbox stores a boolean»।
+        it("Form field rendering: checkbox stores an array of values, and a single checkbox stores a boolean", async () => {
             renderFields([
                 { type: "checkbox", name: "days", options: statusOptions },
                 { type: "checkbox", name: "agree", single: true },
@@ -488,7 +526,8 @@ describe("FormBuilder fields", () => {
     });
 
     describe("dropdown options from the API", () => {
-        it("loads options from `api` and uses item.name as the label and item.id as the value", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads options from `api` and uses item.name as the label and item.id as the value»।
+        it("Form field rendering: loads options from `api` and uses item.name as the label and item.id as the value", async () => {
             mockApi((request) =>
                 request.url === "/dropdown-zones"
                     ? { success: true, data: [{ id: 3, name: "North" }, { id: 4, name: "South" }] }
@@ -502,7 +541,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ zone_id: 4 });
         });
 
-        it("uses valueMapping.idKey as the option value and labelKey as the label", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses valueMapping.idKey as the option value and labelKey as the label»।
+        it("Form field rendering: uses valueMapping.idKey as the option value and labelKey as the label", async () => {
             mockApi((request) =>
                 request.url === "/dropdown-funds"
                     ? {
@@ -533,7 +573,8 @@ describe("FormBuilder fields", () => {
             expect(await saveAndReadPayload(user)).toEqual({ fund_uuid: "f-1" });
         });
 
-        it("says so in the menu when the options fail to load, and tries again when it is opened", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «says so in the menu when the options fail to load, and tries again when it is opened»।
+        it("Form field rendering: says so in the menu when the options fail to load, and tries again when it is opened", async () => {
             mockApi((request) =>
                 request.url === "/dropdown-zones" ? { success: false, message: "boom", status: 500 } : undefined,
             );
@@ -551,7 +592,8 @@ describe("FormBuilder fields", () => {
             expect(await screen.findByText("North")).toBeInTheDocument();
         });
 
-        it("says \"no options\" in the app language for an empty list", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «says "no options" in the app language for an empty list»।
+        it("Form field rendering: says \"no options\" in the app language for an empty list", async () => {
             renderFields([{ type: "dropdown", name: "zone_id", options: [] }]);
             const user = userEvent.setup();
             await user.click(await screen.findByRole("combobox"));
@@ -559,7 +601,8 @@ describe("FormBuilder fields", () => {
             expect(await screen.findByText("common.no_options")).toBeInTheDocument();
         });
 
-        it("turns typing off with isSearchable false", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «turns typing off with isSearchable false»।
+        it("Form field rendering: turns typing off with isSearchable false", async () => {
             renderFields([
                 { type: "dropdown", name: "plain", options: statusOptions },
                 { type: "dropdown", name: "fixed", options: statusOptions, isSearchable: false },

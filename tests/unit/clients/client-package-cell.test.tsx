@@ -29,27 +29,31 @@ describe("ClientPackageCell termination date", () => {
         vi.useRealTimers();
     });
 
-    it("shows the formatted date and remaining days", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the formatted date and remaining days»।
+    it("Client package and expiry: shows the formatted date and remaining days", () => {
         render(<ClientPackageCell client={client("05-Oct-26")} />);
 
         expect(screen.getByText("05-Oct-26 (2-days)")).toBeInTheDocument();
         expect(screen.getByText("05-Oct-26 (2-days)")).not.toHaveClass("text-destructive");
     });
 
-    it("shows zero days when termination is today", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows zero days when termination is today»।
+    it("Client package and expiry: shows zero days when termination is today", () => {
         render(<ClientPackageCell client={client("03-Oct-26")} />);
 
         expect(screen.getByText("03-Oct-26 (0-days)")).toBeInTheDocument();
     });
 
-    it("shows an expired date in the destructive color", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an expired date in the destructive color»।
+    it("Client package and expiry: shows an expired date in the destructive color", () => {
         render(<ClientPackageCell client={client("01-Oct-26")} />);
 
         const date = screen.getByText("01-Oct-26 (expired 2-days)");
         expect(date).toHaveClass("text-destructive");
     });
 
-    it("keeps the dash when there is no termination date", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the dash when there is no termination date»।
+    it("Client package and expiry: keeps the dash when there is no termination date", () => {
         render(<ClientPackageCell client={client(null)} />);
 
         const date = screen.getByText("—", { selector: ".font-semibold" });

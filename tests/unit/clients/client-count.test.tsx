@@ -33,7 +33,8 @@ describe("ClientCount layout", () => {
         activityQuery.isError = false;
     });
 
-    it("keeps the mobile count row in place while the numbers load", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the mobile count row in place while the numbers load»।
+    it("Client count layout: keeps the mobile count row in place while the numbers load", () => {
         const { rerender } = render(<ClientCount />);
 
         const loadingRow = activityRow();

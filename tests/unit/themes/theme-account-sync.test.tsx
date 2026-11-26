@@ -41,7 +41,8 @@ describe("ThemeAccountSync", () => {
     state.activeId = "rickshaw";
   });
 
-  it("leaves the device alone when it already shows the active theme as saved", () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves the device alone when it already shows the active theme as saved»।
+  it("Theme account sync: leaves the device alone when it already shows the active theme as saved", () => {
     state.themes = [savedTheme()];
     state.settings = { ...DEFAULT_THEME_SETTINGS, themeId: "rickshaw" };
 
@@ -50,7 +51,8 @@ describe("ThemeAccountSync", () => {
     expect(state.applyTheme).not.toHaveBeenCalled();
   });
 
-  it("re-applies the active theme once when its settings changed (a reseed added the card border)", () => {
+  // থিমের ফর্ম ও অ্যাকাউন্টে সংরক্ষণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «re-applies the active theme once when its settings changed (a reseed added the card border)»।
+  it("Theme account sync: re-applies the active theme once when its settings changed (a reseed added the card border)", () => {
     state.themes = [savedTheme({ ...record, cardBorder: "top" })];
     state.settings = { ...DEFAULT_THEME_SETTINGS, themeId: "rickshaw" };
 

@@ -115,7 +115,8 @@ describe("ClientView ping button placement", () => {
         });
     });
 
-    it("places the ping button after the SMS button", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «places the ping button after the SMS button»।
+    it("Client view ping button: places the ping button after the SMS button", async () => {
         render(
             <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
                 <ClientView clientId="client-1" />
@@ -144,7 +145,8 @@ describe("ClientView ping button placement", () => {
         });
     });
 
-    it("opens the lock confirmation from the lock button", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the lock confirmation from the lock button»।
+    it("Client view ping button: opens the lock confirmation from the lock button", async () => {
         const user = userEvent.setup();
         render(
             <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
@@ -156,7 +158,8 @@ describe("ClientView ping button placement", () => {
         expect(await screen.findByText("client.lock.confirm_lock")).toBeInTheDocument();
     });
 
-    it("opens the reseller switch dialog from the icon after edit", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the reseller switch dialog from the icon after edit»।
+    it("Client view ping button: opens the reseller switch dialog from the icon after edit", async () => {
         const user = userEvent.setup();
         render(
             <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>

@@ -42,7 +42,8 @@ const model = buildInvoiceViewModel({
 });
 
 describe("InvoiceViewDocument", () => {
-    it("shows the invoice, the full note, and the payable total", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the invoice, the full note, and the payable total»।
+    it("Invoice view document: shows the invoice, the full note, and the payable total", () => {
         expect(model).not.toBeNull();
         if (!model) return;
 
@@ -60,7 +61,8 @@ describe("InvoiceViewDocument", () => {
         expect(screen.queryByText("invoice.discount.label")).not.toBeInTheDocument();
     });
 
-    it("omits the note block when the invoice has no note", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «omits the note block when the invoice has no note»।
+    it("Invoice view document: omits the note block when the invoice has no note", () => {
         const withoutNote = buildInvoiceViewModel({
             trackID: "10",
             status: "paid",
@@ -83,7 +85,8 @@ describe("InvoiceViewDocument", () => {
         expect(screen.getByText(formatInvoiceAmount(20))).toBeInTheDocument();
     });
 
-    it("shows Bangla digits for amounts and quantities", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows Bangla digits for amounts and quantities»।
+    it("Invoice view document: shows Bangla digits for amounts and quantities", () => {
         expect(model).not.toBeNull();
         if (!model) return;
 

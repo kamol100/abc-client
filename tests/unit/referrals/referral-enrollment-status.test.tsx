@@ -15,23 +15,26 @@ vi.mock("@/hooks/use-api-mutation", () => ({ default: () => ({}) }));
 
 afterEach(cleanup);
 describe("user referral enrollment status", () => {
-  it("shows a disabled Enrolled indicator instead of the enrollment action", () => {
+  // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a disabled Enrolled indicator instead of the enrollment action»।
+  it("Referral enrollment status: shows a disabled Enrolled indicator instead of the enrollment action", () => {
     render(<ReferralEnrollmentForm userUuid="existing" enrolled />);
     expect(screen.getByRole("button", { name: "Enrolled" })).toBeDisabled();
     expect(screen.queryByRole("button", { name: "Enroll Seller" })).not.toBeInTheDocument();
   });
+  // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the saved %s enrollment type with a check icon»।
   it.each([
     ["tenant_manager", "Enrolled as tenant"],
     ["independent", "Enrolled as independent"],
     ["reseller", "Enrolled as reseller"],
-  ] as const)("shows the saved %s enrollment type with a check icon", (sellerType, label) => {
+  ] as const)("Referral enrollment status: shows the saved %s enrollment type with a check icon", (sellerType, label) => {
     render(<ReferralEnrollmentForm userUuid="existing" enrolled sellerType={sellerType} />);
     const button = screen.getByRole("button", { name: label });
     expect(button).toBeDisabled();
     expect(button.querySelector("svg")).toHaveClass("lucide-circle-check");
     expect(screen.queryByRole("button", { name: "Enroll Seller" })).not.toBeInTheDocument();
   });
-  it("keeps the enrollment action available for a user without a seller profile", () => {
+  // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the enrollment action available for a user without a seller profile»।
+  it("Referral enrollment status: keeps the enrollment action available for a user without a seller profile", () => {
     render(<ReferralEnrollmentForm userUuid="new" enrolled={false} />);
     expect(screen.getByRole("button", { name: "Enroll Seller" })).toBeEnabled();
     expect(screen.queryByRole("button", { name: "Enrolled" })).not.toBeInTheDocument();

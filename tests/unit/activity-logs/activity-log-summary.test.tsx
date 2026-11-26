@@ -23,20 +23,23 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("activityChangeSummary", () => {
-    it("puts each changed field on one line as old to new", () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts each changed field on one line as old to new»।
+    it("Activity log summary: puts each changed field on one line as old to new", () => {
         expect(activityChangeSummary({
             old: { name: "Kamol", status: "Inactive", updated_at: "1-Jan-26 10:00 am" },
             attributes: { name: "Kamol Hasan", status: "Active", updated_at: "2-Jan-26 11:00 am" },
         })).toBe("Name: Kamol → Kamol Hasan, Status: Inactive → Active");
     });
 
-    it("lists created fields without an old value", () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists created fields without an old value»।
+    it("Activity log summary: lists created fields without an old value", () => {
         expect(activityChangeSummary({
             attributes: { phone: "01700000000" },
         })).toBe("Phone: 01700000000");
     });
 
-    it("returns an empty summary when nothing changed", () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns an empty summary when nothing changed»।
+    it("Activity log summary: returns an empty summary when nothing changed", () => {
         expect(activityChangeSummary()).toBe("");
         expect(activityChangeSummary({
             old: { name: "Kamol" },
@@ -46,14 +49,16 @@ describe("activityChangeSummary", () => {
 });
 
 describe("ActivityLogSummaryCell", () => {
-    it("shows a dash when there is no change", () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a dash when there is no change»।
+    it("Activity log summary: shows a dash when there is no change", () => {
         render(<ActivityLogSummaryCell />);
 
         expect(screen.getByText("—")).toBeInTheDocument();
         expect(screen.queryByRole("button", { name: "Show more" })).not.toBeInTheDocument();
     });
 
-    it("expands a long summary and collapses it again", async () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «expands a long summary and collapses it again»।
+    it("Activity log summary: expands a long summary and collapses it again", async () => {
         const user = userEvent.setup();
         const summary = "Name: A very long original customer name that stays clipped until show more → A very long updated customer name that stays clipped";
 
@@ -85,7 +90,8 @@ describe("ActivityLogSummaryCell", () => {
 });
 
 describe("activity log column widths", () => {
-    it("keeps action by and date at least 150px", () => {
+    // কাজের পরিবর্তনের ইতিহাস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps action by and date at least 150px»।
+    it("Activity log summary: keeps action by and date at least 150px", () => {
         const columns = getActivityLogColumns(() => undefined);
         const actionBy = columns.find(
             (column) => "accessorKey" in column && column.accessorKey === "description"

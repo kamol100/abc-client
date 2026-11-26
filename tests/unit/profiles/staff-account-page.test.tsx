@@ -74,7 +74,8 @@ function renderAccount(overrides: Partial<Parameters<typeof StaffAccountView>[0]
 }
 
 describe("StaffAccountView", () => {
-  it("shows the name with an edit button and keeps the other fields read only", () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the name with an edit button and keeps the other fields read only»।
+  it("Staff account page: shows the name with an edit button and keeps the other fields read only", () => {
     renderAccount();
 
     expect(screen.getByRole("heading", { name: "Kamol Hasan" })).toBeInTheDocument();
@@ -100,7 +101,8 @@ describe("StaffAccountView", () => {
     expect(screen.queryByRole("button", { name: "staff_account.remove_photo" })).not.toBeInTheDocument();
   });
 
-  it("shows the permanent address when the present address is empty", () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the permanent address when the present address is empty»।
+  it("Staff account page: shows the permanent address when the present address is empty", () => {
     renderAccount({
       account: { ...account, present_address: null },
     });
@@ -110,7 +112,8 @@ describe("StaffAccountView", () => {
     expect(screen.queryByText("staff.present_address.label")).not.toBeInTheDocument();
   });
 
-  it("hides the address category when neither address exists", () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the address category when neither address exists»।
+  it("Staff account page: hides the address category when neither address exists", () => {
     renderAccount({
       account: { ...account, present_address: null, permanent_address: null },
     });
@@ -118,7 +121,8 @@ describe("StaffAccountView", () => {
     expect(screen.queryByRole("heading", { name: "staff_account.sections.address" })).not.toBeInTheDocument();
   });
 
-  it("opens the name field on edit and closes it on save or cancel", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the name field on edit and closes it on save or cancel»।
+  it("Staff account page: opens the name field on edit and closes it on save or cancel", async () => {
     const { onSaveName, onCancelName } = renderAccount({ nameDraft: "New Name" });
 
     fireEvent.click(screen.getByRole("button", { name: "staff_account.edit_name" }));
@@ -137,7 +141,8 @@ describe("StaffAccountView", () => {
     expect(await screen.findByRole("button", { name: "staff_account.edit_name" })).toBeInTheDocument();
   });
 
-  it("starts on simple search and saves a new style or an open switch", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «starts on simple search and saves a new style or an open switch»।
+  it("Staff account page: starts on simple search and saves a new style or an open switch", async () => {
     const { onSaveSettings } = renderAccount();
     const simple = screen.getByRole("radio", { name: "staff_account.mobile_search.simple" });
     const standard = screen.getByRole("radio", { name: "staff_account.mobile_search.default" });
@@ -164,7 +169,8 @@ describe("StaffAccountView", () => {
     expect(alwaysOpen).toBeChecked();
   });
 
-  it("restores the previous mobile search when saving fails", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «restores the previous mobile search when saving fails»।
+  it("Staff account page: restores the previous mobile search when saving fails", async () => {
     const onSaveSettings = vi.fn(async () => false);
     renderAccount({ onSaveSettings });
     const simple = screen.getByRole("radio", { name: "staff_account.mobile_search.simple" });
@@ -179,7 +185,8 @@ describe("StaffAccountView", () => {
 });
 
 describe("parseStaffAccount", () => {
-  it("drops salary and keeps the profile fields", () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops salary and keeps the profile fields»।
+  it("Staff account page: drops salary and keeps the profile fields", () => {
     const parsed = parseStaffAccount({
       id: "staff-1",
       name: "Kamol",
@@ -194,7 +201,8 @@ describe("parseStaffAccount", () => {
     expect(parsed).not.toHaveProperty("salary_items");
   });
 
-  it("keeps a stored mobile search setting", () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a stored mobile search setting»।
+  it("Staff account page: keeps a stored mobile search setting", () => {
     const parsed = parseStaffAccount({
       id: "staff-1",
       settings: { mobile_search: { mode: "default", always_open: true } },

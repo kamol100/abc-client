@@ -162,7 +162,8 @@ function renderMatrix(
 }
 
 describe("PlanFeatureMatrix", () => {
-  it("shows the latest saved features when the dialog opens again", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the latest saved features when the dialog opens again»।
+  it("Plan feature matrix: shows the latest saved features when the dialog opens again", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     const user = userEvent.setup();
     const view = renderMatrix([]);
@@ -185,7 +186,8 @@ describe("PlanFeatureMatrix", () => {
     expect(screen.getByRole("checkbox", { name: "Billing" })).not.toBeChecked();
   });
 
-  it("sends the feature that was toggled on", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends the feature that was toggled on»।
+  it("Plan feature matrix: sends the feature that was toggled on", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     impactResult.removed = [];
     saveMutate.mockClear();
@@ -204,7 +206,8 @@ describe("PlanFeatureMatrix", () => {
     });
   });
 
-  it("shows which routes stay after expiry", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows which routes stay after expiry»।
+  it("Plan feature matrix: shows which routes stay after expiry", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     const user = userEvent.setup();
     renderMatrix([{ id: "feature-1", expired_mode: "read_only" }]);
@@ -223,7 +226,8 @@ describe("PlanFeatureMatrix", () => {
     expect(screen.getAllByText("subscription.plan.inspector.granted").length).toBeGreaterThan(0);
   });
 
-  it("leaves Core routes off the plan when Core is not included", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves Core routes off the plan when Core is not included»।
+  it("Plan feature matrix: leaves Core routes off the plan when Core is not included", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     const user = userEvent.setup();
     renderMatrix([{ id: "feature-1", expired_mode: "full" }]);
@@ -241,7 +245,8 @@ describe("PlanFeatureMatrix", () => {
     expect(screen.queryByText("subscription.plan.inspector.kept_core_read")).not.toBeInTheDocument();
   });
 
-  it("asks before saving when a feature is removed", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks before saving when a feature is removed»।
+  it("Plan feature matrix: asks before saving when a feature is removed", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     impactResult.removed = [{ id: "feature-2", name: "Billing", companies: 2, staff: 3, resellers: 1 }];
     saveMutate.mockClear();
@@ -266,7 +271,8 @@ describe("PlanFeatureMatrix", () => {
     impactResult.removed = [];
   });
 
-  it("does not save when the removal warning is cancelled", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not save when the removal warning is cancelled»।
+  it("Plan feature matrix: does not save when the removal warning is cancelled", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     impactResult.removed = [{ id: "feature-2", name: "Billing", companies: 2, staff: 3, resellers: 1 }];
     saveMutate.mockClear();
@@ -286,7 +292,8 @@ describe("PlanFeatureMatrix", () => {
     impactResult.removed = [];
   });
 
-  it("moves and removes a permission when the catalog can be edited", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «moves and removes a permission when the catalog can be edited»।
+  it("Plan feature matrix: moves and removes a permission when the catalog can be edited", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     catalogEditor.allowed = true;
     permissionMutate.mockClear();
@@ -309,7 +316,8 @@ describe("PlanFeatureMatrix", () => {
     catalogEditor.allowed = false;
   });
 
-  it("shows plan features without letting them change", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows plan features without letting them change»।
+  it("Plan feature matrix: shows plan features without letting them change", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     catalogEditor.allowed = true;
     const user = userEvent.setup();
@@ -329,7 +337,8 @@ describe("PlanFeatureMatrix", () => {
     catalogEditor.allowed = false;
   });
 
-  it("adds an unassigned permission to the selected feature", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds an unassigned permission to the selected feature»।
+  it("Plan feature matrix: adds an unassigned permission to the selected feature", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     catalogEditor.allowed = true;
     permissionMutate.mockClear();

@@ -72,19 +72,22 @@ describe("NotificationBell", () => {
         recent.markAllRead.mockReset();
     });
 
-    it("hides the bell without notifications.access", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the bell without notifications.access»।
+    it("Notification bell: hides the bell without notifications.access", () => {
         access.allowed = false;
         render(<NotificationBell />);
         expect(screen.queryByTestId("notification-bell")).not.toBeInTheDocument();
     });
 
-    it("shows 99+ when the unread count is over 99", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows 99+ when the unread count is over 99»।
+    it("Notification bell: shows 99+ when the unread count is over 99", () => {
         recent.count = 120;
         render(<NotificationBell />);
         expect(screen.getByTestId("notification-badge")).toHaveTextContent("99+");
     });
 
-    it("shows the count, an empty dropdown, and mark-all", async () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the count, an empty dropdown, and mark-all»।
+    it("Notification bell: shows the count, an empty dropdown, and mark-all", async () => {
         recent.count = 2;
         const user = userEvent.setup();
         render(<NotificationBell />);
@@ -98,7 +101,8 @@ describe("NotificationBell", () => {
         expect(screen.getByTestId("notification-view-all")).toHaveAttribute("href", "/notifications");
     });
 
-    it("renders loading and error states", async () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders loading and error states»।
+    it("Notification bell: renders loading and error states", async () => {
         recent.isLoading = true;
         const user = userEvent.setup();
         const { rerender } = render(<NotificationBell />);
@@ -112,7 +116,8 @@ describe("NotificationBell", () => {
         expect(screen.getByTestId("notification-error")).toBeInTheDocument();
     });
 
-    it("marks one notification as read from the dropdown", async () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «marks one notification as read from the dropdown»।
+    it("Notification bell: marks one notification as read from the dropdown", async () => {
         recent.count = 1;
         recent.items = [sample];
         const user = userEvent.setup();

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`real form payloads > 'client' > create: starting values 1`] = `
+exports[`real form payloads > 'client' > Form request data: Create mode: initialize the expected request values 1`] = `
 {
   "billing_term": "prepaid",
   "billing_type": "auto",
@@ -14,7 +14,7 @@ exports[`real form payloads > 'client' > create: starting values 1`] = `
 }
 `;
 
-exports[`real form payloads > 'client' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'client' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "adr_latitude": "23.7808",
@@ -116,7 +116,7 @@ exports[`real form payloads > 'client' > edit: loads the record and sends it bac
 }
 `;
 
-exports[`real form payloads > 'device' > create: starting values 1`] = `
+exports[`real form payloads > 'device' > Form request data: Create mode: initialize the expected request values 1`] = `
 {
   "cli_password": null,
   "cli_protocol": null,
@@ -125,7 +125,7 @@ exports[`real form payloads > 'device' > create: starting values 1`] = `
 }
 `;
 
-exports[`real form payloads > 'device' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'device' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "cli_password": "cli_password 8",
@@ -185,9 +185,9 @@ exports[`real form payloads > 'device' > edit: loads the record and sends it bac
 }
 `;
 
-exports[`real form payloads > 'expense' > create: starting values 1`] = `{}`;
+exports[`real form payloads > 'expense' > Form request data: Create mode: initialize the expected request values 1`] = `{}`;
 
-exports[`real form payloads > 'expense' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'expense' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "amount": 1,
@@ -227,9 +227,9 @@ exports[`real form payloads > 'expense' > edit: loads the record and sends it ba
 }
 `;
 
-exports[`real form payloads > 'package' > create: starting values 1`] = `{}`;
+exports[`real form payloads > 'package' > Form request data: Create mode: initialize the expected request values 1`] = `{}`;
 
-exports[`real form payloads > 'package' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'package' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "bandwidth": "bandwidth 4",
@@ -256,7 +256,7 @@ exports[`real form payloads > 'package' > edit: loads the record and sends it ba
 }
 `;
 
-exports[`real form payloads > 'reseller' > create: starting values 1`] = `
+exports[`real form payloads > 'reseller' > Form request data: Create mode: initialize the expected request values 1`] = `
 {
   "auto_recharge": "1",
   "billing_type": "prepaid",
@@ -264,7 +264,7 @@ exports[`real form payloads > 'reseller' > create: starting values 1`] = `
 }
 `;
 
-exports[`real form payloads > 'reseller' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'reseller' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "agent_id": 117,
@@ -345,14 +345,14 @@ exports[`real form payloads > 'reseller' > edit: loads the record and sends it b
 }
 `;
 
-exports[`real form payloads > 'salary' > create: starting values 1`] = `
+exports[`real form payloads > 'salary' > Form request data: Create mode: initialize the expected request values 1`] = `
 {
   "salary_deductions": [],
   "salary_items": [],
 }
 `;
 
-exports[`real form payloads > 'salary' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'salary' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "amount": 7,
@@ -411,7 +411,7 @@ exports[`real form payloads > 'salary' > edit: loads the record and sends it bac
 }
 `;
 
-exports[`real form payloads > 'staff' > create: starting values 1`] = `
+exports[`real form payloads > 'staff' > Form request data: Create mode: initialize the expected request values 1`] = `
 {
   "gender": "male",
   "marital_status": "unmarred",
@@ -419,7 +419,7 @@ exports[`real form payloads > 'staff' > create: starting values 1`] = `
 }
 `;
 
-exports[`real form payloads > 'staff' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'staff' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "date_of_birth": "2026-11-25",
@@ -509,9 +509,9 @@ exports[`real form payloads > 'staff' > edit: loads the record and sends it back
 }
 `;
 
-exports[`real form payloads > 'tj-box' > create: starting values 1`] = `{}`;
+exports[`real form payloads > 'tj-box' > Form request data: Create mode: initialize the expected request values 1`] = `{}`;
 
-exports[`real form payloads > 'tj-box' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'tj-box' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "address": "address 5",
@@ -541,9 +541,9 @@ exports[`real form payloads > 'tj-box' > edit: loads the record and sends it bac
 }
 `;
 
-exports[`real form payloads > 'user' > create: starting values 1`] = `{}`;
+exports[`real form payloads > 'user' > Form request data: Create mode: initialize the expected request values 1`] = `{}`;
 
-exports[`real form payloads > 'user' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'user' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "email": "user@example.com",
@@ -563,9 +563,9 @@ exports[`real form payloads > 'user' > edit: loads the record and sends it back 
 }
 `;
 
-exports[`real form payloads > 'zone' > create: starting values 1`] = `{}`;
+exports[`real form payloads > 'zone' > Form request data: Create mode: initialize the expected request values 1`] = `{}`;
 
-exports[`real form payloads > 'zone' > edit: loads the record and sends it back unchanged 1`] = `
+exports[`real form payloads > 'zone' > Form request data: edit: loads the record and sends it back unchanged 1`] = `
 {
   "payload": {
     "lat": 2,

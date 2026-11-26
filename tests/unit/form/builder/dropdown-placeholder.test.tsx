@@ -21,7 +21,8 @@ describe("dropdown placeholder", () => {
         mockApi();
     });
 
-    it("holds the field's place with the label and a box while the dropdown code loads", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «holds the field's place with the label and a box while the dropdown code loads»।
+    it("Dropdown placeholder: holds the field's place with the label and a box while the dropdown code loads", async () => {
         const { container } = renderWithClient(
             <FormBuilder
                 formSchema={[

@@ -115,7 +115,8 @@ const phoneField = () => screen.queryByPlaceholderText("sms_sent.phone_number.pl
 const phoneFieldIsHidden = () => phoneField()?.closest("[aria-hidden='true']") != null;
 
 describe("SmsSentForm confirmation", () => {
-  it("hides the gateway and settings actions on the client dialog", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the gateway and settings actions on the client dialog»।
+  it("SMS sent form confirm: hides the gateway and settings actions on the client dialog", async () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
         <SmsSentForm mode="singleClient" clientId="client-1" phone="01700000000" />
@@ -128,7 +129,8 @@ describe("SmsSentForm confirmation", () => {
     expect(screen.getByRole("radio", { name: "sms_sent.mode.live.title" })).toBeInTheDocument();
   });
 
-  it("keeps the gateway action on the send page", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the gateway action on the send page»।
+  it("SMS sent form confirm: keeps the gateway action on the send page", async () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
         <SmsSentForm />
@@ -138,7 +140,8 @@ describe("SmsSentForm confirmation", () => {
     expect(await screen.findByRole("button", { name: "sms_sent.gateway.configured" })).toBeInTheDocument();
   });
 
-  it("shows the template hint instead of the phone field until Custom Other is selected", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the template hint instead of the phone field until Custom Other is selected»।
+  it("SMS sent form confirm: shows the template hint instead of the phone field until Custom Other is selected", () => {
     render(
       <QueryClientProvider client={new QueryClient()}>
         <SmsSentForm />
@@ -149,7 +152,8 @@ describe("SmsSentForm confirmation", () => {
     expect(phoneFieldIsHidden()).toBe(true);
   });
 
-  it("shows the phone field only for Custom Other and the hint for a regular template", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the phone field only for Custom Other and the hint for a regular template»।
+  it("SMS sent form confirm: shows the phone field only for Custom Other and the hint for a regular template", async () => {
     const user = userEvent.setup();
     render(
       <QueryClientProvider client={new QueryClient()}>
@@ -170,7 +174,8 @@ describe("SmsSentForm confirmation", () => {
     expect(screen.getByRole("note")).toHaveTextContent("sms_sent.phone_number.hint");
   });
 
-  it("prices the open client by public id before confirming", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «prices the open client by public id before confirming»।
+  it("SMS sent form confirm: prices the open client by public id before confirming", async () => {
     const user = userEvent.setup();
     const clientId = "a32940b3-8cf1-4783-b07a-c5a9382530b3";
     render(
@@ -199,7 +204,8 @@ describe("SmsSentForm confirmation", () => {
     });
   });
 
-  it("opens the confirmation dialog first and sends once after confirming", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the confirmation dialog first and sends once after confirming»।
+  it("SMS sent form confirm: opens the confirmation dialog first and sends once after confirming", async () => {
     const user = userEvent.setup();
     render(
       <QueryClientProvider client={new QueryClient()}>

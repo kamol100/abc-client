@@ -90,20 +90,23 @@ function thread(overrides: Partial<SupportThread> = {}): SupportThread {
 }
 
 describe("platform support scope", () => {
-    it("offers own, reseller, and company scopes only when the server grants them", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «offers own, reseller, and company scopes only when the server grants them»।
+    it("Support message and scope rules: offers own, reseller, and company scopes only when the server grants them", () => {
         expect(supportScopes({ resellerAccess: false, companyAccess: false, isReseller: false })).toEqual(["own"]);
         expect(supportScopes({ resellerAccess: true, companyAccess: true, isReseller: true })).toEqual(["own", "reseller"]);
         expect(supportScopes({ resellerAccess: false, companyAccess: true, isReseller: false })).toEqual(["own", "company"]);
     });
 
-    it("keeps a company reseller filter off own and reseller lists", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a company reseller filter off own and reseller lists»।
+    it("Support message and scope rules: keeps a company reseller filter off own and reseller lists", () => {
         const reseller = "22222222-2222-4222-8222-222222222222";
         expect(supportListParams("own", "issue", { reseller, status: "open" }).reseller).toBeUndefined();
         expect(supportListParams("company", "chat", { reseller }).reseller).toBe(reseller);
         expect(supportListParams("company", "chat", { reseller: "12" }).reseller).toBeUndefined();
     });
 
-    it("sends a colleague reply to the team route and keeps ownership fields out of payloads", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends a colleague reply to the team route and keeps ownership fields out of payloads»।
+    it("Support message and scope rules: sends a colleague reply to the team route and keeps ownership fields out of payloads", () => {
         expect(supportReplyUrl(thread().uuid, true)).toContain("/messages");
         expect(supportReplyUrl(thread().uuid, false)).toContain("/team-messages");
         const created = issueCreatePayload({
@@ -154,7 +157,8 @@ describe("platform support scope", () => {
         expect(payloadOmitsOwnership(chatStartPayload("33333333-3333-4333-8333-333333333333", "/clients"))).toBe(true);
     });
 
-    it("hides send and manage controls for a read-only colleague", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides send and manage controls for a read-only colleague»।
+    it("Support message and scope rules: hides send and manage controls for a read-only colleague", () => {
         const colleague = thread({
             requester: { uuid: "other", name: "Sam" },
             abilities: {
@@ -172,7 +176,8 @@ describe("platform support scope", () => {
         expect(supportActions(colleague, false).send).toBe(false);
     });
 
-    it("uses team status for a colleague and the owner routes for the requester", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses team status for a colleague and the owner routes for the requester»।
+    it("Support message and scope rules: uses team status for a colleague and the owner routes for the requester", () => {
         const id = thread().uuid;
         expect(supportLifecycleRequest({ threadUuid: id, kind: "issue", owns: true, version: 3, action: "resolve" })?.url).toContain("/resolve");
         expect(supportLifecycleRequest({ threadUuid: id, kind: "chat", owns: false, version: 3, action: "resolve" })).toEqual({
@@ -183,7 +188,8 @@ describe("platform support scope", () => {
 });
 
 describe("platform support history", () => {
-    it("drains a backlog in order without duplicating or skipping ahead", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drains a backlog in order without duplicating or skipping ahead»।
+    it("Support message and scope rules: drains a backlog in order without duplicating or skipping ahead", () => {
         const first = page(Array.from({ length: 100 }, (_, index) => index + 1), { has_more: true, has_older: false });
         const second = page([101, 102, 103, 104, 105], { has_more: false });
         const history = drainMessagePages([first, second]);
@@ -193,7 +199,8 @@ describe("platform support history", () => {
         expect(new Set(history.messages.map((row) => row.uuid)).size).toBe(105);
     });
 
-    it("keeps the forward cursor while older history is prepended", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the forward cursor while older history is prepended»।
+    it("Support message and scope rules: keeps the forward cursor while older history is prepended", () => {
         const current = mergeMessagePage(emptyHistory(), page([51, 52], { has_older: true, next_after_sequence: 52 }), "initial");
         const older = mergeMessagePage(current, page([49, 50], { has_older: false, next_after_sequence: 50 }), "older");
 
@@ -201,7 +208,8 @@ describe("platform support history", () => {
         expect(older.cursor).toBe(52);
     });
 
-    it("does not replace history with an empty poll or a duplicate acknowledgement", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not replace history with an empty poll or a duplicate acknowledgement»।
+    it("Support message and scope rules: does not replace history with an empty poll or a duplicate acknowledgement", () => {
         const current = mergeMessagePage(emptyHistory(), page([1, 2], { next_after_sequence: 2 }), "initial");
         const polled = mergeMessagePage(current, page([], { next_after_sequence: 2 }), "newer");
         const saved = acknowledgeMessage(polled, message(2, "m-2"));
@@ -212,7 +220,8 @@ describe("platform support history", () => {
         expect(pendingAfterReload()).toBeNull();
     });
 
-    it("marks only the latest visible message", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «marks only the latest visible message»।
+    it("Support message and scope rules: marks only the latest visible message", () => {
         const rows = [message(1), message(2), message(3)];
         expect(readSequenceForVisible(rows, new Set(["m-1", "m-2"]), 0)).toBe(2);
         expect(readSequenceForVisible(rows, new Set(["m-3"]), 2)).toBe(3);
@@ -221,7 +230,8 @@ describe("platform support history", () => {
 });
 
 describe("platform support polling", () => {
-    it("stops when the tab, network, session, or record is unavailable and backs off", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stops when the tab, network, session, or record is unavailable and backs off»।
+    it("Support message and scope rules: stops when the tab, network, session, or record is unavailable and backs off", () => {
         const base = { surface: "thread" as const, documentVisible: true, online: true, signedIn: true, accessible: true, failureCount: 0 };
         expect(supportPollInterval(base)).toBe(5000);
         expect(supportPollInterval({ ...base, surface: "list" })).toBe(15000);
@@ -234,7 +244,8 @@ describe("platform support polling", () => {
         expect(supportPollInterval({ ...base, retryAfterMs: 9000 })).toBe(9000);
     });
 
-    it("partitions cache keys by the server identity, audience, scope, and thread", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «partitions cache keys by the server identity, audience, scope, and thread»।
+    it("Support message and scope rules: partitions cache keys by the server identity, audience, scope, and thread", () => {
         expect(supportQueryKey({ identity: "user-1", scope: "company", resource: "messages", thread: "thread-1" })).toEqual([
             "platform-support",
             "requester",
@@ -249,7 +260,8 @@ describe("platform support polling", () => {
 describe("platform support composer state", () => {
     const file = (name: string, size: number, type: string, localId: string) => ({ name, size, type, localId });
 
-    it("keeps the other files when one is rejected or one upload fails", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the other files when one is rejected or one upload fails»।
+    it("Support message and scope rules: keeps the other files when one is rejected or one upload fails", () => {
         const first = addDraftImages([], [
             file("a.png", 100, "image/png", "a"),
             file("big.png", 6 * 1024 * 1024, "image/png", "big"),
@@ -274,7 +286,8 @@ describe("platform support composer state", () => {
         expect(uploaded.find((image) => image.localId === "b")?.status).toBe("failed");
     });
 
-    it("reuses a retry id and starts a new id after an edited ambiguous attempt", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reuses a retry id and starts a new id after an edited ambiguous attempt»।
+    it("Support message and scope rules: reuses a retry id and starts a new id after an edited ambiguous attempt", () => {
         const failed = submitAttempt(null, "Hello", ["token-a"], "id-1").request;
         const ambiguous = { ...failed, ambiguous: true };
         const retry = submitAttempt(ambiguous, "Hello", ["token-a"], "id-2");
@@ -289,18 +302,21 @@ describe("platform support composer state", () => {
         expect(priorRequestDelivered([message(1)], "req-1")).toBe(true);
     });
 
-    it("does not treat a resumed chat as a sent first message", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not treat a resumed chat as a sent first message»।
+    it("Support message and scope rules: does not treat a resumed chat as a sent first message", () => {
         expect(resumedChatNeedsMessage({ resumed: true, message: null }, { body: "Hello", attachment_tokens: [] })).toBe(true);
         expect(resumedChatNeedsMessage({ resumed: true, message: null }, { body: "  " })).toBe(false);
     });
 
-    it("revokes every local preview url", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «revokes every local preview url»।
+    it("Support message and scope rules: revokes every local preview url", () => {
         const revoked: string[] = [];
         releasePreviewUrls(["blob:1", "blob:2"], (url) => revoked.push(url));
         expect(revoked).toEqual(["blob:1", "blob:2"]);
     });
 
-    it("hides private history when access is denied", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides private history when access is denied»।
+    it("Support message and scope rules: hides private history when access is denied", () => {
         const denied = new ApiRequestError("Insufficient permission.", 403, "platform_support.forbidden");
         expect(supportActions(thread({ abilities: { ...thread().abilities, can_reply: false, can_resolve: false } }), true).send).toBe(false);
         expect(denied.status).toBe(403);
@@ -308,7 +324,8 @@ describe("platform support composer state", () => {
 });
 
 describe("support summary cards", () => {
-    it("keeps authorized zero counts and omits unavailable or invalid metrics", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps authorized zero counts and omits unavailable or invalid metrics»।
+    it("Support message and scope rules: keeps authorized zero counts and omits unavailable or invalid metrics", () => {
         expect(parseSupportSummary({ open_issues: 0, open_chats: 2, unread_messages: -1, unread_threads: "5" })).toEqual({
             open_issues: 0,
             open_chats: 2,
@@ -320,7 +337,8 @@ describe("support summary cards", () => {
 });
 
 describe("support request ids", () => {
-    it("returns a uuid when randomUUID is missing", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns a uuid when randomUUID is missing»।
+    it("Support message and scope rules: returns a uuid when randomUUID is missing", () => {
         const cryptoWithOptionalUuid: { randomUUID?: Crypto["randomUUID"] } = crypto;
         const original = cryptoWithOptionalUuid.randomUUID;
         cryptoWithOptionalUuid.randomUUID = undefined;
@@ -336,7 +354,8 @@ describe("support request ids", () => {
 });
 
 describe("platform support translations", () => {
-    it("keeps the English and Bangla support keys aligned", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the English and Bangla support keys aligned»।
+    it("Support message and scope rules: keeps the English and Bangla support keys aligned", () => {
         const english = JSON.parse(readFileSync("public/lang/en.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown; platform_support_inbox: unknown } };
         const bangla = JSON.parse(readFileSync("public/lang/bn.json", "utf8")) as { platform_support: unknown; menu: { platform_support: unknown; platform_support_inbox: unknown } };
         expect(leafKeys(english.platform_support)).toEqual(leafKeys(bangla.platform_support));

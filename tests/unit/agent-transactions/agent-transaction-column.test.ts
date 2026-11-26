@@ -9,7 +9,8 @@ const columnIds = (showAgentColumn: boolean) =>
   );
 
 describe("getAgentTransactionColumns", () => {
-  it("shows agent and balance on the company ledger", () => {
+  // এজেন্টের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows agent and balance on the company ledger»।
+  it("Agent transaction column: shows agent and balance on the company ledger", () => {
     expect(columnIds(true)).toEqual([
       "sl",
       "created_at",
@@ -21,7 +22,8 @@ describe("getAgentTransactionColumns", () => {
     ]);
   });
 
-  it("hides agent columns on a single agent ledger", () => {
+  // এজেন্টের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides agent columns on a single agent ledger»।
+  it("Agent transaction column: hides agent columns on a single agent ledger", () => {
     expect(columnIds(false)).toEqual([
       "sl",
       "created_at",

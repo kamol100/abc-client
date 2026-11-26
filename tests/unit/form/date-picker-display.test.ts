@@ -5,30 +5,36 @@ const october21 = new Date(2026, 9, 21);
 const october22 = new Date(2026, 9, 22);
 
 describe("formatDatePickerDisplay", () => {
-    it("shows a single selected date once", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a single selected date once»।
+    it("Date picker display: shows a single selected date once", () => {
         expect(formatDatePickerDisplay(october21, "single")).toBe("10/21/2026");
     });
 
-    it("shows only the start date when a range has no end date", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows only the start date when a range has no end date»।
+    it("Date picker display: shows only the start date when a range has no end date", () => {
         expect(formatDatePickerDisplay({ from: october21 }, "range")).toBe("10/21/2026");
     });
 
-    it("shows a same-day range once", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a same-day range once»।
+    it("Date picker display: shows a same-day range once", () => {
         expect(formatDatePickerDisplay({ from: october21, to: october21 }, "range")).toBe("10/21/2026");
     });
 
-    it("shows a range with one hyphen", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a range with one hyphen»।
+    it("Date picker display: shows a range with one hyphen", () => {
         expect(formatDatePickerDisplay({ from: october21, to: october22 }, "range")).toBe(
             "10/21/2026 - 10/22/2026",
         );
     });
 
-    it("shows the placeholder state when nothing is selected", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the placeholder state when nothing is selected»।
+    it("Date picker display: shows the placeholder state when nothing is selected", () => {
         expect(formatDatePickerDisplay(undefined, "single")).toBeNull();
         expect(formatDatePickerDisplay(undefined, "range")).toBeNull();
     });
 
-    it("formats each side of a custom single-date pattern once", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «formats each side of a custom single-date pattern once»।
+    it("Date picker display: formats each side of a custom single-date pattern once", () => {
         expect(
             formatDatePickerDisplay(
                 { from: october21, to: october22 },
@@ -41,14 +47,16 @@ describe("formatDatePickerDisplay", () => {
 });
 
 describe("hasSelectedDateRange", () => {
-    it("is false for a single date or an incomplete range", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is false for a single date or an incomplete range»।
+    it("Date picker display: is false for a single date or an incomplete range", () => {
         expect(hasSelectedDateRange(october21)).toBe(false);
         expect(hasSelectedDateRange({ from: october21 })).toBe(false);
         expect(hasSelectedDateRange({ from: october21, to: october21 })).toBe(false);
         expect(hasSelectedDateRange(undefined)).toBe(false);
     });
 
-    it("is true when the start and end dates differ", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is true when the start and end dates differ»।
+    it("Date picker display: is true when the start and end dates differ", () => {
         expect(hasSelectedDateRange({ from: october21, to: october22 })).toBe(true);
     });
 });

@@ -23,19 +23,22 @@ vi.mock("@/hooks/use-toast", () => ({
 }));
 
 describe("ClientLoginForm", () => {
-  it("shows the company name on the divider when it is set", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the company name on the divider when it is set»।
+  it("Subscriber login form: shows the company name on the divider when it is set", async () => {
     render(<ClientLoginForm companyName="Acme ISP" />);
 
     expect(await screen.findByText("Acme ISP")).toBeInTheDocument();
   });
 
-  it("falls back to the credentials label when the company name is empty", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «falls back to the credentials label when the company name is empty»।
+  it("Subscriber login form: falls back to the credentials label when the company name is empty", async () => {
     render(<ClientLoginForm companyName="   " />);
 
     expect(await screen.findByText("login.continue_with_credentials")).toBeInTheDocument();
   });
 
-  it("shows the company logo and a back link to the home page", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the company logo and a back link to the home page»।
+  it("Subscriber login form: shows the company logo and a back link to the home page", async () => {
     render(<ClientLoginForm companyLogoUrl="https://cdn.example/logo.png" companyName="Acme ISP" />);
 
     const logo = await screen.findByRole("img", { name: "Company logo" });

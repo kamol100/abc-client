@@ -9,7 +9,8 @@ import {
 } from "@/tests/e2e/support-tickets/fixtures";
 
 test.describe("support ticket list", () => {
-  test("ST-L01 authorized list matches the backend page after reload", async ({ page, staff }) => {
+  // অনুমোদিত টিকিট API অনুযায়ী তালিকায় আসে এবং রিলোডেও সঠিক ফল থাকে কি না দেখি।
+  test("ST-L01 Support ticket list: show authorized tickets and retain the expected rows after reload", async ({ page, staff }) => {
     requirePermissions(staff, "tickets.access");
     const listed = await staff.tickets();
 
@@ -35,7 +36,8 @@ test.describe("support ticket list", () => {
     }
   });
 
-  test("ST-L04 an unmatched ticket code is empty and clearing it restores the owned ticket", async ({ page, staff }) => {
+  // না মেলা টিকিট কোডে খালি ফল আসে এবং সার্চ মুছলে নিজের টিকিট ফিরে আসে কি না দেখি।
+  test("ST-L04 Search tickets by unknown code: show no results and restore the ticket when cleared", async ({ page, staff }) => {
     await withOwnedTicket(staff, async (ticket) => {
       await page.goto("/tickets");
       await expect(page.getByText(ticket.ticket_code, { exact: true })).toBeVisible();

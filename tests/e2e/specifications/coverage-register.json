@@ -1059,7 +1059,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L01 client list reflects backend identities and pagination total after reload"
+          "title": "CL-L01 Client list: show saved clients and total count, and keep clients visible after reload"
         }
       ],
       "last_run": null,
@@ -1078,15 +1078,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L02 search by name matches independent API result and reset"
+          "title": "CL-L02 Search by client name: show matching clients, hide nonmatches, and restore the list when cleared"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L02 search by pppoe_username matches independent API result and reset"
+          "title": "CL-L02 Search by Client ID (PPPoE ID): show matching clients, hide nonmatches, and restore the list when cleared"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L02 search by phone matches independent API result and reset"
+          "title": "CL-L02 Search by phone number: show matching clients, hide nonmatches, and restore the list when cleared"
         }
       ],
       "last_run": null,
@@ -1105,23 +1105,23 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L03 status=1 matches backend inclusion and exclusion"
+          "title": "CL-L03 Status filter - Active: open the dropdown and show only matching clients"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L03 status=0 matches backend inclusion and exclusion"
+          "title": "CL-L03 Status filter - Inactive: open the dropdown and show only matching clients"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L03 billing_type=auto matches backend inclusion and exclusion"
+          "title": "CL-L03 Billing type filter - Auto: open the dropdown and show only matching clients"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L03 billing_type=manual matches backend inclusion and exclusion"
+          "title": "CL-L03 Billing type filter - Manual: open the dropdown and show only matching clients"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L03 billing_type=no_invoice_this_month matches backend inclusion and exclusion"
+          "title": "CL-L03 Billing type filter - No invoice this month: open the dropdown and show only matching clients"
         }
       ],
       "last_run": null,
@@ -1152,7 +1152,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L05 current-month deep link and show-all preserve URL and data scope"
+          "title": "CL-L05 New clients this month: show filtered clients and remove the month filter with Show all"
         }
       ],
       "last_run": null,
@@ -1171,7 +1171,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-L06 unmatched search renders empty results and can be cleared"
+          "title": "CL-L06 Search with no matches: show No results, then find an existing client with a new search"
         }
       ],
       "last_run": null,
@@ -1214,7 +1214,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/isolated.spec.ts",
-          "title": "CL-F01 creates client through UI and persists network/package identity"
+          "title": "CL-F01 Create client: save the name, network, and package and show the client after reload (isolated fixtures required)"
         }
       ],
       "last_run": null,
@@ -1233,27 +1233,27 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 missing name rejects create without persistence"
+          "title": "CL-F02 Required client name: show a validation error and do not create a client when empty"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 missing pppoe_username rejects create without persistence"
+          "title": "CL-F02 Required Client ID (PPPoE ID): show a validation error and do not create a client when empty"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 missing pppoe_password rejects create without persistence"
+          "title": "CL-F02 Required password: show a validation error and do not create a client when empty"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 missing network_id rejects create without persistence"
+          "title": "CL-F02 Required network: show a validation error and do not create a client when empty"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 missing package_id rejects create without persistence"
+          "title": "CL-F02 Required package: show a validation error and do not create a client when empty"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F02 one-character name is rejected before create"
+          "title": "CL-F02 Client name too short: show the two-character minimum error and keep the form open"
         }
       ],
       "last_run": null,
@@ -1284,7 +1284,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/isolated.spec.ts",
-          "title": "CL-F04 edit hydrates owned UUID and persists name while preserving billing"
+          "title": "CL-F04 Edit client: load the saved name and save a new name without changing billing (isolated fixtures required)"
         }
       ],
       "last_run": null,
@@ -1315,7 +1315,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F06 create billing defaults match company settings"
+          "title": "CL-F06 New client defaults: use Prepaid, Auto billing, the company deadline, and invoice day 01"
         }
       ],
       "last_run": null,
@@ -1346,11 +1346,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-F08 cancel create leaves no saved test identity"
+          "title": "CL-F08 Cancel new client: return to the list without saving the entered name"
         },
         {
           "path": "tests/e2e/clients/isolated.spec.ts",
-          "title": "CL-F08 cancel edit preserves original saved values"
+          "title": "CL-F08 Cancel client edit: discard the entered name and keep the saved name (isolated fixtures required)"
         }
       ],
       "last_run": null,
@@ -1381,7 +1381,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/isolated.spec.ts",
-          "title": "CL-F10 clearing optional IP persists blank without string markers"
+          "title": "CL-F10 Clear optional IP address: save an empty value and keep it empty when reopened (isolated fixtures required)"
         }
       ],
       "last_run": null,
@@ -1400,11 +1400,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-D01 identity opens selected UUID detail"
+          "title": "CL-D01 Open client details using the Client ID link: show the selected client"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-D01 view-action opens selected UUID detail"
+          "title": "CL-D01 Open client details using the View action: show the selected client"
         }
       ],
       "last_run": null,
@@ -1423,7 +1423,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-D02 selected client detail retains identity and package after reload"
+          "title": "CL-D02 Client details: show the saved name and package, and keep the name after reload"
         }
       ],
       "last_run": null,
@@ -1478,7 +1478,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-D06 phone and WhatsApp links target the selected client"
+          "title": "CL-D06 Contact links: use the selected client's phone number for calls and WhatsApp"
         }
       ],
       "last_run": null,
@@ -1689,19 +1689,19 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-A01 anonymous /clients requires staff login"
+          "title": "CL-A01 Login required: opening the client list while signed out redirects to staff login"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-A01 anonymous /clients/create requires staff login"
+          "title": "CL-A01 Login required: opening the create client page while signed out redirects to staff login"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-A01 anonymous /clients/edit/00000000-0000-0000-0000-000000000001 requires staff login"
+          "title": "CL-A01 Login required: opening the edit client page while signed out redirects to staff login"
         },
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-A01 anonymous /clients/view/00000000-0000-0000-0000-000000000001 requires staff login"
+          "title": "CL-A01 Login required: opening the client details page while signed out redirects to staff login"
         }
       ],
       "last_run": null,
@@ -1744,7 +1744,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/clients/read-only.spec.ts",
-          "title": "CL-A04 CP and MK cannot retrieve the other's visible client UUID"
+          "title": "CL-A04 Company privacy: CP and MK cannot read or search each other's clients"
         }
       ],
       "last_run": null,
@@ -3329,7 +3329,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L01 list identity date voucher relations amount status and report figures match the API"
+          "title": "EX-L01 Expense list: show saved details, amounts, statuses, and report totals from the API"
         }
       ],
       "last_run": null,
@@ -3348,15 +3348,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L02 expense ID search includes the selected row and clearing restores the list"
+          "title": "EX-L02 Search expenses by ID: show the matching expense and restore the list when cleared"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L02 voucher search matches the API and an unknown voucher is empty"
+          "title": "EX-L02 Search expenses by voucher: show matching expenses and no results for an unknown voucher"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L02 amount search matches the API and an unknown amount is empty"
+          "title": "EX-L02 Search expenses by amount: show matching expenses and no results for an unknown amount"
         }
       ],
       "last_run": null,
@@ -3375,43 +3375,43 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 status filters stay inside the unfiltered total"
+          "title": "EX-L03 Expense status counts: return only the requested status and consistent API totals"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 status approved matches the API page and reload clears it"
+          "title": "EX-L03 Expense status filter - Approved: show matching expenses and clear the filter on reload"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 status pending matches the API page and reload clears it"
+          "title": "EX-L03 Expense status filter - Pending: show matching expenses and clear the filter on reload"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 status declined matches the API page and reload clears it"
+          "title": "EX-L03 Expense status filter - Declined: show matching expenses and clear the filter on reload"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 staff filter matches the API and a second staff does not reuse those rows"
+          "title": "EX-L03 Expense staff filter: show only the selected staff's expenses when switching staff"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 zone filter matches the API and a second zone does not reuse those rows"
+          "title": "EX-L03 Expense zone filter: show the selected zone's expenses when switching zones"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 fund filter matches the API and a second fund does not reuse those rows"
+          "title": "EX-L03 Expense fund filter: show the selected fund's expenses when switching funds"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 expense type filter matches the API and a second type does not reuse those rows"
+          "title": "EX-L03 Expense type filter: show the selected type's expenses when switching types"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 expense date range matches the API and reload clears it"
+          "title": "EX-L03 Expense date filter: show expenses in the selected range and clear it on reload"
         },
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L03 combined expense ID and status filters agree with the API"
+          "title": "EX-L03 Combined expense filters: show expenses matching both ID and status"
         }
       ],
       "last_run": null,
@@ -3430,7 +3430,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L04 pagination buttons match the current page and a later filter returns the matching rows"
+          "title": "EX-L04 Expense pagination: respect page limits and show matching expenses after filtering a later page"
         }
       ],
       "last_run": null,
@@ -3449,7 +3449,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L05 a status filter updates both report figures to the filtered API values"
+          "title": "EX-L05 Expense report totals: update both figures when the status filter changes"
         }
       ],
       "last_run": null,
@@ -3468,7 +3468,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L06 an unmatched search is empty and clearing it restores the known expense"
+          "title": "EX-L06 Expense search with no matches: show an empty list and recover when cleared"
         }
       ],
       "last_run": null,
@@ -3487,7 +3487,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/list.spec.ts",
-          "title": "EX-L07 the expense report has the report title, no create action, and the same rows and figures"
+          "title": "EX-L07 Expense report page: show matching rows and totals without a create action"
         }
       ],
       "last_run": null,
@@ -3520,7 +3520,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F02 missing amount staff and type and an amount below 1 stay on the form"
+          "title": "EX-F02 Invalid expense: reject missing amount, staff, or type and amounts below 1"
         }
       ],
       "last_run": null,
@@ -3539,7 +3539,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F03 create starts on today's date and cancel stores nothing"
+          "title": "EX-F03 New expense: default to today's date and save nothing when cancelled"
         }
       ],
       "last_run": null,
@@ -3558,7 +3558,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F04 edit hydrates the saved expense and cancel leaves it unchanged"
+          "title": "EX-F04 Edit expense: load the saved values and preserve them when cancelled"
         }
       ],
       "last_run": null,
@@ -3577,7 +3577,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F05 list and edit render empty relations without null or undefined markers"
+          "title": "EX-F05 Missing expense details: display empty related fields without null or undefined text"
         }
       ],
       "last_run": null,
@@ -3596,7 +3596,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F06 a voucher over 255 and a note over 1000 are rejected and create nothing"
+          "title": "EX-F06 Expense text limits: reject vouchers over 255 and notes over 1000 characters without saving"
         }
       ],
       "last_run": null,
@@ -3615,7 +3615,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-F07 canceling an edited draft preserves the saved expense"
+          "title": "EX-F07 Cancel expense changes: keep the original saved expense"
         }
       ],
       "last_run": null,
@@ -3676,7 +3676,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/forms.spec.ts",
-          "title": "EX-U03 an admin can open the fund choices and cancel stores nothing"
+          "title": "EX-U03 Expense fund selection: show available funds to an administrator and save nothing on cancel"
         }
       ],
       "last_run": null,
@@ -3821,7 +3821,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/actions.spec.ts",
-          "title": "EX-D01 cancel delete keeps the expense, its fund balance, and fund transactions"
+          "title": "EX-D01 Cancel expense deletion: keep the expense, fund balance, and transaction history unchanged"
         }
       ],
       "last_run": null,
@@ -3896,11 +3896,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/access.spec.ts",
-          "title": "EX-A01 anonymous /expenses redirects to the same-host staff login"
+          "title": "EX-A01 Expense page access - Expense list: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/expenses/access.spec.ts",
-          "title": "EX-A01 anonymous /reports/expenses redirects to the same-host staff login"
+          "title": "EX-A01 Expense page access - Expense report: redirect signed-out users to staff login"
         }
       ],
       "last_run": null,
@@ -3933,7 +3933,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/access.spec.ts",
-          "title": "EX-A03 another company cannot read or find a known expense UUID"
+          "title": "EX-A03 Expense privacy: prevent another company from reading or searching this company's expense"
         }
       ],
       "last_run": null,
@@ -3966,7 +3966,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/expenses/access.spec.ts",
-          "title": "EX-A05 logout back and reload do not restore the expense list"
+          "title": "EX-A05 Expense list after logout: keep it inaccessible after browser back and reload"
         }
       ],
       "last_run": null,
@@ -4689,7 +4689,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L01 list identities dates client type and status match API after reload"
+          "title": "IV-L01 Invoice list: show saved invoice details and statuses after reload"
         }
       ],
       "last_run": null,
@@ -4706,39 +4706,39 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 track ID search includes selected invoice excludes others and resets"
+          "title": "IV-L02 Search invoices by track ID: show the matching invoice and restore the list when cleared"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 status=due matches API inclusion and exclusion"
+          "title": "IV-L02 Invoice status filter - Due: show matching invoices and hide other statuses"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 status=paid matches API inclusion and exclusion"
+          "title": "IV-L02 Invoice status filter - Paid: show matching invoices and hide other statuses"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 status=partial matches API inclusion and exclusion"
+          "title": "IV-L02 Invoice status filter - Partial: show matching invoices and hide other statuses"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 invoice_type_id dropdown matches included and excluded invoice identities"
+          "title": "IV-L02 Invoice type filter: show matching invoices and hide nonmatches"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 client_id dropdown matches included and excluded invoice identities"
+          "title": "IV-L02 Invoice client filter: show matching invoices and hide nonmatches"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 zone_id dropdown matches included and excluded invoice identities"
+          "title": "IV-L02 Invoice zone filter: show matching invoices and hide nonmatches"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 combined track and status filters reset to unfiltered identities"
+          "title": "IV-L02 Combined invoice filters: match both track ID and status, then reset to the full list"
         },
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L02 creator filter matches backend page and clearing restores baseline"
+          "title": "IV-L02 Invoice creator filter: show the selected staff's invoices and restore the list when cleared"
         }
       ],
       "last_run": null,
@@ -4755,7 +4755,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L03 pagination controls reflect bounds and available page identities"
+          "title": "IV-L03 Invoice pagination: show the correct page controls and invoice rows"
         }
       ],
       "last_run": null,
@@ -4784,7 +4784,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L05 client UUID history scopes rows and retains scope after reload"
+          "title": "IV-L05 Client invoice history: show only that client's invoices and retain the scope after reload"
         }
       ],
       "last_run": null,
@@ -4801,7 +4801,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/list.spec.ts",
-          "title": "IV-L06 unmatched track ID renders empty results and clearing restores rows"
+          "title": "IV-L06 Invoice search with no matches: show an empty list and recover when cleared"
         }
       ],
       "last_run": null,
@@ -4830,27 +4830,27 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid client blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - client: show the validation error and retain the draft without saving"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid type blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - type: show the validation error and retain the draft without saving"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid description blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - description: show the validation error and retain the draft without saving"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid zero amount blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - zero amount: show the validation error and retain the draft without saving"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid negative amount blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - negative amount: show the validation error and retain the draft without saving"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F02 invalid zero quantity blocks create and preserves recoverable input"
+          "title": "IV-F02 Invalid invoice - zero quantity: show the validation error and retain the draft without saving"
         }
       ],
       "last_run": null,
@@ -4867,7 +4867,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F03 adding and removing unsaved lines preserves retained values and quantity totals"
+          "title": "IV-F03 Invoice line items: retain entered values and totals when adding and removing unsaved lines"
         }
       ],
       "last_run": null,
@@ -4884,7 +4884,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F04 create defaults to due today no SMS and cancelling creates no invoice"
+          "title": "IV-F04 New invoice: default to Due, today's dates, and no SMS; cancel without saving"
         }
       ],
       "last_run": null,
@@ -4925,11 +4925,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F07 paid requires payment fields and switching due hides them"
+          "title": "IV-F07 Invoice status - Paid: require payment details and hide them when switched to Due"
         },
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F07 partial_paid requires payment fields and switching due hides them"
+          "title": "IV-F07 Invoice status - Partial Paid: require payment details and hide them when switched to Due"
         }
       ],
       "last_run": null,
@@ -4946,7 +4946,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F08 due edit hydrates saved description quantity and note without saving"
+          "title": "IV-F08 Edit due invoice: load saved line items and notes without submitting changes"
         }
       ],
       "last_run": null,
@@ -4975,7 +4975,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F10 cancelling edited note preserves persisted invoice identity and financial fields"
+          "title": "IV-F10 Cancel invoice changes: keep the saved note, identity, and financial values"
         }
       ],
       "last_run": null,
@@ -4992,7 +4992,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/forms.spec.ts",
-          "title": "IV-F11 oversized UTF-8 note is rejected with input preserved"
+          "title": "IV-F11 Invoice note too large: show the size error and keep the entered text"
         }
       ],
       "last_run": null,
@@ -5009,7 +5009,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/payments.spec.ts",
-          "title": "IV-P01 pay dialog offers only selected client's backend outstanding identities"
+          "title": "IV-P01 Invoice payment dialog: list only the selected client's outstanding invoices"
         }
       ],
       "last_run": null,
@@ -5026,7 +5026,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/payments.spec.ts",
-          "title": "IV-P02 deselecting all clears totals and cancel preserves invoice amounts"
+          "title": "IV-P02 Cancel invoice payment: clear totals when all invoices are deselected and keep saved amounts"
         }
       ],
       "last_run": null,
@@ -5175,7 +5175,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/documents.spec.ts",
-          "title": "IV-D01 selected invoice document shows API identity and persisted line descriptions"
+          "title": "IV-D01 Invoice document: show the selected invoice and its saved line descriptions"
         }
       ],
       "last_run": null,
@@ -5216,7 +5216,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/documents.spec.ts",
-          "title": "IV-D04 document print invokes browser print with selected identity and cleans up"
+          "title": "IV-D04 Print invoice: print the selected document and remove temporary print content"
         }
       ],
       "last_run": null,
@@ -5257,19 +5257,19 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/access.spec.ts",
-          "title": "IV-A01 anonymous /invoices redirects to same-host staff login"
+          "title": "IV-A01 Invoice page access - Invoice list: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/invoices/access.spec.ts",
-          "title": "IV-A01 anonymous /invoices/create redirects to same-host staff login"
+          "title": "IV-A01 Invoice page access - Create invoice: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/invoices/access.spec.ts",
-          "title": "IV-A01 anonymous /invoices/edit/00000000-0000-0000-0000-000000000001 redirects to same-host staff login"
+          "title": "IV-A01 Invoice page access - Edit invoice: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/invoices/access.spec.ts",
-          "title": "IV-A01 anonymous /invoices/client/00000000-0000-0000-0000-000000000001 redirects to same-host staff login"
+          "title": "IV-A01 Invoice page access - Client invoice history: redirect signed-out users to staff login"
         }
       ],
       "last_run": null,
@@ -5298,7 +5298,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/access.spec.ts",
-          "title": "IV-A03 CP and MK reject foreign invoice detail UUID and exclude foreign track search"
+          "title": "IV-A03 Invoice privacy: prevent CP and MK from reading or searching each other's invoices"
         }
       ],
       "last_run": null,
@@ -5327,7 +5327,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/invoices/documents.spec.ts",
-          "title": "IV-A05 cancelling deletion preserves the selected due invoice"
+          "title": "IV-A05 Cancel invoice deletion: keep the selected due invoice unchanged"
         }
       ],
       "last_run": null,
@@ -6020,7 +6020,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L01 list shows names addresses operational status and the company total"
+          "title": "NW-L01 Network list: show saved names, addresses, operating statuses, and the company total"
         }
       ],
       "last_run": null,
@@ -6039,19 +6039,19 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L02 name filter keeps matching networks and drops the others"
+          "title": "NW-L02 Filter networks by name: show matching networks and hide nonmatches"
         },
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L02 an unknown address filter is empty"
+          "title": "NW-L02 Filter networks by unknown address: show no results"
         },
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L02 inactive status filter returns only inactive networks and reload restores the list"
+          "title": "NW-L02 Inactive network filter: show inactive networks and restore the list on reload"
         },
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L02 combined name and active status agree on the included network"
+          "title": "NW-L02 Combined network filters: show networks matching both name and Active status"
         }
       ],
       "last_run": null,
@@ -6070,7 +6070,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L03 pagination buttons follow the current page and do not repeat rows"
+          "title": "NW-L03 Network pagination: respect page limits and avoid duplicate rows across pages"
         }
       ],
       "last_run": null,
@@ -6089,7 +6089,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L04 an unmatched name shows an empty list and clearing it restores the rows"
+          "title": "NW-L04 Network search with no matches: show an empty list and recover when cleared"
         }
       ],
       "last_run": null,
@@ -6108,7 +6108,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/list.spec.ts",
-          "title": "NW-L05 column toggles hide only allowed columns and a fresh context shows them again"
+          "title": "NW-L05 Network columns: toggle supported columns and restore defaults in a fresh session"
         }
       ],
       "last_run": null,
@@ -6139,7 +6139,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/forms.spec.ts",
-          "title": "NW-F02 missing and short fields stay in the dialog and create nothing"
+          "title": "NW-F02 Invalid network details: show required-field and minimum-length errors without saving"
         }
       ],
       "last_run": null,
@@ -6170,7 +6170,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/forms.spec.ts",
-          "title": "NW-F04 cancel create stores nothing and a nameless API create is rejected"
+          "title": "NW-F04 Cancel new network: save nothing and reject an API request without a name"
         }
       ],
       "last_run": null,
@@ -6189,7 +6189,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/forms.spec.ts",
-          "title": "NW-F05 edit hydrates the saved network and cancel leaves every network unchanged"
+          "title": "NW-F05 Edit network: load saved values and keep all networks unchanged on cancel"
         }
       ],
       "last_run": null,
@@ -6232,7 +6232,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/forms.spec.ts",
-          "title": "NW-F08 cancel and a rejected save leave the saved network unchanged"
+          "title": "NW-F08 Unsuccessful network edit: preserve saved values after cancel or a rejected save"
         }
       ],
       "last_run": null,
@@ -6263,7 +6263,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/connection.spec.ts",
-          "title": "NW-C01 each visible row shows its own connection label beside its operational status"
+          "title": "NW-C01 Network connection labels: show each router's connection result beside its operating status"
         }
       ],
       "last_run": null,
@@ -6342,7 +6342,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/dependencies.spec.ts",
-          "title": "NW-D01 cancel delete keeps the unused network"
+          "title": "NW-D01 Cancel network deletion: keep the unused network"
         }
       ],
       "last_run": null,
@@ -6361,7 +6361,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/dependencies.spec.ts",
-          "title": "NW-D02 deleting a client-bound network is rejected and the records stay"
+          "title": "NW-D02 Delete a network with clients: reject deletion and preserve the network and clients"
         }
       ],
       "last_run": null,
@@ -6392,7 +6392,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/dependencies.spec.ts",
-          "title": "NW-D04 network choices use numeric ids and client and reseller forms list those names"
+          "title": "NW-D04 Network choices: use valid IDs and show saved network names in client and reseller forms"
         }
       ],
       "last_run": null,
@@ -6423,7 +6423,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/access.spec.ts",
-          "title": "NW-A01 anonymous networks redirects to the same-host staff login"
+          "title": "NW-A01 Network list while signed out: redirect to staff login on the same tenant"
         }
       ],
       "last_run": null,
@@ -6466,7 +6466,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/access.spec.ts",
-          "title": "NW-A04 another company cannot read probe update delete or list a known network"
+          "title": "NW-A04 Network privacy: block another company from reading, probing, changing, or deleting a network"
         }
       ],
       "last_run": null,
@@ -6509,7 +6509,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/access.spec.ts",
-          "title": "NW-A07 logout back and reload drop the network list and the other company stays separate"
+          "title": "NW-A07 Network access after logout: block back and reload, and keep the next company separate"
         }
       ],
       "last_run": null,
@@ -6540,7 +6540,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/networks/dependencies.spec.ts",
-          "title": "NW-R02 mobile width keeps filters create and the connection label reachable"
+          "title": "NW-R02 Network page on mobile: keep filters, create action, and connection labels reachable"
         }
       ],
       "last_run": null,
@@ -8110,7 +8110,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-04-a products route shows tenant-owned stock after reload"
+          "title": "FT051-04-a Product list: show only the current company's stock after reload"
         }
       ],
       "last_run": {
@@ -8138,7 +8138,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-01-a create serial product through UI and freshly read its attributes"
+          "title": "FT051-01-a Create a serial-tracked product: save the entered product details"
         }
       ],
       "last_run": {
@@ -8166,7 +8166,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-04-in stock in form and product-specific movement route survive reload"
+          "title": "FT051-04-in Stock in pages: keep the form and product movement report available after reload"
         }
       ],
       "last_run": {
@@ -8194,7 +8194,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-04-out stock out form and product-specific movement route survive reload"
+          "title": "FT051-04-out Stock out pages: keep the form and product movement report available after reload"
         }
       ],
       "last_run": {
@@ -8222,7 +8222,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-03-a backend rejects negative stock input without persisting a movement"
+          "title": "FT051-03-a Negative stock quantity: reject the request without saving a movement"
         }
       ],
       "last_run": {
@@ -8250,7 +8250,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-03-b rejects duplicate serial numbers atomically"
+          "title": "FT051-03-b Duplicate serial numbers: reject the entire stock request without partial changes"
         }
       ],
       "last_run": {
@@ -8278,7 +8278,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-03-c competing stock issues cannot consume more than the remaining quantity"
+          "title": "FT051-03-c Competing stock-out requests: prevent total issues from exceeding available stock"
         }
       ],
       "last_run": {
@@ -8306,7 +8306,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader denies product and stock mutations with no new records"
+          "title": "FT051-09-prd_reader Product write access - Read-only user: reject product and stock changes without new records"
         }
       ],
       "last_run": {
@@ -8334,7 +8334,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied denies product and stock mutations with no new records"
+          "title": "FT051-09-prd_denied Product write access - User without access: reject product and stock changes without new records"
         }
       ],
       "last_run": {
@@ -8362,7 +8362,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-10-a foreign UUID reads and deletes are denied on both product movement routes"
+          "title": "FT051-10-a Stock movement privacy: block another company from reading or deleting product movements"
         }
       ],
       "last_run": {
@@ -8390,7 +8390,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-10-b foreign category and writable tenant identifiers cannot cross company boundaries"
+          "title": "FT051-10-b Product ownership: reject foreign categories and attempts to change company or reseller scope"
         }
       ],
       "last_run": {
@@ -8418,7 +8418,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-02-a stock-in and stock-out UI persist exact quantities and expense with no invoice"
+          "title": "FT051-02-a Stock in and out: save exact quantities and the expense without creating an invoice"
         }
       ],
       "last_run": {
@@ -8446,7 +8446,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-a product filters combine and clearing restores the known baseline"
+          "title": "FT051-05-a Combined product filters: show matching stock and restore the list when cleared"
         }
       ],
       "last_run": {
@@ -8474,7 +8474,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-product_category_id independently excludes the other fixture"
+          "title": "FT051-05-product_category_id Product category filter: show matching products and hide nonmatches"
         }
       ],
       "last_run": {
@@ -8502,7 +8502,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-unit_type_id independently excludes the other fixture"
+          "title": "FT051-05-unit_type_id Product unit filter: show matching products and hide nonmatches"
         }
       ],
       "last_run": {
@@ -8530,7 +8530,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-has_serial independently excludes the other fixture"
+          "title": "FT051-05-has_serial Product serial tracking filter: show matching products and hide nonmatches"
         }
       ],
       "last_run": {
@@ -8558,7 +8558,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-06-a product pagination and column visibility preserve the selected identities"
+          "title": "FT051-06-a Product table: keep the correct rows when changing pages or toggling columns"
         }
       ],
       "last_run": {
@@ -8586,7 +8586,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-07-a edit hydrates relations, cancel preserves data, and saved changes survive reload"
+          "title": "FT051-07-a Edit product: load saved selections, discard cancelled changes, and retain saved changes after reload"
         }
       ],
       "last_run": {
@@ -8614,7 +8614,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-ui restricted users see no write controls, including direct stock URLs"
+          "title": "FT051-09-ui Read-only product user: hide write controls on the list and direct stock pages"
         }
       ],
       "last_run": {
@@ -8642,7 +8642,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-11-a failed list is not empty state and retry restores exact records"
+          "title": "FT051-11-a Product list request failure: show an error instead of an empty list and recover on retry"
         }
       ],
       "last_run": {
@@ -8670,7 +8670,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-11-b delayed filter refresh keeps rows and scroll stable then shows latest filter"
+          "title": "FT051-11-b Slow product filter: keep current rows and scroll position until the latest result arrives"
         }
       ],
       "last_run": {
@@ -8698,7 +8698,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-in-movement report filters reconcile exact scope beyond one page"
+          "title": "FT051-05-in-movement Stock in report filters: calculate totals for all matching movements across pages"
         }
       ],
       "last_run": {
@@ -8726,7 +8726,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-out-movement report filters reconcile exact scope beyond one page"
+          "title": "FT051-05-out-movement Stock out report filters: calculate totals for all matching movements across pages"
         }
       ],
       "last_run": {
@@ -8754,7 +8754,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-03-d issued serials cannot be issued twice and mismatched lots leave stock unchanged"
+          "title": "FT051-03-d Invalid serial stock-out: reject reused serials and mismatched lots without changing stock"
         }
       ],
       "last_run": {
@@ -8782,7 +8782,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-02-b invoice request preserves the approved base-price minus discount calculation"
+          "title": "FT051-02-b Stock-out invoice: calculate the total using base price minus discount"
         }
       ],
       "last_run": {
@@ -8810,7 +8810,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-03-e failed multi-line stock-out rolls back earlier rows and retains unrelated sentinels"
+          "title": "FT051-03-e Failed multi-line stock-out: roll back earlier lines and preserve unrelated stock"
         }
       ],
       "last_run": {
@@ -8838,7 +8838,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-07-delete product deletion permits unused products and preserves products with stock history"
+          "title": "FT051-07-delete Delete product: allow unused products and protect products with movement history"
         }
       ],
       "last_run": {
@@ -8866,7 +8866,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-08-12 delayed save blocks repeat submission and creates one product"
+          "title": "FT051-08-12 Slow product save: prevent repeated submission and create exactly one product"
         }
       ],
       "last_run": {
@@ -8894,7 +8894,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-10-12 logout and restricted login on the same host cannot restore write controls"
+          "title": "FT051-10-12 Switch to a restricted product user: keep write controls hidden after logout and login"
         }
       ],
       "last_run": {
@@ -8922,7 +8922,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-13 mobile keyboard English Bangla and light dark keep product forms usable"
+          "title": "FT051-13 Product forms on mobile: support keyboard use, English/Bangla, and light/dark themes"
         }
       ],
       "last_run": {
@@ -8950,7 +8950,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-edit denies the direct API capability"
+          "title": "FT051-09-prd_reader-edit Product API access - Read-only user: reject edit requests"
         }
       ],
       "last_run": {
@@ -8978,7 +8978,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-delete denies the direct API capability"
+          "title": "FT051-09-prd_reader-delete Product API access - Read-only user: reject delete requests"
         }
       ],
       "last_run": {
@@ -9006,7 +9006,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-stock-in-read denies the direct API capability"
+          "title": "FT051-09-prd_reader-stock-in-read Product API access - Read-only user: reject stock in read requests"
         }
       ],
       "last_run": {
@@ -9034,7 +9034,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-stock-out-read denies the direct API capability"
+          "title": "FT051-09-prd_reader-stock-out-read Product API access - Read-only user: reject stock out read requests"
         }
       ],
       "last_run": {
@@ -9062,7 +9062,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-stock-in-report denies the direct API capability"
+          "title": "FT051-09-prd_reader-stock-in-report Product API access - Read-only user: reject stock in report requests"
         }
       ],
       "last_run": {
@@ -9090,7 +9090,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_reader-stock-out-report denies the direct API capability"
+          "title": "FT051-09-prd_reader-stock-out-report Product API access - Read-only user: reject stock out report requests"
         }
       ],
       "last_run": {
@@ -9118,7 +9118,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-edit denies the direct API capability"
+          "title": "FT051-09-prd_denied-edit Product API access - User without access: reject edit requests"
         }
       ],
       "last_run": {
@@ -9146,7 +9146,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-delete denies the direct API capability"
+          "title": "FT051-09-prd_denied-delete Product API access - User without access: reject delete requests"
         }
       ],
       "last_run": {
@@ -9174,7 +9174,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-stock-in-read denies the direct API capability"
+          "title": "FT051-09-prd_denied-stock-in-read Product API access - User without access: reject stock in read requests"
         }
       ],
       "last_run": {
@@ -9202,7 +9202,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-stock-out-read denies the direct API capability"
+          "title": "FT051-09-prd_denied-stock-out-read Product API access - User without access: reject stock out read requests"
         }
       ],
       "last_run": {
@@ -9230,7 +9230,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-stock-in-report denies the direct API capability"
+          "title": "FT051-09-prd_denied-stock-in-report Product API access - User without access: reject stock in report requests"
         }
       ],
       "last_run": {
@@ -9258,7 +9258,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-prd_denied-stock-out-report denies the direct API capability"
+          "title": "FT051-09-prd_denied-stock-out-report Product API access - User without access: reject stock out report requests"
         }
       ],
       "last_run": {
@@ -9286,7 +9286,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-anonymous unauthenticated product and movement routes require authentication"
+          "title": "FT051-09-anonymous Product and stock APIs while signed out: require authentication"
         }
       ],
       "last_run": {
@@ -9314,7 +9314,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-09-out-only report reader opens only the permitted stock-out report"
+          "title": "FT051-09-out-only Stock-out report reader: open only the report permitted by the user's permissions"
         }
       ],
       "last_run": {
@@ -9342,7 +9342,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-08-server failed save preserves the draft and retry creates one record"
+          "title": "FT051-08-server Product save failure: keep the draft and create one product on retry"
         }
       ],
       "last_run": {
@@ -9370,7 +9370,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-in-dates inclusive local-date boundaries retain exact fixture totals"
+          "title": "FT051-05-in-dates Stock in date filter: include both date boundaries and keep exact totals"
         }
       ],
       "last_run": {
@@ -9398,7 +9398,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-05-out-dates inclusive local-date boundaries retain exact fixture totals"
+          "title": "FT051-05-out-dates Stock out date filter: include both date boundaries and keep exact totals"
         }
       ],
       "last_run": {
@@ -9426,7 +9426,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-06-size product page size persists and reload returns the exact requested row count"
+          "title": "FT051-06-size Product page size: remember the chosen size and show that many rows after reload"
         }
       ],
       "last_run": {
@@ -9454,7 +9454,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-06-reports full-filter totals remain exact across report pages"
+          "title": "FT051-06-reports Stock report pagination: retain totals for the complete filtered result across pages"
         }
       ],
       "last_run": {
@@ -9482,7 +9482,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/products/products.spec.ts",
-          "title": "FT051-11-background failed background refresh preserves loaded rows and retry recovers"
+          "title": "FT051-11-background Product refresh failure: retain loaded rows and recover on retry"
         }
       ],
       "last_run": {
@@ -10685,7 +10685,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-01 exact decimal negative zero and full-scope balances exclude other tenant and reseller"
+          "title": "FT063-01 Fund report balances: calculate positive, negative, and zero totals within the current company"
         }
       ],
       "last_run": {
@@ -10726,7 +10726,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-02 report exposes no export print or date controls for populated and empty results"
+          "title": "FT063-02 Fund report controls: hide export, print, and date actions for populated and empty lists"
         }
       ],
       "last_run": {
@@ -10767,7 +10767,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-03 funds report identity survives reload with the known account and assigned staff"
+          "title": "FT063-03 Fund report after reload: retain the saved account and assigned staff"
         }
       ],
       "last_run": {
@@ -10808,7 +10808,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-04 filters name account staff independently combined and reset"
+          "title": "FT063-04 Fund report filters: filter by name, account, and staff separately or together, then reset"
         }
       ],
       "last_run": {
@@ -10849,7 +10849,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-05 pagination full-filter totals page size and column visibility"
+          "title": "FT063-05 Fund report table: keep full-result totals when changing pages, page size, or columns"
         }
       ],
       "last_run": {
@@ -10890,7 +10890,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-06 edit hydrates cancel preserves and save persists on a fresh API read"
+          "title": "FT063-06 Edit fund: load saved values, discard cancelled changes, and persist saved changes"
         }
       ],
       "last_run": {
@@ -10931,7 +10931,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-07 invalid edits stay open and direct server validation preserves the balance"
+          "title": "FT063-07 Invalid fund edit: keep the form open and preserve the balance after server rejection"
         }
       ],
       "last_run": {
@@ -10972,7 +10972,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-08 reader and denied personas enforce actual API permissions"
+          "title": "FT063-08 Fund report permissions: allow readers and deny users without access in both UI and API"
         }
       ],
       "last_run": {
@@ -11013,7 +11013,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-09 foreign UUIDs reseller and platform boundaries hold through fresh login"
+          "title": "FT063-09 Fund ownership: enforce company, reseller, and platform boundaries after fresh login"
         }
       ],
       "last_run": {
@@ -11054,7 +11054,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-10 empty and failed requests are distinct with recovery"
+          "title": "FT063-10 Fund report loading failure: distinguish errors from no results and recover correctly"
         }
       ],
       "last_run": {
@@ -11095,7 +11095,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-11 rapid report searches offer no creation or duplicate balance effects"
+          "title": "FT063-11 Rapid fund searches: provide no create action and leave balances unchanged"
         }
       ],
       "last_run": {
@@ -11136,7 +11136,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/reports-funds/funds.spec.ts",
-          "title": "FT063-12 mobile keyboard Bangla and dark theme preserve filter usability"
+          "title": "FT063-12 Fund report on mobile: keep filters usable with keyboard, Bangla, and dark theme"
         }
       ],
       "last_run": {
@@ -12365,7 +12365,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L01 list identities contact status counts and wallet match the API after reload"
+          "title": "RS-L01 Reseller list: show saved contact details, status, client counts, and wallet balance after reload"
         }
       ],
       "last_run": null,
@@ -12384,31 +12384,31 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 name filter includes the selected reseller and reset restores the baseline"
+          "title": "RS-L02 Search resellers by name: show matches and restore the list when cleared"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 phone filter matches the API and excludes a non-matching number"
+          "title": "RS-L02 Search resellers by phone: show matching numbers and hide nonmatches"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 username filter keeps only matching usernames and an unknown username is empty"
+          "title": "RS-L02 Search resellers by username: show matches and no results for an unknown username"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 status filter matches included rows and reload clears it"
+          "title": "RS-L02 Reseller status filter: show matching accounts and clear the filter on reload"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 zone filter matches the API page for the selected zone"
+          "title": "RS-L02 Reseller zone filter: show the selected zone's resellers"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 network filter matches the API page for the selected network"
+          "title": "RS-L02 Reseller network filter: show the selected network's resellers"
         },
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L02 combined name and status filters agree with the API"
+          "title": "RS-L02 Combined reseller filters: show accounts matching both name and status"
         }
       ],
       "last_run": null,
@@ -12427,7 +12427,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L03 pagination buttons match the current page bounds"
+          "title": "RS-L03 Reseller pagination: enable page navigation only within available pages"
         }
       ],
       "last_run": null,
@@ -12446,7 +12446,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/list.spec.ts",
-          "title": "RS-L04 an unmatched name is empty and clearing it restores the list"
+          "title": "RS-L04 Reseller search with no matches: show an empty list and recover when cleared"
         }
       ],
       "last_run": null,
@@ -12477,7 +12477,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/forms.spec.ts",
-          "title": "RS-F02 missing name credentials phone and network stay on the form and create nothing"
+          "title": "RS-F02 Invalid reseller details: reject missing name, login details, phone, or network without saving"
         }
       ],
       "last_run": null,
@@ -12496,7 +12496,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/forms.spec.ts",
-          "title": "RS-F03 a duplicate company username is rejected and the draft is not created"
+          "title": "RS-F03 Duplicate reseller username: reject the request without creating another account"
         }
       ],
       "last_run": null,
@@ -12527,7 +12527,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/forms.spec.ts",
-          "title": "RS-F05 edit hydrates the saved reseller and cancel leaves it unchanged"
+          "title": "RS-F05 Edit reseller: load saved details and preserve them when cancelled"
         }
       ],
       "last_run": null,
@@ -12546,7 +12546,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/forms.spec.ts",
-          "title": "RS-F06 cancel create stores no reseller"
+          "title": "RS-F06 Cancel new reseller: return without creating an account"
         }
       ],
       "last_run": null,
@@ -12565,7 +12565,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/forms.spec.ts",
-          "title": "RS-F07 an agent requires a nonnegative whole-number commission and creates nothing"
+          "title": "RS-F07 Agent commission: require a nonnegative whole number and reject invalid enrollment"
         }
       ],
       "last_run": null,
@@ -12608,7 +12608,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/detail.spec.ts",
-          "title": "RS-P01 detail opens the selected reseller and edit returns to that UUID"
+          "title": "RS-P01 Reseller details: open the selected reseller and edit the same account"
         }
       ],
       "last_run": null,
@@ -12651,7 +12651,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/detail.spec.ts",
-          "title": "RS-P04 clients tab matches the selected reseller and clears when another reseller opens"
+          "title": "RS-P04 Reseller clients tab: show that reseller's clients and replace them when switching resellers"
         }
       ],
       "last_run": null,
@@ -12670,7 +12670,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/detail.spec.ts",
-          "title": "RS-P05 package and profile tabs stay usable for the open reseller"
+          "title": "RS-P05 Reseller detail tabs: keep package and profile information available for the selected reseller"
         }
       ],
       "last_run": null,
@@ -12701,7 +12701,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-S01 the reseller termination setting toggles, persists, and restores without changing company scope"
+          "title": "RS-S01 Reseller termination setting: save a toggle, restore it, and retain the company scope"
         }
       ],
       "last_run": null,
@@ -12732,7 +12732,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-S03 a foreign reseller UUID cannot be read or written as settings"
+          "title": "RS-S03 Reseller settings privacy: block reading or changing another company's settings"
         }
       ],
       "last_run": null,
@@ -12775,7 +12775,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-W01 recharge dialog shows the reseller balance and cancel does not change it"
+          "title": "RS-W01 Reseller recharge dialog: show the balance and leave it unchanged on cancel"
         }
       ],
       "last_run": null,
@@ -12794,7 +12794,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-W02 a nonpositive amount and missing fund stay in the dialog and keep the balance"
+          "title": "RS-W02 Invalid reseller recharge: reject zero/negative amounts or a missing fund without changing the balance"
         }
       ],
       "last_run": null,
@@ -12837,7 +12837,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not change the balance"
+          "title": "RS-W05 Invalid recharge target: reject invalid or foreign funds and unknown wallets without changing the balance"
         }
       ],
       "last_run": null,
@@ -12868,19 +12868,19 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A01 anonymous /resellers redirects to the same-host staff login"
+          "title": "RS-A01 Reseller page access - Reseller list: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A01 anonymous /resellers/create redirects to the same-host staff login"
+          "title": "RS-A01 Reseller page access - Create reseller: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A01 anonymous /resellers/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+          "title": "RS-A01 Reseller page access - Edit reseller: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A01 anonymous /resellers/view/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+          "title": "RS-A01 Reseller page access - Reseller details: redirect signed-out users to staff login"
         }
       ],
       "last_run": null,
@@ -12911,7 +12911,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A03 another company cannot read or find a known reseller UUID"
+          "title": "RS-A03 Reseller privacy: prevent another company from reading or searching this company's reseller"
         }
       ],
       "last_run": null,
@@ -12954,11 +12954,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A06 switching to an admin-role reseller is denied and the staff list stays in place"
+          "title": "RS-A06 Switch to an admin-role reseller: deny the switch and keep the staff session"
         },
         {
           "path": "tests/e2e/resellers/access.spec.ts",
-          "title": "RS-A06 a reseller without a linked user does not offer scope switching"
+          "title": "RS-A06 Reseller without a linked user: hide the account-switch action"
         }
       ],
       "last_run": null,
@@ -12989,7 +12989,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/resellers/actions.spec.ts",
-          "title": "RS-D01 cancel delete keeps the reseller"
+          "title": "RS-D01 Cancel reseller deletion: keep the reseller record"
         }
       ],
       "last_run": null,
@@ -14487,11 +14487,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-01 a live preview shows one recipient, the message units, and the wallet price"
+          "title": "FT087-01 Live SMS preview: show one recipient, message units, and the wallet charge"
         },
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-01 test mode shows the same price as not charged and does not change the wallet"
+          "title": "FT087-01 Test SMS preview: show the quoted price as uncharged and leave the wallet unchanged"
         }
       ],
       "last_run": null,
@@ -14510,7 +14510,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-02 selected clients are quoted and an unselected client is not added"
+          "title": "FT087-02 Selected SMS recipients: quote only selected clients and exclude unselected clients"
         }
       ],
       "last_run": null,
@@ -14529,7 +14529,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed"
+          "title": "FT087-03 SMS quote and balance: calculate the expected price and block unaffordable confirmation"
         }
       ],
       "last_run": null,
@@ -14548,7 +14548,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/page.spec.ts",
-          "title": "FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload"
+          "title": "FT087-04 Send SMS page: show live mode and retain the per-message rate after reload"
         }
       ],
       "last_run": null,
@@ -14567,23 +14567,23 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-05 search includes the selected client, excludes another, and reset restores the list"
+          "title": "FT087-05 Search SMS recipients: show matching clients, hide nonmatches, and reset to the full list"
         },
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-05 an unknown search is empty and shows no request error"
+          "title": "FT087-05 SMS recipient search with no matches: show no results without a request error"
         },
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-05 status filter keeps the selected status and hides the other"
+          "title": "FT087-05 SMS recipient status filter: show the selected status and hide the other"
         },
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-05 zone filter matches that zone and excludes a client in another zone"
+          "title": "FT087-05 SMS recipient zone filter: show clients in the selected zone and hide other zones"
         },
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-05 username, status, and network together match the API and reset clears them"
+          "title": "FT087-05 Combined SMS recipient filters: match Client ID, status, and network, then reset"
         }
       ],
       "last_run": null,
@@ -14616,7 +14616,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/presentation.spec.ts",
-          "title": "FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft"
+          "title": "FT087-07 SMS template: load the saved message and retain the draft when cancelling the quote"
         }
       ],
       "last_run": null,
@@ -14635,11 +14635,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-08 an empty body stays on the form and a one-character body can open the quote"
+          "title": "FT087-08 SMS message validation: reject an empty message and allow a one-character quote"
         },
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-08 a rejected template preview shows the quote error and no success"
+          "title": "FT087-08 SMS quote rejection: show the preview error without reporting success"
         }
       ],
       "last_run": null,
@@ -14658,15 +14658,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/access.spec.ts",
-          "title": "FT087-09 anonymous /sms-send redirects to the same-host staff login"
+          "title": "FT087-09 SMS page without a prefilled phone while signed out: redirect to staff login"
         },
         {
           "path": "tests/e2e/sms-send/access.spec.ts",
-          "title": "FT087-09 anonymous /sms-send?phone=01700000999 redirects to the same-host staff login"
+          "title": "FT087-09 SMS page with a prefilled phone while signed out: redirect to staff login"
         },
         {
           "path": "tests/e2e/sms-send/access.spec.ts",
-          "title": "FT087-09 anonymous SMS endpoints reject the request"
+          "title": "FT087-09 SMS APIs while signed out: reject requests without authentication"
         }
       ],
       "last_run": null,
@@ -14685,7 +14685,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/access.spec.ts",
-          "title": "FT087-10 another company cannot see or price a known SMS client"
+          "title": "FT087-10 SMS recipient privacy: prevent another company from viewing or pricing the client"
         }
       ],
       "last_run": null,
@@ -14704,7 +14704,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/list.spec.ts",
-          "title": "FT087-11 an empty filter is distinct from a failed request and clears back to data"
+          "title": "FT087-11 SMS recipient loading: distinguish empty results from request errors and recover to data"
         }
       ],
       "last_run": null,
@@ -14723,7 +14723,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/preview.spec.ts",
-          "title": "FT087-12 opening the quote twice does not change the wallet"
+          "title": "FT087-12 Reopen SMS quote: leave the wallet unchanged across repeated previews"
         }
       ],
       "last_run": null,
@@ -14742,7 +14742,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/sms-send/presentation.spec.ts",
-          "title": "FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable"
+          "title": "FT087-13 Send SMS on mobile: support keyboard use, Bangla, and dark theme"
         }
       ],
       "last_run": null,
@@ -14995,11 +14995,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-01 locking is refused because the plan omits staff status, and login stays available"
+          "title": "FT090-01 Staff locking without plan access: reject the lock and keep login available"
         },
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-01 locking the signed-in account is refused and the status stays active"
+          "title": "FT090-01 Lock your own staff account: reject the request and keep the account active"
         }
       ],
       "last_run": null
@@ -15018,11 +15018,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-02 a short password is rejected and cancel leaves the password working"
+          "title": "FT090-02 Staff password too short: reject the reset and retain the working password after cancel"
         },
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-02 a valid reset is refused because the plan omits it, and the original password still works"
+          "title": "FT090-02 Password reset without plan access: reject the reset and retain the original password"
         }
       ],
       "last_run": null
@@ -15041,11 +15041,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-03 saved zones and salary lines hydrate on edit and cancel keeps them"
+          "title": "FT090-03 Staff zones and salary lines: load saved values and retain them when editing is cancelled"
         },
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-03 impersonation enters the staff identity and leave returns the actor"
+          "title": "FT090-03 Switch to a staff account: enter that identity and return to the original user on leave"
         }
       ],
       "last_run": null
@@ -15064,15 +15064,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-04 staff list shows the API rows and reload keeps them"
+          "title": "FT090-04 Staff list: show saved staff and keep them visible after reload"
         },
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-04 create route shows the staff form and reload keeps it"
+          "title": "FT090-04 New staff page: show the create form before and after reload"
         },
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-04 edit route hydrates the staff name and reload keeps it"
+          "title": "FT090-04 Edit staff page: load the saved name before and after reload"
         }
       ],
       "last_run": null
@@ -15091,15 +15091,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-05 page one disables previous and the title uses the full total"
+          "title": "FT090-05 Staff pagination: disable Previous on page one and show the complete staff count"
         },
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-05 the page size control shows the saved preference"
+          "title": "FT090-05 Staff page size: show the saved rows-per-page preference"
         },
         {
           "path": "tests/e2e/staffs/list.spec.ts",
-          "title": "FT090-05 the designation column can be hidden and shown again"
+          "title": "FT090-05 Staff designation column: hide it and show it again using column controls"
         }
       ],
       "last_run": null
@@ -15118,15 +15118,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-06 cancel on create stores nothing"
+          "title": "FT090-06 Cancel new staff: return without saving an account"
         },
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-06 edit hydrates the saved staff and cancel leaves it unchanged"
+          "title": "FT090-06 Edit staff: load saved details and preserve them when cancelled"
         },
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-06 a valid staff persists and the edited designation survives reload"
+          "title": "FT090-06 Create and edit staff: save the account and retain its updated designation after reload"
         }
       ],
       "last_run": null
@@ -15145,15 +15145,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-07 a missing name and a short phone stay on the form"
+          "title": "FT090-07 Invalid staff details: show errors for a missing name and short phone number"
         },
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-07 a 256 character username is rejected and creates nothing"
+          "title": "FT090-07 Staff username too long: reject 256 characters without creating an account"
         },
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-07 a duplicate username is rejected and does not create a second staff"
+          "title": "FT090-07 Duplicate staff username: reject the request without creating another account"
         }
       ],
       "last_run": null
@@ -15172,19 +15172,19 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-08 anonymous /staffs redirects to the same-host staff login"
+          "title": "FT090-08 Staff page access - Staff list: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-08 anonymous /staffs/create redirects to the same-host staff login"
+          "title": "FT090-08 Staff page access - Create staff: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-08 anonymous /staffs/edit/00000000-0000-4000-8000-000000000001 redirects to the same-host staff login"
+          "title": "FT090-08 Staff page access - Edit staff: redirect signed-out users to staff login"
         },
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-08 anonymous staff reads and writes return 401"
+          "title": "FT090-08 Staff APIs while signed out: reject read and write requests with 401"
         }
       ],
       "last_run": null
@@ -15203,11 +15203,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-09 another company cannot read or change a known staff"
+          "title": "FT090-09 Staff privacy: prevent another company from reading or changing a staff account"
         },
         {
           "path": "tests/e2e/staffs/access.spec.ts",
-          "title": "FT090-09 logout back and reload do not restore the staff list"
+          "title": "FT090-09 Staff list after logout: keep it inaccessible after browser back and reload"
         }
       ],
       "last_run": null
@@ -15226,7 +15226,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/presentation.spec.ts",
-          "title": "FT090-10 the staff list shows rows instead of a request failure"
+          "title": "FT090-10 Staff list loading: show staff rows without a request failure"
         }
       ],
       "last_run": null
@@ -15245,15 +15245,15 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-11 two saves of an invalid staff form create nothing"
+          "title": "FT090-11 Repeat invalid staff save: create no account after two submissions"
         },
         {
           "path": "tests/e2e/staffs/forms.spec.ts",
-          "title": "FT090-11 leaving create during entry does not store the draft"
+          "title": "FT090-11 Leave the new staff form: discard the unsaved draft"
         },
         {
           "path": "tests/e2e/staffs/account.spec.ts",
-          "title": "FT090-11 cancel delete leaves the staff in place"
+          "title": "FT090-11 Cancel staff deletion: keep the staff account"
         }
       ],
       "last_run": null
@@ -15272,7 +15272,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/staffs/presentation.spec.ts",
-          "title": "FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable"
+          "title": "FT090-12 Staff controls on mobile: support keyboard use, Bangla, and dark theme"
         }
       ],
       "last_run": null
@@ -15893,7 +15893,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/list.spec.ts",
-          "title": "ST-L01 authorized list matches the backend page after reload"
+          "title": "ST-L01 Support ticket list: show authorized tickets and retain the expected rows after reload"
         }
       ],
       "last_run": null,
@@ -15934,7 +15934,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/list.spec.ts",
-          "title": "ST-L04 an unmatched ticket code is empty and clearing it restores the owned ticket"
+          "title": "ST-L04 Search tickets by unknown code: show no results and restore the ticket when cleared"
         }
       ],
       "last_run": null,
@@ -15964,7 +15964,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/create-edit.spec.ts",
-          "title": "ST-F01 create keeps medium/open defaults and the UUID detail survives reload"
+          "title": "ST-F01 Create support ticket: use Medium/Open defaults and keep the saved details after reload"
         }
       ],
       "last_run": null,
@@ -15994,7 +15994,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/create-edit.spec.ts",
-          "title": "ST-F03 missing client and a short message stay on the form and create nothing"
+          "title": "ST-F03 Invalid support ticket: reject a missing client or short message without saving"
         }
       ],
       "last_run": null,
@@ -16123,7 +16123,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/conversation.spec.ts",
-          "title": "ST-C01 view opens the selected UUID and back returns to the list"
+          "title": "ST-C01 Open a support ticket: show the selected conversation and return to the list with Back"
         }
       ],
       "last_run": null,
@@ -16142,7 +16142,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/conversation.spec.ts",
-          "title": "ST-C02 a staff reply is stored once and remains after reload"
+          "title": "ST-C02 Reply to a support ticket: save one reply and keep it after reload"
         }
       ],
       "last_run": null,
@@ -16161,7 +16161,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/conversation.spec.ts",
-          "title": "ST-C03 an empty reply is rejected and adds no message"
+          "title": "ST-C03 Empty ticket reply: reject the message without adding to the conversation"
         }
       ],
       "last_run": null,
@@ -16290,7 +16290,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/access.spec.ts",
-          "title": "ST-A01 anonymous staff list and detail require login"
+          "title": "ST-A01 Ticket list and details while signed out: require staff login"
         }
       ],
       "last_run": null,
@@ -16320,11 +16320,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/access.spec.ts",
-          "title": "ST-A03 another company cannot read or change a known ticket UUID"
+          "title": "ST-A03 Ticket privacy: prevent another company from reading or changing a support ticket"
         },
         {
           "path": "tests/e2e/support-tickets/access.spec.ts",
-          "title": "ST-A03 a foreign client id cannot replace the ticket client"
+          "title": "ST-A03 Ticket client ownership: reject replacing the client with another company's client"
         }
       ],
       "last_run": null,
@@ -16354,7 +16354,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/support-tickets/access.spec.ts",
-          "title": "ST-A05 logout and browser back do not restore the ticket list"
+          "title": "ST-A05 Ticket list after logout: keep it inaccessible after browser back"
         }
       ],
       "last_run": null,
@@ -17517,7 +17517,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/access.spec.ts",
-          "title": "PS-E01 launcher opens requester routes and keeps customer tickets separate"
+          "title": "PS-E01 Platform support launcher: open support pages separately from customer tickets"
         }
       ],
       "last_run": null
@@ -17533,7 +17533,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/access.spec.ts",
-          "title": "PS-E02 anonymous help and support routes require staff login"
+          "title": "PS-E02 Help and support pages while signed out: redirect to staff login on the same tenant"
         }
       ],
       "last_run": null
@@ -17582,11 +17582,11 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/access.spec.ts",
-          "title": "PS-E06 an anonymous upload is rejected before a support row exists"
+          "title": "PS-E06 Support image upload while signed out: reject the request without creating a support record"
         },
         {
           "path": "tests/e2e/platform-support/transport.spec.ts",
-          "title": "PS-E06 a disposable browser send stores one synthetic image through the app proxy"
+          "title": "PS-E06 Support image attachment: save one test image through the browser and app proxy"
         }
       ],
       "last_run": null
@@ -17679,7 +17679,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/help.spec.ts",
-          "title": "PS-E14 published help renders, switches language, and hides an unknown slug"
+          "title": "PS-E14 Help articles: show published content, switch language, and hide unknown articles"
         }
       ],
       "last_run": null
@@ -17695,7 +17695,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/help.spec.ts",
-          "title": "PS-E15 tenant help hides the platform guide and page context stays off"
+          "title": "PS-E15 Company help: hide the platform-only guide and keep page context disabled"
         }
       ],
       "last_run": null
@@ -17711,7 +17711,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/platform-support/access.spec.ts",
-          "title": "PS-E16 logout and mobile help do not keep the staff page"
+          "title": "PS-E16 Support access after logout: keep staff pages protected while mobile help remains available"
         }
       ],
       "last_run": null
@@ -17738,7 +17738,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E01 enrolls all three seller types and verifies each isolated login"
+          "title": "RF-008-E01 Seller enrollment: register tenant, reseller, and independent sellers with separate logins"
         }
       ],
       "last_run": {
@@ -17761,7 +17761,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E02 takes a real demo through Pending, Payable, and Paid"
+          "title": "RF-008-E02 Referral commission: move a demo sale from Pending to Payable to Paid"
         }
       ],
       "last_run": {
@@ -17784,7 +17784,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E03 preserves fixed contract terms and excludes rejected referrals"
+          "title": "RF-008-E03 Referral contract: retain fixed commission terms and exclude rejected referrals from earnings"
         }
       ],
       "last_run": {
@@ -17807,7 +17807,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E04 keeps one earning and transfer across retries and conflicting attempts"
+          "title": "RF-008-E04 Repeated referral actions: create only one earning and transfer despite retries or conflicts"
         }
       ],
       "last_run": {
@@ -17830,7 +17830,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E05 denies unauthorized routes, data, and actions"
+          "title": "RF-008-E05 Referral permissions: block unauthorized pages, data, and commission actions"
         }
       ],
       "last_run": {
@@ -17853,7 +17853,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/referrals/referrals.spec.ts",
-          "title": "RF-008-E06 verifies narrow layouts, keyboard use, Bangla dark mode, and normal demo recovery"
+          "title": "RF-008-E06 Referral forms: support mobile, keyboard, Bangla dark mode, and demo recovery"
         }
       ],
       "last_run": {
@@ -17876,7 +17876,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
-          "title": "FT033-13 filtered selection imports only the visible client"
+          "title": "FT033-13 Import selected MikroTik clients: import only the selected visible client after filtering"
         }
       ],
       "last_run": {
@@ -17911,7 +17911,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
-          "title": "FT033-14 resolve selects the package belonging to the client's router"
+          "title": "FT033-14 Resolve MikroTik profile: assign the package from the client's own router"
         }
       ],
       "last_run": {
@@ -17946,7 +17946,7 @@
       "test_refs": [
         {
           "path": "tests/e2e/mikrotik-sync/bugs.spec.ts",
-          "title": "FT033-15 whole-company import requires an explicit scope choice and fits mobile"
+          "title": "FT033-15 Import all company clients: require an explicit scope choice in the mobile dialog"
         }
       ],
       "last_run": {

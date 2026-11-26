@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`field markup > AccordionFormBuilder: sections with a slot 1`] = `
+exports[`field markup > Form field markup: AccordionFormBuilder: sections with a slot 1`] = `
 <div>
   <form
     class=""
@@ -923,7 +923,7 @@ exports[`field markup > AccordionFormBuilder: sections with a slot 1`] = `
 </div>
 `;
 
-exports[`field markup > FormBuilder: every field type, empty 1`] = `
+exports[`field markup > Form field markup: FormBuilder: every field type, empty 1`] = `
 <div>
   <form
     class=""
@@ -2853,7 +2853,7 @@ exports[`field markup > FormBuilder: every field type, empty 1`] = `
 </div>
 `;
 
-exports[`field markup > FormBuilder: every field type, filled 1`] = `
+exports[`field markup > Form field markup: FormBuilder: every field type, filled 1`] = `
 <div>
   <form
     class=""
@@ -5612,7 +5612,7 @@ exports[`field markup > FormBuilder: every field type, filled 1`] = `
 </div>
 `;
 
-exports[`field markup > FormBuilder: every field type, with a validation error 1`] = `
+exports[`field markup > Form field markup: FormBuilder: every field type, with a validation error 1`] = `
 <div>
   <form
     class=""
@@ -8467,7 +8467,7 @@ exports[`field markup > FormBuilder: every field type, with a validation error 1
 </div>
 `;
 
-exports[`field markup > FormFilter > a text filter with a value shows its clear button 1`] = `
+exports[`field markup > FormFilter > Form field markup: a text filter with a value shows its clear button 1`] = `
 <div>
   <div
     class="flex-none gap-3 md:flex lg:flex mt-1 h-9 !ml-[1px]"
@@ -8527,7 +8527,7 @@ exports[`field markup > FormFilter > a text filter with a value shows its clear 
 </div>
 `;
 
-exports[`field markup > FormFilter > every filter field type, in flexible rows 1`] = `
+exports[`field markup > FormFilter > Form field markup: every filter field type, in flexible rows 1`] = `
 <div>
   <div
     class="flex-none gap-3 md:flex lg:flex h-auto min-w-0 items-start mt-1 w-full"
@@ -8903,7 +8903,7 @@ exports[`field markup > FormFilter > every filter field type, in flexible rows 1
 </div>
 `;
 
-exports[`field markup > FormFilter > every filter field type, in one grid row 1`] = `
+exports[`field markup > FormFilter > Form field markup: every filter field type, in one grid row 1`] = `
 <div>
   <div
     class="flex-none gap-3 md:flex lg:flex mt-1 h-9 !ml-[1px]"

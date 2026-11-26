@@ -21,7 +21,8 @@ test.describe("vendors", () => {
     });
   });
 
-  test("shows client-side validation before creating a vendor", async ({
+  // ভেন্ডর তৈরির আগে আবশ্যক ইনপুটের ত্রুটি দেখায় কি না যাচাই করি।
+  test("New vendor validation: show required-field errors before creating a vendor", async ({
     page,
   }) => {
     const dialog = await openCreateForm(page);
@@ -46,7 +47,8 @@ test.describe("vendors", () => {
     await expect(dialog).toBeVisible();
   });
 
-  test("creates, updates, and deletes a vendor via the form", async ({
+  // ফর্ম দিয়ে পরীক্ষার ভেন্ডর তৈরি, এডিট ও ডিলিটের কাজ ঠিক হয় কি না দেখি।
+  test("Vendor forms: create a vendor, save edited details, and delete the created vendor", async ({
     page,
   }) => {
     const timestamp = Date.now();

@@ -13,7 +13,8 @@ const settings = {
 };
 
 describe("buildInvoiceViewModel", () => {
-    it("maps invoice fields and keeps the full note", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps invoice fields and keeps the full note»।
+    it("Invoice view model: maps invoice fields and keeps the full note", () => {
         const note = `Customer will pick up the parcel from Moulvibazar.\n${"Additional delivery instruction. ".repeat(20)}END`;
         const model = buildInvoiceViewModel({
             id: "uuid-1",
@@ -65,7 +66,8 @@ describe("buildInvoiceViewModel", () => {
         expect(model?.invoiceType).toBe("Monthly");
     });
 
-    it("omits a blank note and reads list line items", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «omits a blank note and reads list line items»।
+    it("Invoice view model: omits a blank note and reads list line items", () => {
         const model = buildInvoiceViewModel({
             uuid: "uuid-2",
             trackID: "INV-2",
@@ -97,7 +99,8 @@ describe("buildInvoiceViewModel", () => {
         expect(model?.total).toBe(450);
     });
 
-    it("formats amounts and quantities in Bangla digits", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «formats amounts and quantities in Bangla digits»।
+    it("Invoice view model: formats amounts and quantities in Bangla digits", () => {
         expect(formatInvoiceAmount(2260)).toBe("2,260৳");
         expect(formatInvoiceAmount(2260, "bn")).toBe("২,২৬০৳");
         expect(formatInvoiceAmount(100000, "bn")).toBe("১,০০,০০০৳");
@@ -108,7 +111,8 @@ describe("buildInvoiceViewModel", () => {
         expect(formatInvoiceDigits("501-12", "bn")).toBe("৫০১-১২");
     });
 
-    it("returns null when the payload is not an invoice", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns null when the payload is not an invoice»।
+    it("Invoice view model: returns null when the payload is not an invoice", () => {
         expect(buildInvoiceViewModel(null)).toBeNull();
         expect(buildInvoiceViewModel({})).toBeNull();
     });

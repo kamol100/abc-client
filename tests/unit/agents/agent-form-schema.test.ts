@@ -3,7 +3,8 @@ import { AgentFormFieldSchema } from "@/components/agents/agent-form-schema";
 import { AgentFormSchema } from "@/components/agents/agent-type";
 
 describe("AgentFormFieldSchema", () => {
-    it("includes the agent fields from the migration", () => {
+    // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «includes the agent fields from the migration»।
+    it("Agent form schema: include the required agent fields in the form", () => {
         const names = AgentFormFieldSchema().map((field) => field.name);
 
         expect(names).toEqual(["name", "phone", "commission", "status", "note"]);
@@ -11,7 +12,8 @@ describe("AgentFormFieldSchema", () => {
 });
 
 describe("AgentFormSchema", () => {
-    it("accepts a valid agent and defaults status to active", () => {
+    // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a valid agent and defaults status to active»।
+    it("Agent form schema: accepts a valid agent and defaults status to active", () => {
         const parsed = AgentFormSchema.parse({
             name: "Karim",
             phone: "01711111111",
@@ -28,7 +30,8 @@ describe("AgentFormSchema", () => {
         });
     });
 
-    it("rejects a missing name and a negative commission", () => {
+    // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects a missing name and a negative commission»।
+    it("Agent form schema: rejects a missing name and a negative commission", () => {
         const result = AgentFormSchema.safeParse({
             name: "",
             commission: -1,

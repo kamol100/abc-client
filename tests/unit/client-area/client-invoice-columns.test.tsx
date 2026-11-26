@@ -34,12 +34,13 @@ function renderStatus(status: InvoiceRow["status"]) {
 }
 
 describe("client invoice status column", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows %s as %s»।
   it.each([
     ["due", "Due"],
     ["paid", "Paid"],
     ["partial", "Partial"],
     ["partial_paid", "Partial"],
-  ] as const)("shows %s as %s", (status, label) => {
+  ] as const)("Client invoice columns: shows %s as %s", (status, label) => {
     renderStatus(status);
     expect(screen.getByText(label)).toBeInTheDocument();
   });

@@ -7,7 +7,8 @@ const filename = 'demo" onerror="alert(1).png';
 const attachment: SupportAttachment = { uuid, filename, mime: "image/png", bytes: 50, width: 20, height: 10 };
 
 describe("platform support rich messages", () => {
-    it("shows formatting and only loads images attached to the same message", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows formatting and only loads images attached to the same message»।
+    it("Support message formatting: shows formatting and only loads images attached to the same message", () => {
         const draft: DraftImage = {
             localId: "beef", name: filename, mime: "image/png", bytes: 50, status: "ready", uploadUuid: uuid,
         };
@@ -24,7 +25,8 @@ describe("platform support rich messages", () => {
         expect(message?.attachments).toEqual([]);
     });
 
-    it("preserves the legacy text path and leaves ordinary attachments in the gallery", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «preserves the legacy text path and leaves ordinary attachments in the gallery»।
+    it("Support message formatting: preserves the legacy text path and leaves ordinary attachments in the gallery", () => {
         expect(renderSupportRichMessage("**ordinary text**", [attachment], "requester")).toBeNull();
         expect(renderSupportRichMessage(encodeSupportRichMessage("**formatted**"), [attachment], "requester")?.attachments)
             .toEqual([attachment]);

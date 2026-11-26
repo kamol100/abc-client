@@ -48,7 +48,8 @@ const duePayment: ClientPaymentData = {
 };
 
 describe("ClientDashboardPaymentCard", () => {
-  it("shows the due amount and opens the bKash invoice modal", async () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the due amount and opens the bKash invoice modal»।
+  it("Client dashboard payment card: shows the due amount and opens the bKash invoice modal", async () => {
     const user = userEvent.setup();
     render(
       <ClientDashboardPaymentCard
@@ -68,7 +69,8 @@ describe("ClientDashboardPaymentCard", () => {
     expect(screen.getByText("client_dashboard.payment.dialog_title")).toBeInTheDocument();
   });
 
-  it("keeps bKash disabled when nothing is due", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps bKash disabled when nothing is due»।
+  it("Client dashboard payment card: keeps bKash disabled when nothing is due", () => {
     render(
       <ClientDashboardPaymentCard
         data={{ ...duePayment, invoice: [], total_due: 0 }}
@@ -82,7 +84,8 @@ describe("ClientDashboardPaymentCard", () => {
     expect(screen.getByRole("button", { name: "pay.result.pay_bkash" })).toBeDisabled();
   });
 
-  it("parses the invoice payment payload", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «parses the invoice payment payload»।
+  it("Client dashboard payment card: parses the invoice payment payload", () => {
     const parsed = ClientDashboardPaymentSchema.parse({
       id: "client-1",
       name: "Kamol",

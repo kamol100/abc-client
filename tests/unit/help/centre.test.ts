@@ -25,7 +25,8 @@ function staff(permissions: string[], extra: Partial<HelpActor> = {}): HelpActor
 const library = projectHelpLibrary(false);
 
 describe("help route context", () => {
-  it("returns the action guide when the account can open that form", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns the action guide when the account can open that form»।
+  it("Help article lookup: returns the action guide when the account can open that form", async () => {
     const response = await helpContextResponse(
       new Request("http://help.local/api/help/context?route=/clients/create"),
       { actor: staff(["clients.create"]), library },
@@ -35,7 +36,8 @@ describe("help route context", () => {
     expect(body.data.page).toContainEqual(expect.objectContaining({ id: "clients.create", topic: "clients" }));
   });
 
-  it("keeps a forbidden action guide out of the page and falls back to general help", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a forbidden action guide out of the page and falls back to general help»।
+  it("Help article lookup: keeps a forbidden action guide out of the page and falls back to general help", async () => {
     const response = await helpContextResponse(
       new Request(`http://help.local/api/help/context?route=${encodeURIComponent("/clients/create?phone=01700000000#note")}`),
       { actor: staff(["clients.access"]), library },
@@ -58,7 +60,8 @@ describe("help route context", () => {
     expect(text).not.toContain('"topic":"clients"');
   });
 
-  it("returns general help for an unmapped route and hides platform titles", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns general help for an unmapped route and hides platform titles»।
+  it("Help article lookup: returns general help for an unmapped route and hides platform titles", async () => {
     const response = await helpContextResponse(
       new Request("http://help.local/api/help/context?route=/tables"),
       { actor: staff(["clients.access", "dashboard.access"]), library },
@@ -86,7 +89,8 @@ describe("help route context", () => {
     expect(inboxText).not.toContain("platform.inbox");
   });
 
-  it("shows the platform inbox only to an account with the admin permission", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the platform inbox only to an account with the admin permission»।
+  it("Help article lookup: shows the platform inbox only to an account with the admin permission", async () => {
     const response = await helpContextResponse(
       new Request("http://help.local/api/help/context?route=/platform-support-admin"),
       { actor: staff(["platform-support-admin.access"]), library },
@@ -100,7 +104,8 @@ describe("help route context", () => {
 describe("help video fixtures", () => {
   const fixture = "FixtureVid1";
 
-  it("builds a privacy-enhanced embed without autoplay", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds a privacy-enhanced embed without autoplay»।
+  it("Help article lookup: builds a privacy-enhanced embed without autoplay", () => {
     const embed = helpVideoEmbed(fixture);
     expect(embed?.src.startsWith("https://www.youtube-nocookie.com/embed/")).toBe(true);
     expect(embed?.src).not.toMatch(/autoplay/i);
@@ -111,7 +116,8 @@ describe("help video fixtures", () => {
     expect(safeHelpVideoSrc(`${embed?.src}&autoplay=1`)).toBeNull();
   });
 
-  it("keeps Bangla text beside an English-only video id", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps Bangla text beside an English-only video id»।
+  it("Help article lookup: keeps Bangla text beside an English-only video id", () => {
     const article = HELP_ARTICLES.find((item) => item.id === "clients.create");
     expect(article).toBeDefined();
     const withVideo: HelpArticlePolicy = { ...article!, videos: { en: fixture } };
@@ -129,12 +135,14 @@ describe("help video fixtures", () => {
 });
 
 describe("help headings and coverage", () => {
-  it("assigns stable heading ids without dropping Bangla", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «assigns stable heading ids without dropping Bangla»।
+  it("Help article lookup: assigns stable heading ids without dropping Bangla", () => {
     const headings = helpHeadings("## Open the form\n### Open the form\n## ক্লায়েন্ট যোগ\n");
     expect(headings.map((heading) => heading.id)).toEqual(["open-the-form", "open-the-form-2", "ক্লায়েন্ট-যোগ"]);
   });
 
-  it("covers the dashboard inventory without a published video url", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «covers the dashboard inventory without a published video url»।
+  it("Help article lookup: covers the dashboard inventory without a published video url", () => {
     const root = path.join(process.cwd(), "content/help");
     const raw = readFileSync(path.join(root, "coverage.json"), "utf8");
     const permissions = JSON.parse(readFileSync(path.join(root, "permission-catalog.json"), "utf8")) as { permissions: string[] };
@@ -154,7 +162,8 @@ describe("help headings and coverage", () => {
     expect(HELP_ARTICLES.every((article) => !article.videos?.en && !article.videos?.bn)).toBe(true);
   });
 
-  it("keeps the same help translation keys in English and Bangla", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the same help translation keys in English and Bangla»।
+  it("Help article lookup: keeps the same help translation keys in English and Bangla", () => {
     const english = JSON.parse(readFileSync(path.join(process.cwd(), "public/lang/en.json"), "utf8")) as { help: Record<string, unknown> };
     const bangla = JSON.parse(readFileSync(path.join(process.cwd(), "public/lang/bn.json"), "utf8")) as { help: Record<string, unknown> };
     const flatten = (value: unknown, prefix = ""): string[] => {

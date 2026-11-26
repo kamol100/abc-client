@@ -30,7 +30,8 @@ vi.mock("@/lib/api/api", () => ({
 }));
 
 describe("password reset routes", () => {
-  it("keeps the forgot and reset pages public", () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the forgot and reset pages public»।
+  it("Password reset: keeps the forgot and reset pages public", () => {
     expect(isPublicPathname("/forgot-password")).toBe(true);
     expect(isPublicPathname("/reset-password")).toBe(true);
     expect(isPublicPathname("/dashboard")).toBe(false);
@@ -38,7 +39,8 @@ describe("password reset routes", () => {
 });
 
 describe("publicApiMessage", () => {
-  it("reads the email-not-found error exactly", () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads the email-not-found error exactly»।
+  it("Password reset: reads the email-not-found error exactly", () => {
     expect(publicApiMessage({ error: EMAIL_NOT_FOUND_MESSAGE }, "fallback")).toBe(
       EMAIL_NOT_FOUND_MESSAGE
     );
@@ -50,7 +52,8 @@ describe("ForgotPasswordForm", () => {
     postPublicDataMock.mockReset();
   });
 
-  it("validates the email before calling the api", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «validates the email before calling the api»।
+  it("Password reset: validates the email before calling the api", async () => {
     const user = userEvent.setup();
     render(<ForgotPasswordForm />);
 
@@ -63,7 +66,8 @@ describe("ForgotPasswordForm", () => {
     expect(postPublicDataMock).not.toHaveBeenCalled();
   });
 
-  it("submits the email and host, then shows the confirmation", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits the email and host, then shows the confirmation»।
+  it("Password reset: submits the email and host, then shows the confirmation", async () => {
     const user = userEvent.setup();
     postPublicDataMock.mockResolvedValueOnce({
       success: true,
@@ -90,7 +94,8 @@ describe("ForgotPasswordForm", () => {
     );
   });
 
-  it("shows the email-not-found message from the api", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the email-not-found message from the api»।
+  it("Password reset: shows the email-not-found message from the api", async () => {
     const user = userEvent.setup();
     postPublicDataMock.mockResolvedValueOnce({
       success: false,
@@ -105,7 +110,8 @@ describe("ForgotPasswordForm", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
-  it("disables the submit button while the request is in flight", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables the submit button while the request is in flight»।
+  it("Password reset: disables the submit button while the request is in flight", async () => {
     const user = userEvent.setup();
     let release: (value: unknown) => void = () => undefined;
     postPublicDataMock.mockImplementation(
@@ -135,7 +141,8 @@ describe("ResetPasswordForm", () => {
     postPublicDataMock.mockReset();
   });
 
-  it("explains an incomplete link without showing the token", () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «explains an incomplete link without showing the token»।
+  it("Password reset: explains an incomplete link without showing the token", () => {
     searchParamState.set("token", "super-secret-token");
 
     render(<ResetPasswordForm />);
@@ -148,7 +155,8 @@ describe("ResetPasswordForm", () => {
     );
   });
 
-  it("requires the confirmation to match before submit", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires the confirmation to match before submit»।
+  it("Password reset: requires the confirmation to match before submit", async () => {
     const user = userEvent.setup();
     searchParamState.set("token", "reset-token");
     searchParamState.set("email", "user@resetco.test");
@@ -165,7 +173,8 @@ describe("ResetPasswordForm", () => {
     expect(postPublicDataMock).not.toHaveBeenCalled();
   });
 
-  it("submits the token and shows a login link after success", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits the token and shows a login link after success»।
+  it("Password reset: submits the token and shows a login link after success", async () => {
     const user = userEvent.setup();
     searchParamState.set("token", "reset-token");
     searchParamState.set("email", "user@resetco.test");
@@ -200,7 +209,8 @@ describe("ResetPasswordForm", () => {
     );
   });
 
-  it("shows an invalid token error and a link to request another email", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an invalid token error and a link to request another email»।
+  it("Password reset: shows an invalid token error and a link to request another email", async () => {
     const user = userEvent.setup();
     searchParamState.set("token", "expired-token");
     searchParamState.set("email", "user@resetco.test");

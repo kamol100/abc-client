@@ -51,7 +51,8 @@ describe("ClientOnlineStatusCell", () => {
         useFetch.mockReset();
     });
 
-    it("keeps the same cell box while online status loads", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the same cell box while online status loads»।
+    it("Client online status cell: keeps the same cell box while online status loads", async () => {
         let resolveStatus: (value: unknown) => void = () => undefined;
         useFetch.mockImplementation(
             () => new Promise((resolve) => {

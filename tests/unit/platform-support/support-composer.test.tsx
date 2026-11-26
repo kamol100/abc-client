@@ -45,7 +45,8 @@ function FormHarness({ images, onChange }: { images: DraftImage[]; onChange: (up
 }
 
 describe("platform support composer keyboard", () => {
-    it("sends a chat with Enter and keeps Shift+Enter and IME composition available", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends a chat with Enter and keeps Shift+Enter and IME composition available»।
+    it("Support composer: sends a chat with Enter and keeps Shift+Enter and IME composition available", async () => {
         mutate.mockClear();
         const user = userEvent.setup();
         render(<SupportComposer mode="message" api="messages" allowImages={false} sendOnEnter />);
@@ -68,7 +69,8 @@ describe("platform support composer keyboard", () => {
         ));
     });
 
-    it("keeps plain Enter as a newline in issue replies", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps plain Enter as a newline in issue replies»।
+    it("Support composer: keeps plain Enter as a newline in issue replies", async () => {
         mutate.mockClear();
         const user = userEvent.setup();
         render(<SupportComposer mode="message" api="messages" allowImages={false} />);
@@ -81,7 +83,8 @@ describe("platform support composer keyboard", () => {
 });
 
 describe("platform support image composer", () => {
-    it("submits an image-only issue with an inline image and its staged token", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits an image-only issue with an inline image and its staged token»।
+    it("Support composer: submits an image-only issue with an inline image and its staged token", async () => {
         mutate.mockClear();
         const preview = vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:local-preview");
         const user = userEvent.setup();
@@ -111,13 +114,15 @@ describe("platform support image composer", () => {
         }
     });
 
-    it("renders message text without interpreting markup", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders message text without interpreting markup»।
+    it("Support composer: renders message text without interpreting markup", () => {
         const { container } = render(<SupportText value={"<b>hello</b>\nnext"} />);
         expect(container.querySelector("b")).toBeNull();
         expect(container.querySelector("p")?.textContent).toBe("<b>hello</b>\nnext");
     });
 
-    it("shows a failed upload beside a ready image and can remove the ready one before send", async () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a failed upload beside a ready image and can remove the ready one before send»।
+    it("Support composer: shows a failed upload beside a ready image and can remove the ready one before send", async () => {
         const user = userEvent.setup();
         const images: DraftImage[] = [
             { localId: "ready", name: "ready.png", bytes: 10, mime: "image/png", status: "ready", uploadToken: "token", uploadUuid: "11111111-1111-4111-8111-111111111111" },

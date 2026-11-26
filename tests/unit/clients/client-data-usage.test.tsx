@@ -106,7 +106,8 @@ describe("Client data usage", () => {
         useFetch.mockReset();
     });
 
-    it("shows formatted period totals after the speed row", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows formatted period totals after the speed row»।
+    it("Client data usage: shows formatted period totals after the speed row", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (String(url).includes("client-usage")) {
                 return usagePayload();
@@ -133,7 +134,8 @@ describe("Client data usage", () => {
         expect(screen.getByText("speed")).toBeInTheDocument();
     });
 
-    it("shows a loading state without blocking router information", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a loading state without blocking router information»।
+    it("Client data usage: shows a loading state without blocking router information", async () => {
         let resolveUsage: (value: unknown) => void = () => undefined;
         useFetch.mockImplementation(({ url }: { url: string }) => {
             if (String(url).includes("client-usage")) {
@@ -157,7 +159,8 @@ describe("Client data usage", () => {
         expect(await screen.findByText("10 GB")).toBeInTheDocument();
     });
 
-    it("keeps router information when usage is missing or the request fails", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps router information when usage is missing or the request fails»।
+    it("Client data usage: keeps router information when usage is missing or the request fails", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (String(url).includes("client-usage")) {
                 return usagePayload({ collected: false });
@@ -192,7 +195,8 @@ describe("Client data usage", () => {
         expect(screen.getByText("10.0.0.8")).toBeInTheDocument();
     });
 
-    it("fetches usage once for the same client", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fetches usage once for the same client»।
+    it("Client data usage: fetches usage once for the same client", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (String(url).includes("client-usage")) {
                 return usagePayload();

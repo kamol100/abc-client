@@ -7,7 +7,8 @@ import {
   test,
 } from "@/tests/e2e/sms-send/fixtures";
 
-test("FT087-04 Send SMS shows the live mode, per-SMS rate, and the same rate after reload", async ({ page, staff }) => {
+// SMS পেজে লাইভ মোড ও প্রতি মেসেজের রেট দেখা যায় এবং রিলোডেও রেট একই থাকে কি না দেখি।
+test("FT087-04 Send SMS page: show live mode and retain the per-message rate after reload", async ({ page, staff }) => {
   const rate = await smsRate(staff);
   await openSmsPage(page);
   await expect(page.getByRole("radio", { name: "Test Mode", exact: true })).not.toBeChecked();

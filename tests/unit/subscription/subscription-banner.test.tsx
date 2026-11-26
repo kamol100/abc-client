@@ -92,7 +92,8 @@ describe("SubscriptionBanner", () => {
     profileState.companyId = "company-a";
   });
 
-  it("stays hidden while the subscription is active or missing", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stays hidden while the subscription is active or missing»।
+  it("Subscription banner: stays hidden while the subscription is active or missing", () => {
     subscriptionState.current = summary();
     const { container, rerender } = render(<SubscriptionBanner />);
     expect(container).toBeEmptyDOMElement();
@@ -102,7 +103,8 @@ describe("SubscriptionBanner", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("shows the grace warning with the plan, remaining days, and amount due", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the grace warning with the plan, remaining days, and amount due»।
+  it("Subscription banner: shows the grace warning with the plan, remaining days, and amount due", async () => {
     subscriptionState.current = summary({
       status: "active",
       state: "grace",
@@ -121,7 +123,8 @@ describe("SubscriptionBanner", () => {
     );
   });
 
-  it("uses the singular day label and a today message when no days remain", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the singular day label and a today message when no days remain»।
+  it("Subscription banner: uses the singular day label and a today message when no days remain", async () => {
     subscriptionState.current = summary({
       state: "grace",
       days_remaining: 1,
@@ -143,7 +146,8 @@ describe("SubscriptionBanner", () => {
     );
   });
 
-  it("shows the expired warning instead of the grace warning", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the expired warning instead of the grace warning»।
+  it("Subscription banner: shows the expired warning instead of the grace warning", async () => {
     subscriptionState.current = summary({
       status: "expired",
       state: "expired",
@@ -160,7 +164,8 @@ describe("SubscriptionBanner", () => {
     expect(status).not.toHaveTextContent("subscription.banner.grace");
   });
 
-  it("dismisses the current alert until the next calendar day and keeps the other alert", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dismisses the current alert until the next calendar day and keeps the other alert»।
+  it("Subscription banner: dismisses the current alert until the next calendar day and keeps the other alert", async () => {
     subscriptionState.current = summary({
       state: "grace",
       days_remaining: 3,
@@ -193,7 +198,8 @@ describe("SubscriptionBanner", () => {
     expect(await screen.findByRole("status")).toHaveTextContent("subscription.banner.expired");
   });
 
-  it("keeps a dismissal scoped to the company", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a dismissal scoped to the company»।
+  it("Subscription banner: keeps a dismissal scoped to the company", async () => {
     localStorage.setItem(
       DISMISS_STORAGE_KEY,
       JSON.stringify({ "company-a:expired": "2026-10-10" }),

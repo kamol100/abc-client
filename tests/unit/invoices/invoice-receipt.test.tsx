@@ -48,7 +48,8 @@ const invoice = {
 } as InvoiceDetail;
 
 describe("InvoiceReceipt thermal layout", () => {
-    it("renders a 384-dot black receipt for a 58mm thermal head", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders a 384-dot black receipt for a 58mm thermal head»।
+    it("Invoice receipt: renders a 384-dot black receipt for a 58mm thermal head", () => {
         const { container } = render(<InvoiceReceipt invoices={[invoice]} />);
         const root = container.querySelector("[data-receipt-root]");
 
@@ -70,7 +71,8 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.queryByText(/Seven Hundred Fifty/)).not.toBeInTheDocument();
     });
 
-    it("hides a disabled field and applies typography only when print settings are passed", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides a disabled field and applies typography only when print settings are passed»।
+    it("Invoice receipt: hides a disabled field and applies typography only when print settings are passed", () => {
         const printSettings: InvoicePrintSettings = {
             ...DEFAULT_INVOICE_PRINT_SETTINGS,
             mode: "advanced",
@@ -92,7 +94,8 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(container.innerHTML).not.toContain("text-[36px]");
     });
 
-    it("prints the amount in words immediately before the thank-you message", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «prints the amount in words immediately before the thank-you message»।
+    it("Invoice receipt: prints the amount in words immediately before the thank-you message", () => {
         render(
             <InvoiceReceipt
                 invoices={[invoice]}
@@ -110,7 +113,8 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(words.nextElementSibling).toBe(thanks);
     });
 
-    it("keeps the original 16px inset and applies content spacing only on the left and right", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the original 16px inset and applies content spacing only on the left and right»।
+    it("Invoice receipt: keeps the original 16px inset and applies content spacing only on the left and right", () => {
         expect(receiptContentPaddingX("comfortable")).toBe(24);
         expect(receiptContentPaddingX("standard")).toBe(16);
         expect(receiptContentPaddingX("compact")).toBe(8);
@@ -150,7 +154,8 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(root()?.querySelector("[data-receipt-item-row] span")?.className).not.toContain("truncate");
     });
 
-    it("renders the basic receipt as a centered bill with the optional footer", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders the basic receipt as a centered bill with the optional footer»।
+    it("Invoice receipt: renders the basic receipt as a centered bill with the optional footer", () => {
         const printedAt = new Date(2025, 9, 1, 15, 22);
         const basicSettings: InvoicePrintSettings = {
             ...DEFAULT_INVOICE_PRINT_SETTINGS,

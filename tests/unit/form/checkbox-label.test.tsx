@@ -17,7 +17,8 @@ function Host() {
 }
 
 describe("CheckboxField single", () => {
-    it("translates its label", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «translates its label»।
+    it("Checkbox label: translates its label", () => {
         render(<Host />);
 
         expect(screen.getByText("translated:terms.agree")).toHaveAttribute("for", "agree");

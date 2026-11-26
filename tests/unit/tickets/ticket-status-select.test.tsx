@@ -84,7 +84,8 @@ describe("ticket status column", () => {
         useApiMutationMock.mockClear();
     });
 
-    it("keeps status and assignee columns visible", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps status and assignee columns visible»।
+    it("Ticket status select: keeps status and assignee columns visible", () => {
         const status = TicketColumns.find((item) => "accessorKey" in item && item.accessorKey === "status");
         const assignee = TicketColumns.find((item) => "accessorKey" in item && item.accessorKey === "staff");
 
@@ -92,7 +93,8 @@ describe("ticket status column", () => {
         expect(assignee?.enableHiding).toBe(false);
     });
 
-    it("shows the current status on a button and lists every status", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the current status on a button and lists every status»।
+    it("Ticket status select: shows the current status on a button and lists every status", () => {
         const view = renderCell("status");
         const button = view.getByRole("button", { name: "ticket.status.change: ticket.status.in_progress" });
 
@@ -104,7 +106,8 @@ describe("ticket status column", () => {
         expect(view.getByRole("menuitem", { name: "ticket.status.closed" })).toBeInTheDocument();
     });
 
-    it("saves the status chosen from the menu", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves the status chosen from the menu»।
+    it("Ticket status select: saves the status chosen from the menu", () => {
         const view = renderCell("status");
 
         fireEvent.click(view.getByRole("menuitem", { name: "ticket.status.resolved" }));
@@ -121,7 +124,8 @@ describe("ticket status column", () => {
         expect(view.getByRole("menuitem", { name: "ticket.status.in_progress" })).toHaveAttribute("aria-checked", "false");
     });
 
-    it("keeps a badge when the user cannot change status", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a badge when the user cannot change status»।
+    it("Ticket status select: keeps a badge when the user cannot change status", () => {
         permissions.names = [];
 
         const view = renderCell("status");
@@ -139,7 +143,8 @@ describe("ticket assignee column", () => {
         useApiMutationMock.mockClear();
     });
 
-    it("shows a user icon and lists the current staff, other staff, and clear", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a user icon and lists the current staff, other staff, and clear»।
+    it("Ticket status select: shows a user icon and lists the current staff, other staff, and clear", () => {
         const view = renderCell("staff");
         const button = view.getByRole("button", { name: "ticket.assigned_to.change: Nila" });
 
@@ -152,7 +157,8 @@ describe("ticket assignee column", () => {
         expect(view.getByRole("menuitem", { name: "ticket.not_assigned" })).toBeInTheDocument();
     });
 
-    it("saves the staff chosen from the menu and can clear the assignee", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves the staff chosen from the menu and can clear the assignee»।
+    it("Ticket status select: saves the staff chosen from the menu and can clear the assignee", () => {
         const view = renderCell("staff");
 
         expect(useApiMutationMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -173,7 +179,8 @@ describe("ticket assignee column", () => {
         expect(view.getByRole("button", { name: "ticket.assigned_to.change: ticket.not_assigned" })).toBeInTheDocument();
     });
 
-    it("shows the user icon and name without a menu when the user cannot assign", () => {
+    // টিকিটের স্ট্যাটাস ও দায়িত্ব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the user icon and name without a menu when the user cannot assign»।
+    it("Ticket status select: shows the user icon and name without a menu when the user cannot assign", () => {
         permissions.names = [];
 
         const view = renderCell("staff");

@@ -73,7 +73,8 @@ describe("ClientBillingPaymentCell payment action", () => {
         useFetch.mockReset();
     });
 
-    it("shows the due amount and loads payment only after the icon is clicked", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the due amount and loads payment only after the icon is clicked»।
+    it("Client billing payment cell: shows the due amount and loads payment only after the icon is clicked", async () => {
         let releaseDialog!: () => void;
         dialogModule.pending = new Promise<void>((resolve) => {
             releaseDialog = resolve;
@@ -113,7 +114,8 @@ describe("ClientBillingPaymentCell payment action", () => {
         expect(screen.getByTestId("pay-dialog")).toHaveAttribute("data-open", "false");
     });
 
-    it("hides the payment icon without invoices.pay", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the payment icon without invoices.pay»।
+    it("Client billing payment cell: hides the payment icon without invoices.pay", () => {
         permissions.canPay = false;
 
         render(<ClientBillingPaymentCell client={{ ...client, status: 0 }} />);
@@ -124,7 +126,8 @@ describe("ClientBillingPaymentCell payment action", () => {
         expect(useFetch).not.toHaveBeenCalled();
     });
 
-    it("shows a zero due amount when the client has no invoices", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a zero due amount when the client has no invoices»।
+    it("Client billing payment cell: shows a zero due amount when the client has no invoices", () => {
         render(<ClientBillingPaymentCell client={{ ...client, invoiceDue: [] }} />);
 
         expect(screen.getByText("0")).toBeInTheDocument();

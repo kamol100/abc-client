@@ -6,7 +6,8 @@ const clientPayload = (values: Record<string, unknown>) =>
     sanitizeServerActionPayload(ClientFormSchema.parse(values));
 
 describe("required PPPoE credentials", () => {
-    it("uses translation keys when username or password is missing", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses translation keys when username or password is missing»।
+    it("Client validation and request data: uses translation keys when username or password is missing", () => {
         const result = ClientFormSchema.safeParse({
             name: "testuser02",
             pppoe_username: undefined,
@@ -27,7 +28,8 @@ describe("required PPPoE credentials", () => {
 });
 
 describe("required client dropdowns", () => {
-    it("asks for a network and package when those dropdowns are empty", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks for a network and package when those dropdowns are empty»।
+    it("Client validation and request data: asks for a network and package when those dropdowns are empty", () => {
         const result = ClientFormSchema.safeParse({
             name: "testuser02",
             pppoe_username: "testuser02",
@@ -48,7 +50,8 @@ describe("required client dropdowns", () => {
 });
 
 describe("client update payload", () => {
-    it("turns blank fields into null and keeps column types", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «turns blank fields into null and keeps column types»।
+    it("Client validation and request data: turns blank fields into null and keeps column types", () => {
         const payload = clientPayload({
             name: "testuser02",
             phone: "01677217129",
@@ -115,7 +118,8 @@ describe("client update payload", () => {
         expect(payload.reseller_id).not.toBe("null");
     });
 
-    it("accepts the leaked string markers and coerces integer columns", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts the leaked string markers and coerces integer columns»।
+    it("Client validation and request data: accepts the leaked string markers and coerces integer columns", () => {
         const payload = clientPayload({
             name: "testuser02",
             phone: "+8801677217129",
@@ -146,7 +150,8 @@ describe("client update payload", () => {
         expect(payload.payment_deadline).not.toBe("$undefined");
     });
 
-    it("keeps payment deadline 0 and an assigned reseller", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps payment deadline 0 and an assigned reseller»।
+    it("Client validation and request data: keeps payment deadline 0 and an assigned reseller", () => {
         const payload = clientPayload({
             name: "testuser02",
             phone: "+8801677217129",
@@ -168,7 +173,8 @@ describe("client update payload", () => {
 });
 
 describe("client create and edit billing defaults", () => {
-    it("submits create defaults and keeps an edited billing choice", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits create defaults and keeps an edited billing choice»।
+    it("Client validation and request data: submits create defaults and keeps an edited billing choice", () => {
         const created = clientPayload({
             name: "testuser02",
             phone: "+8801677217129",
@@ -212,7 +218,8 @@ describe("client create and edit billing defaults", () => {
         expect(edited.cable_length).toBe(0);
     });
 
-    it("keeps a missing edit billing value null", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a missing edit billing value null»।
+    it("Client validation and request data: keeps a missing edit billing value null", () => {
         const payload = clientPayload({
             name: "testuser02",
             phone: "+8801677217129",
@@ -232,7 +239,8 @@ describe("client create and edit billing defaults", () => {
 });
 
 describe("sanitizeServerActionPayload", () => {
-    it("drops undefined keys and replaces the server-action marker", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops undefined keys and replaces the server-action marker»।
+    it("Client validation and request data: drops undefined keys and replaces the server-action marker", () => {
         const payload = sanitizeServerActionPayload({
             name: "testuser02",
             ip_address: undefined,
@@ -251,7 +259,8 @@ describe("sanitizeServerActionPayload", () => {
 });
 
 describe("client phone", () => {
-    it("is required and saved without the +88 country code", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is required and saved without the +88 country code»।
+    it("Client validation and request data: is required and saved without the +88 country code", () => {
         const base = {
             name: "testuser02",
             pppoe_username: "testuser02",

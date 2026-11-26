@@ -90,7 +90,8 @@ describe("staff impersonation action", () => {
     impersonation.switching = false;
   });
 
-  it("places the account switcher immediately before delete", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «places the account switcher immediately before delete»।
+  it("Staff impersonate: places the account switcher immediately before delete", () => {
     const { container } = renderActions();
     const controls = Array.from(container.querySelectorAll("button, a"));
     const switcher = container.querySelector(".lucide-arrow-left-right")?.closest("button");
@@ -103,7 +104,8 @@ describe("staff impersonation action", () => {
     );
   });
 
-  it("asks for confirmation and impersonates that staff record", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks for confirmation and impersonates that staff record»।
+  it("Staff impersonate: asks for confirmation and impersonates that staff record", async () => {
     const user = userEvent.setup();
     renderActions();
 
@@ -116,7 +118,8 @@ describe("staff impersonation action", () => {
     expect(impersonation.impersonate).toHaveBeenCalledWith({ id: "staff-1" }, "staff");
   });
 
-  it("hides the switcher on the signed-in staff member's own account", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the switcher on the signed-in staff member's own account»।
+  it("Staff impersonate: hides the switcher on the signed-in staff member's own account", () => {
     const { unmount } = renderActions({ user: { uuid: "current-user" } });
     expect(screen.queryByRole("button", { name: "staff.impersonate.tooltip" })).not.toBeInTheDocument();
     unmount();
@@ -125,14 +128,16 @@ describe("staff impersonation action", () => {
     expect(screen.queryByRole("button", { name: "staff.impersonate.tooltip" })).not.toBeInTheDocument();
   });
 
-  it("hides the switcher without the staff impersonation permission", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the switcher without the staff impersonation permission»।
+  it("Staff impersonate: hides the switcher without the staff impersonation permission", () => {
     permissions.allowed.clear();
     renderActions();
 
     expect(screen.queryByRole("button", { name: "staff.impersonate.tooltip" })).not.toBeInTheDocument();
   });
 
-  it("disables the switcher when the staff account cannot be impersonated", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables the switcher when the staff account cannot be impersonated»।
+  it("Staff impersonate: disables the switcher when the staff account cannot be impersonated", () => {
     const { unmount } = renderActions({ status: "inactive" });
     expect(screen.getByRole("button", { name: "staff.impersonate.tooltip" })).toBeDisabled();
     unmount();
@@ -141,7 +146,8 @@ describe("staff impersonation action", () => {
     expect(screen.getByRole("button", { name: "staff.impersonate.tooltip" })).toBeDisabled();
   });
 
-  it("does not send a second request while impersonation is in progress", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not send a second request while impersonation is in progress»।
+  it("Staff impersonate: does not send a second request while impersonation is in progress", async () => {
     impersonation.switching = true;
     const user = userEvent.setup();
     renderActions();

@@ -36,13 +36,15 @@ const sshClosed: OltTestResult = {
 };
 
 describe("test result steps", () => {
-    it("lists the steps in run order", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists the steps in run order»।
+    it("OLT test result: lists the steps in run order", () => {
         expect(testSteps(sshClosed).map((step) => step.key)).toEqual(["reachable", "cli_port", "cli_login", "snmp"]);
         expect(testSteps(null)).toEqual([]);
         expect(testSteps({ steps: undefined as unknown as [] })).toEqual([]);
     });
 
-    it("reads pass / fail / warning", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads pass / fail / warning»।
+    it("OLT test result: reads pass / fail / warning", () => {
         expect(testPassed(sshClosed)).toBe(false);
         expect(firstFailedStep(sshClosed)?.key).toBe("cli_port");
         const blocked = { ...sshClosed, ok: true, suggestion: null, steps: [{ key: "reachable", status: "warning" as const, message: "no ping" }] };
@@ -51,14 +53,16 @@ describe("test result steps", () => {
         expect(testPassed(null)).toBe(false);
     });
 
-    it("shows unknown statuses grey", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows unknown statuses grey»।
+    it("OLT test result: shows unknown statuses grey", () => {
         expect(stepStatus({ status: "exploded" as never })).toBe("skipped");
         expect(stepStatus({ status: "fail" })).toBe("fail");
     });
 });
 
 describe("protocol suggestion", () => {
-    it("suggests the protocol whose port is open, unless it is already saved", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «suggests the protocol whose port is open, unless it is already saved»।
+    it("OLT test result: suggests the protocol whose port is open, unless it is already saved", () => {
         expect(suggestedProtocol(sshClosed, "ssh")).toBe("telnet");
         expect(suggestedProtocol(sshClosed, "telnet")).toBeNull();
         expect(suggestedProtocol({ ...sshClosed, suggestion: null }, "ssh")).toBe("telnet"); // from the cli_port step
@@ -66,7 +70,8 @@ describe("protocol suggestion", () => {
         expect(suggestionStep(sshClosed)?.message_key).toBe("olt.test.cli_port.use_other");
     });
 
-    it("builds the PUT body that changes only the protocol and keeps the secrets", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds the PUT body that changes only the protocol and keeps the secrets»।
+    it("OLT test result: builds the PUT body that changes only the protocol and keeps the secrets", () => {
         expect(switchProtocolPayload({ snmp_version: "v2c", cli_username: "admin", snmp_v3_user: null }, "telnet")).toEqual({
             snmp_version: "v2c",
             cli_protocol: "telnet",
@@ -81,13 +86,15 @@ describe("protocol suggestion", () => {
 describe("stepMessage", () => {
     const step = testSteps(sshClosed)[1];
 
-    it("translates message_key with params", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «translates message_key with params»।
+    it("OLT test result: translates message_key with params", () => {
         const t = (key: string, options?: Record<string, unknown>) =>
             key === "olt.test.cli_port.use_other" ? `${options?.protocol} closed, use ${options?.other_protocol}` : String(options?.defaultValue ?? key);
         expect(stepMessage(step, t)).toBe("SSH closed, use Telnet");
     });
 
-    it("falls back to the English message for an unknown key", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «falls back to the English message for an unknown key»।
+    it("OLT test result: falls back to the English message for an unknown key", () => {
         const t = (key: string, options?: Record<string, unknown>) => String(options?.defaultValue ?? key);
         expect(stepMessage(step, t)).toBe(step.message);
         const echoKey = (key: string) => key; // i18next without a default
@@ -97,7 +104,8 @@ describe("stepMessage", () => {
 });
 
 describe("pollFinished", () => {
-    it("waits until last_poll_at differs from the value the 202 returned", async () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «waits until last_poll_at differs from the value the 202 returned»।
+    it("OLT test result: waits until last_poll_at differs from the value the 202 returned", async () => {
         const { pollFinished } = await import("@/components/olt/olt-poll");
         const wait = { since: Date.now(), before: "2026-10-13T08:10:00+00:00" };
         expect(pollFinished(wait, "2026-10-13T08:10:00+00:00")).toBe(false);
@@ -108,7 +116,8 @@ describe("pollFinished", () => {
 });
 
 describe("stepMessage tidying", () => {
-    it("drops what empty params leave behind", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops what empty params leave behind»।
+    it("OLT test result: drops what empty params leave behind", () => {
         const t = (_key: string, options?: Record<string, unknown>) =>
             `SNMP works: ${options?.vendor} ${options?.model} (${options?.sys_name}).`;
         const step = { key: "snmp", status: "ok" as const, message: "x", message_key: "olt.test.snmp.ok", params: { vendor: "", model: "", sys_name: "" } };

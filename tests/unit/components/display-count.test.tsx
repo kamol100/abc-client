@@ -13,7 +13,8 @@ const visibleAmount = (container: HTMLElement) =>
     container.querySelector("[aria-hidden='true'] .absolute");
 
 describe("DisplayCount currency label", () => {
-    it("hides the BDT label by default", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the BDT label by default»।
+    it("Display count: hides the BDT label by default", () => {
         const { container } = render(
             <DisplayCount amount={1500} formatCurrency translation={false} />,
         );
@@ -23,7 +24,8 @@ describe("DisplayCount currency label", () => {
         expect(amount?.textContent).not.toContain("BDT");
     });
 
-    it("hides the /- suffix when currencySuffix is false", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the /- suffix when currencySuffix is false»।
+    it("Display count: hides the /- suffix when currencySuffix is false", () => {
         const { container } = render(
             <DisplayCount amount={1500} formatCurrency currencySuffix={false} translation={false} />,
         );
@@ -33,13 +35,15 @@ describe("DisplayCount currency label", () => {
         expect(amount?.textContent).not.toContain("/-");
     });
 
-    it("does not add /- to a plain count", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not add /- to a plain count»।
+    it("Display count: does not add /- to a plain count", () => {
         const { container } = render(<DisplayCount amount={12} translation={false} />);
 
         expect(visibleAmount(container)?.textContent).not.toContain("/-");
     });
 
-    it("shows the BDT label when hideCurrency is false", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the BDT label when hideCurrency is false»।
+    it("Display count: shows the BDT label when hideCurrency is false", () => {
         const { container } = render(
             <DisplayCount amount={1500} formatCurrency hideCurrency={false} translation={false} />,
         );

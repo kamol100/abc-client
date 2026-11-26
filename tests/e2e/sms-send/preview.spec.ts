@@ -45,7 +45,8 @@ async function singleDraft(page: Page, staff: Session) {
   return { rate, balance, price: singleSmsPrice(PREVIEW_BODY, rate, balance) };
 }
 
-test("FT087-01 a live preview shows one recipient, the message units, and the wallet price", async ({ page, staff }) => {
+// লাইভ SMS প্রিভিউতে একজন প্রাপক, মেসেজ ইউনিট ও ওয়ালেটের চার্জ ঠিক দেখা যায় কি না দেখি।
+test("FT087-01 Live SMS preview: show one recipient, message units, and the wallet charge", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   const { price } = await singleDraft(page, staff);
   expect(smsUnits(PREVIEW_BODY)).toBe(1);
@@ -62,7 +63,8 @@ test("FT087-01 a live preview shows one recipient, the message units, and the wa
   expectMoney(await walletAvailable(staff), before);
 });
 
-test("FT087-01 test mode shows the same price as not charged and does not change the wallet", async ({ page, staff }) => {
+// টেস্ট মোডে কোটের টাকা কাটা হবে না দেখায় এবং ওয়ালেট অপরিবর্তিত থাকে কি না দেখি।
+test("FT087-01 Test SMS preview: show the quoted price as uncharged and leave the wallet unchanged", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   const { price } = await singleDraft(page, staff);
   await page.getByRole("radio", { name: "Test Mode", exact: true }).check();
@@ -79,7 +81,8 @@ test("FT087-01 test mode shows the same price as not charged and does not change
   expectMoney(await walletAvailable(staff), before);
 });
 
-test("FT087-02 selected clients are quoted and an unselected client is not added", async ({ page, staff }) => {
+// বাছাই করা ক্লায়েন্টদেরই কোটে ধরে এবং না বাছা ক্লায়েন্ট যোগ হয় না কি না দেখি।
+test("FT087-02 Selected SMS recipients: quote only selected clients and exclude unselected clients", async ({ page, staff }) => {
   const template = uniqueTemplate(await smsTemplates(staff), "custom_client");
   const listed = await smsClients(staff, clientQuery(template));
   if (listed.pagination.total < 2 || listed.data.length < 2) {
@@ -113,7 +116,8 @@ function shortageMessage(rate: number, balance: number): string | undefined {
   return "a".repeat(length);
 }
 
-test("FT087-03 preview price matches the rate and an unaffordable message cannot be confirmed", async ({ page, staff }) => {
+// রেট অনুযায়ী SMS-এর দাম ঠিক হয় এবং ব্যালেন্স কম হলে নিশ্চিত করা আটকে যায় কি না দেখি।
+test("FT087-03 SMS quote and balance: calculate the expected price and block unaffordable confirmation", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   const { rate, balance, price } = await singleDraft(page, staff);
   await sendButton(page).click();
@@ -145,7 +149,8 @@ test("FT087-03 preview price matches the rate and an unaffordable message cannot
   expectMoney(await walletAvailable(staff), before);
 });
 
-test("FT087-08 an empty body stays on the form and a one-character body can open the quote", async ({ page, staff }) => {
+// খালি SMS বার্তায় ফর্মেই রাখে কিন্তু এক অক্ষরের বার্তায় কোট খোলে কি না দেখি।
+test("FT087-08 SMS message validation: reject an empty message and allow a one-character quote", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   const template = uniqueTemplate(await smsTemplates(staff), "custom_other");
   await openSmsPage(page);
@@ -172,7 +177,8 @@ test("FT087-08 an empty body stays on the form and a one-character body can open
   expectMoney(await walletAvailable(staff), before);
 });
 
-test("FT087-08 a rejected template preview shows the quote error and no success", async ({ page, staff }) => {
+// টেমপ্লেটের প্রিভিউ প্রত্যাখ্যাত হলে ত্রুটি দেখায় এবং সফল বলে না কি না দেখি।
+test("FT087-08 SMS quote rejection: show the preview error without reporting success", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   const rejected = await staff.call("sms-store/preview", "POST", {
     sms_template_id: 0,
@@ -204,7 +210,8 @@ test("FT087-08 a rejected template preview shows the quote error and no success"
   expectMoney(await walletAvailable(staff), before);
 });
 
-test("FT087-12 opening the quote twice does not change the wallet", async ({ page, staff }) => {
+// SMS-এর কোট বারবার খুললেও ওয়ালেটের টাকা বদলায় না কি না দেখি; পাঠানো নিশ্চিত করি না।
+test("FT087-12 Reopen SMS quote: leave the wallet unchanged across repeated previews", async ({ page, staff }) => {
   const before = await walletAvailable(staff);
   await singleDraft(page, staff);
   await sendButton(page).click();

@@ -55,7 +55,8 @@ const account: ClientAccount = {
 };
 
 describe("ClientAccountView", () => {
-  it("shows the subscriber record as read-only and keeps photo as the only edit", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the subscriber record as read-only and keeps photo as the only edit»।
+  it("Client account page: shows the subscriber record as read-only and keeps photo as the only edit", () => {
     const onSelectFile = vi.fn();
     const onRemove = vi.fn();
     const { container } = render(
@@ -100,7 +101,8 @@ describe("ClientAccountView", () => {
     expect(onSelectFile).toHaveBeenCalledWith(file);
   });
 
-  it("hides photo removal when the client has no photo", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides photo removal when the client has no photo»।
+  it("Client account page: hides photo removal when the client has no photo", () => {
     render(
       <ClientAccountView
         account={{ ...account, photo: null }}
@@ -117,7 +119,8 @@ describe("ClientAccountView", () => {
 });
 
 describe("parseClientAccount", () => {
-  it("keeps profile fields and drops secrets", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps profile fields and drops secrets»।
+  it("Client account page: keeps profile fields and drops secrets", () => {
     const parsed = parseClientAccount({
       id: "uuid-1",
       name: "Kamol",

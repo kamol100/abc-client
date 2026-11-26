@@ -67,7 +67,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("request", () => {
-        it("create sends POST to the api with the form values", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create sends POST to the api with the form values»।
+        it("Form submission: create sends POST to the api with the form values", async () => {
             renderForm();
             await typeNameAndSave();
 
@@ -75,7 +76,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()[0]).toEqual({ url: "/zones", method: "POST", data: { name: "North" } });
         });
 
-        it("edit sends PUT to api/{id}, whatever `method` says", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit sends PUT to api/{id}, whatever `method` says»।
+        it("Form submission: edit sends PUT to api/{id}, whatever `method` says", async () => {
             renderForm({ mode: "edit", method: "POST", data: { id: 5, name: "Old", note: "n" } });
             const user = userEvent.setup();
             await user.clear(inputById("name"));
@@ -89,7 +91,8 @@ describe("FormBuilder submit", () => {
             });
         });
 
-        it("create with method PUT sends PUT to the exact api, with no id suffix", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create with method PUT sends PUT to the exact api, with no id suffix»।
+        it("Form submission: create with method PUT sends PUT to the exact api, with no id suffix", async () => {
             renderForm({ method: "PUT", api: "/company-profile" });
             await typeNameAndSave();
 
@@ -97,7 +100,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()[0]).toMatchObject({ url: "/company-profile", method: "PUT" });
         });
 
-        it("create with method GET sends POST", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create with method GET sends POST»।
+        it("Form submission: create with method GET sends POST", async () => {
             renderForm({ method: "GET" });
             await typeNameAndSave();
 
@@ -105,7 +109,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()[0].method).toBe("POST");
         });
 
-        it("adds a leading slash to an api given without one", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds a leading slash to an api given without one»।
+        it("Form submission: adds a leading slash to an api given without one", async () => {
             renderForm({ api: "zones" });
             await typeNameAndSave();
 
@@ -113,7 +118,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()[0].url).toBe("/zones");
         });
 
-        it("does nothing on submit when there is no api", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does nothing on submit when there is no api»।
+        it("Form submission: does nothing on submit when there is no api", async () => {
             const onSuccess = vi.fn();
             renderForm({ api: undefined, onSuccess });
             await typeNameAndSave();
@@ -123,7 +129,8 @@ describe("FormBuilder submit", () => {
             expect(onSuccess).not.toHaveBeenCalled();
         });
 
-        it("does not send when Zod validation fails, and shows the message under the field", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not send when Zod validation fails, and shows the message under the field»।
+        it("Form submission: does not send when Zod validation fails, and shows the message under the field", async () => {
             renderForm();
             const user = userEvent.setup();
             await user.click(screen.getByRole("button", { name: "common.save" }));
@@ -134,7 +141,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("payload steps", () => {
-        it("runs preparePayload, then transformPayload, then merges extraPayload last", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «runs preparePayload, then transformPayload, then merges extraPayload last»।
+        it("Form submission: runs preparePayload, then transformPayload, then merges extraPayload last", async () => {
             const order: string[] = [];
             renderForm({
                 preparePayload: (values) => {
@@ -160,7 +168,8 @@ describe("FormBuilder submit", () => {
             });
         });
 
-        it("awaits an async preparePayload", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «awaits an async preparePayload»।
+        it("Form submission: awaits an async preparePayload", async () => {
             renderForm({
                 preparePayload: async (values) => {
                     await new Promise((resolve) => setTimeout(resolve, 10));
@@ -173,7 +182,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()[0].data).toEqual({ name: "North", uploaded: true });
         });
 
-        it("skips the request and keeps the typed values when preparePayload returns false", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «skips the request and keeps the typed values when preparePayload returns false»।
+        it("Form submission: skips the request and keeps the typed values when preparePayload returns false", async () => {
             renderForm({ preparePayload: () => false });
             await typeNameAndSave();
 
@@ -182,7 +192,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("North");
         });
 
-        it("drops undefined keys and turns the \"$undefined\" marker into null", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops undefined keys and turns the "$undefined" marker into null»।
+        it("Form submission: drops undefined keys and turns the \"$undefined\" marker into null", async () => {
             renderForm({
                 transformPayload: (values) => ({
                     ...values,
@@ -201,7 +212,8 @@ describe("FormBuilder submit", () => {
             });
         });
 
-        it("sends a Date value as a Date object (no date conversion in the builder)", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends a Date value as a Date object (no date conversion in the builder)»।
+        it("Form submission: sends a Date value as a Date object (no date conversion in the builder)", async () => {
             const when = new Date(2026, 10, 25);
             renderForm({ transformPayload: (values) => ({ ...values, when }) });
             await typeNameAndSave();
@@ -214,7 +226,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("after a successful save", () => {
-        it("calls onSuccess with the response data and the sent payload, then onClose", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onSuccess with the response data and the sent payload, then onClose»।
+        it("Form submission: calls onSuccess with the response data and the sent payload, then onClose", async () => {
             mockApi((request) =>
                 request.method === "POST" ? { success: true, data: { id: 9, message: "zone.saved" } } : undefined,
             );
@@ -236,7 +249,8 @@ describe("FormBuilder submit", () => {
             expect(calls).toEqual(["success", "close"]);
         });
 
-        it("resets the form to its starting values", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets the form to its starting values»।
+        it("Form submission: resets the form to its starting values", async () => {
             renderForm();
             await typeNameAndSave();
 
@@ -244,7 +258,8 @@ describe("FormBuilder submit", () => {
             await waitFor(() => expect(inputById("name")).toHaveValue(""));
         });
 
-        it("keeps the typed values when resetOnSuccess is false", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the typed values when resetOnSuccess is false»।
+        it("Form submission: keeps the typed values when resetOnSuccess is false", async () => {
             const onSuccess = vi.fn();
             renderForm({ resetOnSuccess: false, onSuccess });
             await typeNameAndSave();
@@ -253,7 +268,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("North");
         });
 
-        it("shows the response message as the success toast when there is no successMessage", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the response message as the success toast when there is no successMessage»।
+        it("Form submission: shows the response message as the success toast when there is no successMessage", async () => {
             mockApi((request) =>
                 request.method === "POST" ? { success: true, data: { message: "zone.saved" } } : undefined,
             );
@@ -264,7 +280,8 @@ describe("FormBuilder submit", () => {
             expect(toast.success).toHaveBeenCalledWith("zone.saved");
         });
 
-        it("shows successMessage once, and not the response message", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows successMessage once, and not the response message»।
+        it("Form submission: shows successMessage once, and not the response message", async () => {
             mockApi((request) =>
                 request.method === "POST" ? { success: true, data: { message: "zone.saved" } } : undefined,
             );
@@ -275,7 +292,8 @@ describe("FormBuilder submit", () => {
             expect(toast.success).toHaveBeenCalledWith("zone.create_success");
         });
 
-        it("invalidates each key of a comma-separated queryKey", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «invalidates each key of a comma-separated queryKey»।
+        it("Form submission: invalidates each key of a comma-separated queryKey", async () => {
             const view = renderForm({ queryKey: "zones, sub-zones" });
             const invalidate = vi.spyOn(view.client, "invalidateQueries");
             await typeNameAndSave();
@@ -285,7 +303,8 @@ describe("FormBuilder submit", () => {
             expect(invalidate).toHaveBeenCalledWith({ queryKey: ["sub-zones"] });
         });
 
-        it("invalidates the default key \"data\" when no queryKey is given", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «invalidates the default key "data" when no queryKey is given»।
+        it("Form submission: invalidates the default key \"data\" when no queryKey is given", async () => {
             const view = renderForm({ queryKey: undefined });
             const invalidate = vi.spyOn(view.client, "invalidateQueries");
             await typeNameAndSave();
@@ -293,7 +312,8 @@ describe("FormBuilder submit", () => {
             await waitFor(() => expect(invalidate).toHaveBeenCalledWith({ queryKey: ["data"] }));
         });
 
-        it("invalidates nothing when skipInvalidate is set", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «invalidates nothing when skipInvalidate is set»।
+        it("Form submission: invalidates nothing when skipInvalidate is set", async () => {
             const onSuccess = vi.fn();
             const view = renderForm({ skipInvalidate: true, onSuccess });
             const invalidate = vi.spyOn(view.client, "invalidateQueries");
@@ -303,7 +323,8 @@ describe("FormBuilder submit", () => {
             expect(invalidate).not.toHaveBeenCalled();
         });
 
-        it("closes the surrounding MyDialog when no onClose is passed", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «closes the surrounding MyDialog when no onClose is passed»।
+        it("Form submission: closes the surrounding MyDialog when no onClose is passed", async () => {
             const user = userEvent.setup();
             renderWithClient(
                 <MyDialog trigger={<button type="button">open</button>} title="zone.create">
@@ -332,7 +353,8 @@ describe("FormBuilder submit", () => {
         const failWith = (body: Record<string, unknown>) =>
             mockApi((request) => (request.method === "GET" ? undefined : { success: false, ...body }));
 
-        it("keeps the values, does not close, and calls onSubmitError with the error and payload", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the values, does not close, and calls onSubmitError with the error and payload»।
+        it("Form submission: keeps the values, does not close, and calls onSubmitError with the error and payload", async () => {
             failWith({ message: "zone.save_failed", status: 500 });
             const onClose = vi.fn();
             const onSuccess = vi.fn();
@@ -351,7 +373,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("North");
         });
 
-        it("shows a 422 message under a top-level field that is in formSchema", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a 422 message under a top-level field that is in formSchema»।
+        it("Form submission: shows a 422 message under a top-level field that is in formSchema", async () => {
             failWith({ message: "invalid", status: 422, errors: { name: ["zone.name.taken"] } });
             renderForm();
             await typeNameAndSave();
@@ -359,7 +382,8 @@ describe("FormBuilder submit", () => {
             expect(await screen.findByText("zone.name.taken")).toBeInTheDocument();
         });
 
-        it("shows a 422 message under a field inside a row", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a 422 message under a field inside a row»।
+        it("Form submission: shows a 422 message under a field inside a row", async () => {
             failWith({ message: "invalid", status: 422, errors: { "items.0.qty": ["qty.invalid"] } });
             renderForm({
                 formSchema: [
@@ -378,7 +402,8 @@ describe("FormBuilder submit", () => {
             expect(await screen.findByText("qty.invalid")).toBeInTheDocument();
         });
 
-        it("shows a 422 message under a geolocation input", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a 422 message under a geolocation input»।
+        it("Form submission: shows a 422 message under a geolocation input", async () => {
             failWith({ message: "invalid", status: 422, errors: { latitude: ["latitude.range"] } });
             renderForm({
                 formSchema: [
@@ -391,7 +416,8 @@ describe("FormBuilder submit", () => {
             expect(await screen.findByText("latitude.range")).toBeInTheDocument();
         });
 
-        it("ignores a 422 message for a name with no field, and lets the next save go through", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores a 422 message for a name with no field, and lets the next save go through»।
+        it("Form submission: ignores a 422 message for a name with no field, and lets the next save go through", async () => {
             failWith({ message: "invalid", status: 422, errors: { unknown_field: ["unknown.invalid"] } });
             const onSubmitError = vi.fn();
             renderForm({ onSubmitError });
@@ -406,7 +432,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("validate", () => {
-        it("stops the save and shows the returned messages under their fields", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stops the save and shows the returned messages under their fields»।
+        it("Form submission: stops the save and shows the returned messages under their fields", async () => {
             const validate = vi.fn(async () => ({ name: "zone.name.taken" }));
             renderForm({ validate });
             await typeNameAndSave();
@@ -417,7 +444,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("North");
         });
 
-        it("lets the save go on when it returns nothing, and can be tried again after a message", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets the save go on when it returns nothing, and can be tried again after a message»।
+        it("Form submission: lets the save go on when it returns nothing, and can be tried again after a message", async () => {
             let taken = true;
             renderForm({ validate: () => (taken ? { name: "zone.name.taken" } : undefined) });
             const user = await typeNameAndSave();
@@ -429,7 +457,8 @@ describe("FormBuilder submit", () => {
             await waitFor(() => expect(writeRequests()).toHaveLength(1));
         });
 
-        it("does not run when Zod validation fails", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not run when Zod validation fails»।
+        it("Form submission: does not run when Zod validation fails", async () => {
             const validate = vi.fn();
             renderForm({ validate });
             const user = userEvent.setup();
@@ -441,7 +470,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("onSubmit (the caller saves)", () => {
-        it("calls onSubmit with the payload and the form values, and sends no request", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onSubmit with the payload and the form values, and sends no request»।
+        it("Form submission: calls onSubmit with the payload and the form values, and sends no request", async () => {
             const onSubmit = vi.fn(async () => ({ id: 77 }));
             renderForm({ api: undefined, onSubmit, extraPayload: { extra: 1 } });
             await typeNameAndSave();
@@ -451,7 +481,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()).toHaveLength(0);
         });
 
-        it("then runs the same success steps: reset, onSuccess with what it returned, close", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «then runs the same success steps: reset, onSuccess with what it returned, close»।
+        it("Form submission: then runs the same success steps: reset, onSuccess with what it returned, close", async () => {
             const onSuccess = vi.fn();
             const onClose = vi.fn();
             renderForm({
@@ -469,7 +500,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("");
         });
 
-        it("keeps the form open when it throws, toasts the error and shows field messages", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the form open when it throws, toasts the error and shows field messages»।
+        it("Form submission: keeps the form open when it throws, toasts the error and shows field messages", async () => {
             const onClose = vi.fn();
             const onSubmitError = vi.fn();
             const failure = { message: "zone.save_failed", errors: { name: ["zone.name.taken"] } };
@@ -490,7 +522,8 @@ describe("FormBuilder submit", () => {
             expect(inputById("name")).toHaveValue("North");
         });
 
-        it("shows the Save button as busy while it runs", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the Save button as busy while it runs»।
+        it("Form submission: shows the Save button as busy while it runs", async () => {
             let finish: (value: unknown) => void = () => {};
             renderForm({
                 api: undefined,
@@ -508,7 +541,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("footer", () => {
-        it("renders Cancel first and a real submit button", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders Cancel first and a real submit button»।
+        it("Form submission: renders Cancel first and a real submit button", () => {
             const { container } = renderForm();
             const buttons = Array.from(container.querySelectorAll("form button"));
 
@@ -517,7 +551,8 @@ describe("FormBuilder submit", () => {
             expect(buttons[1]).toHaveAttribute("type", "submit");
         });
 
-        it("Cancel calls onClose and sends nothing", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «Cancel calls onClose and sends nothing»।
+        it("Form submission: Cancel calls onClose and sends nothing", async () => {
             const onClose = vi.fn();
             renderForm({ onClose });
             const user = userEvent.setup();
@@ -527,7 +562,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()).toHaveLength(0);
         });
 
-        it("hides both buttons when actionButton is false, but keeps the form", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides both buttons when actionButton is false, but keeps the form»।
+        it("Form submission: hides both buttons when actionButton is false, but keeps the form", () => {
             const { container } = renderForm({ actionButton: false });
 
             expect(container.querySelector("form")).toBeInTheDocument();
@@ -535,13 +571,15 @@ describe("FormBuilder submit", () => {
             expect(screen.queryByRole("button", { name: "common.cancel" })).not.toBeInTheDocument();
         });
 
-        it("uses submitTitle as the submit label", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses submitTitle as the submit label»।
+        it("Form submission: uses submitTitle as the submit label", () => {
             renderForm({ submitTitle: "onu.bind" });
 
             expect(screen.getByRole("button", { name: "onu.bind" })).toHaveAttribute("type", "submit");
         });
 
-        it("sticks the footer to the bottom in a dialog and not in fullPage", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sticks the footer to the bottom in a dialog and not in fullPage»।
+        it("Form submission: sticks the footer to the bottom in a dialog and not in fullPage", () => {
             const dialog = renderForm();
             const dialogFooter = screen.getByRole("button", { name: "common.save" }).parentElement;
             expect(dialogFooter).toHaveClass("sticky", "bottom-0", "justify-between");
@@ -567,7 +605,8 @@ describe("FormBuilder submit", () => {
             return () => release({ success: true, data: {} });
         };
 
-        it("disables the submit button while the request is in flight", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables the submit button while the request is in flight»।
+        it("Form submission: disables the submit button while the request is in flight", async () => {
             const finish = slowApi();
             renderForm();
             await typeNameAndSave();
@@ -577,7 +616,8 @@ describe("FormBuilder submit", () => {
             finish();
         });
 
-        it("ignores Enter while saving, because the only submit button is disabled", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores Enter while saving, because the only submit button is disabled»।
+        it("Form submission: ignores Enter while saving, because the only submit button is disabled", async () => {
             const finish = slowApi();
             renderForm();
             const user = await typeNameAndSave();
@@ -589,7 +629,8 @@ describe("FormBuilder submit", () => {
             finish();
         });
 
-        it("Enter in a field saves the form", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «Enter in a field saves the form»।
+        it("Form submission: Enter in a field saves the form", async () => {
             renderForm();
             const user = userEvent.setup();
             await user.type(inputById("name"), "North{Enter}");
@@ -597,7 +638,8 @@ describe("FormBuilder submit", () => {
             await waitFor(() => expect(writeRequests()).toHaveLength(1));
         });
 
-        it("Enter does not save a form whose buttons are hidden with actionButton={false}", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «Enter does not save a form whose buttons are hidden with actionButton={false}»।
+        it("Form submission: Enter does not save a form whose buttons are hidden with actionButton={false}", async () => {
             renderForm({ actionButton: false });
             const user = userEvent.setup();
             await user.type(inputById("name"), "North{Enter}");
@@ -606,7 +648,8 @@ describe("FormBuilder submit", () => {
             expect(writeRequests()).toHaveLength(0);
         });
 
-        it("ignores Enter while saving when preventDuplicateSubmit is set", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores Enter while saving when preventDuplicateSubmit is set»।
+        it("Form submission: ignores Enter while saving when preventDuplicateSubmit is set", async () => {
             const finish = slowApi();
             renderForm({ preventDuplicateSubmit: true });
             const user = await typeNameAndSave();
@@ -620,7 +663,8 @@ describe("FormBuilder submit", () => {
     });
 
     describe("submitHoldMs", () => {
-        it("waits at least that long after the click before closing", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «waits at least that long after the click before closing»।
+        it("Form submission: wait for the configured minimum loading duration before closing after submit", async () => {
             const onClose = vi.fn();
             const onSuccess = vi.fn();
             renderForm({ submitHoldMs: 300, onClose, onSuccess });

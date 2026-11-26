@@ -31,7 +31,8 @@ function fill(template: string, values: Record<string, string | number>): string
 }
 
 describe("notification catalog", () => {
-    it("maps subjects to dashboard routes", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps subjects to dashboard routes»।
+    it("Notification destinations: maps subjects to dashboard routes", () => {
         expect(resolveNotificationHref({ type: "client", uuid: "c-1" })).toBe("/clients/view/c-1");
         expect(resolveNotificationHref({ type: "ticket", uuid: "t-1" })).toBe("/tickets/view/t-1");
         expect(resolveNotificationHref({ type: "invoice", uuid: "i-1" })).toBe("/invoices/edit/i-1");
@@ -54,7 +55,8 @@ describe("notification catalog", () => {
         );
     });
 
-    it("treats a missing preference as enabled", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «treats a missing preference as enabled»।
+    it("Notification destinations: treats a missing preference as enabled", () => {
         expect(isNotificationSettingEnabled(undefined)).toBe(true);
         expect(isNotificationSettingEnabled(null)).toBe(true);
         expect(isNotificationSettingEnabled(1)).toBe(true);
@@ -64,7 +66,8 @@ describe("notification catalog", () => {
         expect(isNotificationSettingEnabled(false)).toBe(false);
     });
 
-    it("fills ticket status copy from the stored payload", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills ticket status copy from the stored payload»।
+    it("Notification destinations: fills ticket status copy from the stored payload", () => {
         const values = notificationInterpolation(
             { ticket_number: 18, client_name: "Rahim", status: "open" },
             (key) => translateFrom(bn, key)
@@ -76,7 +79,8 @@ describe("notification catalog", () => {
         expect(fill(String(message), values)).toBe("টিকিট 18 এখন ওপেন");
     });
 
-    it("translates onu status names used as from and to", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «translates onu status names used as from and to»।
+    it("Notification destinations: translates onu status names used as from and to", () => {
         const values = notificationInterpolation(
             { onu_name: "ONU-1", from_status: "offline", status: "online" },
             (key) => translateFrom(bn, key)
@@ -87,7 +91,8 @@ describe("notification catalog", () => {
         );
     });
 
-    it("has an English and Bangla title and message for every event", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «has an English and Bangla title and message for every event»।
+    it("Notification destinations: has an English and Bangla title and message for every event", () => {
         for (const event of NOTIFICATION_EVENTS) {
             const title = notificationTitleKey(event.value);
             expect(readPath(en, title), title).toEqual(expect.any(String));
@@ -101,7 +106,8 @@ describe("notification catalog", () => {
 });
 
 describe("formatRelativeTime", () => {
-    it("uses the active language locale", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the active language locale»।
+    it("Notification destinations: uses the active language locale", () => {
         const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
         const english = formatRelativeTime(twoHoursAgo, "en");
         const bangla = formatRelativeTime(twoHoursAgo, "bn");

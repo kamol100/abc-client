@@ -6,17 +6,20 @@ import {
 import { TrafficReportSchema } from "@/components/client-area/traffic-report/traffic-report-type";
 
 describe("traffic report formatting", () => {
-  it("shows recorded days at midnight without shifting the calendar date", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows recorded days at midnight without shifting the calendar date»।
+  it("Traffic report format: shows recorded days at midnight without shifting the calendar date", () => {
     expect(formatUsageRecordedAt("2026-10-27", "en")).toBe("27 Oct, 2026 12:00 am");
   });
 
-  it("keeps unavailable usage distinct from a real zero", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps unavailable usage distinct from a real zero»।
+  it("Traffic report format: keeps unavailable usage distinct from a real zero", () => {
     expect(formatTrafficAmount(0, false)).toBeNull();
     expect(formatTrafficAmount(0, true)).toBe("0 B");
     expect(formatTrafficAmount(1536, true)).toBe("1.5 KB");
   });
 
-  it("accepts the traffic report payload", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts the traffic report payload»।
+  it("Traffic report format: accepts the traffic report payload", () => {
     const parsed = TrafficReportSchema.parse({
       timezone: "Asia/Dhaka",
       collected: true,

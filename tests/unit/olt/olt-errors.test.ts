@@ -17,19 +17,22 @@ const denied = {
 };
 
 describe("API error helpers", () => {
-    it("reads message_key + params and translates them", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads message_key + params and translates them»।
+    it("OLT errors: reads message_key + params and translates them", () => {
         expect(apiErrorKey(denied)).toMatchObject({ key: "olt.address.denied", params: { address: "169.254.169.254" } });
         expect(apiErrorText(denied, t)).toBe("denied 169.254.169.254 (a link-local address)");
         expect(apiErrorKey({ success: false, error: { message: "Configure OLT access first." } })).toBeNull();
     });
 
-    it("turns Laravel's throttle body into a friendly text and keeps other messages", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «turns Laravel's throttle body into a friendly text and keeps other messages»।
+    it("OLT errors: turns Laravel's throttle body into a friendly text and keeps other messages", () => {
         expect(apiErrorText({ message: "Too Many Attempts." }, t)).toBe("slow down");
         expect(apiErrorText({ success: false, error: { message: "Configure OLT access first." } }, t)).toBe("Configure OLT access first.");
         expect(apiErrorText({}, t, "olt.test.request_failed")).toBe("olt.test.request_failed");
     });
 
-    it("maps 422 field errors to their first message", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps 422 field errors to their first message»।
+    it("OLT errors: maps 422 field errors to their first message", () => {
         expect(serverFieldErrors({ message: "x", errors: { device_ip: ["Only users who may manage OLT access…", "second"] } })).toEqual({
             device_ip: "Only users who may manage OLT access…",
         });
@@ -38,7 +41,8 @@ describe("API error helpers", () => {
 });
 
 describe("addressDeniedResult", () => {
-    it("shows a refused Device IP as a failed test with one Device IP step", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a refused Device IP as a failed test with one Device IP step»।
+    it("OLT errors: shows a refused Device IP as a failed test with one Device IP step", () => {
         const result = addressDeniedResult(apiErrorKey(denied), "2026-10-13T08:15:02+00:00");
         expect(testPassed(result)).toBe(false);
         expect(result?.steps).toEqual([
@@ -52,7 +56,8 @@ describe("addressDeniedResult", () => {
 describe("device form OLT credentials", () => {
     const device = { name: "OLT-1", network_id: 1, device_type_id: 2 };
 
-    it("applies the community and printable-ASCII rules", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies the community and printable-ASCII rules»।
+    it("OLT errors: applies the community and printable-ASCII rules", () => {
         expect(DeviceFormSchema.safeParse({ ...device, snmp_community: "public", cli_username: "admin", cli_password: "p w" }).success).toBe(true);
         expect(DeviceFormSchema.safeParse({ ...device, snmp_community: "pub lic" }).success).toBe(false);
         expect(DeviceFormSchema.safeParse({ ...device, snmp_community: "x".repeat(65) }).success).toBe(false);

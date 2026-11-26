@@ -8,7 +8,8 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("StaffFormSchema", () => {
-  it("puts photo and nid uploads in the advance section", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts photo and nid uploads in the advance section»।
+  it("Staff form schema: puts photo and nid uploads in the advance section", () => {
     const sections = StaffFormSchema({});
     const advance = sections.find((section) => section.name === "common.advance_information");
     const names = sections.flatMap((section) => section.form.map((field) => field.name));
@@ -25,7 +26,8 @@ describe("StaffFormSchema", () => {
     expect(names).not.toContain("nid");
   });
 
-  it("assigns zones from the basic section", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «assigns zones from the basic section»।
+  it("Staff form schema: assigns zones from the basic section", () => {
     const sections = StaffFormSchema({});
     const basic = sections.find((section) => section.name === "common.basic_information");
     const zones = basic?.form.find((field) => field.name === "zone_ids");
@@ -42,7 +44,8 @@ describe("StaffFormSchema", () => {
     });
   });
 
-  it("does not require an empty salary row", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not require an empty salary row»।
+  it("Staff form schema: does not require an empty salary row", () => {
     const sections = StaffFormSchema({});
     const salary = sections.find((section) => section.name === "common.salary_information");
     const arrays = salary?.form.filter((field) => field.type === "fieldArray") ?? [];

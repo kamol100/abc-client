@@ -1,0 +1,25 @@
+---
+description: Meaningful test names, Bengali purpose comments, and clear failure diagnostics.
+globs: "tests/**"
+alwaysApply: false
+---
+
+# Readable test names
+
+- Name each test in plain English: `[existing scenario ID] Feature or action: expected result`, adding the relevant input, role, or condition when needed.
+- A reader must understand what is checked without opening the implementation. Prefer `Client ID`, `Active`, and `Partial Paid` over field keys, numeric statuses, UUIDs, or fixture account names.
+- Give parameterized cases distinct, readable titles. Preserve existing scenario IDs and every parameter variant; do not invent IDs for older tests without an owning specification.
+- State only behavior actually asserted. Avoid vague names such as `works`, `handles correctly`, `matches backend`, or `test create` without a specific outcome.
+- Describe expected behavior, not an assumed failure cause. Use named `test.step` actions and useful assertion/fixture messages to identify the stage that actually fails. Distinguish missing setup from application failures.
+- Add a concise Bengali comment immediately above each test definition explaining its purpose and important side-effect checks. For a parameterized definition, explain the variants in its shared comment.
+- Keep test names/comments free of credentials, tokens, private customer data, and generated identifiers.
+- When renaming, update exact title references in the coverage register and active runners/docs. Preserve historical run evidence and do not claim old results verify renamed or changed tests.
+- For name-based snapshots, migrate only the affected keys and verify the stored values are unchanged. Never use a blanket snapshot update to hide content differences during a naming task.
+- Naming work must preserve assertions, inputs, fixtures, safety guards, skips, cleanup, and application behavior. Verify discovery/counts and run relevant checks.
+
+```ts
+// Active ফিল্টারে শুধু সক্রিয় ক্লায়েন্ট দেখা যায় এবং নিষ্ক্রিয় ক্লায়েন্ট বাদ যায় কি না যাচাই করি।
+test("CL-L03 Status filter - Active: show active clients and hide inactive clients", async () => {
+  // Existing test actions and assertions belong here.
+});
+```

@@ -6,7 +6,8 @@ import {
   test,
 } from "@/tests/e2e/staffs/fixtures";
 
-test("FT090-10 the staff list shows rows instead of a request failure", async ({ page, staff }) => {
+// স্টাফ পেজে অনুরোধের ত্রুটির বদলে তালিকার সারিগুলো দেখা যায় কি না দেখি।
+test("FT090-10 Staff list loading: show staff rows without a request failure", async ({ page, staff }) => {
   const listed = await staffList(staff);
   if (!listed.pagination.total) throw new Error("The loaded staff list needs at least one staff member.");
   await page.goto("/staffs");
@@ -20,7 +21,8 @@ test("FT090-10 the staff list shows rows instead of a request failure", async ({
   await expect(page.getByText("Request failed", { exact: true })).toHaveCount(0);
 });
 
-test("FT090-12 mobile width, Bangla, dark mode, and keyboard keep staff controls usable", async ({ page, staff }) => {
+// মোবাইলে বাংলা, ডার্ক থিম ও কিবোর্ড দিয়ে স্টাফের নিয়ন্ত্রণ ব্যবহার করা যায় কি না দেখি।
+test("FT090-12 Staff controls on mobile: support keyboard use, Bangla, and dark theme", async ({ page, staff }) => {
   const listed = await staffList(staff);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/staffs");

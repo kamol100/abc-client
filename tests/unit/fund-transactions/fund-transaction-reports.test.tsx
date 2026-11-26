@@ -9,7 +9,8 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("positiveTypeTotals", () => {
-  it("keeps only types above zero, in type order", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps only types above zero, in type order»।
+  it("Fund transaction reports: keeps only types above zero, in type order", () => {
     expect(
       positiveTypeTotals({ salary: "40", deposit: 150.5, transfer: 0, withdraw: null, expense: "-3" }),
     ).toEqual([
@@ -18,13 +19,15 @@ describe("positiveTypeTotals", () => {
     ]);
   });
 
-  it("returns nothing for missing totals", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns nothing for missing totals»।
+  it("Fund transaction reports: returns nothing for missing totals", () => {
     expect(positiveTypeTotals(undefined)).toEqual([]);
   });
 });
 
 describe("FundTransactionReports", () => {
-  it("shows a chip only for types with an amount", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a chip only for types with an amount»।
+  it("Fund transaction reports: shows a chip only for types with an amount", () => {
     render(<FundTransactionReports totals={{ deposit: 100, withdraw: 0, expense: 25 }} />);
 
     expect(screen.getByText("fund_transaction.transaction_type.options.deposit")).toBeInTheDocument();
@@ -33,7 +36,8 @@ describe("FundTransactionReports", () => {
     expect(screen.queryByText("fund_transaction.transaction_type.options.transfer")).not.toBeInTheDocument();
   });
 
-  it("renders nothing when every total is zero", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders nothing when every total is zero»।
+  it("Fund transaction reports: renders nothing when every total is zero", () => {
     const { container } = render(<FundTransactionReports totals={{ deposit: 0 }} />);
     expect(container).toBeEmptyDOMElement();
   });

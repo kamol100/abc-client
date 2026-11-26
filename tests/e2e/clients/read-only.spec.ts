@@ -10,7 +10,8 @@ async function visibleClient(staff: Parameters<typeof requirePermissions>[0]): P
   return [...candidates].sort((a, b) => clientId(a).localeCompare(clientId(b)))[0];
 }
 
-test("CL-L01 client list reflects backend identities and pagination total after reload", async ({ page, staff }) => {
+// তালিকায় API থেকে পাওয়া ক্লায়েন্ট ও মোট সংখ্যা দেখা যায় এবং রিলোডের পরও ক্লায়েন্টগুলো থাকে কি না যাচাই করি।
+test("CL-L01 Client list: show saved clients and total count, and keep clients visible after reload", async ({ page, staff }) => {
   requirePermissions(staff, "clients.access");
   const list = await staff.list();
   await page.goto("/clients");
@@ -20,8 +21,11 @@ test("CL-L01 client list reflects backend identities and pagination total after 
   for (const client of list.data) await expect(page.getByText(client.name, { exact: true })).toBeVisible();
 });
 
-for (const field of ["name", "pppoe_username", "phone"] as const) {
-  test(`CL-L02 search by ${field} matches independent API result and reset`, async ({ page, staff }) => {
+for (const [field, fieldLabel] of [
+  ["name", "client name"], ["pppoe_username", "Client ID (PPPoE ID)"], ["phone", "phone number"],
+] as const) {
+  // নাম, ক্লায়েন্ট আইডি বা ফোন দিয়ে খুঁজে সঠিক ফল আসে, অন্য ফল বাদ যায় এবং সার্চ মুছলে তালিকা ফিরে আসে কি না দেখি।
+  test(`CL-L02 Search by ${fieldLabel}: show matching clients, hide nonmatches, and restore the list when cleared`, async ({ page, staff }) => {
     const client = await visibleClient(staff);
     const value = client[field];
     if (!value) throw new Error(`Read-only fixture needs ${field}; provide a suitable client.`);
@@ -37,7 +41,8 @@ for (const field of ["name", "pppoe_username", "phone"] as const) {
   });
 }
 
-test("CL-L05 current-month deep link and show-all preserve URL and data scope", async ({ page, staff }) => {
+// এই মাসের ক্লায়েন্টের লিংক খুলে ফিল্টার দেখি; Show all চাপলে URL ও মাসের ফিল্টার সরে যায় কি না যাচাই করি।
+test("CL-L05 New clients this month: show filtered clients and remove the month filter with Show all", async ({ page, staff }) => {
   const expected = await staff.list("created_at=this_month");
   await page.goto("/clients?created_at=this_month");
   await expect(page.getByText("New clients this month", { exact: true })).toBeVisible();
@@ -48,7 +53,8 @@ test("CL-L05 current-month deep link and show-all preserve URL and data scope", 
   await expect(page.getByText("New clients this month", { exact: true })).toHaveCount(0);
 });
 
-test("CL-L06 unmatched search renders empty results and can be cleared", async ({ page, staff }) => {
+// কোনো ক্লায়েন্টের সঙ্গে না মেলা সার্চে খালি ফল এবং পরে পরিচিত আইডি খুঁজলে ক্লায়েন্টটি ফিরে আসে কি না দেখি।
+test("CL-L06 Search with no matches: show No results, then find an existing client with a new search", async ({ page, staff }) => {
   const client = await visibleClient(staff);
   await page.goto("/clients");
   await searchClients(page, `does-not-exist-${randomUUID()}`);
@@ -58,8 +64,9 @@ test("CL-L06 unmatched search renders empty results and can be cleared", async (
   await expect(page.getByText(client.name, { exact: true })).toBeVisible();
 });
 
-for (const entry of ["identity", "view-action"] as const) {
-  test(`CL-D01 ${entry} opens selected UUID detail`, async ({ page, staff }) => {
+for (const [entry, entryLabel] of [["identity", "Client ID link"], ["view-action", "View action"]] as const) {
+  // ক্লায়েন্ট আইডি বা View লিংক চাপলে নির্বাচিত ক্লায়েন্টেরই বিস্তারিত পেজ খোলে কি না যাচাই করি।
+  test(`CL-D01 Open client details using the ${entryLabel}: show the selected client`, async ({ page, staff }) => {
     const client = await visibleClient(staff);
     await page.goto("/clients");
     const link = entry === "identity"
@@ -82,7 +89,8 @@ for (const entry of ["identity", "view-action"] as const) {
   });
 }
 
-test("CL-D02 selected client detail retains identity and package after reload", async ({ page, staff }) => {
+// বিস্তারিত পেজে সংরক্ষিত নাম ও প্যাকেজ দেখি এবং রিলোডের পরও একই ক্লায়েন্টের নাম থাকে কি না যাচাই করি।
+test("CL-D02 Client details: show the saved name and package, and keep the name after reload", async ({ page, staff }) => {
   const client = await visibleClient(staff);
   const saved = await staff.detail(clientId(client));
   await page.goto(`/clients/view/${clientId(client)}`);
@@ -92,7 +100,8 @@ test("CL-D02 selected client detail retains identity and package after reload", 
   await expect(page.getByText(saved.name, { exact: true }).and(page.locator("span"))).toBeVisible();
 });
 
-test("CL-D06 phone and WhatsApp links target the selected client", async ({ page, staff }) => {
+// তালিকার ফোন ও WhatsApp লিংকে নির্বাচিত ক্লায়েন্টের সঠিক নম্বর ব্যবহার হচ্ছে কি না যাচাই করি; কল বা মেসেজ পাঠাই না।
+test("CL-D06 Contact links: use the selected client's phone number for calls and WhatsApp", async ({ page, staff }) => {
   const client = await visibleClient(staff);
   if (!client.phone) throw new Error("Read-only fixture needs a phone number.");
   await page.goto("/clients");
@@ -103,8 +112,14 @@ test("CL-D06 phone and WhatsApp links target the selected client", async ({ page
   await expect(row.locator(`a[href^="https://wa.me/${international}"]`)).toBeVisible();
 });
 
-for (const path of ["/clients", "/clients/create", "/clients/edit/00000000-0000-0000-0000-000000000001", "/clients/view/00000000-0000-0000-0000-000000000001"]) {
-  test(`CL-A01 anonymous ${path} requires staff login`, async ({ browser, baseURL }) => {
+for (const [path, pageLabel] of [
+  ["/clients", "client list"],
+  ["/clients/create", "create client page"],
+  ["/clients/edit/00000000-0000-0000-0000-000000000001", "edit client page"],
+  ["/clients/view/00000000-0000-0000-0000-000000000001", "client details page"],
+] as const) {
+  // লগইন ছাড়া প্রতিটি ক্লায়েন্ট পেজ খুললে একই টেন্যান্টের স্টাফ লগইনে পাঠায় এবং ফেরার ঠিকানা ঠিক থাকে কি না দেখি।
+  test(`CL-A01 Login required: opening the ${pageLabel} while signed out redirects to staff login`, async ({ browser, baseURL }) => {
     const context = await browser.newContext({ baseURL, storageState: { cookies: [], origins: [] } });
     try {
       const page = await context.newPage();
@@ -115,7 +130,8 @@ for (const path of ["/clients", "/clients/create", "/clients/edit/00000000-0000-
   });
 }
 
-test("CL-A04 CP and MK cannot retrieve the other's visible client UUID", async ({ browser, staff }) => {
+// CP ও MK উভয় দিক থেকে অন্য কোম্পানির ক্লায়েন্টের বিস্তারিত পড়া বা সার্চে পাওয়া যায় না—তা যাচাই করি।
+test("CL-A04 Company privacy: CP and MK cannot read or search each other's clients", async ({ browser, staff }) => {
   const other = await authenticate(browser, staff.tenant === "cp" ? "mk" : "cp");
   try {
     const ownClient = await visibleClient(staff);
@@ -130,11 +146,18 @@ test("CL-A04 CP and MK cannot retrieve the other's visible client UUID", async (
   } finally { await other.dispose(); }
 });
 
-for (const field of ["name", "pppoe_username", "pppoe_password", "network_id", "package_id"] as const) {
-  test(`CL-F02 missing ${field} rejects create without persistence`, async ({ page, staff }) => {
+for (const [field, fieldLabel] of [
+  ["name", "client name"], ["pppoe_username", "Client ID (PPPoE ID)"],
+  ["pppoe_password", "password"], ["network_id", "network"], ["package_id", "package"],
+] as const) {
+  // আবশ্যক ঘর ফাঁকা রেখে Save চাপলে সংশ্লিষ্ট ভুল দেখায়, ফর্ম খোলা থাকে এবং নতুন ক্লায়েন্ট তৈরি হয় না কি না দেখি।
+  test(`CL-F02 Required ${fieldLabel}: show a validation error and do not create a client when empty`, async ({ page, staff }) => {
     const marker = `E2E invalid ${randomUUID()}`;
-    const errors = { name: "Client name is required", pppoe_username: "PPPoE ID is required", pppoe_password: "Password is required", network_id: "Please select a network.", package_id: "Please select a package." };
+    const errors = { name: "Client name is required", pppoe_username: "Client ID is required", pppoe_password: "Password is required", network_id: "Please select a network.", package_id: "Please select a package." };
     await openClientCreate(page);
+    if (field === "pppoe_username") {
+      await expect(page.locator("#pppoe_username")).toHaveAttribute("placeholder", "Enter client ID (PPPoE ID)");
+    }
     if (field !== "name") await page.locator("#name").fill(marker);
     await page.getByRole("button", { name: "Save", exact: true }).click();
     await expect(page.getByText(errors[field], { exact: true })).toBeVisible();
@@ -143,7 +166,8 @@ for (const field of ["name", "pppoe_username", "pppoe_password", "network_id", "
   });
 }
 
- test("CL-F08 cancel create leaves no saved test identity", async ({ page, staff }) => {
+ // নতুন ক্লায়েন্টের ফর্মে নাম লিখে Cancel করলে তালিকায় ফিরে আসে এবং ওই নামে কোনো ক্লায়েন্ট তৈরি হয় না কি না দেখি।
+ test("CL-F08 Cancel new client: return to the list without saving the entered name", async ({ page, staff }) => {
    requirePermissions(staff, "clients.create");
    const marker = `E2E cancelled ${randomUUID()}`;
    await openClientCreate(page);
@@ -153,7 +177,8 @@ for (const field of ["name", "pppoe_username", "pppoe_password", "network_id", "
    expect((await staff.list(`any=${encodeURIComponent(marker)}`)).data).toHaveLength(0);
  });
 
- test("CL-F06 create billing defaults match company settings", async ({ page, staff }) => {
+ // নতুন ফর্মে Prepaid, Auto, কোম্পানির পেমেন্ট সময়সীমা ও মাসের প্রথম ইনভয়েস দিন ডিফল্ট থাকে কি না দেখি।
+ test("CL-F06 New client defaults: use Prepaid, Auto billing, the company deadline, and invoice day 01", async ({ page, staff }) => {
    requirePermissions(staff, "clients.create");
    await openClientCreate(page);
    await expect(page.getByRole("radio", { name: "Prepaid", exact: true })).toBeChecked();
@@ -163,7 +188,8 @@ for (const field of ["name", "pppoe_username", "pppoe_password", "network_id", "
    await expect(page.locator('input[name="invoice_day"]')).toHaveValue("01");
  });
 
- test("CL-F02 one-character name is rejected before create", async ({ page, staff }) => {
+ // এক অক্ষরের নাম দিয়ে Save চাপলে ন্যূনতম দুই অক্ষরের বার্তা দেখায় এবং ফর্মেই থাকে কি না যাচাই করি।
+ test("CL-F02 Client name too short: show the two-character minimum error and keep the form open", async ({ page, staff }) => {
    requirePermissions(staff, "clients.create");
    await openClientCreate(page);
    await page.locator("#name").fill("x");
@@ -177,13 +203,20 @@ for (const [field, value, label] of [
   ["billing_type", "auto", "Auto"], ["billing_type", "manual", "Manual"],
   ["billing_type", "no_invoice_this_month", "No invoice this month"],
 ] as const) {
-  test(`CL-L03 ${field}=${value} matches backend inclusion and exclusion`, async ({ page, staff }) => {
+  const filterLabel = field === "status" ? "Status" : "Billing type";
+  // Status বা Billing type বেছে API-এর সঙ্গে মিলিয়ে সঠিক ক্লায়েন্ট দেখা যায় এবং অন্য ক্লায়েন্ট বাদ যায় কি না দেখি।
+  test(`CL-L03 ${filterLabel} filter - ${label}: open the dropdown and show only matching clients`, async ({ page, staff }) => {
     const expected = await staff.list(`${field}=${value}`);
     const baseline = await staff.list();
     await page.goto("/clients");
     await searchClients(page, "");
-    await page.locator(`#react-select-${field}-input`).click();
-    await page.getByRole("option", { name: label, exact: true }).click();
+    // এই ধাপে টাইমআউট হলে ড্রপডাউন খোলার locator খুঁজে পাওয়া বা ক্লিক করা যাচ্ছে কি না পরীক্ষা করতে হবে।
+    await test.step(`Open the ${filterLabel} filter dropdown`, async () => {
+      await page.locator(`#react-select-${field}-input`).click();
+    });
+    await test.step(`Select the ${label} option`, async () => {
+      await page.getByRole("option", { name: label, exact: true }).click();
+    });
     // FilterDropdownField submits immediately on selection.
     if (!expected.data.length) await expect(page.getByText("No results", { exact: true })).toBeVisible();
     for (const client of expected.data) await expect(page.getByText(client.name, { exact: true })).toBeVisible();

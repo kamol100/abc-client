@@ -19,7 +19,8 @@ function Harness({ children }: { children: ReactNode }) {
 }
 
 describe("InputField adornments", () => {
-    it("renders prefix and suffix without changing a plain field", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders prefix and suffix without changing a plain field»।
+    it("Password visibility: renders prefix and suffix without changing a plain field", () => {
         const { rerender } = render(
             <Harness>
                 <InputField name="secret" placeholder="field.placeholder" />
@@ -49,7 +50,8 @@ describe("InputField adornments", () => {
         expect(screen.getByText("BDT")).toBeInTheDocument();
     });
 
-    it("keeps password type as given and does not add a visibility toggle", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps password type as given and does not add a visibility toggle»।
+    it("Password visibility: keeps password type as given and does not add a visibility toggle", () => {
         render(
             <Harness>
                 <InputField name="secret" type="password" placeholder="field.placeholder" />
@@ -62,7 +64,8 @@ describe("InputField adornments", () => {
 });
 
 describe("PasswordField", () => {
-    it("toggles visibility through the input suffix", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «toggles visibility through the input suffix»।
+    it("Password visibility: toggles visibility through the input suffix", async () => {
         const user = userEvent.setup();
         render(
             <Harness>

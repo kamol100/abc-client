@@ -36,7 +36,8 @@ async function expectFiltered(page: Page, staff: Session, template: SmsTemplate,
   return expected;
 }
 
-test("FT087-05 search includes the selected client, excludes another, and reset restores the list", async ({ page, staff }) => {
+// SMS প্রাপকের সার্চে সঠিক ক্লায়েন্ট আসে, অন্যটি বাদ যায় এবং রিসেটে তালিকা ফেরে কি না দেখি।
+test("FT087-05 Search SMS recipients: show matching clients, hide nonmatches, and reset to the full list", async ({ page, staff }) => {
   const { template, listed } = await listedTemplate(staff);
   const client = listed.data.find((row) => (row.pppoe_username ?? "").trim().length >= 3);
   if (!client?.pppoe_username) throw new Error("Search needs a first-page SMS client username of at least 3 characters.");
@@ -51,7 +52,8 @@ test("FT087-05 search includes the selected client, excludes another, and reset 
   await expectClientRows(page, (await smsClients(staff, clientQuery(template))).data);
 });
 
-test("FT087-05 an unknown search is empty and shows no request error", async ({ page, staff }) => {
+// না মেলা প্রাপকের সার্চে খালি ফল আসে কিন্তু অনুরোধের ত্রুটি দেখায় না কি না দেখি।
+test("FT087-05 SMS recipient search with no matches: show no results without a request error", async ({ page, staff }) => {
   const { template, listed } = await listedTemplate(staff);
   const client = listed.data[0];
   const absent = `E2E-NO-SMS-${randomUUID()}`;
@@ -68,7 +70,8 @@ test("FT087-05 an unknown search is empty and shows no request error", async ({ 
   await expect(clientRow(page, client)).toBeVisible();
 });
 
-test("FT087-05 status filter keeps the selected status and hides the other", async ({ page, staff }) => {
+// প্রাপকের স্ট্যাটাস বেছে শুধু সেই স্ট্যাটাসের ক্লায়েন্ট দেখা যায় কি না দেখি।
+test("FT087-05 SMS recipient status filter: show the selected status and hide the other", async ({ page, staff }) => {
   const { template } = await listedTemplate(staff);
   const active = await smsClients(staff, clientQuery(template, "status=1"));
   const inactive = await smsClients(staff, clientQuery(template, "status=0"));
@@ -87,7 +90,8 @@ test("FT087-05 status filter keeps the selected status and hides the other", asy
   await expect(clientRow(page, active.data[0])).toHaveCount(0);
 });
 
-test("FT087-05 zone filter matches that zone and excludes a client in another zone", async ({ page, staff }) => {
+// নির্বাচিত জোনের SMS প্রাপক আসে এবং অন্য জোনের ক্লায়েন্ট বাদ যায় কি না দেখি।
+test("FT087-05 SMS recipient zone filter: show clients in the selected zone and hide other zones", async ({ page, staff }) => {
   const { template, listed } = await listedTemplate(staff);
   const client = listed.data.find((row) => row.zone?.name);
   if (!client?.zone) throw new Error("Zone filter needs a first-page SMS client with a zone.");
@@ -111,7 +115,8 @@ test("FT087-05 zone filter matches that zone and excludes a client in another zo
   await expect(clientRow(page, client)).toHaveCount(0);
 });
 
-test("FT087-05 username, status, and network together match the API and reset clears them", async ({ page, staff }) => {
+// ক্লায়েন্ট আইডি, স্ট্যাটাস ও নেটওয়ার্ক একসঙ্গে ফিল্টার হয় এবং রিসেট কাজ করে কি না দেখি।
+test("FT087-05 Combined SMS recipient filters: match Client ID, status, and network, then reset", async ({ page, staff }) => {
   const { template, listed } = await listedTemplate(staff);
   const client = listed.data.find((row) => (row.pppoe_username ?? "").trim().length >= 3 && row.network?.name);
   if (!client?.pppoe_username || !client.network) {
@@ -135,7 +140,8 @@ test("FT087-05 username, status, and network together match the API and reset cl
   await expectClientRows(page, (await smsClients(staff, clientQuery(template))).data);
 });
 
-test("FT087-11 an empty filter is distinct from a failed request and clears back to data", async ({ page, staff }) => {
+// প্রাপকের খালি ফল ও লোডের ত্রুটি আলাদা থাকে এবং ফিল্টার মুছলে তথ্য ফেরে কি না দেখি।
+test("FT087-11 SMS recipient loading: distinguish empty results from request errors and recover to data", async ({ page, staff }) => {
   const { template, listed } = await listedTemplate(staff);
   await openClientList(page, staff, template);
   await expect(clientRow(page, listed.data[0])).toBeVisible();

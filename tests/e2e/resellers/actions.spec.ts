@@ -15,7 +15,8 @@ import {
   test,
 } from "@/tests/e2e/resellers/fixtures";
 
-test("RS-D01 cancel delete keeps the reseller", async ({ page, staff }) => {
+// রিসেলার ডিলিট বাতিল করলে আগের রেকর্ড থেকে যায় কি না যাচাই করি।
+test("RS-D01 Cancel reseller deletion: keep the reseller record", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.delete", "resellers.show");
   const reseller = await sample(staff);
   const before = await resellerDetail(staff, reseller.id);
@@ -34,7 +35,8 @@ test("RS-D01 cancel delete keeps the reseller", async ({ page, staff }) => {
   await expect(resellerRow(page, reseller)).toBeVisible();
 });
 
-test("RS-W01 recharge dialog shows the reseller balance and cancel does not change it", async ({ page, staff }) => {
+// রিচার্জ ডায়ালগে ব্যালেন্স দেখা যায় এবং Cancel করলে ব্যালেন্স বদলায় না কি না দেখি।
+test("RS-W01 Reseller recharge dialog: show the balance and leave it unchanged on cancel", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.access");
   if (!staff.profile.permissions.includes("reseller-wallet.recharge") && !staff.profile.permissions.includes("wallets.edit")) {
     throw new Error("Recharge dialog checks need reseller-wallet.recharge or wallets.edit.");
@@ -54,7 +56,8 @@ test("RS-W01 recharge dialog shows the reseller balance and cancel does not chan
   expect(after?.wallet?.balance).toBe(before);
 });
 
-test("RS-W02 a nonpositive amount and missing fund stay in the dialog and keep the balance", async ({ page, staff }) => {
+// রিচার্জে শূন্য বা ঋণাত্মক টাকা কিংবা ফান্ড না থাকলে ব্যালেন্স না বদলে ত্রুটি দেখায় কি না দেখি।
+test("RS-W02 Invalid reseller recharge: reject zero/negative amounts or a missing fund without changing the balance", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.access");
   const reseller = (await resellers(staff)).data.find((row) => row.wallet?.id);
   if (!reseller?.wallet) throw new Error("Recharge validation needs a reseller wallet on the first page.");
@@ -75,7 +78,8 @@ test("RS-W02 a nonpositive amount and missing fund stay in the dialog and keep t
   expect(after?.wallet?.balance).toBe(before);
 });
 
-test("RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not change the balance", async ({ browser, staff }) => {
+// ভুল বা অন্য কোম্পানির ফান্ড ও অজানা ওয়ালেটে রিচার্জ করলে ব্যালেন্স অক্ষত থাকে কি না দেখি।
+test("RS-W05 Invalid recharge target: reject invalid or foreign funds and unknown wallets without changing the balance", async ({ browser, staff }) => {
   requirePermissions(staff, "reseller-wallet.recharge");
   const reseller = (await resellers(staff)).data.find((row) => row.wallet?.id);
   if (!reseller?.wallet) throw new Error("Wallet denial checks need a reseller wallet on the first page.");
@@ -106,7 +110,8 @@ test("RS-W05 an invalid fund, a foreign fund, and an unknown wallet do not chang
   await denied(choices(await staff.get("dropdown-funds"))[0]?.id ?? 1, "00000000-0000-4000-8000-000000000099");
 });
 
-test("RS-S01 the reseller termination setting toggles, persists, and restores without changing company scope", async ({ page, staff }) => {
+// রিসেলারের টার্মিনেশন সেটিং বদলে সেভ ও পুনরুদ্ধার করলে কোম্পানির সীমা ঠিক থাকে কি না দেখি।
+test("RS-S01 Reseller termination setting: save a toggle, restore it, and retain the company scope", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.settings", "company-settings.access", "company-settings.edit");
   const listed = await resellers(staff);
   const reseller = listed.data[0];
@@ -143,7 +148,8 @@ test("RS-S01 the reseller termination setting toggles, persists, and restores wi
   }
 });
 
-test("RS-S03 a foreign reseller UUID cannot be read or written as settings", async ({ browser, staff }) => {
+// অন্য কোম্পানির রিসেলারের সেটিং পড়া বা পরিবর্তন করা যায় না কি না দেখি।
+test("RS-S03 Reseller settings privacy: block reading or changing another company's settings", async ({ browser, staff }) => {
   requirePermissions(staff, "company-settings.access", "company-settings.edit");
   const reseller = await sample(staff);
   const before = settingRecord(await staff.get(`company/settings?reseller_uuid=${reseller.id}`));

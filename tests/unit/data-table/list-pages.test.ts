@@ -19,17 +19,19 @@ function lookup(dict: unknown, key: string): unknown {
 }
 
 describe("list pages", () => {
-  it("reads 'below' and treats anything else as inline", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads 'below' and treats anything else as inline»।
+  it("List pages: reads 'below' and treats anything else as inline", () => {
     expect(toFilterPosition("below")).toBe("below");
     for (const raw of ["inline", undefined, null, "", "BELOW", 1]) expect(toFilterPosition(raw)).toBe("inline");
     expect(readSetting(filterPositionKey("invoices"), "below")).toBe("below");
     expect(readSetting(filterPositionKey("invoices"), "sideways")).toBe("inline");
   });
 
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «has every %s translation the ⚙ dialogs need»।
   it.each([
     ["en", en],
     ["bn", bn],
-  ])("has every %s translation the ⚙ dialogs need", (_lang, dict) => {
+  ])("List pages: has every %s translation the ⚙ dialogs need", (_lang, dict) => {
     const keys = [
       ...LIST_PAGE_IDS.map((page) => LIST_PAGES[page]),
       settingLabelKey(filterPositionKey("invoices")),

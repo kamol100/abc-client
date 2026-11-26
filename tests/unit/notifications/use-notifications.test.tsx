@@ -29,7 +29,8 @@ describe("notification live queries", () => {
         captured.calls = [];
     });
 
-    it("refetches the unread count and recent list on focus and every 5 minutes", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «refetches the unread count and recent list on focus and every 5 minutes»।
+    it("Use notifications: refetches the unread count and recent list on focus and every 5 minutes", () => {
         renderHook(() => {
             useUnreadCount();
             useRecentNotifications(2);
@@ -50,7 +51,8 @@ describe("notification live queries", () => {
         expect(captured.calls[1]?.queryKey).toEqual(["notifications", "recent", 2]);
     });
 
-    it("pauses the refresh while the tab is hidden", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «pauses the refresh while the tab is hidden»।
+    it("Use notifications: pauses the refresh while the tab is hidden", () => {
         renderHook(() => useUnreadCount());
         const refresh = captured.calls[0]?.refetchInterval;
 

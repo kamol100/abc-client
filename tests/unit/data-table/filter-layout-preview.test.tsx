@@ -37,7 +37,8 @@ function renderFilter(filterRows?: number) {
 }
 
 describe("FormFilter filter rows", () => {
-    it("uses flexible rows when filter_row is set", () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses flexible rows when filter_row is set»।
+    it("Filter layout preview: uses flexible rows when filter_row is set", () => {
         const { html, root } = renderFilter(2);
         expect(html.match(/flex-wrap/g)).toHaveLength(2);
         expect(html).toContain("sm:min-w-[12rem]");
@@ -46,7 +47,8 @@ describe("FormFilter filter rows", () => {
         expect(root).not.toContain("h-9");
     });
 
-    it("keeps the single-row grid when filter_row is omitted", () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the single-row grid when filter_row is omitted»।
+    it("Filter layout preview: keeps the single-row grid when filter_row is omitted", () => {
         const { html, root } = renderFilter();
         expect(html).toContain("lg:grid-cols-8");
         expect(root).toContain("h-9");

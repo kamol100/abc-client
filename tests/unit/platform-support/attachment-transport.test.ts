@@ -12,7 +12,8 @@ import {
 const ATTACHMENT_ID = "11111111-1111-4111-8111-111111111111";
 
 describe("support image paths", () => {
-  it("keeps requester and platform uploads on fixed same-origin paths", () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps requester and platform uploads on fixed same-origin paths»।
+  it("Support attachment requests: keeps requester and platform uploads on fixed same-origin paths", () => {
     expect(supportUploadPath("requester")).toBe("/api/platform-support/uploads");
     expect(supportUploadPath("platform")).toBe("/api/platform-support-admin/uploads");
     expect(supportAttachmentPath("requester", ATTACHMENT_ID)).toBe(
@@ -23,12 +24,14 @@ describe("support image paths", () => {
     );
   });
 
-  it("rejects an attachment id that is not a uuid", () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects an attachment id that is not a uuid»।
+  it("Support attachment requests: rejects an attachment id that is not a uuid", () => {
     expect(supportAttachmentPath("requester", "../api/v1/clients/1")).toBeNull();
     expect(supportAttachmentPath("requester", "not-a-uuid")).toBeNull();
   });
 
-  it("maps API error codes onto translation keys and keeps the 5 and 6 MiB caps", () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps API error codes onto translation keys and keeps the 5 and 6 MiB caps»।
+  it("Support attachment requests: maps API error codes onto translation keys and keeps the 5 and 6 MiB caps", () => {
     expect(SUPPORT_IMAGE_MAX_BYTES).toBe(5 * 1024 * 1024);
     expect(SUPPORT_UPLOAD_MAX_REQUEST_BYTES).toBe(6 * 1024 * 1024);
     expect(supportImageErrorKey("platform_support.image_too_large")).toBe(
@@ -47,7 +50,8 @@ describe("support image client", () => {
     vi.unstubAllGlobals();
   });
 
-  it("posts one file to the same-origin route and preserves the upstream status", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «posts one file to the same-origin route and preserves the upstream status»।
+  it("Support attachment requests: posts one file to the same-origin route and preserves the upstream status", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(JSON.stringify({ success: false, error: { code: "platform_support.image_too_large" } }), {
         status: 422,
@@ -77,7 +81,8 @@ describe("support image client", () => {
     expect(headers.get("Content-Type")).toBeNull();
   });
 
-  it("does not call the network for a delete id that is not a uuid", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not call the network for a delete id that is not a uuid»।
+  it("Support attachment requests: does not call the network for a delete id that is not a uuid", async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 

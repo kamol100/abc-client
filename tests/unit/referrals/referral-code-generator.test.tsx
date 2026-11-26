@@ -27,7 +27,8 @@ function Harness({ submit }: { submit: () => void }) {
 }
 afterEach(cleanup);
 describe("referral code generation", () => {
-  it("fills a valid editable code without submitting or changing the selected user", async () => {
+  // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills a valid editable code without submitting or changing the selected user»।
+  it("Referral code generator: fills a valid editable code without submitting or changing the selected user", async () => {
     const submit = vi.fn();
     render(<Harness submit={submit} />);
     const input = screen.getByRole("textbox", { name: "Referral code" });

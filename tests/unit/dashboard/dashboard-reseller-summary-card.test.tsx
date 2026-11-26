@@ -31,7 +31,8 @@ const stats: DashboardResellerCount = {
 };
 
 describe("DashboardResellerSummaryCard", () => {
-  it("parses the reseller dashboard payload", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «parses the reseller dashboard payload»।
+  it("Dashboard reseller summary card: parses the reseller dashboard payload", () => {
     const parsed = DashboardResellerCountSchema.parse({
       total_resellers: "3",
       total_reseller_clients: "60",
@@ -46,7 +47,8 @@ describe("DashboardResellerSummaryCard", () => {
     expect(parsed).toMatchObject(stats);
   });
 
-  it("links a positive new-client count to this month's reseller clients", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «links a positive new-client count to this month's reseller clients»।
+  it("Dashboard reseller summary card: links a positive new-client count to this month's reseller clients", () => {
     permissionState.allowReport = true;
 
     render(
@@ -63,7 +65,8 @@ describe("DashboardResellerSummaryCard", () => {
     expect(screen.queryByRole("link", { name: "55" })).not.toBeInTheDocument();
   });
 
-  it("leaves a zero new-client count as plain text", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves a zero new-client count as plain text»।
+  it("Dashboard reseller summary card: leaves a zero new-client count as plain text", () => {
     permissionState.allowReport = true;
 
     render(
@@ -78,7 +81,8 @@ describe("DashboardResellerSummaryCard", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
-  it("does not link the count when the user cannot open the reseller client report", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not link the count when the user cannot open the reseller client report»।
+  it("Dashboard reseller summary card: does not link the count when the user cannot open the reseller client report", () => {
     permissionState.allowReport = false;
 
     render(
@@ -93,7 +97,8 @@ describe("DashboardResellerSummaryCard", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
-  it("renders reseller, client, and monthly counts", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders reseller, client, and monthly counts»।
+  it("Dashboard reseller summary card: renders reseller, client, and monthly counts", () => {
     permissionState.allowReport = true;
 
     render(
@@ -115,7 +120,8 @@ describe("DashboardResellerSummaryCard", () => {
     ).toEqual(["3", "60", "55", "5", "7"]);
   });
 
-  it("shows the shared loading skeleton", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the shared loading skeleton»।
+  it("Dashboard reseller summary card: shows the shared loading skeleton", () => {
     render(
       <DashboardResellerSummaryCard
         data={stats}
@@ -129,7 +135,8 @@ describe("DashboardResellerSummaryCard", () => {
     expect(screen.queryByText("55")).not.toBeInTheDocument();
   });
 
-  it("shows the shared error state", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the shared error state»।
+  it("Dashboard reseller summary card: shows the shared error state", () => {
     render(
       <DashboardResellerSummaryCard
         data={stats}

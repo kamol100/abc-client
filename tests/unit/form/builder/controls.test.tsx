@@ -33,13 +33,15 @@ describe("controls without a form", () => {
     });
 
     describe("SelectBox", () => {
-        it("shows the option that matches `value`", () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the option that matches `value`»।
+        it("Form input controls: shows the option that matches `value`", () => {
             render(<SelectBox id="status" value={2} onChange={vi.fn()} options={options} />);
 
             expect(screen.getByText("status.inactive")).toBeInTheDocument();
         });
 
-        it("calls onChange with the option value and the chosen option", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onChange with the option value and the chosen option»।
+        it("Form input controls: calls onChange with the option value and the chosen option", async () => {
             const onChange = vi.fn();
             render(<SelectBox id="status" value={null} onChange={onChange} options={options} />);
             const user = userEvent.setup();
@@ -49,7 +51,8 @@ describe("controls without a form", () => {
             expect(onChange).toHaveBeenCalledWith(1, options[0]);
         });
 
-        it("calls onChange with a list of values when isMulti", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onChange with a list of values when isMulti»।
+        it("Form input controls: calls onChange with a list of values when isMulti", async () => {
             const onChange = vi.fn();
             render(<SelectBox id="tags" value={[1]} onChange={onChange} options={options} isMulti />);
             const user = userEvent.setup();
@@ -59,7 +62,8 @@ describe("controls without a form", () => {
             expect(onChange).toHaveBeenCalledWith([1, 2]);
         });
 
-        it("calls onChange with null when cleared", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onChange with null when cleared»।
+        it("Form input controls: calls onChange with null when cleared", async () => {
             const onChange = vi.fn();
             const { container } = render(
                 <SelectBox id="status" value={1} onChange={onChange} options={options} />,
@@ -72,7 +76,8 @@ describe("controls without a form", () => {
     });
 
     describe("DateInput", () => {
-        it("shows the value and calls onChange with the picked day", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the value and calls onChange with the picked day»।
+        it("Form input controls: shows the value and calls onChange with the picked day", async () => {
             const onChange = vi.fn();
             render(
                 <DateInput id="paid_at" value="2026-10-10" onChange={onChange} onClear={vi.fn()} />,
@@ -88,7 +93,8 @@ describe("controls without a form", () => {
             expect([picked.getFullYear(), picked.getMonth(), picked.getDate()]).toEqual([2026, 9, 21]);
         });
 
-        it("calls onClear from the clear button, and has none when empty", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onClear from the clear button, and has none when empty»।
+        it("Form input controls: calls onClear from the clear button, and has none when empty", async () => {
             const onClear = vi.fn();
             const { rerender } = render(
                 <DateInput id="paid_at" value={new Date(2026, 9, 10)} onChange={vi.fn()} onClear={onClear} />,
@@ -103,7 +109,8 @@ describe("controls without a form", () => {
     });
 
     describe("DateRangeInput", () => {
-        it("calls onChange once, with the finished range, after the second day is picked", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «calls onChange once, with the finished range, after the second day is picked»।
+        it("Form input controls: calls onChange once, with the finished range, after the second day is picked", async () => {
             const onChange = vi.fn();
             render(
                 <DateRangeInput id="period" value={undefined} onChange={onChange} onClear={vi.fn()} placeholder="period" />,

@@ -89,12 +89,14 @@ describe("client activation invoice", () => {
         harness.options = null;
     });
 
-    it("reads the billing preview only for a missing internet bill", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads the billing preview only for a missing internet bill»।
+    it("Client activation: reads the billing preview only for a missing internet bill", () => {
         expect(activationPreview(billRequired)).toEqual(preview);
         expect(activationPreview({ error: { code: "package_price_invalid" } })).toBeNull();
     });
 
-    it("deactivates an active client without opening the bill", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «deactivates an active client without opening the bill»।
+    it("Client activation: deactivates an active client without opening the bill", async () => {
         const user = userEvent.setup();
         render(<ClientStatusToggle clientId="client-1" initialStatus={1} />);
 
@@ -104,7 +106,8 @@ describe("client activation invoice", () => {
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
 
-    it("opens the bill when activation needs an internet invoice", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the bill when activation needs an internet invoice»।
+    it("Client activation: opens the bill when activation needs an internet invoice", async () => {
         const user = userEvent.setup();
         render(<ClientStatusToggle clientId="client-1" initialStatus={0} />);
 
@@ -127,7 +130,8 @@ describe("client activation invoice", () => {
         expect(screen.getByText("client.activation.amount_calculated")).toBeInTheDocument();
     });
 
-    it("keeps the dialog open until a valid invoice is submitted", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the dialog open until a valid invoice is submitted»।
+    it("Client activation: keeps the dialog open until a valid invoice is submitted", async () => {
         const user = userEvent.setup();
         render(<ClientStatusToggle clientId="client-1" initialStatus={0} />);
         await user.click(screen.getByRole("switch"));
@@ -172,7 +176,8 @@ describe("client activation invoice", () => {
         expect(screen.getByRole("switch")).toBeChecked();
     });
 
-    it("ignores a second activation click while the first request is still locked", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores a second activation click while the first request is still locked»।
+    it("Client activation: ignores a second activation click while the first request is still locked", async () => {
         const user = userEvent.setup();
         harness.mutate.mockImplementation(() => undefined);
         render(<ClientStatusToggle clientId="client-1" initialStatus={0} />);

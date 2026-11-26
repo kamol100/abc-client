@@ -18,7 +18,8 @@ const schema: FieldConfig[] = [
 ];
 
 describe("useFilterForm defaults", () => {
-  it("starts with the default values and resets back to them", () => {
+  // ফিল্টারের অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «starts with the default values and resets back to them»।
+  it("Use filter form: starts with the default values and resets back to them", () => {
     const setFilter = vi.fn();
     const { result } = renderHook(() =>
       useFilterForm({ formSchema: schema, setFilter, defaultValues: { syncd_status: "null" } }),
@@ -33,7 +34,8 @@ describe("useFilterForm defaults", () => {
     expect(setFilter).toHaveBeenLastCalledWith("syncd_status=null");
   });
 
-  it("resets to an empty query without defaults", () => {
+  // ফিল্টারের অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets to an empty query without defaults»।
+  it("Use filter form: resets to an empty query without defaults", () => {
     const setFilter = vi.fn();
     const { result } = renderHook(() => useFilterForm({ formSchema: schema, setFilter }));
 
@@ -44,7 +46,8 @@ describe("useFilterForm defaults", () => {
 });
 
 describe("MikrotikSyncFilterSchema", () => {
-  it("offers all, imported and not imported, defaulting to not imported", () => {
+  // ফিল্টারের অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «offers all, imported and not imported, defaulting to not imported»।
+  it("Use filter form: offers all, imported and not imported, defaulting to not imported", () => {
     const field = MikrotikSyncFilterSchema().find((f) => f.name === "syncd_status");
     const values = field && "options" in field ? field.options?.map((o) => o.value) : [];
 

@@ -20,7 +20,8 @@ const rows = [
 ].map((name) => ({ name }));
 
 describe("permission groups", () => {
-  it("groups by the route-name prefix in API order", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «groups by the route-name prefix in API order»।
+  it("Permission groups: groups by the route-name prefix in API order", () => {
     const groups = buildPermissionGroups(rows);
     expect(groups.map((group) => group.name)).toEqual(["clients", "invoices", "sub-zones", "dashboard"]);
     expect(groups[0].permissions.map((row) => row.name)).toEqual([
@@ -30,18 +31,21 @@ describe("permission groups", () => {
     ]);
   });
 
-  it("puts pinned groups first in pin order and skips unknown pins", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts pinned groups first in pin order and skips unknown pins»।
+  it("Permission groups: puts pinned groups first in pin order and skips unknown pins", () => {
     const groups = buildPermissionGroups(rows);
     const ordered = orderPermissionGroups(groups, ["sub-zones", "gone", "invoices"]);
     expect(ordered.map((group) => group.name)).toEqual(["sub-zones", "invoices", "clients", "dashboard"]);
   });
 
-  it("adds a new pin at the top and removes an existing one", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds a new pin at the top and removes an existing one»।
+  it("Permission groups: adds a new pin at the top and removes an existing one", () => {
     expect(togglePin(["clients"], "invoices")).toEqual(["invoices", "clients"]);
     expect(togglePin(["invoices", "clients"], "invoices")).toEqual(["clients"]);
   });
 
-  it("searches group names, with dashes read as spaces", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «searches group names, with dashes read as spaces»।
+  it("Permission groups: searches group names, with dashes read as spaces", () => {
     const groups = buildPermissionGroups(rows);
     const none = new Set<string>();
     expect(filterPermissionGroups(groups, "sub zo", "all", none).map((group) => group.name)).toEqual(["sub-zones"]);
@@ -50,7 +54,8 @@ describe("permission groups", () => {
     expect(filterPermissionGroups(groups, "upload", "all", none)).toEqual([]);
   });
 
-  it("narrows to granted or not granted permissions and drops empty groups", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «narrows to granted or not granted permissions and drops empty groups»।
+  it("Permission groups: narrows to granted or not granted permissions and drops empty groups", () => {
     const groups = buildPermissionGroups(rows);
     const selected = new Set(["clients.access", "invoices.access", "invoices.delete"]);
 
@@ -62,12 +67,14 @@ describe("permission groups", () => {
     expect(missing.map((group) => group.name)).toEqual(["clients", "sub-zones", "dashboard"]);
   });
 
-  it("labels the action without the group prefix", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «labels the action without the group prefix»।
+  it("Permission groups: labels the action without the group prefix", () => {
     expect(permissionActionName("clients", "clients.image.upload")).toBe("image upload");
     expect(permissionActionName("dashboard-card", "dashboard-card.product-stock")).toBe("product stock");
   });
 
-  it("only pins real group names", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «only pins real group names»।
+  it("Permission groups: only pins real group names", () => {
     expect(canPinGroup("sub-zones")).toBe(true);
     // The backend accepts the same pattern, so the general group can be pinned too.
     expect(canPinGroup(GENERAL_GROUP)).toBe(true);

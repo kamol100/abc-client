@@ -17,7 +17,8 @@ describe("signOutClient", () => {
     });
   });
 
-  it("clears the session and stays on the current host", async () => {
+  // লগইন ও প্রবেশাধিকার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the session and stays on the current host»।
+  it("Subscriber logout: clears the session and stays on the current host", async () => {
     await signOutClient();
 
     expect(signOutMock).toHaveBeenCalledWith({ redirect: false });

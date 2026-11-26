@@ -64,7 +64,8 @@ beforeEach(() => {
 });
 
 describe("DataTable toolbar config", () => {
-  it("renders page end items before the built-ins, in the fixed order", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders page end items before the built-ins, in the fixed order»।
+  it("Toolbar config: renders page end items before the built-ins, in the fixed order", () => {
     renderTable({
       title: "Clients (3)",
       start: [{ key: "info", node: <span>Online 2</span> }],
@@ -78,23 +79,27 @@ describe("DataTable toolbar config", () => {
     expect(endLabels()).toEqual(["Settings", "common.view", "Switch to full layout", "common.filter", "Add"]);
   });
 
-  it("switches built-ins off and accepts add as an element", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switches built-ins off and accepts add as an element»।
+  it("Toolbar config: switches built-ins off and accepts add as an element", () => {
     renderTable({ features: { columns: false, layoutToggle: false, add: <AddButton /> } });
 
     expect(endLabels()).toEqual(["Add"]);
   });
 
-  it("shows only the layout toggle by default and nothing when the toolbar is off", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows only the layout toggle by default and nothing when the toolbar is off»।
+  it("Toolbar config: shows only the layout toggle by default and nothing when the toolbar is off", () => {
     renderTable(true);
     expect(endLabels()).toEqual(["Switch to full layout"]);
   });
 
-  it("renders no toolbar for toolbar={false}", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders no toolbar for toolbar={false}»।
+  it("Toolbar config: renders no toolbar for toolbar={false}", () => {
     renderTable(false);
     expect(document.querySelector("[data-toolbar-layout]")).toBeNull();
   });
 
-  it("skips hidden and empty items", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «skips hidden and empty items»।
+  it("Toolbar config: skips hidden and empty items", () => {
     renderTable({
       end: [
         { key: "hidden", node: <button type="button">Hidden</button>, show: false },
@@ -107,20 +112,23 @@ describe("DataTable toolbar config", () => {
     expect(endLabels()).toEqual(["Shown"]);
   });
 
-  it("uses the centered layout only when center has items", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the centered layout only when center has items»।
+  it("Toolbar config: uses the centered layout only when center has items", () => {
     renderTable({ center: [{ key: "middle", node: <span>Middle</span> }] });
 
     expect(document.querySelector('[data-toolbar-layout="desktop-centered"]')).not.toBeNull();
     expect(screen.getByText("Middle").closest('[data-toolbar-slot="center"]')).not.toBeNull();
   });
 
-  it("keeps the plain layout when center is empty", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the plain layout when center is empty»।
+  it("Toolbar config: keeps the plain layout when center is empty", () => {
     renderTable({ center: [{ key: "empty", node: null }] });
 
     expect(document.querySelector('[data-toolbar-layout="desktop"]')).not.toBeNull();
   });
 
-  it("applies mobile rules: title hidden, row items on their own row, hidden items dropped", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies mobile rules: title hidden, row items on their own row, hidden items dropped»।
+  it("Toolbar config: applies mobile rules: title hidden, row items on their own row, hidden items dropped", () => {
     isMobile = true;
     renderTable({
       title: "Clients (3)",
@@ -136,7 +144,8 @@ describe("DataTable toolbar config", () => {
     expect(screen.getByTestId("page-size")).toBeInTheDocument();
   });
 
-  it("puts mobile actions on their own row when asked", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts mobile actions on their own row when asked»।
+  it("Toolbar config: puts mobile actions on their own row when asked", () => {
     isMobile = true;
     renderTable({ features: { add: AddButton }, mobileActions: "row" });
 
@@ -144,7 +153,8 @@ describe("DataTable toolbar config", () => {
     expect(end?.className).toContain("w-full");
   });
 
-  it("clears an active filter when the desktop filter row is closed", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears an active filter when the desktop filter row is closed»।
+  it("Toolbar config: clears an active filter when the desktop filter row is closed", async () => {
     const user = userEvent.setup();
     const { setFilter } = renderTable({ page: null, features: { filter: { filter } } });
 

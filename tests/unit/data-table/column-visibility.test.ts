@@ -22,7 +22,8 @@ const columns: ColumnDef<Row>[] = [
 ];
 
 describe("column visibility storage", () => {
-  it("builds a page and table specific key", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds a page and table specific key»।
+  it("Column visibility: builds a page and table specific key", () => {
     expect(columnVisibilityStorageKey("/clients", "clients")).toBe(
       "data-table:column-visibility:/clients:clients",
     );
@@ -37,13 +38,15 @@ describe("column visibility storage", () => {
     );
   });
 
-  it("uses the query key, then column ids, as the table id", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the query key, then column ids, as the table id»।
+  it("Column visibility: uses the query key, then column ids, as the table id", () => {
     expect(tableColumnVisibilityId("clients", ["email", "name"])).toBe("clients");
     expect(tableColumnVisibilityId("  ", ["email", "name"])).toBe("email,name");
     expect(tableColumnVisibilityId(undefined, [])).toBe("default");
   });
 
-  it("collects only columns the toggle can hide", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «collects only columns the toggle can hide»।
+  it("Column visibility: collects only columns the toggle can hide", () => {
     expect(collectColumnIds(columns)).toEqual(["name", "email"]);
     expect(
       collectColumnIds<Row, unknown>([
@@ -52,7 +55,8 @@ describe("column visibility storage", () => {
     ).toEqual(["onu_name"]);
   });
 
-  it("keeps defaults when storage is missing, invalid, or outdated", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps defaults when storage is missing, invalid, or outdated»।
+  it("Column visibility: keeps defaults when storage is missing, invalid, or outdated", () => {
     const defaults: VisibilityState = { email: false };
     const allowed = new Set(["name", "email"]);
 
@@ -64,7 +68,8 @@ describe("column visibility storage", () => {
     ).toEqual({ email: true });
   });
 
-  it("lets a saved choice override the default visibility", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets a saved choice override the default visibility»।
+  it("Column visibility: lets a saved choice override the default visibility", () => {
     const allowed = new Set(["name", "email"]);
 
     expect(mergeColumnVisibility({ email: false }, { email: true }, allowed)).toEqual({
@@ -73,13 +78,15 @@ describe("column visibility storage", () => {
     expect(mergeColumnVisibility({}, { name: false }, allowed)).toEqual({ name: false });
   });
 
-  it("drops columns that cannot be toggled before writing", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops columns that cannot be toggled before writing»।
+  it("Column visibility: drops columns that cannot be toggled before writing", () => {
     expect(
       sanitizeColumnVisibility({ email: false, actions: false, name: true }, new Set(["name", "email"])),
     ).toEqual({ email: false, name: true });
   });
 
-  it("removes corrupt storage and keeps a partial record", () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «removes corrupt storage and keeps a partial record»।
+  it("Column visibility: removes corrupt storage and keeps a partial record", () => {
     const key = columnVisibilityStorageKey("/clients", "clients");
     localStorage.setItem(key, "{");
 

@@ -30,7 +30,8 @@ describe("ChangePagination labels", () => {
         Element.prototype.scrollIntoView = () => undefined;
     });
 
-    it("shows the number alone on small screens and keeps / page in the open list", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the number alone on small screens and keeps / page in the open list»।
+    it("Change pagination: shows the number alone on small screens and keeps / page in the open list", async () => {
         const user = userEvent.setup();
         renderPagination();
 

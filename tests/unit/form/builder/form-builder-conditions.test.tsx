@@ -66,7 +66,8 @@ describe("FormBuilder visibleWhen", () => {
         mockApi();
     });
 
-    it("equals: shows the field only while the other field has that value", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «equals: shows the field only while the other field has that value»।
+    it("Conditional form fields: equals: shows the field only while the other field has that value", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "company", visibleWhen: { field: "kind", equals: "business" } },
@@ -80,7 +81,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(fieldById("company")).toBeNull();
     });
 
-    it("equals: compares as text, so the number 1 matches \"1\"", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «equals: compares as text, so the number 1 matches "1"»।
+    it("Conditional form fields: equals: compares as text, so the number 1 matches \"1\"", () => {
         renderFields(
             [
                 { type: "text", name: "kind" },
@@ -92,7 +94,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(fieldById("extra")).toBeInTheDocument();
     });
 
-    it("when: uses the function and ignores equals", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «when: uses the function and ignores equals»।
+    it("Conditional form fields: when: uses the function and ignores equals", () => {
         renderFields(
             [
                 { type: "text", name: "kind" },
@@ -108,7 +111,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(fieldById("extra")).toBeInTheDocument();
     });
 
-    it("with neither: shows the field while the other field is filled", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «with neither: shows the field while the other field is filled»।
+    it("Conditional form fields: with neither: shows the field while the other field is filled", async () => {
         renderFields([
             { type: "text", name: "agent" },
             { type: "text", name: "commission", visibleWhen: { field: "agent" } },
@@ -122,7 +126,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(fieldById("commission")).toBeNull();
     });
 
-    it("with neither: an empty list counts as not filled, and 0 and false count as filled", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «with neither: an empty list counts as not filled, and 0 and false count as filled»।
+    it("Conditional form fields: with neither: an empty list counts as not filled, and 0 and false count as filled", () => {
         renderFields(
             [
                 { type: "text", name: "by_list", visibleWhen: { field: "list" } },
@@ -137,7 +142,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(fieldById("by_false")).toBeInTheDocument();
     });
 
-    it("keeps the field className on the wrapper", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the field className on the wrapper»।
+    it("Conditional form fields: keeps the field className on the wrapper", () => {
         renderFields(
             [{ type: "text", name: "extra", className: "col-span-full", visibleWhen: { field: "kind", equals: "a" } }],
             { data: { kind: "a" } },
@@ -146,7 +152,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(inputById("extra").parentElement?.parentElement).toHaveClass("col-span-full");
     });
 
-    it("writes null into a field that starts hidden", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «writes null into a field that starts hidden»।
+    it("Conditional form fields: writes null into a field that starts hidden", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "company", visibleWhen: { field: "kind", equals: "business" } },
@@ -155,7 +162,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(await saveAndReadPayload()).toEqual({ company: null });
     });
 
-    it("clears the value to null when the field is hidden after it was filled", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the value to null when the field is hidden after it was filled»।
+    it("Conditional form fields: clears the value to null when the field is hidden after it was filled", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "company", visibleWhen: { field: "kind", equals: "b" } },
@@ -168,7 +176,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(await saveAndReadPayload(user)).toEqual({ kind: "bx", company: null });
     });
 
-    it("uses resetValue in place of null", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses resetValue in place of null»।
+    it("Conditional form fields: uses resetValue in place of null", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "auth", visibleWhen: { field: "kind", equals: "v3", resetValue: "SHA" } },
@@ -179,7 +188,8 @@ describe("FormBuilder visibleWhen", () => {
         expect(await saveAndReadPayload()).toEqual({ auth: "SHA", flag: false, text: "" });
     });
 
-    it("overwrites a saved value of a hidden field in edit data", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «overwrites a saved value of a hidden field in edit data»।
+    it("Conditional form fields: overwrites a saved value of a hidden field in edit data", async () => {
         renderFields(
             [
                 { type: "text", name: "kind" },
@@ -225,14 +235,16 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         });
     });
 
-    it("is disabled and loads nothing until the parent has a value", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is disabled and loads nothing until the parent has a value»।
+    it("Conditional form fields: is disabled and loads nothing until the parent has a value", async () => {
         renderFields(fields());
 
         await waitFor(() => expect(selectRoot("package_id")).toHaveClass("select--is-disabled"));
         expect(apiRequests("GET").map((request) => request.url)).toEqual(["/dropdown-networks"]);
     });
 
-    it("loads its options from buildApi(parent value) and never from its own api", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads its options from buildApi(parent value) and never from its own api»।
+    it("Conditional form fields: loads its options from buildApi(parent value) and never from its own api", async () => {
         renderFields(fields());
         const user = userEvent.setup();
         await pickOption(user, "network_id", "Network B");
@@ -245,7 +257,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ network_id: 2, package_id: 21 });
     });
 
-    it("clears its value to null when the parent changes", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears its value to null when the parent changes»।
+    it("Conditional form fields: clears its value to null when the parent changes", async () => {
         renderFields(fields());
         const user = userEvent.setup();
         await pickOption(user, "network_id", "Network A");
@@ -255,7 +268,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ network_id: 2, package_id: null });
     });
 
-    it("keeps its value when the parent changes and resetOnChange is false", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps its value when the parent changes and resetOnChange is false»।
+    it("Conditional form fields: keeps its value when the parent changes and resetOnChange is false", async () => {
         renderFields(fields(false));
         const user = userEvent.setup();
         await pickOption(user, "network_id", "Network A");
@@ -265,7 +279,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ network_id: 2, package_id: 11 });
     });
 
-    it("keeps the child when an edit record arrives and fills an empty parent", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the child when an edit record arrives and fills an empty parent»।
+    it("Conditional form fields: keeps the child when an edit record arrives and fills an empty parent", async () => {
         mockApi((request) => {
             if (request.url === "/dropdown-networks") return { success: true, data: networks };
             if (request.url in packagesByNetwork) return { success: true, data: packagesByNetwork[request.url] };
@@ -285,7 +300,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload()).toEqual({ id: 5, network_id: 1, package_id: 11 });
     });
 
-    it("still clears the child when the user changes the parent of a loaded record", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «still clears the child when the user changes the parent of a loaded record»।
+    it("Conditional form fields: still clears the child when the user changes the parent of a loaded record", async () => {
         renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
         const user = userEvent.setup();
         await screen.findByText("A 10 Mbps");
@@ -294,7 +310,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ id: 5, network_id: 2, package_id: null });
     });
 
-    it("clears the child when the user changes the parent away and back", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the child when the user changes the parent away and back»।
+    it("Conditional form fields: clears the child when the user changes the parent away and back", async () => {
         renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
         const user = userEvent.setup();
         await screen.findByText("A 10 Mbps");
@@ -305,7 +322,8 @@ describe("FormBuilder dependent dropdown (dependsOn)", () => {
         expect(await saveAndReadPayload(user)).toEqual({ id: 5, network_id: 1, package_id: null });
     });
 
-    it("keeps a saved child value when the form opens with both values", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a saved child value when the form opens with both values»।
+    it("Conditional form fields: keeps a saved child value when the form opens with both values", async () => {
         renderFields(fields(), { mode: "edit", data: { id: 5, network_id: 1, package_id: 11 } });
 
         expect(await screen.findByText("A 10 Mbps")).toBeInTheDocument();
@@ -342,7 +360,8 @@ describe("FormBuilder dropdown populate", () => {
         { type: "number", name: "commission" },
     ];
 
-    it("copies values from the chosen option's record into other fields, including fields with no input", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies values from the chosen option's record into other fields, including fields with no input»।
+    it("Conditional form fields: copies values from the chosen option's record into other fields, including fields with no input", async () => {
         renderFields(fields);
         const user = userEvent.setup();
         await pickOption(user, "agent_id", "Karim");
@@ -351,7 +370,8 @@ describe("FormBuilder dropdown populate", () => {
         expect(await saveAndReadPayload(user)).toEqual({ agent_id: 7, commission: 12, agent_phone: null });
     });
 
-    it("leaves a target alone when the chosen record has no such key", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves a target alone when the chosen record has no such key»।
+    it("Conditional form fields: leaves a target alone when the chosen record has no such key", async () => {
         renderFields(fields, { data: { commission: 5 } });
         const user = userEvent.setup();
         await pickOption(user, "agent_id", "Rahim");

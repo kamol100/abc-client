@@ -6,7 +6,8 @@ import {
   test,
 } from "@/tests/e2e/networks/fixtures";
 
-test("NW-C01 each visible row shows its own connection label beside its operational status", async ({ page, staff }) => {
+// প্রতিটি রাউটারের নিজের সংযোগের ফল তার অপারেশনাল স্ট্যাটাসের পাশে দেখায় কি না যাচাই করি।
+test("NW-C01 Network connection labels: show each router's connection result beside its operating status", async ({ page, staff }) => {
   const listed = await openNetworks(page, staff);
   expect(listed.data.length).toBeGreaterThan(1);
   for (const network of listed.data) {

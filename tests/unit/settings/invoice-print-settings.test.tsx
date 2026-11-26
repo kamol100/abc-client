@@ -88,7 +88,8 @@ describe("Invoice print settings page", () => {
         mutateAsync.mockImplementation(async (payload: unknown) => payload);
     });
 
-    it("keeps the original receipt fixed while the customized preview follows the draft", async () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the original receipt fixed while the customized preview follows the draft»।
+    it("Invoice print settings: keeps the original receipt fixed while the customized preview follows the draft", async () => {
         const user = userEvent.setup();
         render(<InvoicePrintSettingsPage />);
 
@@ -152,7 +153,8 @@ describe("Invoice print settings page", () => {
         }));
     });
 
-    it("resets the draft to the default configuration", async () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets the draft to the default configuration»।
+    it("Invoice print settings: resets the draft to the default configuration", async () => {
         const user = userEvent.setup();
         render(<InvoicePrintSettingsPage />);
 

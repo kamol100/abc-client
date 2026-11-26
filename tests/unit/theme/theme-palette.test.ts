@@ -21,7 +21,8 @@ const padma: ThemePalette = {
 };
 
 describe("theme palette", () => {
-  it("maps the picks to the app's light variables", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps the picks to the app's light variables»।
+  it("Theme palette: maps the picks to the app's light variables", () => {
     const vars = lightPaletteVariables(padma);
     // Same channels as the app's existing converter.
     expect(vars["--primary"]).toBe(hexToHslChannels("#F0543C"));
@@ -33,13 +34,15 @@ describe("theme palette", () => {
     expect(vars["--sidebar-foreground"]).toBe("0 0% 98%");
   });
 
-  it("gives a light sidebar dark text and white backgrounds no tint", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «gives a light sidebar dark text and white backgrounds no tint»।
+  it("Theme palette: gives a light sidebar dark text and white backgrounds no tint", () => {
     const vars = lightPaletteVariables({ ...padma, sidebarFrom: "#FAFAFA", sidebarTo: "#F4F4F5", background: "white" });
     expect(vars["--sidebar-foreground"]).not.toBe("0 0% 98%");
     expect(vars["--background"]).toBe("0 0% 100%");
   });
 
-  it("uses hand-tuned dark colors when present, and generates them otherwise", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses hand-tuned dark colors when present, and generates them otherwise»।
+  it("Theme palette: uses hand-tuned dark colors when present, and generates them otherwise", () => {
     const dark = generatedDark(padma);
     expect(dark.background).toMatch(/^#[0-9A-F]{6}$/);
     expect(darkPaletteVariables(padma)["--background"]).toBe(darkPaletteVariables({ ...padma, dark })["--background"]);
@@ -47,7 +50,8 @@ describe("theme palette", () => {
     expect(tuned["--background"]).toBe(hexToHslChannels("#1A0F0D"));
   });
 
-  it("writes page CSS only for a valid palette", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «writes page CSS only for a valid palette»।
+  it("Theme palette: writes page CSS only for a valid palette", () => {
     const css = paletteCss(padma);
     expect(css).toContain('html[data-palette="on"]:not(.dark){');
     expect(css).toContain('html.dark[data-palette="on"]{');
@@ -55,14 +59,16 @@ describe("theme palette", () => {
     expect(paletteCss({ ...padma, primary: "red;}body{display:none" })).toBe("");
   });
 
-  it("scopes preview CSS to one element and refuses unsafe ids", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «scopes preview CSS to one element and refuses unsafe ids»।
+  it("Theme palette: scopes preview CSS to one element and refuses unsafe ids", () => {
     const settings = { ...DEFAULT_THEME_SETTINGS, palette: padma };
     expect(previewCss("tp-1", settings, padma)).toContain('[data-theme-preview="tp-1"]:not(.dark){');
     expect(previewCss('x"]{}', settings, padma)).toBe("");
     expect(previewCss("tp-2", { ...settings, fontWeight: "light" }, padma)).toContain("--font-weight-normal:300;");
   });
 
-  it("sets the dashboard card accent variables in a preview scope", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sets the dashboard card accent variables in a preview scope»।
+  it("Theme palette: sets the dashboard card accent variables in a preview scope", () => {
     const settings = { ...DEFAULT_THEME_SETTINGS, palette: padma };
     const off = previewCss("tp-3", settings, padma);
     expect(off).toContain("--dash-card-top:0px;--dash-card-ring:0px;");
@@ -76,34 +82,39 @@ describe("theme palette", () => {
     expect(previewCss("tp-5", { ...settings, cardBorder: "top" }, padma)).toContain("--dash-card-top:3px;");
   });
 
-  it("reads the card options as off and multicolor for themes saved before they existed", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads the card options as off and multicolor for themes saved before they existed»।
+  it("Theme palette: reads the card options as off and multicolor for themes saved before they existed", () => {
     const { cardBorder: _border, cardColors: _colors, ...older } = { ...DEFAULT_THEME_SETTINGS, palette: padma };
     const settings = settingsFromTheme(older as typeof DEFAULT_THEME_SETTINGS, "old");
     expect(settings.cardBorder).toBe("off");
     expect(settings.cardColors).toBe("multi");
   });
 
-  it("fills font weight for themes saved before the option existed", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills font weight for themes saved before the option existed»।
+  it("Theme palette: fills font weight for themes saved before the option existed", () => {
     const { fontWeight: _unused, ...older } = { ...DEFAULT_THEME_SETTINGS, palette: padma };
     expect(settingsFromTheme(older as typeof DEFAULT_THEME_SETTINGS, "old").fontWeight).toBe("regular");
   });
 });
 
 describe("saved theme settings on the device", () => {
-  it("drops overrides and uses the default preset for a colorful theme", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops overrides and uses the default preset for a colorful theme»।
+  it("Theme palette: drops overrides and uses the default preset for a colorful theme", () => {
     const settings = settingsFromTheme({ ...DEFAULT_THEME_SETTINGS, preset: "jomuna", palette: padma }, "theme-1");
     expect(settings.preset).toBe("default");
     expect(settings.overrides).toEqual({});
     expect(settings.themeId).toBe("theme-1");
   });
 
-  it("keeps a preset theme as it is", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a preset theme as it is»।
+  it("Theme palette: keeps a preset theme as it is", () => {
     const settings = settingsFromTheme({ ...DEFAULT_THEME_SETTINGS, preset: "jomuna", palette: null }, "theme-2");
     expect(settings.preset).toBe("jomuna");
     expect(settings.palette).toBeNull();
   });
 
-  it("reads the palette back from the cookie and ignores a broken one", () => {
+  // রং ও থিমের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads the palette back from the cookie and ignores a broken one»।
+  it("Theme palette: reads the palette back from the cookie and ignores a broken one", () => {
     const good = readThemeSettings({ themePrefs: JSON.stringify({ palette: padma, themeId: "abc" }) });
     expect(good.settings.palette?.primary).toBe("#F0543C");
     expect(good.settings.themeId).toBe("abc");

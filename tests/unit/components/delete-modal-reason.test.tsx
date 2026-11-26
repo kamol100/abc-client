@@ -25,7 +25,8 @@ describe("DeleteModal reason", () => {
         mutation.mutateAsync.mockResolvedValue(undefined);
     });
 
-    it("sends the trimmed reason in the delete body", async () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends the trimmed reason in the delete body»।
+    it("Delete modal reason: sends the trimmed reason in the delete body", async () => {
         render(<DeleteModal api_url="/products-out/abc" withReason />);
         const user = await openDialog();
 
@@ -35,7 +36,8 @@ describe("DeleteModal reason", () => {
         await waitFor(() => expect(mutation.mutateAsync).toHaveBeenCalledWith({ reason: "Wrong client" }));
     });
 
-    it("sends no body when the optional reason is left empty", async () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends no body when the optional reason is left empty»।
+    it("Delete modal reason: sends no body when the optional reason is left empty", async () => {
         render(<DeleteModal api_url="/products-out/abc" withReason />);
         const user = await openDialog();
 
@@ -45,14 +47,16 @@ describe("DeleteModal reason", () => {
         await waitFor(() => expect(mutation.mutateAsync).toHaveBeenCalledWith(undefined));
     });
 
-    it("limits the reason to 500 characters", async () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «limits the reason to 500 characters»।
+    it("Delete modal reason: limits the reason to 500 characters", async () => {
         render(<DeleteModal api_url="/products-out/abc" withReason />);
         await openDialog();
 
         expect(screen.getByRole("textbox").getAttribute("maxlength")).toBe("500");
     });
 
-    it("does not show a reason field unless asked", async () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not show a reason field unless asked»।
+    it("Delete modal reason: does not show a reason field unless asked", async () => {
         render(<DeleteModal api_url="/payments/abc" />);
         const user = await openDialog();
 
@@ -61,7 +65,8 @@ describe("DeleteModal reason", () => {
         await waitFor(() => expect(mutation.mutateAsync).toHaveBeenCalledWith(undefined));
     });
 
-    it("clears the reason when the dialog is closed and opened again", async () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the reason when the dialog is closed and opened again»।
+    it("Delete modal reason: clears the reason when the dialog is closed and opened again", async () => {
         render(<DeleteModal api_url="/products-out/abc" withReason />);
         const user = await openDialog();
         await user.type(screen.getByRole("textbox"), "Draft reason");

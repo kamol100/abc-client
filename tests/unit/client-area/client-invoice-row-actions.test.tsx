@@ -63,7 +63,8 @@ vi.mock("@/components/invoices/invoice-print-dialog", () => ({
 const dueInvoice = { status: "due" } as InvoiceRow;
 
 describe("ClientInvoiceRowActions", () => {
-  it("opens the same bKash invoice dialog", async () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the same bKash invoice dialog»।
+  it("Client invoice row actions: opens the same bKash invoice dialog", async () => {
     const user = userEvent.setup();
     render(<ClientInvoiceRowActions invoice={dueInvoice} />);
 
@@ -73,7 +74,8 @@ describe("ClientInvoiceRowActions", () => {
     expect(screen.getByText("client_dashboard.payment.dialog_title")).toBeInTheDocument();
   });
 
-  it("hides pay when the invoice is paid", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides pay when the invoice is paid»।
+  it("Client invoice row actions: hides pay when the invoice is paid", () => {
     render(<ClientInvoiceRowActions invoice={{ status: "paid" } as InvoiceRow} />);
 
     expect(screen.queryByRole("button", { name: "invoice.actions.pay" })).not.toBeInTheDocument();

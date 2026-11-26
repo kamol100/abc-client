@@ -16,7 +16,8 @@ function mockCommand(result = true) {
 }
 
 describe("referral link clipboard", () => {
-    it("copies the full link using the secure clipboard API", async () => {
+    // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies the full link using the secure clipboard API»।
+    it("Referral clipboard: copies the full link using the secure clipboard API", async () => {
         vi.stubGlobal("isSecureContext", true);
         const writeText = vi.fn().mockResolvedValue(undefined);
         vi.stubGlobal("navigator", { clipboard: { writeText } });
@@ -27,7 +28,8 @@ describe("referral link clipboard", () => {
         expect(command).not.toHaveBeenCalled();
     });
 
-    it("copies on HTTP without the Clipboard API and restores focus without scrolling", async () => {
+    // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies on HTTP without the Clipboard API and restores focus without scrolling»।
+    it("Referral clipboard: copies on HTTP without the Clipboard API and restores focus without scrolling", async () => {
         vi.stubGlobal("isSecureContext", false);
         vi.stubGlobal("navigator", {});
         const button = document.createElement("button");
@@ -47,7 +49,8 @@ describe("referral link clipboard", () => {
         expect(focus).toHaveBeenCalledWith({ preventScroll: true });
     });
 
-    it("falls back when browser clipboard permission is denied", async () => {
+    // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «falls back when browser clipboard permission is denied»।
+    it("Referral clipboard: falls back when browser clipboard permission is denied", async () => {
         vi.stubGlobal("isSecureContext", true);
         vi.stubGlobal("navigator", { clipboard: { writeText: vi.fn().mockRejectedValue(new Error("denied")) } });
         const command = mockCommand();
@@ -56,7 +59,8 @@ describe("referral link clipboard", () => {
         expect(command).toHaveBeenCalledWith("copy");
     });
 
-    it("reports failure when the browser refuses both copy methods", async () => {
+    // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reports failure when the browser refuses both copy methods»।
+    it("Referral clipboard: reports failure when the browser refuses both copy methods", async () => {
         vi.stubGlobal("isSecureContext", false);
         mockCommand(false);
 
@@ -64,7 +68,8 @@ describe("referral link clipboard", () => {
         expect(document.querySelector("textarea")).toBeNull();
     });
 
-    it("cleans up when the legacy copy command throws", async () => {
+    // রেফারেল ও সেলার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «cleans up when the legacy copy command throws»।
+    it("Referral clipboard: cleans up when the legacy copy command throws", async () => {
         vi.stubGlobal("isSecureContext", false);
         mockCommand().mockImplementation(() => { throw new Error("unavailable"); });
 

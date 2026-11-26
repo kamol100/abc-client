@@ -17,13 +17,15 @@ const valid = {
 };
 
 describe("buildDemoRequestSchema website", () => {
-  it("accepts a website that is not a url", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a website that is not a url»।
+  it("Demo request schema: accepts a website that is not a url", () => {
     const result = schema.safeParse({ ...valid, website: "example.isptik.com" });
 
     expect(result.success).toBe(true);
   });
 
-  it("accepts an empty website", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts an empty website»।
+  it("Demo request schema: accepts an empty website", () => {
     const result = schema.safeParse(valid);
 
     expect(result.success).toBe(true);
@@ -46,7 +48,8 @@ const adminEdit = {
 };
 
 describe("DemoRequestAdminEditFormSchema", () => {
-  it("accepts every fillable field, including username and password", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts every fillable field, including username and password»।
+  it("Demo request schema: accepts every fillable field, including username and password", () => {
     const result = DemoRequestAdminEditFormSchema.safeParse(adminEdit);
 
     expect(result.success).toBe(true);
@@ -56,7 +59,8 @@ describe("DemoRequestAdminEditFormSchema", () => {
     }
   });
 
-  it("accepts a subdomain website when approving", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a subdomain website when approving»।
+  it("Demo request schema: accepts a subdomain website when approving", () => {
     const dotted = DemoRequestAdminEditFormSchema.safeParse({
       ...adminEdit,
       website: "xxx.xxxxx.com",
@@ -70,7 +74,8 @@ describe("DemoRequestAdminEditFormSchema", () => {
     expect(testDomain.success).toBe(true);
   });
 
-  it("rejects approval without username, a short password, or a non-domain website", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects approval without username, a short password, or a non-domain website»।
+  it("Demo request schema: rejects approval without username, a short password, or a non-domain website", () => {
     const result = DemoRequestAdminEditFormSchema.safeParse({
       ...adminEdit,
       username: "",
@@ -87,7 +92,8 @@ describe("DemoRequestAdminEditFormSchema", () => {
     }
   });
 
-  it("allows a pending update without username, password, or a subdomain", () => {
+  // ডেমোর আবেদন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows a pending update without username, password, or a subdomain»।
+  it("Demo request schema: allows a pending update without username, password, or a subdomain", () => {
     const result = DemoRequestAdminEditFormSchema.safeParse({
       ...adminEdit,
       status: "pending",

@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { CompanySubscriptionFormSchema } from "@/components/subscription/company-subscription-type";
 
 describe("company subscription form", () => {
-  it("serializes date fields for the update payload and keeps empty dates null", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «serializes date fields for the update payload and keeps empty dates null»।
+  it("Company subscription form: serializes date fields for the update payload and keeps empty dates null", () => {
     const parsed = CompanySubscriptionFormSchema.parse({
       company_id: "company-uuid",
       plan_id: "plan-uuid",
@@ -22,7 +23,8 @@ describe("company subscription form", () => {
     });
   });
 
-  it("defaults a missing status to active and accepts an existing date string", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «defaults a missing status to active and accepts an existing date string»।
+  it("Company subscription form: defaults a missing status to active and accepts an existing date string", () => {
     const parsed = CompanySubscriptionFormSchema.parse({
       company_id: "company-uuid",
       plan_id: "plan-uuid",

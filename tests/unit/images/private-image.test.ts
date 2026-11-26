@@ -8,13 +8,15 @@ import {
 } from "@/lib/images/private-image";
 
 describe("privateImageFileError", () => {
-  it("accepts jpeg, png, and webp within 2MB", () => {
+  // ব্যক্তিগত ছবি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts jpeg, png, and webp within 2MB»।
+  it("Private image: accepts jpeg, png, and webp within 2MB", () => {
     expect(privateImageFileError({ type: "image/jpeg", size: 1200 })).toBeNull();
     expect(privateImageFileError({ type: "image/png", size: MAX_PRIVATE_IMAGE_BYTES })).toBeNull();
     expect(privateImageFileError({ type: "image/webp", size: 1 })).toBeNull();
   });
 
-  it("rejects other types and files over 2MB", () => {
+  // ব্যক্তিগত ছবি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects other types and files over 2MB»।
+  it("Private image: rejects other types and files over 2MB", () => {
     expect(privateImageFileError({ type: "application/pdf", size: 100 })).toBe("invalid_type");
     expect(privateImageFileError({ type: "image/gif", size: 100 })).toBe("invalid_type");
     expect(privateImageFileError({ type: "image/png", size: MAX_PRIVATE_IMAGE_BYTES + 1 })).toBe("too_large");
@@ -22,7 +24,8 @@ describe("privateImageFileError", () => {
 });
 
 describe("privateImageSrc", () => {
-  it("builds a same-origin preview url", () => {
+  // ব্যক্তিগত ছবি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds a same-origin preview url»।
+  it("Private image: builds a same-origin preview url", () => {
     expect(privateImageSrc("staffs", "abc", "nid_front", "staffs/1/photo.png")).toBe(
       "/api/staffs/abc/images/nid_front?v=staffs%2F1%2Fphoto.png",
     );
@@ -30,7 +33,8 @@ describe("privateImageSrc", () => {
 });
 
 describe("privateImageFieldAllowed", () => {
-  it("keeps client and staff on photo and lets resellers use avatar", () => {
+  // ব্যক্তিগত ছবি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps client and staff on photo and lets resellers use avatar»।
+  it("Private image: keeps client and staff on photo and lets resellers use avatar", () => {
     expect(privateImageFieldAllowed("clients", "photo")).toBe(true);
     expect(privateImageFieldAllowed("clients", "avatar")).toBe(false);
     expect(privateImageFieldAllowed("staffs", "nid_front")).toBe(true);
@@ -41,7 +45,8 @@ describe("privateImageFieldAllowed", () => {
 });
 
 describe("storedPrivateImage", () => {
-  it("keeps a stored path and ignores blanks", () => {
+  // ব্যক্তিগত ছবি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a stored path and ignores blanks»।
+  it("Private image: keeps a stored path and ignores blanks", () => {
     expect(storedPrivateImage("staffs/1/photo.png")).toBe("staffs/1/photo.png");
     expect(storedPrivateImage("  ")).toBeNull();
     expect(storedPrivateImage(null)).toBeNull();

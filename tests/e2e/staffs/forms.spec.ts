@@ -25,7 +25,8 @@ function phoneNumber(): string {
   return `018${digits}`;
 }
 
-test("FT090-07 a missing name and a short phone stay on the form", async ({ page, staff }) => {
+// স্টাফের নাম না দিলে ও ছোট ফোন নম্বরে ত্রুটি দেখিয়ে ফর্ম খোলা রাখে কি না দেখি।
+test("FT090-07 Invalid staff details: show errors for a missing name and short phone number", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   const before = await staffList(staff);
   await openCreate(page);
@@ -43,7 +44,8 @@ test("FT090-07 a missing name and a short phone stay on the form", async ({ page
   expect((await staffList(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("FT090-07 a 256 character username is rejected and creates nothing", async ({ page, staff }) => {
+// ২৫৬ অক্ষরের ইউজারনেমে ত্রুটি দেখায় এবং স্টাফ তৈরি হয় না কি না দেখি।
+test("FT090-07 Staff username too long: reject 256 characters without creating an account", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   const before = await staffList(staff);
   const username = `e2e${"x".repeat(253)}`;
@@ -60,7 +62,8 @@ test("FT090-07 a 256 character username is rejected and creates nothing", async 
   expect((await staffList(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("FT090-07 a duplicate username is rejected and does not create a second staff", async ({ page, staff }) => {
+// আগে থাকা ইউজারনেমে নতুন স্টাফ তৈরি করতে দেয় না কি না দেখি।
+test("FT090-07 Duplicate staff username: reject the request without creating another account", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.create", "staffs.access");
   await withOwnedStaff(staff, async (owned) => {
     const before = await staffList(staff);
@@ -80,7 +83,8 @@ test("FT090-07 a duplicate username is rejected and does not create a second sta
   });
 });
 
-test("FT090-06 cancel on create stores nothing", async ({ page, staff }) => {
+// নতুন স্টাফের ফর্ম বাতিল করলে কোনো অ্যাকাউন্ট সেভ হয় না কি না দেখি।
+test("FT090-06 Cancel new staff: return without saving an account", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   const before = await staffList(staff);
   const name = `E2E Cancel ${randomUUID().slice(0, 8)}`;
@@ -97,7 +101,8 @@ test("FT090-06 cancel on create stores nothing", async ({ page, staff }) => {
   expect(after.data.some((row) => row.user?.username === username || row.name === name)).toBe(false);
 });
 
-test("FT090-06 edit hydrates the saved staff and cancel leaves it unchanged", async ({ page, staff }) => {
+// স্টাফ এডিটে সংরক্ষিত তথ্য আসে এবং বাতিল করলে আগের তথ্য থাকে কি না দেখি।
+test("FT090-06 Edit staff: load saved details and preserve them when cancelled", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.show", "staffs.edit");
   const listed = await staffList(staff);
   const row = listed.data.find((item) => item.user?.username);
@@ -123,7 +128,8 @@ test("FT090-06 edit hydrates the saved staff and cancel leaves it unchanged", as
   expect(staffSnapshot(await staffDetail(staff, before.id))).toEqual(staffSnapshot(before));
 });
 
-test("FT090-06 a valid staff persists and the edited designation survives reload", async ({ page, staff }) => {
+// সঠিক স্টাফ তৈরি হয় এবং পরে বদলানো পদবি রিলোডের পরও থাকে কি না দেখি।
+test("FT090-06 Create and edit staff: save the account and retain its updated designation after reload", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.create", "staffs.edit", "staffs.show", "staffs.delete");
   const role = uniqueChoice(await companyRoles(staff), "Staff create role");
   const zones = await companyZones(staff);
@@ -180,7 +186,8 @@ test("FT090-06 a valid staff persists and the edited designation survives reload
   }
 });
 
-test("FT090-03 saved zones and salary lines hydrate on edit and cancel keeps them", async ({ page, staff }) => {
+// স্টাফের জোন ও বেতনের লাইন এডিটে আসে এবং বাতিল করলে অপরিবর্তিত থাকে কি না দেখি।
+test("FT090-03 Staff zones and salary lines: load saved values and retain them when editing is cancelled", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.show", "staffs.edit");
   await withOwnedStaff(staff, async (owned) => {
     if (!owned.zone) throw new Error("Zone persistence needs a company zone.");
@@ -207,7 +214,8 @@ test("FT090-03 saved zones and salary lines hydrate on edit and cancel keeps the
   });
 });
 
-test("FT090-11 two saves of an invalid staff form create nothing", async ({ page, staff }) => {
+// ভুল স্টাফ ফর্ম দুবার সেভ করলেও কোনো অ্যাকাউন্ট তৈরি হয় না কি না দেখি।
+test("FT090-11 Repeat invalid staff save: create no account after two submissions", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   const before = await staffList(staff);
   await openCreate(page);
@@ -219,7 +227,8 @@ test("FT090-11 two saves of an invalid staff form create nothing", async ({ page
   expect((await staffList(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("FT090-11 leaving create during entry does not store the draft", async ({ page, staff }) => {
+// নতুন স্টাফের ফর্মে লেখা অবস্থায় বের হলে খসড়া সেভ হয় না কি না দেখি।
+test("FT090-11 Leave the new staff form: discard the unsaved draft", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   const before = await staffList(staff);
   const username = `e2e${randomBytes(6).toString("hex")}`;

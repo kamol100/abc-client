@@ -48,7 +48,8 @@ const client = (phone: string | null): ClientRow => ({
 } as ClientRow);
 
 describe("ClientNamePhoneCell WhatsApp link", () => {
-    it("opens WhatsApp with a local Bangladesh number", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens WhatsApp with a local Bangladesh number»।
+    it("Client identity and contact links: opens WhatsApp with a local Bangladesh number", () => {
         render(<ClientNamePhoneCell client={client("01712345678")} />);
 
         const link = screen.getByRole("link", { name: "client.whatsapp" });
@@ -56,7 +57,8 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         expect(link).toHaveAttribute("target", "_blank");
     });
 
-    it("keeps an international number and drops the plus", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps an international number and drops the plus»।
+    it("Client identity and contact links: keeps an international number and drops the plus", () => {
         render(<ClientNamePhoneCell client={client("+8801712345678")} />);
 
         expect(screen.getByRole("link", { name: "client.whatsapp" })).toHaveAttribute(
@@ -65,7 +67,8 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         );
     });
 
-    it("hides the icon when there is no phone number", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the icon when there is no phone number»।
+    it("Client identity and contact links: hides the icon when there is no phone number", () => {
         render(<ClientNamePhoneCell client={client(null)} />);
 
         expect(screen.queryByRole("link", { name: "client.whatsapp" })).not.toBeInTheDocument();
@@ -73,13 +76,15 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         expect(screen.getByText("—")).toBeInTheDocument();
     });
 
-    it("hides the copy icon when the phone is blank", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the copy icon when the phone is blank»।
+    it("Client identity and contact links: hides the copy icon when the phone is blank", () => {
         render(<ClientNamePhoneCell client={client("   ")} />);
 
         expect(screen.queryByRole("button", { name: "client.copy_phone" })).not.toBeInTheDocument();
     });
 
-    it("copies the phone number", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies the phone number»।
+    it("Client identity and contact links: copies the phone number", async () => {
         const writeText = vi.fn().mockResolvedValue(undefined);
         vi.stubGlobal("navigator", { clipboard: { writeText } });
         Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => true });
@@ -94,7 +99,8 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
         vi.restoreAllMocks();
     });
 
-    it("copies with the document command when the clipboard API is unavailable", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies with the document command when the clipboard API is unavailable»।
+    it("Client identity and contact links: copies with the document command when the clipboard API is unavailable", () => {
         vi.stubGlobal("navigator", {});
         Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => false });
         let copiedValue = "";
@@ -127,7 +133,8 @@ describe("ClientNamePhoneCell WhatsApp link", () => {
 describe("ClientNamePhoneCell view link", () => {
     const viewable = { ...client("01712345678"), id: "client-uuid" };
 
-    it("opens the client details page from the username", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the client details page from the username»।
+    it("Client identity and contact links: opens the client details page from the username", () => {
         permissions.allowed = true;
         permissions.newTab = false;
         render(<ClientNamePhoneCell client={viewable} />);
@@ -137,7 +144,8 @@ describe("ClientNamePhoneCell view link", () => {
         expect(link).toHaveAttribute("target", "_self");
     });
 
-    it("opens the details page in a new tab when that setting is on", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।
+    it("Client identity and contact links: opens the details page in a new tab when that setting is on", () => {
         permissions.newTab = true;
         render(<ClientNamePhoneCell client={viewable} />);
 
@@ -145,7 +153,8 @@ describe("ClientNamePhoneCell view link", () => {
         permissions.newTab = false;
     });
 
-    it("keeps the username as text without view permission", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the username as text without view permission»।
+    it("Client identity and contact links: keeps the username as text without view permission", () => {
         permissions.allowed = false;
         render(<ClientNamePhoneCell client={viewable} />);
 
@@ -154,7 +163,8 @@ describe("ClientNamePhoneCell view link", () => {
         permissions.allowed = true;
     });
 
-    it("does not link when the details page is turned off", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not link when the details page is turned off»।
+    it("Client identity and contact links: does not link when the details page is turned off", () => {
         render(<ClientNamePhoneCell client={viewable} linkToView={false} />);
 
         expect(screen.queryByRole("link", { name: "kamal01" })).not.toBeInTheDocument();
@@ -162,7 +172,8 @@ describe("ClientNamePhoneCell view link", () => {
 });
 
 describe("ClientBasicView WhatsApp link", () => {
-    it("shows a WhatsApp icon next to the phone number", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a WhatsApp icon next to the phone number»।
+    it("Client identity and contact links: shows a WhatsApp icon next to the phone number", () => {
         render(<ClientBasicView client={client("01712345678")} />);
 
         expect(screen.getByRole("link", { name: "01712345678" })).toHaveAttribute("href", "tel:01712345678");
@@ -172,7 +183,8 @@ describe("ClientBasicView WhatsApp link", () => {
         );
     });
 
-    it("copies the phone number from the icon after WhatsApp", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «copies the phone number from the icon after WhatsApp»।
+    it("Client identity and contact links: copies the phone number from the icon after WhatsApp", async () => {
         const writeText = vi.fn().mockResolvedValue(undefined);
         vi.stubGlobal("navigator", { clipboard: { writeText } });
         Object.defineProperty(window, "isSecureContext", { configurable: true, get: () => true });

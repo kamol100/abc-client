@@ -7,7 +7,8 @@ const PNG = Buffer.from(
   "base64",
 );
 
-guest("PS-E02 anonymous help and support routes require staff login", async ({ browser, baseURL }) => {
+// লগইন ছাড়া হেল্প ও সাপোর্টের পেজগুলো খুললে একই টেন্যান্টের স্টাফ লগইনে পাঠায় কি না যাচাই করি।
+guest("PS-E02 Help and support pages while signed out: redirect to staff login on the same tenant", async ({ browser, baseURL }) => {
   const context = await browser.newContext({
     baseURL,
     locale: "en-US",
@@ -30,7 +31,8 @@ guest("PS-E02 anonymous help and support routes require staff login", async ({ b
   }
 });
 
-test("PS-E01 launcher opens requester routes and keeps customer tickets separate", async ({ page, staff }) => {
+// প্ল্যাটফর্ম সাপোর্ট খুললে তার পেজ আসে এবং গ্রাহকের টিকিটের সঙ্গে মিশে যায় না কি না দেখি।
+test("PS-E01 Platform support launcher: open support pages separately from customer tickets", async ({ page, staff }) => {
   requirePermissions(staff, "platform-support.access", "tickets.access");
   await page.goto("/dashboard");
   await expect(page.getByTestId("platform-support-launcher")).toBeVisible();
@@ -47,7 +49,8 @@ test("PS-E01 launcher opens requester routes and keeps customer tickets separate
   expect(tickets.status).toBe(200);
 });
 
-test("PS-E06 an anonymous upload is rejected before a support row exists", async ({ browser, baseURL }) => {
+// লগইন ছাড়া ছবি আপলোডে বাধা দেয় এবং সাপোর্টের নতুন রেকর্ড তৈরি হয় না কি না দেখি।
+test("PS-E06 Support image upload while signed out: reject the request without creating a support record", async ({ browser, baseURL }) => {
   const context = await browser.newContext({
     baseURL,
     storageState: { cookies: [], origins: [] },
@@ -77,7 +80,8 @@ test("PS-E06 an anonymous upload is rejected before a support row exists", async
   }
 });
 
-test("PS-E16 logout and mobile help do not keep the staff page", async ({ browser, staff, baseURL }) => {
+// লগআউটের পর স্টাফ পেজ সুরক্ষিত থাকে এবং মোবাইলে হেল্প ব্যবহার করা যায় কি না দেখি।
+test("PS-E16 Support access after logout: keep staff pages protected while mobile help remains available", async ({ browser, staff, baseURL }) => {
   requirePermissions(staff, "platform-support.access");
   const mobile = await browser.newContext({
     baseURL,

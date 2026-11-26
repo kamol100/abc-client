@@ -29,7 +29,8 @@ describe("usePinnedPermissionGroups", () => {
     toastError.mockReset();
   });
 
-  it("reads saved pins and saves a new pin at the top of the user's list", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads saved pins and saves a new pin at the top of the user's list»।
+  it("Use pinned permission groups: reads saved pins and saves a new pin at the top of the user's list", async () => {
     useFetch.mockImplementation(async ({ url, method, data }: { url: string; method?: string; data?: { pinned_permission_groups: string[] } }) => {
       if (url === "/staff-account" && !method) return account(["clients"]);
       if (url === "/staff-account/settings" && method === "PUT") return account(data?.pinned_permission_groups ?? []);
@@ -52,7 +53,8 @@ describe("usePinnedPermissionGroups", () => {
     expect(result.current.pins).toEqual(["invoices", "clients"]);
   });
 
-  it("rolls back the pin when saving fails", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rolls back the pin when saving fails»।
+  it("Use pinned permission groups: rolls back the pin when saving fails", async () => {
     useFetch.mockImplementation(async ({ method }: { method?: string }) =>
       method === "PUT" ? { success: false, data: { message: "nope" } } : account(["clients"]),
     );
@@ -67,7 +69,8 @@ describe("usePinnedPermissionGroups", () => {
     expect(toastError).toHaveBeenCalled();
   });
 
-  it("cannot pin without a staff profile", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «cannot pin without a staff profile»।
+  it("Use pinned permission groups: cannot pin without a staff profile", async () => {
     useFetch.mockResolvedValue({ success: false, status: 404, data: { message: "Staff profile not found" } });
 
     const { result } = renderHook(() => usePinnedPermissionGroups(), { wrapper });

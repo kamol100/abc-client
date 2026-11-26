@@ -37,7 +37,8 @@ const result: OltTestResult = {
 };
 
 describe("OltTestResultView", () => {
-    it("lists every step with its translated message and status", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists every step with its translated message and status»।
+    it("OLT test result view: lists every step with its translated message and status", () => {
         render(<OltTestResultView result={result} cliProtocol="ssh" />);
 
         expect(screen.getByText("olt.test.failed")).toBeInTheDocument();
@@ -46,7 +47,8 @@ describe("OltTestResultView", () => {
         ["ok", "fail", "skipped", "warning"].forEach((status) => expect(screen.getByText(`(olt.test.status.${status})`)).toBeInTheDocument());
     });
 
-    it("puts the protocol hint first and switches with one click", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts the protocol hint first and switches with one click»।
+    it("OLT test result view: puts the protocol hint first and switches with one click", () => {
         const onSwitch = vi.fn();
         render(<OltTestResultView result={result} cliProtocol="ssh" onSwitchProtocol={onSwitch} />);
 
@@ -56,7 +58,8 @@ describe("OltTestResultView", () => {
         expect(onSwitch).toHaveBeenCalledWith("telnet");
     });
 
-    it("hides the hint once the suggested protocol is saved, and folds a clean pass", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the hint once the suggested protocol is saved, and folds a clean pass»।
+    it("OLT test result view: hides the hint once the suggested protocol is saved, and folds a clean pass", () => {
         const passed: OltTestResult = { ...result, ok: true, suggestion: null, steps: [result.steps[0]] };
         render(<OltTestResultView result={passed} cliProtocol="telnet" collapsible />);
 

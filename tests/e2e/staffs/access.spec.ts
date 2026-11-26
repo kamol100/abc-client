@@ -18,7 +18,8 @@ const ANONYMOUS_PATHS = [
 ];
 
 for (const path of ANONYMOUS_PATHS) {
-  test(`FT090-08 anonymous ${path} redirects to the same-host staff login`, async ({ browser, baseURL }) => {
+  // লগইন ছাড়া স্টাফের তালিকা, তৈরি বা এডিট পেজ খুললে স্টাফ লগইনে পাঠায় কি না দেখি।
+  test(`FT090-08 Staff page access - ${path.includes('/edit/') ? 'Edit staff' : path.endsWith('/create') ? 'Create staff' : 'Staff list'}: redirect signed-out users to staff login`, async ({ browser, baseURL }) => {
     const context = await browser.newContext({
       baseURL,
       locale: "en-US",
@@ -41,7 +42,8 @@ for (const path of ANONYMOUS_PATHS) {
   });
 }
 
-test("FT090-08 anonymous staff reads and writes return 401", async ({ request }) => {
+// লগইন ছাড়া স্টাফের তথ্য পড়া বা পরিবর্তনের API অনুরোধ 401 দিয়ে আটকায় কি না দেখি।
+test("FT090-08 Staff APIs while signed out: reject read and write requests with 401", async ({ request }) => {
   const id = randomUUID();
   const calls: Array<[string, string]> = [
     ["GET", "staffs"],
@@ -63,7 +65,8 @@ test("FT090-08 anonymous staff reads and writes return 401", async ({ request })
   }
 });
 
-test("FT090-09 another company cannot read or change a known staff", async ({ browser, page, staff }) => {
+// অন্য কোম্পানির স্টাফের তথ্য পড়া বা বদলানো যায় না কি না যাচাই করি।
+test("FT090-09 Staff privacy: prevent another company from reading or changing a staff account", async ({ browser, page, staff }) => {
   const otherTenant = staff.tenant === "cp" ? "mk" : "cp";
   const other = await authenticate(browser, otherTenant).catch(() => authenticate(browser, otherTenant));
   try {
@@ -111,7 +114,8 @@ test("FT090-09 another company cannot read or change a known staff", async ({ br
   }
 });
 
-test("FT090-09 logout back and reload do not restore the staff list", async ({ browser, page, staff }) => {
+// লগআউটের পর Back ও রিলোডেও স্টাফের তালিকা ফিরে আসে না কি না দেখি।
+test("FT090-09 Staff list after logout: keep it inaccessible after browser back and reload", async ({ browser, page, staff }) => {
   const listed = await staffList(staff);
   const row = listed.data.find((item) => item.user?.username);
   if (!row?.user?.username) throw new Error("Logout isolation needs a staff username.");

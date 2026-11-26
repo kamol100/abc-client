@@ -42,7 +42,8 @@ async function baseline(page: Page) {
   await expect(page.getByText('Funds (12)', { exact: true })).toBeVisible();
 }
 
-test('FT063-01 exact decimal negative zero and full-scope balances exclude other tenant and reseller', async ({page, request}, testInfo) => {
+// দশমিক, ঋণাত্মক ও শূন্য ব্যালেন্সের মোট সঠিক হয় এবং অন্য টেন্যান্ট-রিসেলার বাদ থাকে কি না দেখি।
+test("FT063-01 Fund report balances: calculate positive, negative, and zero totals within the current company", async ({page, request}, testInfo) => {
   await login(page); await baseline(page);
   const listed = await read(request);
   expect(listed.report.total_balance).toBe(286);
@@ -57,7 +58,8 @@ test('FT063-01 exact decimal negative zero and full-scope balances exclude other
   await page.screenshot({path:testInfo.outputPath('desktop.png'),fullPage:true});
 });
 
-test('FT063-02 report exposes no export print or date controls for populated and empty results', async ({page}) => {
+// তথ্য থাকা বা খালি উভয় অবস্থায় ফান্ড রিপোর্টে এক্সপোর্ট, প্রিন্ট ও তারিখের নিয়ন্ত্রণ থাকে না কি না দেখি।
+test("FT063-02 Fund report controls: hide export, print, and date actions for populated and empty lists", async ({page}) => {
   await login(page); await baseline(page);
   await expect(page.getByRole('button', {name: /export|download|print/i})).toHaveCount(0);
   await filters(page);
@@ -67,7 +69,8 @@ test('FT063-02 report exposes no export print or date controls for populated and
   await expect(page.getByRole('button', {name: /export|download|print/i})).toHaveCount(0);
 });
 
-test('FT063-03 funds report identity survives reload with the known account and assigned staff', async ({page}) => {
+// রিলোডের পর ফান্ডের পরিচয়, অ্যাকাউন্ট ও নিযুক্ত স্টাফের তথ্য ঠিক থাকে কি না দেখি।
+test("FT063-03 Fund report after reload: retain the saved account and assigned staff", async ({page}) => {
   await login(page); await baseline(page); await page.reload(); await baseline(page);
   await expect(row(page, 'alpha cash')).toContainText('MATCH-001');
   await expect(row(page, 'alpha cash')).toContainText('Alice Funds');
@@ -79,7 +82,8 @@ test('FT063-03 funds report identity survives reload with the known account and 
   await expect(row(page,'alpha cash')).toBeVisible();
 });
 
-test('FT063-04 filters name account staff independently combined and reset', async ({page}) => {
+// নাম, অ্যাকাউন্ট ও স্টাফ আলাদা এবং একসঙ্গে ফিল্টার করে রিসেটের ফল যাচাই করি।
+test("FT063-04 Fund report filters: filter by name, account, and staff separately or together, then reset", async ({page}) => {
   await login(page); await baseline(page); await filters(page);
   const name = page.getByPlaceholder('Enter fund name', {exact:true});
   const account = page.getByPlaceholder('Enter account number', {exact:true});
@@ -101,7 +105,8 @@ test('FT063-04 filters name account staff independently combined and reset', asy
   await expect(row(page,'alpha bank')).toBeVisible();
 });
 
-test('FT063-05 pagination full-filter totals page size and column visibility', async ({page}) => {
+// পেজ, পেজের আকার ও কলাম বদলালেও পুরো ফলের মোট হিসাব ঠিক থাকে কি না দেখি।
+test("FT063-05 Fund report table: keep full-result totals when changing pages, page size, or columns", async ({page}) => {
   await login(page); await baseline(page);
   await page.getByRole('button',{name:'Go to next page'}).click();
   await expect(row(page,'reserve 08')).toBeVisible(); await expect(row(page,'alpha cash')).toHaveCount(0);
@@ -115,7 +120,8 @@ test('FT063-05 pagination full-filter totals page size and column visibility', a
   await expect(page.getByRole('cell',{name:'MATCH-001',exact:true})).toHaveCount(0);
 });
 
-test('FT063-06 edit hydrates cancel preserves and save persists on a fresh API read', async ({page,request}) => {
+// ফান্ড এডিটে পুরোনো তথ্য আসে, বাতিলের পরিবর্তন বাদ যায় এবং সেভ করা তথ্য API-তে থাকে কি না দেখি।
+test("FT063-06 Edit fund: load saved values, discard cancelled changes, and persist saved changes", async ({page,request}) => {
   await login(page); await baseline(page);
   await row(page,'alpha cash').locator('button').filter({ has: page.locator('svg.lucide-square-pen') }).click();
   const dialog = page.getByRole('dialog');
@@ -135,7 +141,8 @@ test('FT063-06 edit hydrates cancel preserves and save persists on a fresh API r
   expect(response.status()).toBe(200);
 });
 
-test('FT063-07 invalid edits stay open and direct server validation preserves the balance', async ({page,request}) => {
+// ভুল এডিটে ফর্ম খোলা থাকে এবং সার্ভার প্রত্যাখ্যান করলে ব্যালেন্স বদলায় না কি না দেখি।
+test("FT063-07 Invalid fund edit: keep the form open and preserve the balance after server rejection", async ({page,request}) => {
   await login(page); await baseline(page);
   await row(page,'alpha cash').locator('button').filter({ has: page.locator('svg.lucide-square-pen') }).click();
   const dialog=page.getByRole('dialog');
@@ -148,7 +155,8 @@ test('FT063-07 invalid edits stay open and direct server validation preserves th
   expect((await read(request)).data.find(f=>f.id===funds['alpha cash'])?.balance).toBe(100.25);
 });
 
-test('FT063-08 reader and denied personas enforce actual API permissions', async ({page,request,browser}) => {
+// ফান্ড রিপোর্টের পাঠক ঢুকতে পারে এবং অনুমতিহীন ব্যবহারকারী UI ও API-তে আটকায় কি না দেখি।
+test("FT063-08 Fund report permissions: allow readers and deny users without access in both UI and API", async ({page,request,browser}) => {
   await login(page,'fr_reader'); await baseline(page);
   await expect(row(page,'alpha cash').locator('button').filter({ has: page.locator('svg.lucide-square-pen') })).toHaveCount(0);
   const denied=await request.get(`${api}/api/v1/funds`,{headers:await headers(request,'fr_denied')}); expect(denied.status()).toBe(403);
@@ -164,7 +172,8 @@ test('FT063-08 reader and denied personas enforce actual API permissions', async
 
 });
 
-test('FT063-09 foreign UUIDs reseller and platform boundaries hold through fresh login', async ({page,request}) => {
+// নতুন লগইনের পরও ফান্ডের কোম্পানি, রিসেলার ও প্ল্যাটফর্মের সীমা কার্যকর থাকে কি না দেখি।
+test("FT063-09 Fund ownership: enforce company, reseller, and platform boundaries after fresh login", async ({page,request}) => {
   const cp=await headers(request);
   for (const name of ['mk secret','reseller secret']) {
     const response=await request.get(`${api}/api/v1/funds/${funds[name]}`,{headers:cp});expect(response.status()).toBe(404);
@@ -182,7 +191,8 @@ test('FT063-09 foreign UUIDs reseller and platform boundaries hold through fresh
   await expect(row(page,'alpha cash')).toHaveCount(0);
 });
 
-test('FT063-10 empty and failed requests are distinct with recovery', async ({page}) => {
+// খালি ফল ও লোডের ত্রুটি আলাদাভাবে দেখায় এবং পুনরুদ্ধার কাজ করে কি না দেখি।
+test("FT063-10 Fund report loading failure: distinguish errors from no results and recover correctly", async ({page}) => {
   await login(page);await baseline(page);await filters(page);
   await page.getByPlaceholder('Enter fund name', {exact:true}).fill('absent');await expect(page.getByRole('cell',{name:'No results'})).toBeVisible();
   await page.getByPlaceholder('Enter fund name', {exact:true}).fill('');
@@ -208,7 +218,8 @@ test('FT063-10 empty and failed requests are distinct with recovery', async ({pa
   await expect(page.getByRole('alert').filter({hasText:'Unable to load funds'})).toHaveCount(0);
 });
 
-test('FT063-11 rapid report searches offer no creation or duplicate balance effects', async ({page,request}) => {
+// দ্রুত রিপোর্ট সার্চে নতুন ফান্ড তৈরি বা ব্যালেন্সে দ্বৈত পরিবর্তন হয় না কি না দেখি।
+test("FT063-11 Rapid fund searches: provide no create action and leave balances unchanged", async ({page,request}) => {
   await login(page);await baseline(page);await filters(page);
   const name=page.getByPlaceholder('Enter fund name', {exact:true});await name.fill('beta');await name.fill('alpha');
   await expect(page.getByText('BDT 300.75',{exact:true})).toBeVisible();
@@ -217,7 +228,8 @@ test('FT063-11 rapid report searches offer no creation or duplicate balance effe
   await expect(page.getByRole('button',{name:/add fund|create fund/i})).toHaveCount(0);
 });
 
-test('FT063-12 mobile keyboard Bangla and dark theme preserve filter usability', async ({page}, testInfo) => {
+// মোবাইলে কিবোর্ড, বাংলা ও ডার্ক থিমে ফান্ডের ফিল্টার ব্যবহারযোগ্য থাকে কি না দেখি।
+test("FT063-12 Fund report on mobile: keep filters usable with keyboard, Bangla, and dark theme", async ({page}, testInfo) => {
   await login(page);await baseline(page);await page.context().addCookies([{name:'themeMode',value:'dark',url:origin('fr_editor')}]);
   await page.reload(); await page.setViewportSize({width:390,height:844});
   await page.getByRole('button').filter({ has: page.locator('svg.lucide-funnel') }).click();

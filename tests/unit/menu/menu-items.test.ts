@@ -23,7 +23,8 @@ function group(items: NavMenuItem[], id: number): NavMenuItem {
 }
 
 describe("admin menu order", () => {
-  it("follows the admin sidebar order and keeps every current link", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «follows the admin sidebar order and keeps every current link»।
+  it("Menu items: follows the admin sidebar order and keeps every current link", () => {
     const items = selectMenuItems(menu, access(true));
 
     expect(items.map((item) => item.url)).toEqual([
@@ -154,7 +155,8 @@ describe("admin menu order", () => {
 });
 
 describe("admin menu permissions", () => {
-  it("shows only the Help management pages the user can access", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows only the Help management pages the user can access»।
+  it("Menu items: shows only the Help management pages the user can access", () => {
     const articles = selectMenuItems(menu, access(["platform-help-admin.articles.access"]));
     const categories = selectMenuItems(menu, access(["platform-help-admin.categories.access"]));
     expect(group(articles, 40).items?.map((item) => item.url)).toEqual(["/help-management"]);
@@ -162,13 +164,15 @@ describe("admin menu permissions", () => {
     expect(selectMenuItems(menu, access(["platform-support.access"])).some((item) => item.id === 40)).toBe(false);
   });
 
-  it("shows a network child only for its own permission", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a network child only for its own permission»।
+  it("Menu items: shows a network child only for its own permission", () => {
     const items = selectMenuItems(menu, access(["networks.access", "mikrotik-packages.access"]));
 
     expect(urls(items)).toEqual(["/networks", "/subscription"]);
   });
 
-  it("keeps mikrotik package behind the old packages gate", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps mikrotik package behind the old packages gate»।
+  it("Menu items: keeps mikrotik package behind the old packages gate", () => {
     const hidden = selectMenuItems(menu, access(["mikrotik-packages.access"]));
     const visible = selectMenuItems(menu, access(["packages.access", "mikrotik-packages.access"]));
 
@@ -176,22 +180,26 @@ describe("admin menu permissions", () => {
     expect(urls(visible)).toEqual(["/mikrotik-packages", "/client-packages", "/subscription"]);
   });
 
-  it("shows mikrotik sync for its own permission", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows mikrotik sync for its own permission»।
+  it("Menu items: shows mikrotik sync for its own permission", () => {
     expect(urls(selectMenuItems(menu, access(["mikrotik-sync.access"])))).toEqual([
       "/mikrotik-sync",
       "/subscription",
     ]);
   });
 
-  it("shows noc only with monitoring access", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows noc only with monitoring access»।
+  it("Menu items: shows noc only with monitoring access", () => {
     expect(urls(selectMenuItems(menu, access(["monitoring.summary"])))).toEqual(["/noc", "/subscription"]);
   });
 
-  it("shows send sms inside communication without the other communication links", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows send sms inside communication without the other communication links»।
+  it("Menu items: shows send sms inside communication without the other communication links", () => {
     expect(urls(selectMenuItems(menu, access(["sms-send.access"])))).toEqual(["/sms-send", "/subscription"]);
   });
 
-  it("shows reseller clients under the reseller menu", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows reseller clients under the reseller menu»।
+  it("Menu items: shows reseller clients under the reseller menu", () => {
     const items = selectMenuItems(menu, access(["resellers.clients.report"]));
     const resellers = group(items, 14);
 
@@ -199,7 +207,8 @@ describe("admin menu permissions", () => {
     expect(urls(items)).not.toContain("/reports/income-expense");
   });
 
-  it("does not open a report link from an unrelated permission", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not open a report link from an unrelated permission»।
+  it("Menu items: does not open a report link from an unrelated permission", () => {
     expect(urls(selectMenuItems(menu, access(["funds.access"])))).toEqual(["/funds", "/subscription"]);
     expect(urls(selectMenuItems(menu, access(["reports.access"])))).toEqual([
       "/reports/income-expense",
@@ -209,7 +218,8 @@ describe("admin menu permissions", () => {
     ]);
   });
 
-  it("hides the tenant subscription from a reseller and still applies other permissions", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the tenant subscription from a reseller and still applies other permissions»।
+  it("Menu items: hides the tenant subscription from a reseller and still applies other permissions", () => {
     const items = selectMenuItems(menu, access(true, { isReseller: true }));
 
     expect(urls(items)).not.toContain("/subscription");
@@ -218,7 +228,8 @@ describe("admin menu permissions", () => {
 });
 
 describe("admin menu feature locks", () => {
-  it("locks network links without revealing packages or noc", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks network links without revealing packages or noc»।
+  it("Menu items: locks network links without revealing packages or noc", () => {
     const items = selectMenuItems(menu, access([], { subscriptionState: "expired", disabledFeatures: ["network"] }));
     const network = group(items, 17);
 
@@ -235,7 +246,8 @@ describe("admin menu feature locks", () => {
     expect(network.items?.every((sub) => sub.disabled)).toBe(true);
   });
 
-  it("locks noc on the olts feature without locking the rest of network", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks noc on the olts feature without locking the rest of network»।
+  it("Menu items: locks noc on the olts feature without locking the rest of network", () => {
     const items = selectMenuItems(
       menu,
       access(["networks.access"], { subscriptionState: "expired", disabledFeatures: ["olts"] }),
@@ -249,7 +261,8 @@ describe("admin menu feature locks", () => {
     ]);
   });
 
-  it("locks every communication link, including sms, when sms is disabled", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks every communication link, including sms, when sms is disabled»।
+  it("Menu items: locks every communication link, including sms, when sms is disabled", () => {
     const items = selectMenuItems(menu, access([], { subscriptionState: "expired", disabledFeatures: ["sms"] }));
     const communication = group(items, 15);
 
@@ -264,7 +277,8 @@ describe("admin menu feature locks", () => {
     expect(communication.items?.every((sub) => sub.disabled)).toBe(true);
   });
 
-  it("shows platform support without tickets, notifications, or the paid support feature", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows platform support without tickets, notifications, or the paid support feature»।
+  it("Menu items: shows platform support without tickets, notifications, or the paid support feature", () => {
     const items = selectMenuItems(menu, access(["platform-support.access"]));
 
     expect(urls(items)).toEqual([
@@ -278,7 +292,8 @@ describe("admin menu feature locks", () => {
     expect(urls(items)).not.toContain("/platform-support-admin?kind=issue");
   });
 
-  it("shows the platform inbox only with the admin access permission", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the platform inbox only with the admin access permission»।
+  it("Menu items: shows the platform inbox only with the admin access permission", () => {
     const hidden = selectMenuItems(menu, access(["platform-support.access", "platform-support-admin.reply"]));
     expect(urls(hidden)).not.toContain("/platform-support-admin?kind=issue");
 
@@ -293,18 +308,21 @@ describe("admin menu feature locks", () => {
 });
 
 describe("independent referral sidebar", () => {
-  it("shows only My referrals even when support and other permissions exist", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows only My referrals even when support and other permissions exist»।
+  it("Menu items: shows only My referrals even when support and other permissions exist", () => {
     const items = selectMenuItems(menu, access(true, { isIndependentReferral: true }));
     expect(urls(items)).toEqual(["/referrals"]);
   });
-  it("keeps the referral-only account's history accessible when subscription features are locked", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the referral-only account's history accessible when subscription features are locked»।
+  it("Menu items: keeps the referral-only account's history accessible when subscription features are locked", () => {
     const items = selectMenuItems(menu, access(["referrals.access", "platform-support.access"], {
       isIndependentReferral: true, subscriptionState: "expired", disabledFeatures: ["core"],
     }));
     expect(urls(items)).toEqual(["/referrals"]);
     expect(items[0].disabled).toBe(false);
   });
-  it("preserves subscription and support for other tenant and reseller sellers", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «preserves subscription and support for other tenant and reseller sellers»।
+  it("Menu items: preserves subscription and support for other tenant and reseller sellers", () => {
     for (const isReseller of [false, true]) {
       const items = selectMenuItems(menu, access(["referrals.access", "platform-support.access"], { isReseller }));
       if (isReseller) expect(urls(items)).not.toContain("/subscription");
@@ -313,7 +331,8 @@ describe("independent referral sidebar", () => {
       expect(urls(items)).toContain("/referrals");
     }
   });
-  it("does not invent referral permission from a profile flag", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not invent referral permission from a profile flag»।
+  it("Menu items: does not invent referral permission from a profile flag", () => {
     expect(selectMenuItems(menu, access([], { isIndependentReferral: true }))).toEqual([]);
   });
 });

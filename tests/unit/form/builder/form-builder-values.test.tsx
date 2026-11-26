@@ -58,7 +58,8 @@ describe("FormBuilder: turning data into form values", () => {
     });
 
     describe("edit mode", () => {
-        it("keeps every key of the record, including ones with no field", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps every key of the record, including ones with no field»।
+        it("Form value conversion: keeps every key of the record, including ones with no field", async () => {
             const values = await startingValues([{ type: "text", name: "name" }], {
                 data: { id: 5, name: "North", created_at: "2026-01-01", zone: { id: 1 } },
             });
@@ -66,7 +67,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values).toEqual({ id: 5, name: "North", created_at: "2026-01-01", zone: { id: 1 } });
         });
 
-        it("date: turns a date-only string into that day at local midnight", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date: turns a date-only string into that day at local midnight»।
+        it("Form value conversion: date: turns a date-only string into that day at local midnight", async () => {
             const values = await startingValues([{ type: "date", name: "paid_at" }], {
                 data: { id: 5, paid_at: "2026-11-25" },
             });
@@ -75,7 +77,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(localParts(values.paid_at as Date)).toEqual([2026, 11, 25, 0, 0]);
         });
 
-        it("date: leaves a value that is not a date as it is", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date: leaves a value that is not a date as it is»।
+        it("Form value conversion: date: leaves a value that is not a date as it is", async () => {
             const values = await startingValues([{ type: "date", name: "paid_at" }], {
                 data: { id: 5, paid_at: "not a date" },
             });
@@ -83,7 +86,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.paid_at).toBe("not a date");
         });
 
-        it("date: reads from valueKey and keeps the source key too", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date: reads from valueKey and keeps the source key too»।
+        it("Form value conversion: date: reads from valueKey and keeps the source key too", async () => {
             const values = await startingValues([{ type: "date", name: "paid_at", valueKey: "payment_date" }], {
                 data: { id: 5, payment_date: "2026-11-25T10:30:00.000Z" },
             });
@@ -92,7 +96,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.payment_date).toBe("2026-11-25T10:30:00.000Z");
         });
 
-        it("date: leaves an empty value as it is", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «date: leaves an empty value as it is»।
+        it("Form value conversion: date: leaves an empty value as it is", async () => {
             const values = await startingValues([{ type: "date", name: "paid_at" }], {
                 data: { id: 5, paid_at: null },
             });
@@ -100,7 +105,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.paid_at).toBeNull();
         });
 
-        it("dateRange: turns from/to strings into Dates", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dateRange: turns from/to strings into Dates»।
+        it("Form value conversion: dateRange: turns from/to strings into Dates", async () => {
             const values = await startingValues([{ type: "dateRange", name: "period" }], {
                 data: { id: 5, period: { from: "2026-11-01", to: "2026-11-30" } },
             });
@@ -110,7 +116,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(localParts(period.to)).toEqual([2026, 11, 30, 0, 0]);
         });
 
-        it("dropdown: with valueKey and valueMapping, takes the id out of the related object", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: with valueKey and valueMapping, takes the id out of the related object»।
+        it("Form value conversion: dropdown: with valueKey and valueMapping, takes the id out of the related object", async () => {
             const values = await startingValues(
                 [
                     {
@@ -128,7 +135,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.zone).toEqual({ id: 3, name: "North" });
         });
 
-        it("dropdown: uses a custom idKey", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: uses a custom idKey»।
+        it("Form value conversion: dropdown: uses a custom idKey", async () => {
             const values = await startingValues(
                 [
                     {
@@ -145,7 +153,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.fund_uuid).toBe("f-1");
         });
 
-        it("dropdown multi: turns a list of related objects into a list of ids", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown multi: turns a list of related objects into a list of ids»।
+        it("Form value conversion: dropdown multi: turns a list of related objects into a list of ids", async () => {
             const values = await startingValues(
                 [
                     {
@@ -163,7 +172,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.tag_ids).toEqual([1, 2, 7]);
         });
 
-        it("dropdown: with valueKey but no valueMapping, copies the source value unchanged", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: with valueKey but no valueMapping, copies the source value unchanged»।
+        it("Form value conversion: dropdown: with valueKey but no valueMapping, copies the source value unchanged", async () => {
             const values = await startingValues(
                 [{ type: "dropdown", name: "zone_id", valueKey: "zone", options: [] }],
                 { data: { id: 5, zone: { id: 3, name: "North" } } },
@@ -172,7 +182,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.zone_id).toEqual({ id: 3, name: "North" });
         });
 
-        it("dropdown: with valueMapping and a plain value, keeps the plain value", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: with valueMapping and a plain value, keeps the plain value»।
+        it("Form value conversion: dropdown: with valueMapping and a plain value, keeps the plain value", async () => {
             const values = await startingValues(
                 [
                     {
@@ -188,7 +199,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.zone_id).toBe(3);
         });
 
-        it("dropdown: does not set the field when the source is null or missing", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dropdown: does not set the field when the source is null or missing»।
+        it("Form value conversion: dropdown: does not set the field when the source is null or missing", async () => {
             const values = await startingValues(
                 [
                     {
@@ -208,7 +220,8 @@ describe("FormBuilder: turning data into form values", () => {
     });
 
     describe("create mode", () => {
-        it("passes data through unchanged: no date parsing and no id extraction", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «passes data through unchanged: no date parsing and no id extraction»।
+        it("Form value conversion: passes data through unchanged: no date parsing and no id extraction", async () => {
             const values = await startingValues(
                 [
                     { type: "date", name: "paid_at" },
@@ -226,7 +239,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values).toEqual({ paid_at: "2026-11-25", zone: { id: 3 } });
         });
 
-        it("starts empty when no data is passed", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «starts empty when no data is passed»।
+        it("Form value conversion: starts empty when no data is passed", async () => {
             const values = await startingValues([{ type: "text", name: "name" }], {
                 mode: "create",
                 data: undefined,
@@ -256,13 +270,15 @@ describe("FormBuilder: turning data into form values", () => {
             ],
         };
 
-        it("create: fills an empty dropdown and an empty radio", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: fills an empty dropdown and an empty radio»।
+        it("Form value conversion: create: fills an empty dropdown and an empty radio", async () => {
             const values = await startingValues([dropdown, radio], { mode: "create", data: undefined });
 
             expect(values).toEqual({ status: 1, kind: "home" });
         });
 
-        it("create: treats null and an empty string as empty", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: treats null and an empty string as empty»।
+        it("Form value conversion: create: treats null and an empty string as empty", async () => {
             const values = await startingValues([dropdown, radio], {
                 mode: "create",
                 data: { status: null, kind: "" },
@@ -271,7 +287,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values).toEqual({ status: 1, kind: "home" });
         });
 
-        it("create: keeps a value that is already set, including 0 and false", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: keeps a value that is already set, including 0 and false»।
+        it("Form value conversion: create: keeps a value that is already set, including 0 and false", async () => {
             const values = await startingValues([dropdown, radio], {
                 mode: "create",
                 data: { status: 0, kind: false },
@@ -280,7 +297,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values).toEqual({ status: 0, kind: false });
         });
 
-        it("edit: fills an empty dropdown but not an empty radio", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: fills an empty dropdown but not an empty radio»।
+        it("Form value conversion: edit: fills an empty dropdown but not an empty radio", async () => {
             const values = await startingValues([dropdown, radio], { data: { id: 5, status: null, kind: null } });
 
             expect(values).toEqual({ id: 5, status: 1, kind: null });
@@ -298,7 +316,8 @@ describe("FormBuilder: turning data into form values", () => {
             ],
         };
 
-        it("edit: keeps the rows of the record, including blank ones", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: keeps the rows of the record, including blank ones»।
+        it("Form value conversion: edit: keeps the rows of the record, including blank ones", async () => {
             const values = await startingValues([items], {
                 data: {
                     id: 5,
@@ -315,7 +334,8 @@ describe("FormBuilder: turning data into form values", () => {
             ]);
         });
 
-        it("edit: drops blank rows and non-object rows when omitBlankItems is set", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: drops blank rows and non-object rows when omitBlankItems is set»।
+        it("Form value conversion: edit: drops blank rows and non-object rows when omitBlankItems is set", async () => {
             const values = await startingValues([{ ...items, omitBlankItems: true }], {
                 data: {
                     id: 5,
@@ -326,13 +346,15 @@ describe("FormBuilder: turning data into form values", () => {
             expect(values.items).toEqual([{ label: "Basic", value: 100 }]);
         });
 
-        it("edit: starts with an empty list when the record has no array", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: starts with an empty list when the record has no array»।
+        it("Form value conversion: edit: starts with an empty list when the record has no array", async () => {
             const values = await startingValues([items], { data: { id: 5 } });
 
             expect(values.items).toEqual([]);
         });
 
-        it("edit: starts with minItems copies of defaultItem when the record has no array", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: starts with minItems copies of defaultItem when the record has no array»।
+        it("Form value conversion: edit: starts with minItems copies of defaultItem when the record has no array", async () => {
             const values = await startingValues([{ ...items, minItems: 2 }], { data: { id: 5 } });
 
             expect(values.items).toEqual([
@@ -341,7 +363,8 @@ describe("FormBuilder: turning data into form values", () => {
             ]);
         });
 
-        it("edit: parses dates and extracts ids inside rows", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: parses dates and extracts ids inside rows»।
+        it("Form value conversion: edit: parses dates and extracts ids inside rows", async () => {
             const values = await startingValues(
                 [
                     {
@@ -368,7 +391,8 @@ describe("FormBuilder: turning data into form values", () => {
             expect(line.product_id).toBe(8);
         });
 
-        it("edit: a row text field reads its value from valueKey when its own key is blank", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: a row text field reads its value from valueKey when its own key is blank»।
+        it("Form value conversion: edit: a row text field reads its value from valueKey when its own key is blank", async () => {
             const values = await startingValues(
                 [
                     {
@@ -389,13 +413,15 @@ describe("FormBuilder: turning data into form values", () => {
             ]);
         });
 
-        it("create: starts with an empty list and ignores minItems", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: starts with an empty list and ignores minItems»।
+        it("Form value conversion: create: starts with an empty list and ignores minItems", async () => {
             const values = await startingValues([{ ...items, minItems: 2 }], { mode: "create", data: undefined });
 
             expect(values.items).toEqual([]);
         });
 
-        it("fills a dropdown default inside each row, and not at the top level", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills a dropdown default inside each row, and not at the top level»।
+        it("Form value conversion: fills a dropdown default inside each row, and not at the top level", async () => {
             const values = await startingValues(
                 [
                     {

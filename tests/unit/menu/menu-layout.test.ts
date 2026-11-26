@@ -28,7 +28,8 @@ const menu: NavMenuItem[] = [
 ];
 
 describe("parseMenuLayout", () => {
-  it("reads a saved layout and drops icons we do not know", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads a saved layout and drops icons we do not know»।
+  it("Menu layout: reads a saved layout and drops icons we do not know", () => {
     const layout = parseMenuLayout({
       items: [
         { id: "2", icon: "contact", children: [] },
@@ -43,7 +44,8 @@ describe("parseMenuLayout", () => {
     expect(layout?.updated_by).toBe("vp");
   });
 
-  it("treats nothing saved, an empty list or a broken value as the default menu", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «treats nothing saved, an empty list or a broken value as the default menu»।
+  it("Menu layout: treats nothing saved, an empty list or a broken value as the default menu", () => {
     expect(parseMenuLayout(undefined)).toBeNull();
     expect(parseMenuLayout(null)).toBeNull();
     expect(parseMenuLayout({ items: [] })).toBeNull();
@@ -52,18 +54,21 @@ describe("parseMenuLayout", () => {
 });
 
 describe("orderBySavedKeys", () => {
-  it("puts an item the saved order does not know right after its default neighbour", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts an item the saved order does not know right after its default neighbour»।
+  it("Menu layout: puts an item the saved order does not know right after its default neighbour", () => {
     expect(orderBySavedKeys(["a", "b", "new", "c"], (key) => key, ["c", "b", "a"])).toEqual(["c", "b", "new", "a"]);
     expect(orderBySavedKeys(["first", "a", "b"], (key) => key, ["b", "a"])).toEqual(["first", "b", "a"]);
   });
 
-  it("ignores saved keys that are no longer in the menu", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores saved keys that are no longer in the menu»।
+  it("Menu layout: ignores saved keys that are no longer in the menu", () => {
     expect(orderBySavedKeys(["a", "b"], (key) => key, ["gone", "b", "a"])).toEqual(["b", "a"]);
   });
 });
 
 describe("applyMenuLayout", () => {
-  it("orders the sidebar, swaps icons and orders sub-items", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «orders the sidebar, swaps icons and orders sub-items»।
+  it("Menu layout: orders the sidebar, swaps icons and orders sub-items", () => {
     const result = applyMenuLayout(menu, {
       items: [
         { id: 13, icon: "headset", children: ["/tags", "/tickets"] },
@@ -80,13 +85,15 @@ describe("applyMenuLayout", () => {
     expect(result[3].icon).toBe(Contact);
   });
 
-  it("returns the menu unchanged without a layout", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns the menu unchanged without a layout»।
+  it("Menu layout: returns the menu unchanged without a layout", () => {
     expect(applyMenuLayout(menu, null)).toBe(menu);
   });
 });
 
 describe("menu editor helpers", () => {
-  it("builds rows from the saved layout and turns them back into the same layout", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «builds rows from the saved layout and turns them back into the same layout»।
+  it("Menu layout: builds rows from the saved layout and turns them back into the same layout", () => {
     const saved = {
       items: [
         { id: 2, icon: "contact" as const, children: [] },
@@ -102,14 +109,16 @@ describe("menu editor helpers", () => {
     expect(layoutItemsFrom(rows)).toEqual(saved.items);
   });
 
-  it("keeps saved items this admin cannot see after their saved neighbour", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps saved items this admin cannot see after their saved neighbour»।
+  it("Menu layout: keeps saved items this admin cannot see after their saved neighbour", () => {
     const saved = { items: [{ id: 1, icon: null, children: [] }, { id: 28, icon: "globe" as const, children: [] }, { id: 2, icon: null, children: [] }] };
     const visible = [{ id: 2, icon: null, children: [] }, { id: 1, icon: null, children: [] }];
 
     expect(withHiddenItems(visible, saved).map((item) => item.id)).toEqual([2, 1, 28]);
   });
 
-  it("counts moved rows, reordered groups and changed icons", () => {
+  // মেনুর বিন্যাস ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «counts moved rows, reordered groups and changed icons»।
+  it("Menu layout: counts moved rows, reordered groups and changed icons", () => {
     const saved = editorItemsFrom(menu, null);
     const draft = editorItemsFrom(menu, {
       items: [

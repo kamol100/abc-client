@@ -7,7 +7,8 @@ import {
 } from "@/tests/e2e/expenses/fixtures";
 
 for (const path of ["/expenses", "/reports/expenses"]) {
-  test(`EX-A01 anonymous ${path} redirects to the same-host staff login`, async ({ browser, baseURL }) => {
+  // লগইন ছাড়া খরচের প্রতিটি পেজ খুললে একই টেন্যান্টের স্টাফ লগইনে পাঠায় কি না দেখি।
+  test(`EX-A01 Expense page access - ${path.startsWith('/reports/') ? 'Expense report' : 'Expense list'}: redirect signed-out users to staff login`, async ({ browser, baseURL }) => {
     const context = await browser.newContext({
       baseURL,
       locale: "en-US",
@@ -29,7 +30,8 @@ for (const path of ["/expenses", "/reports/expenses"]) {
   });
 }
 
-test("EX-A03 another company cannot read or find a known expense UUID", async ({ browser, page, staff }) => {
+// অন্য কোম্পানির খরচ বিস্তারিত পড়া বা সার্চে খুঁজে পাওয়া যায় না কি না যাচাই করি।
+test("EX-A03 Expense privacy: prevent another company from reading or searching this company's expense", async ({ browser, page, staff }) => {
   const other = await authenticate(browser, staff.tenant === "cp" ? "mk" : "cp");
   try {
     const ownList = await expenses(staff);
@@ -74,7 +76,8 @@ test("EX-A03 another company cannot read or find a known expense UUID", async ({
   }
 });
 
-test("EX-A05 logout back and reload do not restore the expense list", async ({ browser, page, staff }) => {
+// লগআউটের পর Back ও রিলোড দিয়েও খরচের তালিকা ফিরে আসে না কি না দেখি।
+test("EX-A05 Expense list after logout: keep it inaccessible after browser back and reload", async ({ browser, page, staff }) => {
   const listed = await expenses(staff);
   const expense = listed.data.find((row) => row.expense_id);
   if (!expense) throw new Error("Logout isolation needs an expense with a display ID.");

@@ -10,13 +10,15 @@ import { fieldOf } from "@/components/settings/registry/fields";
 import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("dashboard visibility settings", () => {
-  it("shows an item when the setting is missing", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an item when the setting is missing»।
+  it("Dashboard visibility: shows an item when the setting is missing", () => {
     expect(isDashboardItemVisible(undefined)).toBe(true);
     expect(isDashboardItemVisible(null)).toBe(true);
     expect(isDashboardItemVisible("")).toBe(true);
   });
 
-  it("hides an item only when the setting is explicitly off", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides an item only when the setting is explicitly off»।
+  it("Dashboard visibility: hides an item only when the setting is explicitly off", () => {
     expect(isDashboardItemVisible(0)).toBe(false);
     expect(isDashboardItemVisible("0")).toBe(false);
     expect(isDashboardItemVisible(false)).toBe(false);
@@ -26,7 +28,8 @@ describe("dashboard visibility settings", () => {
     expect(isDashboardItemVisible(true)).toBe(true);
   });
 
-  it("keeps permission before the visibility setting", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps permission before the visibility setting»।
+  it("Dashboard visibility: keeps permission before the visibility setting", () => {
     const visibility = resolveDashboardVisibility(
       (permission) => permission === "dashboard-card.client",
       { dashboard_show_client: 0, dashboard_show_reseller: 1 },
@@ -38,7 +41,8 @@ describe("dashboard visibility settings", () => {
     expect(visibility.zoneDue).toBe(false);
   });
 
-  it("shows a permitted item when its setting has never been saved", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a permitted item when its setting has never been saved»।
+  it("Dashboard visibility: shows a permitted item when its setting has never been saved", () => {
     const visibility = resolveDashboardVisibility(
       () => true,
       {},
@@ -49,7 +53,8 @@ describe("dashboard visibility settings", () => {
     }
   });
 
-  it("registers every dashboard item as a settings switch that defaults on", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «registers every dashboard item as a settings switch that defaults on»।
+  it("Dashboard visibility: registers every dashboard item as a settings switch that defaults on", () => {
     for (const item of DASHBOARD_VISIBILITY_ITEMS) {
       expect(fieldOf(item.settingKey).kind).toBe("toggle");
       expect(readSetting(item.settingKey, null)).toBe(true);
@@ -57,7 +62,8 @@ describe("dashboard visibility settings", () => {
     }
   });
 
-  it("hides settings for dashboard cards the user cannot access", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides settings for dashboard cards the user cannot access»।
+  it("Dashboard visibility: hides settings for dashboard cards the user cannot access", () => {
     const keys = visibleSettingKeys(sectionKeys("dashboard"), {
       hasPermission: (permission) => permission === "dashboard-card.invoice",
       valueOf: () => null,

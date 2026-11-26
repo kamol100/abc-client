@@ -194,7 +194,8 @@ describe("mobile simple search", () => {
         setFilter = vi.fn();
     });
 
-    it("shows the inline any field only for mobile simple search and toggles it without clearing", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the inline any field only for mobile simple search and toggles it without clearing»।
+    it("Mobile simple search: shows the inline any field only for mobile simple search and toggles it without clearing", async () => {
         const user = userEvent.setup();
         renderTable(true);
 
@@ -233,7 +234,8 @@ describe("mobile simple search", () => {
         expect(screen.getByPlaceholderText(ANY)).toHaveValue("abc");
     });
 
-    it("keeps simple search open and disables the filter toggle when always open", () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps simple search open and disables the filter toggle when always open»।
+    it("Mobile simple search: keeps simple search open and disables the filter toggle when always open", () => {
         accountState.alwaysOpen = true;
         renderTable(true);
 
@@ -247,7 +249,8 @@ describe("mobile simple search", () => {
         expect(filterButton()).toBeDisabled();
     });
 
-    it("keeps the bottom drawer for default mode, a failed setting, and simpleSearch off", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the bottom drawer for default mode, a failed setting, and simpleSearch off»।
+    it("Mobile simple search: keeps the bottom drawer for default mode, a failed setting, and simpleSearch off", async () => {
         accountState.mode = "default";
         const { unmount } = renderTable(true);
         expect(drawer()).toHaveAttribute("data-side", "bottom");
@@ -289,7 +292,8 @@ describe("mobile simple search", () => {
         expect(drawer()).toContainElement(screen.getByRole("button", { name: "common.filter" }));
     });
 
-    it("leaves the desktop filter unchanged when simple search is enabled", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves the desktop filter unchanged when simple search is enabled»।
+    it("Mobile simple search: leaves the desktop filter unchanged when simple search is enabled", async () => {
         const user = userEvent.setup();
         sidebarState.isMobile = false;
         queryCalls.length = 0;

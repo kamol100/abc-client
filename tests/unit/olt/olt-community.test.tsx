@@ -21,21 +21,24 @@ const i18n = vi.hoisted(() => ({
 vi.mock("react-i18next", () => ({ useTranslation: () => i18n }));
 
 describe("SNMP community help and order", () => {
-    it("puts the CLI login first and the SNMP settings last in Edit access", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts the CLI login first and the SNMP settings last in Edit access»।
+    it("OLT community: puts the CLI login first and the SNMP settings last in Edit access", () => {
         const names = OltAccessFormFieldSchema({ configured: false }).map((field) => field.name);
         expect(names.slice(0, 4)).toEqual(["cli_protocol", "cli_username", "cli_password", "cli_enable_password"]);
         expect(names.indexOf("snmp_version")).toBeGreaterThan(names.indexOf("cli_enable_password"));
         expect(names.indexOf("snmp_community")).toBe(names.indexOf("snmp_version") + 1);
     });
 
-    it("puts the community last among the OLT fields of the device form", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts the community last among the OLT fields of the device form»।
+    it("OLT community: puts the community last among the OLT fields of the device form", () => {
         const names = DeviceFormFieldSchema([5]).map((field) => field.name);
         const olt = ["device_ip", "cli_protocol", "cli_username", "cli_password", "snmp_community"].map((name) => names.indexOf(name));
         expect(olt).toEqual([...olt].sort((a, b) => a - b));
         expect(olt[4]).toBe(olt[0] + 4);
     });
 
-    it("picks the brand's community tooltip, or the all-brands one", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «picks the brand's community tooltip, or the all-brands one»।
+    it("OLT community: picks the brand's community tooltip, or the all-brands one", () => {
         expect(communityTooltipKey("bdcom")).toBe("olt.access.fields.snmp_community_tooltip_bdcom");
         expect(communityTooltipKey("huawei")).toBe("olt.access.fields.snmp_community_tooltip_huawei");
         expect(communityTooltipKey("generic")).toBe("olt.access.fields.snmp_community_tooltip");
@@ -45,20 +48,23 @@ describe("SNMP community help and order", () => {
         );
     });
 
-    it("says the community can stay empty only with a CLI login", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «says the community can stay empty only with a CLI login»।
+    it("OLT community: says the community can stay empty only with a CLI login", () => {
         expect(communityPlaceholder(false, true)).toBe("olt.access.fields.snmp_community_auto_placeholder");
         expect(communityPlaceholder(false, false)).toBe("olt.access.fields.snmp_community");
         expect(communityPlaceholder(true, true)).toBe("olt.access.fields.keep_placeholder");
     });
 
-    it("lists the OLT's brand first in the help panel", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists the OLT's brand first in the help panel»।
+    it("OLT community: lists the OLT's brand first in the help panel", () => {
         expect(whereToFindRows(null)).toEqual(["general", "auto", "bdcom", "vsol", "huawei", "missing"]);
         expect(whereToFindRows("huawei")).toEqual(["huawei", "general", "auto", "bdcom", "vsol", "missing"]);
     });
 });
 
 describe("Detect from OLT", () => {
-    it("needs a saved CLI login and a v2c, non-Huawei OLT", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «needs a saved CLI login and a v2c, non-Huawei OLT»।
+    it("OLT community: needs a saved CLI login and a v2c, non-Huawei OLT", () => {
         expect(detectCommunityBlockedReason({ configured: false })).toBe("olt.access.detect.needs_cli");
         expect(detectCommunityBlockedReason({ configured: true, cli_protocol: null })).toBe("olt.access.detect.needs_cli");
         expect(detectCommunityBlockedReason({ configured: true, cli_protocol: "telnet", snmp_version: "v3" })).toBe("olt.access.detect.v3");
@@ -78,12 +84,14 @@ const detected: OltTestResult = {
 };
 
 describe("snmp_community test step", () => {
-    it("runs between the CLI login and SNMP, with the access type translated", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «runs between the CLI login and SNMP, with the access type translated»।
+    it("OLT community: runs between the CLI login and SNMP, with the access type translated", () => {
         expect(testSteps(detected).map((step) => step.key)).toEqual(["cli_login", "snmp_community", "snmp"]);
         expect(stepMessage(testSteps(detected)[1], i18n.t)).toBe("olt.test.snmp_community.detected|access_type=RO");
     });
 
-    it("is labelled in the result view", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is labelled in the result view»।
+    it("OLT community: is labelled in the result view", () => {
         render(<OltTestResultView result={detected} cliProtocol="telnet" />);
         expect(screen.getByText("olt.test.step.snmp_community")).toBeInTheDocument();
         expect(screen.getByText("olt.test.snmp_community.detected|access_type=RO")).toBeInTheDocument();

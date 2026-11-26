@@ -11,7 +11,8 @@ import {
 const UNKNOWN = "00000000-0000-4000-8000-000000000001";
 
 for (const path of ["/resellers", "/resellers/create", `/resellers/edit/${UNKNOWN}`, `/resellers/view/${UNKNOWN}`]) {
-  test(`RS-A01 anonymous ${path} redirects to the same-host staff login`, async ({ browser, baseURL }) => {
+  // লগইন ছাড়া রিসেলারের প্রতিটি পেজ খুললে একই টেন্যান্টের স্টাফ লগইনে পাঠায় কি না দেখি।
+  test(`RS-A01 Reseller page access - ${path.includes('/edit/') ? 'Edit reseller' : path.endsWith('/create') ? 'Create reseller' : path.includes('/view/') ? 'Reseller details' : 'Reseller list'}: redirect signed-out users to staff login`, async ({ browser, baseURL }) => {
     const context = await browser.newContext({
       baseURL,
       locale: "en-US",
@@ -33,7 +34,8 @@ for (const path of ["/resellers", "/resellers/create", `/resellers/edit/${UNKNOW
   });
 }
 
-test("RS-A03 another company cannot read or find a known reseller UUID", async ({ browser, page, staff }) => {
+// অন্য কোম্পানির রিসেলার বিস্তারিত পড়া বা খুঁজে পাওয়া যায় না কি না দেখি।
+test("RS-A03 Reseller privacy: prevent another company from reading or searching this company's reseller", async ({ browser, page, staff }) => {
   const other = await authenticate(browser, staff.tenant === "cp" ? "mk" : "cp");
   try {
     const ownList = await resellers(staff);
@@ -77,7 +79,8 @@ test("RS-A03 another company cannot read or find a known reseller UUID", async (
   }
 });
 
-test("RS-A06 switching to an admin-role reseller is denied and the staff list stays in place", async ({ page, staff }) => {
+// অ্যাডমিন ভূমিকার রিসেলারে সুইচ আটকে দেয় এবং আগের স্টাফ সেশন থাকে কি না দেখি।
+test("RS-A06 Switch to an admin-role reseller: deny the switch and keep the staff session", async ({ page, staff }) => {
   requirePermissions(staff, "impersonate.start", "resellers.access");
   const reseller = (await resellers(staff)).data.find((row) => row.user?.uuid);
   if (!reseller?.user?.uuid) throw new Error("Switch denial needs a reseller linked to a user.");
@@ -103,7 +106,8 @@ test("RS-A06 switching to an admin-role reseller is denied and the staff list st
   await expect(resellerRow(page, reseller)).toBeVisible();
 });
 
-test("RS-A06 a reseller without a linked user does not offer scope switching", async ({ page, staff }) => {
+// ব্যবহারকারীর সঙ্গে যুক্ত নয় এমন রিসেলারের অ্যাকাউন্ট সুইচের অপশন থাকে না কি না দেখি।
+test("RS-A06 Reseller without a linked user: hide the account-switch action", async ({ page, staff }) => {
   requirePermissions(staff, "resellers.access");
   const listed = await resellers(staff);
   const missingUser = listed.data.find((row) => !row.user?.uuid);

@@ -274,7 +274,8 @@ describe("real form payloads", () => {
     });
 
     describe.each(cases)("$name", (formCase) => {
-        it("create: starting values", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: starting values»।
+        it("Form request data: Create mode: initialize the expected request values", async () => {
             mockApi();
             renderWithClient(<RealForm formCase={formCase} mode="create" zod={anyValues} />);
 
@@ -285,7 +286,8 @@ describe("real form payloads", () => {
             expect(request.data).toMatchSnapshot();
         });
 
-        it("edit: loads the record and sends it back unchanged", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: loads the record and sends it back unchanged»।
+        it("Form request data: edit: loads the record and sends it back unchanged", async () => {
             let record: Record<string, unknown> = {};
             function Probe() {
                 // Build the sample record from the same field config the form uses.

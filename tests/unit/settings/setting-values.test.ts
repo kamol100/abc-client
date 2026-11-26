@@ -9,12 +9,14 @@ import { SETTING_KEYS, type SettingKey } from "@/components/settings/registry/fi
 const golden = expected as Record<string, { read: unknown[]; payload: unknown[] }>;
 
 describe("setting values", () => {
-  it("covers every registered setting", () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «covers every registered setting»।
+  it("Setting value conversion: cover every registered setting in the expected-value fixture", () => {
     expect([...SETTING_KEYS].sort()).toEqual(Object.keys(golden).sort());
   });
 
   for (const key of Object.keys(golden) as SettingKey[]) {
-    it(`reads and saves ${key} as before`, () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads and saves ${key} as before»।
+    it(`Setting value conversion: Read and save ${key}: return the expected normalized input and request value`, () => {
       RAW_INPUTS.forEach((raw, index) => {
         expect(readSetting(key, raw) ?? null, `read ${key} ${String(raw)}`).toEqual(golden[key].read[index]);
         expect(toPayload(key, raw), `payload ${key} ${String(raw)}`).toEqual(golden[key].payload[index]);

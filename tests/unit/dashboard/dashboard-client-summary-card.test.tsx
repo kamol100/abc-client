@@ -27,7 +27,8 @@ const stats: DashboardClientCount = {
 };
 
 describe("DashboardClientSummaryCard", () => {
-  it("links a positive new-client count to this month's clients", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «links a positive new-client count to this month's clients»।
+  it("Dashboard client summary card: links a positive new-client count to this month's clients", () => {
     permissionState.allowClients = true;
 
     render(
@@ -45,7 +46,8 @@ describe("DashboardClientSummaryCard", () => {
     expect(screen.queryByRole("link", { name: "9" })).not.toBeInTheDocument();
   });
 
-  it("leaves a zero new-client count as plain text", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves a zero new-client count as plain text»।
+  it("Dashboard client summary card: leaves a zero new-client count as plain text", () => {
     permissionState.allowClients = true;
 
     render(
@@ -60,7 +62,8 @@ describe("DashboardClientSummaryCard", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 
-  it("does not link the count when the user cannot open clients", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not link the count when the user cannot open clients»।
+  it("Dashboard client summary card: does not link the count when the user cannot open clients", () => {
     permissionState.allowClients = false;
 
     render(

@@ -3,7 +3,8 @@ import FeatureFormFieldSchema from "@/components/subscription/feature-form-schem
 import { FeatureCreateSchema, FeatureFormSchema } from "@/components/subscription/feature-type";
 
 describe("feature form", () => {
-  it("requires a lowercase key when creating a feature", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires a lowercase key when creating a feature»।
+  it("Subscription feature form: requires a lowercase key when creating a feature", () => {
     expect(FeatureCreateSchema.safeParse({ name: "Inventory" }).success).toBe(false);
     expect(FeatureCreateSchema.safeParse({ key: "Inventory", name: "Inventory" }).success).toBe(false);
 
@@ -17,7 +18,8 @@ describe("feature form", () => {
     expect(parsed.sort_order).toBe(0);
   });
 
-  it("updates name and description without a key", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «updates name and description without a key»।
+  it("Subscription feature form: updates name and description without a key", () => {
     const parsed = FeatureFormSchema.parse({
       name: "Stock",
       description: "Updated",
@@ -31,7 +33,8 @@ describe("feature form", () => {
     });
   });
 
-  it("shows the key field only when creating", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the key field only when creating»।
+  it("Subscription feature form: shows the key field only when creating", () => {
     const createKey = FeatureFormFieldSchema("create").find((field) => field.name === "key");
     const editKey = FeatureFormFieldSchema("edit").find((field) => field.name === "key");
 

@@ -18,7 +18,8 @@ import {
 
 const CLIENT_BOUND = "Please delete the client first!";
 
-test("NW-D01 cancel delete keeps the unused network", async ({ page, staff }) => {
+// ব্যবহার না হওয়া নেটওয়ার্কের ডিলিট বাতিল করলে সেটি থেকে যায় কি না দেখি।
+test("NW-D01 Cancel network deletion: keep the unused network", async ({ page, staff }) => {
   requirePermissions(staff, "networks.delete", "networks.show", "clients.access");
   const { rows } = await networkRelations(staff);
   const unused = rows.find((row) => row.clients === 0);
@@ -38,7 +39,8 @@ test("NW-D01 cancel delete keeps the unused network", async ({ page, staff }) =>
   await expect(networkRow(page, unused.network)).toBeVisible();
 });
 
-test("NW-D02 deleting a client-bound network is rejected and the records stay", async ({ page, staff }) => {
+// ক্লায়েন্টযুক্ত নেটওয়ার্ক ডিলিটে বাধা দেয় এবং সংশ্লিষ্ট তথ্য অক্ষত থাকে কি না দেখি।
+test("NW-D02 Delete a network with clients: reject deletion and preserve the network and clients", async ({ page, staff }) => {
   requirePermissions(staff, "networks.delete", "networks.show", "clients.access");
   const { rows } = await networkRelations(staff);
   const bound = rows.find((row) => row.clients > 0);
@@ -66,7 +68,8 @@ test("NW-D02 deleting a client-bound network is rejected and the records stay", 
   await expect(networkRow(page, bound.network)).toBeVisible();
 });
 
-test("NW-D04 network choices use numeric ids and client and reseller forms list those names", async ({ page, staff }) => {
+// ক্লায়েন্ট ও রিসেলার ফর্মে সঠিক আইডিসহ সংরক্ষিত নেটওয়ার্কের নাম দেখা যায় কি না দেখি।
+test("NW-D04 Network choices: use valid IDs and show saved network names in client and reseller forms", async ({ page, staff }) => {
   requirePermissions(staff, "networks.access", "resellers.create", "clients.create");
   const listed = await networks(staff);
   const options = choices(await staff.get("dropdown-networks"));
@@ -97,7 +100,8 @@ async function expectDropdownNames(page: Page, names: string[]) {
   await page.keyboard.press("Escape");
 }
 
-test("NW-R02 mobile width keeps filters create and the connection label reachable", async ({ page, staff }) => {
+// মোবাইলে নেটওয়ার্ক ফিল্টার, তৈরি বোতাম ও সংযোগের ফল ব্যবহারযোগ্য থাকে কি না দেখি।
+test("NW-R02 Network page on mobile: keep filters, create action, and connection labels reachable", async ({ page, staff }) => {
   const listed = await networks(staff);
   assertProbeSafe(listed.data);
   const network = listed.data[0];

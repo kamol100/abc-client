@@ -2,7 +2,8 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 import { test, expect, invoices, sample, row, assertRows, filters, select } from "@/tests/e2e/invoices/fixtures";
 
-test("IV-L01 list identities dates client type and status match API after reload", async ({ page, staff }) => {
+// রিলোডের পর ইনভয়েসের পরিচয়, তারিখ, ক্লায়েন্ট, ধরন ও স্ট্যাটাস API-এর সঙ্গে মেলে কি না দেখি।
+test("IV-L01 Invoice list: show saved invoice details and statuses after reload", async ({ page, staff }) => {
   const expected = await invoices(staff);
   expect(expected.data.length, "Seed at least one invoice").toBeGreaterThan(0);
   await page.goto("/invoices");
@@ -22,7 +23,8 @@ test("IV-L01 list identities dates client type and status match API after reload
   await assertRows(page, expected.data);
 });
 
-test("IV-L02 track ID search includes selected invoice excludes others and resets", async ({ page, staff }) => {
+// ট্র্যাক আইডির সঠিক ইনভয়েস আসে, অন্যগুলো বাদ যায় এবং সার্চ মুছলে তালিকা ফেরে কি না দেখি।
+test("IV-L02 Search invoices by track ID: show the matching invoice and restore the list when cleared", async ({ page, staff }) => {
   const item = await sample(staff);
   const expected = await invoices(staff, `track_id=${encodeURIComponent(item.trackID)}&trackID=${encodeURIComponent(item.trackID)}`);
   expect(expected.data.some(i => i.id === item.id)).toBe(true);
@@ -35,7 +37,8 @@ test("IV-L02 track ID search includes selected invoice excludes others and reset
 });
 
 for (const [status, label] of [["due", "Due"], ["paid", "Paid"], ["partial", "Partial"]] as const) {
-  test(`IV-L02 status=${status} matches API inclusion and exclusion`, async ({ page, staff }) => {
+  // প্রতিটি স্ট্যাটাস ফিল্টারে সেই স্ট্যাটাসের ইনভয়েসই আসে কি না যাচাই করি।
+  test(`IV-L02 Invoice status filter - ${label}: show matching invoices and hide other statuses`, async ({ page, staff }) => {
     const expected = await invoices(staff, `status=${status}`);
     expect(expected.data.every(i => i.status === status || (status === "partial" && i.status === "partial_paid"))).toBe(true);
     await page.goto("/invoices");
@@ -48,7 +51,8 @@ for (const [status, label] of [["due", "Due"], ["paid", "Paid"], ["partial", "Pa
 }
 
 for (const [field, relation] of [["invoice_type_id", "invoice_type"], ["client_id", "client"], ["zone_id", "zone"]] as const) {
-  test(`IV-L02 ${field} dropdown matches included and excluded invoice identities`, async ({ page, staff }) => {
+  // ইনভয়েসের ধরন, ক্লায়েন্ট বা জোন ফিল্টারে সঠিক ইনভয়েস আসে এবং অন্যগুলো বাদ যায় কি না দেখি।
+  test(`IV-L02 Invoice ${field === 'invoice_type_id' ? 'type' : field === 'zone_id' ? 'zone' : 'client'} filter: show matching invoices and hide nonmatches`, async ({ page, staff }) => {
     const item = await sample(staff);
     const ref = item[relation];
     if (!ref) throw new Error(`Invoice fixture requires ${relation} for this filter check.`);
@@ -66,7 +70,8 @@ for (const [field, relation] of [["invoice_type_id", "invoice_type"], ["client_i
   });
 }
 
-test("IV-L02 combined track and status filters reset to unfiltered identities", async ({ page, staff }) => {
+// ট্র্যাক আইডি ও স্ট্যাটাস একসঙ্গে কাজ করে এবং রিসেট করলে আগের তালিকা ফেরে কি না দেখি।
+test("IV-L02 Combined invoice filters: match both track ID and status, then reset to the full list", async ({ page, staff }) => {
   const item = await sample(staff);
   const status = item.status.startsWith("partial") ? "partial" : item.status;
   const expected = await invoices(staff, `track_id=${encodeURIComponent(item.trackID)}&status=${status}`);
@@ -80,7 +85,8 @@ test("IV-L02 combined track and status filters reset to unfiltered identities", 
   await assertRows(page, (await invoices(staff)).data);
 });
 
-test("IV-L02 creator filter matches backend page and clearing restores baseline", async ({ page, staff }) => {
+// তৈরিকারী স্টাফ অনুযায়ী ইনভয়েস আসে এবং ফিল্টার মুছলে তালিকা ফিরে আসে কি না দেখি।
+test("IV-L02 Invoice creator filter: show the selected staff's invoices and restore the list when cleared", async ({ page, staff }) => {
   const options = z.array(z.object({ id: z.coerce.number(), name: z.string() })).parse(await staff.get("dropdown-staffs"));
   const creator = [...options].sort((a, b) => a.id - b.id)[0];
   if (!creator) throw new Error("Creator filter needs a tenant-owned staff dropdown fixture.");
@@ -94,7 +100,8 @@ test("IV-L02 creator filter matches backend page and clearing restores baseline"
   // Resource omits create_by; this checks UI/API agreement, not creator ownership.
 });
 
-test("IV-L03 pagination controls reflect bounds and available page identities", async ({ page, staff }) => {
+// বর্তমান পেজ অনুযায়ী বোতামের অবস্থা ও ইনভয়েসের সারিগুলো সঠিক থাকে কি না দেখি।
+test("IV-L03 Invoice pagination: show the correct page controls and invoice rows", async ({ page, staff }) => {
   const first = await invoices(staff);
   await page.goto("/invoices");
   await assertRows(page, first.data);
@@ -113,7 +120,8 @@ test("IV-L03 pagination controls reflect bounds and available page identities", 
   await assertRows(page, first.data);
 });
 
-test("IV-L05 client UUID history scopes rows and retains scope after reload", async ({ page, staff }) => {
+// নির্দিষ্ট ক্লায়েন্টের ইতিহাসে শুধু তার ইনভয়েস থাকে এবং রিলোডেও সীমা ঠিক থাকে কি না দেখি।
+test("IV-L05 Client invoice history: show only that client's invoices and retain the scope after reload", async ({ page, staff }) => {
   const item = await sample(staff);
   const expected = await invoices(staff, `client_uuid=${item.client.uuid}`);
   expect(expected.data.length).toBeGreaterThan(0);
@@ -124,7 +132,8 @@ test("IV-L05 client UUID history scopes rows and retains scope after reload", as
   await assertRows(page, expected.data);
 });
 
-test("IV-L06 unmatched track ID renders empty results and clearing restores rows", async ({ page, staff }) => {
+// না মেলা ট্র্যাক আইডিতে খালি ফল আসে এবং সার্চ মুছলে তালিকা ফিরে আসে কি না দেখি।
+test("IV-L06 Invoice search with no matches: show an empty list and recover when cleared", async ({ page, staff }) => {
   const baseline = await invoices(staff);
   const marker = `E2E-no-invoice-${randomUUID()}`;
   expect((await invoices(staff, `track_id=${marker}`)).data).toHaveLength(0);

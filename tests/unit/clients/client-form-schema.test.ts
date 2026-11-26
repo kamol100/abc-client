@@ -3,7 +3,8 @@ import { ClientFormFieldSchema } from "@/components/clients/client-form-schema";
 import { applyFormFieldDefaults } from "@/components/form-wrapper/form-field-defaults";
 
 describe("ClientFormFieldSchema", () => {
-  it("shows the next sid on the create pppoe label", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the next sid on the create pppoe label»।
+  it("Client form schema: shows the next sid on the create pppoe label", () => {
     const sections = ClientFormFieldSchema({ mode: "create", nextSid: 8 });
     const username = sections
       .flatMap((section) => section.form)
@@ -17,7 +18,8 @@ describe("ClientFormFieldSchema", () => {
     });
   });
 
-  it("omits the next sid while creating until the number is known and while editing", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «omits the next sid while creating until the number is known and while editing»।
+  it("Client form schema: omits the next sid while creating until the number is known and while editing", () => {
     const pending = ClientFormFieldSchema({ mode: "create" });
     const editing = ClientFormFieldSchema({ mode: "edit", nextSid: 8 });
     const pendingUsername = pending
@@ -31,7 +33,8 @@ describe("ClientFormFieldSchema", () => {
     expect(editingUsername?.label).not.toHaveProperty("labelTrailing");
   });
 
-  it("uses the company payment deadline and falls back to day 11", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the company payment deadline and falls back to day 11»।
+  it("Client form schema: uses the company payment deadline and falls back to day 11", () => {
     const deadlineOf = (paymentDeadline?: unknown) => {
       const field = ClientFormFieldSchema({ mode: "create", paymentDeadline })
         .flatMap((section) => section.form)
@@ -46,7 +49,8 @@ describe("ClientFormFieldSchema", () => {
     expect(deadlineOf(31)).toBe("11");
   });
 
-  it("selects the first payment term option by default", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «selects the first payment term option by default»।
+  it("Client form schema: selects the first payment term option by default", () => {
     const sections = ClientFormFieldSchema({ mode: "create" });
     const paymentTerm = sections
       .flatMap((section) => section.form)
@@ -59,7 +63,8 @@ describe("ClientFormFieldSchema", () => {
     expect(paymentTerm.defaultValue).toBe(paymentTerm.options?.[0]?.value);
   });
 
-  it("fills create defaults without replacing a chosen value or numeric zero", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills create defaults without replacing a chosen value or numeric zero»।
+  it("Client form schema: fills create defaults without replacing a chosen value or numeric zero", () => {
     const schema = ClientFormFieldSchema({ mode: "create" });
     const defaults = applyFormFieldDefaults(undefined, schema, { radios: true });
 
@@ -95,7 +100,8 @@ describe("ClientFormFieldSchema", () => {
     });
   });
 
-  it("leaves stored billing values alone when editing", () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves stored billing values alone when editing»।
+  it("Client form schema: leaves stored billing values alone when editing", () => {
     const schema = ClientFormFieldSchema({ mode: "edit" });
     const unchanged = applyFormFieldDefaults(
       {

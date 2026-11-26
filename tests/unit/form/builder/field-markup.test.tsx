@@ -133,7 +133,8 @@ describe("field markup", () => {
         mockApi();
     });
 
-    it("FormBuilder: every field type, empty", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «FormBuilder: every field type, empty»।
+    it("Form field markup: FormBuilder: every field type, empty", async () => {
         const { container } = renderWithClient(
             <FormBuilder
                 formSchema={everyField}
@@ -150,7 +151,8 @@ describe("field markup", () => {
         expect(stableDom(container)).toMatchSnapshot();
     });
 
-    it("FormBuilder: every field type, filled", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «FormBuilder: every field type, filled»।
+    it("Form field markup: FormBuilder: every field type, filled", async () => {
         const { container } = renderWithClient(
             <FormBuilder
                 formSchema={everyField}
@@ -168,7 +170,8 @@ describe("field markup", () => {
         expect(stableDom(container)).toMatchSnapshot();
     });
 
-    it("FormBuilder: every field type, with a validation error", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «FormBuilder: every field type, with a validation error»।
+    it("Form field markup: FormBuilder: every field type, with a validation error", async () => {
         const { container } = renderWithClient(
             <FormBuilder
                 formSchema={everyField}
@@ -189,7 +192,8 @@ describe("field markup", () => {
         expect(stableDom(container)).toMatchSnapshot();
     });
 
-    it("AccordionFormBuilder: sections with a slot", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «AccordionFormBuilder: sections with a slot»।
+    it("Form field markup: AccordionFormBuilder: sections with a slot", async () => {
         const { container } = renderWithClient(
             <AccordionFormBuilder
                 formSchema={[
@@ -226,7 +230,8 @@ describe("field markup", () => {
             { type: "text", name: "hidden", permission: false },
         ];
 
-        it("every filter field type, in one grid row", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «every filter field type, in one grid row»।
+        it("Form field markup: every filter field type, in one grid row", async () => {
             const { container } = renderWithClient(
                 <FormFilter formSchema={filterFields} grids={4} forceOpen searchButton />,
             );
@@ -235,7 +240,8 @@ describe("field markup", () => {
             expect(stableDom(container)).toMatchSnapshot();
         });
 
-        it("every filter field type, in flexible rows", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «every filter field type, in flexible rows»।
+        it("Form field markup: every filter field type, in flexible rows", async () => {
             const { container } = renderWithClient(
                 <FormFilter formSchema={filterFields} filterRows={2} forceOpen hideTrigger resultCount={12} />,
             );
@@ -244,7 +250,8 @@ describe("field markup", () => {
             expect(stableDom(container)).toMatchSnapshot();
         });
 
-        it("a text filter with a value shows its clear button", async () => {
+        // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a text filter with a value shows its clear button»।
+        it("Form field markup: a text filter with a value shows its clear button", async () => {
             const { container } = renderWithClient(
                 <FormFilter formSchema={filterFields.slice(0, 1)} forceOpen hideTrigger />,
             );
@@ -262,7 +269,8 @@ describe("FormFilter idPrefix", () => {
         mockApi();
     });
 
-    it("keeps filter ids apart from a form with the same field names", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps filter ids apart from a form with the same field names»।
+    it("Form field markup: keeps filter ids apart from a form with the same field names", () => {
         renderWithClient(
             <>
                 <FormFilter formSchema={[{ type: "text", name: "name" }]} forceOpen hideTrigger idPrefix="filter" />

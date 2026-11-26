@@ -45,7 +45,8 @@ describe("BkashCallbackPage", () => {
     });
   });
 
-  it("returns a verified quick pay payment to /pay", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns a verified quick pay payment to /pay»।
+  it("bKash callback: returns a verified quick pay payment to /pay", async () => {
     searchParams.value = new URLSearchParams({
       paymentID: "pay-quick",
       status: "success",
@@ -62,7 +63,8 @@ describe("BkashCallbackPage", () => {
     expect(executePayment).toHaveBeenCalledWith("pay-quick", "client-1");
   });
 
-  it("returns a verified dashboard payment to the dashboard", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns a verified dashboard payment to the dashboard»।
+  it("bKash callback: returns a verified dashboard payment to the dashboard", async () => {
     searchParams.value = new URLSearchParams({
       paymentID: "pay-dashboard",
       status: "success",
@@ -80,7 +82,8 @@ describe("BkashCallbackPage", () => {
     expect(executePayment).toHaveBeenCalledTimes(1);
   });
 
-  it("uses the stored origin when bKash drops the return query", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the stored origin when bKash drops the return query»।
+  it("bKash callback: uses the stored origin when bKash drops the return query", async () => {
     rememberBkashReturnTarget("client-invoices");
     searchParams.value = new URLSearchParams({
       paymentID: "pay-invoices",
@@ -96,7 +99,8 @@ describe("BkashCallbackPage", () => {
     });
   });
 
-  it("ignores an external return url", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores an external return url»।
+  it("bKash callback: ignores an external return url", async () => {
     searchParams.value = new URLSearchParams({
       paymentID: "pay-evil",
       status: "success",
@@ -112,7 +116,8 @@ describe("BkashCallbackPage", () => {
     });
   });
 
-  it("does not confirm a cancelled payment", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not confirm a cancelled payment»।
+  it("bKash callback: does not confirm a cancelled payment", async () => {
     const user = userEvent.setup();
     searchParams.value = new URLSearchParams({
       paymentID: "pay-cancel",
@@ -131,7 +136,8 @@ describe("BkashCallbackPage", () => {
     expect(locationAssign).toHaveBeenCalledWith("/client/dashboard");
   });
 
-  it("does not confirm a failed or unverified payment", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not confirm a failed or unverified payment»।
+  it("bKash callback: does not confirm a failed or unverified payment", async () => {
     const user = userEvent.setup();
     searchParams.value = new URLSearchParams({
       paymentID: "pay-failed",
@@ -150,7 +156,8 @@ describe("BkashCallbackPage", () => {
     expect(locationAssign).toHaveBeenCalledWith("/client/invoices");
   });
 
-  it("does not execute when bKash reports failure", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not execute when bKash reports failure»।
+  it("bKash callback: does not execute when bKash reports failure", async () => {
     searchParams.value = new URLSearchParams({
       status: "failure",
       return: "pay",

@@ -156,7 +156,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     await Promise.all(contexts.map((context) => context.close()));
   });
 
-  test("RF-008-E01 enrolls all three seller types and verifies each isolated login", async ({ browser }) => {
+  // তিন ধরনের সেলার এনরোল করে প্রত্যেকের আলাদা লগইন ও পরিচয় যাচাই করি।
+  test("RF-008-E01 Seller enrollment: register tenant, reseller, and independent sellers with separate logins", async ({ browser }) => {
     const adminSession = await login(browser, "rf_admin", "/platform-referral-sellers");
     contexts.push(adminSession.context);
     admin = adminSession.page;
@@ -191,7 +192,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     }
   });
 
-  test("RF-008-E02 takes a real demo through Pending, Payable, and Paid", async ({ browser, request }, testInfo) => {
+  // ডেমো রেফারেল থেকে কমিশন অপেক্ষমাণ, পাওনাযোগ্য ও পরিশোধিত হওয়ার পুরো ধাপ যাচাই করি।
+  test("RF-008-E02 Referral commission: move a demo sale from Pending to Payable to Paid", async ({ browser, request }, testInfo) => {
     const publicContext = await browser.newContext({ ...browserSettings, baseURL: origin("rf_manager") });
     contexts.push(publicContext);
     await publicContext.addCookies([{ name: "lang", value: "en", url: origin("rf_manager") }]);
@@ -261,7 +263,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     expect(current).toMatchObject({ status: "paid", commission_amount_minor: 200000 });
   });
 
-  test("RF-008-E03 preserves fixed contract terms and excludes rejected referrals", async ({ request }) => {
+  // নির্ধারিত কমিশনের শর্ত থাকে এবং বাতিল রেফারেল আয়ের হিসাবে আসে না কি না দেখি।
+  test("RF-008-E03 Referral contract: retain fixed commission terms and exclude rejected referrals from earnings", async ({ request }) => {
     await reseller.getByRole("button", { name: "Add referral" }).click();
     const add = reseller.getByRole("dialog", { name: "Add referral" });
     await field(add, "prospect_name").fill(directSale);
@@ -302,7 +305,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     expect(await ledger(request, headers, rejected)).toMatchObject({ status: "rejected", commission_amount_minor: null });
   });
 
-  test("RF-008-E04 keeps one earning and transfer across retries and conflicting attempts", async ({ request }) => {
+  // একই কাজ পুনরায় বা বিরোধপূর্ণভাবে করলেও কমিশন ও ট্রান্সফার একবারই হয় কি না দেখি।
+  test("RF-008-E04 Repeated referral actions: create only one earning and transfer despite retries or conflicts", async ({ request }) => {
     const headers = await auth(request, "rf_admin");
     const { api } = environment();
     const row = await ledger(request, headers, publicSale);
@@ -321,7 +325,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     await expect(referralRow(seller, publicSale)).toHaveCount(1);
   });
 
-  test("RF-008-E05 denies unauthorized routes, data, and actions", async ({ browser, request }) => {
+  // অনুমতি ছাড়া রেফারেল পেজ, তথ্য ও কমিশনের কাজ ব্যবহার করা যায় না কি না দেখি।
+  test("RF-008-E05 Referral permissions: block unauthorized pages, data, and commission actions", async ({ browser, request }) => {
     const adminHeaders = await auth(request, "rf_admin");
     const current = await ledger(request, adminHeaders, publicSale);
     const { api } = environment();
@@ -365,7 +370,8 @@ test.describe.serial("disposable ISP referral acceptance", () => {
     await expect(seller.locator('[data-referral-total="paid"]')).toHaveText("৳0");
   });
 
-  test("RF-008-E06 verifies narrow layouts, keyboard use, Bangla dark mode, and normal demo recovery", async ({ browser }, testInfo) => {
+  // ছোট পর্দা, কিবোর্ড ও বাংলা ডার্ক থিমে ফর্ম চলে এবং সাধারণ ডেমোর ত্রুটি কাটিয়ে ওঠে কি না দেখি।
+  test("RF-008-E06 Referral forms: support mobile, keyboard, Bangla dark mode, and demo recovery", async ({ browser }, testInfo) => {
     await reseller.setViewportSize({ width: 390, height: 844 });
     await expect(reseller.getByRole("heading", { name: "My referrals" })).toBeVisible();
     await expect.poll(() => reseller.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);

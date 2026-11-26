@@ -28,7 +28,8 @@ const article = (id: string) => {
 };
 
 describe("help authorization", () => {
-  it("hides every article from anonymous and client sessions", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides every article from anonymous and client sessions»।
+  it("Help article access: hides every article from anonymous and client sessions", () => {
     const client: HelpActor = { ...staff(["clients.access", "platform-support.create"]), principal: "client" };
     for (const item of HELP_ARTICLES) {
       expect(canReadHelpArticle(ANONYMOUS_HELP_ACTOR, item)).toBe(false);
@@ -36,7 +37,8 @@ describe("help authorization", () => {
     }
   });
 
-  it("keeps baseline support articles available without tickets.access or a paid feature", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps baseline support articles available without tickets.access or a paid feature»।
+  it("Help article access: keeps baseline support articles available without tickets.access or a paid feature", () => {
     const actor = staff([]);
     expect(canReadHelpArticle(actor, article("support.getting-started"))).toBe(true);
     expect(canReadHelpArticle(actor, article("support.contact"))).toBe(true);
@@ -46,7 +48,8 @@ describe("help authorization", () => {
     expect(actor.permissions).not.toContain("tickets.access");
   });
 
-  it("requires the action permission for create, chat, images, and conversion", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires the action permission for create, chat, images, and conversion»।
+  it("Help article access: requires the action permission for create, chat, images, and conversion", () => {
     const createOnly = staff(["platform-support.create"]);
     expect(canReadHelpArticle(createOnly, article("support.create-issue"))).toBe(true);
     expect(canReadHelpArticle(createOnly, article("support.chat"))).toBe(false);
@@ -57,7 +60,8 @@ describe("help authorization", () => {
     expect(canReadHelpArticle(staff(["platform-support.convert"]), article("support.convert-chat"))).toBe(true);
   });
 
-  it("splits client overview from client create and follows subscription locks", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «splits client overview from client create and follows subscription locks»।
+  it("Help article access: splits client overview from client create and follows subscription locks", () => {
     const reader = staff(["clients.access"]);
     expect(canReadHelpArticle(reader, article("clients.overview"))).toBe(true);
     expect(canReadHelpArticle(reader, article("clients.create"))).toBe(false);
@@ -77,7 +81,8 @@ describe("help authorization", () => {
     expect(canReadHelpArticle(activeWithExpiryMetadata, article("clients.overview"))).toBe(true);
   });
 
-  it("keeps invoice overview during a read-only billing expiry and hides a write tutorial", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps invoice overview during a read-only billing expiry and hides a write tutorial»।
+  it("Help article access: keeps invoice overview during a read-only billing expiry and hides a write tutorial", () => {
     const actor = staff(["invoices.access", "invoices.create"], {
       subscriptionState: "expired",
       readOnlyFeatures: ["billing"],
@@ -91,7 +96,8 @@ describe("help authorization", () => {
     expect(canReadHelpArticle(actor, writeTutorial)).toBe(false);
   });
 
-  it("changes the allowed set when permissions change and does not copy a bearer token", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «changes the allowed set when permissions change and does not copy a bearer token»।
+  it("Help article access: changes the allowed set when permissions change and does not copy a bearer token", () => {
     const overview = article("clients.overview");
     expect(canReadHelpArticle(staff([]), overview)).toBe(false);
     expect(canReadHelpArticle(staff(["clients.access"]), overview)).toBe(true);
@@ -110,7 +116,8 @@ describe("help authorization", () => {
     expect(helpActorFromSettings({ success: false, data: { permissions: ["clients.access"] } }).principal).toBe("anonymous");
   });
 
-  it("hides a platform article from tenant staff", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides a platform article from tenant staff»।
+  it("Help article access: hides a platform article from tenant staff", () => {
     const platform = {
       ...article("support.contact"),
       id: "platform.inbox",
@@ -123,7 +130,8 @@ describe("help authorization", () => {
     expect(canReadHelpArticle(staff(["platform-support-admin.access"]), platform)).toBe(true);
   });
 
-  it("matches the client create route ahead of the client list", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «matches the client create route ahead of the client list»।
+  it("Help article access: matches the client create route ahead of the client list", () => {
     const matches = matchingHelpArticles(HELP_ARTICLES, "/clients/create?name=Ada").map((item) => item.id);
     expect(matches[0]).toBe("clients.create");
     expect(matches).not.toContain("clients.overview");
@@ -133,7 +141,8 @@ describe("help authorization", () => {
 });
 
 describe("help files stay server-side", () => {
-  it("does not import the help engine from client components or the public folder", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not import the help engine from client components or the public folder»।
+  it("Help article access: does not import the help engine from client components or the public folder", () => {
     const root = process.cwd();
     const skip = new Set(["node_modules", ".next", "dist", "tests", "content"]);
     const offenders: string[] = [];

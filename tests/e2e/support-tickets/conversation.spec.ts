@@ -2,7 +2,8 @@ import { randomUUID } from "node:crypto";
 import { expect, test, ticketRow, withOwnedTicket } from "@/tests/e2e/support-tickets/fixtures";
 
 test.describe("support ticket conversation", () => {
-  test("ST-C01 view opens the selected UUID and back returns to the list", async ({ page, staff }) => {
+  // নির্বাচিত টিকিটের কথোপকথন খোলে এবং Back দিয়ে তালিকায় ফেরা যায় কি না দেখি।
+  test("ST-C01 Open a support ticket: show the selected conversation and return to the list with Back", async ({ page, staff }) => {
     await withOwnedTicket(staff, async (ticket) => {
       await page.goto("/tickets");
       await ticketRow(page, ticket.ticket_code).getByRole("link", { name: "View", exact: true }).click();
@@ -21,7 +22,8 @@ test.describe("support ticket conversation", () => {
     });
   });
 
-  test("ST-C02 a staff reply is stored once and remains after reload", async ({ page, staff }) => {
+  // স্টাফের একটি উত্তর একবারই সেভ হয় এবং রিলোডের পরও থাকে কি না দেখি।
+  test("ST-C02 Reply to a support ticket: save one reply and keep it after reload", async ({ page, staff }) => {
     await withOwnedTicket(staff, async (ticket) => {
       const reply = `E2E reply ${randomUUID()}`;
       await page.goto(`/tickets/view/${ticket.id}`);
@@ -50,7 +52,8 @@ test.describe("support ticket conversation", () => {
     });
   });
 
-  test("ST-C03 an empty reply is rejected and adds no message", async ({ page, staff }) => {
+  // খালি উত্তর পাঠাতে দেয় না এবং কথোপকথনে নতুন বার্তা যোগ হয় না কি না দেখি।
+  test("ST-C03 Empty ticket reply: reject the message without adding to the conversation", async ({ page, staff }) => {
     await withOwnedTicket(staff, async (ticket) => {
       await page.goto(`/tickets/view/${ticket.id}`);
       const composer = page.getByPlaceholder("Type your reply here...");

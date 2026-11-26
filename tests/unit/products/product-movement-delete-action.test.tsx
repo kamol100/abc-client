@@ -38,7 +38,8 @@ describe("PRODUCTS-003 movement delete action", () => {
         permissions.granted = [];
     });
 
-    it("deletes a stock-out by uuid and refreshes stock lists and reports", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «deletes a stock-out by uuid and refreshes stock lists and reports»।
+    it("Product movement delete action: deletes a stock-out by uuid and refreshes stock lists and reports", () => {
         permissions.granted = ["products-out.delete"];
         render(<ProductMovementDeleteAction mode="out" id={uuid} />);
 
@@ -52,7 +53,8 @@ describe("PRODUCTS-003 movement delete action", () => {
         );
     });
 
-    it("deletes a stock-in with its own permission and endpoint", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «deletes a stock-in with its own permission and endpoint»।
+    it("Product movement delete action: deletes a stock-in with its own permission and endpoint", () => {
         permissions.granted = ["products-in.delete"];
         render(<ProductMovementDeleteAction mode="in" id={uuid} />);
 
@@ -61,14 +63,16 @@ describe("PRODUCTS-003 movement delete action", () => {
         expect(button.dataset.confirm).toBe("product_movement.actions.delete_in_confirmation");
     });
 
-    it("hides the button without the matching delete permission", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the button without the matching delete permission»।
+    it("Product movement delete action: hides the button without the matching delete permission", () => {
         permissions.granted = ["products-in.delete"];
         render(<ProductMovementDeleteAction mode="out" id={uuid} />);
 
         expect(screen.queryByTestId("delete")).toBeNull();
     });
 
-    it("adds an actions column to the stock-in and stock-out report tables", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds an actions column to the stock-in and stock-out report tables»।
+    it("Product movement delete action: adds an actions column to the stock-in and stock-out report tables", () => {
         for (const mode of ["in", "out"] as const) {
             const { result } = renderHook(() => useProductReportsColumns(mode));
             const ids = result.current.map((column) => column.id ?? ("accessorKey" in column ? column.accessorKey : undefined));

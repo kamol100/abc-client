@@ -58,13 +58,15 @@ describe("Reseller settings", () => {
         state.fetch.mockResolvedValue({ success: true, data: {} });
     });
 
-    it("removes the termination-date setting from general settings", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «removes the termination-date setting from general settings»।
+    it("Reseller settings: removes the termination-date setting from general settings", () => {
         expect(getSectionFieldKeys("general")).not.toContain(
             "auto_inactive_reseller_client_termination_date",
         );
     });
 
-    it("shows the selected reseller and the existing inactive setting", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the selected reseller and the existing inactive setting»।
+    it("Reseller settings: shows the selected reseller and the existing inactive setting", () => {
         renderDialog();
 
         expect(screen.getByText("reseller.settings.title")).toBeInTheDocument();
@@ -75,7 +77,8 @@ describe("Reseller settings", () => {
         expect(screen.getByText("common.inactive")).toBeInTheDocument();
     });
 
-    it("saves through the existing company settings payload", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves through the existing company settings payload»।
+    it("Reseller settings: saves through the existing company settings payload", async () => {
         const user = userEvent.setup();
         renderDialog("East Reseller");
 

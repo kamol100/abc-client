@@ -57,21 +57,24 @@ describe("AccordionFormBuilder", () => {
         mockApi();
     });
 
-    it("draws one trigger per section, titled with the section name", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws one trigger per section, titled with the section name»।
+    it("Accordion form sections: draws one trigger per section, titled with the section name", () => {
         renderAccordion();
 
         expect(screen.getByRole("button", { name: "client.sections.basic" })).toBeInTheDocument();
         expect(screen.getByRole("button", { name: "client.sections.address" })).toBeInTheDocument();
     });
 
-    it("opens the first section and does not mount the fields of closed sections", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the first section and does not mount the fields of closed sections»।
+    it("Accordion form sections: opens the first section and does not mount the fields of closed sections", () => {
         renderAccordion();
 
         expect(fieldById("name")).toBeInTheDocument();
         expect(fieldById("address")).toBeNull();
     });
 
-    it("opens another section on click and closes the first (one open at a time)", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens another section on click and closes the first (one open at a time)»।
+    it("Accordion form sections: opens another section on click and closes the first (one open at a time)", async () => {
         renderAccordion();
         const user = userEvent.setup();
         await user.click(screen.getByRole("button", { name: "client.sections.address" }));
@@ -80,13 +83,15 @@ describe("AccordionFormBuilder", () => {
         expect(fieldById("name")).toBeNull();
     });
 
-    it("lays the open section out with the grid classes for `grids`", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lays the open section out with the grid classes for `grids`»।
+    it("Accordion form sections: lays the open section out with the grid classes for `grids`", () => {
         renderAccordion({ grids: 3 });
 
         expect(inputById("name").closest(".grid")).toHaveClass("grid-cols-1", "sm:grid-cols-2", "lg:grid-cols-3");
     });
 
-    it("applies permission and visibleWhen to section fields", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies permission and visibleWhen to section fields»।
+    it("Accordion form sections: applies permission and visibleWhen to section fields", async () => {
         renderAccordion();
         const user = userEvent.setup();
 
@@ -96,7 +101,8 @@ describe("AccordionFormBuilder", () => {
         expect(inputById("company").parentElement?.parentElement).toHaveClass("col-span-full");
     });
 
-    it("draws the matching sectionSlots entry for a slot field, inside the field's wrapper", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws the matching sectionSlots entry for a slot field, inside the field's wrapper»।
+    it("Accordion form sections: draws the matching sectionSlots entry for a slot field, inside the field's wrapper", async () => {
         const { container } = renderAccordion({ sectionSlots: { images: <p>image uploader</p> } });
         const user = userEvent.setup();
         await user.click(screen.getByRole("button", { name: "client.sections.address" }));
@@ -104,7 +110,8 @@ describe("AccordionFormBuilder", () => {
         expect(container.querySelector(".image-slot")).toHaveTextContent("image uploader");
     });
 
-    it("keeps the values of a closed section and sends them", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the values of a closed section and sends them»।
+    it("Accordion form sections: keeps the values of a closed section and sends them", async () => {
         renderAccordion();
         const user = userEvent.setup();
         await user.type(inputById("name"), "Karim");
@@ -120,7 +127,8 @@ describe("AccordionFormBuilder", () => {
         });
     });
 
-    it("keeps the Save button outside the sections, so it shows whichever section is open", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the Save button outside the sections, so it shows whichever section is open»।
+    it("Accordion form sections: keeps the Save button outside the sections, so it shows whichever section is open", async () => {
         renderAccordion();
         const user = userEvent.setup();
         await user.click(screen.getByRole("button", { name: "client.sections.address" }));

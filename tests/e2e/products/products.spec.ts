@@ -46,7 +46,8 @@ test.afterEach(async ({ request }) => { await control(request, {}); });
 
 const row = (page: Page, name: string) => page.getByRole("row").filter({ hasText: name });
 
-test("FT051-04-a products route shows tenant-owned stock after reload", async ({ browser, request }, testInfo) => {
+// পণ্য তালিকা ও রিলোডের পর শুধু বর্তমান কোম্পানির স্টক দেখা যায় কি না যাচাই করি।
+test("FT051-04-a Product list: show only the current company's stock after reload", async ({ browser, request }, testInfo) => {
   const headers = await auth(request);
   const result = await request.get(api("products"), { headers });
   expect(result.status()).toBe(200);
@@ -97,7 +98,8 @@ async function lot(request: APIRequestContext, headers: Record<string, string>, 
   return { productin_id: lots[0].id as number };
 }
 
-test("FT051-01-a create serial product through UI and freshly read its attributes", async ({ browser, request }) => {
+// সিরিয়ালসহ পণ্য ফর্ম দিয়ে তৈরি করে নতুন API পাঠে তার তথ্য সেভ হয়েছে কি না দেখি।
+test("FT051-01-a Create a serial-tracked product: save the entered product details", async ({ browser, request }) => {
   const { page, context } = await login(browser);
   await expect(row(page, environment().fixtures.prd_cp.products[0].name)).toBeVisible();
   await page.getByRole("button", { name: "Add Product", exact: true }).click();
@@ -125,7 +127,8 @@ test("FT051-01-a create serial product through UI and freshly read its attribute
 });
 
 for (const mode of ["in", "out"] as const) {
-  test(`FT051-04-${mode} stock ${mode} form and product-specific movement route survive reload`, async ({ browser }) => {
+  // স্টক ইন ও আউটের ফর্ম এবং পণ্যের লেনদেন রিপোর্ট রিলোডেও খোলে কি না দেখি।
+  test(`FT051-04-${mode} Stock ${mode} pages: keep the form and product movement report available after reload`, async ({ browser }) => {
     const stock = environment().fixtures.prd_cp.products[0];
     const { page, context } = await login(browser, "prd_cp", `/products/${mode}?product_id=${stock.id}`);
     await expect(page.getByRole("button", { name: "Save", exact: true })).toBeVisible();
@@ -140,7 +143,8 @@ for (const mode of ["in", "out"] as const) {
   });
 }
 
-test("FT051-03-a backend rejects negative stock input without persisting a movement", async ({ request }) => {
+// ঋণাত্মক স্টকের পরিমাণ দিলে API প্রত্যাখ্যান করে এবং কোনো লেনদেন তৈরি হয় না কি না দেখি।
+test("FT051-03-a Negative stock quantity: reject the request without saving a movement", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Negative input sentinel");
   expect((await stockIn(request, headers, product.product_id, -1)).status()).toBe(422);
@@ -148,7 +152,8 @@ test("FT051-03-a backend rejects negative stock input without persisting a movem
   expect((await response.json()).data.data).toEqual([]);
 });
 
-test("FT051-03-b rejects duplicate serial numbers atomically", async ({ request }) => {
+// একই সিরিয়াল পুনরাবৃত্তি হলে পুরো অনুরোধ বাতিল হয় এবং আংশিক স্টক সেভ হয় না কি না দেখি।
+test("FT051-03-b Duplicate serial numbers: reject the entire stock request without partial changes", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Duplicate serial sentinel", 1);
   expect((await stockIn(request, headers, product.product_id, 2, ["SERIAL-DUP", "SERIAL-DUP"])).status()).toBe(422);
@@ -156,7 +161,8 @@ test("FT051-03-b rejects duplicate serial numbers atomically", async ({ request 
   expect((await result.json()).data.data).toEqual([]);
 });
 
-test("FT051-03-c competing stock issues cannot consume more than the remaining quantity", async ({ request }) => {
+// একই স্টক নিতে একাধিক অনুরোধ এলে মোট ইস্যু অবশিষ্ট স্টকের বেশি হয় না কি না দেখি।
+test("FT051-03-c Competing stock-out requests: prevent total issues from exceeding available stock", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Concurrent issue sentinel");
   expect((await stockIn(request, headers, product.product_id)).status()).toBe(200);
@@ -169,7 +175,8 @@ test("FT051-03-c competing stock issues cannot consume more than the remaining q
 });
 
 for (const actor of ["prd_reader", "prd_denied"]) {
-  test(`FT051-09-${actor} denies product and stock mutations with no new records`, async ({ request }) => {
+  // শুধু পড়ার অনুমতি বা কোনো অনুমতি না থাকা ব্যবহারকারী পণ্য ও স্টক বদলাতে পারে না কি না দেখি।
+  test(`FT051-09-${actor} Product write access - ${actor === 'prd_reader' ? 'Read-only user' : 'User without access'}: reject product and stock changes without new records`, async ({ request }) => {
     const headers = await auth(request, actor);
     for (const path of ["products", "products-in", "products-out"]) {
       expect((await request.post(api(path), { headers, data: {} })).status()).toBe(403);
@@ -179,7 +186,8 @@ for (const actor of ["prd_reader", "prd_denied"]) {
   });
 }
 
-test("FT051-10-a foreign UUID reads and deletes are denied on both product movement routes", async ({ request }) => {
+// অন্য কোম্পানির স্টক ইন ও আউটের রেকর্ড পড়া বা ডিলিট করা যায় না কি না দেখি।
+test("FT051-10-a Stock movement privacy: block another company from reading or deleting product movements", async ({ request }) => {
   const headers = await auth(request);
   const foreign = environment().fixtures.prd_mk.products[0];
   for (const path of [`products/${foreign.uuid}`, `products-in/${foreign.uuid}`, `products-out/${foreign.uuid}`, `get-product/${foreign.id}`]) {
@@ -190,7 +198,8 @@ test("FT051-10-a foreign UUID reads and deletes are denied on both product movem
   expect((await request.get(api(`products/${foreign.uuid}`), { headers: ownerHeaders })).status()).toBe(200);
 });
 
-test("FT051-10-b foreign category and writable tenant identifiers cannot cross company boundaries", async ({ request }) => {
+// অন্য কোম্পানির ক্যাটাগরি বা অনুরোধে কোম্পানি-রিসেলার বদলে সীমানা পার হওয়া আটকে দেয় কি না দেখি।
+test("FT051-10-b Product ownership: reject foreign categories and attempts to change company or reseller scope", async ({ request }) => {
   const headers = await auth(request);
   const f = environment().fixtures.prd_cp;
   const foreign = environment().fixtures.prd_mk;
@@ -223,7 +232,8 @@ async function pickToday(page: Page, label: RegExp) {
   await page.locator(`button[data-day="${date}"]`).click();
 }
 
-test("FT051-02-a stock-in and stock-out UI persist exact quantities and expense with no invoice", async ({ browser, request }) => {
+// ফর্মের স্টক ইন ও আউটে সঠিক পরিমাণ ও খরচ সেভ হয় কিন্তু ইনভয়েস তৈরি হয় না কি না দেখি।
+test("FT051-02-a Stock in and out: save exact quantities and the expense without creating an invoice", async ({ browser, request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "UI movement reconciliation");
   const { page, context } = await login(browser, "prd_cp", `/products/in?product_id=${product.product_id}`);
@@ -267,7 +277,8 @@ test("FT051-02-a stock-in and stock-out UI persist exact quantities and expense 
   await context.close();
 });
 
-test("FT051-05-a product filters combine and clearing restores the known baseline", async ({ browser }) => {
+// একাধিক পণ্য ফিল্টার একসঙ্গে কাজ করে এবং মুছলে পরিচিত তালিকা ফেরে কি না দেখি।
+test("FT051-05-a Combined product filters: show matching stock and restore the list when cleared", async ({ browser }) => {
   const { page, context } = await login(browser);
   const f = environment().fixtures.prd_cp;
   await expect(row(page, f.products[0].name)).toBeVisible();
@@ -288,7 +299,8 @@ test("FT051-05-a product filters combine and clearing restores the known baselin
 });
 
 for (const filter of ["product_category_id", "unit_type_id", "has_serial"] as const) {
-  test(`FT051-05-${filter} independently excludes the other fixture`, async ({ browser }) => {
+  // ক্যাটাগরি, ইউনিট বা সিরিয়াল ফিল্টার আলাদাভাবে সঠিক পণ্য দেখায় ও অন্যগুলো বাদ দেয় কি না দেখি।
+  test(`FT051-05-${filter} Product ${filter === 'product_category_id' ? 'category' : filter === 'unit_type_id' ? 'unit' : 'serial tracking'} filter: show matching products and hide nonmatches`, async ({ browser }) => {
     const { page, context } = await login(browser);
     const f = environment().fixtures.prd_cp;
     await expect(row(page, f.products[0].name)).toBeVisible();
@@ -303,7 +315,8 @@ for (const filter of ["product_category_id", "unit_type_id", "has_serial"] as co
   });
 }
 
-test("FT051-06-a product pagination and column visibility preserve the selected identities", async ({ browser }) => {
+// পেজ বদলানো ও কলাম লুকানো-দেখানোর সময় সঠিক পণ্যগুলো থাকে কি না দেখি।
+test("FT051-06-a Product table: keep the correct rows when changing pages or toggling columns", async ({ browser }) => {
   const { page, context } = await login(browser);
   await expect(row(page, environment().fixtures.prd_cp.products[0].name)).toBeVisible();
   await expect(page.getByRole("row")).toHaveCount(11);
@@ -318,7 +331,8 @@ test("FT051-06-a product pagination and column visibility preserve the selected 
   await context.close();
 });
 
-test("FT051-07-a edit hydrates relations, cancel preserves data, and saved changes survive reload", async ({ browser, request }) => {
+// পণ্যের পুরোনো নির্বাচন লোড হয়, বাতিলের পরিবর্তন বাদ যায় এবং সেভ করা তথ্য রিলোডেও থাকে কি না দেখি।
+test("FT051-07-a Edit product: load saved selections, discard cancelled changes, and retain saved changes after reload", async ({ browser, request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Hydration sentinel");
   const { page, context } = await login(browser);
@@ -346,7 +360,8 @@ test("FT051-07-a edit hydrates relations, cancel preserves data, and saved chang
   await context.close();
 });
 
-test("FT051-09-ui restricted users see no write controls, including direct stock URLs", async ({ browser }) => {
+// সীমিত ব্যবহারকারীর পণ্য তালিকা ও সরাসরি স্টক পেজে পরিবর্তনের বোতাম থাকে না কি না দেখি।
+test("FT051-09-ui Read-only product user: hide write controls on the list and direct stock pages", async ({ browser }) => {
   const { page, context } = await login(browser, "prd_reader");
   await expect(row(page, environment().fixtures.prd_cp.products[0].name)).toBeVisible();
   await expect(page.getByRole("button", { name: "Add Product", exact: true })).toHaveCount(0);
@@ -359,7 +374,8 @@ test("FT051-09-ui restricted users see no write controls, including direct stock
   await context.close();
 });
 
-test("FT051-11-a failed list is not empty state and retry restores exact records", async ({ browser, request }) => {
+// পণ্য লোড ব্যর্থ হলে খালি তালিকার বদলে ত্রুটি আসে এবং পুনরায় চেষ্টা করলে সঠিক তথ্য ফেরে কি না দেখি।
+test("FT051-11-a Product list request failure: show an error instead of an empty list and recover on retry", async ({ browser, request }) => {
   await control(request, { path: "/api/v1/products?", failures: 3 });
   const { page, context } = await login(browser, "prd_cp", "/products", false);
   await expect(page.getByRole("alert").filter({ hasText: "Products could not be loaded" })).toBeVisible();
@@ -370,7 +386,8 @@ test("FT051-11-a failed list is not empty state and retry restores exact records
   await context.close();
 });
 
-test("FT051-11-b delayed filter refresh keeps rows and scroll stable then shows latest filter", async ({ browser, request }) => {
+// ধীর ফিল্টারে আগের সারি ও স্ক্রল অবস্থান স্থির থাকে এবং শেষে সর্বশেষ ফল আসে কি না দেখি।
+test("FT051-11-b Slow product filter: keep current rows and scroll position until the latest result arrives", async ({ browser, request }) => {
   const { page, context } = await login(browser);
   const f = environment().fixtures.prd_cp;
   await expect(row(page, f.products[0].name)).toBeVisible();
@@ -392,7 +409,8 @@ test("FT051-11-b delayed filter refresh keeps rows and scroll stable then shows 
 });
 
 for (const mode of ["in", "out"] as const) {
-  test(`FT051-05-${mode}-movement report filters reconcile exact scope beyond one page`, async ({ request, browser }) => {
+  // স্টক ইন ও আউট রিপোর্টে ফিল্টার করা সব পেজের লেনদেনের সঠিক মোট হিসাব আসে কি না দেখি।
+  test(`FT051-05-${mode}-movement Stock ${mode} report filters: calculate totals for all matching movements across pages`, async ({ request, browser }) => {
     const headers = await auth(request);
     const f = environment().fixtures.prd_cp;
     const filters = [
@@ -432,7 +450,8 @@ for (const mode of ["in", "out"] as const) {
   });
 }
 
-test("FT051-03-d issued serials cannot be issued twice and mismatched lots leave stock unchanged", async ({ request }) => {
+// আগে ইস্যু হওয়া সিরিয়াল বা ভুল লট দিলে স্টক না বদলে অনুরোধ বাতিল হয় কি না দেখি।
+test("FT051-03-d Invalid serial stock-out: reject reused serials and mismatched lots without changing stock", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Serial availability sentinel", 1);
   expect((await stockIn(request, headers, product.product_id, 2, ["ISSUE-A", "ISSUE-B"])).status()).toBe(200);
@@ -451,7 +470,8 @@ test("FT051-03-d issued serials cannot be issued twice and mismatched lots leave
   expect(snapshot.product_outs.filter((r) => r.product_id === product.product_id)).toHaveLength(1);
 });
 
-test("FT051-02-b invoice request preserves the approved base-price minus discount calculation", async ({ request }) => {
+// স্টক আউটের ইনভয়েসে অনুমোদিত মূল দাম থেকে ছাড় বাদ দিয়ে হিসাব হয় কি না দেখি।
+test("FT051-02-b Stock-out invoice: calculate the total using base price minus discount", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Invoice calculation sentinel");
   expect((await stockIn(request, headers, product.product_id, 3)).status()).toBe(200);
@@ -468,7 +488,8 @@ test("FT051-02-b invoice request preserves the approved base-price minus discoun
   expect(snapshot.product_ins.find((r) => r.id === incoming.productin_id)).toMatchObject({ quantity_remaining: 1 });
 });
 
-test("FT051-03-e failed multi-line stock-out rolls back earlier rows and retains unrelated sentinels", async ({ request }) => {
+// একাধিক লাইনের স্টক আউট ব্যর্থ হলে আগের পরিবর্তনও ফেরত যায় এবং অন্য স্টক অক্ষত থাকে কি না দেখি।
+test("FT051-03-e Failed multi-line stock-out: roll back earlier lines and preserve unrelated stock", async ({ request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Atomic rollback sentinel");
   expect((await stockIn(request, headers, product.product_id, 3)).status()).toBe(200);
@@ -482,7 +503,8 @@ test("FT051-03-e failed multi-line stock-out rolls back earlier rows and retains
   expect(snapshot.products.some((r) => r.name === environment().fixtures.prd_mk.products[0].name)).toBe(true);
 });
 
-test("FT051-07-delete product deletion permits unused products and preserves products with stock history", async ({ request }) => {
+// অব্যবহৃত পণ্য ডিলিট করা যায় কিন্তু স্টকের ইতিহাস থাকা পণ্য রক্ষা পায় কি না দেখি।
+test("FT051-07-delete Delete product: allow unused products and protect products with movement history", async ({ request }) => {
   const headers = await auth(request);
   const unused = await createProduct(request, headers, "Disposable empty product");
   expect((await request.delete(api(`products/${unused.id}`), { headers })).status()).toBe(200);
@@ -492,7 +514,8 @@ test("FT051-07-delete product deletion permits unused products and preserves pro
   expect((await request.get(api(`products/${stock.uuid}`), { headers })).status()).toBe(200);
 });
 
-test("FT051-08-12 delayed save blocks repeat submission and creates one product", async ({ browser, request }) => {
+// ধীর সেভে বারবার ক্লিক আটকায় এবং একটিই পণ্য তৈরি হয় কি না দেখি।
+test("FT051-08-12 Slow product save: prevent repeated submission and create exactly one product", async ({ browser, request }) => {
   const { page, context } = await login(browser);
   await page.getByRole("button", { name: "Add Product", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Add Product", exact: true });
@@ -515,7 +538,8 @@ test("FT051-08-12 delayed save blocks repeat submission and creates one product"
   await context.close();
 });
 
-test("FT051-10-12 logout and restricted login on the same host cannot restore write controls", async ({ browser }) => {
+// লগআউট করে সীমিত ব্যবহারকারী হিসেবে ঢুকলে পুরোনো পরিবর্তনের অনুমতি ফিরে আসে না কি না দেখি।
+test("FT051-10-12 Switch to a restricted product user: keep write controls hidden after logout and login", async ({ browser }) => {
   const { page, context } = await login(browser);
   await expect(page.getByRole("button", { name: "Add Product", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "User menu", exact: false }).click();
@@ -538,7 +562,8 @@ test("FT051-10-12 logout and restricted login on the same host cannot restore wr
   await context.close();
 });
 
-test("FT051-13 mobile keyboard English Bangla and light dark keep product forms usable", async ({ browser }, testInfo) => {
+// মোবাইলে কিবোর্ড, বাংলা-ইংরেজি ও লাইট-ডার্ক থিমে পণ্যের ফর্ম ব্যবহার করা যায় কি না দেখি।
+test("FT051-13 Product forms on mobile: support keyboard use, English/Bangla, and light/dark themes", async ({ browser }, testInfo) => {
   const { page, context } = await login(browser);
   await page.setViewportSize({ width: 393, height: 852 });
   const add = page.getByRole("button", { name: "Add Product", exact: true });
@@ -565,7 +590,8 @@ test("FT051-13 mobile keyboard English Bangla and light dark keep product forms 
 
 for (const actor of ["prd_reader", "prd_denied"]) {
   for (const operation of ["edit", "delete", "stock-in-read", "stock-out-read", "stock-in-report", "stock-out-report"]) {
-    test(`FT051-09-${actor}-${operation} denies the direct API capability`, async ({ request }) => {
+    // সীমিত ব্যবহারকারীর প্রতিটি সরাসরি পণ্য বা স্টক API অনুরোধে অনুমতির বাধা কাজ করে কি না দেখি।
+    test(`FT051-09-${actor}-${operation} Product API access - ${actor === 'prd_reader' ? 'Read-only user' : 'User without access'}: reject ${operation.replaceAll('-', ' ')} requests`, async ({ request }) => {
       const headers = await auth(request, actor);
       const uuid = environment().fixtures.prd_cp.products[0].uuid;
       const routes: Record<string, string> = { "stock-in-read": `products-in/${uuid}`, "stock-out-read": `products-out/${uuid}`,
@@ -578,14 +604,16 @@ for (const actor of ["prd_reader", "prd_denied"]) {
   }
 }
 
-test("FT051-09-anonymous unauthenticated product and movement routes require authentication", async ({ request }) => {
+// লগইন ছাড়া পণ্য ও স্টকের API পড়া বা ব্যবহার করা আটকে দেয় কি না দেখি।
+test("FT051-09-anonymous Product and stock APIs while signed out: require authentication", async ({ request }) => {
   const uuid = environment().fixtures.prd_cp.products[0].uuid;
   for (const path of ["products", `products/${uuid}`, `products-in/${uuid}`, `products-out/${uuid}`, "products-in/reports", "products-out/reports"]) {
     expect((await request.get(api(path), { headers: { Accept: "application/json" } })).status()).toBe(401);
   }
 });
 
-test("FT051-09-out-only report reader opens only the permitted stock-out report", async ({ browser }) => {
+// শুধু স্টক আউট রিপোর্টের পাঠক অন্য রিপোর্টে প্রবেশ করতে পারে না কি না দেখি।
+test("FT051-09-out-only Stock-out report reader: open only the report permitted by the user's permissions", async ({ browser }) => {
   const { page, context } = await login(browser, "prd_out_reader", "/products/reports");
   await expect(page.getByRole("table")).toContainText(environment().fixtures.prd_cp.products[0].name);
   await expect(page.getByRole("button", { name: "Product In", exact: true })).toHaveCount(0);
@@ -593,7 +621,8 @@ test("FT051-09-out-only report reader opens only the permitted stock-out report"
   await context.close();
 });
 
-test("FT051-08-server failed save preserves the draft and retry creates one record", async ({ browser, request }) => {
+// সেভ ব্যর্থ হলে খসড়া থাকে এবং আবার চেষ্টা করলে একটিই পণ্য তৈরি হয় কি না দেখি।
+test("FT051-08-server Product save failure: keep the draft and create one product on retry", async ({ browser, request }) => {
   const { page, context } = await login(browser);
   await page.getByRole("button", { name: "Add Product", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Add Product", exact: true });
@@ -617,7 +646,8 @@ test("FT051-08-server failed save preserves the draft and retry creates one reco
 });
 
 for (const mode of ["in", "out"]) {
-  test(`FT051-05-${mode}-dates inclusive local-date boundaries retain exact fixture totals`, async ({ request }) => {
+  // স্টক রিপোর্টে স্থানীয় তারিখসীমার দুই প্রান্তসহ সঠিক লেনদেন ও মোট হিসাব আসে কি না দেখি।
+  test(`FT051-05-${mode}-dates Stock ${mode} date filter: include both date boundaries and keep exact totals`, async ({ request }) => {
     const headers = await auth(request);
     const date = mode === "in" ? "2026-11-01" : "2026-11-05";
     const field = mode === "in" ? "purchase_date" : "out_date";
@@ -631,7 +661,8 @@ for (const mode of ["in", "out"]) {
   });
 }
 
-test("FT051-06-size product page size persists and reload returns the exact requested row count", async ({ browser, request }) => {
+// পণ্যের পেজের আকার মনে রাখে এবং রিলোডে ঠিক তত সারি দেখায় কি না দেখি।
+test("FT051-06-size Product page size: remember the chosen size and show that many rows after reload", async ({ browser, request }) => {
   const { page, context } = await login(browser);
   await page.locator("#results-per-page").click();
   await page.getByRole("option", { name: "5 / page", exact: true }).click();
@@ -650,7 +681,8 @@ test("FT051-06-size product page size persists and reload returns the exact requ
   await context.close();
 });
 
-test("FT051-06-reports full-filter totals remain exact across report pages", async ({ browser, request }) => {
+// স্টক রিপোর্টের পেজ বদলালেও পুরো ফিল্টার করা ফলের মোট হিসাব ঠিক থাকে কি না দেখি।
+test("FT051-06-reports Stock report pagination: retain totals for the complete filtered result across pages", async ({ browser, request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Multi-page report product");
   for (let n = 0; n < 12; n++) expect((await stockIn(request, headers, product.product_id, 2)).status()).toBe(200);
@@ -673,7 +705,8 @@ test("FT051-06-reports full-filter totals remain exact across report pages", asy
   await context.close();
 });
 
-test("FT051-11-background failed background refresh preserves loaded rows and retry recovers", async ({ browser, request }) => {
+// পটভূমিতে পণ্য রিফ্রেশ ব্যর্থ হলেও আগের সারি থাকে এবং পুনরায় চেষ্টায় ফল ফেরে কি না দেখি।
+test("FT051-11-background Product refresh failure: retain loaded rows and recover on retry", async ({ browser, request }) => {
   const headers = await auth(request);
   const product = await createProduct(request, headers, "Background error sentinel");
   const { page, context } = await login(browser);

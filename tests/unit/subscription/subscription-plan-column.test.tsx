@@ -47,7 +47,8 @@ function renderCell(accessorKey: string, row: Partial<SubscriptionPlanRow>) {
 }
 
 describe("SubscriptionPlanColumns", () => {
-  it("includes client limits and status", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «includes client limits and status»।
+  it("Subscription plan column: includes client limits and status", () => {
     const keys = SubscriptionPlanColumns.map((column) =>
       "accessorKey" in column ? column.accessorKey : column.id,
     );
@@ -63,7 +64,8 @@ describe("SubscriptionPlanColumns", () => {
     ]);
   });
 
-  it("shows client limits", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows client limits»।
+  it("Subscription plan column: shows client limits", () => {
     renderCell("min_clients", plan);
     renderCell("max_clients", plan);
 
@@ -71,7 +73,8 @@ describe("SubscriptionPlanColumns", () => {
     expect(screen.getByText("500")).toBeInTheDocument();
   });
 
-  it("shows active and inactive status", () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows active and inactive status»।
+  it("Subscription plan column: shows active and inactive status", () => {
     renderCell("is_active", plan);
     expect(screen.getByText("common.active")).toBeInTheDocument();
 

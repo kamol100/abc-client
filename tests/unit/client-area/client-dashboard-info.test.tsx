@@ -35,7 +35,8 @@ const info: ClientDashboardInfoData = {
 };
 
 describe("ClientDashboardInfo", () => {
-  it("shows the subscriber fields from the reference layout", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the subscriber fields from the reference layout»।
+  it("Client dashboard info: show the subscriber's saved account details", () => {
     render(<ClientDashboardInfo data={info} isLoading={false} isError={false} />);
 
     expect(screen.getByRole("heading", { name: "client_dashboard.info.title" })).toBeInTheDocument();
@@ -54,7 +55,8 @@ describe("ClientDashboardInfo", () => {
     expect(screen.getAllByText("—")).toHaveLength(2);
   });
 
-  it("shows inactive and offline states", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows inactive and offline states»।
+  it("Client dashboard info: shows inactive and offline states", () => {
     render(
       <ClientDashboardInfo
         data={{
@@ -74,14 +76,16 @@ describe("ClientDashboardInfo", () => {
     expect(screen.queryByText("100.64.150.42")).not.toBeInTheDocument();
   });
 
-  it("shows a loading skeleton without subscriber values", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a loading skeleton without subscriber values»।
+  it("Client dashboard info: shows a loading skeleton without subscriber values", () => {
     render(<ClientDashboardInfo data={null} isLoading isError={false} />);
 
     expect(screen.getByRole("heading", { name: "client_dashboard.info.title" })).toBeInTheDocument();
     expect(screen.queryByText("12673")).not.toBeInTheDocument();
   });
 
-  it("shows an error when the request fails", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an error when the request fails»।
+  it("Client dashboard info: shows an error when the request fails", () => {
     render(<ClientDashboardInfo data={null} isLoading={false} isError />);
 
     expect(screen.getByRole("alert")).toHaveTextContent("common.failed_to_load_data");
@@ -89,7 +93,8 @@ describe("ClientDashboardInfo", () => {
 });
 
 describe("ClientDashboardInfoSchema", () => {
-  it("keeps a numeric customer id and defaults a missing session", () => {
+  // গ্রাহকের পোর্টাল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a numeric customer id and defaults a missing session»।
+  it("Client dashboard info: keeps a numeric customer id and defaults a missing session", () => {
     const parsed = ClientDashboardInfoSchema.parse({
       customer_id: 12673,
       name: "Kamol",

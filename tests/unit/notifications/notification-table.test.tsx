@@ -50,7 +50,8 @@ vi.mock("@/hooks/use-notifications", () => ({
 }));
 
 describe("notification history", () => {
-    it("turns filter strings into list params", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «turns filter strings into list params»।
+    it("Notification table: turns filter strings into list params", () => {
         expect(notificationListParams(null)).toBeUndefined();
         expect(notificationListParams("status=unread&category=invoice")).toEqual({
             status: "unread",
@@ -58,7 +59,8 @@ describe("notification history", () => {
         });
     });
 
-    it("requests the notifications list with backend pagination", () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requests the notifications list with backend pagination»।
+    it("Notification table: requests the notifications list with backend pagination", () => {
         render(<NotificationTable />);
         expect(screen.getByTestId("notification-history")).toBeInTheDocument();
         expect(query.last?.url).toBe("notifications");

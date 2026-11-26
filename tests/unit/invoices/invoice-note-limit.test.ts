@@ -23,7 +23,8 @@ const noteIssue = (note: string) => {
 };
 
 describe("invoice note mysql text limit", () => {
-    it("accepts a note at the byte limit, including one past the old 500 character cap", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a note at the byte limit, including one past the old 500 character cap»।
+    it("Invoice note limit: accepts a note at the byte limit, including one past the old 500 character cap", () => {
         const note = "a".repeat(MYSQL_TEXT_MAX_BYTES);
         expect(utf8Bytes(note)).toBe(65535);
         expect(invoiceNoteFitsMysqlText(note)).toBe(true);
@@ -35,14 +36,16 @@ describe("invoice note mysql text limit", () => {
         expect(InvoiceFormSchema.safeParse(validInvoice("a".repeat(501))).success).toBe(true);
     });
 
-    it("accepts a multibyte note that fills the column exactly", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a multibyte note that fills the column exactly»।
+    it("Invoice note limit: accepts a multibyte note that fills the column exactly", () => {
         const note = "ক".repeat(21845);
         expect(note.length).toBeLessThan(65535);
         expect(utf8Bytes(note)).toBe(65535);
         expect(InvoiceFormSchema.safeParse(validInvoice(note)).success).toBe(true);
     });
 
-    it("rejects notes whose utf-8 size exceeds 65535 bytes", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects notes whose utf-8 size exceeds 65535 bytes»।
+    it("Invoice note limit: rejects notes whose utf-8 size exceeds 65535 bytes", () => {
         const ascii = "a".repeat(MYSQL_TEXT_MAX_BYTES + 1);
         expect(noteIssue(ascii)?.message).toBe("invoice.note.errors.max_bytes");
 
@@ -52,7 +55,8 @@ describe("invoice note mysql text limit", () => {
         expect(noteIssue(bengali)?.message).toBe("invoice.note.errors.max_bytes");
     });
 
-    it("allows an empty note", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows an empty note»।
+    it("Invoice note limit: allows an empty note", () => {
         expect(invoiceNoteFitsMysqlText("")).toBe(true);
         expect(invoiceNoteFitsMysqlText(null)).toBe(true);
         expect(InvoiceFormSchema.safeParse(validInvoice("")).success).toBe(true);

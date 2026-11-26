@@ -81,7 +81,8 @@ describe("staff account lock action", () => {
     mutation.isPending = false;
   });
 
-  it("shows an open lock for an active staff account", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows an open lock for an active staff account»।
+  it("Staff account lock: shows an open lock for an active staff account", () => {
     const { container } = renderActions("active");
 
     expect(screen.getByRole("button", { name: "staff.lock_account" })).toBeInTheDocument();
@@ -89,7 +90,8 @@ describe("staff account lock action", () => {
     expect(container.querySelector(".lucide-lock")).not.toBeInTheDocument();
   });
 
-  it("shows a closed lock for an inactive staff account", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a closed lock for an inactive staff account»।
+  it("Staff account lock: shows a closed lock for an inactive staff account", () => {
     const { container } = renderActions("inactive");
 
     expect(screen.getByRole("button", { name: "staff.unlock_account" })).toBeInTheDocument();
@@ -97,7 +99,8 @@ describe("staff account lock action", () => {
     expect(container.querySelector(".lucide-lock-open")).not.toBeInTheDocument();
   });
 
-  it("places the lock action before the reset password and edit actions", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «places the lock action before the reset password and edit actions»।
+  it("Staff account lock: places the lock action before the reset password and edit actions", () => {
     const { container } = renderActions("active");
     const controls = container.querySelectorAll("a, button");
 
@@ -106,7 +109,8 @@ describe("staff account lock action", () => {
     expect(controls[2]).toHaveAttribute("href", "/staffs/edit/staff-1");
   });
 
-  it("locks an active account when the open lock is clicked", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks an active account when the open lock is clicked»।
+  it("Staff account lock: locks an active account when the open lock is clicked", async () => {
     const user = userEvent.setup();
     renderActions("active");
 
@@ -115,7 +119,8 @@ describe("staff account lock action", () => {
     expect(mutation.mutate).toHaveBeenCalledWith({ status: "inactive" });
   });
 
-  it("unlocks an inactive account when the closed lock is clicked", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «unlocks an inactive account when the closed lock is clicked»।
+  it("Staff account lock: unlocks an inactive account when the closed lock is clicked", async () => {
     const user = userEvent.setup();
     renderActions("inactive");
 
@@ -124,14 +129,16 @@ describe("staff account lock action", () => {
     expect(mutation.mutate).toHaveBeenCalledWith({ status: "active" });
   });
 
-  it("disables the action while the status update is in progress", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables the action while the status update is in progress»।
+  it("Staff account lock: disables the action while the status update is in progress", () => {
     mutation.isPending = true;
     renderActions("active");
 
     expect(screen.getByRole("button", { name: "staff.lock_account" })).toBeDisabled();
   });
 
-  it("hides the action when the user cannot edit staff", () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the action when the user cannot edit staff»।
+  it("Staff account lock: hides the action when the user cannot edit staff", () => {
     permissions.allowed.clear();
     renderActions("active");
 
@@ -149,7 +156,8 @@ describe("staff reset password action", () => {
     mutation.isPending = false;
   });
 
-  it("opens a dialog with the staff name and a password field", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens a dialog with the staff name and a password field»।
+  it("Staff account lock: opens a dialog with the staff name and a password field", async () => {
     const user = userEvent.setup();
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -169,7 +177,8 @@ describe("staff reset password action", () => {
     ).toBeInTheDocument();
   });
 
-  it("submits the new password for that staff member", async () => {
+  // স্টাফের তথ্য ও অ্যাকাউন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «submits the new password for that staff member»।
+  it("Staff account lock: submits the new password for that staff member", async () => {
     const user = userEvent.setup();
     const client = new QueryClient({
       defaultOptions: { queries: { retry: false } },

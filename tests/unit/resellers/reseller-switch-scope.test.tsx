@@ -132,7 +132,8 @@ describe("Reseller row switch scope", () => {
         });
     });
 
-    it("switches into the reseller from the row menu", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switches into the reseller from the row menu»।
+    it("Reseller switch scope: switches into the reseller from the row menu", async () => {
         state.fetch.mockResolvedValue({ success: false, message: "Failed to impersonate" });
         renderActions();
         const user = await openMenu();
@@ -148,7 +149,8 @@ describe("Reseller row switch scope", () => {
         });
     });
 
-    it("hides the switch when the current scope is already a reseller", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the switch when the current scope is already a reseller»।
+    it("Reseller switch scope: hides the switch when the current scope is already a reseller", async () => {
         state.roles = ["Reseller"];
         renderActions();
         await openMenu();
@@ -156,7 +158,8 @@ describe("Reseller row switch scope", () => {
         expect(screen.queryByText("reseller.actions.switch_scope")).not.toBeInTheDocument();
     });
 
-    it("hides the switch without impersonate permission", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the switch without impersonate permission»।
+    it("Reseller switch scope: hides the switch without impersonate permission", async () => {
         state.permissions = [];
         renderActions();
         await openMenu();
@@ -164,7 +167,8 @@ describe("Reseller row switch scope", () => {
         expect(screen.queryByText("reseller.actions.switch_scope")).not.toBeInTheDocument();
     });
 
-    it("hides the switch when the reseller has no login user", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the switch when the reseller has no login user»।
+    it("Reseller switch scope: hides the switch when the reseller has no login user", async () => {
         renderActions({ ...reseller, user: null });
         await openMenu();
 
@@ -199,7 +203,8 @@ describe("useStartImpersonation", () => {
         });
     };
 
-    it("saves the original token, refreshes the session, and opens the reseller scope", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves the original token, refreshes the session, and opens the reseller scope»।
+    it("Reseller switch scope: saves the original token, refreshes the session, and opens the reseller scope", async () => {
         state.fetch
             .mockResolvedValueOnce({ success: true, data: impersonationResult })
             .mockResolvedValueOnce({
@@ -230,7 +235,8 @@ describe("useStartImpersonation", () => {
         expect(state.assign).toHaveBeenCalledWith("/");
     });
 
-    it("posts the staff record id without a tenant id", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «posts the staff record id without a tenant id»।
+    it("Reseller switch scope: posts the staff record id without a tenant id", async () => {
         state.fetch.mockResolvedValueOnce({ success: false, message: "Failed to impersonate" });
 
         const { result } = renderImpersonation();
@@ -245,7 +251,8 @@ describe("useStartImpersonation", () => {
         expect(state.assign).not.toHaveBeenCalled();
     });
 
-    it("ignores a second impersonation request while the first is in flight", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores a second impersonation request while the first is in flight»।
+    it("Reseller switch scope: ignores a second impersonation request while the first is in flight", async () => {
         let finish: (value: unknown) => void = () => undefined;
         state.fetch.mockImplementation(
             () => new Promise((resolve) => {
@@ -270,7 +277,8 @@ describe("useStartImpersonation", () => {
         });
     });
 
-    it("sends a company id when switching a company", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends a company id when switching a company»।
+    it("Reseller switch scope: sends a company id when switching a company", async () => {
         state.fetch.mockResolvedValueOnce({ success: false, message: "Failed to impersonate" });
 
         const { result } = renderImpersonation();

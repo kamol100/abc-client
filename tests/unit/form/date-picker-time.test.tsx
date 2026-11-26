@@ -28,7 +28,8 @@ const day15 = () => {
 };
 
 describe("DatePicker showTime", () => {
-  it("is unchanged without showTime: no time field, date-only display, closes on pick", async () => {
+  // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is unchanged without showTime: no time field, date-only display, closes on pick»।
+  it("Date picker time: is unchanged without showTime: no time field, date-only display, closes on pick", async () => {
     const user = userEvent.setup();
     const onValue = vi.fn();
     render(<Harness initial={null} onValue={onValue} />);
@@ -43,7 +44,8 @@ describe("DatePicker showTime", () => {
     expect(screen.queryByRole("button", { name: "common.done" })).not.toBeInTheDocument();
   });
 
-  it("keeps the time when another day is picked, and sets the time from the time field", async () => {
+  // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the time when another day is picked, and sets the time from the time field»।
+  it("Date picker time: keeps the time when another day is picked, and sets the time from the time field", async () => {
     const user = userEvent.setup();
     const onValue = vi.fn();
     const start = new Date(day15().getFullYear(), day15().getMonth(), 10, 9, 45);

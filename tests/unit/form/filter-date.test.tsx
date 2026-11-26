@@ -47,7 +47,8 @@ function DateFilter({
 }
 
 describe("filter date query", () => {
-    it("keeps a selected day when building the API date", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a selected day when building the API date»।
+    it("Filter date: keeps a selected day when building the API date", async () => {
         const user = userEvent.setup();
         const onFilter = vi.fn();
         render(<DateFilter onFilter={onFilter} singleDate={october14} />);
@@ -59,7 +60,8 @@ describe("filter date query", () => {
         });
     });
 
-    it("serializes a date range with both local calendar days", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «serializes a date range with both local calendar days»।
+    it("Filter date: serializes a date range with both local calendar days", async () => {
         const user = userEvent.setup();
         const onFilter = vi.fn();
         render(
@@ -78,7 +80,8 @@ describe("filter date query", () => {
         });
     });
 
-    it("keeps the same start and end date without shifting either day", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the same start and end date without shifting either day»।
+    it("Filter date: keeps the same start and end date without shifting either day", async () => {
         const user = userEvent.setup();
         const onFilter = vi.fn();
         render(

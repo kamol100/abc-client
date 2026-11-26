@@ -56,12 +56,14 @@ function catalog(extra = ""): string {
 }
 
 describe("help content validator", () => {
-  it("accepts the published articles", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts the published articles»।
+  it("Help content validation: accepts the published articles", () => {
     const result = run(path.join(process.cwd(), "content/help"));
     expect(result.status, result.output).toBe(0);
   });
 
-  it("fails broken fixtures", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fails broken fixtures»।
+  it("Help content validation: reject help fixtures with broken references or invalid content", () => {
     const duplicate = mkdtempSync(path.join(tmpdir(), "help-dup-"));
     writePair(duplicate);
     writeFileSync(path.join(duplicate, "catalog.ts"), `

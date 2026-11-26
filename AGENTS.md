@@ -41,6 +41,7 @@ Tenant and reseller filtering is enforced by the API. The UI still hides actions
 
 ## Testing and checks
 
+- Follow [test-naming.mdc](.cursor/rules/test-naming.mdc): use plain-English action/expected-result titles, preserve scenario IDs, and add a Bengali purpose comment above each test definition. Update exact title references when renaming tests.
 - Unit: Vitest, `tests/unit/**/*.test.{ts,tsx}`, via `scripts/ai/test`.
 - Types: `scripts/ai/typecheck` (`tsc --noEmit`). This passes on the current tree.
 - Unit: `scripts/ai/test` (`vitest run`).

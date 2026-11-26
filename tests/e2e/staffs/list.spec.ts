@@ -10,7 +10,8 @@ import {
   test,
 } from "@/tests/e2e/staffs/fixtures";
 
-test("FT090-04 staff list shows the API rows and reload keeps them", async ({ page, staff }) => {
+// API-এর স্টাফ তালিকায় আসে এবং রিলোডের পরও দেখা যায় কি না যাচাই করি।
+test("FT090-04 Staff list: show saved staff and keep them visible after reload", async ({ page, staff }) => {
   const listed = await staffList(staff);
   if (!listed.pagination.total) throw new Error("Staff list checks need at least one staff member.");
   await openStaffList(page, listed);
@@ -22,7 +23,8 @@ test("FT090-04 staff list shows the API rows and reload keeps them", async ({ pa
   await expectStaffRows(page, reloaded.data);
 });
 
-test("FT090-04 create route shows the staff form and reload keeps it", async ({ page, staff }) => {
+// স্টাফ তৈরির সরাসরি পেজ ও রিলোডের পর ফর্ম দেখা যায় কি না দেখি।
+test("FT090-04 New staff page: show the create form before and after reload", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.access");
   await page.goto("/staffs/create");
   await expect(page.getByRole("button", { name: "Basic Information" })).toBeVisible();
@@ -41,7 +43,8 @@ test("FT090-04 create route shows the staff form and reload keeps it", async ({ 
   await expect(page.locator("#name")).toHaveValue("");
 });
 
-test("FT090-04 edit route hydrates the staff name and reload keeps it", async ({ page, staff }) => {
+// স্টাফের সরাসরি এডিট পেজ ও রিলোডে সংরক্ষিত নাম আসে কি না দেখি।
+test("FT090-04 Edit staff page: load the saved name before and after reload", async ({ page, staff }) => {
   requirePermissions(staff, "staffs.show", "staffs.edit");
   const listed = await staffList(staff);
   const row = listed.data.find((item) => item.user?.username);
@@ -57,7 +60,8 @@ test("FT090-04 edit route hydrates the staff name and reload keeps it", async ({
   await expect(page).toHaveURL(new RegExp(`/staffs/edit/${detail.id}$`));
 });
 
-test("FT090-05 page one disables previous and the title uses the full total", async ({ page, staff }) => {
+// প্রথম পেজে Previous বন্ধ থাকে এবং শিরোনামে পুরো স্টাফের সংখ্যা দেখায় কি না দেখি।
+test("FT090-05 Staff pagination: disable Previous on page one and show the complete staff count", async ({ page, staff }) => {
   const listed = await staffList(staff);
   if (!listed.pagination.total) throw new Error("Pagination checks need at least one staff member.");
   await openStaffList(page, listed);
@@ -81,7 +85,8 @@ test("FT090-05 page one disables previous and the title uses the full total", as
   await expectStaffRows(page, listed.data);
 });
 
-test("FT090-05 the page size control shows the saved preference", async ({ page, staff }) => {
+// স্টাফ তালিকায় আগে সেভ করা প্রতি পেজের সারিসংখ্যা দেখায় কি না দেখি।
+test("FT090-05 Staff page size: show the saved rows-per-page preference", async ({ page, staff }) => {
   const profile = await actorProfile(staff);
   const size = profile.staff?.item_per_page ?? 10;
   await page.goto("/staffs");
@@ -91,7 +96,8 @@ test("FT090-05 the page size control shows the saved preference", async ({ page,
   expect(after.staff?.item_per_page ?? 10).toBe(size);
 });
 
-test("FT090-05 the designation column can be hidden and shown again", async ({ page, staff }) => {
+// কলামের নিয়ন্ত্রণ দিয়ে স্টাফের পদবি লুকানো ও আবার দেখানো যায় কি না দেখি।
+test("FT090-05 Staff designation column: hide it and show it again using column controls", async ({ page, staff }) => {
   const listed = await staffList(staff);
   if (!listed.data.length) throw new Error("Column visibility needs a visible staff row.");
   await openStaffList(page, listed);

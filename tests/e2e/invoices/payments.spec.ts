@@ -19,7 +19,8 @@ async function openPayment(page: Parameters<typeof row>[0], staff: Parameters<ty
   return { due, before, dialog };
 }
 
-test("IV-P01 pay dialog offers only selected client's backend outstanding identities", async ({ page, staff }) => {
+// পেমেন্ট ডায়ালগে নির্বাচিত ক্লায়েন্টের বকেয়া ইনভয়েসই দেখা যায় কি না যাচাই করি।
+test("IV-P01 Invoice payment dialog: list only the selected client's outstanding invoices", async ({ page, staff }) => {
   const { due, dialog, before } = await openPayment(page, staff);
   for (const item of due.invoiceDue) await expect(dialog.getByRole("button", { name: new RegExp(`^${item.trackID.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")} -`) })).toBeVisible();
   await expect(dialog.getByRole("checkbox")).toHaveCount(due.invoiceDue.length + 1);
@@ -28,7 +29,8 @@ test("IV-P01 pay dialog offers only selected client's backend outstanding identi
   for (const saved of before) expect(await detail(staff, saved.id)).toEqual(saved);
 });
 
-test("IV-P02 deselecting all clears totals and cancel preserves invoice amounts", async ({ page, staff }) => {
+// সব ইনভয়েসের নির্বাচন তুলে দিলে হিসাব শূন্য হয় এবং বাতিলে আগের টাকার তথ্য থাকে কি না দেখি।
+test("IV-P02 Cancel invoice payment: clear totals when all invoices are deselected and keep saved amounts", async ({ page, staff }) => {
   const { dialog, before } = await openPayment(page, staff);
   // The checkbox and text are direct siblings; identify by the stable label text,
   // not an arbitrary checkbox index (invoice checkboxes currently lack labels).

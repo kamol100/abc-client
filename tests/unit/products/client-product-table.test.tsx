@@ -76,7 +76,8 @@ describe("PRODUCTS-004 client products section", () => {
         state.queryArgs = [];
     });
 
-    it("loads stock-outs for this client and shows product, invoice and receiver", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads stock-outs for this client and shows product, invoice and receiver»।
+    it("Client product table: loads stock-outs for this client and shows product, invoice and receiver", () => {
         state.granted = ["products-out.report"];
         render(<ClientProductTable clientUuid={clientUuid} />);
 
@@ -93,14 +94,16 @@ describe("PRODUCTS-004 client products section", () => {
         expect(screen.queryByTestId("delete")).toBeNull();
     });
 
-    it("shows delete for staff who can delete stock-outs", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows delete for staff who can delete stock-outs»।
+    it("Client product table: shows delete for staff who can delete stock-outs", () => {
         state.granted = ["products-out.report", "products-out.delete"];
         render(<ClientProductTable clientUuid={clientUuid} />);
 
         expect(screen.getByTestId("delete").dataset.url).toBe("/products-out/019aac07-0000-7000-8000-000000000020");
     });
 
-    it("renders nothing and does not fetch without products-out.report", () => {
+    // পণ্য ও স্টকের হিসাব যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders nothing and does not fetch without products-out.report»।
+    it("Client product table: renders nothing and does not fetch without products-out.report", () => {
         const { container } = render(<ClientProductTable clientUuid={clientUuid} />);
 
         expect(container.innerHTML).toBe("");

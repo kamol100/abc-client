@@ -21,7 +21,8 @@ vi.mock("react-i18next", () => ({
 }));
 
 describe("BkashPaymentResultNotice", () => {
-  it("shows one success message after a verified redirect", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows one success message after a verified redirect»।
+  it("bKash payment result notice: shows one success message after a verified redirect", () => {
     searchParams.value = new URLSearchParams("payment=success");
 
     render(<BkashPaymentResultNotice />);
@@ -30,7 +31,8 @@ describe("BkashPaymentResultNotice", () => {
     expect(screen.getByRole("status")).toHaveTextContent("pay.bkash.success");
   });
 
-  it("hides when the dismiss icon is clicked", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides when the dismiss icon is clicked»।
+  it("bKash payment result notice: hides when the dismiss icon is clicked", async () => {
     const user = userEvent.setup();
     searchParams.value = new URLSearchParams("payment=success");
     replace.mockClear();
@@ -42,7 +44,8 @@ describe("BkashPaymentResultNotice", () => {
     expect(replace).toHaveBeenCalledWith("/pay", { scroll: false });
   });
 
-  it("hides automatically after 15 seconds", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides automatically after 15 seconds»।
+  it("bKash payment result notice: hides automatically after 15 seconds", () => {
     vi.useFakeTimers();
     searchParams.value = new URLSearchParams("payment=success");
     replace.mockClear();
@@ -64,7 +67,8 @@ describe("BkashPaymentResultNotice", () => {
     }
   });
 
-  it("stays hidden for failed, cancelled, and ordinary visits", () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stays hidden for failed, cancelled, and ordinary visits»।
+  it("bKash payment result notice: stays hidden for failed, cancelled, and ordinary visits", () => {
     searchParams.value = new URLSearchParams("payment=failure");
     const { rerender, container } = render(<BkashPaymentResultNotice />);
     expect(container).toBeEmptyDOMElement();

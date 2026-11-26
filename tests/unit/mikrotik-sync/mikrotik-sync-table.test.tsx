@@ -58,7 +58,8 @@ function renderTable() {
 }
 
 describe("MikroTik import selection", () => {
-  it("keeps selecting a page limited to its two UUIDs instead of the total across pages", async () => {
+  // মাইক্রোটিক সিঙ্ক যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps selecting a page limited to its two UUIDs instead of the total across pages»।
+  it("MikroTik sync table: keeps selecting a page limited to its two UUIDs instead of the total across pages", async () => {
     renderTable();
     await userEvent.click(screen.getByRole("button", { name: "Select this page" }));
     expect(screen.getByTestId("bulk-dialog")).toHaveAttribute("data-import-ids", "row-1,row-2");
@@ -67,7 +68,8 @@ describe("MikroTik import selection", () => {
     expect(screen.queryByRole("button", { name: "mikrotik_sync.actions.import_selected:50" })).not.toBeInTheDocument();
   });
 
-  it("clears selected UUIDs when the filter changes", async () => {
+  // মাইক্রোটিক সিঙ্ক যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears selected UUIDs when the filter changes»।
+  it("MikroTik sync table: clears selected UUIDs when the filter changes", async () => {
     renderTable();
     await userEvent.click(screen.getByRole("button", { name: "Select one row" }));
     expect(screen.getByTestId("bulk-dialog")).toHaveAttribute("data-import-ids", "row-1");

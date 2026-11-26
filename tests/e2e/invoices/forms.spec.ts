@@ -7,7 +7,8 @@ const invalidCases = [
   ["negative amount", "Amount must be greater than 0"], ["zero quantity", "Quantity must be at least 1"],
 ] as const;
 for (const [field, error] of invalidCases) {
-  test(`IV-F02 invalid ${field} blocks create and preserves recoverable input`, async ({ page, staff }) => {
+  // প্রতিটি ভুল ইনপুটে সংশ্লিষ্ট ত্রুটি দেখায়, লেখা তথ্য থাকে এবং ইনভয়েস তৈরি হয় না কি না দেখি।
+  test(`IV-F02 Invalid invoice - ${field}: show the validation error and retain the draft without saving`, async ({ page, staff }) => {
     const before = await invoices(staff);
     const marker = `E2E invalid invoice ${randomUUID()}`;
     await createForm(page, staff);
@@ -26,7 +27,8 @@ for (const [field, error] of invalidCases) {
   });
 }
 
-test("IV-F03 adding and removing unsaved lines preserves retained values and quantity totals", async ({ page, staff }) => {
+// নতুন লাইন যোগ বা বাদ দিলে বাকি লাইনের লেখা ও পরিমাণের হিসাব ঠিক থাকে কি না দেখি।
+test("IV-F03 Invoice line items: retain entered values and totals when adding and removing unsaved lines", async ({ page, staff }) => {
   await createForm(page, staff);
   await page.locator('[id="lines.0.description"]').fill("E2E retained line");
   await page.locator('[id="lines.0.amount"]').fill("100");
@@ -41,7 +43,8 @@ test("IV-F03 adding and removing unsaved lines preserves retained values and qua
   await expect(page.locator('[id="lines.0.total_amount"]')).toHaveValue("200");
 });
 
-test("IV-F04 create defaults to due today no SMS and cancelling creates no invoice", async ({ page, staff }) => {
+// নতুন ইনভয়েসে বকেয়া স্ট্যাটাস, আজকের তারিখ ও SMS বন্ধ থাকে; বাতিলে সেভ হয় না কি না দেখি।
+test("IV-F04 New invoice: default to Due, today's dates, and no SMS; cancel without saving", async ({ page, staff }) => {
   const before = await invoices(staff);
   await createForm(page, staff);
   await expect(page.locator('[id="lines.0.quantity"]')).toHaveValue("1");
@@ -60,7 +63,8 @@ test("IV-F04 create defaults to due today no SMS and cancelling creates no invoi
 });
 
 for (const [status, label] of [["paid", "Paid"], ["partial_paid", "Partial Paid"]] as const) {
-  test(`IV-F07 ${status} requires payment fields and switching due hides them`, async ({ page, staff }) => {
+  // Paid বা Partial Paid বেছে পেমেন্টের তথ্য চায় এবং Due করলে সেসব ঘর লুকায় কি না দেখি।
+  test(`IV-F07 Invoice status - ${label}: require payment details and hide them when switched to Due`, async ({ page, staff }) => {
     await createForm(page, staff);
     await select(page, "status", label);
     await expect(page.locator("#react-select-fund_id-input")).toBeVisible();
@@ -75,7 +79,8 @@ for (const [status, label] of [["paid", "Paid"], ["partial_paid", "Partial Paid"
   });
 }
 
-test("IV-F08 due edit hydrates saved description quantity and note without saving", async ({ page, staff }) => {
+// বকেয়া ইনভয়েস এডিটে সংরক্ষিত বিবরণ, পরিমাণ ও নোট লোড হয় কি না দেখি; সেভ করি না।
+test("IV-F08 Edit due invoice: load saved line items and notes without submitting changes", async ({ page, staff }) => {
   const item = await sample(staff, "due");
   const saved = await detail(staff, item.id);
   if (!saved.lines?.length) throw new Error("Due invoice fixture needs at least one persisted line.");
@@ -88,7 +93,8 @@ test("IV-F08 due edit hydrates saved description quantity and note without savin
   await expect(page.locator("#note")).toHaveValue(saved.note ?? "");
 });
 
-test("IV-F10 cancelling edited note preserves persisted invoice identity and financial fields", async ({ page, staff }) => {
+// নোট বদলে Cancel করলে ইনভয়েসের পরিচয় ও টাকার তথ্য অপরিবর্তিত থাকে কি না দেখি।
+test("IV-F10 Cancel invoice changes: keep the saved note, identity, and financial values", async ({ page, staff }) => {
   const item = await sample(staff, "due");
   const before = await detail(staff, item.id);
   await page.goto(`/invoices/edit/${item.id}`);
@@ -99,7 +105,8 @@ test("IV-F10 cancelling edited note preserves persisted invoice identity and fin
   expect(await detail(staff, item.id)).toEqual(before);
 });
 
-test("IV-F11 oversized UTF-8 note is rejected with input preserved", async ({ page, staff }) => {
+// নোটের আকারসীমা ছাড়ালে ত্রুটি দেখায় এবং লেখা নোট মুছে যায় না কি না দেখি।
+test("IV-F11 Invoice note too large: show the size error and keep the entered text", async ({ page, staff }) => {
   await createForm(page, staff);
   const note = "আ".repeat(21_846); // 65,538 bytes; independent UTF-8 boundary.
   expect(Buffer.byteLength(note, "utf8")).toBeGreaterThan(65_535);

@@ -5,12 +5,14 @@ import {
 } from "@/components/invoices/payment-fund-access";
 
 describe("resolveAssignedFundId", () => {
-    it("accepts a positive integer fund id", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a positive integer fund id»।
+    it("Payment fund access: accepts a positive integer fund id", () => {
         expect(resolveAssignedFundId({ id: 4, name: "cash" })).toBe(4);
         expect(resolveAssignedFundId({ id: "12" })).toBe(12);
     });
 
-    it("rejects missing and invalid fund ids", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects missing and invalid fund ids»।
+    it("Payment fund access: rejects missing and invalid fund ids", () => {
         expect(resolveAssignedFundId(null)).toBeNull();
         expect(resolveAssignedFundId(undefined)).toBeNull();
         expect(resolveAssignedFundId({ id: 0 })).toBeNull();
@@ -25,7 +27,8 @@ describe("resolveAssignedFundId", () => {
 describe("paymentFundAccess", () => {
     const own = { fund: { id: 4, name: "cash" } };
 
-    it("locks a staff member without either permission to their own fund", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks a staff member without either permission to their own fund»।
+    it("Payment fund access: locks a staff member without either permission to their own fund", () => {
         expect(paymentFundAccess({ staff: own })).toEqual({
             canChooseFund: false,
             assignedFundId: 4,
@@ -35,7 +38,8 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("blocks a staff member without either permission or an own fund", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks a staff member without either permission or an own fund»।
+    it("Payment fund access: blocks a staff member without either permission or an own fund", () => {
         expect(paymentFundAccess({ staff: { fund: null } })).toMatchObject({
             assignedFundId: null,
             lockFund: true,
@@ -44,7 +48,8 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("lets invoices.change-fund choose any fund, with or without an own fund", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets invoices.change-fund choose any fund, with or without an own fund»।
+    it("Payment fund access: lets invoices.change-fund choose any fund, with or without an own fund", () => {
         expect(paymentFundAccess({ staff: own, canChangeFund: true })).toEqual({
             canChooseFund: true,
             assignedFundId: 4,
@@ -64,7 +69,8 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("lets invoices.bkash-fund-access choose between the own and bKash funds", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets invoices.bkash-fund-access choose between the own and bKash funds»।
+    it("Payment fund access: lets invoices.bkash-fund-access choose between the own and bKash funds", () => {
         expect(paymentFundAccess({ staff: own, canUseBkashFund: true })).toEqual({
             canChooseFund: true,
             assignedFundId: 4,
@@ -81,12 +87,14 @@ describe("paymentFundAccess", () => {
         });
     });
 
-    it("ignores roles: an admin without the permission is locked like anyone else", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «ignores roles: an admin without the permission is locked like anyone else»।
+    it("Payment fund access: ignores roles: an admin without the permission is locked like anyone else", () => {
         // Roles are no longer an input; access comes only from the permissions.
         expect(paymentFundAccess({ staff: own }).lockFund).toBe(true);
     });
 
-    it("does not select a fund or show the unassigned warning while the profile is incomplete", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not select a fund or show the unassigned warning while the profile is incomplete»।
+    it("Payment fund access: does not select a fund or show the unassigned warning while the profile is incomplete", () => {
         expect(paymentFundAccess({ staff: {} })).toEqual({
             canChooseFund: false,
             assignedFundId: null,

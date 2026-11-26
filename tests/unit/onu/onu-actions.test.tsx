@@ -51,13 +51,15 @@ describe("OnuActionsMenu", () => {
         state.permissions = [];
     });
 
-    it("shows a dash without onus.edit and onus.reboot", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a dash without onus.edit and onus.reboot»।
+    it("ONU actions: shows a dash without onus.edit and onus.reboot", () => {
         render(<OnuActionsMenu onu={onu("online")} />);
         expect(screen.getByText("—")).toBeInTheDocument();
         expect(screen.queryByRole("menuitem")).not.toBeInTheDocument();
     });
 
-    it("offers reboot with onus.reboot only and opens the confirmation", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «offers reboot with onus.reboot only and opens the confirmation»।
+    it("ONU actions: offers reboot with onus.reboot only and opens the confirmation", () => {
         state.permissions = ["onus.reboot"];
         render(<OnuActionsMenu onu={onu("online")} />);
         expect(screen.queryByRole("menuitem", { name: /onu.bind.button/ })).not.toBeInTheDocument();
@@ -65,21 +67,24 @@ describe("OnuActionsMenu", () => {
         expect(screen.getByText("onu.reboot.title")).toBeInTheDocument();
     });
 
-    it("disables reboot while the OLT needs a new connection test", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables reboot while the OLT needs a new connection test»।
+    it("ONU actions: disables reboot while the OLT needs a new connection test", () => {
         state.permissions = ["onus.reboot"];
         render(<OnuActionsMenu onu={onu("online")} rebootBlocked />);
         expect(screen.getByRole("menuitem", { name: /onu.reboot.button/ })).toBeDisabled();
         expect(screen.getByText("onu.reboot.retest_short")).toBeInTheDocument();
     });
 
-    it("disables reboot when the ONU status is from an old poll", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables reboot when the ONU status is from an old poll»।
+    it("ONU actions: disables reboot when the ONU status is from an old poll", () => {
         state.permissions = ["onus.reboot"];
         render(<OnuActionsMenu onu={{ ...onu("online"), status_known: false }} />);
         expect(screen.getByRole("menuitem", { name: /onu.reboot.button/ })).toBeDisabled();
         expect(screen.getByText("onu.reboot.unknown_short")).toBeInTheDocument();
     });
 
-    it("disables reboot for an offline ONU and keeps bind for onus.edit", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables reboot for an offline ONU and keeps bind for onus.edit»।
+    it("ONU actions: disables reboot for an offline ONU and keeps bind for onus.edit", () => {
         state.permissions = ["onus.edit", "onus.reboot"];
         render(<OnuActionsMenu onu={onu("los")} />);
         expect(screen.getByRole("menuitem", { name: /onu.reboot.button/ })).toBeDisabled();
@@ -94,7 +99,8 @@ describe("OnuRebootDialog", () => {
         useApiMutationMock.mockClear();
     });
 
-    it("posts to the reboot endpoint after confirmation and closes", async () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «posts to the reboot endpoint after confirmation and closes»।
+    it("ONU actions: posts to the reboot endpoint after confirmation and closes", async () => {
         const onOpenChange = vi.fn();
         render(<OnuRebootDialog onu={onu("online")} open onOpenChange={onOpenChange} />);
 
@@ -108,7 +114,8 @@ describe("OnuRebootDialog", () => {
         );
     });
 
-    it("stays open when the API refuses (the hook shows the toast)", async () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stays open when the API refuses (the hook shows the toast)»।
+    it("ONU actions: stays open when the API refuses (the hook shows the toast)", async () => {
         mutateAsync.mockRejectedValue({ success: false, status: 422 });
         const onOpenChange = vi.fn();
         render(<OnuRebootDialog onu={onu("online")} open onOpenChange={onOpenChange} />);

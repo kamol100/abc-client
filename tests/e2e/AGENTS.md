@@ -2,6 +2,8 @@
 
 Applies to all Playwright tests, fixtures, helpers, setup and specifications in this directory. Read the root constitution first, then [initial test guidelines](specifications/INITIAL-TEST-GUIDELINES.md), [coverage policy](specifications/COVERAGE-POLICY.md), and the feature ticket before writing tests.
 
+- Follow [the test naming rule](../../.cursor/rules/test-naming.mdc). Keep scenario IDs, use readable action/expected-result titles and parameter labels, add Bengali purpose comments, and use named steps to identify actual failure stages. Update active exact title references without rewriting historical evidence.
+
 - Browser login MUST use registered local tenant hosts. Never authenticate against localhost:3000, localhost:3001 or 127.0.0.1 as a fallback.
 - Company tenants: http://cp.isp.test/admin (cp) and http://mk.isp.test/admin (mk). Their authenticated company_id scopes normal business data. SMS send uses http://vp.isp.test/admin (vp, username vpc) and MK as the other company.
 - Administration: http://app.isp.test/admin (kamol). Authorized platform workflows may intentionally read/manage other tenants; hostname or company_id alone grants no permission.

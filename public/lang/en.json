@@ -1506,7 +1506,7 @@
         "pppoe_username": {
             "label": "Client ID",
             "next_sid": "SID:{{sid}}",
-            "placeholder": "Enter client ID",
+            "placeholder": "Enter client ID (PPPoE ID)",
             "errors": {
                 "required": "Client ID is required"
             }

@@ -58,7 +58,8 @@ function filterButton(): HTMLElement {
 }
 
 describe("filter result count", () => {
-    it("shows the count at the start of an open filter and hides it when closed", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the count at the start of an open filter and hides it when closed»।
+    it("Filter result count: shows the count at the start of an open filter and hides it when closed", async () => {
         const user = userEvent.setup();
         render(<FormFilter formSchema={fields} resultCount={1284} />);
 
@@ -76,12 +77,14 @@ describe("filter result count", () => {
         expect(screen.queryByTestId("filter-result-count")).not.toBeInTheDocument();
     });
 
-    it("shows zero and stays with a pinned-open filter", () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows zero and stays with a pinned-open filter»।
+    it("Filter result count: shows zero and stays with a pinned-open filter", () => {
         render(<FormFilter formSchema={fields} resultCount={0} forceOpen hideTrigger />);
         expect(screen.getByTestId("filter-result-count")).toHaveTextContent("0");
     });
 
-    it("passes the list total from any data table into the open filter", async () => {
+    // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «passes the list total from any data table into the open filter»।
+    it("Filter result count: passes the list total from any data table into the open filter", async () => {
         const user = userEvent.setup();
         render(
             <TableLayoutProvider>

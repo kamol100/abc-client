@@ -40,7 +40,8 @@ describe("support image proxy", () => {
     delete process.env.NEXTAPI_URL;
   });
 
-  it("rejects a cross-site or headerless mutation before any upstream call", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects a cross-site or headerless mutation before any upstream call»।
+  it("Support attachment proxy security: rejects a cross-site or headerless mutation before any upstream call", async () => {
     const fetchMock = vi.mocked(fetch);
     const crossSite = mutationRequest("https://isp.test/api/platform-support/uploads", {
       method: "POST",
@@ -54,7 +55,8 @@ describe("support image proxy", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("stops a declared body over 6 MiB and a stream that grows past the cap", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «stops a declared body over 6 MiB and a stream that grows past the cap»।
+  it("Support attachment proxy security: stops a declared body over 6 MiB and a stream that grows past the cap", async () => {
     const oversized = mutationRequest("https://isp.test/api/platform-support/uploads", {
       method: "POST",
       headers: {
@@ -85,7 +87,8 @@ describe("support image proxy", () => {
     expect(Array.from((await readBoundedBody(small, 8)) ?? [])).toEqual([1, 2, 3]);
   });
 
-  it("forwards one fixed upstream path and preserves error statuses", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «forwards one fixed upstream path and preserves error statuses»।
+  it("Support attachment proxy security: forwards one fixed upstream path and preserves error statuses", async () => {
     const fetchMock = vi.mocked(fetch);
     for (const status of [401, 403, 404, 413, 422, 429]) {
       fetchMock.mockResolvedValueOnce(
@@ -121,7 +124,8 @@ describe("support image proxy", () => {
     expect(init.body).toBeInstanceOf(ArrayBuffer);
   });
 
-  it("streams an authorized image and refuses ids that are not uuids", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «streams an authorized image and refuses ids that are not uuids»।
+  it("Support attachment proxy security: streams an authorized image and refuses ids that are not uuids", async () => {
     const bytes = Uint8Array.from([137, 80, 78, 71]);
     vi.mocked(fetch).mockResolvedValue(
       new Response(bytes, { status: 200, headers: { "Content-Type": "image/png" } }),
@@ -144,7 +148,8 @@ describe("support image proxy", () => {
     expect(vi.mocked(fetch)).toHaveBeenCalledTimes(1);
   });
 
-  it("deletes through the admin path and does not call upstream without a session", async () => {
+  // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «deletes through the admin path and does not call upstream without a session»।
+  it("Support attachment proxy security: deletes through the admin path and does not call upstream without a session", async () => {
     vi.mocked(fetch).mockResolvedValue(
       new Response(JSON.stringify({ success: true }), {
         status: 200,

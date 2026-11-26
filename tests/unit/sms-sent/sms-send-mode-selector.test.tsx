@@ -38,7 +38,8 @@ function Harness({
 }
 
 describe("SmsSendModeSelector", () => {
-  it("selects live mode by default", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «selects live mode by default»।
+  it("SMS send mode selector: selects live mode by default", () => {
     render(<SmsSendModeSelector value="live" onChange={vi.fn()} />);
 
     expect(screen.getByRole("radio", { name: "sms_sent.mode.live.title" })).toBeChecked();
@@ -47,7 +48,8 @@ describe("SmsSendModeSelector", () => {
     expect(screen.getByText("sms_sent.mode.test.short")).toBeVisible();
   });
 
-  it("selects test mode from a click or the keyboard", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «selects test mode from a click or the keyboard»।
+  it("SMS send mode selector: selects test mode from a click or the keyboard", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();
     render(<Harness onChange={onChange} />);

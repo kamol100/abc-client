@@ -49,13 +49,15 @@ function ExpenseDateFilter({ onFilter }: { onFilter: (query: string) => void }) 
 }
 
 describe("DatePicker clear", () => {
-    it("hides the clear button until a date is selected", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the clear button until a date is selected»।
+    it("Date picker clear: hides the clear button until a date is selected", () => {
         render(<ExpenseDateFilter onFilter={vi.fn()} />);
 
         expect(screen.queryByRole("button", { name: "common.clear" })).not.toBeInTheDocument();
     });
 
-    it("clears a selected range and submits the filter without that date", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears a selected range and submits the filter without that date»।
+    it("Date picker clear: clears a selected range and submits the filter without that date", async () => {
         const user = userEvent.setup({ skipHover: true });
         const onFilter = vi.fn();
         render(<ExpenseDateFilter onFilter={onFilter} />);
@@ -81,7 +83,8 @@ describe("DatePicker clear", () => {
         expect(screen.getByRole("button", { name: "expense.expense_date.label" })).toBeInTheDocument();
     });
 
-    it("shows the clear button after a single day is applied", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the clear button after a single day is applied»।
+    it("Date picker clear: shows the clear button after a single day is applied", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(<ExpenseDateFilter onFilter={vi.fn()} />);
 

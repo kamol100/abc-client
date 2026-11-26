@@ -14,7 +14,8 @@ const validReseller = {
 };
 
 describe("ResellerFormFieldSchema", () => {
-    it("adds an agent dropdown and hides commission until an agent is selected", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds an agent dropdown and hides commission until an agent is selected»।
+    it("Reseller form schema: adds an agent dropdown and hides commission until an agent is selected", () => {
         const billing = ResellerFormFieldSchema().find(
             (section) => section.name === "reseller.sections.billing_information"
         );
@@ -40,7 +41,8 @@ describe("ResellerFormFieldSchema", () => {
         });
     });
 
-    it("puts avatar and nid uploads after join date and drops the nid number field", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «puts avatar and nid uploads after join date and drops the nid number field»।
+    it("Reseller form schema: puts avatar and nid uploads after join date and drops the nid number field", () => {
         const advance = ResellerFormFieldSchema().find(
             (section) => section.name === "reseller.sections.advance_information"
         );
@@ -59,7 +61,8 @@ describe("ResellerFormFieldSchema", () => {
         expect(fieldNames("edit")).not.toContain("nid");
     });
 
-    it("drops marital status, blood group, and date of birth", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops marital status, blood group, and date of birth»।
+    it("Reseller form schema: drops marital status, blood group, and date of birth", () => {
         const removed = ["marital_status", "blood_group", "date_of_birth"];
 
         expect(fieldNames()).not.toEqual(expect.arrayContaining(removed));
@@ -71,7 +74,8 @@ describe("ResellerFormFieldSchema", () => {
 });
 
 describe("getResellerFormSchema", () => {
-    it("accepts a reseller with an agent and commission", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a reseller with an agent and commission»।
+    it("Reseller form schema: accepts a reseller with an agent and commission", () => {
         const parsed = getResellerFormSchema("edit").parse({
             ...validReseller,
             agent_id: "7",
@@ -86,7 +90,8 @@ describe("getResellerFormSchema", () => {
         });
     });
 
-    it("allows an empty agent and defaults count commission to false", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows an empty agent and defaults count commission to false»।
+    it("Reseller form schema: allows an empty agent and defaults count commission to false", () => {
         const parsed = getResellerFormSchema("edit").parse(validReseller);
 
         expect(parsed.agent_id).toBeNull();
@@ -94,7 +99,8 @@ describe("getResellerFormSchema", () => {
         expect(parsed.count_commission).toBe(false);
     });
 
-    it("requires commission when an agent is selected and rejects a negative commission", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires commission when an agent is selected and rejects a negative commission»।
+    it("Reseller form schema: requires commission when an agent is selected and rejects a negative commission", () => {
         const missing = getResellerFormSchema("edit").safeParse({
             ...validReseller,
             agent_id: 7,

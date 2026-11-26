@@ -18,7 +18,8 @@ const device = (id: string, clients: unknown[]) => ({
 });
 
 describe("parseClientMapData", () => {
-  it("returns devices with their clients and clients without a device", () => {
+  // ম্যাপের অবস্থান ও ক্লায়েন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns devices with their clients and clients without a device»।
+  it("Client map data: returns devices with their clients and clients without a device", () => {
     const result = parseClientMapData({
       devices: [device("d1", [client("c1")])],
       clients: [client("c2"), client("c3")],
@@ -30,14 +31,16 @@ describe("parseClientMapData", () => {
     expect(result.clients[0].location).toEqual([23.81, 90.41]);
   });
 
-  it("still reads the older payload: a plain array of devices", () => {
+  // ম্যাপের অবস্থান ও ক্লায়েন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «still reads the older payload: a plain array of devices»।
+  it("Client map data: still reads the older payload: a plain array of devices", () => {
     const result = parseClientMapData([device("d1", [client("c1")])]);
 
     expect(result.devices.map((row) => row.id)).toEqual(["d1"]);
     expect(result.clients).toEqual([]);
   });
 
-  it("drops entries that do not match instead of failing the map", () => {
+  // ম্যাপের অবস্থান ও ক্লায়েন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops entries that do not match instead of failing the map»।
+  it("Client map data: drops entries that do not match instead of failing the map", () => {
     const result = parseClientMapData({
       devices: [null, "x", device("d1", [client("bad", "not-a-location"), client("c1")])],
       clients: [client("c2"), client("bad", ["x"])],
@@ -48,7 +51,8 @@ describe("parseClientMapData", () => {
     expect(result.clients.map((row) => row.id)).toEqual(["c2"]);
   });
 
-  it("returns empty lists for a missing or unexpected payload", () => {
+  // ম্যাপের অবস্থান ও ক্লায়েন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns empty lists for a missing or unexpected payload»।
+  it("Client map data: returns empty lists for a missing or unexpected payload", () => {
     for (const payload of [undefined, null, "oops", {}]) {
       expect(parseClientMapData(payload)).toEqual({ devices: [], clients: [] });
     }

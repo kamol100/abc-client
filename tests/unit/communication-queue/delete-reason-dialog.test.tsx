@@ -21,7 +21,8 @@ function renderDialog(onConfirm = vi.fn()) {
 }
 
 describe("CommunicationQueueDeleteReasonDialog", () => {
-  it("does not delete without a reason", async () => {
+  // বার্তা পাঠানোর অপেক্ষমাণ তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not delete without a reason»।
+  it("Delete reason dialog: does not delete without a reason", async () => {
     const user = userEvent.setup();
     const { onConfirm } = renderDialog();
 
@@ -31,7 +32,8 @@ describe("CommunicationQueueDeleteReasonDialog", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("communication_queue.delete_reason.errors.required");
   });
 
-  it("sends the trimmed reason", async () => {
+  // বার্তা পাঠানোর অপেক্ষমাণ তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends the trimmed reason»।
+  it("Delete reason dialog: sends the trimmed reason", async () => {
     const user = userEvent.setup();
     const { onConfirm } = renderDialog();
 

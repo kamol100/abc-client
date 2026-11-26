@@ -11,7 +11,8 @@ const assignedFund = {
 };
 
 describe("fundTransactionAccess", () => {
-  it("lets an admin choose a fund and keeps a preset without forcing their own account", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets an admin choose a fund and keeps a preset without forcing their own account»।
+  it("Fund transaction form: lets an admin choose a fund and keeps a preset without forcing their own account", () => {
     expect(
       fundTransactionAccess({
         roles: ["Admin"],
@@ -41,7 +42,8 @@ describe("fundTransactionAccess", () => {
     });
   });
 
-  it("lets a super admin choose a fund", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets a super admin choose a fund»।
+  it("Fund transaction form: lets a super admin choose a fund", () => {
     expect(
       fundTransactionAccess({
         roles: ["Super Admin"],
@@ -54,7 +56,8 @@ describe("fundTransactionAccess", () => {
     });
   });
 
-  it("locks a non-admin to the fund on their profile", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks a non-admin to the fund on their profile»।
+  it("Fund transaction form: locks a non-admin to the fund on their profile", () => {
     const access = fundTransactionAccess({
       roles: ["Staff"],
       staff: { fund: assignedFund },
@@ -73,7 +76,8 @@ describe("fundTransactionAccess", () => {
     });
   });
 
-  it("blocks a non-admin who has no fund account", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks a non-admin who has no fund account»।
+  it("Fund transaction form: blocks a non-admin who has no fund account", () => {
     expect(
       fundTransactionAccess({
         roles: ["Manager"],
@@ -88,7 +92,8 @@ describe("fundTransactionAccess", () => {
     });
   });
 
-  it("does not warn while the profile is still loading", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not warn while the profile is still loading»।
+  it("Fund transaction form: does not warn while the profile is still loading", () => {
     expect(
       fundTransactionAccess({
         roles: undefined,
@@ -103,7 +108,8 @@ describe("fundTransactionAccess", () => {
 });
 
 describe("FundTransactionFormFieldSchema", () => {
-  it("asks for the sender fund first, then transaction by, amount and note", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks for the sender fund first, then transaction by, amount and note»।
+  it("Fund transaction form: asks for the sender fund first, then transaction by, amount and note", () => {
     const fields = FundTransactionFormFieldSchema("receiver-fund");
     const sender = fields[0];
 
@@ -122,7 +128,8 @@ describe("FundTransactionFormFieldSchema", () => {
 });
 
 describe("Transaction By field", () => {
-  it("is optional, loads staff bKash totals, and fills the limit", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «is optional, loads staff bKash totals, and fills the limit»।
+  it("Fund transaction form: is optional, loads staff bKash totals, and fills the limit", () => {
     const field = FundTransactionFormFieldSchema(null).find((item) => item.name === "transaction_by");
 
     expect(field && "label" in field ? field.label?.mandatory : undefined).toBeFalsy();
@@ -140,15 +147,18 @@ describe("FundTransactionFormSchema transaction by limit", () => {
     return result.success ? [] : result.error.issues.filter((issue) => issue.path[0] === "amount").map((issue) => issue.message);
   };
 
-  it("allows any amount when no staff is selected", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows any amount when no staff is selected»।
+  it("Fund transaction form: allows any amount when no staff is selected", () => {
     expect(amountErrors({ amount: 9999, transaction_by: null, transaction_by_amount: 100 })).toEqual([]);
   });
 
-  it("allows an amount equal to the staff total", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows an amount equal to the staff total»।
+  it("Fund transaction form: allows an amount equal to the staff total", () => {
     expect(amountErrors({ amount: "500.10", transaction_by: 5, transaction_by_amount: 500.1 })).toEqual([]);
   });
 
-  it("rejects an amount above the staff total", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «rejects an amount above the staff total»।
+  it("Fund transaction form: rejects an amount above the staff total", () => {
     expect(amountErrors({ amount: 500.11, transaction_by: 5, transaction_by_amount: "500.10" })).toEqual([
       "fund_transaction.transaction_by.errors.max",
     ]);
@@ -156,7 +166,8 @@ describe("FundTransactionFormSchema transaction by limit", () => {
 });
 
 describe("FundTransactionFormSchema", () => {
-  it("defaults the transaction type to transfer", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «defaults the transaction type to transfer»।
+  it("Fund transaction form: defaults the transaction type to transfer", () => {
     const parsed = FundTransactionFormSchema.parse({
       amount: "25",
       transfer_by: 8,
@@ -168,7 +179,8 @@ describe("FundTransactionFormSchema", () => {
     expect(parsed.note).toBeNull();
   });
 
-  it("accepts only a transfer", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts only a transfer»।
+  it("Fund transaction form: accepts only a transfer", () => {
     expect(FundTransactionFormSchema.safeParse({ amount: 10, transaction_type: "deposit", transfer_by: 1 }).success).toBe(
       false,
     );
@@ -180,7 +192,8 @@ describe("FundTransactionFormSchema", () => {
     );
   });
 
-  it("requires a sender fund for a transfer", () => {
+  // ফান্ডের লেনদেন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires a sender fund for a transfer»।
+  it("Fund transaction form: requires a sender fund for a transfer", () => {
     const result = FundTransactionFormSchema.safeParse({
       amount: 10,
       transaction_type: "transfer",

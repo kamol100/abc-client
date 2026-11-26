@@ -49,7 +49,8 @@ function groupNames(): string[] {
 }
 
 describe("PermissionGroupsPanel", () => {
-  it("lists pinned groups first and shows the first group's permissions", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lists pinned groups first and shows the first group's permissions»।
+  it("Permission groups panel: lists pinned groups first and shows the first group's permissions", () => {
     renderPanel({ pins: ["sub-zones"] });
 
     expect(groupNames()).toEqual(["sub zones", "clients", "invoices"]);
@@ -57,7 +58,8 @@ describe("PermissionGroupsPanel", () => {
     expect(screen.queryByText("clients.create")).toBeNull();
   });
 
-  it("filters the group list by the search box", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «filters the group list by the search box»।
+  it("Permission groups panel: filters the group list by the search box", async () => {
     const user = userEvent.setup();
     renderPanel();
 
@@ -67,7 +69,8 @@ describe("PermissionGroupsPanel", () => {
     expect(screen.getByText("invoices.delete")).toBeInTheDocument();
   });
 
-  it("opens a group and grants one permission or the whole group through the same callbacks", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens a group and grants one permission or the whole group through the same callbacks»।
+  it("Permission groups panel: opens a group and grants one permission or the whole group through the same callbacks", async () => {
     const user = userEvent.setup();
     const props = renderPanel();
 
@@ -82,7 +85,8 @@ describe("PermissionGroupsPanel", () => {
     );
   });
 
-  it("revokes a granted permission", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «revokes a granted permission»।
+  it("Permission groups panel: revokes a granted permission", async () => {
     const user = userEvent.setup();
     const props = renderPanel();
 
@@ -90,7 +94,8 @@ describe("PermissionGroupsPanel", () => {
     expect(props.onTogglePermission).toHaveBeenCalledWith("clients.access", false);
   });
 
-  it("pins and unpins from the list", async () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «pins and unpins from the list»।
+  it("Permission groups panel: pins and unpins from the list", async () => {
     const user = userEvent.setup();
     const props = renderPanel({ pins: ["invoices"] });
 
@@ -102,12 +107,14 @@ describe("PermissionGroupsPanel", () => {
     expect(props.onTogglePin).toHaveBeenNthCalledWith(2, "clients");
   });
 
-  it("hides the pin button when pins cannot be saved", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the pin button when pins cannot be saved»।
+  it("Permission groups panel: hides the pin button when pins cannot be saved", () => {
     renderPanel({ canPin: false });
     expect(screen.queryByRole("button", { name: "permission.pin.pin" })).toBeNull();
   });
 
-  it("keeps permissions read-only while disabled", () => {
+  // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps permissions read-only while disabled»।
+  it("Permission groups panel: keeps permissions read-only while disabled", () => {
     renderPanel({ disabled: true });
     expect(screen.getByRole("checkbox", { name: /clients\.access/ })).toBeDisabled();
   });
@@ -124,7 +131,8 @@ describe("PermissionGroupsPanel", () => {
       viewport.mobile = false;
     });
 
-    it("opens the tapped group's permissions in a bottom sheet", async () => {
+    // ব্যবহারকারীর অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the tapped group's permissions in a bottom sheet»।
+    it("Permission groups panel: opens the tapped group's permissions in a bottom sheet", async () => {
       const user = userEvent.setup();
       const props = renderPanel();
 

@@ -2,7 +2,8 @@ import { expect, test } from "@playwright/test";
 import { loginAsAdmin } from "@/tests/e2e/helpers/auth";
 
 test.describe("auth integration", () => {
-  test("logs in with real backend credentials and reaches dashboard", async ({ page, context }) => {
+  // সঠিক স্টাফ পরিচয় দিয়ে লগইন করলে ড্যাশবোর্ড খোলে কি না যাচাই করি।
+  test("Staff login: accept valid credentials and open the dashboard", async ({ page, context }) => {
     test.setTimeout(90000);
 
     await loginAsAdmin(page);

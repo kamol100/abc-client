@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import ResellerFilterSchema from "@/components/resellers/reseller-filter-schema";
 
 describe("ResellerFilterSchema", () => {
-    it("searches name, username, phone, and email through one any field", () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «searches name, username, phone, and email through one any field»।
+    it("Reseller filter schema: searches name, username, phone, and email through one any field", () => {
         const fields = ResellerFilterSchema();
         const any = fields.find((field) => field.name === "any");
 

@@ -99,7 +99,8 @@ function SingleDateField({ onValueChange }: { onValueChange: (value: DatePickerV
 }
 
 describe("DatePicker range selection", () => {
-    it("keeps a single selected day open until Apply", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a single selected day open until Apply»।
+    it("Date picker range: keeps a single selected day open until Apply", async () => {
         const user = userEvent.setup({ skipHover: true });
         const onFilter = vi.fn();
         render(<DueDateFilter onFilter={onFilter} />);
@@ -122,7 +123,8 @@ describe("DatePicker range selection", () => {
         expect(screen.getByRole("button", { name: "10/21/2026" })).toBeInTheDocument();
     });
 
-    it("applies a completed range without waiting for Apply", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies a completed range without waiting for Apply»।
+    it("Date picker range: applies a completed range without waiting for Apply", async () => {
         const user = userEvent.setup({ skipHover: true });
         const onFilter = vi.fn();
         render(<DueDateFilter onFilter={onFilter} />);
@@ -139,7 +141,8 @@ describe("DatePicker range selection", () => {
         expect(screen.getByRole("button", { name: "10/21/2026 - 10/23/2026" })).toBeInTheDocument();
     });
 
-    it("highlights the start, middle, and end of a selected range", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «highlights the start, middle, and end of a selected range»।
+    it("Date picker range: highlights the start, middle, and end of a selected range", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(<DueDateFilter onFilter={vi.fn()} />);
 
@@ -171,7 +174,8 @@ describe("DatePicker range selection", () => {
         expect(end.closest("td")).toHaveClass("[&:not(:has([data-range-start=true]))_button]:![border:2px_solid_transparent]");
     });
 
-    it("clears the hover preview when the pointer leaves the calendar", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the hover preview when the pointer leaves the calendar»।
+    it("Date picker range: clears the hover preview when the pointer leaves the calendar", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(<DueDateFilter onFilter={vi.fn()} />);
 
@@ -188,7 +192,8 @@ describe("DatePicker range selection", () => {
         expect(screen.getByRole("button", { name: october21 })).toHaveAttribute("data-selected-single", "true");
     });
 
-    it("clears the hover preview on Apply and commits only the selected day", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the hover preview on Apply and commits only the selected day»।
+    it("Date picker range: clears the hover preview on Apply and commits only the selected day", async () => {
         const user = userEvent.setup({ skipHover: true });
         const onFilter = vi.fn();
         render(<DueDateFilter onFilter={onFilter} />);
@@ -209,7 +214,8 @@ describe("DatePicker range selection", () => {
         });
     });
 
-    it("keeps the hover preview while moving between calendar days", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the hover preview while moving between calendar days»।
+    it("Date picker range: keeps the hover preview while moving between calendar days", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(<DueDateFilter onFilter={vi.fn()} />);
 
@@ -223,7 +229,8 @@ describe("DatePicker range selection", () => {
         expect(screen.getByRole("button", { name: october24 }).closest("td")).toHaveClass("range-preview-edge");
     });
 
-    it("keeps a completed range highlighted after the pointer leaves", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a completed range highlighted after the pointer leaves»।
+    it("Date picker range: keeps a completed range highlighted after the pointer leaves", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(<StickyRangeField />);
 
@@ -240,7 +247,8 @@ describe("DatePicker range selection", () => {
         expect(screen.getByRole("button", { name: october22 }).closest("td")).not.toHaveClass("range-preview-middle");
     });
 
-    it("does not show Apply or delay a single-date selection", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not show Apply or delay a single-date selection»।
+    it("Date picker range: does not show Apply or delay a single-date selection", async () => {
         const user = userEvent.setup({ skipHover: true });
         const onValueChange = vi.fn();
         render(<SingleDateField onValueChange={onValueChange} />);

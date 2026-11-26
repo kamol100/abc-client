@@ -72,7 +72,8 @@ async function transactions(staff: Session, fundId: number) {
   return { total, rows, complete: pages <= 5 };
 }
 
-test("EX-D01 cancel delete keeps the expense, its fund balance, and fund transactions", async ({ page, staff }) => {
+// ডিলিট বাতিল করলে খরচ, ফান্ডের ব্যালেন্স ও লেনদেনের ইতিহাস অপরিবর্তিত থাকে কি না যাচাই করি।
+test("EX-D01 Cancel expense deletion: keep the expense, fund balance, and transaction history unchanged", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.show", "expenses.access");
   const listed = await expenses(staff);
   const expense = listed.data.find((row) => row.fund && row.expense_id) ?? listed.data.find((row) => row.expense_id);

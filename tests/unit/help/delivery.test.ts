@@ -44,7 +44,8 @@ function request(url: string, cookie?: string): Request {
 describe("help renderer", () => {
   const allowed = new Map([["support.contact", "support/contact"]]);
 
-  it("escapes raw html and drops unsafe urls", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «escapes raw html and drops unsafe urls»।
+  it("Safe help content rendering: escapes raw html and drops unsafe urls", () => {
     const html = renderHelpMarkdown(
       [
         "Hello <script>alert(1)</script>",
@@ -72,7 +73,8 @@ describe("help renderer", () => {
 });
 
 describe("help delivery", () => {
-  it("renders authorized articles in the requested language and hides the other session's article", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders authorized articles in the requested language and hides the other session's article»।
+  it("Safe help content rendering: renders authorized articles in the requested language and hides the other session's article", async () => {
     const limited = staff(["platform-support.create"]);
     const [english, bangla, hidden] = await Promise.all([
       helpArticleResponse(request("http://help.local/api/help/articles/clients.create?locale=en"), "clients.create", { actor: full, library }),
@@ -96,7 +98,8 @@ describe("help delivery", () => {
     expect(hiddenText).not.toContain("Network Package");
   });
 
-  it("uses the lang cookie, rejects a bad locale, and omits forbidden related titles", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the lang cookie, rejects a bad locale, and omits forbidden related titles»।
+  it("Safe help content rendering: uses the lang cookie, rejects a bad locale, and omits forbidden related titles", async () => {
     const bangla = await helpArticleResponse(
       request("http://help.local/api/help/articles/support.contact", "lang=bn"),
       "support.contact",
@@ -135,7 +138,8 @@ describe("help delivery", () => {
     expect(signedOut.status).toBe(401);
   });
 
-  it("searches only authorized text and does not echo a private query", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «searches only authorized text and does not echo a private query»।
+  it("Safe help content rendering: searches only authorized text and does not echo a private query", async () => {
     const found = await helpSearchResponse(
       request("http://help.local/api/help/search?q=pppoe&locale=en&route=/clients/create"),
       { actor: full, library },
@@ -163,7 +167,8 @@ describe("help delivery", () => {
     expect(normalizeHelpQuery(`ক্লায়েন্ট\u200b`)).toBe("ক্লায়েন্ট");
   });
 
-  it("serves a protected image only with the parent article and blocks path escapes", async () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «serves a protected image only with the parent article and blocks path escapes»।
+  it("Safe help content rendering: serves a protected image only with the parent article and blocks path escapes", async () => {
     clearHelpContentCache();
     const root = mkdtempSync(path.join(tmpdir(), "help-media-"));
     const policy: HelpArticlePolicy = {
@@ -203,7 +208,8 @@ describe("help delivery", () => {
     expect(resolveHelpFile(root, "../en", "support/images.md")).toBeNull();
   });
 
-  it("allows a development-only English fallback for a draft and refuses it for published text", () => {
+  // সহায়তার লেখা ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows a development-only English fallback for a draft and refuses it for published text»।
+  it("Safe help content rendering: allows a development-only English fallback for a draft and refuses it for published text", () => {
     clearHelpContentCache();
     const root = mkdtempSync(path.join(tmpdir(), "help-draft-"));
     mkdirSync(path.join(root, "en/support"), { recursive: true });

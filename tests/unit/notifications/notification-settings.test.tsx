@@ -31,7 +31,8 @@ vi.mock("@/hooks/use-api-mutation", () => ({
 }));
 
 describe("NotificationSettings", () => {
-    it("saves a missing key as on and an explicit off key as on when toggled", async () => {
+    // নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves a missing key as on and an explicit off key as on when toggled»।
+    it("Notification settings: saves a missing key as on and an explicit off key as on when toggled", async () => {
         const user = userEvent.setup();
         render(<NotificationSettings />);
 

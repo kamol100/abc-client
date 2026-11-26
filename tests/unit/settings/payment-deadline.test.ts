@@ -4,7 +4,8 @@ import { fieldOf } from "@/components/settings/registry/fields";
 import { sectionKeys } from "@/components/settings/registry/sections";
 
 describe("payment deadline setting", () => {
-    it("offers days 01 through 30 on general settings and defaults to 11", () => {
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «offers days 01 through 30 on general settings and defaults to 11»।
+    it("Payment deadline: offers days 01 through 30 on general settings and defaults to 11", () => {
         expect(sectionKeys("general")).toContain("payment_deadline");
         const field = fieldOf("payment_deadline");
 

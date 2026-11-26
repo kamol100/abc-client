@@ -82,7 +82,8 @@ describe("ClientTable reseller report", () => {
         window.history.replaceState(null, "", "/");
     });
 
-    it("loads reseller clients with the reseller filter and no create action", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads reseller clients with the reseller filter and no create action»।
+    it("Reseller client table: loads reseller clients with the reseller filter and no create action", () => {
         searchParamsState.value = "";
         queryCalls.length = 0;
 
@@ -99,7 +100,8 @@ describe("ClientTable reseller report", () => {
         expect(queryCalls[0]?.params).toBeUndefined();
     });
 
-    it("sends this month from the browser url when the page prop is missing", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends this month from the browser url when the page prop is missing»।
+    it("Reseller client table: sends this month from the browser url when the page prop is missing", () => {
         searchParamsState.value = "";
         window.history.replaceState(null, "", "/reports/reseller-clients?created_at=this_month");
         queryCalls.length = 0;
@@ -113,7 +115,8 @@ describe("ClientTable reseller report", () => {
         expect(screen.getByText("client.new_this_month.notice")).toBeInTheDocument();
     });
 
-    it("requests this month's reseller clients and clears the filter", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requests this month's reseller clients and clears the filter»।
+    it("Reseller client table: requests this month's reseller clients and clears the filter", async () => {
         searchParamsState.value = "created_at=this_month";
         window.history.replaceState(null, "", "/reports/reseller-clients?created_at=this_month");
         queryCalls.length = 0;
@@ -133,7 +136,8 @@ describe("ClientTable reseller report", () => {
         expect(routerReplace).toHaveBeenCalledWith("/reports/reseller-clients");
     });
 
-    it("passes simple search only for the default client list", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «passes simple search only for the default client list»।
+    it("Reseller client table: passes simple search only for the default client list", () => {
         searchParamsState.value = "";
 
         const { unmount } = render(<ClientTable />);
@@ -145,7 +149,8 @@ describe("ClientTable reseller report", () => {
         expect(screen.queryByText("simple-search-on")).not.toBeInTheDocument();
     });
 
-    it("keeps the company client list on the default table", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the company client list on the default table»।
+    it("Reseller client table: keeps the company client list on the default table", () => {
         searchParamsState.value = "";
         queryCalls.length = 0;
 
@@ -161,7 +166,8 @@ describe("ClientTable reseller report", () => {
         expect(screen.getByText("simple-search-on")).toBeInTheDocument();
     });
 
-    it("hides the client list and the add button when the plan removed those permissions", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the client list and the add button when the plan removed those permissions»।
+    it("Reseller client table: hides the client list and the add button when the plan removed those permissions", () => {
         clientAccess.list = false;
         clientAccess.create = false;
         queryCalls.length = 0;

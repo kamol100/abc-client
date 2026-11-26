@@ -18,7 +18,8 @@ test.describe("zones", () => {
     });
   });
 
-  test("shows client-side validation before creating a zone", async ({ page }) => {
+  // জোন তৈরির আগে আবশ্যক ইনপুটের ত্রুটি দেখায় কি না যাচাই করি।
+  test("New zone validation: show required-field errors before creating a zone", async ({ page }) => {
     const dialog = await openCreateForm(page);
     await expect(
       dialog.getByRole("heading", { name: /add zone/i })
@@ -35,7 +36,8 @@ test.describe("zones", () => {
     await expect(dialog).toBeVisible();
   });
 
-  test("creates a new zone via the form", async ({ page }) => {
+  // ফর্ম দিয়ে নতুন জোন তৈরি ও সংরক্ষণ হয় কি না যাচাই করি।
+  test("Create zone: save a new zone through the form", async ({ page }) => {
     const zoneName = `E2E Zone ${Date.now()}`;
     const dialog = await openCreateForm(page);
 
@@ -58,7 +60,8 @@ test.describe("sub-zones", () => {
     });
   });
 
-  test("shows client-side validation before creating a sub-zone", async ({
+  // সাব-জোন তৈরির আগে আবশ্যক ইনপুটের ত্রুটি দেখায় কি না দেখি।
+  test("New sub-zone validation: show required-field errors before creating a sub-zone", async ({
     page,
   }) => {
     const dialog = await openCreateForm(page);
@@ -78,7 +81,8 @@ test.describe("sub-zones", () => {
     await expect(dialog).toBeVisible();
   });
 
-  test("creates a new sub-zone via the form", async ({ page }) => {
+  // ফর্ম দিয়ে নতুন সাব-জোন তৈরি ও সংরক্ষণ হয় কি না যাচাই করি।
+  test("Create sub-zone: save a new sub-zone through the form", async ({ page }) => {
     const subZoneName = `E2E Sub Zone ${Date.now()}`;
     const dialog = await openCreateForm(page);
 

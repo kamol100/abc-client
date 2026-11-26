@@ -49,7 +49,8 @@ vi.mock("@/hooks/use-api-query", () => ({
 }));
 
 describe("staff invoice collection visibility", () => {
-  it("loads and shows the card for a staff collector without the invoice dashboard permission", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads and shows the card for a staff collector without the invoice dashboard permission»।
+  it("Dashboard staff collection visibility: loads and shows the card for a staff collector without the invoice dashboard permission", () => {
     session.hasStaff = true;
     session.thisMonthAmount = 6200;
 
@@ -61,7 +62,8 @@ describe("staff invoice collection visibility", () => {
     expect(result.current.staffCollection.this_month_amount).toBe(6200);
   });
 
-  it("hides the card when every collection period is zero", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the card when every collection period is zero»।
+  it("Dashboard staff collection visibility: hides the card when every collection period is zero", () => {
     session.hasStaff = true;
     session.thisMonthAmount = 0;
 
@@ -71,7 +73,8 @@ describe("staff invoice collection visibility", () => {
     expect(result.current.showStaffCollection).toBe(false);
   });
 
-  it("does not request collections for a user without a staff profile", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not request collections for a user without a staff profile»।
+  it("Dashboard staff collection visibility: does not request collections for a user without a staff profile", () => {
     session.hasStaff = false;
     session.thisMonthAmount = 6200;
 

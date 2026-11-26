@@ -73,7 +73,8 @@ describe("ClientSwitchDialog", () => {
         harness.mutation = null;
     });
 
-    it("keeps switch disabled until a reseller is selected, then moves the client", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps switch disabled until a reseller is selected, then moves the client»।
+    it("Client switch dialog: keeps switch disabled until a reseller is selected, then moves the client", async () => {
         const user = userEvent.setup();
         render(<ClientSwitchDialog client={client} open onOpenChange={() => undefined} />);
 

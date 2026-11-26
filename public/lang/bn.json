@@ -1506,7 +1506,7 @@
         "pppoe_username": {
             "label": "ক্লায়েন্ট আইডি",
             "next_sid": "এসআইডি:{{sid}}",
-            "placeholder": "ক্লায়েন্ট আইডি দিন",
+            "placeholder": "ক্লায়েন্ট আইডি দিন (PPPoE ID)",
             "errors": {
                 "required": "ক্লায়েন্ট আইডি আবশ্যক"
             }

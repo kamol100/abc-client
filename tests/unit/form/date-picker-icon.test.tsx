@@ -40,34 +40,39 @@ function DateField({
 const calendarIcon = () => document.querySelector(".lucide-calendar");
 
 describe("DatePicker calendar icon", () => {
-    it("keeps the icon for a single selected date", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the icon for a single selected date»।
+    it("Date picker icon: keeps the icon for a single selected date", () => {
         const { container } = render(<DateField value={october21} mode="single" />);
 
         expect(calendarIcon()).toBeInTheDocument();
         expect(container.querySelector(".truncate")).toHaveClass("truncate");
     });
 
-    it("keeps the icon when only the range start date is selected", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the icon when only the range start date is selected»।
+    it("Date picker icon: keeps the icon when only the range start date is selected", () => {
         render(<DateField value={{ from: october21 }} />);
 
         expect(calendarIcon()).toBeInTheDocument();
         expect(screen.getByRole("button", { name: "10/21/2026" })).toBeInTheDocument();
     });
 
-    it("hides the icon by default when a date range is selected", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the icon by default when a date range is selected»।
+    it("Date picker icon: hides the icon by default when a date range is selected", () => {
         render(<DateField value={{ from: october21, to: october22 }} />);
 
         expect(calendarIcon()).not.toBeInTheDocument();
         expect(screen.getByRole("button", { name: "10/21/2026 - 10/22/2026" })).toHaveClass("overflow-hidden");
     });
 
-    it("shows a date-only API string on the same calendar day", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a date-only API string on the same calendar day»।
+    it("Date picker icon: shows a date-only API string on the same calendar day", () => {
         render(<DateField value="2026-10-14" mode="single" />);
 
         expect(screen.getByRole("button", { name: "10/14/2026" })).toBeInTheDocument();
     });
 
-    it("keeps the icon for a date range when hide_calendar_icon_on_date_range is false", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the icon for a date range when hide_calendar_icon_on_date_range is false»।
+    it("Date picker icon: keeps the icon for a date range when hide_calendar_icon_on_date_range is false", () => {
         render(
             <DateField
                 value={{ from: october21, to: october22 }}

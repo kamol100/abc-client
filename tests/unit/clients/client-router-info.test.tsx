@@ -84,7 +84,8 @@ describe("ClientRouterInfo ping button", () => {
         useFetch.mockReset();
     });
 
-    it("shows a loading button until router information arrives", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a loading button until router information arrives»।
+    it("Client router info: shows a loading button until router information arrives", async () => {
         let resolveRouter: (value: unknown) => void = () => undefined;
         useFetch.mockImplementation(
             () => new Promise((resolve) => {
@@ -112,7 +113,8 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(1);
     });
 
-    it("applies the button variant, defaulting to outline", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies the button variant, defaulting to outline»।
+    it("Client router info: applies the button variant, defaulting to outline", async () => {
         useFetch.mockResolvedValue({
             success: true,
             data: { ip_address: "10.0.0.8", is_online: true },
@@ -133,7 +135,8 @@ describe("ClientRouterInfo ping button", () => {
         expect(ghost.className).not.toContain("border-input");
     });
 
-    it("replaces the loading button when router information fails", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «replaces the loading button when router information fails»।
+    it("Client router info: replaces the loading button when router information fails", async () => {
         useFetch.mockResolvedValue({ success: false, message: "Client is offline" });
 
         renderPing();
@@ -146,7 +149,8 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(1);
     });
 
-    it("keeps ping disabled and does not call the ping API without a valid IP", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps ping disabled and does not call the ping API without a valid IP»।
+    it("Client router info: keeps ping disabled and does not call the ping API without a valid IP", async () => {
         useFetch.mockResolvedValue({
             success: true,
             data: { ip_address: "not-an-ip", is_online: false },
@@ -170,7 +174,8 @@ describe("ClientRouterInfo ping button", () => {
         open.mockRestore();
     });
 
-    it("pings a valid IP and reuses the cached router response", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «pings a valid IP and reuses the cached router response»।
+    it("Client router info: pings a valid IP and reuses the cached router response", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (url.includes("client-ping")) {
                 return reachablePing();
@@ -233,7 +238,8 @@ describe("ClientRouterInfo ping button", () => {
         expect(routerCalls()).toHaveLength(1);
     });
 
-    it("uses a provided IP without fetching router information", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses a provided IP without fetching router information»।
+    it("Client router info: uses a provided IP without fetching router information", async () => {
         useFetch.mockImplementation(async ({ url }: { url: string }) => {
             if (url.includes("client-ping")) {
                 return reachablePing();
@@ -269,7 +275,8 @@ describe("ClientRouterInfo ping button", () => {
         open.mockRestore();
     });
 
-    it("opens the device address on port 80", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the device address on port 80»।
+    it("Client router info: opens the device address on port 80", async () => {
         useFetch.mockResolvedValue({
             success: true,
             data: { ip_address: "10.10.10.102", is_online: true },

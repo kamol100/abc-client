@@ -54,7 +54,8 @@ class ResizeObserverStub {
 }
 
 describe("FeaturePermissionEditor", () => {
-  it("places the form above the assigned permissions", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «places the form above the assigned permissions»।
+  it("Feature permission editor: places the form above the assigned permissions", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const user = userEvent.setup();
@@ -75,7 +76,8 @@ describe("FeaturePermissionEditor", () => {
     ).toBeTruthy();
   });
 
-  it("removes the clicked permission and keeps the rest", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «removes the clicked permission and keeps the rest»।
+  it("Feature permission editor: removes the clicked permission and keeps the rest", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     mutate.mockClear();
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -101,7 +103,8 @@ describe("FeaturePermissionEditor", () => {
     });
   });
 
-  it("adds the selected permission to the feature", async () => {
+  // সাবস্ক্রিপশন, প্ল্যান ও ফিচার যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds the selected permission to the feature»।
+  it("Feature permission editor: adds the selected permission to the feature", async () => {
     vi.stubGlobal("ResizeObserver", ResizeObserverStub);
     mutate.mockClear();
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });

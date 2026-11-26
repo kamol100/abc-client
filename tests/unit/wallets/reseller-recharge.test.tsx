@@ -84,7 +84,8 @@ describe("ResellerRechargeDialog", () => {
         };
     });
 
-    it("shows the client package summary and a one-day buying cost", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the client package summary and a one-day buying cost»।
+    it("Reseller recharge: shows the client package summary and a one-day buying cost", () => {
         renderDialog();
 
         expect(screen.getByText("Rahim")).toBeInTheDocument();
@@ -98,7 +99,8 @@ describe("ResellerRechargeDialog", () => {
         expect(screen.getByRole("button", { name: "common.save" })).toBeEnabled();
     });
 
-    it("posts clientUuid, cost, days, and note", async () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «posts clientUuid, cost, days, and note»।
+    it("Reseller recharge: posts clientUuid, cost, days, and note", async () => {
         const user = userEvent.setup();
         renderDialog();
 
@@ -116,7 +118,8 @@ describe("ResellerRechargeDialog", () => {
         });
     });
 
-    it("updates the recharge cost when the day count changes", async () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «updates the recharge cost when the day count changes»।
+    it("Reseller recharge: updates the recharge cost when the day count changes", async () => {
         const user = userEvent.setup();
         renderDialog();
 
@@ -140,7 +143,8 @@ describe("ResellerRechargeDialog", () => {
         });
     });
 
-    it("blocks submit when the wallet cannot cover the cost", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks submit when the wallet cannot cover the cost»।
+    it("Reseller recharge: blocks submit when the wallet cannot cover the cost", () => {
         state.wallet.balance = 1;
         renderDialog();
 
@@ -151,7 +155,8 @@ describe("ResellerRechargeDialog", () => {
         expect(screen.queryByText(/NaN|Infinity/)).not.toBeInTheDocument();
     });
 
-    it("shows a placeholder and blocks submit when buying price is missing", () => {
+    // রিসেলারের ওয়ালেট ও রিচার্জ খরচ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a placeholder and blocks submit when buying price is missing»।
+    it("Reseller recharge: shows a placeholder and blocks submit when buying price is missing", () => {
         state.details = {
             ...client,
             phone: null,

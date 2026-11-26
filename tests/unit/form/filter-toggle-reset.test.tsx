@@ -31,7 +31,8 @@ function iconButton(name: string): HTMLElement {
 }
 
 describe("FormFilter toggle", () => {
-    it("resets applied filters when the fields are hidden", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets applied filters when the fields are hidden»।
+    it("Filter toggle reset: resets applied filters when the fields are hidden", async () => {
         const user = userEvent.setup();
         const setFilter = vi.fn();
 
@@ -63,7 +64,8 @@ describe("FormFilter toggle", () => {
         expect(screen.getByPlaceholderText("code.placeholder")).toHaveValue("");
     });
 
-    it("leaves an empty filter query unchanged when hiding the fields", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves an empty filter query unchanged when hiding the fields»।
+    it("Filter toggle reset: leaves an empty filter query unchanged when hiding the fields", async () => {
         const user = userEvent.setup();
         const setFilter = vi.fn();
 
@@ -82,7 +84,8 @@ describe("FormFilter toggle", () => {
         expect(screen.queryByPlaceholderText("search.placeholder")).not.toBeInTheDocument();
     });
 
-    it("keeps a page default filter when user filters are cleared", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a page default filter when user filters are cleared»।
+    it("Filter toggle reset: keeps a page default filter when user filters are cleared", async () => {
         const user = userEvent.setup();
         const setFilter = vi.fn();
 
@@ -106,7 +109,8 @@ describe("FormFilter toggle", () => {
         expect(setFilter).toHaveBeenLastCalledWith("status=active");
     });
 
-    it("does not reset filters that stay visible", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not reset filters that stay visible»।
+    it("Filter toggle reset: does not reset filters that stay visible", async () => {
         const user = userEvent.setup();
         const setFilter = vi.fn();
 
@@ -127,7 +131,8 @@ describe("FormFilter toggle", () => {
         expect(screen.getByPlaceholderText("search.placeholder")).toHaveValue("acme");
     });
 
-    it("resets a shared filter form when the fields are hidden", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets a shared filter form when the fields are hidden»।
+    it("Filter toggle reset: resets a shared filter form when the fields are hidden", async () => {
         const user = userEvent.setup();
         const setFilter = vi.fn();
 

@@ -100,7 +100,8 @@ describe("reseller agent commission fields", () => {
         return user;
     };
 
-    it("hides commission fields until an agent is selected", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides commission fields until an agent is selected»।
+    it("Reseller form: hides commission fields until an agent is selected", async () => {
         renderBilling();
 
         expect(await screen.findByRole("combobox", { hidden: true })).toBeInTheDocument();
@@ -113,7 +114,8 @@ describe("reseller agent commission fields", () => {
         expect(screen.getByText("reseller.count_commission.label")).toBeInTheDocument();
     });
 
-    it("hides commission fields again when the agent is cleared", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides commission fields again when the agent is cleared»।
+    it("Reseller form: hides commission fields again when the agent is cleared", async () => {
         renderBilling();
         const user = await openAgentMenu();
 
@@ -128,7 +130,8 @@ describe("reseller agent commission fields", () => {
         });
     });
 
-    it("fills commission from the selected agent and keeps the field editable", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fills commission from the selected agent and keeps the field editable»।
+    it("Reseller form: fills commission from the selected agent and keeps the field editable", async () => {
         renderBilling();
         const user = await openAgentMenu();
 
@@ -140,7 +143,8 @@ describe("reseller agent commission fields", () => {
         expect(commission).toHaveValue(18);
     });
 
-    it("updates commission when the agent changes and leaves count commission untouched", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «updates commission when the agent changes and leaves count commission untouched»।
+    it("Reseller form: updates commission when the agent changes and leaves count commission untouched", async () => {
         renderBilling();
         const user = await openAgentMenu();
 
@@ -154,7 +158,8 @@ describe("reseller agent commission fields", () => {
         expect(screen.getByRole("switch")).toBeChecked();
     });
 
-    it("keeps the saved commission when editing until the agent changes", async () => {
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the saved commission when editing until the agent changes»।
+    it("Reseller form: keeps the saved commission when editing until the agent changes", async () => {
         renderBilling({
             id: "reseller-uuid",
             agent_id: 7,

@@ -36,7 +36,8 @@ describe("ClientSpeedWidget", () => {
     });
   });
 
-  it("loads the signed-in client speed from the portal endpoint", async () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads the signed-in client speed from the portal endpoint»।
+  it("Client speed widget: loads the signed-in client speed from the portal endpoint", async () => {
     renderWidget({ url: "client-dashboard-speed" });
 
     expect(await screen.findByText("1.20 MB")).toBeInTheDocument();
@@ -48,7 +49,8 @@ describe("ClientSpeedWidget", () => {
     );
   });
 
-  it("loads one client from the staff endpoint", async () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads one client from the staff endpoint»।
+  it("Client speed widget: loads one client from the staff endpoint", async () => {
     renderWidget({ clientId: "client-uuid" });
 
     await screen.findByText("1.20 MB");
@@ -57,7 +59,8 @@ describe("ClientSpeedWidget", () => {
     );
   });
 
-  it("shows placeholders when the session has no speed", async () => {
+  // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows placeholders when the session has no speed»।
+  it("Client speed widget: shows placeholders when the session has no speed", async () => {
     useFetch.mockResolvedValue({
       success: true,
       data: { upload_speed: null, download_speed: null },

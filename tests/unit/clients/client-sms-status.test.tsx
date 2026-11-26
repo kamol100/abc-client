@@ -43,7 +43,8 @@ vi.mock("@/hooks/use-api-query", () => ({
 }));
 
 describe("ClientSmsStatus", () => {
-    it("shows the generic icon and skips the request until a client id is available", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the generic icon and skips the request until a client id is available»।
+    it("Client SMS status: shows the generic icon and skips the request until a client id is available", () => {
         query.data = undefined;
         permissions.show = true;
         render(<ClientSmsStatus />);
@@ -53,7 +54,8 @@ describe("ClientSmsStatus", () => {
         expect(query.options?.retry).toBe(false);
     });
 
-    it("requests sms status for one client without blocking on a loading icon", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requests sms status for one client without blocking on a loading icon»।
+    it("Client SMS status: requests sms status for one client without blocking on a loading icon", () => {
         query.data = undefined;
         render(<ClientSmsStatus clientId="client-1" />);
 
@@ -63,14 +65,16 @@ describe("ClientSmsStatus", () => {
         expect(screen.getByRole("button", { name: "client.sms_status.unknown" })).toHaveClass("h-4", "w-4");
     });
 
-    it("keeps the generic icon when the request fails", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the generic icon when the request fails»।
+    it("Client SMS status: keeps the generic icon when the request fails", () => {
         query.data = undefined;
         render(<ClientSmsStatus clientId="client-1" />);
 
         expect(screen.getByRole("button", { name: "client.sms_status.unknown" })).toBeInTheDocument();
     });
 
-    it("shows a success mark and the sent time", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a success mark and the sent time»।
+    it("Client SMS status: shows a success mark and the sent time", () => {
         query.data = {
             success: true,
             data: {
@@ -87,7 +91,8 @@ describe("ClientSmsStatus", () => {
         expect(screen.queryByText("client.sms_status.invoice_due_reminder")).not.toBeInTheDocument();
     });
 
-    it("shows a failure mark with the reason and the reminder separately", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a failure mark with the reason and the reminder separately»।
+    it("Client SMS status: shows a failure mark with the reason and the reminder separately", () => {
         query.data = {
             success: true,
             data: {
@@ -111,7 +116,8 @@ describe("ClientSmsStatus", () => {
         expect(screen.getByText(/18 Nov 2026, 9:00 AM/)).toBeInTheDocument();
     });
 
-    it("does not request sms status without permission", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not request sms status without permission»।
+    it("Client SMS status: does not request sms status without permission", () => {
         permissions.show = false;
         permissions.sms = false;
         query.data = {

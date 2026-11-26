@@ -73,7 +73,8 @@ describe("ClientAddMapDialog", () => {
         harness.mutation = null;
     });
 
-    it("shows a location error and keeps save disabled when GPS is denied", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a location error and keeps save disabled when GPS is denied»।
+    it("Client add map dialog: shows a location error and keeps save disabled when GPS is denied", async () => {
         installGeolocation((_success, error) => {
             error({ code: 1 } as GeolocationPositionError);
         });
@@ -86,7 +87,8 @@ describe("ClientAddMapDialog", () => {
         expect(harness.mutateAsync).not.toHaveBeenCalled();
     });
 
-    it("previews the browser coordinates and submits only those values", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «previews the browser coordinates and submits only those values»।
+    it("Client add map dialog: previews the browser coordinates and submits only those values", async () => {
         const user = userEvent.setup();
         installGeolocation((success, _error, options) => {
             expect(options?.enableHighAccuracy).toBe(true);
@@ -114,7 +116,8 @@ describe("ClientAddMapDialog", () => {
         });
     });
 
-    it("does not save when the dialog is cancelled", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not save when the dialog is cancelled»।
+    it("Client add map dialog: does not save when the dialog is cancelled", async () => {
         const user = userEvent.setup();
         installGeolocation((success) => {
             success({ coords: { latitude: 23.5, longitude: 90.25 } } as GeolocationPosition);

@@ -77,7 +77,8 @@ describe("expense status column", () => {
         useApiMutationMock.mockClear();
     });
 
-    it("shows the current status and lists pending, approved, and declined", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the current status and lists pending, approved, and declined»।
+    it("Expense status select: shows the current status and lists pending, approved, and declined", () => {
         const view = renderCell("status");
         const button = view.getByRole("button", { name: "expense.status.change: common.pending" });
 
@@ -87,7 +88,8 @@ describe("expense status column", () => {
         expect(view.getByRole("menuitem", { name: "expense.declined" })).toHaveAttribute("aria-checked", "false");
     });
 
-    it("saves the status chosen from the menu", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves the status chosen from the menu»।
+    it("Expense status select: saves the status chosen from the menu", () => {
         const view = renderCell("status");
 
         fireEvent.click(view.getByRole("menuitem", { name: "common.approved" }));
@@ -103,7 +105,8 @@ describe("expense status column", () => {
         expect(view.getByRole("menuitem", { name: "common.approved" })).toHaveAttribute("aria-checked", "true");
     });
 
-    it("keeps a badge when the user cannot change status", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a badge when the user cannot change status»।
+    it("Expense status select: keeps a badge when the user cannot change status", () => {
         permissions.names = [];
 
         const view = renderCell("status");
@@ -113,7 +116,8 @@ describe("expense status column", () => {
         expect(mutate).not.toHaveBeenCalled();
     });
 
-    it("keeps edit and delete in actions without approve or decline buttons", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps edit and delete in actions without approve or decline buttons»।
+    it("Expense status select: keeps edit and delete in actions without approve or decline buttons", () => {
         const view = renderCell("actions");
 
         expect(view.queryByRole("button", { name: "expense.approve" })).not.toBeInTheDocument();
@@ -121,7 +125,8 @@ describe("expense status column", () => {
         expect(view.container.querySelector("svg")).not.toBeInTheDocument();
     });
 
-    it("hides expense editing without expenses.edit", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides expense editing without expenses.edit»।
+    it("Expense status select: hides expense editing without expenses.edit", () => {
         permissions.names = ["expenses.approval"];
 
         const view = renderCell("actions");
@@ -129,7 +134,8 @@ describe("expense status column", () => {
         expect(view.queryByTestId("expense-form")).not.toBeInTheDocument();
     });
 
-    it("shows expense editing when the user has expenses.edit", () => {
+    // খরচের তথ্য ও অনুমতি যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows expense editing when the user has expenses.edit»।
+    it("Expense status select: shows expense editing when the user has expenses.edit", () => {
         permissions.names = ["expenses.edit"];
 
         const view = renderCell("actions");

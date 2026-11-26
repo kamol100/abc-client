@@ -23,7 +23,8 @@ const saved: OltAccess = {
 describe("buildOltAccessSchema", () => {
     const base = { snmp_version: "v2c", cli_protocol: "telnet", cli_username: "admin" };
 
-    it("requires the CLI password on the first save, and the community only without a CLI login", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires the CLI password on the first save, and the community only without a CLI login»।
+    it("OLT access: requires the CLI password on the first save, and the community only without a CLI login", () => {
         const first = buildOltAccessSchema({});
         // With a CLI login the community may stay empty: the app reads it from the OLT (BDCOM, VSOL).
         expect(first.safeParse({ ...base, snmp_community: "", cli_password: "pw" }).success).toBe(true);
@@ -34,19 +35,22 @@ describe("buildOltAccessSchema", () => {
         expect(noCli.error?.issues[0]).toMatchObject({ path: ["snmp_community"], message: "olt.access.errors.community_required_without_cli" });
     });
 
-    it("lets empty secrets keep the stored ones", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets empty secrets keep the stored ones»।
+    it("OLT access: lets empty secrets keep the stored ones", () => {
         const stored = buildOltAccessSchema({ has_snmp_community: true, has_cli_password: true });
         expect(stored.safeParse({ ...base, snmp_community: "", cli_password: "" }).success).toBe(true);
         expect(stored.safeParse({ ...base, cli_protocol: null, snmp_community: "" }).success).toBe(true);
     });
 
-    it("needs a CLI user with a protocol and rejects spaces in the community", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «needs a CLI user with a protocol and rejects spaces in the community»।
+    it("OLT access: needs a CLI user with a protocol and rejects spaces in the community", () => {
         const stored = buildOltAccessSchema({ has_snmp_community: true, has_cli_password: true });
         expect(stored.safeParse({ ...base, cli_username: "" }).success).toBe(false);
         expect(stored.safeParse({ ...base, snmp_community: "pub lic" }).success).toBe(false);
     });
 
-    it("needs a v3 user and an 8+ character auth passphrase until one is stored", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «needs a v3 user and an 8+ character auth passphrase until one is stored»।
+    it("OLT access: needs a v3 user and an 8+ character auth passphrase until one is stored", () => {
         const first = buildOltAccessSchema({});
         const v3 = { snmp_version: "v3", cli_protocol: null };
         expect(first.safeParse({ ...v3, snmp_v3_user: "", snmp_v3_auth_pass: "12345678" }).success).toBe(false);
@@ -58,7 +62,8 @@ describe("buildOltAccessSchema", () => {
 });
 
 describe("toAccessFormValues", () => {
-    it("never pre-fills secrets and can preselect another protocol", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «never pre-fills secrets and can preselect another protocol»।
+    it("OLT access: never pre-fills secrets and can preselect another protocol", () => {
         const values = toAccessFormValues(saved);
         expect(values).toMatchObject({ snmp_version: "v2c", snmp_community: "", cli_protocol: "ssh", cli_username: "admin", cli_password: "" });
         expect(toAccessFormValues(saved, "telnet").cli_protocol).toBe("telnet");
@@ -66,7 +71,8 @@ describe("toAccessFormValues", () => {
 });
 
 describe("toAccessPayload", () => {
-    it("sends only the chosen SNMP version's fields and drops empty secrets (keep)", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends only the chosen SNMP version's fields and drops empty secrets (keep)»।
+    it("OLT access: sends only the chosen SNMP version's fields and drops empty secrets (keep)", () => {
         const payload = toAccessPayload({
             snmp_version: "v2c",
             snmp_community: "",
@@ -82,7 +88,8 @@ describe("toAccessPayload", () => {
         expect(payload).toEqual({ snmp_version: "v2c", cli_protocol: "telnet", cli_username: "admin" });
     });
 
-    it("clears the CLI with a null protocol and sends the privacy protocol only with a privacy passphrase", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «clears the CLI with a null protocol and sends the privacy protocol only with a privacy passphrase»।
+    it("OLT access: clears the CLI with a null protocol and sends the privacy protocol only with a privacy passphrase", () => {
         const values = {
             snmp_version: "v3",
             snmp_community: "ignored",
@@ -107,7 +114,8 @@ describe("toAccessPayload", () => {
         expect(toAccessPayload(values, { has_snmp_v3_priv_pass: true }).snmp_v3_priv_protocol).toBe("AES");
     });
 
-    it("asks to reset the SSH host key only when ticked", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks to reset the SSH host key only when ticked»।
+    it("OLT access: asks to reset the SSH host key only when ticked", () => {
         const values = { snmp_version: "v2c", cli_protocol: "ssh", cli_username: "admin" };
         expect(toAccessPayload({ ...values, reset_host_key: true }).reset_host_key).toBe(true);
         expect("reset_host_key" in toAccessPayload({ ...values, reset_host_key: false })).toBe(false);
@@ -118,7 +126,8 @@ describe("printable ASCII credentials", () => {
     const stored = buildOltAccessSchema({ has_snmp_community: true, has_cli_password: true, has_snmp_v3_auth_pass: true });
     const base = { snmp_version: "v2c", cli_protocol: "telnet", cli_username: "admin" };
 
-    it("refuses line breaks and non-ASCII in the CLI and SNMPv3 fields", () => {
+    // OLT-এর প্রবেশাধিকার ও পরীক্ষার ফল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «refuses line breaks and non-ASCII in the CLI and SNMPv3 fields»।
+    it("OLT access: refuses line breaks and non-ASCII in the CLI and SNMPv3 fields", () => {
         expect(stored.safeParse({ ...base, cli_password: "pass word!" }).success).toBe(true);
         expect(stored.safeParse({ ...base, cli_password: "pw\nshow run" }).success).toBe(false);
         expect(stored.safeParse({ ...base, cli_username: "অ্যাডমিন" }).success).toBe(false);

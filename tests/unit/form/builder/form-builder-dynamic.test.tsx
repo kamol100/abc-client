@@ -71,7 +71,8 @@ describe("computed field", () => {
         },
     ];
 
-    it("shows a read-only value worked out from other fields, and updates it as they change", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a read-only value worked out from other fields, and updates it as they change»।
+    it("Dependent and calculated form fields: shows a read-only value worked out from other fields, and updates it as they change", async () => {
         renderFields(fields, { data: { amount: 5, quantity: 2 } });
         const user = userEvent.setup();
 
@@ -83,19 +84,22 @@ describe("computed field", () => {
         await waitFor(() => expect(inputById("total")).toHaveValue(20));
     });
 
-    it("keeps the value in the form, so it is sent", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the value in the form, so it is sent»।
+    it("Dependent and calculated form fields: keeps the value in the form, so it is sent", async () => {
         renderFields(fields, { data: { amount: 5, quantity: 2 } });
 
         expect(await saveAndReadPayload()).toEqual({ amount: 5, quantity: 2, total: 10 });
     });
 
-    it("overwrites a stale saved value", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «overwrites a stale saved value»।
+    it("Dependent and calculated form fields: overwrites a stale saved value", async () => {
         renderFields(fields, { mode: "edit", data: { id: 1, amount: 5, quantity: 2, total: 999 } });
 
         expect(await saveAndReadPayload()).toEqual({ id: 1, amount: 5, quantity: 2, total: 10 });
     });
 
-    it("inside a row, works from that row only", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «inside a row, works from that row only»।
+    it("Dependent and calculated form fields: calculate a repeated row value using only that row", async () => {
         renderFields(
             [
                 {
@@ -118,7 +122,8 @@ describe("computed field", () => {
         expect(inputById("lines.0.total")).toHaveValue(10);
     });
 
-    it("can read the rest of the form through getFormValues", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «can read the rest of the form through getFormValues»।
+    it("Dependent and calculated form fields: can read the rest of the form through getFormValues", () => {
         renderFields(
             [
                 {
@@ -141,7 +146,8 @@ describe("computed field", () => {
         expect(inputById("lines.0.with_rate")).toHaveValue(15);
     });
 
-    it("does not make an edit form fetch its record", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not make an edit form fetch its record»।
+    it("Dependent and calculated form fields: does not make an edit form fetch its record", async () => {
         renderFields(fields, { mode: "edit", hydrateOnEdit: "ifNeeded", data: { id: 1, amount: 5, quantity: 2 } });
         await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -164,7 +170,8 @@ describe("custom field", () => {
         );
     }
 
-    it("draws your component in the field's place, with the field wrapper around it", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws your component in the field's place, with the field wrapper around it»।
+    it("Dependent and calculated form fields: draws your component in the field's place, with the field wrapper around it", () => {
         const { container } = renderFields([
             { type: "custom", name: "summary", className: "col-span-full", render: () => <p>my summary</p> },
         ]);
@@ -173,7 +180,8 @@ describe("custom field", () => {
         expect(container.querySelector("form")).toContainElement(screen.getByText("my summary"));
     });
 
-    it("gets its form path, also inside a row, and can read and write the form", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «gets its form path, also inside a row, and can read and write the form»।
+    it("Dependent and calculated form fields: gets its form path, also inside a row, and can read and write the form", async () => {
         renderFields(
             [
                 {
@@ -191,7 +199,8 @@ describe("custom field", () => {
         expect(await saveAndReadPayload(user)).toEqual({ lines: [{ points: 2 }, { points: 10 }] });
     });
 
-    it("applies permission and visibleWhen like any other field", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «applies permission and visibleWhen like any other field»।
+    it("Dependent and calculated form fields: applies permission and visibleWhen like any other field", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "custom", name: "secret", permission: false, render: () => <p>secret</p> },
@@ -205,7 +214,8 @@ describe("custom field", () => {
         expect(screen.getByText("extra")).toBeInTheDocument();
     });
 
-    it("makes an edit form fetch only for the record keys it names", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «makes an edit form fetch only for the record keys it names»।
+    it("Dependent and calculated form fields: makes an edit form fetch only for the record keys it names", async () => {
         const custom = (sourceKeys?: string[]): FormFieldConfig[] => [
             { type: "custom", name: "widget", sourceKeys, render: () => <p>widget</p> },
         ];
@@ -226,7 +236,8 @@ describe("disabledWhen", () => {
         mockApi();
     });
 
-    it("disables a field while the rule passes", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables a field while the rule passes»।
+    it("Dependent and calculated form fields: disables a field while the rule passes", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "detail", disabledWhen: { field: "kind", equals: "locked" } },
@@ -240,7 +251,8 @@ describe("disabledWhen", () => {
         expect(inputById("detail")).toBeEnabled();
     });
 
-    it("with `when`, can disable a field until another one is filled", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «with `when`, can disable a field until another one is filled»।
+    it("Dependent and calculated form fields: with `when`, can disable a field until another one is filled", async () => {
         renderFields([
             { type: "text", name: "network" },
             { type: "text", name: "command", disabledWhen: { field: "network", when: (value) => !value } },
@@ -252,7 +264,8 @@ describe("disabledWhen", () => {
         expect(inputById("command")).toBeEnabled();
     });
 
-    it("keeps a field disabled that is disabled in its config", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps a field disabled that is disabled in its config»।
+    it("Dependent and calculated form fields: keeps a field disabled that is disabled in its config", () => {
         renderFields([
             { type: "text", name: "detail", disabled: true, disabledWhen: { field: "kind", equals: "locked" } },
         ]);
@@ -260,7 +273,8 @@ describe("disabledWhen", () => {
         expect(inputById("detail")).toBeDisabled();
     });
 
-    it("inside a row, reads the field of the same row", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «inside a row, reads the field of the same row»।
+    it("Dependent and calculated form fields: inside a row, reads the field of the same row", () => {
         renderFields(
             [
                 {
@@ -308,7 +322,8 @@ describe("field array as a table", () => {
 
     const twoLines = { lines: [{ description: "A", amount: 1 }, { description: "B", amount: 2 }] };
 
-    it("draws a heading with the Add button, a header row of column names, and one row per item", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws a heading with the Add button, a header row of column names, and one row per item»।
+    it("Dependent and calculated form fields: draws a heading with the Add button, a header row of column names, and one row per item", () => {
         const { container } = renderFields([lines()], { data: twoLines });
 
         expect(screen.getByRole("heading", { name: "thing.lines.title" })).toBeInTheDocument();
@@ -327,7 +342,8 @@ describe("field array as a table", () => {
         expect(screen.getByText("thing.lines.item 2")).toBeInTheDocument();
     });
 
-    it("adds a row with defaultItem and removes a row, without submitting", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds a row with defaultItem and removes a row, without submitting»।
+    it("Dependent and calculated form fields: adds a row with defaultItem and removes a row, without submitting", async () => {
         renderFields([lines()], { data: twoLines });
         const user = userEvent.setup();
         await user.click(screen.getByRole("button", { name: "thing.lines.add" }));
@@ -341,7 +357,8 @@ describe("field array as a table", () => {
         expect(writeRequests()).toHaveLength(0);
     });
 
-    it("disables the remove buttons at minItems, and hides Add at maxItems", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables the remove buttons at minItems, and hides Add at maxItems»।
+    it("Dependent and calculated form fields: disables the remove buttons at minItems, and hides Add at maxItems", () => {
         renderFields([lines({ maxItems: 1 })], { data: { lines: [{ description: "A", amount: 1 }] } });
 
         screen
@@ -350,7 +367,8 @@ describe("field array as a table", () => {
         expect(screen.queryByRole("button", { name: "thing.lines.add" })).not.toBeInTheDocument();
     });
 
-    it("reserveErrorSpace keeps a line free under every row field", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reserveErrorSpace keeps a line free under every row field»।
+    it("Dependent and calculated form fields: reserveErrorSpace keeps a line free under every row field", () => {
         const { container } = renderFields(
             [{ type: "text", name: "outside" }, lines({ reserveErrorSpace: true })],
             { data: twoLines },
@@ -360,7 +378,8 @@ describe("field array as a table", () => {
         expect(container.querySelectorAll(".min-h-\\[1\\.25rem\\]:not([aria-hidden])")).toHaveLength(4);
     });
 
-    it("leaves out a row field with permission false, from the header and the rows", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «leaves out a row field with permission false, from the header and the rows»।
+    it("Dependent and calculated form fields: leaves out a row field with permission false, from the header and the rows", () => {
         const { container } = renderFields(
             [
                 lines({
@@ -385,7 +404,8 @@ describe("conditions on more than one field", () => {
         mockApi();
     });
 
-    it("visibleWhen all: shown only while every rule passes", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «visibleWhen all: shown only while every rule passes»।
+    it("Dependent and calculated form fields: visibleWhen all: shown only while every rule passes", async () => {
         renderFields([
             { type: "text", name: "kind" },
             { type: "text", name: "plan" },
@@ -403,7 +423,8 @@ describe("conditions on more than one field", () => {
         expect(fieldById("extra")).toBeInTheDocument();
     });
 
-    it("visibleWhen any: shown while at least one rule passes, and reset when none does", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «visibleWhen any: shown while at least one rule passes, and reset when none does»।
+    it("Dependent and calculated form fields: visibleWhen any: shown while at least one rule passes, and reset when none does", async () => {
         renderFields(
             [
                 { type: "text", name: "status" },
@@ -428,7 +449,8 @@ describe("conditions on more than one field", () => {
         expect(await saveAndReadPayload(user)).toEqual({ status: "due", fund: "" });
     });
 
-    it("disabledWhen any: disabled while at least one rule passes", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disabledWhen any: disabled while at least one rule passes»।
+    it("Dependent and calculated form fields: disabledWhen any: disabled while at least one rule passes", () => {
         renderFields(
             [
                 {
@@ -455,7 +477,8 @@ describe("onChange effect", () => {
         { type: "text", name: "lot" },
     ];
 
-    it("writes the given values into other fields when the user changes the field", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «writes the given values into other fields when the user changes the field»।
+    it("Dependent and calculated form fields: writes the given values into other fields when the user changes the field", async () => {
         renderFields(fields, { data: { product: "a", lot: "L1", serials: ["s1"] } });
         const user = userEvent.setup();
         await user.type(inputById("product"), "b");
@@ -464,14 +487,16 @@ describe("onChange effect", () => {
         expect(await saveAndReadPayload(user)).toEqual({ product: "ab", lot: null, serials: [] });
     });
 
-    it("does not fire when the form opens with values", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not fire when the form opens with values»।
+    it("Dependent and calculated form fields: does not fire when the form opens with values", async () => {
         renderFields(fields, { data: { product: "a", lot: "L1", serials: ["s1"] } });
         await new Promise((resolve) => setTimeout(resolve, 50));
 
         expect(await saveAndReadPayload()).toEqual({ product: "a", lot: "L1", serials: ["s1"] });
     });
 
-    it("does not fire when an edit record arrives", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not fire when an edit record arrives»।
+    it("Dependent and calculated form fields: does not fire when an edit record arrives", async () => {
         mockApi((request) =>
             request.url === "/things/5"
                 ? { success: true, data: { id: 5, product: "a", lot: "L1", serials: ["s1"] } }
@@ -484,7 +509,8 @@ describe("onChange effect", () => {
         expect(inputById("lot")).toHaveValue("L1");
     });
 
-    it("fires when the user changes the field away and back", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «fires when the user changes the field away and back»।
+    it("Dependent and calculated form fields: fires when the user changes the field away and back", async () => {
         renderFields(fields, { data: { product: "a", lot: "L1" } });
         const user = userEvent.setup();
         await user.type(inputById("product"), "b");
@@ -495,7 +521,8 @@ describe("onChange effect", () => {
         await waitFor(() => expect(inputById("lot")).toHaveValue(""));
     });
 
-    it("inside a row, changes the fields of that row only; a leading slash names a top-level field", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «inside a row, changes the fields of that row only; a leading slash names a top-level field»।
+    it("Dependent and calculated form fields: inside a row, changes the fields of that row only; a leading slash names a top-level field", async () => {
         renderFields(
             [
                 { type: "text", name: "note" },
@@ -558,7 +585,8 @@ describe("field array with its own render", () => {
         ),
     };
 
-    it("draws your markup, with the fields of itemFields placed by name", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «draws your markup, with the fields of itemFields placed by name»।
+    it("Dependent and calculated form fields: draws your markup, with the fields of itemFields placed by name", () => {
         renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }] } });
 
         const article = screen.getByText("row 1").parentElement as HTMLElement;
@@ -568,14 +596,16 @@ describe("field array with its own render", () => {
         expect(inputById("lines.0.qty")).toHaveValue(2);
     });
 
-    it("keeps the fields' rules working, per row", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the fields' rules working, per row»।
+    it("Dependent and calculated form fields: keeps the fields' rules working, per row", async () => {
         renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }, { name: "hide", qty: 3 }] } });
 
         expect(fieldById("lines.0.qty")).toBeInTheDocument();
         expect(fieldById("lines.1.qty")).toBeNull();
     });
 
-    it("adds and removes rows through addRow and row.remove, within minItems and maxItems", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds and removes rows through addRow and row.remove, within minItems and maxItems»।
+    it("Dependent and calculated form fields: adds and removes rows through addRow and row.remove, within minItems and maxItems", async () => {
         renderFields([lines], { data: { lines: [{ name: "A", qty: 2 }] } });
         const user = userEvent.setup();
 
@@ -597,7 +627,8 @@ describe("smaller field options", () => {
         mockApi();
     });
 
-    it("step and reserveErrorSpace reach a number input", () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «step and reserveErrorSpace reach a number input»।
+    it("Dependent and calculated form fields: step and reserveErrorSpace reach a number input", () => {
         const { container } = renderFields([
             { type: "number", name: "price", step: "any", reserveErrorSpace: true },
             { type: "number", name: "count" },
@@ -608,7 +639,8 @@ describe("smaller field options", () => {
         expect(container.querySelectorAll(".min-h-\\[1\\.25rem\\]")).toHaveLength(1);
     });
 
-    it("a computed field with `display` draws that in place of the input, and still stores the value", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «a computed field with `display` draws that in place of the input, and still stores the value»।
+    it("Dependent and calculated form fields: a computed field with `display` draws that in place of the input, and still stores the value", async () => {
         renderFields(
             [
                 { type: "number", name: "amount" },
@@ -627,7 +659,8 @@ describe("smaller field options", () => {
         expect(await saveAndReadPayload()).toEqual({ amount: 4, double: 8 });
     });
 
-    it("dependsOn.isSet decides when the parent counts as chosen", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «dependsOn.isSet decides when the parent counts as chosen»।
+    it("Dependent and calculated form fields: dependsOn.isSet decides when the parent counts as chosen", async () => {
         mockApi((request) =>
             request.url === "/dropdown-lots/3" ? { success: true, data: [{ id: 9, name: "Lot 9" }] } : undefined,
         );

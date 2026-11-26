@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`stock forms > stock in > a fibre product: shows the cable fields and works the total from the metres 1`] = `
+exports[`stock forms > stock in > Stock movement forms: Fibre product: show cable fields and calculate the total from the length in metres 1`] = `
 <div
   class="space-y-3"
 >
@@ -702,7 +702,7 @@ exports[`stock forms > stock in > a fibre product: shows the cable fields and wo
 </div>
 `;
 
-exports[`stock forms > stock in > a serial product: one serial input per unit, and the expense amount follows the total 1`] = `
+exports[`stock forms > stock in > Stock movement forms: a serial product: one serial input per unit, and the expense amount follows the total 1`] = `
 <div
   class="space-y-3"
 >
@@ -1342,7 +1342,7 @@ exports[`stock forms > stock in > a serial product: one serial input per unit, a
 </div>
 `;
 
-exports[`stock forms > stock in > a serial product: one serial input per unit, and the expense amount follows the total 2`] = `
+exports[`stock forms > stock in > Stock movement forms: a serial product: one serial input per unit, and the expense amount follows the total 2`] = `
 {
   "data": {
     "expense": {
@@ -1386,7 +1386,7 @@ exports[`stock forms > stock in > a serial product: one serial input per unit, a
 }
 `;
 
-exports[`stock forms > stock out > a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 1`] = `
+exports[`stock forms > stock out > Stock movement forms: a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 1`] = `
 <div
   class="space-y-3"
 >
@@ -2126,7 +2126,7 @@ exports[`stock forms > stock out > a serial product: loads its details, fills th
 </div>
 `;
 
-exports[`stock forms > stock out > a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 2`] = `
+exports[`stock forms > stock out > Stock movement forms: a serial product: loads its details, fills the price from the lot, and picks serials up to the quantity 2`] = `
 {
   "data": {
     "client_id": null,

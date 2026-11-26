@@ -54,7 +54,8 @@ describe("ChangePasswordDialog", () => {
     useFetchMock.mockReset();
   });
 
-  it("opens on the reset password tab and keeps that tab after close and reopen", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens on the reset password tab and keeps that tab after close and reopen»।
+  it("Change password dialog: opens on the reset password tab and keeps that tab after close and reopen", async () => {
     const user = userEvent.setup();
     const { rerender, queryClient } = renderDialog();
 
@@ -96,7 +97,8 @@ describe("ChangePasswordDialog", () => {
     expect(reopened[1]).toHaveAttribute("hidden");
   });
 
-  it("requires a new username and does not submit the current username", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «requires a new username and does not submit the current username»।
+  it("Change password dialog: requires a new username and does not submit the current username", async () => {
     const user = userEvent.setup();
     renderDialog();
 
@@ -113,7 +115,8 @@ describe("ChangePasswordDialog", () => {
     expect(useFetchMock).not.toHaveBeenCalled();
   });
 
-  it("saves a new username and refreshes the profile", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «saves a new username and refreshes the profile»।
+  it("Change password dialog: saves a new username and refreshes the profile", async () => {
     const user = userEvent.setup();
     useFetchMock.mockResolvedValue({
       success: true,
@@ -138,7 +141,8 @@ describe("ChangePasswordDialog", () => {
     expect(updateProfile).toHaveBeenCalledWith({ username: "kamol.new" });
   });
 
-  it("shows a backend username validation error", async () => {
+  // ব্যবহারকারীর প্রোফাইল যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a backend username validation error»।
+  it("Change password dialog: shows a backend username validation error", async () => {
     const user = userEvent.setup();
     useFetchMock.mockResolvedValue({
       success: false,

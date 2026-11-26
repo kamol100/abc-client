@@ -35,7 +35,8 @@ function todayLabel(): string {
   }).format(new Date());
 }
 
-test("EX-F02 missing amount staff and type and an amount below 1 stay on the form", async ({ page, staff }) => {
+// খরচের আবশ্যক তথ্য না দিলে বা পরিমাণ ১-এর কম হলে ভুল দেখিয়ে ফর্ম খোলা রাখে কি না দেখি।
+test("EX-F02 Invalid expense: reject missing amount, staff, or type and amounts below 1", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.access");
   const before = await expenses(staff);
   const dialog = await openCreate(page);
@@ -54,7 +55,8 @@ test("EX-F02 missing amount staff and type and an amount below 1 stay on the for
   expect((await expenses(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("EX-F03 create starts on today's date and cancel stores nothing", async ({ page, staff }) => {
+// নতুন খরচে আজকের তারিখ থাকে এবং Cancel করলে কিছু সেভ হয় না কি না দেখি।
+test("EX-F03 New expense: default to today's date and save nothing when cancelled", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.access");
   const before = await expenses(staff);
   const voucher = `E2E-CANCEL-${randomUUID()}`;
@@ -77,7 +79,8 @@ async function openEdit(page: Page, expense: Expense) {
   return dialog;
 }
 
-test("EX-F04 edit hydrates the saved expense and cancel leaves it unchanged", async ({ page, staff }) => {
+// এডিট ফর্মে সংরক্ষিত খরচ লোড হয় এবং বাতিল করলে আগের মান থাকে কি না যাচাই করি।
+test("EX-F04 Edit expense: load the saved values and preserve them when cancelled", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.edit", "expenses.show");
   const listed = await expenses(staff);
   const expense = listed.data.find((row) => row.expense_id);
@@ -114,7 +117,8 @@ test("EX-F04 edit hydrates the saved expense and cancel leaves it unchanged", as
   expect(expenseSnapshot(await expenseDetail(staff, before.id))).toEqual(expenseSnapshot(before));
 });
 
-test("EX-F05 list and edit render empty relations without null or undefined markers", async ({ page, staff }) => {
+// সম্পর্কিত তথ্য না থাকলে তালিকা ও এডিট ফর্মে null বা undefined লেখা দেখায় না কি না দেখি।
+test("EX-F05 Missing expense details: display empty related fields without null or undefined text", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.show", "expenses.edit");
   const listed = await expenses(staff);
   if (!listed.data.length) throw new Error("Relation rendering needs a visible expense.");
@@ -137,7 +141,8 @@ test("EX-F05 list and edit render empty relations without null or undefined mark
   await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
 });
 
-test("EX-F06 a voucher over 255 and a note over 1000 are rejected and create nothing", async ({ page, staff }) => {
+// ভাউচার ও নোটের দৈর্ঘ্যসীমা ছাড়ালে ভুল দেখায় এবং খরচ তৈরি হয় না কি না যাচাই করি।
+test("EX-F06 Expense text limits: reject vouchers over 255 and notes over 1000 characters without saving", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.access");
   const before = await expenses(staff);
   const staffOptions = choices(await staff.get("dropdown-staffs")).filter((choice) => choice.name.trim().length > 0);
@@ -160,7 +165,8 @@ test("EX-F06 a voucher over 255 and a note over 1000 are rejected and create not
   expect((await expenses(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("EX-F07 canceling an edited draft preserves the saved expense", async ({ page, staff }) => {
+// খরচের তথ্য বদলে Cancel করলে সংরক্ষিত তথ্য অপরিবর্তিত থাকে কি না দেখি।
+test("EX-F07 Cancel expense changes: keep the original saved expense", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.edit", "expenses.show");
   const listed = await expenses(staff);
   const expense = listed.data.find((row) => row.expense_id);
@@ -177,7 +183,8 @@ test("EX-F07 canceling an edited draft preserves the saved expense", async ({ pa
   expect((await expenses(staff, `any=${encodeURIComponent(voucher)}`)).pagination.total).toBe(0);
 });
 
-test("EX-U03 an admin can open the fund choices and cancel stores nothing", async ({ page, staff }) => {
+// অ্যাডমিন ফান্ডের তালিকা দেখতে পারে এবং ফর্ম বাতিল করলে খরচ তৈরি হয় না কি না দেখি।
+test("EX-U03 Expense fund selection: show available funds to an administrator and save nothing on cancel", async ({ page, staff }) => {
   requirePermissions(staff, "expenses.access");
   if (!canChooseFund(staff)) {
     throw new Error("Fund choice check needs Admin, Super Admin, or expenses.fund.update.");

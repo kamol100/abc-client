@@ -200,13 +200,15 @@ describe("BulkInvoicePayDialog fund selection", () => {
         fundApi.value = undefined;
     });
 
-    it("asks the API for the funds this user may pay into", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «asks the API for the funds this user may pay into»।
+    it("Bulk invoice payment dialog: asks the API for the funds this user may pay into", async () => {
         renderDialog();
         await waitFor(() => expect(fundSelect()).toBeInTheDocument());
         expect(fundApi.value).toBe("/dropdown-funds?scope=invoice-payment");
     });
 
-    it("preselects and locks the assigned fund for a non-admin", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «preselects and locks the assigned fund for a non-admin»।
+    it("Bulk invoice payment dialog: preselects and locks the assigned fund for a non-admin", async () => {
         const user = userEvent.setup();
         renderDialog();
 
@@ -222,7 +224,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         );
     });
 
-    it("warns and blocks payment when a non-admin has no fund", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «warns and blocks payment when a non-admin has no fund»।
+    it("Bulk invoice payment dialog: warns and blocks payment when a non-admin has no fund", () => {
         session.staff = { fund: null };
         renderDialog();
 
@@ -235,7 +238,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         expect(mutate).not.toHaveBeenCalled();
     });
 
-    it("lets a staff member with invoices.change-fund choose another fund", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets a staff member with invoices.change-fund choose another fund»।
+    it("Bulk invoice payment dialog: lets a staff member with invoices.change-fund choose another fund", async () => {
         const user = userEvent.setup();
         session.canChangeFund = true;
         renderDialog();
@@ -253,7 +257,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         );
     });
 
-    it("lets a staff member with invoices.change-fund pay when no fund is assigned", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets a staff member with invoices.change-fund pay when no fund is assigned»।
+    it("Bulk invoice payment dialog: lets a staff member with invoices.change-fund pay when no fund is assigned", async () => {
         const user = userEvent.setup();
         session.canChangeFund = true;
         session.staff = { fund: null };
@@ -273,7 +278,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         );
     });
 
-    it("locks an Admin or Super Admin role without the permission to its own fund", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «locks an Admin or Super Admin role without the permission to its own fund»।
+    it("Bulk invoice payment dialog: locks an Admin or Super Admin role without the permission to its own fund", async () => {
         for (const role of ["Admin", "Super Admin"]) {
             session.roles = [role];
             const { unmount } = renderDialog();
@@ -284,7 +290,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         }
     });
 
-    it("lets invoices.bkash-fund-access start on the own fund and switch to another allowed fund", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets invoices.bkash-fund-access start on the own fund and switch to another allowed fund»।
+    it("Bulk invoice payment dialog: lets invoices.bkash-fund-access start on the own fund and switch to another allowed fund", async () => {
         const user = userEvent.setup();
         session.canUseBkash = true;
         renderDialog();
@@ -299,7 +306,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         expect(mutate).toHaveBeenCalledWith(expect.objectContaining({ fund_id: 9 }));
     });
 
-    it("lets invoices.bkash-fund-access pay without an own fund (the bKash fund is allowed)", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «lets invoices.bkash-fund-access pay without an own fund (the bKash fund is allowed)»।
+    it("Bulk invoice payment dialog: lets invoices.bkash-fund-access pay without an own fund (the bKash fund is allowed)", () => {
         session.canUseBkash = true;
         session.staff = { fund: null };
         renderDialog();
@@ -310,7 +318,8 @@ describe("BulkInvoicePayDialog fund selection", () => {
         expect(submitButton()).toBeEnabled();
     });
 
-    it("does not select a fund or show the unassigned warning while user data is missing", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not select a fund or show the unassigned warning while user data is missing»।
+    it("Bulk invoice payment dialog: does not select a fund or show the unassigned warning while user data is missing", () => {
         session.staff = {};
         renderDialog();
 
@@ -332,7 +341,8 @@ describe("BulkInvoicePayDialog discount", () => {
         session.staff = { fund: { id: 4, name: "cash" } };
     });
 
-    it("keeps the pay dialog open and recalculates the discount and due", async () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the pay dialog open and recalculates the discount and due»।
+    it("Bulk invoice payment dialog: keeps the pay dialog open and recalculates the discount and due", async () => {
         const user = userEvent.setup();
         const onOpenChange = vi.fn();
         renderDialog({

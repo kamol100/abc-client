@@ -31,7 +31,8 @@ function renderPackageDue(client: SmsSentClientRow) {
 }
 
 describe("sms sent package due column", () => {
-  it("shows the summed due invoice total for the client", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the summed due invoice total for the client»।
+  it("SMS sent column: shows the summed due invoice total for the client", () => {
     renderPackageDue({
       name: "Kamal",
       package: { id: 1, name: "20 Mbps" },
@@ -50,7 +51,8 @@ describe("sms sent package due column", () => {
     expect(screen.getByText("client.table.deadline: 10")).toBeInTheDocument();
   });
 
-  it("shows zero due when the client has no open invoice", () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows zero due when the client has no open invoice»।
+  it("SMS sent column: shows zero due when the client has no open invoice", () => {
     renderPackageDue({
       name: "Kamal",
       package: { id: 1, name: "20 Mbps" },

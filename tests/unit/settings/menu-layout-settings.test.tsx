@@ -44,7 +44,8 @@ describe("MenuLayoutSettingsPage", () => {
     app.settings = {};
   });
 
-  it("tells staff without menu-layout.edit that they cannot change the menu", () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «tells staff without menu-layout.edit that they cannot change the menu»।
+  it("Menu layout settings: tells staff without menu-layout.edit that they cannot change the menu", () => {
     app.permissions = new Set(["clients.access"]);
     renderPage();
 
@@ -52,7 +53,8 @@ describe("MenuLayoutSettingsPage", () => {
     expect(screen.queryByRole("button", { name: "menu_layout.actions.save" })).not.toBeInTheDocument();
   });
 
-  it("changes an icon and saves the menu for everyone", async () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «changes an icon and saves the menu for everyone»।
+  it("Menu layout settings: changes an icon and saves the menu for everyone", async () => {
     const user = userEvent.setup();
     useFetch.mockResolvedValue({
       success: true,
@@ -83,7 +85,8 @@ describe("MenuLayoutSettingsPage", () => {
     );
   });
 
-  it("resets a custom menu to the default after confirming", async () => {
+  // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «resets a custom menu to the default after confirming»।
+  it("Menu layout settings: resets a custom menu to the default after confirming", async () => {
     const user = userEvent.setup();
     app.settings = { menu_layout: { items: [{ id: 13, icon: "headset", children: [] }, { id: 1, icon: null, children: [] }], updated_by: "vp" } };
     useFetch.mockResolvedValue({ success: true, data: { layout: null, updated_at: null, updated_by: null, scope: "company" } });

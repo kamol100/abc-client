@@ -61,7 +61,8 @@ describe("PayInvoice return origin", () => {
     startPayment.mockReset();
   });
 
-  it("uses the current dashboard path when payment starts", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the current dashboard path when payment starts»।
+  it("Pay invoice return: uses the current dashboard path when payment starts", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("location", { pathname: "/client/dashboard" });
 
@@ -73,7 +74,8 @@ describe("PayInvoice return origin", () => {
     );
   });
 
-  it("uses the invoice list when payment starts there", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «uses the invoice list when payment starts there»।
+  it("Pay invoice return: uses the invoice list when payment starts there", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("location", { pathname: "/client/invoices" });
 
@@ -85,7 +87,8 @@ describe("PayInvoice return origin", () => {
     );
   });
 
-  it("keeps quick pay on /pay", async () => {
+  // বিকাশ পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps quick pay on /pay»।
+  it("Pay invoice return: keeps quick pay on /pay", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("location", { pathname: "/pay" });
 

@@ -78,7 +78,8 @@ function capability(overrides: Partial<Parameters<typeof platformAgentControls>[
 }
 
 describe("platform inbox identity", () => {
-    it("keeps company, domain, reseller and requester on the row", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps company, domain, reseller and requester on the row»।
+    it("Support inbox data: keeps company, domain, reseller and requester on the row", () => {
         const thread = parsePlatformThread(row());
         expect(thread?.company).toEqual({ uuid: COMPANY, name: "North Net", domain: "north.example" });
         expect(thread?.reseller).toEqual({ uuid: "55555555-5555-4555-8555-555555555555", name: "North" });
@@ -87,7 +88,8 @@ describe("platform inbox identity", () => {
         expect(thread?.unread_count).toBe(2);
     });
 
-    it("drops a company or requester value that is not a uuid", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops a company or requester value that is not a uuid»।
+    it("Support inbox data: drops a company or requester value that is not a uuid", () => {
         const params = platformListParams("issue", {
             company: "1",
             reseller: "north",
@@ -109,12 +111,14 @@ describe("platform inbox identity", () => {
 });
 
 describe("platform inbox controls", () => {
-    it("hides every action from a read-only agent", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides every action from a read-only agent»।
+    it("Support inbox data: hides every action from a read-only agent", () => {
         const controls = platformAgentControls(parsePlatformThread(row())!, capability());
         expect(controls).toMatchObject({ send: false, upload: false, transition: false, assign: false, convert: false, readOnly: true });
     });
 
-    it("gives a reply agent send and upload, and no assignee list", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «gives a reply agent send and upload, and no assignee list»।
+    it("Support inbox data: gives a reply agent send and upload, and no assignee list", () => {
         const thread = parsePlatformThread(row({ kind: "chat", abilities: abilities({ can_reply: true, can_upload: true, can_assign: true, can_convert: true }) }))!;
         const replyOnly = platformAgentControls(thread, capability({ reply: true, upload: true, assign: true }));
         expect(replyOnly.send).toBe(true);
@@ -127,7 +131,8 @@ describe("platform inbox controls", () => {
         expect(noUpload.upload).toBe(false);
     });
 
-    it("shows manager actions only when the record ability and the named permission both allow them", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows manager actions only when the record ability and the named permission both allow them»।
+    it("Support inbox data: shows manager actions only when the record ability and the named permission both allow them", () => {
         const thread = parsePlatformThread(row({
             kind: "chat",
             abilities: abilities({
@@ -155,7 +160,8 @@ describe("platform inbox controls", () => {
         expect(deniedByRecord.readOnly).toBe(true);
     });
 
-    it("sends assignment and status with the expected version and no ownership fields", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «sends assignment and status with the expected version and no ownership fields»।
+    it("Support inbox data: sends assignment and status with the expected version and no ownership fields", () => {
         const assign = platformAssignBody(4, null);
         const status = platformStatusBody(4, "waiting_for_requester");
         const read = platformReadBody(8);
@@ -169,7 +175,8 @@ describe("platform inbox controls", () => {
 });
 
 describe("platform inbox cache", () => {
-    it("keeps each agent's inbox cache separate from requester cache", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps each agent's inbox cache separate from requester cache»।
+    it("Support inbox data: keeps each agent's inbox cache separate from requester cache", () => {
         const first = platformQueryKey({ identity: "agent-a", resource: "threads" });
         const second = platformQueryKey({ identity: "agent-b", resource: "threads" });
         expect(first).not.toEqual(second);
@@ -177,7 +184,8 @@ describe("platform inbox cache", () => {
         expect(supportQueryKey({ identity: "agent-a", scope: "own", resource: "threads" })).not.toEqual(first);
     });
 
-    it("polls the inbox every 10 seconds and stops when the tab is hidden", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «polls the inbox every 10 seconds and stops when the tab is hidden»।
+    it("Support inbox data: polls the inbox every 10 seconds and stops when the tab is hidden", () => {
         const visible = {
             surface: "inbox" as const,
             documentVisible: true,
@@ -192,20 +200,23 @@ describe("platform inbox cache", () => {
         expect(supportPollInterval({ ...visible, failureCount: 2 })).toBe(40_000);
     });
 
-    it("keeps the current row order while an agent is acting and still shows a new request", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the current row order while an agent is acting and still shows a new request»।
+    it("Support inbox data: keeps the current row order while an agent is acting and still shows a new request", () => {
         const previous = [{ uuid: "b" }, { uuid: "a" }];
         const incoming = [{ uuid: "c" }, { uuid: "a" }, { uuid: "b" }];
         expect(mergeInboxPage(previous, incoming, true).map((item) => item.uuid)).toEqual(["c", "b", "a"]);
         expect(mergeInboxPage(previous, incoming, false).map((item) => item.uuid)).toEqual(["c", "a", "b"]);
     });
 
-    it("treats a failed empty inbox as stale and a denial as no rows", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «treats a failed empty inbox as stale and a denial as no rows»।
+    it("Support inbox data: treats a failed empty inbox as stale and a denial as no rows", () => {
         expect(inboxListState({ denied: false, failed: true, rows: [] })).toEqual({ rows: [], stale: true, showTable: false });
         expect(inboxListState({ denied: false, failed: true, rows: [{ uuid: "a" }] }).showTable).toBe(true);
         expect(inboxListState({ denied: true, failed: true, rows: [{ uuid: "a" }] })).toEqual({ rows: [], stale: false, showTable: false });
     });
 
-    it("does not duplicate an acknowledged reply when the poll returns it again", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «does not duplicate an acknowledged reply when the poll returns it again»।
+    it("Support inbox data: does not duplicate an acknowledged reply when the poll returns it again", () => {
         const message: SupportMessage = {
             uuid: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
             sequence: 4,
@@ -224,7 +235,8 @@ describe("platform inbox cache", () => {
         expect(supportHistoryUrl("platform", "not-a-uuid")).toBeNull();
     });
 
-    it("reads assignee names only from the admin assignee payload", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads assignee names only from the admin assignee payload»।
+    it("Support inbox data: reads assignee names only from the admin assignee payload", () => {
         expect(parseAssignees({
             data: [
                 { uuid: AGENT, name: "Rafi" },
@@ -243,7 +255,8 @@ describe("platform inbox cache", () => {
 });
 
 describe("platform inbox translations", () => {
-    it("keeps the inbox menu keys aligned", () => {
+    // প্ল্যাটফর্ম সাপোর্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the inbox menu keys aligned»।
+    it("Support inbox data: keeps the inbox menu keys aligned", () => {
         const english = JSON.parse(readFileSync("public/lang/en.json", "utf8")) as { menu: { platform_support_inbox: unknown } };
         const bangla = JSON.parse(readFileSync("public/lang/bn.json", "utf8")) as { menu: { platform_support_inbox: unknown } };
         expect(english.menu.platform_support_inbox).toBeTruthy();

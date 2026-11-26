@@ -33,7 +33,8 @@ const october21 = /October 21st, 2026/;
 const october23 = /October 23rd, 2026/;
 
 describe("filter date range closeOnSelectDate", () => {
-    it("keeps the calendar open after a completed range", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the calendar open after a completed range»।
+    it("Filter date range close: keeps the calendar open after a completed range", async () => {
         const user = userEvent.setup({ skipHover: true });
         render(
             <FormFilter

@@ -11,7 +11,8 @@ import {
   uniqueTemplate,
 } from "@/tests/e2e/sms-send/fixtures";
 
-test("FT087-07 a template hydrates its saved message and cancelling the quote keeps the draft", async ({ page, staff }) => {
+// টেমপ্লেটের সংরক্ষিত বার্তা আসে এবং কোট বাতিল করলেও খসড়া থাকে কি না দেখি।
+test("FT087-07 SMS template: load the saved message and retain the draft when cancelling the quote", async ({ page, staff }) => {
   const template = uniqueTemplate(await smsTemplates(staff), "custom_other");
   const detail = await smsTemplateDetail(staff, template.id);
   await page.goto(`/sms-send?phone=${PREVIEW_PHONE}`);
@@ -29,7 +30,8 @@ test("FT087-07 a template hydrates its saved message and cancelling the quote ke
   await expect(page.getByRole("heading", { name: "Send SMS", exact: true })).toBeVisible();
 });
 
-test("FT087-13 mobile width, keyboard, Bangla, and dark mode keep Send SMS usable", async ({ page, staff }) => {
+// মোবাইলে কিবোর্ড, বাংলা ও ডার্ক থিমে SMS ফর্ম ব্যবহারযোগ্য থাকে কি না দেখি।
+test("FT087-13 Send SMS on mobile: support keyboard use, Bangla, and dark theme", async ({ page, staff }) => {
   const template = uniqueTemplate(await smsTemplates(staff), "custom_other");
   const detail = await smsTemplateDetail(staff, template.id);
   await page.setViewportSize({ width: 390, height: 844 });

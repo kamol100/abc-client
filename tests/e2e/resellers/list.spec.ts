@@ -15,7 +15,8 @@ import {
 } from "@/tests/e2e/resellers/fixtures";
 import type { Session } from "@/tests/e2e/clients/fixtures";
 
-test("RS-L01 list identities contact status counts and wallet match the API after reload", async ({ page, staff }) => {
+// রিসেলারের যোগাযোগ, স্ট্যাটাস, ক্লায়েন্ট সংখ্যা ও ওয়ালেটের হিসাব রিলোডের পর API-এর সঙ্গে মেলে কি না দেখি।
+test("RS-L01 Reseller list: show saved contact details, status, client counts, and wallet balance after reload", async ({ page, staff }) => {
   const listed = await resellers(staff);
   await page.goto("/resellers");
   const title = listed.pagination.total ? `Resellers (${listed.pagination.total})` : "Resellers";
@@ -35,7 +36,8 @@ async function expectAnyPage(staff: Session, rows: Reseller[], term: string) {
   }
 }
 
-test("RS-L02 name filter includes the selected reseller and reset restores the baseline", async ({ page, staff }) => {
+// নাম দিয়ে সঠিক রিসেলার আসে এবং সার্চ মুছলে আগের তালিকা ফেরে কি না দেখি।
+test("RS-L02 Search resellers by name: show matches and restore the list when cleared", async ({ page, staff }) => {
   const reseller = await sample(staff);
   const expected = await resellers(staff, `any=${encodeURIComponent(reseller.name)}`);
   expect(expected.data.some((row) => row.id === reseller.id)).toBe(true);
@@ -47,7 +49,8 @@ test("RS-L02 name filter includes the selected reseller and reset restores the b
   await expectResellerRows(page, (await resellers(staff)).data);
 });
 
-test("RS-L02 phone filter matches the API and excludes a non-matching number", async ({ page, staff }) => {
+// ফোন নম্বর ফিল্টারে মিল থাকা রিসেলার আসে এবং অন্য নম্বর বাদ যায় কি না দেখি।
+test("RS-L02 Search resellers by phone: show matching numbers and hide nonmatches", async ({ page, staff }) => {
   const listed = await resellers(staff);
   const reseller = listed.data.find((row) => (row.phone ?? "").length >= 3);
   if (!reseller?.phone) throw new Error("Phone filter needs a reseller phone of at least 3 characters.");
@@ -64,7 +67,8 @@ test("RS-L02 phone filter matches the API and excludes a non-matching number", a
   await expectResellerRows(page, none.data);
 });
 
-test("RS-L02 username filter keeps only matching usernames and an unknown username is empty", async ({ page, staff }) => {
+// ইউজারনেম দিয়ে সঠিক ফল আসে এবং অজানা ইউজারনেমে তালিকা খালি থাকে কি না দেখি।
+test("RS-L02 Search resellers by username: show matches and no results for an unknown username", async ({ page, staff }) => {
   const listed = await resellers(staff);
   let username = "";
   let resellerId = "";
@@ -90,7 +94,8 @@ test("RS-L02 username filter keeps only matching usernames and an unknown userna
   await expectResellerRows(page, none.data);
 });
 
-test("RS-L02 status filter matches included rows and reload clears it", async ({ page, staff }) => {
+// স্ট্যাটাসে সঠিক রিসেলার আসে এবং রিলোডে ফিল্টার সরে যায় কি না দেখি।
+test("RS-L02 Reseller status filter: show matching accounts and clear the filter on reload", async ({ page, staff }) => {
   const reseller = await sample(staff);
   const status = Number(reseller.status ?? 0) === 1 ? 1 : 0;
   const expected = await resellers(staff, `status=${status}`);
@@ -103,7 +108,8 @@ test("RS-L02 status filter matches included rows and reload clears it", async ({
   await expectResellerRows(page, (await resellers(staff)).data);
 });
 
-test("RS-L02 zone filter matches the API page for the selected zone", async ({ page, staff }) => {
+// জোন বেছে সেই জোনের রিসেলার দেখা যায় কি না API-এর সঙ্গে মিলিয়ে দেখি।
+test("RS-L02 Reseller zone filter: show the selected zone's resellers", async ({ page, staff }) => {
   const listed = await resellers(staff);
   const reseller = listed.data.find((row) => row.zone?.name);
   if (!reseller?.zone) throw new Error("Zone filter needs a reseller with a zone on the first page.");
@@ -116,7 +122,8 @@ test("RS-L02 zone filter matches the API page for the selected zone", async ({ p
   await expectResellerRows(page, expected.data);
 });
 
-test("RS-L02 network filter matches the API page for the selected network", async ({ page, staff }) => {
+// নেটওয়ার্ক বেছে সেই নেটওয়ার্কের রিসেলার দেখা যায় কি না যাচাই করি।
+test("RS-L02 Reseller network filter: show the selected network's resellers", async ({ page, staff }) => {
   const listed = await resellers(staff);
   let network: { id: number; name: string } | undefined;
   for (const row of listed.data) {
@@ -137,7 +144,8 @@ test("RS-L02 network filter matches the API page for the selected network", asyn
   if (probe) expect((await resellerDetail(staff, probe.id)).network?.id).toBe(network.id);
 });
 
-test("RS-L02 combined name and status filters agree with the API", async ({ page, staff }) => {
+// রিসেলারের নাম ও স্ট্যাটাস একসঙ্গে মেলা অ্যাকাউন্টই আসে কি না দেখি।
+test("RS-L02 Combined reseller filters: show accounts matching both name and status", async ({ page, staff }) => {
   const reseller = await sample(staff);
   const status = Number(reseller.status ?? 0) === 1 ? 1 : 0;
   const expected = await resellers(staff, `any=${encodeURIComponent(reseller.name)}&status=${status}`);
@@ -153,7 +161,8 @@ test("RS-L02 combined name and status filters agree with the API", async ({ page
   await expectResellerRows(page, (await resellers(staff)).data);
 });
 
-test("RS-L03 pagination buttons match the current page bounds", async ({ page, staff }) => {
+// রিসেলারের বর্তমান পেজের সীমা অনুযায়ী পেজের বোতাম কাজ করে কি না দেখি।
+test("RS-L03 Reseller pagination: enable page navigation only within available pages", async ({ page, staff }) => {
   const first = await resellers(staff);
   expect(first.pagination.total).toBeGreaterThan(0);
   await page.goto("/resellers");
@@ -171,7 +180,8 @@ test("RS-L03 pagination buttons match the current page bounds", async ({ page, s
   await expectResellerRows(page, first.data);
 });
 
-test("RS-L04 an unmatched name is empty and clearing it restores the list", async ({ page, staff }) => {
+// না মেলা নাম খুঁজলে খালি তালিকা আসে এবং মুছলে আগের রিসেলার ফিরে আসে কি না দেখি।
+test("RS-L04 Reseller search with no matches: show an empty list and recover when cleared", async ({ page, staff }) => {
   const reseller = await sample(staff);
   await page.goto("/resellers");
   await expect(resellerRow(page, reseller)).toBeVisible();

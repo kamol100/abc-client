@@ -57,7 +57,8 @@ function filterButton(): HTMLElement {
 }
 
 describe("toolbar action while filtering", () => {
-  it("keeps the selection action beside the open filter fields", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the selection action beside the open filter fields»।
+  it("Toolbar filter action: keeps the selection action beside the open filter fields", async () => {
     const user = userEvent.setup();
 
     render(
@@ -89,7 +90,8 @@ describe("toolbar action while filtering", () => {
     expect(screen.getByPlaceholderText("client.placeholder")).toBeVisible();
   });
 
-  it("keeps the add slot after the filter button, open or closed", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the add slot after the filter button, open or closed»।
+  it("Toolbar filter action: keeps the add slot after the filter button, open or closed", async () => {
     const user = userEvent.setup();
     const bulk = <button type="button">Bulk action</button>;
 
@@ -121,7 +123,8 @@ describe("toolbar action while filtering", () => {
     expect(filterButton().compareDocumentPosition(open[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("hides a center item with inFilterRow false while the filter is open", async () => {
+  // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides a center item with inFilterRow false while the filter is open»।
+  it("Toolbar filter action: hides a center item with inFilterRow false while the filter is open", async () => {
     const user = userEvent.setup();
 
     render(

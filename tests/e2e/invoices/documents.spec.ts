@@ -16,7 +16,8 @@ async function openDocument(page: Parameters<typeof row>[0], staff: Parameters<t
   return { saved, dialog };
 }
 
-test("IV-D01 selected invoice document shows API identity and persisted line descriptions", async ({ page, staff }) => {
+// নির্বাচিত ইনভয়েসের পরিচয় ও সংরক্ষিত লাইনের বিবরণ ডকুমেন্টে দেখা যায় কি না দেখি।
+test("IV-D01 Invoice document: show the selected invoice and its saved line descriptions", async ({ page, staff }) => {
   const { saved, dialog } = await openDocument(page, staff);
   if (!saved.lines?.length) throw new Error("Document fixture requires persisted invoice lines.");
   for (const line of saved.lines) await expect(dialog.getByRole("cell", { name: line.description, exact: true })).toBeVisible();
@@ -28,7 +29,8 @@ test("IV-D01 selected invoice document shows API identity and persisted line des
   await expect(reopened.dialog.locator(".invoice-view-meta")).toContainText(saved.trackID);
 });
 
-test("IV-D04 document print invokes browser print with selected identity and cleans up", async ({ page, staff }) => {
+// নির্বাচিত ইনভয়েস প্রিন্টে যায় এবং অস্থায়ী প্রিন্ট কনটেন্ট পরে সরানো হয় কি না দেখি।
+test("IV-D04 Print invoice: print the selected document and remove temporary print content", async ({ page, staff }) => {
   const { saved, dialog } = await openDocument(page, staff);
   await page.evaluate(() => {
     window.print = () => {
@@ -46,7 +48,8 @@ test("IV-D04 document print invokes browser print with selected identity and cle
   await expect(page).toHaveTitle(originalTitle);
 });
 
-test("IV-A05 cancelling deletion preserves the selected due invoice", async ({ page, staff }) => {
+// বকেয়া ইনভয়েস মুছে ফেলা বাতিল করলে সেটি সংরক্ষিত থাকে কি না যাচাই করি।
+test("IV-A05 Cancel invoice deletion: keep the selected due invoice unchanged", async ({ page, staff }) => {
   requirePermissions(staff, "invoices.delete");
   const item = await sample(staff, "due");
   const before = await detail(staff, item.id);

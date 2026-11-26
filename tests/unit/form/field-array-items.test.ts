@@ -14,7 +14,8 @@ const deductionFields: FieldConfig[] = [
 ];
 
 describe("normalizeFieldArrayItems", () => {
-  it("drops salary rows that only have an empty label and value", () => {
+  // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops salary rows that only have an empty label and value»।
+  it("Field array items: drops salary rows that only have an empty label and value", () => {
     const items = normalizeFieldArrayItems(
       [
         { items_label: "", items_value: 0 },
@@ -28,7 +29,8 @@ describe("normalizeFieldArrayItems", () => {
     expect(items).toEqual([{ items_label: "Basic", items_value: 1000 }]);
   });
 
-  it("drops blank deductions and keeps a labeled amount", () => {
+  // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «drops blank deductions and keeps a labeled amount»।
+  it("Field array items: drops blank deductions and keeps a labeled amount", () => {
     const items = normalizeFieldArrayItems(
       [
         { deductions_label: "", deductions_value: 0 },
@@ -41,7 +43,8 @@ describe("normalizeFieldArrayItems", () => {
     expect(items).toEqual([{ deductions_label: "Tax", deductions_value: 150 }]);
   });
 
-  it("maps a filled label and value onto the salary item fields", () => {
+  // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps a filled label and value onto the salary item fields»।
+  it("Field array items: maps a filled label and value onto the salary item fields", () => {
     const items = normalizeFieldArrayItems(
       [{ label: "Allowance", value: 200 }],
       salaryItemFields,

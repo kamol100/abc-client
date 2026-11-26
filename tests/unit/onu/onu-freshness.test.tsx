@@ -18,7 +18,8 @@ const asOf = "2026-09-29T08:00:00+00:00";
 const at = formatDateTime(asOf);
 
 describe("ONU data freshness", () => {
-    it("explains why a status is unknown", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «explains why a status is unknown»।
+    it("ONU freshness: explains why a status is unknown", () => {
         expect(unknownStatusText("olt_down", asOf, i18n.t)).toBe(`onu.unknown.olt_down|time=${at}`);
         expect(unknownStatusText("stale", asOf, i18n.t)).toBe(`onu.unknown.stale|time=${at}`);
         expect(unknownStatusText("never_polled", null, i18n.t)).toBe("onu.unknown.never_polled");
@@ -26,7 +27,8 @@ describe("ONU data freshness", () => {
         expect(unknownStatusText(null, null, i18n.t)).toBe("onu.unknown.generic");
     });
 
-    it("notes old numbers on the OLT cards only when the API says they are not fresh", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «notes old numbers on the OLT cards only when the API says they are not fresh»।
+    it("ONU freshness: notes old numbers on the OLT cards only when the API says they are not fresh", () => {
         expect(isStale(undefined)).toBe(false);
         expect(staleNoteText({ fresh: true, reason: null, as_of: asOf }, i18n.t)).toBeNull();
         expect(staleNoteText({ fresh: false, reason: "olt_down", as_of: asOf }, i18n.t)).toBe(`olt.onu_data.olt_down|time=${at}`);
@@ -34,7 +36,8 @@ describe("ONU data freshness", () => {
         expect(staleNoteText({ fresh: false, reason: "never_polled", as_of: null }, i18n.t)).toBe("olt.onu_data.never_polled");
     });
 
-    it("shows a grey Unknown badge instead of Online for an old status", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a grey Unknown badge instead of Online for an old status»।
+    it("ONU freshness: shows a grey Unknown badge instead of Online for an old status", () => {
         render(<OnuStatusBadge status="online" statusKnown={false} unknownReason="olt_down" asOf={asOf} />);
         expect(screen.getByText("onu.status.unknown")).toBeInTheDocument();
         expect(screen.queryByText("onu.status.online")).not.toBeInTheDocument();
@@ -43,7 +46,8 @@ describe("ONU data freshness", () => {
 });
 
 describe("not answering", () => {
-    it("only while still up with failed checks in a row", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «only while still up with failed checks in a row»।
+    it("ONU freshness: only while still up with failed checks in a row", () => {
         expect(notAnswering("up", 1, 2)).toEqual({ count: 1, threshold: 2 });
         expect(notAnswering("up", 0, 2)).toBeNull();
         expect(notAnswering("down", 3, 2)).toBeNull();
@@ -51,7 +55,8 @@ describe("not answering", () => {
         expect(notAnswering("up", 1, null)).toEqual({ count: 1, threshold: 2 });
     });
 
-    it("renders the amber line with n of threshold", () => {
+    // ONU-এর অবস্থা ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «renders the amber line with n of threshold»।
+    it("ONU freshness: renders the amber line with n of threshold", () => {
         const { rerender } = render(<NotAnsweringBadge state="up" failures={1} threshold={3} />);
         expect(screen.getByRole("status")).toHaveTextContent("monitoring.not_answering|count=1,threshold=3");
         rerender(<NotAnsweringBadge state="up" failures={0} threshold={3} />);

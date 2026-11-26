@@ -16,23 +16,27 @@ const invoiceResource = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe("toPaidInvoices", () => {
-    it("maps the response uuid and keeps invoices with zero-amount lines", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «maps the response uuid and keeps invoices with zero-amount lines»।
+    it("Paid invoice response data: maps the response uuid and keeps invoices with zero-amount lines", () => {
         const [invoice] = toPaidInvoices([invoiceResource()]);
         expect(invoice.uuid).toBe("0195a3c0-uuid");
         expect(invoice.status).toBe("paid");
         expect(invoice.lines).toHaveLength(1);
     });
 
-    it("accepts a wrapped { data: [] } response", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a wrapped { data: [] } response»।
+    it("Paid invoice response data: accepts a wrapped { data: [] } response", () => {
         expect(toPaidInvoices({ data: [invoiceResource()] })).toHaveLength(1);
     });
 
-    it("excludes invoices that are still due", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «excludes invoices that are still due»।
+    it("Paid invoice response data: excludes invoices that are still due", () => {
         const result = toPaidInvoices([invoiceResource(), invoiceResource({ id: "b", status: "due" })]);
         expect(result.map((invoice) => invoice.uuid)).toEqual(["0195a3c0-uuid"]);
     });
 
-    it("returns an empty list for unexpected responses", () => {
+    // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns an empty list for unexpected responses»।
+    it("Paid invoice response data: returns an empty list for unexpected responses", () => {
         expect(toPaidInvoices(null)).toEqual([]);
         expect(toPaidInvoices("oops")).toEqual([]);
     });

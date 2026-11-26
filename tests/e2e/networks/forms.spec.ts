@@ -12,7 +12,8 @@ import {
   test,
 } from "@/tests/e2e/networks/fixtures";
 
-test("NW-F02 missing and short fields stay in the dialog and create nothing", async ({ page, staff }) => {
+// নেটওয়ার্কের আবশ্যক বা ছোট ইনপুটে ত্রুটি দেখায় এবং নতুন তথ্য তৈরি হয় না কি না দেখি।
+test("NW-F02 Invalid network details: show required-field and minimum-length errors without saving", async ({ page, staff }) => {
   requirePermissions(staff, "networks.create");
   const before = await openNetworks(page, staff);
   await page.getByRole("button", { name: "Add", exact: true }).click();
@@ -37,7 +38,8 @@ test("NW-F02 missing and short fields stay in the dialog and create nothing", as
   expect((await networks(staff)).pagination.total).toBe(before.pagination.total);
 });
 
-test("NW-F04 cancel create stores nothing and a nameless API create is rejected", async ({ page, staff }) => {
+// নতুন নেটওয়ার্কের ফর্ম বাতিল ও নামবিহীন API অনুরোধে কোনো নেটওয়ার্ক তৈরি হয় না কি না দেখি।
+test("NW-F04 Cancel new network: save nothing and reject an API request without a name", async ({ page, staff }) => {
   requirePermissions(staff, "networks.create");
   const before = await openNetworks(page, staff);
   const name = `E2E Net ${randomUUID()}`;
@@ -58,7 +60,8 @@ test("NW-F04 cancel create stores nothing and a nameless API create is rejected"
   expect(afterReject.data.map((row) => row.id)).toEqual(before.data.map((row) => row.id));
 });
 
-test("NW-F05 edit hydrates the saved network and cancel leaves every network unchanged", async ({ page, staff }) => {
+// এডিটে পুরোনো তথ্য আসে এবং বাতিল করলে কোনো নেটওয়ার্কের তথ্য বদলায় না কি না দেখি।
+test("NW-F05 Edit network: load saved values and keep all networks unchanged on cancel", async ({ page, staff }) => {
   requirePermissions(staff, "networks.edit", "networks.show");
   const listed = await openNetworks(page, staff);
   const selected = listed.data[0];
@@ -81,7 +84,8 @@ test("NW-F05 edit hydrates the saved network and cancel leaves every network unc
   expect(sameConfig(await networkDetail(staff, sibling.id), siblingBefore)).toBe(true);
 });
 
-test("NW-F08 cancel and a rejected save leave the saved network unchanged", async ({ page, staff }) => {
+// পরিবর্তন বাতিল বা সেভ ব্যর্থ হলে নেটওয়ার্কের আগের তথ্য থাকে কি না যাচাই করি।
+test("NW-F08 Unsuccessful network edit: preserve saved values after cancel or a rejected save", async ({ page, staff }) => {
   requirePermissions(staff, "networks.edit", "networks.show");
   const listed = await openNetworks(page, staff);
   const selected = listed.data[0];

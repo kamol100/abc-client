@@ -38,7 +38,8 @@ const renderClientCell = (client: HistoryRow["client"]) => {
 };
 
 describe("history client column", () => {
-    it("links the client name to the details page", () => {
+    // ইতিহাসের তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «links the client name to the details page»।
+    it("History column: links the client name to the details page", () => {
         permissions.allowed = true;
         permissions.newTab = false;
 
@@ -52,7 +53,8 @@ describe("history client column", () => {
         expect(link).toHaveAttribute("target", "_self");
     });
 
-    it("opens the details page in a new tab when that setting is on", () => {
+    // ইতিহাসের তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।
+    it("History column: opens the details page in a new tab when that setting is on", () => {
         permissions.allowed = true;
         permissions.newTab = 1;
 
@@ -64,7 +66,8 @@ describe("history client column", () => {
         expect(view?.getByRole("link", { name: "Kamal" })).toHaveAttribute("target", "_blank");
     });
 
-    it("shows the name as text without view permission", () => {
+    // ইতিহাসের তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the name as text without view permission»।
+    it("History column: shows the name as text without view permission", () => {
         permissions.allowed = false;
 
         const view = renderClientCell({
@@ -76,7 +79,8 @@ describe("history client column", () => {
         expect(view?.getByText("Kamal")).toBeTruthy();
     });
 
-    it("shows a dash when the history has no client", () => {
+    // ইতিহাসের তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a dash when the history has no client»।
+    it("History column: shows a dash when the history has no client", () => {
         permissions.allowed = true;
 
         const view = renderClientCell(null);

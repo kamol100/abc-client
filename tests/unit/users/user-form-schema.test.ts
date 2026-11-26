@@ -3,7 +3,8 @@ import UserFormSchema from "@/components/users/user-form-schema";
 import { getUserFormSchema } from "@/components/users/user-type";
 
 describe("UserFormSchema", () => {
-  it("shows username on create and edit and omits roles", () => {
+  // ব্যবহারকারীর ফর্ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows username on create and edit and omits roles»।
+  it("User form schema: shows username on create and edit and omits roles", () => {
     for (const mode of ["create", "edit"] as const) {
       const fields = UserFormSchema({ mode });
       const names = fields.map((field) => field.name);
@@ -14,7 +15,8 @@ describe("UserFormSchema", () => {
     }
   });
 
-  it("accepts a username change without roles", () => {
+  // ব্যবহারকারীর ফর্ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «accepts a username change without roles»।
+  it("User form schema: accepts a username change without roles", () => {
     const parsed = getUserFormSchema("edit").parse({
       name: "Ada Lovelace",
       username: "ada",

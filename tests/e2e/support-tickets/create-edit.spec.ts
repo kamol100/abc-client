@@ -10,7 +10,8 @@ import {
 } from "@/tests/e2e/support-tickets/fixtures";
 
 test.describe("support ticket create", () => {
-  test("ST-F01 create keeps medium/open defaults and the UUID detail survives reload", async ({ page, staff }) => {
+  // নতুন টিকিটে Medium ও Open ডিফল্ট থাকে এবং সেভের পর বিস্তারিত রিলোডেও থাকে কি না দেখি।
+  test("ST-F01 Create support ticket: use Medium/Open defaults and keep the saved details after reload", async ({ page, staff }) => {
     requirePermissions(staff, "tickets.create", "tickets.show", "tickets.delete");
     const client = uniqueNamed(namedList(await staff.get("dropdown-clients")), "client");
     const subject = uniqueNamed(namedList(await staff.get("dropdown-subjects")), "subject");
@@ -69,7 +70,8 @@ test.describe("support ticket create", () => {
     }
   });
 
-  test("ST-F03 missing client and a short message stay on the form and create nothing", async ({ page, staff }) => {
+  // ক্লায়েন্ট না দিলে বা ছোট বার্তায় ত্রুটি দেখায় এবং টিকিট তৈরি হয় না কি না দেখি।
+  test("ST-F03 Invalid support ticket: reject a missing client or short message without saving", async ({ page, staff }) => {
     requirePermissions(staff, "tickets.access", "tickets.create");
     const before = await staff.tickets();
     const marker = `E2E ticket ${randomUUID()}`;

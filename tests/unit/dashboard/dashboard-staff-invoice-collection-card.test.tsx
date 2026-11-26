@@ -18,7 +18,8 @@ const collection = {
 };
 
 describe("DashboardStaffInvoiceCollectionCard", () => {
-  it("shows the staff name truncated and the collection totals", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the staff name truncated and the collection totals»।
+  it("Dashboard staff invoice collection card: shows the staff name truncated and the collection totals", () => {
     render(
       <DashboardStaffInvoiceCollectionCard
         staffName={collection.staff_name}
@@ -41,7 +42,8 @@ describe("DashboardStaffInvoiceCollectionCard", () => {
     expect(screen.getByText("dashboard.metrics.last_month")).toBeInTheDocument();
   });
 
-  it("shows the card only when one period has an amount", () => {
+  // ড্যাশবোর্ড যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the card only when one period has an amount»।
+  it("Dashboard staff invoice collection card: shows the card only when one period has an amount", () => {
     expect(hasStaffInvoiceCollection(collection)).toBe(true);
     expect(
       hasStaffInvoiceCollection({ today_amount: 0, this_month_amount: 0, last_month_amount: 0 }),

@@ -63,7 +63,8 @@ async function state(request: APIRequestContext): Promise<State> {
 
 const row = (page: Page, name: string) => page.getByRole("row").filter({ hasText: name });
 
-test("FT033-13 filtered selection imports only the visible client", async ({ page, request }, testInfo) => {
+// ফিল্টার করা তালিকা থেকে বাছা ক্লায়েন্টটিই ইমপোর্ট হয় এবং লুকানো ক্লায়েন্ট বাদ থাকে কি না দেখি।
+test("FT033-13 Import selected MikroTik clients: import only the selected visible client after filtering", async ({ page, request }, testInfo) => {
   const baseline = await state(request);
   const otherCompany = baseline.clients.filter((client) => client.company_id === baseline.companyIds.mk);
 
@@ -110,7 +111,8 @@ test("FT033-13 filtered selection imports only the visible client", async ({ pag
   });
 });
 
-test("FT033-15 whole-company import requires an explicit scope choice and fits mobile", async ({ page, request }, testInfo) => {
+// মোবাইলে পুরো কোম্পানির ইমপোর্ট স্পষ্টভাবে বেছে নিতে হয় এবং ডায়ালগ পর্দায় ধরে কি না দেখি।
+test("FT033-15 Import all company clients: require an explicit scope choice in the mobile dialog", async ({ page, request }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const baseline = await state(request);
   const foreign = baseline.clients.filter((client) => client.company_id === baseline.companyIds.mk);
@@ -137,7 +139,8 @@ test("FT033-15 whole-company import requires an explicit scope choice and fits m
   expect(actual.clients.filter((client) => client.company_id === actual.companyIds.mk)).toEqual(foreign);
 });
 
-test("FT033-14 resolve selects the package belonging to the client's router", async ({ page, request }, testInfo) => {
+// প্রোফাইল মেলানোর সময় অন্য রাউটারের বদলে ক্লায়েন্টের নিজের রাউটারের প্যাকেজ নেয় কি না দেখি।
+test("FT033-14 Resolve MikroTik profile: assign the package from the client's own router", async ({ page, request }, testInfo) => {
   await test.step("Show Router B's mismatch with a profile shared by Router A", async () => {
     await login(page, "mks_mk");
     await page.getByRole("button", { name: "Filter", exact: true }).click();

@@ -81,7 +81,8 @@ describe("invoice form", () => {
         vi.useRealTimers();
     });
 
-    it("edit: draws the saved lines, and their markup", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: draws the saved lines, and their markup»।
+    it("Invoice form: edit: draws the saved lines, and their markup", async () => {
         renderWithClient(<InvoiceForm mode="edit" data={{ id: 5 }} />);
 
         await waitFor(() => expect(inputById("lines.1.description")).toHaveValue("Router rent"));
@@ -92,7 +93,8 @@ describe("invoice form", () => {
         expect(stableDom(linesBlock())).toMatchSnapshot();
     });
 
-    it("edit: sends the record back with its lines", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «edit: sends the record back with its lines»।
+    it("Invoice form: edit: sends the record back with its lines", async () => {
         renderWithClient(<InvoiceForm mode="edit" data={{ id: 5 }} />);
         await waitFor(() => expect(inputById("lines.1.description")).toHaveValue("Router rent"));
         await screen.findByText("Karim");
@@ -104,7 +106,8 @@ describe("invoice form", () => {
         expect(writeRequests()[0]).toMatchSnapshot();
     });
 
-    it("recomputes a line total when amount or quantity changes", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «recomputes a line total when amount or quantity changes»।
+    it("Invoice form: recomputes a line total when amount or quantity changes", async () => {
         renderWithClient(<InvoiceForm mode="edit" data={{ id: 5 }} />);
         await waitFor(() => expect(inputById("lines.0.amount")).toHaveValue(500));
 
@@ -115,7 +118,8 @@ describe("invoice form", () => {
         await waitFor(() => expect(inputById("lines.0.total_amount")).toHaveValue(1500));
     });
 
-    it("adds a line with the default values and removes a line", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds a line with the default values and removes a line»।
+    it("Invoice form: adds a line with the default values and removes a line", async () => {
         renderWithClient(<InvoiceForm mode="edit" data={{ id: 5 }} />);
         await waitFor(() => expect(inputById("lines.1.description")).toHaveValue("Router rent"));
 
@@ -133,7 +137,8 @@ describe("invoice form", () => {
         expect(inputById("lines.0.description")).toHaveValue("Router rent");
     });
 
-    it("cannot remove the last line", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «cannot remove the last line»।
+    it("Invoice form: cannot remove the last line", async () => {
         renderWithClient(<InvoiceForm mode="create" />);
         await waitFor(() => expect(fieldById("lines.0.description")).toBeInTheDocument());
 
@@ -142,7 +147,8 @@ describe("invoice form", () => {
             .forEach((button) => expect(button).toBeDisabled());
     });
 
-    it("create: starts with one empty line", async () => {
+    // ফর্মের ইনপুট ও অবস্থা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «create: starts with one empty line»।
+    it("Invoice form: create: starts with one empty line", async () => {
         renderWithClient(<InvoiceForm mode="create" />);
 
         await waitFor(() => expect(fieldById("lines.0.description")).toBeInTheDocument());

@@ -45,7 +45,8 @@ const columnIds = (columns: ColumnDef<AgentRow>[]) =>
     );
 
 describe("useAgentColumns", () => {
-    it("shows the agent fields and row actions", () => {
+    // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the agent fields and row actions»।
+    it("Agent column: shows the agent fields and row actions", () => {
         allowed.clear();
         allowed.add("agents.edit");
         allowed.add("agents.delete");
@@ -63,7 +64,8 @@ describe("useAgentColumns", () => {
         ]);
     });
 
-    it("hides edit and delete when the user lacks those permissions", () => {
+    // এজেন্টের তথ্য ও কমিশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides edit and delete when the user lacks those permissions»।
+    it("Agent column: hides edit and delete when the user lacks those permissions", () => {
         allowed.clear();
 
         const { result } = renderHook(() => useAgentColumns());

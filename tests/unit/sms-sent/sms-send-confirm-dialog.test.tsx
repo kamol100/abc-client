@@ -87,7 +87,8 @@ describe("SmsSendConfirmDialog", () => {
     vi.mocked(useFetch).mockReset();
   });
 
-  it("loads the quote from the preview endpoint and confirms a funded live send", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «loads the quote from the preview endpoint and confirms a funded live send»।
+  it("SMS send confirm dialog: loads the quote from the preview endpoint and confirms a funded live send", async () => {
     mockQuote();
     const user = userEvent.setup();
     const { onConfirm } = renderDialog();
@@ -106,7 +107,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).toHaveBeenCalledWith({ sendNow: false });
   });
 
-  it("shows a private gateway quote without a wallet balance and allows the send", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a private gateway quote without a wallet balance and allows the send»।
+  it("SMS send confirm dialog: shows a private gateway quote without a wallet balance and allows the send", async () => {
     mockQuote({
       billing_mode: "provider",
       provider: "private",
@@ -127,7 +129,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).toHaveBeenCalledWith({ sendNow: false });
   });
 
-  it("allows a private gateway test send without a wallet balance", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows a private gateway test send without a wallet balance»।
+  it("SMS send confirm dialog: allows a private gateway test send without a wallet balance", async () => {
     mockQuote({
       billing_mode: "provider",
       balance: null,
@@ -141,7 +144,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(confirmButton()).toBeEnabled();
   });
 
-  it("blocks a live send when the wallet cannot cover the cost", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «blocks a live send when the wallet cannot cover the cost»।
+  it("SMS send confirm dialog: blocks a live send when the wallet cannot cover the cost", async () => {
     mockQuote({ balance: 1, remaining_balance: -3, sufficient: false });
     renderDialog();
 
@@ -150,7 +154,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(confirmButton()).toBeDisabled();
   });
 
-  it("allows a test send without enough balance and marks it as test mode", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «allows a test send without enough balance and marks it as test mode»।
+  it("SMS send confirm dialog: allows a test send without enough balance and marks it as test mode", async () => {
     mockQuote({ balance: 0, remaining_balance: -4, sufficient: false });
     const user = userEvent.setup();
     const { onConfirm } = renderDialog({ mode: "test" });
@@ -163,7 +168,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).toHaveBeenCalledWith({ sendNow: false });
   });
 
-  it("shows the upcoming invoice schedule in the app timezone and passes the send now choice", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the upcoming invoice schedule in the app timezone and passes the send now choice»।
+  it("SMS send confirm dialog: shows the upcoming invoice schedule in the app timezone and passes the send now choice", async () => {
     mockQuote({ scheduled_at: "2026-10-28T04:00:00+00:00", timezone: "Asia/Dhaka" });
     const user = userEvent.setup();
     const { onConfirm } = renderDialog();
@@ -180,7 +186,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).toHaveBeenCalledWith({ sendNow: true });
   });
 
-  it("hides the schedule once the configured time has passed", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the schedule once the configured time has passed»।
+  it("SMS send confirm dialog: hides the schedule once the configured time has passed", async () => {
     mockQuote({ scheduled_at: null });
     renderDialog();
 
@@ -188,7 +195,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 
-  it("disables confirmation while the send is in progress", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables confirmation while the send is in progress»।
+  it("SMS send confirm dialog: disables confirmation while the send is in progress", async () => {
     mockQuote();
     const user = userEvent.setup();
     const { onConfirm } = renderDialog({ isSubmitting: true });
@@ -199,7 +207,8 @@ describe("SmsSendConfirmDialog", () => {
     expect(onConfirm).not.toHaveBeenCalled();
   });
 
-  it("disables confirmation when nothing would be sent", async () => {
+  // SMS-এর কোট ও পাঠানোর নিয়ম যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «disables confirmation when nothing would be sent»।
+  it("SMS send confirm dialog: disables confirmation when nothing would be sent", async () => {
     mockQuote({ recipients: 0, total_units: 0, total_cost: 0 });
     renderDialog();
 

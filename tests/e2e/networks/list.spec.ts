@@ -17,7 +17,8 @@ function matchingName(rows: Network[], term: string) {
   return rows.filter((row) => row.name.toLowerCase().includes(needle)).map((row) => row.id).sort();
 }
 
-test("NW-L01 list shows names addresses operational status and the company total", async ({ page, staff }) => {
+// নেটওয়ার্কের নাম, ঠিকানা, অপারেশনাল স্ট্যাটাস ও কোম্পানির মোট সংখ্যা সঠিক কি না দেখি।
+test("NW-L01 Network list: show saved names, addresses, operating statuses, and the company total", async ({ page, staff }) => {
   const listed = await openNetworks(page, staff);
   await expectNetworkRows(page, listed.data);
   expect(new Set(listed.data.map((row) => row.id)).size).toBe(listed.data.length);
@@ -29,7 +30,8 @@ test("NW-L01 list shows names addresses operational status and the company total
   await expectNetworkRows(page, reloaded.data);
 });
 
-test("NW-L02 name filter keeps matching networks and drops the others", async ({ page, staff }) => {
+// নাম দিয়ে ফিল্টার করলে সঠিক নেটওয়ার্ক আসে এবং অন্যগুলো বাদ যায় কি না দেখি।
+test("NW-L02 Filter networks by name: show matching networks and hide nonmatches", async ({ page, staff }) => {
   const listed = await networks(staff);
   const selected = listed.data.find((row) => row.name.trim().length >= 3);
   const excluded = listed.data.find((row) => row.id !== selected?.id && !row.name.toLowerCase().includes((selected?.name ?? "").toLowerCase()));
@@ -46,7 +48,8 @@ test("NW-L02 name filter keeps matching networks and drops the others", async ({
   await expectNetworkRows(page, (await networks(staff)).data);
 });
 
-test("NW-L02 an unknown address filter is empty", async ({ page, staff }) => {
+// কোনো নেটওয়ার্কের সঙ্গে না মেলা ঠিকানায় তালিকা খালি দেখায় কি না যাচাই করি।
+test("NW-L02 Filter networks by unknown address: show no results", async ({ page, staff }) => {
   const absent = `203.0.113.${randomUUID().replace(/\D/g, "").slice(0, 2) || "10"}`;
   const filtered = await networks(staff, `ip_address=${encodeURIComponent(absent)}`);
   expect(filtered.data.every((row) => (row.ip_address ?? "").includes(absent))).toBe(true);
@@ -58,7 +61,8 @@ test("NW-L02 an unknown address filter is empty", async ({ page, staff }) => {
   await expect(page.getByText(listTitle(0), { exact: true })).toBeVisible();
 });
 
-test("NW-L02 inactive status filter returns only inactive networks and reload restores the list", async ({ page, staff }) => {
+// নিষ্ক্রিয় স্ট্যাটাসে শুধু সেই নেটওয়ার্ক আসে এবং রিলোডে আগের তালিকা ফেরে কি না দেখি।
+test("NW-L02 Inactive network filter: show inactive networks and restore the list on reload", async ({ page, staff }) => {
   const baseline = await networks(staff);
   const filtered = await networks(staff, "status=0");
   expect(filtered.data.every((row) => Number(row.status ?? 0) === 0)).toBe(true);
@@ -71,7 +75,8 @@ test("NW-L02 inactive status filter returns only inactive networks and reload re
   await expectNetworkRows(page, (await networks(staff)).data);
 });
 
-test("NW-L02 combined name and active status agree on the included network", async ({ page, staff }) => {
+// নাম ও Active স্ট্যাটাস একসঙ্গে বেছে দুটো শর্ত মেলা নেটওয়ার্ক আসে কি না দেখি।
+test("NW-L02 Combined network filters: show networks matching both name and Active status", async ({ page, staff }) => {
   const listed = await networks(staff);
   const selected = listed.data.find((row) => row.name.trim().length >= 3 && Number(row.status ?? 0) === 1);
   if (!selected) throw new Error("Combined filter needs an active network whose name is at least 3 characters.");
@@ -88,7 +93,8 @@ test("NW-L02 combined name and active status agree on the included network", asy
   await expectNetworkRows(page, filtered.data);
 });
 
-test("NW-L03 pagination buttons follow the current page and do not repeat rows", async ({ page, staff }) => {
+// পেজের বোতাম সীমা মেনে চলে এবং পেজ বদলালে একই নেটওয়ার্ক পুনরাবৃত্তি হয় না কি না দেখি।
+test("NW-L03 Network pagination: respect page limits and avoid duplicate rows across pages", async ({ page, staff }) => {
   const first = await openNetworks(page, staff);
   expect(first.pagination.total).toBeGreaterThan(0);
   await expectNetworkRows(page, first.data);
@@ -105,7 +111,8 @@ test("NW-L03 pagination buttons follow the current page and do not repeat rows",
   await expectNetworkRows(page, first.data);
 });
 
-test("NW-L04 an unmatched name shows an empty list and clearing it restores the rows", async ({ page, staff }) => {
+// না মেলা নাম খুঁজলে খালি ফল আসে এবং সার্চ মুছলে আগের নেটওয়ার্কগুলো ফেরে কি না দেখি।
+test("NW-L04 Network search with no matches: show an empty list and recover when cleared", async ({ page, staff }) => {
   const listed = await networks(staff);
   const known = listed.data[0];
   if (!known) throw new Error("Empty-filter recovery needs at least one network.");
@@ -124,7 +131,8 @@ test("NW-L04 an unmatched name shows an empty list and clearing it restores the 
   await expect(page.getByText("No results", { exact: true })).toHaveCount(0);
 });
 
-test("NW-L05 column toggles hide only allowed columns and a fresh context shows them again", async ({ browser, page, staff }) => {
+// অনুমোদিত কলাম লুকানো যায় এবং নতুন সেশনে সেগুলো আবার দেখা যায় কি না যাচাই করি।
+test("NW-L05 Network columns: toggle supported columns and restore defaults in a fresh session", async ({ browser, page, staff }) => {
   const listed = await openNetworks(page, staff);
   const network = listed.data[0];
   if (!network) throw new Error("Column toggles need a visible network.");

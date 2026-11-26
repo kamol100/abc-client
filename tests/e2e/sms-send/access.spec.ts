@@ -18,7 +18,8 @@ import {
 const ROUTES = ["/sms-send", "/sms-send?phone=01700000999"];
 
 for (const path of ROUTES) {
-  test(`FT087-09 anonymous ${path} redirects to the same-host staff login`, async ({ browser, baseURL }) => {
+  // ফোন আগে দেওয়া থাকুক বা না থাকুক, লগইন ছাড়া SMS পেজ স্টাফ লগইনে পাঠায় কি না দেখি।
+  test(`FT087-09 SMS page ${path.includes('?') ? 'with a prefilled phone' : 'without a prefilled phone'} while signed out: redirect to staff login`, async ({ browser, baseURL }) => {
     const context = await browser.newContext({
       baseURL,
       locale: "en-US",
@@ -40,7 +41,8 @@ for (const path of ROUTES) {
   });
 }
 
-test("FT087-09 anonymous SMS endpoints reject the request", async ({ browser }) => {
+// লগইন ছাড়া SMS-এর সরাসরি API অনুরোধ গ্রহণ করে না কি না যাচাই করি।
+test("FT087-09 SMS APIs while signed out: reject requests without authentication", async ({ browser }) => {
   const context = await browser.newContext({ locale: "en-US", serviceWorkers: "block" });
   try {
     const paths = ["sms-clients", "sms-rate", "sms-store/preview", "sms-store"];
@@ -58,7 +60,8 @@ test("FT087-09 anonymous SMS endpoints reject the request", async ({ browser }) 
   }
 });
 
-test("FT087-10 another company cannot see or price a known SMS client", async ({ browser, page, staff }) => {
+// অন্য কোম্পানির ক্লায়েন্টকে SMS প্রাপক হিসেবে দেখা বা তার কোট নেওয়া যায় না কি না দেখি।
+test("FT087-10 SMS recipient privacy: prevent another company from viewing or pricing the client", async ({ browser, page, staff }) => {
   const other = await authenticate(browser, staff.tenant === "mk" ? "vp" : "mk");
   try {
     const ownTemplate = listTemplate(await smsTemplates(staff));

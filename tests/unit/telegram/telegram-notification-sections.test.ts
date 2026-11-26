@@ -7,7 +7,8 @@ function keys(platform: boolean, sectionId: "tenant" | "administration"): string
 }
 
 describe("telegram notification sections", () => {
-    it("shows tenant platform support create and update to every company", () => {
+    // টেলিগ্রাম নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows tenant platform support create and update to every company»।
+    it("Telegram notification sections: shows tenant platform support create and update to every company", () => {
         const sections = telegramNotificationSections(false);
 
         expect(sections.map((section) => section.id)).toEqual(["tenant"]);
@@ -18,7 +19,8 @@ describe("telegram notification sections", () => {
         expect(keys(false, "tenant").some((key) => key.includes("admin"))).toBe(false);
     });
 
-    it("adds administration create and update only for the platform company", () => {
+    // টেলিগ্রাম নোটিফিকেশন যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «adds administration create and update only for the platform company»।
+    it("Telegram notification sections: adds administration create and update only for the platform company", () => {
         const sections = telegramNotificationSections(true);
 
         expect(sections.map((section) => section.id)).toEqual(["tenant", "administration"]);

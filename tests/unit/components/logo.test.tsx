@@ -15,7 +15,8 @@ describe("Logo", () => {
         profileState.profile = null;
     });
 
-    it("shows the default logo when expanded and the initial when collapsed if no logo is configured", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the default logo when expanded and the initial when collapsed if no logo is configured»।
+    it("Logo: shows the default logo when expanded and the initial when collapsed if no logo is configured", () => {
         render(<Logo name="acme networks" />);
 
         const image = screen.getByRole("img");
@@ -24,7 +25,8 @@ describe("Logo", () => {
         expect(screen.getByText("A").className).toContain("group-data-[collapsible=icon]:flex");
     });
 
-    it("shows the configured logo in both states without the initial tile", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the configured logo in both states without the initial tile»।
+    it("Logo: shows the configured logo in both states without the initial tile", () => {
         profileState.profile = { company: { name: "Zenith ISP", logo: "https://cdn.test/logo.png" } };
         render(<Logo />);
 
@@ -32,7 +34,8 @@ describe("Logo", () => {
         expect(screen.queryByText("Z")).toBeNull();
     });
 
-    it("hides the name when the sidebar is collapsed", () => {
+    // সাধারণ UI নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides the name when the sidebar is collapsed»।
+    it("Logo: hides the name when the sidebar is collapsed", () => {
         render(<Logo name="Acme Networks" />);
 
         const nameWrapper = screen.getByText("Acme Networks").parentElement;

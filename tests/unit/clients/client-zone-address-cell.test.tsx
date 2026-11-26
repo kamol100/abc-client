@@ -58,21 +58,24 @@ describe("ClientZoneAddressCell", () => {
         if (clientWidth) Object.defineProperty(HTMLElement.prototype, "clientWidth", clientWidth);
     });
 
-    it("shows a short address without a toggle", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a short address without a toggle»।
+    it("Client zone address cell: shows a short address without a toggle", () => {
         render(<ClientZoneAddressCell client={client("Road 5, Mirpur")} />);
 
         expect(screen.getByText("Road 5, Mirpur")).toBeInTheDocument();
         expect(screen.queryByRole("button", { name: "Show more" })).not.toBeInTheDocument();
     });
 
-    it("shows a dash when the address is empty", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a dash when the address is empty»।
+    it("Client zone address cell: shows a dash when the address is empty", () => {
         render(<ClientZoneAddressCell client={client(null)} />);
 
         expect(screen.getAllByText("—").length).toBeGreaterThan(0);
         expect(screen.queryByRole("button", { name: "Show more" })).not.toBeInTheDocument();
     });
 
-    it("expands a clamped address and collapses it again", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «expands a clamped address and collapses it again»।
+    it("Client zone address cell: expands a clamped address and collapses it again", async () => {
         const user = userEvent.setup();
         const address = "House 12, Road 5, Block C, Mirpur 10, Dhaka 1216, beside the mosque";
 
@@ -94,7 +97,8 @@ describe("ClientZoneAddressCell", () => {
         expect(screen.getByText(address)).toHaveClass("line-clamp-1");
     });
 
-    it("links to map directions when the client has a location", async () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «links to map directions when the client has a location»।
+    it("Client zone address cell: links to map directions when the client has a location", async () => {
         const user = userEvent.setup();
         const rowClick = vi.fn();
 
@@ -114,7 +118,8 @@ describe("ClientZoneAddressCell", () => {
         expect(rowClick).not.toHaveBeenCalled();
     });
 
-    it("shows no directions link without a usable location", () => {
+    // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows no directions link without a usable location»।
+    it("Client zone address cell: shows no directions link without a usable location", () => {
         const { rerender } = render(<ClientZoneAddressCell client={client("Road 5, Mirpur")} />);
         expect(screen.queryByRole("link", { name: "Directions on map" })).not.toBeInTheDocument();
 
