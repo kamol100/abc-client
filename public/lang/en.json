@@ -5480,8 +5480,7 @@
         },
         "fields": {
             "filter_position": {
-                "label": "Filter position",
-                "description": "Where the filter opens on a computer when you press the filter button."
+                "label": "Filter position"
             },
             "olt_poll_interval": {
                 "label": "Poll OLTs automatically",

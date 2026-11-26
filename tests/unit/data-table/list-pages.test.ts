@@ -35,7 +35,6 @@ describe("list pages", () => {
     const keys = [
       ...LIST_PAGE_IDS.map((page) => LIST_PAGES[page]),
       settingLabelKey(filterPositionKey("invoices")),
-      "settings.fields.filter_position.description",
       "settings.groups.filter",
       "settings.sections.list_page.description",
       ...FILTER_POSITION_OPTIONS.map((option) => option.label),

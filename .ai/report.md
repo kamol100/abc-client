@@ -1,3 +1,12 @@
+## Filter position setting: help text removed — 2026-11-26
+
+Branch `master`. Uncommitted.
+
+- The line "Where the filter opens on a computer when you press the filter button." no longer shows under "Filter position" in any list page's filter settings. `components/settings/registry/fields.ts` drops the `description` from the per-page filter position select.
+- The now-unused key `settings.fields.filter_position.description` is removed from `public/lang/en.json` and `public/lang/bn.json`, and from the key list in `tests/unit/data-table/list-pages.test.ts`.
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1463 passed, 9 failed, the same 9 as on the tree without this change. Not checked in a browser.
+
 ## Client view modal / drawer: closing animation — 2026-11-27
 
 Branch `master`. Uncommitted (together with the eye-icon spinner entry below).

@@ -62,7 +62,6 @@ const filterPositionSettings = Object.fromEntries(
       strict: true,
       read: toFilterPosition,
       label: "settings.fields.filter_position.label",
-      description: "settings.fields.filter_position.description",
     }),
   ]),
 ) as Record<FilterPositionSettingKey, SelectSetting>;
