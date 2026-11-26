@@ -1,9 +1,22 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, renderHook } from "@testing-library/react";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { describe, expect, it, vi } from "vitest";
 import { useInvoiceColumns } from "@/components/invoices/invoice-column";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
+
+// ClientViewLink reads the router (modal / drawer open over the current page).
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+    usePathname: () => "/list",
+}));
+
+// ClientViewLink prefetches the client detail, so the cell needs a query client, as in the app.
+function QueryWrapper({ children }: { children: ReactNode }) {
+    return <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>;
+}
+
 
 const permissions = vi.hoisted(() => ({
     allowed: true,
@@ -45,7 +58,7 @@ const renderClientCell = (client: InvoiceRow["client"]) => {
     expect(typeof cell).toBe("function");
     if (typeof cell !== "function") return;
 
-    return render(cell({ row: { original: { client } } } as never) as ReactElement);
+    return render(cell({ row: { original: { client } } } as never) as ReactElement, { wrapper: QueryWrapper });
 };
 
 describe("invoice client column", () => {
@@ -62,7 +75,7 @@ describe("invoice client column", () => {
 
         const link = view?.getByRole("link", { name: "Kamal" });
         expect(link).toHaveAttribute("href", "/clients/view/client-uuid");
-        expect(link).toHaveAttribute("target", "_self");
+        expect(link).not.toHaveAttribute("target");
     });
 
     // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।

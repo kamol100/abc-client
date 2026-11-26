@@ -1,20 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { CircleAlert, CircleCheck, CircleDotDashed, type LucideIcon } from "lucide-react";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import DisplayCount from "@/components/display-count";
 import { PaymentRow } from "@/components/payments/payment-type";
 import { Badge } from "@/components/ui/badge";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions } from "@/context/app-provider";
 import { toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 
 function PaymentClientName({ client }: { client: PaymentRow["client"] }) {
     const { hasPermission } = usePermissions();
-    const { settings } = useSettings();
     const name = client?.name?.trim() ?? "";
     const clientId = client?.uuid?.trim() ?? "";
     const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
@@ -28,13 +27,12 @@ function PaymentClientName({ client }: { client: PaymentRow["client"] }) {
     }
 
     return (
-        <Link
-            href={`/clients/view/${clientId}`}
-            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+        <ClientViewLink
+            clientId={clientId}
             className="block w-[120px] capitalize truncate text-sm underline-offset-4 hover:underline"
         >
             {name}
-        </Link>
+        </ClientViewLink>
     );
 }
 

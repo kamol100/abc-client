@@ -2,12 +2,11 @@
 
 import { FC } from "react";
 import { Phone } from "lucide-react";
-import Link from "next/link";
 import ClientCopyPhoneButton from "@/components/clients/client-copy-phone-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
-import { useClientDetailPrefetch } from "@/components/clients/client-detail-query";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import ClientWhatsAppLink from "@/components/clients/client-whatsapp-link";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions } from "@/context/app-provider";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -17,13 +16,11 @@ type Props = {
 
 const ClientNamePhoneCell: FC<Props> = ({ client, linkToView = true }) => {
     const { hasPermission } = usePermissions();
-    const { settings } = useSettings();
     const inactive = client.status === 0;
     const phone = client.phone?.trim() ?? "";
     const clientId = getClientId(client);
     const identity = client.pppoe_username || client.client_id || "—";
     const canView = linkToView && Boolean(clientId) && identity !== "—" && hasPermission("clients.show");
-    const prefetchView = useClientDetailPrefetch(clientId, canView && !settings.client_view_open_on_new_tab);
     const identityClass = cn(
         "font-semibold text-sm w-fit",
         inactive && "text-destructive",
@@ -33,14 +30,9 @@ const ClientNamePhoneCell: FC<Props> = ({ client, linkToView = true }) => {
     return (
         <div className="flex flex-col gap-0.5 min-w-[140px]">
             {canView ? (
-                <Link
-                    href={`/clients/view/${clientId}`}
-                    target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
-                    className={identityClass}
-                    {...prefetchView}
-                >
+                <ClientViewLink clientId={clientId ?? ""} className={identityClass}>
                     {identity}
-                </Link>
+                </ClientViewLink>
             ) : (
                 <span className={identityClass}>{identity}</span>
             )}

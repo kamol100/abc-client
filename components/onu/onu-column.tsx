@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
@@ -136,9 +137,9 @@ export function useOnuColumns({ showOlt = true, thresholdDbm, rebootBlocked = fa
                     return (
                         <div className="flex flex-col text-sm">
                             {canShowClient ? (
-                                <Link href={`/clients/view/${client.id}`} className="font-medium hover:underline">
+                                <ClientViewLink clientId={String(client.id)} className="font-medium hover:underline">
                                     {client.name}
-                                </Link>
+                                </ClientViewLink>
                             ) : (
                                 <span className="font-medium">{client.name}</span>
                             )}

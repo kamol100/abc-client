@@ -7,6 +7,13 @@ import ClientBasicView from "@/components/clients/basic-view";
 import ClientNamePhoneCell from "@/components/clients/client-name-phone-cell";
 import { ClientRow } from "@/components/clients/client-type";
 
+// ClientViewLink reads the router (modal / drawer open over the current page).
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+    usePathname: () => "/list",
+}));
+
+
 vi.mock("react-toastify", () => ({
     toast: { success: vi.fn(), error: vi.fn() },
 }));
@@ -148,7 +155,7 @@ describe("ClientNamePhoneCell view link", () => {
 
         const link = screen.getByRole("link", { name: "kamal01" });
         expect(link).toHaveAttribute("href", "/clients/view/client-uuid");
-        expect(link).toHaveAttribute("target", "_self");
+        expect(link).not.toHaveAttribute("target");
     });
 
     // ক্লায়েন্টের তথ্য ও নিয়ন্ত্রণ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।

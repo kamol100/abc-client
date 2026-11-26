@@ -1767,6 +1767,13 @@
         },
         "delete_mikrotik": "মাইক্রোটিক থেকে মুছবেন?",
         "view_title": "ক্লায়েন্ট বিবরণ",
+        "view_overlay": {
+            "previous": "আগের ক্লায়েন্ট",
+            "next": "পরের ক্লায়েন্ট",
+            "open_full_page": "পুরো পেজে খুলুন",
+            "close": "বন্ধ করুন",
+            "position": "এই পেজে {{total}} জনের মধ্যে {{current}}"
+        },
         "basic_view": {
             "basic_information": "বেসিক তথ্য",
             "billing_information": "বিলিং তথ্য",
@@ -5413,6 +5420,10 @@
         "options": {
             "filter_position_inline": "টুলবারের ভেতরে",
             "filter_position_below": "টুলবারের নিচে",
+            "client_view_open_mode_modal": "মডাল (পপআপ)",
+            "client_view_open_mode_drawer": "ড্রয়ার (পাশের প্যানেল)",
+            "client_view_open_mode_page": "একই পেজে",
+            "client_view_open_mode_new_tab": "নতুন ট্যাবে",
             "olt_poll_interval_0": "বন্ধ",
             "olt_poll_interval_5": "প্রতি ৫ মিনিটে",
             "olt_poll_interval_15": "প্রতি ১৫ মিনিটে",
@@ -5502,8 +5513,8 @@
                 "label": "পেমেন্ট ডেডলাইন",
                 "placeholder": "পেমেন্ট ডেডলাইন নির্বাচন করুন"
             },
-            "client_view_open_on_new_tab": {
-                "label": "ক্লায়েন্ট ভিউ ওপেন নতুন ট্যাবে"
+            "client_view_open_mode": {
+                "label": "ক্লায়েন্ট ভিউ খুলবে"
             },
             "client_edit_open_on_new_tab": {
                 "label": "ক্লায়েন্ট এডিট ওপেন নতুন ট্যাবে"

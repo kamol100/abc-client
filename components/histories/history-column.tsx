@@ -1,16 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import MyTooltip from "@/components/my-tooltip";
 import type { HistoryRow } from "@/components/histories/history-type";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions } from "@/context/app-provider";
 import { cellIndex, formatKey } from "@/lib/helper/helper";
 
 function HistoryClientName({ client }: { client: HistoryRow["client"] }) {
     const { hasPermission } = usePermissions();
-    const { settings } = useSettings();
     const name = client?.name?.trim() ?? "";
     const clientId = client?.uuid?.trim() ?? "";
     const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
@@ -20,13 +19,12 @@ function HistoryClientName({ client }: { client: HistoryRow["client"] }) {
     }
 
     return (
-        <Link
-            href={`/clients/view/${clientId}`}
-            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+        <ClientViewLink
+            clientId={clientId}
             className="text-sm capitalize underline-offset-4 hover:underline"
         >
             {name}
-        </Link>
+        </ClientViewLink>
     );
 }
 

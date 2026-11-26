@@ -1,3 +1,24 @@
+## Client view opens in a modal, a drawer, the same page or a new tab — 2026-11-27
+
+Branch `feat/client-view-open-mode`. Backend part: `isp-backend/.ai/report.md`, same date (needs `migrate`).
+
+- **Setting.** The "Client view open on new tab" switch is replaced by the dropdown **"Open client view in"**: Modal, Drawer, Same page, New tab (`client_view_open_mode`, default Same page). It is in the same place (client settings). Until the API migration has run, a company with the old switch on still gets New tab (`clientViewModeFromSettings` falls back to it).
+- **One link for every "view client" link:** `components/clients/view-mode/client-view-link.tsx`. The href is always `/clients/view/{id}`, so copy link, Ctrl/Cmd-click and middle-click work as before. A plain click: same page, new tab (`rel="noopener noreferrer"`), or for modal / drawer it adds `?view_client={id}` with `history.pushState` (no server round trip; Back closes it). Hover prefetch is built in (off for New tab). Used by: client table menu "View", eye icon and Client ID; the invoice, payment and history client columns; the ONU column; the OLT attention list; the OLT clients table; the map pop-up. No component reads the old key any more.
+- **Overlay.** `client-view-overlay-host.tsx` is mounted once in `app/(dashboard)/layout.tsx` (in `Suspense`) and lazy-loads `client-view-overlay.tsx` on first use.
+  - One Radix dialog for both looks: a centered modal (up to 1240 px) or a right drawer (up to 1060 px); full screen under `md`. The list underneath stays mounted (filters, page, scroll kept).
+  - Top bar: name, Client ID, "2 of 8 on this page", Previous / Next (the cached list page it was opened from; hidden when opened from elsewhere; uses replaceState so Back still closes; hover prefetches), Open full page, Close. Esc, the scrim and Close close it: Back when it was opened by a click in this tab, otherwise the parameter is removed.
+  - With the setting on Same page or New tab, a pasted `?view_client=` URL opens the full page instead.
+  - The view inside is the same `ClientView` with `variant="overlay"` (no back arrow). Its lazy tables measure against the overlay's scroll area (`useInView` got a `root` option).
+- **Existing features:** the view's dialogs (Pay, Edit link, switch, reset, package, map, ticket, invoice, SMS, lock, ping) are unchanged; a test opens a real `MyDialog` inside the modal and the drawer and checks it stacks on top and that Esc closes only it. The full page and the list's own menus are unchanged.
+- **Refactor (first commit):** `useClientDetail` (shared detail query with the list-row placeholder), `findClientListContext`, `ClientView`/`ClientViewSkeleton` `variant` and `scrollRoot`, `useInView` `root`. No behaviour change.
+- Translations: `settings.fields.client_view_open_mode.label`, `settings.options.client_view_open_mode_*`, `client.view_overlay.*` in `en.json` and `bn.json`. The old label key is removed.
+- Tests: new `client-view-mode`, `client-view-link`, `client-view-overlay`, `client-view-overlay-host` tests and list-context / overlay-variant cases; the invoice, payment, history and name-cell tests got a router mock and query wrapper, and now expect no `target` for same-tab links (was `_self`). Settings snapshot fixture: the old key's entry is replaced by the new one.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1449 passed, 9 failed. The 9 are the ones that failed before this change (client dashboard info, reseller client filter and table, column visibility, client map rows, menu order, public pay page).
+- Not checked in a browser (needs a login). Check in all four modes: open from the client list, an invoice and the map; Previous / Next; Back, Esc and a click outside; Pay, SMS, Lock, Change package and Create invoice from inside the modal and the drawer; a form on a phone-width screen inside the overlay; the list keeps its filters and scroll after closing; Ctrl/Cmd-click opens a new tab.
+
 ## Client view: prefetch the detail on hover — 2026-11-26
 
 Branch `master`. Builds on the two entries below.

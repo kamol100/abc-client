@@ -4,14 +4,13 @@ import "leaflet/dist/leaflet.css";
 
 import { cn } from "@/lib/utils";
 import type { LatLngTuple } from "leaflet";
-import Link from "next/link";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { Fragment, useEffect, useState } from "react";
 import { CircleMarker, MapContainer, Marker, Polyline, Popup, TileLayer } from "react-leaflet";
 import { useTranslation } from "react-i18next";
 import type { ClientMapClient, ClientMapRow } from "@/components/maps/maps-type";
 import { deviceIcon, ensureLeafletDefaultIcon, mapIcons, normalizeStatus, toLatLngTuple } from "@/components/maps/map-utils";
-import { usePermissions, useSettings } from "@/context/app-provider";
-import { readSetting } from "@/components/settings/core/values";
+import { usePermissions } from "@/context/app-provider";
 
 type Props = {
   /** Devices, each with its clients (marker + line from the device). */
@@ -156,13 +155,9 @@ type ClientMarkerProps = {
 function ClientMarker({ client, position, deviceName }: ClientMarkerProps) {
   const { t } = useTranslation();
   const { hasPermission } = usePermissions();
-  const { settings } = useSettings();
   const name = client.info?.name ?? t("map_common.not_available");
-  const viewHref =
-    client.id !== undefined && client.info?.name && hasPermission("clients.show")
-      ? `/clients/view/${String(client.id)}`
-      : null;
-  const openInNewTab = readSetting("client_view_open_on_new_tab", settings.client_view_open_on_new_tab) === true;
+  const viewClientId =
+    client.id !== undefined && client.info?.name && hasPermission("clients.show") ? String(client.id) : null;
   const status = normalizeStatus(client.info?.status ?? client.status);
   const statusLabelKey =
     status === "active"
@@ -180,14 +175,10 @@ function ClientMarker({ client, position, deviceName }: ClientMarkerProps) {
         <div className="space-y-1 text-sm">
           <div className="font-semibold">
             {t("client_map.client.label")}:{" "}
-            {viewHref ? (
-              <Link
-                href={viewHref}
-                target={openInNewTab ? "_blank" : "_self"}
-                className="!text-primary underline-offset-2 hover:underline"
-              >
+            {viewClientId ? (
+              <ClientViewLink clientId={viewClientId} className="!text-primary underline-offset-2 hover:underline">
                 {name}
-              </Link>
+              </ClientViewLink>
             ) : (
               name
             )}

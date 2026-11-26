@@ -9,7 +9,7 @@ const CLIENT = [
   "payment_deadline",
   "auto_inactive_client_invoice_due",
   "auto_inactive_client_time",
-  "client_view_open_on_new_tab",
+  "client_view_open_mode",
   "client_edit_open_on_new_tab",
   "create_invoice_billing_type_auto",
 ];

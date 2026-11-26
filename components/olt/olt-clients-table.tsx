@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { ColumnDef } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -164,11 +165,13 @@ export default function OltClientsTable({ oltId, summary, ponPorts, thresholdDbm
                         <MyButton
                             variant="outline"
                             size="icon"
-                            url={`/clients/view/${row.original.id}`}
-                            aria-label={t("olt.clients.view_client")}
+                            asChild
+                            className="hover:bg-primary hover:text-primary-foreground"
                             tooltip={t("olt.clients.view_client")}
                         >
-                            <Eye className="h-4 w-4" />
+                            <ClientViewLink clientId={String(row.original.id)} aria-label={t("olt.clients.view_client")}>
+                                <Eye className="h-4 w-4" />
+                            </ClientViewLink>
                         </MyButton>
                     ) : (
                         <span className="text-muted-foreground">—</span>

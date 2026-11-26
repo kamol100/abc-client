@@ -1,8 +1,21 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { PaymentColumns } from "@/components/payments/payment-column";
 import { PaymentRow } from "@/components/payments/payment-type";
+
+// ClientViewLink reads the router (modal / drawer open over the current page).
+vi.mock("next/navigation", () => ({
+    useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
+    usePathname: () => "/list",
+}));
+
+// ClientViewLink prefetches the client detail, so the cell needs a query client, as in the app.
+function QueryWrapper({ children }: { children: ReactNode }) {
+    return <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>;
+}
+
 
 const permissions = vi.hoisted(() => ({
     allowed: true,
@@ -38,7 +51,7 @@ const renderClientCell = (client: PaymentRow["client"]) => {
     expect(typeof cell).toBe("function");
     if (typeof cell !== "function") return;
 
-    return render(cell({ row: { original: { client } } } as never) as ReactElement);
+    return render(cell({ row: { original: { client } } } as never) as ReactElement, { wrapper: QueryWrapper });
 };
 
 describe("payment client column", () => {
@@ -55,7 +68,7 @@ describe("payment client column", () => {
 
         const link = view?.getByRole("link", { name: "Kamal" });
         expect(link).toHaveAttribute("href", "/clients/view/client-uuid");
-        expect(link).toHaveAttribute("target", "_self");
+        expect(link).not.toHaveAttribute("target");
     });
 
     // পেমেন্টের তালিকা যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «opens the details page in a new tab when that setting is on»।

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -10,7 +10,7 @@ import MyBadge from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
-import { usePermissions, useSettings } from "@/context/app-provider";
+import { usePermissions } from "@/context/app-provider";
 import { toNumber } from "@/lib/helper/helper";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
@@ -34,7 +34,6 @@ function InvoiceResellerName({ name }: { name: string }) {
 
 function InvoiceClientName({ client }: { client: InvoiceRow["client"] }) {
     const { hasPermission } = usePermissions();
-    const { settings } = useSettings();
     const name = client?.name?.trim() ?? "";
     const clientId = client?.uuid?.trim() ?? "";
     const canView = name !== "" && clientId !== "" && hasPermission("clients.show");
@@ -44,13 +43,12 @@ function InvoiceClientName({ client }: { client: InvoiceRow["client"] }) {
     }
 
     return (
-        <Link
-            href={`/clients/view/${clientId}`}
-            target={settings.client_view_open_on_new_tab ? "_blank" : "_self"}
+        <ClientViewLink
+            clientId={clientId}
             className="text-sm underline-offset-4 hover:underline"
         >
             {name}
-        </Link>
+        </ClientViewLink>
     );
 }
 

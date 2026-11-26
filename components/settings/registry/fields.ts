@@ -38,6 +38,11 @@ import {
   toFilterPosition,
   type FilterPositionSettingKey,
 } from "@/components/data-table/toolbar/list-pages";
+import {
+  CLIENT_VIEW_MODE_OPTIONS,
+  DEFAULT_CLIENT_VIEW_MODE,
+  toClientViewMode,
+} from "@/components/clients/view-mode/client-view-mode";
 
 /** One "show on dashboard" switch per dashboard card. On until turned off; hidden without the card's permission. */
 const dashboardSettings = Object.fromEntries(
@@ -79,7 +84,13 @@ export const SETTINGS = {
     strict: true,
     visibleWhen: { key: "auto_inactive_client_invoice_due", equals: true },
   }),
-  client_view_open_on_new_tab: toggle(),
+  // Replaces the on/off "client_view_open_on_new_tab"; the API migration copies "on" to new_tab.
+  client_view_open_mode: select({
+    options: CLIENT_VIEW_MODE_OPTIONS,
+    default: DEFAULT_CLIENT_VIEW_MODE,
+    strict: true,
+    read: toClientViewMode,
+  }),
   client_edit_open_on_new_tab: toggle(),
   create_invoice_billing_type_auto: toggle(),
 

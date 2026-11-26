@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import dynamic from "next/dynamic";
 import { format, isToday } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -55,9 +55,9 @@ export default function OltAttention({ items, className }: Props) {
                             >
                                 <div className="min-w-0 flex-[1_1_220px]">
                                     {canShowClient ? (
-                                        <Link href={`/clients/view/${item.client.id}`} className="font-semibold hover:underline">
+                                        <ClientViewLink clientId={String(item.client.id)} className="font-semibold hover:underline">
                                             {item.client.name}
-                                        </Link>
+                                        </ClientViewLink>
                                     ) : (
                                         <span className="font-semibold">{item.client.name}</span>
                                     )}

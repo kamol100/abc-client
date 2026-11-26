@@ -1767,6 +1767,13 @@
         },
         "delete_mikrotik": "Delete from Mikrotik?",
         "view_title": "Client Details",
+        "view_overlay": {
+            "previous": "Previous client",
+            "next": "Next client",
+            "open_full_page": "Open full page",
+            "close": "Close",
+            "position": "{{current}} of {{total}} on this page"
+        },
         "basic_view": {
             "basic_information": "Basic Information",
             "billing_information": "Billing Information",
@@ -5413,6 +5420,10 @@
         "options": {
             "filter_position_inline": "In the toolbar",
             "filter_position_below": "Below the toolbar",
+            "client_view_open_mode_modal": "Modal (popup)",
+            "client_view_open_mode_drawer": "Drawer (side panel)",
+            "client_view_open_mode_page": "Same page",
+            "client_view_open_mode_new_tab": "New tab",
             "olt_poll_interval_0": "Off",
             "olt_poll_interval_5": "Every 5 minutes",
             "olt_poll_interval_15": "Every 15 minutes",
@@ -5502,8 +5513,8 @@
                 "label": "Payment Deadline",
                 "placeholder": "Select payment deadline"
             },
-            "client_view_open_on_new_tab": {
-                "label": "Client view open on new tab"
+            "client_view_open_mode": {
+                "label": "Open client view in"
             },
             "client_edit_open_on_new_tab": {
                 "label": "Client edit open on new tab"
