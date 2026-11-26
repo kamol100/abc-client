@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePermissions } from "@/context/app-provider";
 import {
@@ -10,15 +9,15 @@ import {
     isOverlayMode,
     withClientViewParam,
 } from "@/components/clients/view-mode/client-view-mode";
+import ClientViewOverlay from "@/components/clients/view-mode/client-view-overlay";
 import { takeClientViewOpenedInApp } from "@/components/clients/view-mode/client-view-overlay-history";
 import { useClientViewMode } from "@/components/clients/view-mode/use-client-view-mode";
 
-// Loaded on the first open, so pages do not ship the overlay (or the client view) until it is used.
-const ClientViewOverlay = dynamic(() => import("@/components/clients/view-mode/client-view-overlay"), { ssr: false });
 
 /**
  * Mounted once in the dashboard layout. Shows the client view as a modal or drawer while the URL has
  * `?view_client={id}`; the page underneath stays mounted, so its filters, page and scroll are kept.
+ * The overlay frame is small and imported directly, so it opens at once; the view inside it is lazy.
  * With the setting on "Same page" or "New tab", such a URL (pasted or shared) opens the full page instead.
  */
 export default function ClientViewOverlayHost() {

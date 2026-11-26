@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useClientDetailPrefetch } from "@/components/clients/client-detail-query";
 import { clientViewPageHref, isOverlayMode, withClientViewParam } from "@/components/clients/view-mode/client-view-mode";
+import { preloadClientView } from "@/components/clients/view-mode/client-view-lazy";
 import { markClientViewOpenedInApp } from "@/components/clients/view-mode/client-view-overlay-history";
 import { useClientViewMode } from "@/components/clients/view-mode/use-client-view-mode";
 
@@ -55,6 +56,8 @@ const ClientViewLink = forwardRef<HTMLAnchorElement, Props>(function ClientViewL
             onPointerEnter={(event) => {
                 onPointerEnter?.(event);
                 prefetch.onPointerEnter?.();
+                // Modal / drawer: have the view's code ready before the click.
+                if (isOverlayMode(mode)) preloadClientView();
             }}
             onPointerLeave={(event) => {
                 onPointerLeave?.(event);
@@ -63,6 +66,7 @@ const ClientViewLink = forwardRef<HTMLAnchorElement, Props>(function ClientViewL
             onFocus={(event) => {
                 onFocus?.(event);
                 prefetch.onFocus?.();
+                if (isOverlayMode(mode)) preloadClientView();
             }}
             onBlur={(event) => {
                 onBlur?.(event);

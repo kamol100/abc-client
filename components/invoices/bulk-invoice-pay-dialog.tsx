@@ -25,12 +25,22 @@ import {
 } from "@/components/invoices/invoice-type";
 import { BadgePercent, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import InvoiceDiscountDialog from "@/components/invoices/invoice-discount-dialog";
 import InvoicePrintDialog from "@/components/invoices/invoice-print-dialog";
 import { INVOICE_PAYMENT_FUNDS_API, paymentFundAccess } from "@/components/invoices/payment-fund-access";
 
-const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
+// `loading` gives the dropdown its own Suspense boundary. Without one, its code loading suspends the
+// nearest boundary above the dialog and hides whatever the dialog was opened from.
+const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
+    loading: () => (
+        <div className="space-y-2" aria-hidden>
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-9 w-full rounded-md" />
+        </div>
+    ),
+});
 
 const DISCOUNT_CLOSE_GUARD_MS = 300;
 

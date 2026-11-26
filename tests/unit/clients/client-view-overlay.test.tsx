@@ -127,4 +127,24 @@ describe("ClientViewOverlay", () => {
             expect(screen.getByText("view of c-2")).toBeInTheDocument();
         },
     );
+
+    // ক্লায়েন্টের তথ্য লোড হওয়ার সময় শিরোনাম-বারের নিচে লোডিং লাইন দেখায় এবং লোড শেষ হলে সরে যায় কি না যাচাই করি।
+    it("Client view overlay: shows the loading line under the title bar while the client loads, then removes it", async () => {
+        let finish: (value: unknown) => void = () => undefined;
+        useFetch.mockImplementation(
+            () =>
+                new Promise((resolve) => {
+                    finish = resolve;
+                }),
+        );
+        setup({ clientId: "c-2" });
+
+        expect(await screen.findByRole("progressbar", { name: "common.loading" })).toBeInTheDocument();
+        // The list row is shown meanwhile, so the title is already the client's name.
+        expect(screen.getByRole("heading", { name: "Client c-2" })).toBeInTheDocument();
+
+        finish({ success: true, data: { id: "c-2", name: "Client c-2", pppoe_username: "c-2-ppp", status: 1 } });
+
+        await waitFor(() => expect(screen.queryByRole("progressbar")).not.toBeInTheDocument());
+    });
 });

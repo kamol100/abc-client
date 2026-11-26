@@ -12,6 +12,10 @@ vi.mock("next/navigation", () => ({
     usePathname: () => nav.pathname,
 }));
 
+const preloadClientView = vi.hoisted(() => vi.fn());
+
+vi.mock("@/components/clients/view-mode/client-view-lazy", () => ({ preloadClientView }));
+
 vi.mock("@/context/app-provider", () => ({
     useSettings: () => ({ settings: settings.value }),
 }));
@@ -39,6 +43,7 @@ describe("ClientViewLink", () => {
         nav.pathname = "/clients";
         window.history.replaceState(null, "", "/clients?page=2");
         takeClientViewOpenedInApp();
+        preloadClientView.mockReset();
         pushState?.mockRestore();
         pushState = vi.spyOn(window.history, "pushState").mockImplementation(() => undefined);
     });
@@ -117,4 +122,21 @@ describe("ClientViewLink", () => {
         expect(onClick).toHaveBeenCalledTimes(1);
         expect(pushState).toHaveBeenCalledTimes(1);
     });
+
+    // মডাল/ড্রয়ার মোডে লিংকে হোভার বা ফোকাস করলে ভিউয়ের কোড আগেই লোড শুরু হয়, অন্য মোডে হয় না কি না যাচাই করি।
+    it.each([
+        ["modal", 2],
+        ["drawer", 2],
+        ["page", 0],
+        ["new_tab", 0],
+    ])("Client view link (%s): hover and focus start loading the view's code %i times", (mode, times) => {
+        settings.value = { client_view_open_mode: mode };
+        const link = renderLink();
+
+        fireEvent.pointerEnter(link);
+        fireEvent.focus(link);
+
+        expect(preloadClientView).toHaveBeenCalledTimes(times);
+    });
 });
+

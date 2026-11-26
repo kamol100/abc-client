@@ -148,12 +148,18 @@ export default {
     			marquee: {
     				from: { transform: 'translateX(0)' },
     				to: { transform: 'translateX(-50%)' }
+    			},
+    			// Indeterminate loading line: a quarter-width bar crossing its track.
+    			'progress-slide': {
+    				from: { transform: 'translateX(-100%)' },
+    				to: { transform: 'translateX(400%)' }
     			}
     		},
     		animation: {
     			'accordion-down': 'accordion-down 0.2s ease-out',
     			'accordion-up': 'accordion-up 0.2s ease-out',
-    			marquee: 'marquee 24s linear infinite'
+    			marquee: 'marquee 24s linear infinite',
+    			'progress-slide': 'progress-slide 1.1s ease-in-out infinite'
     		}
     	}
     },

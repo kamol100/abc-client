@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import { DialogOverlay, DialogPortal } from "@/components/ui/dialog";
-import ClientView from "@/components/clients/client-view";
+import { LazyClientView } from "@/components/clients/view-mode/client-view-lazy";
 import { useClientDetail, useClientDetailPrefetch } from "@/components/clients/client-detail-query";
 import { findClientListContext } from "@/components/clients/client-list-cache";
 import { cn } from "@/lib/utils";
@@ -44,7 +44,7 @@ const PANEL_CLASSES: Record<Props["mode"], string> = {
 export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate, onOpenFullPage }: Props) {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const { data } = useClientDetail(clientId);
+    const { data, isFetching } = useClientDetail(clientId);
     const client = data?.data;
     const [scrollRoot, setScrollRoot] = useState<HTMLDivElement | null>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,7 @@ export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate,
                         PANEL_CLASSES[mode],
                     )}
                 >
-                    <div className="flex shrink-0 items-center gap-2 border-b py-2 pl-4 pr-2 md:pl-5">
+                    <div className="relative flex shrink-0 items-center gap-2 border-b py-2 pl-4 pr-2 md:pl-5">
                         <div className="flex min-w-0 flex-col">
                             <DialogPrimitive.Title className="truncate text-sm font-semibold">{title}</DialogPrimitive.Title>
                             <span className="h-4 truncate text-xs text-muted-foreground">
@@ -138,9 +138,19 @@ export default function ClientViewOverlay({ clientId, mode, onClose, onNavigate,
                                 <X className="h-4 w-4" />
                             </MyButton>
                         </div>
+                        {/* Loading line on the title bar's bottom border: first open and Previous / Next. */}
+                        {isFetching && (
+                            <div
+                                role="progressbar"
+                                aria-label={t("common.loading")}
+                                className="pointer-events-none absolute inset-x-0 -bottom-px h-0.5 overflow-hidden bg-primary/15"
+                            >
+                                <div className="h-full w-1/4 animate-progress-slide rounded-full bg-primary motion-reduce:w-full motion-reduce:animate-pulse" />
+                            </div>
+                        )}
                     </div>
                     <div ref={setScrollRoot} className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 md:p-5">
-                        <ClientView clientId={clientId} variant="overlay" scrollRoot={scrollRoot} />
+                        <LazyClientView clientId={clientId} variant="overlay" scrollRoot={scrollRoot} />
                     </div>
                 </DialogPrimitive.Content>
             </DialogPortal>

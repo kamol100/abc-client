@@ -1,3 +1,22 @@
+## Client view modal / drawer: Pay dialog freeze, instant open, loading line — 2026-11-27
+
+Branch `master`. Uncommitted. Fixes from testing the modal / drawer on production.
+
+- **Pay dialog on top of the modal / drawer could not be clicked.**
+  - Cause: `bulk-invoice-pay-dialog.tsx` and `invoice-pay-dialog.tsx` load the fund dropdown with `dynamic(() => import(...))` and no options. In this Next version that form has no Suspense boundary of its own, so while the dropdown's code downloaded (noticeable on production) React suspended a boundary above the dialog. The dialog then lost its place as the top Radix layer: the modal / drawer underneath stayed the active layer and the Pay dialog got `pointer-events: none`.
+  - Fix 1: both Pay dialogs give the dropdown a `loading` placeholder (label line + box), which also gives it its own boundary.
+  - Fix 2: `components/my-dialog.tsx` wraps the dialog body in a `Suspense` boundary with a small placeholder, so no lazy content in any `MyDialog` can do this again. Side effect on normal pages: such loading now shows inside the dialog instead of flashing the page behind it.
+  - Fix 3: the view inside the overlay is `LazyClientView` (`view-mode/client-view-lazy.tsx`), with its own boundary, so nothing in the view can hide the overlay.
+  - Regression test: `tests/unit/clients/client-view-overlay-suspense.test.tsx`. It failed before the `MyDialog` change (dialog `pointer-events: none`) and passes now.
+- **Slow to open.** The overlay frame was itself lazy-loaded, so nothing showed until its code (including the whole client view) had downloaded. Now the frame is imported directly by `client-view-overlay-host.tsx` and opens at once with the view skeleton; only the view is lazy, and `ClientViewLink` starts loading its code on hover / focus in modal and drawer modes (`preloadClientView`).
+- **Loading line.** `client-view-overlay.tsx` shows an indeterminate line on the title bar's bottom border while the client detail is fetching: first open, Previous / Next, and refreshes after an action. It is positioned over the border, so nothing moves. New Tailwind animation `progress-slide` in `tailwind.config.ts`; reduced-motion users get a pulsing full-width line.
+- Tests: loading line shown and removed; hover / focus preload per mode; the regression test above.
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1455 passed, 9 failed, the same 9 as before.
+- Not checked in a browser. The freeze was reproduced and fixed in a unit test, not on production; please confirm there: open a client in the modal and the drawer, click Pay straight away, and use the fund dropdown, date and Pay button.
+
 ## Client view opens in a modal, a drawer, the same page or a new tab — 2026-11-27
 
 Branch `feat/client-view-open-mode`. Backend part: `isp-backend/.ai/report.md`, same date (needs `migrate`).

@@ -23,7 +23,16 @@ import {
     InvoicePaySchema,
 } from "./invoice-type";
 
-const SelectDropdown = dynamic(() => import("@/components/select-dropdown"));
+// `loading` gives the dropdown its own Suspense boundary. Without one, its code loading suspends the
+// nearest boundary above the dialog and hides whatever the dialog was opened from.
+const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
+    loading: () => (
+        <div className="space-y-2" aria-hidden>
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-9 w-full rounded-md" />
+        </div>
+    ),
+});
 
 type InvoicePayDialogProps = {
     invoiceId: number;

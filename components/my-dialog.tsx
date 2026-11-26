@@ -14,17 +14,30 @@ import { Loader2 } from "lucide-react";
 import {
   createContext,
   ReactNode,
+  Suspense,
   useCallback,
   useContext,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DialogCloseContext = createContext<(() => void) | null>(null);
 
 export function useMyDialogClose() {
   return useContext(DialogCloseContext);
+}
+
+/** Shown in the dialog body while code used by its content is still loading. */
+function DialogBodyPlaceholder() {
+  return (
+    <div className="space-y-3 py-1" aria-busy="true">
+      <Skeleton className="h-9 w-full" />
+      <Skeleton className="h-9 w-full" />
+      <Skeleton className="h-9 w-2/3" />
+    </div>
+  );
 }
 
 const sizeClasses = {
@@ -177,7 +190,10 @@ export function MyDialog({
         {children && (
           <DialogCloseContext.Provider value={close}>
             <div className="flex-1 overflow-y-auto min-h-0 px-0.5">
-              {children}
+              {/* Code that loads after the dialog opens (lazy fields) stops here. Without this boundary it
+                  suspends one above the dialog: the page flashes, and a dialog opened from another dialog
+                  (e.g. Pay from the client view modal) loses its place as the top layer and cannot be clicked. */}
+              <Suspense fallback={<DialogBodyPlaceholder />}>{children}</Suspense>
             </div>
           </DialogCloseContext.Provider>
         )}
