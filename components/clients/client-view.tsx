@@ -13,7 +13,9 @@ import {
     RotateCcw,
     Ticket,
 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
+import { findClientInListCache } from "@/components/clients/client-list-cache";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import MyButton from "@/components/my-button";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
@@ -73,13 +75,21 @@ const ClientView: FC<Props> = ({ clientId }) => {
     const [switchOpen, setSwitchOpen] = useState(false);
     const canAddMap = hasPermission("clients.map.add");
     const canSwitchClient = hasPermission("clients.switch.reseller") && !isResellerUser;
-    const { data, isLoading } = useApiQuery<ApiResponse<ClientRow>>({
+    const queryClient = useQueryClient();
+    const { data, isLoading, isPlaceholderData } = useApiQuery<ApiResponse<ClientRow>>({
         queryKey: ["clients", "detail", clientId],
         url: `clients/${clientId}`,
         pagination: false,
+        // Opened from the client list: show the row already loaded there while the full record loads.
+        placeholderData: () => {
+            const row = findClientInListCache(queryClient, clientId);
+            return row ? { success: true, data: row } : undefined;
+        },
     });
 
     const client = data?.data;
+    // The list row lacks detail-only fields; actions wait for the full record.
+    const isSummary = isPlaceholderData;
 
     if (!isLoading && !client) return null;
 
@@ -100,7 +110,11 @@ const ClientView: FC<Props> = ({ clientId }) => {
                                 {isActive ? t("common.active") : t("common.inactive")}
                             </Badge>
                         </div>
-                        <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+                        <fieldset
+                            disabled={isSummary}
+                            aria-busy={isSummary}
+                            className="flex min-w-0 flex-wrap items-center gap-2 sm:ml-auto"
+                        >
                             {hasPermission("invoices.pay") && (
                                 <MyButton
                                     action="edit"
@@ -209,7 +223,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
                                 />
                             )}
                             <ClientIpPingButton clientId={getClientId(client) ?? clientId} />
-                        </div>
+                        </fieldset>
                     </div>
                     <ClientSessionResetDialog
                         clientId={getClientId(client) ?? clientId}
@@ -246,6 +260,7 @@ const ClientView: FC<Props> = ({ clientId }) => {
                     <div className="w-full">
                         <ClientBasicView
                             client={client as ClientRow}
+                            summaryOnly={isSummary}
                         />
                     </div>
                     {hasPermission("onus.access") && (client.onus?.length ?? 0) > 0 && (

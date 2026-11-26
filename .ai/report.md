@@ -1,3 +1,18 @@
+## Default staleTime, and the client view starts from the list row — 2026-11-26
+
+Branch `master`. Builds on the read proxy entry below.
+
+- **`context/tanstack-provider.tsx`:** queries default to `staleTime: 30_000`. Remounting a page, or opening one whose data was just loaded, reuses the data instead of fetching it again. Mutations still refetch through `invalidateQueries`, and queries that set their own `staleTime` (online status, router info, invoice print settings `0`, …) keep it. I checked the direct `useFetch` writes: each one refreshes its own data, or (themes) has its own `staleTime`.
+- **New `components/clients/client-list-cache.ts`:** `findClientInListCache` finds a client row on any cached page of `["clients", …]` or `["reseller-clients", …]`.
+- **`components/clients/client-view.tsx`:** that row is the `placeholderData` of the detail query. Opened from the list, the header and info cards show at once, and router info, usage and SMS status start loading straight away. The full record is still fetched and replaces the row. While the row is shown, the header action buttons are in a disabled `fieldset`, because the row lacks fields the dialogs read, such as the reseller. With no list in the cache (a new tab or a direct link) the page shows the skeleton as before.
+- **`components/clients/basic-view.tsx`:** new `summaryOnly` prop. Password, balance, invoice day and discount show a one-line skeleton instead of "—" or ৳0 until the full record arrives, so the rows keep their height. The copy button (it copies the password) is disabled until then.
+- Tests: `tests/unit/clients/client-list-cache.test.ts`, `tests/unit/clients/client-view-list-placeholder.test.tsx` (5 tests).
+
+Checks:
+- `scripts/ai/typecheck` passed.
+- `scripts/ai/test`: 1391 passed, 9 failed, the same 9 as before these changes.
+- Not checked in a browser. Check: open a client from the list; name, phone and package should show at once, and the buttons enable when the full record arrives. The ONU section can still appear under the cards after the full record loads, as it did before this change.
+
 ## Reads go through a Route Handler, so pages load their queries in parallel — 2026-11-26
 
 Branch `master`.

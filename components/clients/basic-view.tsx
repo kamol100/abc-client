@@ -10,6 +10,7 @@ import ClientSmsStatus from "@/components/clients/client-sms-status";
 import ClientWhatsAppLink from "@/components/clients/client-whatsapp-link";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
 import ClientRouterInfo from "./client-router-info";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatMoney } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,12 @@ type ClientDetail = ClientRow & {
 
 interface Props {
     client: ClientDetail;
+    /** The client is a list row: fields only the detail returns show a placeholder, not "—" or 0. */
+    summaryOnly?: boolean;
 }
+
+/** Same line height as one line of value text, so the row does not move when the value arrives. */
+const ValuePlaceholder: FC = () => <Skeleton className="inline-block h-4 w-20 align-middle" />;
 
 const InfoRow: FC<{ label: string; labelWidth?: string; children: React.ReactNode }> = ({
     label,
@@ -43,7 +49,7 @@ const InfoRow: FC<{ label: string; labelWidth?: string; children: React.ReactNod
     </div>
 );
 
-const ClientBasicView: FC<Props> = ({ client }) => {
+const ClientBasicView: FC<Props> = ({ client, summaryOnly = false }) => {
     const { t } = useTranslation();
     const [copied, setCopied] = useState(false);
 
@@ -82,8 +88,9 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                     <button
                         type="button"
                         onClick={handleCopy}
+                        disabled={summaryOnly}
                         className={cn(
-                            "rounded p-1.5 transition-colors hover:bg-muted",
+                            "rounded p-1.5 transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-50",
                             copied && "text-primary",
                         )}
                         aria-label={t("client.basic_view.copy")}
@@ -111,12 +118,14 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                         )}
                     </InfoRow>
                     <InfoRow label={t("client.basic_view.username")}>{client?.pppoe_username ?? "—"}</InfoRow>
-                    <InfoRow label={t("common.password")}>{client?.pppoe_password ?? "—"}</InfoRow>
+                    <InfoRow label={t("common.password")}>
+                        {summaryOnly ? <ValuePlaceholder /> : client?.pppoe_password ?? "—"}
+                    </InfoRow>
                     <InfoRow label={t("client.zone.label")}>{client?.zone?.name ?? "—"}</InfoRow>
                     <InfoRow label={t("client.basic_view.address")}>{client?.current_address ?? "—"}</InfoRow>
                     <InfoRow label={t("common.email")}>{client?.email ?? "—"}</InfoRow>
                     <InfoRow label={t("client.basic_view.balance")}>
-                        ৳{formatMoney(balance)}/- {t("client.basic_view.tk")}
+                        {summaryOnly ? <ValuePlaceholder /> : <>৳{formatMoney(balance)}/- {t("client.basic_view.tk")}</>}
                     </InfoRow>
                 </div>
             </Card>
@@ -144,13 +153,13 @@ const ClientBasicView: FC<Props> = ({ client }) => {
                         {client?.billing_term ? t(`common.${client.billing_term}`) : t("common.monthly")}
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.basic_view.invoice_date")}>
-                        {client?.invoice_day ?? "—"}
+                        {summaryOnly ? <ValuePlaceholder /> : client?.invoice_day ?? "—"}
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.basic_view.billing_type")}>
                         {client?.billing_type ?? "—"}
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.discount.label")}>
-                        {client?.discount ?? "—"}
+                        {summaryOnly ? <ValuePlaceholder /> : client?.discount ?? "—"}
                     </InfoRow>
                     <InfoRow labelWidth="w-36" label={t("client.sms_status.label")}>
                         <ClientSmsStatus clientId={getClientId(client)} />
