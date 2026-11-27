@@ -12,6 +12,11 @@ class ResizeObserverMock {
 }
 
 vi.stubGlobal("ResizeObserver", ResizeObserverMock);
+// The dropdown (Radix Select) needs these in jsdom.
+Element.prototype.hasPointerCapture = () => false;
+Element.prototype.setPointerCapture = () => {};
+Element.prototype.releasePointerCapture = () => {};
+Element.prototype.scrollIntoView = () => {};
 
 const state = vi.hoisted(() => ({
     fetch: vi.fn(async (_options?: unknown) => ({ success: true, data: {} })),
@@ -99,5 +104,54 @@ describe("Reseller settings", () => {
                 },
             }),
         );
+    });
+
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the client auto inactive time and keeps it disabled while the switch is off»।
+    it("Reseller settings: shows the client auto inactive time and keeps it disabled while the switch is off", async () => {
+        renderDialog();
+
+        expect(screen.getByText("settings.fields.auto_inactive_client_time.label")).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByRole("switch")).toBeEnabled();
+        });
+        expect(screen.getByRole("combobox")).toBeDisabled();
+        expect(screen.getByRole("combobox")).toHaveTextContent("12");
+    });
+
+    // রিসেলারের তথ্য ও সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows the saved hour and saves a newly chosen hour for the reseller»।
+    it("Reseller settings: shows the saved hour and saves a newly chosen hour for the reseller", async () => {
+        state.fetch.mockResolvedValue({
+            success: true,
+            data: {
+                settings: {
+                    auto_inactive_reseller_client_termination_date: 1,
+                    auto_inactive_client_time: 9,
+                },
+            },
+        });
+        const user = userEvent.setup();
+        renderDialog();
+
+        await waitFor(() => {
+            expect(screen.getByRole("combobox")).toBeEnabled();
+        });
+        expect(screen.getByRole("combobox")).toHaveTextContent("09");
+
+        await user.click(screen.getByRole("combobox"));
+        await user.click(await screen.findByRole("option", { name: "18" }));
+
+        await waitFor(() => {
+            expect(state.fetch).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    url: "/company/settings",
+                    method: "POST",
+                    data: {
+                        reseller_uuid: "reseller-1",
+                        settings: { auto_inactive_client_time: 18 },
+                    },
+                }),
+            );
+        });
+        expect(screen.getByRole("combobox")).toHaveTextContent("18");
     });
 });
