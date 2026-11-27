@@ -7,6 +7,8 @@ import {
     type InvoicePrintSettings,
 } from "@/components/invoices/invoice-print-config";
 
+const permissionState = vi.hoisted(() => ({ allowed: new Set<string>() }));
+
 const { queryState, mutateAsync } = vi.hoisted(() => ({
     queryState: {
         data: {
@@ -52,7 +54,7 @@ vi.mock("@/context/app-provider", () => ({
         },
     }),
     usePermissions: () => ({
-        hasPermission: (permission: string) => permission === "company-settings.edit",
+        hasPermission: (permission: string) => permissionState.allowed.has(permission),
     }),
 }));
 
@@ -86,6 +88,20 @@ describe("Invoice print settings page", () => {
         };
         mutateAsync.mockClear();
         mutateAsync.mockImplementation(async (payload: unknown) => payload);
+        permissionState.allowed = new Set([
+            "company-settings.access",
+            "company-settings.edit",
+            "company-settings.invoice-print",
+        ]);
+    });
+
+    // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «shows a no-permission notice without the invoice print permission»।
+    it("Invoice print settings: shows a no-permission notice without the invoice print permission", () => {
+        permissionState.allowed = new Set(["company-settings.access", "company-settings.edit"]);
+        render(<InvoicePrintSettingsPage />);
+
+        expect(screen.getByText("settings.common.no_permission")).toBeInTheDocument();
+        expect(screen.queryByText("settings.invoice_print.original_preview")).not.toBeInTheDocument();
     });
 
     // অ্যাপের সেটিংস যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «keeps the original receipt fixed while the customized preview follows the draft»।

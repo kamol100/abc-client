@@ -17,7 +17,7 @@ import { usePermissions } from "@/context/app-provider";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SECTIONS, sectionKeys, type SectionName } from "@/components/settings/registry/sections";
+import { SECTIONS, permittedGroups, type SectionName } from "@/components/settings/registry/sections";
 
 // Loaded when the dialog first opens: every list toolbar has this button, but few open it.
 const SettingsPanel = lazy(() =>
@@ -36,7 +36,10 @@ export function SettingsButton({ section, size = "icon", className }: SettingsBu
   const [open, setOpen] = useState(false);
   const { title, description } = SECTIONS[section];
 
-  if (!hasPermission("company-settings.access")) return null;
+  // Nothing to show when the user may see none of the section's groups.
+  const groups = permittedGroups(section, hasPermission);
+  if (!hasPermission("company-settings.access") || groups.length === 0) return null;
+  const rows = groups.reduce((count, group) => count + group.keys.length, 0);
 
   return (
     <>
@@ -52,7 +55,7 @@ export function SettingsButton({ section, size = "icon", className }: SettingsBu
         <Settings className="h-4 w-4" />
       </MyButton>
       <MyDialog open={open} onOpenChange={setOpen} size="2xl" title={title} description={description}>
-        <Suspense fallback={<SettingsPanelPlaceholder rows={sectionKeys(section).length} />}>
+        <Suspense fallback={<SettingsPanelPlaceholder rows={rows} />}>
           <SettingsPanel section={section} inDialog />
         </Suspense>
       </MyDialog>

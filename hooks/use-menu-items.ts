@@ -34,6 +34,11 @@ import {
 } from "lucide-react";
 import { usePermissions, useProfile, useSetting, useSubscription } from "@/context/app-provider";
 import { applyMenuLayout, parseMenuLayout } from "@/lib/menu/menu-layout";
+import {
+  SETTINGS_ACCESS_PERMISSION,
+  SETTINGS_PAGES,
+  SETTINGS_PERMISSIONS,
+} from "@/components/settings/registry/permissions";
 import { isMenuFeatureLocked } from "@/lib/helper/helper";
 import { useTranslation } from "react-i18next";
 
@@ -451,19 +456,15 @@ export function buildMenuConfig(t: (key: string) => string): MenuItemConfig[] {
       title: t("menu.settings.title"),
       url: "#",
       icon: Settings,
-      permissions: ["company-settings.access", "menu-layout.edit"],
+      permissions: SETTINGS_PAGES.map((page) => page.permission),
       feature: "core",
-      items: [
-        { title: t("menu.settings.general.title"), url: "/settings/general", permission: "company-settings.access" },
-        { title: t("menu.settings.dashboard.title"), url: "/settings/dashboard", permission: "company-settings.access" },
-        { title: t("menu.settings.sms.title"), url: "/settings/sms", permission: "company-settings.access" },
-        { title: t("menu.settings.map.title"), url: "/settings/map", permission: "company-settings.access" },
-        { title: t("menu.settings.monitoring.title"), url: "/settings/monitoring", permission: "company-settings.access" },
-        { title: t("menu.settings.olt.title"), url: "/settings/olt", permission: "company-settings.access" },
-        { title: t("menu.settings.notifications.title"), url: "/settings/notifications", permission: "company-settings.access" },
-        { title: t("menu.settings.invoice_print.title"), url: "/settings/invoice-print", permission: "company-settings.access" },
-        { title: t("menu.settings.menu_layout.title"), url: "/settings/menu", permission: "menu-layout.edit" },
-      ],
+      // One permission per settings page. Every page but the menu layout also reads the company settings.
+      items: SETTINGS_PAGES.map((page) => ({
+        title: t(page.title),
+        url: page.url,
+        permission: page.permission,
+        ...(page.permission === SETTINGS_PERMISSIONS.menuLayout ? {} : { requiresAny: [SETTINGS_ACCESS_PERMISSION] }),
+      })),
     },
     {
       id: 4,

@@ -12,6 +12,7 @@ import { GRID_STYLES } from "@/components/form-wrapper/form-builder-type";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { formatDateTime, useMonitoringFormat } from "@/components/monitoring/monitoring-format";
+import { canOpenSettingsPage, SETTINGS_PERMISSIONS } from "@/components/settings/registry/permissions";
 import { usePermissions, useSetting } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { cn } from "@/lib/utils";
@@ -203,7 +204,7 @@ export default function OltAccessPanel({ oltId, access, test, deviceIp, vendor, 
                             {pollInterval > 0
                                 ? t("olt.access.auto_poll_every", { count: pollInterval })
                                 : t("olt.access.auto_poll_off")}
-                            {hasPermission("company-settings.access") && (
+                            {canOpenSettingsPage(SETTINGS_PERMISSIONS.olt, hasPermission) && (
                                 <>
                                     {" "}
                                     <Link href="/settings/olt" className="font-medium underline-offset-2 hover:underline">

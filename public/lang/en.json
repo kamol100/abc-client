@@ -5412,13 +5412,15 @@
             }
         },
         "actions": {
-            "edit": "Edit"
+            "edit": "Edit",
+            "about": "About {{label}}"
         },
         "messages": {
             "updated": "Setting updated successfully"
         },
         "common": {
             "not_set": "Not set",
+            "no_permission": "You do not have permission to open this settings page.",
             "prefix_description": "Used at the start of new IDs."
         },
         "groups": {
@@ -5609,8 +5611,25 @@
             },
             "books_closed_until": {
                 "label": "Books closed until",
-                "placeholder": "YYYY-MM-DD (empty: every period open)",
-                "description": "Payments, fund transactions, expenses and salaries dated on or before this day can no longer be added, changed or deleted, so the income statement for a closed month stays as reported. The latest day you can close is yesterday."
+                "description": "Money entries dated on or before this day are locked. Leave it empty to keep every period open.",
+                "info": {
+                    "what": {
+                        "title": "What it does",
+                        "text": "Payments, fund transactions, expenses and salaries dated on or before this day can no longer be added, changed or deleted."
+                    },
+                    "why": {
+                        "title": "Why use it",
+                        "text": "After you report a month, nobody can back-date, edit or delete an entry in it, so the income statement for a closed month stays as reported and mistakes or hidden changes are prevented."
+                    },
+                    "effect": {
+                        "title": "Effect",
+                        "text": "Entries dated after this day work as usual. A late bill or payment for a closed month has to be entered with a date that is still open."
+                    },
+                    "note": {
+                        "title": "Good to know",
+                        "text": "The latest day you can close is yesterday, because today is not over yet. Check the month before you close it. To correct a closed entry, move this date back or clear it, fix the entry, then close again."
+                    }
+                }
             },
             "invoice_prefix": {
                 "label": "Invoice Prefix",

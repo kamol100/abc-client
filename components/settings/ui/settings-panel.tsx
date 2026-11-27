@@ -9,10 +9,11 @@
  */
 
 import type { ReactNode } from "react";
-import { TriangleAlert } from "lucide-react";
+import { Info, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import MyButton from "@/components/my-button";
 import { Card } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { usePermissions, useSettings } from "@/context/app-provider";
 import { cn } from "@/lib/utils";
 import { useSmsGatewayStatus } from "@/components/sms-sent/sms-gateway";
@@ -20,8 +21,10 @@ import { isSmsSendingSetting, smsSettingsLocked } from "@/components/sms-sent/sm
 import { readSetting } from "@/components/settings/core/values";
 import { useSaveSetting } from "@/components/settings/core/use-save-setting";
 import { visibleSettingKeys } from "@/components/settings/core/visibility";
+import type { SettingInfoPart } from "@/components/settings/registry/define";
 import { fieldOf, settingLabelKey, type SettingKey } from "@/components/settings/registry/fields";
-import { SECTIONS, type SectionName, type SettingsSection } from "@/components/settings/registry/sections";
+import { canOpenSettingsPage } from "@/components/settings/registry/permissions";
+import { SECTIONS, permittedGroups, type SectionName, type SettingsSection } from "@/components/settings/registry/sections";
 import { SettingControl } from "@/components/settings/ui/setting-controls";
 
 type SettingsPanelProps = {
@@ -38,9 +41,14 @@ export function SettingsPanel({ section, inDialog = false }: SettingsPanelProps)
   const smsLock = useSmsLock(config.guard === "sms-gateway");
 
   const valueOf = (key: SettingKey) => readSetting(key, settings[key]);
-  const groups = config.groups
+  const groups = permittedGroups(section, hasPermission)
     .map((group) => ({ ...group, keys: visibleSettingKeys(group.keys, { hasPermission, valueOf }) }))
     .filter((group) => group.keys.length > 0);
+
+  // A settings page opened by its address, without the permission of its menu item.
+  if (!inDialog && config.permission && !canOpenSettingsPage(config.permission, hasPermission)) {
+    return <NoSettingsPermission />;
+  }
 
   return (
     <div className={cn("flex w-full flex-col gap-6", !inDialog && "max-w-3xl")}>
@@ -80,21 +88,69 @@ export function SettingsPanel({ section, inDialog = false }: SettingsPanelProps)
   );
 }
 
+/** Shown in place of a settings page the user may not open. */
+export function NoSettingsPermission() {
+  const { t } = useTranslation();
+  return (
+    <Card className="w-full max-w-3xl p-4 text-sm text-muted-foreground" role="alert">
+      {t("settings.common.no_permission")}
+    </Card>
+  );
+}
+
 /** Label (+ optional help line) on the left, control on the right. Stacks on phones. */
 function SettingRow({ settingKey, children }: { settingKey: SettingKey; children: ReactNode }) {
   const { t } = useTranslation();
-  const { description } = fieldOf(settingKey);
+  const { description, info } = fieldOf(settingKey);
+  const label = t(settingLabelKey(settingKey));
   return (
     <div
       data-setting={settingKey}
       className="flex min-h-14 flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
     >
       <div className="min-w-0">
-        <p className="text-sm font-medium">{t(settingLabelKey(settingKey))}</p>
+        <div className="flex items-center gap-1">
+          <p className="text-sm font-medium">{label}</p>
+          {info && <SettingInfo label={label} parts={info} />}
+        </div>
         {description && <p className="mt-0.5 text-xs text-muted-foreground">{t(description)}</p>}
       </div>
       <div className="flex min-w-0 justify-end">{children}</div>
     </div>
+  );
+}
+
+/** Info button next to a label; the explanation opens in a popover. */
+function SettingInfo({ label, parts }: { label: string; parts: SettingInfoPart[] }) {
+  const { t } = useTranslation();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <MyButton
+          type="button"
+          variant="ghost"
+          size="icon"
+          icon={false}
+          className="size-6 shrink-0 text-muted-foreground"
+          aria-label={t("settings.actions.about", { label })}
+        >
+          <Info className="size-4" aria-hidden />
+        </MyButton>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        collisionPadding={16}
+        className="flex max-h-[--radix-popover-content-available-height] w-[min(24rem,calc(100vw-2rem))] flex-col gap-3 overflow-y-auto text-sm"
+      >
+        <p className="font-semibold">{label}</p>
+        {parts.map((part) => (
+          <div key={part.title}>
+            <p className="font-medium">{t(part.title)}</p>
+            <p className="mt-0.5 text-muted-foreground">{t(part.text)}</p>
+          </div>
+        ))}
+      </PopoverContent>
+    </Popover>
   );
 }
 

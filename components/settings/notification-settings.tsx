@@ -8,11 +8,17 @@ import {
     notificationSettingKey,
 } from "@/components/notifications/notification-catalog";
 import { useSaveSetting } from "@/components/settings/core/use-save-setting";
+import {
+    canOpenSettingsPage,
+    notificationCategoryPermission,
+    SETTINGS_PERMISSIONS,
+} from "@/components/settings/registry/permissions";
+import { NoSettingsPermission } from "@/components/settings/ui/settings-panel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useSettings } from "@/context/app-provider";
+import { usePermissions, useSettings } from "@/context/app-provider";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -20,10 +26,20 @@ import { useTranslation } from "react-i18next";
 export function NotificationSettings() {
     const { t } = useTranslation();
     const { settings } = useSettings();
+    const { hasPermission } = usePermissions();
     const { save: saveSetting, isSaving } = useSaveSetting();
 
     // Notification switches are not in the settings registry; they are saved as 1/0.
     const save = (key: string, next: boolean) => saveSetting(key, next ? 1 : 0);
+
+    if (!canOpenSettingsPage(SETTINGS_PERMISSIONS.notifications, hasPermission)) {
+        return <NoSettingsPermission />;
+    }
+
+    // Each category is a block with its own permission.
+    const categories = NOTIFICATION_CATEGORIES.filter((category) =>
+        hasPermission(notificationCategoryPermission(category)),
+    );
 
     return (
         <div className="flex flex-col gap-4">
@@ -31,7 +47,7 @@ export function NotificationSettings() {
                 <h1 className="text-lg font-medium">{t("notifications.settings.title")}</h1>
                 <p className="text-sm text-muted-foreground">{t("notifications.settings.description")}</p>
             </div>
-            {NOTIFICATION_CATEGORIES.map((category) => {
+            {categories.map((category) => {
                 const categoryKey = notificationCategorySettingKey(category);
                 const categoryOn = isNotificationSettingEnabled(settings[categoryKey]);
                 return (

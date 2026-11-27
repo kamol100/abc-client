@@ -32,6 +32,8 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { canOpenSettingsPage, SETTINGS_PERMISSIONS } from "@/components/settings/registry/permissions";
+import { NoSettingsPermission } from "@/components/settings/ui/settings-panel";
 import { usePermissions } from "@/context/app-provider";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery, { type ApiResponse } from "@/hooks/use-api-query";
@@ -107,7 +109,8 @@ function ReceiptPreview({
 export function InvoicePrintSettingsPage() {
     const { t } = useTranslation();
     const { hasPermission } = usePermissions();
-    const canEdit = hasPermission("company-settings.edit");
+    const canOpen = canOpenSettingsPage(SETTINGS_PERMISSIONS.invoicePrint, hasPermission);
+    const canEdit = canOpen && hasPermission("company-settings.edit");
     const [draft, setDraft] = useState<InvoicePrintSettings>(DEFAULT_INVOICE_PRINT_SETTINGS);
     const [fontSizeText, setFontSizeText] = useState(String(DEFAULT_INVOICE_PRINT_SETTINGS.font_size));
     const [hydrated, setHydrated] = useState(false);
@@ -196,6 +199,8 @@ export function InvoicePrintSettingsPage() {
             }
         }
     }
+
+    if (!canOpen) return <NoSettingsPermission />;
 
     if (isError || (data && !saved)) {
         return (

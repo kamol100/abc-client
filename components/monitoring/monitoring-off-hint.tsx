@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { canOpenSettingsPage, SETTINGS_PERMISSIONS } from "@/components/settings/registry/permissions";
 import { usePermissions } from "@/context/app-provider";
 
 /** Shown on a device that is not checked automatically: which switch is off and where to turn it on. */
@@ -30,7 +31,7 @@ export default function MonitoringOffHint({ deviceOff, companyOff }: { deviceOff
             {companyOff && (
                 <p className="flex flex-wrap items-center gap-x-3">
                     <span>{t("monitoring.off_hint.company")}</span>
-                    {hasPermission("company-settings.access") && (
+                    {canOpenSettingsPage(SETTINGS_PERMISSIONS.monitoring, hasPermission) && (
                         <Link href="/settings/monitoring" className={linkClass}>
                             {t("monitoring.off_hint.settings")}
                         </Link>

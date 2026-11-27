@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type Ref } from "react";
+import type { Matcher } from "react-day-picker";
 import { useTranslation } from "react-i18next";
 import { DatePopover, useCalendarLocale } from "@/components/controls/date-popover";
 import {
@@ -23,6 +24,8 @@ type DateInputProps = {
     onClear: () => void;
     placeholder?: string;
     disabled?: boolean;
+    /** Days that cannot be picked. */
+    disabledDays?: Matcher | Matcher[];
     hasError?: boolean;
     /** How the picked day is shown (date-fns format). */
     dateFormat?: string;
@@ -48,6 +51,7 @@ export function DateInput({
     onClear,
     placeholder = "common.pick_date",
     disabled = false,
+    disabledDays,
     hasError = false,
     dateFormat = "MM/dd/yyyy",
     closeOnSelect = true,
@@ -106,6 +110,7 @@ export function DateInput({
                     mode="single"
                     selected={selected}
                     onSelect={handleSelect}
+                    disabled={disabledDays}
                     autoFocus
                     defaultMonth={selected ?? new Date()}
                 />
