@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Cell,
   ColumnDef,
   ColumnFiltersState,
   PaginationState,
@@ -57,6 +58,32 @@ interface DataTableProps<TData, TValue> {
   setFilter?: (x: string) => void;
   queryKey?: string;
   initialColumnVisibility?: VisibilityState;
+}
+
+type CellRenderer<TData> = ColumnDef<TData, unknown>["cell"];
+
+const isPlainFunction = (value: unknown): value is (props: unknown) => React.ReactNode =>
+  typeof value === "function" && !(value.prototype && value.prototype.isReactComponent);
+
+/**
+ * Identifies a column's `cell` by its code, not by the function object. A page that
+ * builds its columns while rendering hands over a new function every time; the code
+ * behind it is the same.
+ */
+const cellRendererKey = <TData,>(renderer: CellRenderer<TData>): string =>
+  isPlainFunction(renderer) ? renderer.toString() : "static";
+
+/**
+ * Draws one cell. The column's `cell` function is called here, not mounted as its own
+ * component. Mounted directly (flexRender), a new function object counts as a new
+ * component: every cell is thrown away and built again on each render of the page, and
+ * a dialog opened from a row closes by itself. The caller keys this by the function's
+ * code, so a cell whose code really changes still starts fresh.
+ */
+function CellContent<TData>({ cell }: { cell: Cell<TData, unknown> }) {
+  const renderer = cell.column.columnDef.cell;
+  if (isPlainFunction(renderer)) return <>{renderer(cell.getContext())}</>;
+  return <>{flexRender(renderer, cell.getContext())}</>;
 }
 
 export function DataTable<TData, TValue>({
@@ -202,10 +229,10 @@ export function DataTable<TData, TValue>({
                           key={cell.id}
                           className={cell.column.columnDef.meta?.className}
                         >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
+                          <CellContent
+                            key={cellRendererKey(cell.column.columnDef.cell)}
+                            cell={cell}
+                          />
                         </TableCell>
                       ))}
                     </TableRow>
