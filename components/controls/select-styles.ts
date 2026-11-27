@@ -53,6 +53,11 @@ const buildSelectStyles = (hasError: boolean): SelectStyles => ({
       color: `hsl(var(--muted-foreground))`,
       fontSize: dropdownFontSize,
       opacity: 1,
+      // Keep one line in a narrow control: cut with "…" instead of wrapping,
+      // so the dropdown never grows taller than its single-line height.
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     }),
     singleValue: (base) => ({
       ...base,
