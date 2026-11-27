@@ -152,10 +152,15 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
 
                     return (
                         <div className="space-y-0.5">
-                            <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-semibold text-primary">
+                            <p className="font-semibold text-primary">
                                 <DisplayCount amount={toNumber(total)} formatCurrency />
-                                {advance && <InvoiceAdvanceTag {...advance} />}
                             </p>
+                            {/* On its own line under the amount; a block wrapper keeps the tag from stretching. */}
+                            {advance && (
+                                <p>
+                                    <InvoiceAdvanceTag {...advance} />
+                                </p>
+                            )}
                             {isPartial && (
                                 <p className="text-xs text-green-600">
                                     {t("invoice.reports.paid")}: <DisplayCount amount={toNumber(paid)} formatCurrency />

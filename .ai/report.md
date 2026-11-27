@@ -1,3 +1,11 @@
+## Invoice list: the "Advance paid" tag sits under the amount — 2026-11-27
+
+Branch `fix/invoice-advance-tag-under-amount` (from `master`), committed there, not merged. No backend change.
+
+- `components/invoices/invoice-column.tsx`: in the Amount cell the "Advance paid" tag was beside the amount; it is now on its own line under it, above the "Paid" line of a part-paid bill. A row with the tag is one line taller than before.
+- Not changed: the client portal invoice list (`client-invoice-columns.tsx`) still shows the tag beside the amount.
+
+Checks: `scripts/ai/typecheck` passed. `invoice-column.test.tsx` and `invoice-advance-tag.test.tsx`: 9 passed. Browser (Chromium, tenant `cp`, 1440 px and 390 px): the invoice list renders with no horizontal page scroll, but none of the local invoices on the first page used an advance, so the tag itself was not seen in the browser.
 ## Settings → General → Books: calendar and info popover for "Books closed until" — 2026-11-27
 
 Branch `feat/books-closed-calendar` (from `master`), committed there, not merged. No backend change.
