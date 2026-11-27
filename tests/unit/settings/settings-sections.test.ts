@@ -32,7 +32,7 @@ const LIST_EXPECTED = Object.fromEntries(
 // Order on each page and dialog, as shown before the registry refactor.
 const EXPECTED = {
   ...LIST_EXPECTED,
-  general: [...PREFIXES, ...CLIENT],
+  general: [...PREFIXES, ...CLIENT, "books_closed_until"],
   dashboard: DASHBOARD_VISIBILITY_ITEMS.map((item) => item.settingKey),
   sms: [
     "sms_after_client_create",

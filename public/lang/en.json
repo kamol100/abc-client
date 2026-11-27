@@ -2748,7 +2748,24 @@
             "total_expense": "Total Expense",
             "net_balance": "Net Balance"
         },
-        "empty": "No data found"
+        "empty": "No data found",
+        "checks": {
+            "ok": "Matches the books: every payment has its fund deposit (৳{{amount}}) and every expense its one fund transaction.",
+            "missing_fund_deposit": "{{count}} payment(s) of ৳{{amount}} have no fund deposit.",
+            "amount_mismatch": "{{count}} payment(s) of ৳{{amount}} differ from their fund deposit.",
+            "date_mismatch": "{{count}} payment(s) of ৳{{amount}} are dated differently from their fund deposit.",
+            "expense_duplicates": "{{count}} expense(s) or salaries were taken from the fund more than once: ৳{{amount}} is counted too much.",
+            "expense_without_debit": "{{count}} approved expense(s) or paid salaries of ৳{{amount}} were never taken from a fund and are not counted.",
+            "settled_from_reseller_wallet": "৳{{amount}} of client bills were settled from your reseller wallet; they are your income and have no fund deposit.",
+            "paid_from_wallet": "৳{{amount}} of bills were paid from wallets; that money was counted when the wallet was recharged."
+        },
+        "types": {
+            "salary": "Salary",
+            "wallet_recharge": "Advance payment (wallet recharge)",
+            "reseller_bill": "Reseller bill",
+            "other_income": "Other income",
+            "other_expense": "Other expense"
+        }
     },
     "btrc": {
         "title": "BTRC Reports",
@@ -5407,6 +5424,7 @@
         "groups": {
             "filter": "Filter",
             "id_prefixes": "ID prefixes",
+            "books": "Books",
             "clients": "Clients",
             "sms_client_events": "Client events",
             "sms_invoices": "Invoices",
@@ -5588,6 +5606,11 @@
             "lon": {
                 "label": "Default Longitude",
                 "placeholder": "Enter default longitude"
+            },
+            "books_closed_until": {
+                "label": "Books closed until",
+                "placeholder": "YYYY-MM-DD (empty: every period open)",
+                "description": "Payments, fund transactions, expenses and salaries dated on or before this day can no longer be added, changed or deleted, so the income statement for a closed month stays as reported. The latest day you can close is yesterday."
             },
             "invoice_prefix": {
                 "label": "Invoice Prefix",

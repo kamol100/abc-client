@@ -74,6 +74,11 @@ export const SETTINGS = {
   product_code_prefix: text({ default: "PRO" }),
   ticket_code_prefix: text({ default: "TKT" }),
 
+  // ── General: books ─────────────────────────────────────────────────
+  // A date (YYYY-MM-DD). Payments, fund transactions, expenses and salaries dated
+  // on or before it can no longer change, so a closed month's statement stays fixed.
+  books_closed_until: text({ description: "settings.fields.books_closed_until.description" }),
+
   // ── General: clients ───────────────────────────────────────────────
   payment_deadline: select({ options: PAYMENT_DEADLINE_OPTIONS, default: PAYMENT_DEADLINE_RANGE.fallback, strict: true }),
   auto_inactive_client_invoice_due: toggle(),

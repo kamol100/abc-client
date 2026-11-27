@@ -412,7 +412,9 @@ const bulkPayPaymentDateSchema = z.preprocess(
 
 export const BulkInvoicePaySchema = z.object({
     invoice_ids: z.array(z.string()).min(1),
-    fund_id: z.coerce.number().min(1),
+    fund_id: z.coerce
+        .number({ invalid_type_error: "invoice.bulk_pay.fund.errors.required" })
+        .min(1, { message: "invoice.bulk_pay.fund.errors.required" }),
     payment_date: bulkPayPaymentDateSchema,
     status: z.enum(["paid", "partial"]),
     partial_amount: z.coerce.number().min(0),

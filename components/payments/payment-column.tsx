@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import DisplayCount from "@/components/display-count";
-import { PaymentRow } from "@/components/payments/payment-type";
+import { isWalletPaid, PaymentRow } from "@/components/payments/payment-type";
 import { Badge } from "@/components/ui/badge";
 import { usePermissions } from "@/context/app-provider";
 import { toNumber } from "@/lib/helper/helper";
@@ -156,7 +156,7 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
         ),
         cell: ({ row }) => (
             <span className="text-sm">
-                {row.original.fund?.name ?? (row.original.source === "wallet" ? <WalletSourceLabel /> : "—")}
+                {row.original.fund?.name ?? (isWalletPaid(row.original.source) ? <WalletSourceLabel /> : "—")}
             </span>
         ),
         enableSorting: false,
