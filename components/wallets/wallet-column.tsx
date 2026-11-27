@@ -22,8 +22,6 @@ const ClientWalletActionsCell: FC<{ wallet: ClientWalletRow }> = ({ wallet }) =>
   const canAccessWallets = hasPermission("wallets.access");
   const walletId = wallet.id;
   const clientUuid = wallet.client?.uuid;
-  console.log(wallet.client?.uuid);
-  const clientName = wallet.client?.name ?? "";
 
   if (!canAccessWallets || !walletId) {
     return null;
@@ -53,7 +51,7 @@ const ClientWalletActionsCell: FC<{ wallet: ClientWalletRow }> = ({ wallet }) =>
       {openRecharge && (
         <ClientWalletRechargeDialog
           clientUuid={clientUuid as string}
-          clientName={clientName}
+          client={wallet.client}
           open={openRecharge}
           onOpenChange={setOpenRecharge}
         />

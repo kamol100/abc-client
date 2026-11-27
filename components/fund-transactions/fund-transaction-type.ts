@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LinkedPaymentChainSchema } from "@/components/wallets/wallet-type";
 
 const optionalNullableNumber = z.preprocess(
   (value) => (value === "" || value === undefined ? null : value),
@@ -31,6 +32,8 @@ export const FundTransactionRowSchema = z
     transaction_type: FundTransactionTypeSchema,
     created_at: z.string().nullable().optional(),
     fund: FundRefSchema.nullable().optional(),
+    /** Set for the deposit of an advance payment: deleting it deletes these too. */
+    linked: LinkedPaymentChainSchema.nullable().optional(),
     /** Staff who made the transaction; can differ from the fund's owner. */
     transaction_by: z
       .object({ id: z.coerce.number(), name: z.string() })

@@ -111,6 +111,70 @@ describe("buildInvoiceViewModel", () => {
         expect(formatInvoiceDigits("501-12", "bn")).toBe("৫০১-১২");
     });
 
+    // অগ্রিম থেকে পুরো মিটে যাওয়া 1400 টাকার বিলে পুরো বিল, পরিশোধ 1400, বকেয়া 0 ও হাতে থাকা অগ্রিম 600 আসে এবং বিয়োগ line বাদ যায় কি না যাচাই করি।
+    it("Invoice view model - 1400 bill covered by the advance: shows the full bill as paid and 600 advance in hand", () => {
+        const model = buildInvoiceViewModel({
+            trackID: "INV-20",
+            total_amount: 0,
+            discount: 0,
+            line_total_discount: 0,
+            after_discount_amount: 0,
+            amount_paid: 0,
+            amount_due: 0,
+            advance_amount: 1400,
+            wallet_balance: 600,
+            lines: [
+                { description: "Internet bill", amount: 1400, quantity: 1, total_amount: 1400 },
+                { description: "Advance payment adjusted", amount: -1400, quantity: 1, total_amount: -1400 },
+            ],
+        });
+
+        expect(model?.subTotal).toBe(1400);
+        expect(model?.total).toBe(1400);
+        expect(model?.amountPaid).toBe(1400);
+        expect(model?.amountDue).toBe(0);
+        expect(model?.advanceInHand).toBe(600);
+        expect(model?.lines.map((line) => line.description)).toEqual(["Internet bill"]);
+    });
+
+    // অগ্রিম আংশিক (500) হলে বিল 1400, পরিশোধ 500, বকেয়া 900 আসে কি না যাচাই করি।
+    it("Invoice view model - advance covers 500 of 1400: shows paid 500 and due 900", () => {
+        const model = buildInvoiceViewModel({
+            trackID: "INV-21",
+            total_amount: 900,
+            after_discount_amount: 900,
+            amount_paid: 0,
+            amount_due: 900,
+            advance_amount: 500,
+            wallet_balance: 0,
+            lines: [
+                { description: "Internet bill", amount: 1400, quantity: 1, total_amount: 1400 },
+                { description: "Advance payment adjusted", amount: -500, quantity: 1, total_amount: -500 },
+            ],
+        });
+
+        expect(model?.total).toBe(1400);
+        expect(model?.amountPaid).toBe(500);
+        expect(model?.amountDue).toBe(900);
+        expect(model?.advanceInHand).toBe(0);
+    });
+
+    // অগ্রিম ছাড়া সাধারণ বিলের অঙ্ক আগের মতোই থাকে কি না যাচাই করি।
+    it("Invoice view model - ordinary bill: keeps its amounts and has no advance in hand", () => {
+        const model = buildInvoiceViewModel({
+            trackID: "INV-22",
+            total_amount: 500,
+            after_discount_amount: 500,
+            amount_paid: 200,
+            lines: [{ description: "Internet bill", amount: 500, quantity: 1, total_amount: 500 }],
+        });
+
+        expect(model?.total).toBe(500);
+        expect(model?.amountPaid).toBe(200);
+        expect(model?.amountDue).toBe(300);
+        expect(model?.advanceInHand).toBe(0);
+    });
+
     // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «returns null when the payload is not an invoice»।
     it("Invoice view model: returns null when the payload is not an invoice", () => {
         expect(buildInvoiceViewModel(null)).toBeNull();

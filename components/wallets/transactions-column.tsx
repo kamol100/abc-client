@@ -8,6 +8,8 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { Badge } from "@/components/ui/badge";
 import DisplayCount from "@/components/display-count";
 import { WalletTransactionRow } from "@/components/wallets/wallet-type";
+import { DeleteModal } from "@/components/delete-modal";
+import { ChainDeleteModal } from "@/components/wallets/chain-delete-modal";
 
 const TRANSACTION_TYPE_BADGE_STYLES: Record<string, string> = {
   deposit: "theme-badge-success",
@@ -33,6 +35,43 @@ const TransactionTypeCell = ({
     </Badge>
   );
 };
+
+/** A transaction of a payment names what goes with it; any other is a plain delete. */
+const TransactionDeleteCell = ({ row }: { row: WalletTransactionRow }) => {
+  const api = `/wallet-transactions/${row.id}`;
+
+  return (
+    <div className="flex items-center justify-end mr-2">
+      {row.linked ? (
+        <ChainDeleteModal api_url={api} linked={row.linked} />
+      ) : (
+        <DeleteModal
+          api_url={api}
+          keys="wallet-transactions,client-wallets,clients"
+          confirmMessage="wallet.transaction_delete_confirmation"
+        />
+      )}
+    </div>
+  );
+};
+
+const deleteColumn: ColumnDef<WalletTransactionRow> = {
+  id: "actions",
+  header: ({ column }) => (
+    <DataTableColumnHeader
+      column={column}
+      title="common.actions"
+      className="flex justify-end mr-2"
+    />
+  ),
+  cell: ({ row }) => <TransactionDeleteCell row={row.original} />,
+  enableSorting: false,
+  enableHiding: false,
+};
+
+/** `withDelete` adds the delete action: only for a client wallet opened by staff. */
+export const getTransactionsColumns = (withDelete: boolean): ColumnDef<WalletTransactionRow>[] =>
+  withDelete ? [...TransactionsColumns, deleteColumn] : TransactionsColumns;
 
 export const TransactionsColumns: ColumnDef<WalletTransactionRow>[] = [
   {

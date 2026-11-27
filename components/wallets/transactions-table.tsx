@@ -4,7 +4,8 @@ import { FC, ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig, ToolbarItem } from "@/components/data-table/toolbar/toolbar-config";
-import { TransactionsColumns } from "@/components/wallets/transactions-column";
+import { getTransactionsColumns } from "@/components/wallets/transactions-column";
+import { usePermissions } from "@/context/app-provider";
 import {
   WalletTransactionRow,
   WalletTransactionRowSchema,
@@ -23,6 +24,10 @@ interface TransactionsTableProps {
 export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId, toolbarCenter, toolbarAdd }) => {
   const { t } = useTranslation();
   const { wallet } = useMyWallet();
+  const { hasPermission } = usePermissions();
+  // Only a client wallet opened from the wallet list; never the user's own wallet.
+  const canDelete = walletId != null && hasPermission("wallet-transactions.delete");
+  const columns = useMemo(() => getTransactionsColumns(canDelete), [canDelete]);
   const [filterValue, setFilter] = useState<string | null>(null);
   const resolvedWalletId = walletId ?? wallet?.id;
 
@@ -68,7 +73,7 @@ export const TransactionsTable: FC<TransactionsTableProps> = ({ walletId, toolba
     <DataTable
       data={rows}
       setFilter={setFilter}
-      columns={TransactionsColumns}
+      columns={columns}
       toolbar={toolbar}
       pagination={pagination}
       setCurrentPage={setCurrentPage}

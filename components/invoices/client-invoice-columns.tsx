@@ -6,6 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
+import InvoiceAdvanceTag, { invoiceAdvance } from "@/components/invoices/invoice-advance-tag";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
 
 const STATUS_STYLES: Record<string, string> = {
@@ -68,11 +69,16 @@ export const clientInvoiceColumns: ColumnDef<InvoiceRow>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="invoice.amount.label" />
         ),
-        cell: ({ row }) => (
-            <span className="font-semibold text-primary">
-                ৳{formatMoney(row.original.after_discount_amount)}
-            </span>
-        ),
+        cell: ({ row }) => {
+            const advance = invoiceAdvance(row.original);
+
+            return (
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-semibold text-primary">
+                    ৳{formatMoney(row.original.after_discount_amount)}
+                    {advance && <InvoiceAdvanceTag {...advance} />}
+                </span>
+            );
+        },
     },
     {
         accessorKey: "status",

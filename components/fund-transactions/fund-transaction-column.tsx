@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Badge } from "@/components/ui/badge";
 import { DeleteModal } from "@/components/delete-modal";
+import { ChainDeleteModal } from "@/components/wallets/chain-delete-modal";
 import { FundTransactionRow } from "./fund-transaction-type";
 import DisplayCount from "../display-count";
 
@@ -39,11 +40,15 @@ const FundTransactionActions = ({ row }: { row: FundTransactionRow }) => {
 
   return (
     <div className="flex items-center justify-end gap-2 mr-2">
-      <DeleteModal
-        api_url={`/fund-transactions/${row.id}`}
-        keys="fund-transactions,funds"
-        confirmMessage="fund_transaction.delete_confirmation"
-      />
+      {row.linked ? (
+        <ChainDeleteModal api_url={`/fund-transactions/${row.id}`} linked={row.linked} />
+      ) : (
+        <DeleteModal
+          api_url={`/fund-transactions/${row.id}`}
+          keys="fund-transactions,funds"
+          confirmMessage="fund_transaction.delete_confirmation"
+        />
+      )}
     </div>
   );
 };

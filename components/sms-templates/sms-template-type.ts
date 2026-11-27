@@ -6,6 +6,7 @@ export const SMS_TEMPLATE_TYPES = [
   "invoice_due_reseller",
   "payment_received",
   "wallet_payment",
+  "wallet_recharge",
   "client_activated",
   "client_deactivated",
   "invoice_due_reminder",
@@ -22,6 +23,7 @@ export const SMS_TEMPLATE_TYPE_LABEL_KEYS: Record<
   invoice_due_reseller: "sms_template.template_type.options.invoice_due_reseller",
   payment_received: "sms_template.template_type.options.payment_received",
   wallet_payment: "sms_template.template_type.options.wallet_payment",
+  wallet_recharge: "sms_template.template_type.options.wallet_recharge",
   client_activated: "sms_template.template_type.options.client_activated",
   client_deactivated: "sms_template.template_type.options.client_deactivated",
   invoice_due_reminder: "sms_template.template_type.options.invoice_due_reminder",
@@ -52,6 +54,7 @@ export const SmsTemplateTokenSchema = z.enum([
   "{{reseller_name}}",
   "{{opening_balance}}",
   "{{closing_balance}}",
+  "{{wallet_balance}}",
 ]);
 
 export type SmsTemplateToken = z.infer<typeof SmsTemplateTokenSchema>;

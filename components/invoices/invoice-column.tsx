@@ -8,6 +8,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import DisplayCount from "@/components/display-count";
 import MyBadge from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
+import InvoiceAdvanceTag, { invoiceAdvance } from "@/components/invoices/invoice-advance-tag";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
 import { usePermissions } from "@/context/app-provider";
@@ -147,11 +148,13 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                         row.original.after_discount_amount ?? row.original.total_amount ?? 0;
                     const paid = row.original.amount_paid ?? 0;
                     const isPartial = paid > 0 && paid < toNumber(total);
+                    const advance = invoiceAdvance(row.original);
 
                     return (
                         <div className="space-y-0.5">
-                            <p className="font-semibold text-primary">
+                            <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-semibold text-primary">
                                 <DisplayCount amount={toNumber(total)} formatCurrency />
+                                {advance && <InvoiceAdvanceTag {...advance} />}
                             </p>
                             {isPartial && (
                                 <p className="text-xs text-green-600">

@@ -60,6 +60,9 @@ export const PaymentRowSchema = z.object({
     fund: FundRefSchema.nullable().optional(),
     invoice: InvoiceRefSchema.nullable().optional(),
     fund_id: z.coerce.number().nullable().optional(),
+    // null: ordinary collection. "wallet_recharge": advance into a client wallet.
+    // "wallet": a bill settled from the wallet balance (no fund, no new money).
+    source: z.string().nullable().optional(),
     payment_type: PaymentTypeRefSchema.nullable().optional(),
     payment_type_id: z.coerce.number().nullable().optional(),
 }).passthrough();

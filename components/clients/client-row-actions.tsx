@@ -205,7 +205,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
                 {hasPermission("wallets.access") && (
                     <DropdownMenuItem onSelect={() => setWalletRechargeOpen(true)}>
                         <Wallet className="mr-2 h-4 w-4" />
-                        {t("client.actions.recharge_client")}
+                        {t("client.actions.advance_payment")}
                     </DropdownMenuItem>
                 )}
                 {canLockClients && (
@@ -317,7 +317,7 @@ const ClientRowActions: FC<ClientRowActionsProps> = ({ row }) => {
             ) : (
                 <ClientWalletRechargeDialog
                     clientUuid={clientId}
-                    clientName={client.name}
+                    client={client}
                     open={walletRechargeOpen}
                     onOpenChange={setWalletRechargeOpen}
                 />

@@ -3,6 +3,7 @@
 import { CircleAlert, CircleCheck, CircleDotDashed, type LucideIcon } from "lucide-react";
 import ClientViewLink from "@/components/clients/view-mode/client-view-link";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DeleteModal } from "@/components/delete-modal";
 import DisplayCount from "@/components/display-count";
@@ -34,6 +35,12 @@ function PaymentClientName({ client }: { client: PaymentRow["client"] }) {
             {name}
         </ClientViewLink>
     );
+}
+
+/** Shown in the fund column for a bill settled from the client's wallet (it has no fund). */
+function WalletSourceLabel() {
+    const { t } = useTranslation();
+    return <span className="text-muted-foreground">{t("payment.wallet_source")}</span>;
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -149,7 +156,7 @@ export const PaymentColumns: ColumnDef<PaymentRow>[] = [
         ),
         cell: ({ row }) => (
             <span className="text-sm">
-                {row.original.fund?.name ?? "—"}
+                {row.original.fund?.name ?? (row.original.source === "wallet" ? <WalletSourceLabel /> : "—")}
             </span>
         ),
         enableSorting: false,

@@ -34,6 +34,8 @@ export type InvoiceViewModel = {
     amountPaid: number;
     amountDue: number;
     total: number;
+    /** What the client still holds in the wallet, when the API sent it; 0 otherwise. */
+    advanceInHand: number;
     paymentMethod: string | null;
     paymentDate: string | null;
     transactionId: string | null;
@@ -142,9 +144,14 @@ export const buildInvoiceViewModel = (
     const zone = isRecord(source.zone) ? source.zone : null;
     const invoiceType = isRecord(source.invoice_type) ? source.invoice_type : null;
     const fund = isRecord(source.fund) ? source.fund : null;
+    // A bill that used the client's advance is saved with the advance taken off its
+    // amounts, as a minus line. It is shown the usual way: the full bill, with the
+    // advance counted as paid. The minus line is not an item.
+    const advance = Math.max(toNumber(asNumberInput(source.advance_amount)), 0);
     const lines = readLines(source).flatMap((line, index) => {
         const parsed = readLine(line, index);
-        return parsed ? [parsed] : [];
+        if (!parsed || (advance > 0 && parsed.amount < 0)) return [];
+        return [parsed];
     });
 
     const invoiceNumber = readString(source, "trackID");
@@ -157,14 +164,14 @@ export const buildInvoiceViewModel = (
     );
     if (!hasIdentity) return null;
 
-    const subTotal = toNumber(asNumberInput(source.total_amount));
+    const subTotal = toNumber(asNumberInput(source.total_amount)) + advance;
     const discount = toNumber(asNumberInput(source.discount));
     const lineDiscount = toNumber(asNumberInput(source.line_total_discount));
     const explicitTotal = asNumberInput(source.after_discount_amount);
     const total = explicitTotal == null || explicitTotal === ""
         ? Math.max(subTotal - discount - lineDiscount, 0)
-        : toNumber(explicitTotal);
-    const amountPaid = toNumber(asNumberInput(source.amount_paid));
+        : toNumber(explicitTotal) + advance;
+    const amountPaid = toNumber(asNumberInput(source.amount_paid)) + advance;
     const amountDue = source.amount_due == null
         ? Math.max(total - amountPaid, 0)
         : toNumber(asNumberInput(source.amount_due));
@@ -213,6 +220,7 @@ export const buildInvoiceViewModel = (
         amountPaid,
         amountDue,
         total,
+        advanceInHand: Math.max(toNumber(asNumberInput(source.wallet_balance)), 0),
         paymentMethod: readString(fund, "name"),
         paymentDate: formatInvoiceDate(readString(source, "payment_date")),
         transactionId: readString(source, "transaction_id"),

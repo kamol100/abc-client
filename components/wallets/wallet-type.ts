@@ -24,6 +24,21 @@ export const WalletResellerRefSchema = z
   })
   .passthrough();
 
+/**
+ * What the API deletes together with a transaction that belongs to a payment.
+ * `invoice_deleted` is false for a bill paid from the wallet: that bill stays and is due again.
+ */
+export const LinkedPaymentChainSchema = z
+  .object({
+    source: z.string().nullable().optional(),
+    amount: z.coerce.number().default(0),
+    payment: z.coerce.string().nullable().optional(),
+    invoice: z.coerce.string().nullable().optional(),
+    invoice_deleted: z.boolean().default(false),
+    fund: z.string().nullable().optional(),
+  })
+  .passthrough();
+
 export const WalletTransactionRowSchema = z
   .object({
     id: z.string(),
@@ -35,6 +50,7 @@ export const WalletTransactionRowSchema = z
     reference: z.string().nullable().optional(),
     note: z.string().nullable().optional(),
     created_at: z.string().nullable().optional(),
+    linked: LinkedPaymentChainSchema.nullable().optional(),
     wallet: WalletRefSchema.nullable().optional(),
   })
   .passthrough();
@@ -56,6 +72,8 @@ export const ClientRefSchema = z
   .object({
     id: z.coerce.string(),
     name: z.string(),
+    phone: z.string().nullable().optional(),
+    pppoe_username: z.string().nullable().optional(),
   })
   .passthrough();
 
@@ -100,6 +118,18 @@ export const ClientWalletRechargeFormSchema = z
         invalid_type_error: "wallet.amount.errors.required",
       })
       .gt(0, { message: "wallet.amount.errors.min" }),
+    // The fund account that received the money. The API books the advance as a
+    // paid invoice and a payment in this fund. Empty until a fund is chosen.
+    fund_id: z.preprocess(
+      (value) => (value === "" || value == null ? undefined : value),
+      z.coerce
+        .number({
+          required_error: "wallet.fund.errors.required",
+          invalid_type_error: "wallet.fund.errors.required",
+        })
+        .min(1, { message: "wallet.fund.errors.required" })
+    ),
+    confirmation_sms: z.coerce.number().int().min(0).max(1).default(0),
     note: z.string().nullable().optional(),
   })
   .refine(
@@ -111,6 +141,7 @@ export type WalletClientRef = z.infer<typeof WalletClientRefSchema>;
 export type WalletRef = z.infer<typeof WalletRefSchema>;
 export type WalletResellerRef = z.infer<typeof WalletResellerRefSchema>;
 export type WalletResourceRow = z.infer<typeof WalletResourceRowSchema>;
+export type LinkedPaymentChain = z.infer<typeof LinkedPaymentChainSchema>;
 export type WalletTransactionRow = z.infer<typeof WalletTransactionRowSchema>;
 export type ClientWalletRow = z.infer<typeof ClientWalletRowSchema>;
 export type MyWalletBalance = z.infer<typeof MyWalletBalanceSchema>;

@@ -1,3 +1,91 @@
+## Invoice view: full bill for an advance-adjusted invoice, and "Advance in Hand" — 2026-11-28
+
+Branch `master`. Uncommitted. The same rule as the invoice print (entries below).
+
+- `components/invoices/invoice-view-model.ts`: for an invoice with `advance_amount`, Sub Total, Total and Paid include the advance, and the minus line "Advance payment adjusted" is left out of the items. New `advanceInHand` from `wallet_balance`.
+- `components/invoices/invoice-view-document.tsx`: an "Advance in Hand" row after the due row when the client's wallet holds more than 0. The due row still shows only above 0, as before.
+- Tests: 3 new cases in `tests/unit/invoices/invoice-view-model.test.ts`.
+
+Checks: `scripts/ai/typecheck` passed; `tests/unit/invoices`: 83 passed. Full suite not rerun. Not checked in a browser.
+
+## Invoice print: "Advance in Hand" was missing when printing from the list — 2026-11-28
+
+Branch `master`. Uncommitted. Fix for the entry below.
+
+- Cause: printing from an invoice row uses the list row as it is (no detail request), and the list API did not send `wallet_balance`; only the invoice detail did. The earlier test covered the receipt component only, not this path.
+- Fix is in the backend (the list and the client portal list now send `wallet_balance`). Here `wallet_balance` moved from `InvoiceDetailSchema` to `InvoiceRowSchema`.
+
+Checks: `scripts/ai/typecheck` passed; `tests/unit/invoices`: 80 passed. Not checked in a browser.
+
+## Invoice print: full bill for an advance-adjusted invoice, and "Advance in Hand" — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- `components/invoices/invoice-receipt.tsx`, both print versions. A bill that used the client's advance printed 0 everywhere (its saved amounts have the advance taken off). It now prints the usual way: the full bill, with the advance counted as paid.
+  - Basic: Total Bill 1,400, Paid & Discount 1,400, Total Due 0.
+  - Advanced: Sub Total 1,400, Total 1,400, Paid 1,400; the minus line "Advance payment adjusted" is not printed as an item.
+- New row "Advance in Hand" after the due row, in both versions, whenever the client's wallet holds more than 0 (any invoice, not only an adjusted one). It is the balance at the time of printing; a client with several invoices on one receipt is counted once.
+- `InvoiceDetailSchema.wallet_balance`; translation `invoice.receipt.advance_in_hand` in `en.json` and `bn.json`.
+- Not changed: the on-screen invoice view still shows the saved amounts and the minus line.
+- New test `tests/unit/invoices/invoice-receipt-advance.test.tsx` (5).
+
+Checks: `scripts/ai/typecheck` passed. `npx vitest run`: 1484 passed, 13 failed, the same 13 as in the entry below. Not checked in a browser or on a printer.
+
+## Bills adjusted with the client's advance: tag and tooltip in the invoice lists — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date. **Needs the new backend migration.** This replaces the two entries below about invoice totals: the "bills only" totals and the extra chips are gone.
+
+- A bill made while the client has an advance now carries the advance as a minus line (backend). Its amount in the list is what is left to pay (0 when fully covered).
+- New `components/invoices/invoice-advance-tag.tsx`: a small "Advance paid" tag next to the amount, in the invoice list and in one client's invoice list. Hover or focus shows the sum: Total bill, − Advance paid, To pay. Shown only when `advance_amount > 0`.
+- `InvoiceRowSchema`: `advance_amount`, `bill_amount`.
+- `InvoiceReports` is back to its four chips and original layout (no "Paid From Wallet", no "Advance Payment", no `showAdvance`). `invoice-reports.tsx`, `invoice-table.tsx` and `client-invoice-table.tsx` have no diff against HEAD.
+- Linked delete confirmation: the advance deduction of a bill has no payment, so it lists only the wallet transaction and says the invoice's full amount becomes due again.
+- The Payments page still has the "Paid From Wallet" chip. Nothing new feeds it; it only shows bills paid from a wallet the older way (earlier the same day).
+- Translations: `invoice.advance.*` added; `invoice.reports.paid_from_wallet` and `invoice.reports.advance` removed; `wallet.chain_delete.invoice_due_again` reworded.
+- Tests: new `tests/unit/invoices/invoice-advance-tag.test.tsx` (5); one more case in `chain-delete.test.ts`; `invoice-reports-wallet.test.tsx` removed.
+
+Checks: `scripts/ai/typecheck` passed. `npx vitest run`: 1479 passed, 13 failed: the same 9 as before, plus the 4 snapshot tests in `field-markup.test.tsx` that come from the unrelated uncommitted change in `components/controls/select-styles.ts`. Not checked in a browser (tag wrapping in a narrow amount column, tooltip look, the minus line in the invoice view and print).
+
+## Invoice list totals: advance payments no longer counted twice — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- The invoice totals (Sub Total, Discount, Total, Paid) now count bills only; the API leaves wallet recharge receipts out. Example: a 2,000 advance and a 1,400 bill paid from the wallet showed Paid 3,400; it now shows Total 1,400 and Paid 1,400.
+- Two new chips in `components/invoices/invoice-reports.tsx`: "Paid From Wallet" (`reports.paid_from_wallet`, the part of Paid that came out of wallets) and "Advance Payment" (`reports.advance_amount`, the recharge receipts in the list). Always rendered, 0 when absent. Recharge invoices stay visible in the list. Follow-up the same day: the "Advance Payment" chip shows only for one client's invoices (`showAdvance`: the client view and `/invoices/client/[id]`); the invoice page and the invoice report show five chips, without it.
+- Layout: six chips instead of four. In the toolbar they are a 3-wide grid from `sm` and one row only from 1800px (was 1440px). **Needs a browser look**: between 1440px and 1800px the toolbar is now two chip rows tall.
+- Translations `invoice.reports.paid_from_wallet`, `invoice.reports.advance` in `en.json` and `bn.json`. New test `tests/unit/invoices/invoice-reports-wallet.test.tsx` (3).
+
+Checks: `scripts/ai/typecheck` passed. `npx vitest run`: 1476 passed, 13 failed: the same 9 as before, plus 4 snapshot tests in `tests/unit/form/builder/field-markup.test.tsx`. Those 4 come from an uncommitted change in `components/controls/select-styles.ts` (placeholder kept on one line) that is not part of this work and was left alone. Not checked in a browser.
+
+## Advance payment follow-up: fund rules, client details, linked delete, dialogs closing by themselves — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- **Fund field** (`ClientWalletRechargeDialog`): no longer shows `0`; it is empty with the "Select fund" placeholder, or preselects the staff member's own fund. It follows the invoice payment rules through `paymentFundAccess`: no permission = locked to the own fund; `invoices.bkash-fund-access` = own fund or bKash; `invoices.change-fund` = any fund. Staff with no fund and no permission see the "no fund assigned" warning and cannot save. `ClientWalletRechargeFormSchema.fund_id` treats empty as "required".
+- **Client details** at the top of the dialog: name, phone and client ID (PPPoE username). The dialog prop `clientName` is replaced by `client`; both callers updated.
+- **Linked delete confirmation**: new `components/wallets/chain-delete-modal.tsx` and `chain-delete.ts`. For a wallet or fund transaction that belongs to a payment (the API sends `linked`), the confirmation lists every entry that goes with it (invoice, payment, fund transaction, wallet transaction, each with a ticked read-only checkbox and the balance effect) and Delete stays disabled until the user types `OK`. A bill paid from the wallet lists the payment and wallet transaction and says the invoice becomes due again.
+  - Fund transactions list uses it for the deposit of an advance payment.
+  - Client wallet transactions (the list opened from Client Wallets) had no delete action; it now has one, shown with `wallet-transactions.delete`. Unlinked rows use the plain `DeleteModal`. The user's own wallet page gets no delete action.
+- **Dialogs closing by themselves**: `components/data-table/data-table.tsx` mounted each column's `cell` function as a component, so a page that builds its columns while rendering (clients list and others) rebuilt every cell on each re-render, and a dialog opened from a row lost its state and closed. Cells are now drawn by a stable `CellContent`, keyed by the cell function's code. Reproduced and covered by `tests/unit/data-table/cell-state-survives-rerender.test.tsx`. Not confirmed in a browser as the cause the user saw.
+- Translations: `wallet.chain_delete.*`, `wallet.transaction_delete_confirmation` in `en.json` and `bn.json`.
+- Tests: `tests/unit/wallets/chain-delete.test.ts` (5), one more case in `advance-payment-form.test.ts`, `cell-state-survives-rerender.test.tsx` (2).
+
+Checks: `scripts/ai/typecheck` passed. `npx vitest run`: 1477 passed, 9 failed, the same 9 as before; the 4 of them that render `DataTable` fail the same way with the old `data-table.tsx`. Not checked in a browser.
+
+## Advance payment dialog: fund, SMS choice and note — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date. **The backend migration must be run first.**
+
+- Client row menu: "Recharge Client" is now "Advance Payment" (`client.actions.advance_payment`; the old key `recharge_client` is removed).
+- `ClientWalletRechargeDialog` (`components/wallets/wallet-transaction.tsx`): title "Advance Payment"; fields are amount, fund (required, `/dropdown-funds?scope=invoice-payment`), "Send Confirmation SMS" yes/no, and note. The fund dropdown is loaded with a skeleton of its own size, so the dialog does not jump. On success it refreshes clients, client wallets, invoices, payments, wallet transactions and funds.
+- `ClientWalletRechargeFormSchema`: adds `fund_id` (required) and `confirmation_sms` (default 0).
+- Payments list: a second chip "Paid From Wallet" (`reports.wallet_paid_amount`), always shown; "Total Paid" no longer includes bills settled from a wallet. The fund column shows "Wallet" for such a payment.
+- SMS templates: new type `wallet_recharge` and token `{{wallet_balance}}`.
+- Translations added to `public/lang/en.json` and `public/lang/bn.json`.
+- New test `tests/unit/wallets/advance-payment-form.test.ts` (6).
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1469 passed, 9 failed, the same 9 as before (client dashboard info, reseller client filter and table, column visibility, client map rows, menu order, public pay page). Not checked in a browser.
+
 ## Filter position setting: help text removed — 2026-11-26
 
 Branch `master`. Uncommitted.

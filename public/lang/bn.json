@@ -1703,7 +1703,7 @@
             "client_sync": "ক্লায়েন্ট সিঙ্ক",
             "wallet_recharge": "ওয়ালেট রিচার্জ",
             "delete": "মুছুন",
-            "recharge_client": "ক্লায়েন্ট রিচার্জ",
+            "advance_payment": "অগ্রিম পেমেন্ট",
             "lock": "ক্লায়েন্ট লক",
             "unlock": "ক্লায়েন্ট আনলক",
             "add_map": "ম্যাপ যোগ",
@@ -2250,6 +2250,7 @@
             "total_bill": "মোট বিল",
             "paid_and_discount": "পেইড ও ডিসকাউন্ট",
             "total_due": "মোট বাকি",
+            "advance_in_hand": "অগ্রিম জমা আছে",
             "taka": "টাকা",
             "help": "হেল্প"
         },
@@ -2263,6 +2264,12 @@
                 "due_date": "ডিউ তারিখ রেঞ্জ",
                 "status": "স্ট্যাটাস"
             }
+        },
+        "advance": {
+            "tag": "অগ্রিম পরিশোধিত",
+            "total_bill": "মোট বিল",
+            "advance_paid": "অগ্রিম পরিশোধ",
+            "to_pay": "পরিশোধযোগ্য"
         },
         "reports": {
             "sub_total": "সাব টোটাল",
@@ -2609,6 +2616,7 @@
                 "invoice_due_reseller": "ইনভয়েস ডিউ রিসেলার",
                 "payment_received": "পেমেন্ট রিসিভড",
                 "wallet_payment": "ওয়ালেট পেমেন্ট",
+                "wallet_recharge": "অগ্রিম পেমেন্ট (ওয়ালেট রিচার্জ)",
                 "client_activated": "ক্লায়েন্ট অ্যাক্টিভেটেড",
                 "client_deactivated": "ক্লায়েন্ট ডিএ্যাক্টিভেটেড",
                 "invoice_due_reminder": "ইনভয়েস ডিউ রিমাইন্ডার",
@@ -2709,6 +2717,8 @@
         "due": "ডিউ",
         "partial_paid": "আংশিক পেইড",
         "total_paid": "মোট পেইড",
+        "paid_from_wallet": "ওয়ালেট থেকে পেইড",
+        "wallet_source": "ওয়ালেট",
         "total_due": "মোট ডিউ",
         "bill_due": "বিল ডিউ",
         "bill_created": "বিল তৈরি",
@@ -3459,6 +3469,23 @@
         }
     },
     "wallet": {
+        "transaction_delete_confirmation": "আপনি কি এই ওয়ালেট লেনদেনটি মুছতে চান? ওয়ালেট ব্যালেন্স সমন্বয় করা হবে।",
+        "chain_delete": {
+            "description": "এই লেনদেনটি একটি পেমেন্টের সাথে যুক্ত। এটি মুছলে নিচের সব এন্ট্রিও মুছে যাবে।",
+            "entries": {
+                "invoice": "ইনভয়েস {{id}}",
+                "payment": "পেমেন্ট {{id}}",
+                "fund_transaction": "ফান্ড লেনদেন ({{fund}})",
+                "wallet_transaction": "ওয়ালেট লেনদেন"
+            },
+            "effects": {
+                "fund_decrease": "{{fund}} ফান্ডের ব্যালেন্স ৳{{amount}} কমবে",
+                "wallet_decrease": "ক্লায়েন্টের ওয়ালেট ব্যালেন্স ৳{{amount}} কমবে",
+                "wallet_increase": "৳{{amount}} ক্লায়েন্টের ওয়ালেটে ফেরত যাবে"
+            },
+            "invoice_due_again": "ইনভয়েস {{id}} মুছবে না। এর পুরো টাকা আবার বকেয়া হবে।",
+            "confirm_label": "নিশ্চিত করতে {{word}} লিখুন"
+        },
         "title_plural": "ওয়ালেট ট্রানজেকশন",
         "view_transactions": "ট্রানজেকশন দেখুন",
         "transactions_modal_title": "ওয়ালেট ট্রানজেকশন",
@@ -3467,6 +3494,17 @@
         "my_balance": "আমার ব্যালেন্স",
         "recharge_title": "ওয়ালেট রিচার্জ",
         "client_recharge_title": "ক্লায়েন্ট ওয়ালেট রিচার্জ",
+        "advance_payment_title": "অগ্রিম পেমেন্ট",
+        "fund": {
+            "label": "ফান্ড",
+            "placeholder": "ফান্ড নির্বাচন করুন",
+            "errors": {
+                "required": "ফান্ড আবশ্যক"
+            }
+        },
+        "confirmation_sms": {
+            "label": "কনফার্মেশন SMS পাঠান"
+        },
         "recharge_action": "ওয়ালেট রিচার্জ",
         "recharge_with_bkash": "bKash দিয়ে রিচার্জ",
         "pay_with_bkash": "bKash দিয়ে পেমেন্ট",
@@ -3543,8 +3581,8 @@
             "recharge_successful": "ওয়ালেট রিচার্জ সফল হয়েছে।",
             "recharge_failed": "ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।",
             "redirecting_to_payment": "পেমেন্ট গেটওয়েতে রিডাইরেক্ট করা হচ্ছে...",
-            "client_recharge_success": "ক্লায়েন্ট ওয়ালেট সফলভাবে রিচার্জ হয়েছে।",
-            "client_recharge_failed": "ক্লায়েন্ট ওয়ালেট রিচার্জ ব্যর্থ হয়েছে।",
+            "client_recharge_success": "অগ্রিম পেমেন্ট গ্রহণ করা হয়েছে। ইনভয়েস ও পেমেন্ট তৈরি হয়েছে।",
+            "client_recharge_failed": "অগ্রিম পেমেন্ট ব্যর্থ হয়েছে।",
             "insufficient_balance": "এই রিচার্জের জন্য ওয়ালেট ব্যালেন্স পর্যাপ্ত নয়।",
             "wallet_unavailable": "ওয়ালেট ব্যালেন্স লোড করা যায়নি।"
         }

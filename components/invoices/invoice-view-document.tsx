@@ -70,6 +70,9 @@ export const InvoiceViewDocument = forwardRef<HTMLDivElement, { model: InvoiceVi
             ...(model.amountDue > 0
                 ? [{ key: "due", label: t("invoice.receipt.due"), value: amountText(model.amountDue) }]
                 : []),
+            ...(model.advanceInHand > 0
+                ? [{ key: "advance-in-hand", label: t("invoice.receipt.advance_in_hand"), value: amountText(model.advanceInHand) }]
+                : []),
             ...(model.paymentMethod
                 ? [{ key: "method", label: t("invoice.fund.label"), value: model.paymentMethod }]
                 : []),

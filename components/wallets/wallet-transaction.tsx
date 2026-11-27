@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useFetch } from "@/app/actions";
 import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
@@ -14,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { parseApiError } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 import {
   ClientWalletRechargeFormInput,
   ClientWalletRechargeFormSchema,
@@ -21,6 +23,21 @@ import {
   WalletRechargeFormSchema,
 } from "@/components/wallets/wallet-type";
 import { BkashIcon } from "@/components/bkash-payment/bkash-icon";
+import RadioField from "@/components/form/radio-field";
+import { Skeleton } from "@/components/ui/skeleton";
+import { INVOICE_PAYMENT_FUNDS_API, paymentFundAccess } from "@/components/invoices/payment-fund-access";
+import { usePermissions, useProfile } from "@/context/app-provider";
+
+// `loading` gives the dropdown its own Suspense boundary and holds its space, so the
+// dialog does not jump (or hide what opened it) while the dropdown code loads.
+const SelectDropdown = dynamic(() => import("@/components/select-dropdown"), {
+  loading: () => (
+    <div className="space-y-2" aria-hidden>
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-9 w-full rounded-md" />
+    </div>
+  ),
+});
 const pad2 = (value: number): string => value.toString().padStart(2, "0");
 
 export const BkashWalletForm: FC = () => {
@@ -129,30 +146,59 @@ export const BkashWalletForm: FC = () => {
   );
 };
 
+/** Who the advance is for, shown at the top of the dialog. */
+interface WalletClientInfo {
+  name?: string | null;
+  phone?: string | null;
+  pppoe_username?: string | null;
+}
+
 interface ClientWalletRechargeDialogProps {
   clientUuid: string;
-  clientName: string;
+  client: WalletClientInfo | null | undefined;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+const ClientInfoItem: FC<{ label: string; value?: string | null; className?: string }> = ({
+  label,
+  value,
+  className,
+}) => (
+  <div className="min-w-0">
+    <dt className="text-xs text-muted-foreground">{label}</dt>
+    <dd className={cn("truncate text-sm font-medium", className)}>{value || "—"}</dd>
+  </div>
+);
+
 export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = ({
   clientUuid,
-  clientName,
+  client,
   open,
   onOpenChange,
 }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const submitRef = useRef<HTMLInputElement>(null);
+  const { hasPermission } = usePermissions();
+  const { profile } = useProfile();
+  // The same fund rules as collecting an invoice payment (the API checks them too).
+  const { assignedFundId, lockFund, blockSubmit, showUnassignedWarning } = paymentFundAccess({
+    staff: profile.staff,
+    canChangeFund: hasPermission("invoices.change-fund"),
+    canUseBkashFund: hasPermission("invoices.bkash-fund-access"),
+  });
 
   const defaultValues = useMemo<ClientWalletRechargeFormInput>(
     () => ({
       clientUuid: clientUuid,
       balance: 0,
+      // The staff member's own fund, when they have one; otherwise empty, so the placeholder shows.
+      fund_id: assignedFundId ?? undefined,
+      confirmation_sms: 0,
       note: "",
     }),
-    [clientUuid]
+    [clientUuid, assignedFundId]
   );
 
   const form = useForm<ClientWalletRechargeFormInput>({
@@ -180,7 +226,10 @@ export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = (
       return result?.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["client-wallets"] });
+      // The advance also creates an invoice, a payment and a fund deposit.
+      for (const key of ["client-wallets", "clients", "invoices", "payments", "wallet-transactions", "funds"]) {
+        queryClient.invalidateQueries({ queryKey: [key] });
+      }
       toast.success(t("wallet.messages.client_recharge_success"));
       onOpenChange(false);
       form.reset(defaultValues);
@@ -205,7 +254,7 @@ export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = (
       open={open}
       onOpenChange={handleOpenChange}
       size="md"
-      title="wallet.client_recharge_title"
+      title="wallet.advance_payment_title"
       footer={({ close }) => (
         <>
           <MyButton type="button" variant="outline" onClick={close}>
@@ -217,6 +266,7 @@ export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = (
             action="save"
             onClick={() => submitRef.current?.click()}
             loading={rechargeMutation.isPending}
+            disabled={blockSubmit}
           >
             {t("common.save")}
           </MyButton>
@@ -224,17 +274,45 @@ export const ClientWalletRechargeDialog: FC<ClientWalletRechargeDialogProps> = (
       )}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((values) => rechargeMutation.mutate(values), (errors) => console.log(errors))}>
+        <form onSubmit={form.handleSubmit((values) => rechargeMutation.mutate(values))}>
           <div className="space-y-4">
-            <div className="space-y-1">
-              <p className="text-sm font-medium">{t("wallet.client.label")}</p>
-              <p className="text-sm capitalize text-muted-foreground">{clientName}</p>
+            <dl className="grid grid-cols-1 gap-3 rounded-md border bg-muted/40 p-3 sm:grid-cols-3">
+              <ClientInfoItem label={t("common.name")} value={client?.name} className="capitalize" />
+              <ClientInfoItem label={t("common.phone")} value={client?.phone} />
+              <ClientInfoItem label={t("client.pppoe_username.label")} value={client?.pppoe_username} />
+            </dl>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <InputField
+                name="balance"
+                type="number"
+                label={{ labelText: "wallet.amount.label", mandatory: true }}
+                placeholder="wallet.amount.placeholder"
+              />
+              <div className="flex flex-col gap-2">
+                <SelectDropdown
+                  name="fund_id"
+                  label={{ labelText: "wallet.fund.label", mandatory: true }}
+                  placeholder="wallet.fund.placeholder"
+                  api={INVOICE_PAYMENT_FUNDS_API}
+                  isDisabled={lockFund}
+                  isClearable={!lockFund}
+                />
+                {showUnassignedWarning && (
+                  <p role="alert" className="text-sm text-destructive">
+                    {t("invoice.bulk_pay.fund.errors.unassigned")}
+                  </p>
+                )}
+              </div>
             </div>
-            <InputField
-              name="balance"
-              type="number"
-              label={{ labelText: "wallet.amount.label", mandatory: true }}
-              placeholder="wallet.amount.placeholder"
+            <RadioField
+              name="confirmation_sms"
+              label={{ labelText: "wallet.confirmation_sms.label" }}
+              options={[
+                { label: "common.yes", value: 1 },
+                { label: "common.no", value: 0 },
+              ]}
+              direction="row"
+              defaultValue="0"
             />
             <TextareaField
               name="note"

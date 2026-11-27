@@ -103,6 +103,15 @@ export const InvoiceRowSchema = z.object({
     total_amount: z.coerce.number().nullable().optional(),
     after_discount_amount: z.coerce.number().nullable().optional(),
     amount_paid: z.coerce.number().nullable().optional(),
+    /** Taken from the client's advance when the bill was made; already off the amounts above. */
+    advance_amount: z.coerce.number().nullable().optional(),
+    /** The bill before the advance was taken off. */
+    bill_amount: z.coerce.number().nullable().optional(),
+    /**
+     * What the client still holds in the wallet (advance), at the time of loading. The
+     * list sends it with every row, because the print opens straight from a row.
+     */
+    wallet_balance: z.coerce.number().nullable().optional(),
     discount: z.coerce.number().nullable().optional(),
     line_total_discount: z.coerce.number().nullable().optional(),
     partial_amount: z.coerce.number().nullable().optional(),

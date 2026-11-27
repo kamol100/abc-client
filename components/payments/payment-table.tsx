@@ -4,7 +4,7 @@ import useApiQuery, { ApiResponse } from "@/hooks/use-api-query";
 import { toNumber } from "@/lib/helper/helper";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Banknote } from "lucide-react";
+import { Banknote, Wallet } from "lucide-react";
 import { DataTable } from "@/components/data-table/data-table";
 import type { DataTableToolbarConfig } from "@/components/data-table/toolbar/toolbar-config";
 import SummaryChip from "@/components/summary-chip";
@@ -16,7 +16,9 @@ import PaymentFilterSchema, { paymentListParams } from "@/components/payments/pa
 type PaymentListPayload = {
     data: PaymentRow[];
     pagination: Pagination;
-    reports?: { amount?: number | string } | null;
+    // amount: money collected. wallet_paid_amount: bills settled from client wallets
+    // (that money was collected earlier, as an advance payment).
+    reports?: { amount?: number | string; wallet_paid_amount?: number | string } | null;
 };
 type PaymentApiResponse = ApiResponse<PaymentListPayload>;
 
@@ -50,6 +52,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
     const payments = data?.data?.data ?? [];
     const pagination = data?.data?.pagination;
     const totalPaid = data?.data?.reports?.amount;
+    const walletPaid = data?.data?.reports?.wallet_paid_amount;
     const { t } = useTranslation();
 
     const toolbarTitle = pagination?.total
@@ -59,10 +62,17 @@ const PaymentTable: FC<PaymentTableProps> = ({
     const totalChip = (
         <SummaryChip icon={Banknote} label="payment.total_paid" amount={toNumber(totalPaid)} isLoading={isLoading} />
     );
+    // Always rendered, so the toolbar does not move when the totals arrive.
+    const walletChip = (
+        <SummaryChip icon={Wallet} label="payment.paid_from_wallet" amount={toNumber(walletPaid)} isLoading={isLoading} />
+    );
 
     const toolbar: DataTableToolbarConfig | false = tableToolBar ? {
         title: toolbarTitle,
-        center: [{ key: "total-paid", node: totalChip }],
+        center: [
+            { key: "total-paid", node: totalChip },
+            { key: "wallet-paid", node: walletChip },
+        ],
         page: "payments",
         features: {
             columns: true,
@@ -73,7 +83,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
     return (
         <div className="space-y-4">
             {/* Without the toolbar (client view), the total sits above the table. */}
-            {!tableToolBar && <div className="flex">{totalChip}</div>}
+            {!tableToolBar && <div className="flex flex-wrap gap-2">{totalChip}{walletChip}</div>}
 
             <DataTable
                 data={payments}

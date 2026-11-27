@@ -131,6 +131,7 @@ const BasicInvoiceReceipt = ({
     totalBill,
     paidAndDiscount,
     totalDue,
+    advanceInHand,
     showAmountInWords,
     showThankYou,
     showSupport,
@@ -147,6 +148,8 @@ const BasicInvoiceReceipt = ({
     totalBill: number;
     paidAndDiscount: number;
     totalDue: number;
+    /** What the client still holds in the wallet. The row shows only above 0. */
+    advanceInHand: number;
     showAmountInWords: boolean;
     showThankYou: boolean;
     showSupport: boolean;
@@ -233,6 +236,14 @@ const BasicInvoiceReceipt = ({
                         labelStyle={labelStyle}
                         valueStyle={amountStyle}
                     />
+                    {advanceInHand > 0 && (
+                        <BasicMoneyRow
+                            label={t("invoice.receipt.advance_in_hand")}
+                            value={formatMoney(advanceInHand, 2)}
+                            labelStyle={labelStyle}
+                            valueStyle={amountStyle}
+                        />
+                    )}
                     {showFooter && (
                         <div className="pt-[1.15em] text-center">
                             {showAmountInWords && (
@@ -261,14 +272,20 @@ const BasicInvoiceReceipt = ({
     );
 };
 
+/**
+ * A bill that used the client's advance is saved with the advance already taken off
+ * its amounts (as a minus line). On paper the client reads it the usual way: the full
+ * bill, with the advance counted as paid.
+ */
 const getInvoiceTotals = (invoice: InvoiceDetail) => {
-    const subTotal = toNumber(invoice.total_amount);
+    const advance = Math.max(toNumber(invoice.advance_amount), 0);
+    const subTotal = toNumber(invoice.total_amount) + advance;
     const totalDiscount =
         toNumber(invoice.total_discount) ||
         toNumber(invoice.discount) + toNumber(invoice.line_total_discount);
     const totalAmount =
-        toNumber(invoice.after_discount_amount) || Math.max(subTotal - totalDiscount, 0);
-    const amountPaid = toNumber(invoice.amount_paid);
+        toNumber(invoice.after_discount_amount) + advance || Math.max(subTotal - totalDiscount, 0);
+    const amountPaid = toNumber(invoice.amount_paid) + advance;
     const amountDue =
         toNumber(invoice.amount_due) || Math.max(toNumber(totalAmount) - amountPaid, 0);
 
@@ -350,7 +367,12 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
             safeInvoices.map((invoice, invoiceIndex) => {
                 const invoiceLabel =
                     invoice.trackID || (invoice.id ? `#${invoice.id}` : `#${invoiceIndex + 1}`);
-                const lines: ReceiptItem[] = (invoice.lines ?? []).map((line: InvoiceLine, lineIndex: number) => {
+                // The minus line of the advance is not an item: the totals show it as paid.
+                const hasAdvance = toNumber(invoice.advance_amount) > 0;
+                const itemLines = (invoice.lines ?? []).filter(
+                    (line: InvoiceLine) => !(hasAdvance && toNumber(line.total_amount) < 0),
+                );
+                const lines: ReceiptItem[] = itemLines.map((line: InvoiceLine, lineIndex: number) => {
                     const quantity = Math.max(1, toNumber(line.quantity || 1));
                     const unitPrice = toNumber(line.amount);
                     const amount =
@@ -405,6 +427,17 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
         [safeInvoices],
     );
 
+    // What the clients on this receipt still hold as advance. One wallet per client,
+    // so a client with several invoices here is counted once.
+    const advanceInHand = useMemo(() => {
+        const byClient = new Map<string, number>();
+        safeInvoices.forEach((invoice, index) => {
+            const client = invoice.client?.uuid ?? invoice.client?.id ?? `invoice-${index}`;
+            byClient.set(String(client), Math.max(toNumber(invoice.wallet_balance), 0));
+        });
+        return Array.from(byClient.values()).reduce((sum, balance) => sum + balance, 0);
+    }, [safeInvoices]);
+
     const showCompanyName = configured ? printSettings.show_company_name : true;
     const showCompanyAddress = (configured ? printSettings.show_company_address : true) && Boolean(companyAddress);
     const showCompanyPhone = (configured ? printSettings.show_company_phone : true) && Boolean(companyPhone);
@@ -449,6 +482,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                 totalBill={totals.subTotal}
                 paidAndDiscount={totals.amountPaid + totals.totalDiscount}
                 totalDue={totals.amountDue}
+                advanceInHand={advanceInHand}
                 showAmountInWords={showAmountInWords}
                 showThankYou={showThankYou}
                 showSupport={showSupport}
@@ -601,6 +635,9 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                 <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.amountPaid)} className={bodyText} />
                 {totals.amountDue > 0 && (
                     <ReceiptPair label={t("invoice.receipt.due")} value={formatMoney(totals.amountDue)} className={titleText} />
+                )}
+                {advanceInHand > 0 && (
+                    <ReceiptPair label={t("invoice.receipt.advance_in_hand")} value={formatMoney(advanceInHand)} className={bodyText} />
                 )}
                 {showFooter && (
                     <div className={cn("mt-[12px] border-t-[3px] border-solid border-black pt-[12px] text-center text-black", bodyText)}>
