@@ -26,7 +26,7 @@ export const WalletResellerRefSchema = z
 
 /**
  * What the API deletes together with a transaction that belongs to a payment.
- * `invoice_deleted` is false for a bill paid from the wallet: that bill stays and is due again.
+ * `invoice_deleted` is true only for an advance payment; any other bill stays and is due again.
  */
 export const LinkedPaymentChainSchema = z
   .object({
@@ -36,6 +36,8 @@ export const LinkedPaymentChainSchema = z
     invoice: z.coerce.string().nullable().optional(),
     invoice_deleted: z.boolean().default(false),
     fund: z.string().nullable().optional(),
+    /** A wallet transaction goes too. False for an ordinary bill payment, which has none. */
+    wallet: z.boolean().nullable().optional(),
   })
   .passthrough();
 

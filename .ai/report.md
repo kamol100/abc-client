@@ -1,3 +1,14 @@
+## Fund transaction delete: any payment goes with it, with the OK confirmation — 2026-11-28
+
+Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- The linked delete confirmation (entries with ticked checkboxes, type `OK`) now shows for every fund transaction that was written for a payment, not only the deposit of an advance. For a bill payment it lists the payment and the fund transaction, and says the amount becomes due on the invoice again.
+- `chainDeleteEntries` (`components/wallets/chain-delete.ts`): the fund transaction entry shows whenever the payment has a fund; the wallet transaction entry only when the API says a wallet is involved (`linked.wallet`). `LinkedPaymentChainSchema.wallet` added.
+- Wallet transactions: unchanged. A transaction of a payment, or the advance taken for a bill, already gets this confirmation; a hand-made one keeps the plain confirmation.
+- `wallet.chain_delete.invoice_due_again` reworded in `en.json` and `bn.json`. One more case in `tests/unit/wallets/chain-delete.test.ts`.
+
+Checks: `scripts/ai/typecheck` passed; `tests/unit/wallets` and `tests/unit/fund-transactions`: 45 passed. Full suite not rerun. Not checked in a browser.
+
 ## Invoice view: full bill for an advance-adjusted invoice, and "Advance in Hand" — 2026-11-28
 
 Branch `master`. Uncommitted. The same rule as the invoice print (entries below).

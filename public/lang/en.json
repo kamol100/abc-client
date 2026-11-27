@@ -3483,7 +3483,7 @@
                 "wallet_decrease": "Client wallet balance goes down by ৳{{amount}}",
                 "wallet_increase": "৳{{amount}} goes back to the client wallet"
             },
-            "invoice_due_again": "Invoice {{id}} is not deleted. Its full amount becomes due again.",
+            "invoice_due_again": "Invoice {{id}} is not deleted. This amount becomes due on it again.",
             "confirm_label": "Type {{word}} to confirm"
         },
         "title_plural": "Wallet Transactions",

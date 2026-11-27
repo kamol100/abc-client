@@ -14,12 +14,15 @@ const WALLET_RECHARGE = "wallet_recharge";
 
 /**
  * The records that go when a transaction of this payment is deleted.
- * An advance payment loses all four. The advance taken for a bill loses only its
- * wallet deduction (and the payment, for a bill paid the older way); the bill stays.
+ * - An advance payment: its invoice, payment, fund transaction and wallet transaction.
+ * - A bill payment: the payment and its fund transaction; the bill stays.
+ * - The advance taken for a bill: only the wallet deduction; the bill stays.
  */
 export function chainDeleteEntries(linked: LinkedPaymentChain): ChainDeleteEntry[] {
   const isRecharge = linked.source === WALLET_RECHARGE;
   const fund = linked.fund ?? "";
+  // Older API answers do not say: only wallet sources have a wallet transaction.
+  const hasWallet = linked.wallet ?? (isRecharge || linked.source === "wallet");
   const entries: ChainDeleteEntry[] = [];
 
   if (linked.invoice_deleted && linked.invoice) {
@@ -30,7 +33,6 @@ export function chainDeleteEntries(linked: LinkedPaymentChain): ChainDeleteEntry
     });
   }
 
-  // The advance taken for a bill has no payment: only the wallet deduction goes.
   if (linked.payment) {
     entries.push({
       key: "payment",
@@ -39,7 +41,7 @@ export function chainDeleteEntries(linked: LinkedPaymentChain): ChainDeleteEntry
     });
   }
 
-  if (isRecharge && fund !== "") {
+  if (fund !== "") {
     entries.push({
       key: "fund_transaction",
       label: "wallet.chain_delete.entries.fund_transaction",
@@ -48,14 +50,16 @@ export function chainDeleteEntries(linked: LinkedPaymentChain): ChainDeleteEntry
     });
   }
 
-  entries.push({
-    key: "wallet_transaction",
-    label: "wallet.chain_delete.entries.wallet_transaction",
-    effect: isRecharge
-      ? "wallet.chain_delete.effects.wallet_decrease"
-      : "wallet.chain_delete.effects.wallet_increase",
-    values: { id: "", fund },
-  });
+  if (hasWallet) {
+    entries.push({
+      key: "wallet_transaction",
+      label: "wallet.chain_delete.entries.wallet_transaction",
+      effect: isRecharge
+        ? "wallet.chain_delete.effects.wallet_decrease"
+        : "wallet.chain_delete.effects.wallet_increase",
+      values: { id: "", fund },
+    });
+  }
 
   return entries;
 }

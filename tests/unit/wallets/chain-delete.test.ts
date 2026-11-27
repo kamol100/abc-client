@@ -71,6 +71,25 @@ describe("Linked delete confirmation", () => {
         expect(chainDeleteDueAgainInvoice(advance)).toBe("INV-3");
     });
 
+    // সাধারণ বিল payment-এর fund লেনদেন মুছলে payment ও fund লেনদেন তালিকায় আসে, wallet লেনদেন আসে না, আর বিল আবার বকেয়া হয় কি না যাচাই করি।
+    it("Fund transaction of an ordinary bill payment: lists the payment and fund transaction, no wallet transaction", () => {
+        const billPayment = LinkedPaymentChainSchema.parse({
+            source: null,
+            amount: 500,
+            payment: "PAY-9",
+            invoice: "INV-9",
+            invoice_deleted: false,
+            fund: "cash",
+            wallet: false,
+        });
+        const entries = chainDeleteEntries(billPayment);
+
+        expect(entries.map((entry) => entry.key)).toEqual(["payment", "fund_transaction"]);
+        expect(entries[0]?.values.id).toBe("PAY-9");
+        expect(entries[1]?.effect).toBe("wallet.chain_delete.effects.fund_decrease");
+        expect(chainDeleteDueAgainInvoice(billPayment)).toBe("INV-9");
+    });
+
     // OK লিখলেই কেবল delete অনুমতি পায় কি না যাচাই করি।
     it("Confirm word: allows the delete only after OK is typed", () => {
         expect(isChainDeleteConfirmed("OK")).toBe(true);
