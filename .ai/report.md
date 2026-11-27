@@ -1,3 +1,15 @@
+## Settings → General → Books: calendar and info popover for "Books closed until" — 2026-11-27
+
+Branch `feat/books-closed-calendar` (from `master`), committed there, not merged. No backend change.
+
+- The setting was a text box (Edit, type YYYY-MM-DD, Save) next to a four-line description. It is now a calendar button the same width as the dropdowns on the page. Picking a day saves it; the × on the button clears it (every period open again). Today and later days cannot be picked, as the API only accepts a day before today. The saved date shows as "31 Oct 2026".
+- An info button next to the label opens a popover with the explanation in the current language: what it does, why to use it, the effect, and good to know. The line under the label is now one short sentence.
+- New setting kind `date` (`registry/define.ts`, `core/values.ts`, `DateControl` in `ui/setting-controls.tsx`) and an optional `info` list on any setting, shown by `SettingRow` in `ui/settings-panel.tsx`. `DateInput` got an optional `disabledDays`.
+- Translations in `en.json` and `bn.json`: `settings.fields.books_closed_until.description` (shortened), `.info.{what,why,effect,note}.{title,text}`, `settings.actions.about`; `.placeholder` removed (no longer used).
+- Tests: new `tests/unit/settings/books-closed-until.test.tsx` (5).
+
+Checks: `scripts/ai/frontend-check`: typecheck passed; unit 1,525 passed, 14 failed in 9 files, the same 14 in 9 files that the entry below recorded before this change (none is in a file this change touches). Browser (Chromium, tenant `cp`, 1440 px and 390 px, English; 390 px Bengali): no horizontal scroll; the row keeps the same position and size before a pick, after picking yesterday (saved, shown as "26 Nov 2026") and after clearing (back to "Not set", the local setting is left empty); the info popover and the calendar open inside the screen; 27–30 Nov are disabled. Not checked in the browser: dark theme, a reseller login, the ⚙ dialogs.
+
 ## Reseller settings: "Client Auto Inactive Time" dropdown — 2026-11-27
 
 Branch `feat/reseller-auto-inactive-time` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same date.

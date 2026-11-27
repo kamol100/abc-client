@@ -16,6 +16,11 @@ type Common = {
   label?: string;
   /** Translation key for an optional help line under the label. */
   description?: string;
+  /**
+   * A longer explanation, opened from an info button next to the label. Each
+   * part is a heading and a paragraph (translation keys).
+   */
+  info?: SettingInfoPart[];
   /** Only users with this permission see the setting. */
   permission?: string;
   /** Read the stored value with a rule of its own instead of the kind's rule. */
@@ -23,6 +28,8 @@ type Common = {
   /** Show this setting only while another setting has this value. */
   visibleWhen?: { key: string; equals: SettingValue };
 };
+
+export type SettingInfoPart = { title: string; text: string };
 
 /** What a setting holds on screen. */
 export type SettingValue = boolean | string | number | null;
@@ -52,7 +59,14 @@ export type TextSetting = Common & {
 /** A number typed into a box, with an optional range. Saved as a number. */
 export type NumberSetting = Common & { kind: "number"; min?: number; max?: number };
 
-export type SettingDefinition = ToggleSetting | SelectSetting | TextSetting | NumberSetting;
+/** A day picked from a calendar. Saved as YYYY-MM-DD, or null when cleared. Saves as soon as a day is picked. */
+export type DateSetting = Common & {
+  kind: "date";
+  /** Only days before today can be picked. */
+  pastOnly?: boolean;
+};
+
+export type SettingDefinition = ToggleSetting | SelectSetting | TextSetting | NumberSetting | DateSetting;
 
 export const toggle = (opts: Partial<Omit<ToggleSetting, "kind">> = {}): ToggleSetting => ({
   kind: "toggle",
@@ -71,3 +85,5 @@ export const select = (
 export const text = (opts: Omit<TextSetting, "kind"> = {}): TextSetting => ({ kind: "text", ...opts });
 
 export const number = (opts: Omit<NumberSetting, "kind"> = {}): NumberSetting => ({ kind: "number", ...opts });
+
+export const date = (opts: Omit<DateSetting, "kind"> = {}): DateSetting => ({ kind: "date", ...opts });

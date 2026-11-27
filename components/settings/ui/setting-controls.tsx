@@ -8,13 +8,15 @@
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { endOfYesterday, format } from "date-fns";
 import { Loader2 } from "lucide-react";
+import { DateInput } from "@/components/controls/date-input";
 import MyButton from "@/components/my-button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import type { NumberSetting, SelectSetting, SettingDefinition, SettingValue, TextSetting } from "@/components/settings/registry/define";
+import type { DateSetting, NumberSetting, SelectSetting, SettingDefinition, SettingValue, TextSetting } from "@/components/settings/registry/define";
 import { validateSetting } from "@/components/settings/core/values";
 import { settingLabelKey, type SettingKey } from "@/components/settings/registry/fields";
 
@@ -169,6 +171,36 @@ function TextControl({ settingKey, field, value, saving, disabled, save }: Contr
   );
 }
 
+/** Calendar for one day. Saves when a day is picked or the value is cleared. */
+function DateControl({ settingKey, field, value, saving, disabled, save }: ControlProps & { field: DateSetting }) {
+  const [day, setDay] = useState(value);
+  useEffect(() => setDay(value), [value]);
+
+  const change = async (next: string | null) => {
+    const previous = day;
+    setDay(next);
+    if (!(await save(next))) setDay(previous);
+  };
+
+  return (
+    <div className="flex w-full items-center gap-2 sm:w-auto">
+      <SavingSpinner show={saving} />
+      <div className="w-full sm:w-56">
+        <DateInput
+          id={`date-${settingKey}`}
+          value={day}
+          dateFormat="dd MMM yyyy"
+          placeholder="settings.common.not_set"
+          disabled={disabled || saving}
+          disabledDays={field.pastOnly ? { after: endOfYesterday() } : undefined}
+          onChange={(next) => void change(next ? format(next, "yyyy-MM-dd") : null)}
+          onClear={() => void change(null)}
+        />
+      </div>
+    </div>
+  );
+}
+
 /** Picks the control for a setting's kind. */
 export function SettingControl(props: ControlProps & { field: SettingDefinition }) {
   const { field } = props;
@@ -177,6 +209,8 @@ export function SettingControl(props: ControlProps & { field: SettingDefinition 
       return <ToggleControl {...props} />;
     case "select":
       return <SelectControl {...props} field={field} />;
+    case "date":
+      return <DateControl {...props} field={field} />;
     case "text":
     case "number":
       return <TextControl {...props} field={field} />;

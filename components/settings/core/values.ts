@@ -69,6 +69,7 @@ export function readSetting(key: SettingKey, raw: unknown): SettingValue {
     }
 
     case "number":
+    case "date":
       return toText(raw);
   }
 }
@@ -84,7 +85,8 @@ export function toPayload(key: SettingKey, value: unknown): string | number | nu
       return value === null || value === undefined || String(value).trim() === "" ? null : String(value).trim();
     case "number":
       return toNumber(value);
-    case "text": {
+    case "text":
+    case "date": {
       const textValue = value === null || value === undefined ? "" : String(value).trim();
       return textValue === "" ? null : textValue;
     }

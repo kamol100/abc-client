@@ -16,7 +16,7 @@ import {
   isDashboardItemVisible,
   type DashboardVisibilitySettingKey,
 } from "@/components/dashboard/dashboard-visibility";
-import { number, select, text, toggle, type SelectSetting, type SettingDefinition, type ToggleSetting } from "@/components/settings/registry/define";
+import { date, number, select, text, toggle, type SelectSetting, type SettingDefinition, type ToggleSetting } from "@/components/settings/registry/define";
 import {
   CLIENT_AUTO_INACTIVE_TIME_OPTIONS,
   CLIENT_AUTO_INACTIVE_TIME_RANGE,
@@ -77,7 +77,14 @@ export const SETTINGS = {
   // ── General: books ─────────────────────────────────────────────────
   // A date (YYYY-MM-DD). Payments, fund transactions, expenses and salaries dated
   // on or before it can no longer change, so a closed month's statement stays fixed.
-  books_closed_until: text({ description: "settings.fields.books_closed_until.description" }),
+  books_closed_until: date({
+    pastOnly: true,
+    description: "settings.fields.books_closed_until.description",
+    info: ["what", "why", "effect", "note"].map((part) => ({
+      title: `settings.fields.books_closed_until.info.${part}.title`,
+      text: `settings.fields.books_closed_until.info.${part}.text`,
+    })),
+  }),
 
   // ── General: clients ───────────────────────────────────────────────
   payment_deadline: select({ options: PAYMENT_DEADLINE_OPTIONS, default: PAYMENT_DEADLINE_RANGE.fallback, strict: true }),
