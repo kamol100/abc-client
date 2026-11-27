@@ -2316,7 +2316,8 @@
                 "label": "Partial Amount",
                 "placeholder": "Enter partial amount",
                 "errors": {
-                    "min": "Amount must be greater than 0"
+                    "min": "Amount must be greater than 0",
+                    "max": "Amount cannot be greater than total due"
                 }
             },
             "confirmation_sms": {

@@ -168,6 +168,10 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
         };
     }, [invoices, selectedIds]);
 
+    // A part payment above what is due is refused at once, not on submit.
+    const partialAmount = Number(watch("partial_amount")) || 0;
+    const partialAboveDue = status === "partial" && partialAmount > totals.due;
+
     const handleDiscountOpenChange = useCallback((next: boolean) => {
         if (discountLockTimer.current != null) {
             clearTimeout(discountLockTimer.current);
@@ -234,7 +238,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
     };
 
     const onSubmit = (data: BulkInvoicePayInput) => {
-        if (blockSubmit) return;
+        if (blockSubmit || partialAboveDue) return;
         if (data.invoice_ids.length === 0) {
             setError("invoice_ids", {
                 message: t("invoice.bulk_pay.errors.select_invoice"),
@@ -284,7 +288,7 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                 size="default"
                                 onClick={handleSubmit((data) => onSubmit(data as BulkInvoicePayInput))}
                                 loading={loading}
-                                disabled={blockSubmit}
+                                disabled={blockSubmit || partialAboveDue}
                                 title={t("invoice.bulk_pay.submit")}
                             />
                         </>
@@ -522,18 +526,25 @@ const BulkInvoicePayDialog: FC<BulkInvoicePayDialogProps> = ({
                                     direction="row"
                                 />
                                 {status === "partial" && (
-                                    <InputField
-                                        name="partial_amount"
-                                        label={{
-                                            labelText: t(
-                                                "invoice.bulk_pay.partial_amount.label",
-                                            ),
-                                        }}
-                                        placeholder={t(
-                                            "invoice.bulk_pay.partial_amount.placeholder",
+                                    <div className="flex flex-col gap-2">
+                                        <InputField
+                                            name="partial_amount"
+                                            label={{
+                                                labelText: t(
+                                                    "invoice.bulk_pay.partial_amount.label",
+                                                ),
+                                            }}
+                                            placeholder={t(
+                                                "invoice.bulk_pay.partial_amount.placeholder",
+                                            )}
+                                            type="number"
+                                        />
+                                        {partialAboveDue && (
+                                            <p role="alert" className="text-sm text-destructive">
+                                                {t("invoice.bulk_pay.partial_amount.errors.max")}
+                                            </p>
                                         )}
-                                        type="number"
-                                    />
+                                    </div>
                                 )}
                                 <RadioField
                                     name="confirmation_sms"

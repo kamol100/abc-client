@@ -1,3 +1,13 @@
+## Pay Invoices dialog: partial amount above the total due is refused at once — 2026-11-28
+
+Branch `master`. Uncommitted.
+
+- `components/invoices/bulk-invoice-pay-dialog.tsx`: with "partial" chosen, a partial amount greater than the total due of the selected invoices shows "Amount cannot be greater than total due" under the field as the user types, and the submit button is disabled. An amount equal to the due is allowed. Switching back to full payment, lowering the amount, or changing the selection re-checks it.
+- Translation `invoice.bulk_pay.partial_amount.errors.max` in `en.json` and `bn.json`.
+- New test `tests/unit/invoices/bulk-invoice-pay-partial.test.tsx` (4).
+
+Checks: `scripts/ai/typecheck` passed; `tests/unit/invoices`: 87 passed. Full suite not rerun. Not checked in a browser. Backend not changed.
+
 ## Fund transaction delete: any payment goes with it, with the OK confirmation — 2026-11-28
 
 Branch `master`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date.
