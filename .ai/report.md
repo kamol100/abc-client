@@ -10,6 +10,19 @@ Branch `feat/books-closed-calendar` (from `master`), committed there, not merged
 
 Checks: `scripts/ai/frontend-check`: typecheck passed; unit 1,525 passed, 14 failed in 9 files, the same 14 in 9 files that the entry below recorded before this change (none is in a file this change touches). Browser (Chromium, tenant `cp`, 1440 px and 390 px, English; 390 px Bengali): no horizontal scroll; the row keeps the same position and size before a pick, after picking yesterday (saved, shown as "26 Nov 2026") and after clearing (back to "Not set", the local setting is left empty); the info popover and the calendar open inside the screen; 27–30 Nov are disabled. Not checked in the browser: dark theme, a reseller login, the ⚙ dialogs.
 
+## Settings: one permission per menu item and per block — 2026-11-27
+
+Branch `feat/settings-permissions`, committed there, not merged. It is based on `feat/books-closed-calendar` (the checkout was on that branch), so it contains that commit too. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- New `components/settings/registry/permissions.ts`: the settings pages with their permissions (same names as the API), `canOpenSettingsPage()`, `firstSettingsPath()`.
+- Sidebar: each Settings item needs its own page permission (`company-settings.general`, `.dashboard`, `.sms`, `.map`, `.monitoring`, `.olt`, `.notifications`, `.invoice-print`; the menu page keeps `menu-layout.edit`) and, except the menu page, `company-settings.access`.
+- A settings page opened by its address without the permission shows "You do not have permission to open this settings page."
+- Blocks: General (ID prefixes, Clients, Books), SMS (Client events, Invoices, Due reminders) and each notification category are shown only with their block permission. The same rule applies in the ⚙ dialogs on list pages (the filter position stays open); the ⚙ button on the SMS send page hides when no SMS block is permitted.
+- The "Settings" link in the user menu and the two profile menus goes to the first settings page the user may open, and hides when there is none. The links to monitoring and OLT settings follow those pages' permissions.
+- Translation `settings.common.no_permission` in `en.json` and `bn.json`.
+- Tests: new `tests/unit/settings/settings-permissions.test.tsx` (8); 2 new in `notification-settings.test.tsx`; 1 new in `invoice-print-settings.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1,520 passed, 14 failed in 9 files; all 14 fail the same way without this change (none is caused by it). Not checked in a browser: the local database does not have the new permissions until `update:permission` runs there, which needs approval.
 ## Reseller settings: "Client Auto Inactive Time" dropdown — 2026-11-27
 
 Branch `feat/reseller-auto-inactive-time` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same date.

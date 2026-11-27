@@ -5420,6 +5420,7 @@
         },
         "common": {
             "not_set": "Not set",
+            "no_permission": "You do not have permission to open this settings page.",
             "prefix_description": "Used at the start of new IDs."
         },
         "groups": {

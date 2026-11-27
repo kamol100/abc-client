@@ -23,7 +23,8 @@ import { useSaveSetting } from "@/components/settings/core/use-save-setting";
 import { visibleSettingKeys } from "@/components/settings/core/visibility";
 import type { SettingInfoPart } from "@/components/settings/registry/define";
 import { fieldOf, settingLabelKey, type SettingKey } from "@/components/settings/registry/fields";
-import { SECTIONS, type SectionName, type SettingsSection } from "@/components/settings/registry/sections";
+import { canOpenSettingsPage } from "@/components/settings/registry/permissions";
+import { SECTIONS, permittedGroups, type SectionName, type SettingsSection } from "@/components/settings/registry/sections";
 import { SettingControl } from "@/components/settings/ui/setting-controls";
 
 type SettingsPanelProps = {
@@ -40,9 +41,14 @@ export function SettingsPanel({ section, inDialog = false }: SettingsPanelProps)
   const smsLock = useSmsLock(config.guard === "sms-gateway");
 
   const valueOf = (key: SettingKey) => readSetting(key, settings[key]);
-  const groups = config.groups
+  const groups = permittedGroups(section, hasPermission)
     .map((group) => ({ ...group, keys: visibleSettingKeys(group.keys, { hasPermission, valueOf }) }))
     .filter((group) => group.keys.length > 0);
+
+  // A settings page opened by its address, without the permission of its menu item.
+  if (!inDialog && config.permission && !canOpenSettingsPage(config.permission, hasPermission)) {
+    return <NoSettingsPermission />;
+  }
 
   return (
     <div className={cn("flex w-full flex-col gap-6", !inDialog && "max-w-3xl")}>
@@ -79,6 +85,16 @@ export function SettingsPanel({ section, inDialog = false }: SettingsPanelProps)
         </section>
       ))}
     </div>
+  );
+}
+
+/** Shown in place of a settings page the user may not open. */
+export function NoSettingsPermission() {
+  const { t } = useTranslation();
+  return (
+    <Card className="w-full max-w-3xl p-4 text-sm text-muted-foreground" role="alert">
+      {t("settings.common.no_permission")}
+    </Card>
   );
 }
 

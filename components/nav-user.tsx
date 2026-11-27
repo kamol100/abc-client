@@ -33,6 +33,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { firstSettingsPath } from "@/components/settings/registry/permissions";
 import { usePermissions, useProfile } from "@/context/app-provider";
 import { STAFF_PROFILE_PATH } from "@/lib/auth/routes";
 
@@ -63,6 +64,8 @@ export function NavUser() {
   const avatar = profile?.avatar ?? undefined;
   const reseller = profile?.reseller;
   const canAccessSettings = hasPermission("company-settings.access");
+  // The first settings page this user may open; no link when there is none.
+  const settingsHref = firstSettingsPath(hasPermission);
   const resellerUuid = reseller?.uuid;
   const companyUuid = profile?.company?.uuid;
   let organizationHref: string | null = null;
@@ -149,9 +152,9 @@ export function NavUser() {
                   <span>{t("user_profile.my_profile")}</span>
                 </Link>
               </DropdownMenuItem>
-              {canAccessSettings ? (
+              {settingsHref ? (
                 <DropdownMenuItem asChild>
-                  <Link href="/settings">
+                  <Link href={settingsHref}>
                     <Settings />
                     <span>{t("user_profile.settings")}</span>
                   </Link>

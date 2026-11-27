@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { firstSettingsPath } from "@/components/settings/registry/permissions";
 import { usePermissions } from "@/context/app-provider";
 import { STAFF_PROFILE_PATH } from "@/lib/auth/routes";
 import type { Profile } from "@/types/app";
@@ -51,6 +52,8 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
   const email = profile.email ?? "";
   const avatar = staffProfileAvatarSrc(profile.staff);
   const canAccessSettings = hasPermission("company-settings.access");
+  // The first settings page this user may open; no link when there is none.
+  const settingsHref = firstSettingsPath(hasPermission);
 
   return (
     <>
@@ -111,9 +114,9 @@ export function CompanyProfile({ profile }: CompanyProfileProps) {
               {t("user_profile.my_profile")}
             </Link>
           </DropdownMenuItem>
-          {canAccessSettings && (
+          {settingsHref && (
             <DropdownMenuItem asChild>
-              <Link href="/settings" className="flex items-center gap-2">
+              <Link href={settingsHref} className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
                 {t("user_profile.settings")}
               </Link>
