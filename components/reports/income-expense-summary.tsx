@@ -7,9 +7,16 @@ import { CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatKey, formatMoney } from "@/lib/helper/helper";
 
+export type IncomeExpenseEntry = {
+    key: string;
+    /** Shown when there is no translation for the key (a type the ISP named itself). */
+    name: string;
+    amount: number;
+};
+
 type IncomeExpenseSummaryProps = {
     titleKey: string;
-    entries: Array<[string, number]>;
+    entries: IncomeExpenseEntry[];
     total: number;
     isLoading?: boolean;
 };
@@ -38,14 +45,14 @@ const IncomeExpenseSummary: FC<IncomeExpenseSummaryProps> = ({
                     </div>
                 ) : entries.length ? (
                     <div className="space-y-2">
-                        {entries.map(([key, value]) => (
-                            <div key={key} className="flex items-center justify-between gap-3 text-sm">
+                        {entries.map((entry) => (
+                            <div key={entry.key} className="flex items-center justify-between gap-3 text-sm">
                                 <p className="text-muted-foreground">
-                                    {t(`income_expense.types.${key}`, {
-                                        defaultValue: formatKey(key),
+                                    {t(`income_expense.types.${entry.key}`, {
+                                        defaultValue: entry.name || formatKey(entry.key),
                                     })}
                                 </p>
-                                <p className="font-medium">৳{formatMoney(value)}</p>
+                                <p className="font-medium">৳{formatMoney(entry.amount)}</p>
                             </div>
                         ))}
                     </div>

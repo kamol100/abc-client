@@ -38,3 +38,49 @@ export function normalizeIncomeExpenseRow(data: unknown): IncomeExpenseRow {
     if (parsed.success) return parsed.data;
     return { total: 0 };
 }
+
+const IncomeStatementLineSchema = z.object({
+    key: z.string(),
+    name: z.string(),
+    amount: z.coerce.number(),
+    count: z.coerce.number(),
+});
+
+const IncomeStatementCheckSchema = z.object({
+    count: z.coerce.number(),
+    amount: z.coerce.number(),
+});
+
+/** GET reports/income-statement: cash basis, checked against the fund deposits. */
+export const IncomeStatementSchema = z.object({
+    period: z.object({ from: z.string(), to: z.string() }),
+    income: z.object({ lines: z.array(IncomeStatementLineSchema), total: z.coerce.number() }),
+    expenses: z.object({ lines: z.array(IncomeStatementLineSchema), total: z.coerce.number() }),
+    net: z.coerce.number(),
+    paid_from_wallet: z.coerce.number(),
+    checks: z.object({
+        fund_deposits: z.coerce.number(),
+        missing_fund_deposit: IncomeStatementCheckSchema,
+        amount_mismatch: IncomeStatementCheckSchema,
+        date_mismatch: IncomeStatementCheckSchema,
+    }),
+});
+
+export type IncomeStatementLine = z.infer<typeof IncomeStatementLineSchema>;
+export type IncomeStatement = z.infer<typeof IncomeStatementSchema>;
+export type IncomeStatementApiResponse = ApiResponse<IncomeStatement>;
+
+export function parseIncomeStatement(data: unknown): IncomeStatement | null {
+    const parsed = IncomeStatementSchema.safeParse(data);
+    return parsed.success ? parsed.data : null;
+}
+
+/** The filter sends the range as "from,to" (or a single "from"); the API takes from and to. */
+export function incomeStatementParams(filter: string | null): Record<string, string> | undefined {
+    if (!filter) return undefined;
+    const range = new URLSearchParams(filter).get("create_date");
+    if (!range) return undefined;
+    const [from, to] = range.split(",");
+    if (!from) return undefined;
+    return { from, to: to || from };
+}

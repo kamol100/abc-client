@@ -133,6 +133,7 @@ export const SECTIONS = {
     groups: [
       { title: "settings.groups.id_prefixes", keys: [...PREFIX_KEYS] },
       { title: "settings.groups.clients", keys: CLIENT_KEYS },
+      { title: "settings.groups.books", keys: ["books_closed_until"] },
     ],
   },
   dashboard: {

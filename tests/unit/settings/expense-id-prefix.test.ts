@@ -18,6 +18,7 @@ describe("expense id prefix setting", () => {
             "client_view_open_mode",
             "client_edit_open_on_new_tab",
             "create_invoice_billing_type_auto",
+            "books_closed_until",
         ]);
         expect(getSectionFieldKeys("general")[2]).toBe("expense_id_prefix");
         expect(fieldOf("expense_id_prefix").kind).toBe("text");

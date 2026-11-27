@@ -1,3 +1,25 @@
+## Income statement page and "books closed until" setting — 2026-11-27
+
+Branch `master`. Uncommitted. Backend part (needed first): `isp-backend/.ai/report.md`, same date, branch `fix/income-integrity`.
+
+- `/reports/income-expense` now reads one endpoint, `reports/income-statement` (cash basis), instead of `invoice-type` + `expense-type`. Before, the two halves used different default periods (month vs year), counted subscription bills as income, listed "paid from wallet" as an income row, and left salaries out. Same cards and two section tables; income/expense lines use the API's names (translated when a key exists). New check panel under the totals: "matches the cash book" or a warning per problem (payments without a fund deposit, amount or date different from the deposit), plus the amount of bills paid from wallets. The panel keeps one height in every state and the previous figures stay while a new period loads (`keepPreviousData`).
+- The page needs the new permission `reports.income-statement` (company Admin roles get it from `update:permission`); other staff see the existing "failed to load" card until it is granted.
+- Settings → General → Books: `books_closed_until` (text, YYYY-MM-DD; the API validates it and refuses a future date).
+- Translations in `en.json` and `bn.json`: `income_expense.checks.*`, `income_expense.types.*`, `settings.groups.books`, `settings.fields.books_closed_until.*`.
+- Tests: new `tests/unit/reports/income-statement.test.tsx` (4); settings fixture and section lists updated for the new key.
+
+Checks: `scripts/ai/frontend-check`: typecheck passed; unit 1,497 passed, 13 failed in 8 files — the same 8 files fail on a clean `master` (field-markup snapshots, menu items, pay page, client map, column visibility, reseller client table/filter, client dashboard info). Not checked in a browser (no running app or login here), so the layout-stability rule in `UI-update.mdc` is not yet verified at mobile/desktop widths.
+
+## Income flow audit (invoice → payment → fund) — 2026-11-27
+
+Read-only audit. No code changed in either repo. Full report: `isp-backend/docs/audits/income-flow-audit-2026-11-27.md` (new, untracked).
+
+- Critical: expense and salary delete wipe every transaction in the fund; reseller-wallet bill payments are counted as income twice and deleting them does not refund the wallet; deleting a reseller recharge receipt leaves a due invoice and the wallet balance; bulk pay is not atomic or locked, so a double submit doubles income.
+- High: a payment can be written without a fund; `(int)` casts drop paisa from `amount_paid`; paid invoices can be edited without a status recompute; manual client-wallet transactions skip invoice, payment and fund; expense fund jobs repeat on every update.
+- Decision asked: cash basis or accrual basis for the statement. Proposed fix order is in the report, waiting for approval.
+
+Checks: none run (no code change). Not checked in a browser.
+
 ## Pay Invoices dialog: partial amount above the total due is refused at once — 2026-11-28
 
 Branch `master`. Uncommitted.
