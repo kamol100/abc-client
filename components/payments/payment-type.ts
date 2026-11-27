@@ -62,11 +62,17 @@ export const PaymentRowSchema = z.object({
     fund_id: z.coerce.number().nullable().optional(),
     // null: ordinary collection. "wallet_recharge": advance into a client wallet.
     // "wallet": a bill settled from the wallet balance (no fund, no new money).
+    // "reseller_wallet": a reseller's client bill settled from the reseller wallet
+    // (no fund; the reseller's income).
     source: z.string().nullable().optional(),
     payment_type: PaymentTypeRefSchema.nullable().optional(),
     payment_type_id: z.coerce.number().nullable().optional(),
 }).passthrough();
 
 export type PaymentRow = z.infer<typeof PaymentRowSchema>;
+
+/** Paid out of a wallet balance: the payment has no fund. */
+export const isWalletPaid = (source: string | null | undefined): boolean =>
+    source === "wallet" || source === "reseller_wallet";
 
 

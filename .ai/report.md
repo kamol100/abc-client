@@ -1,3 +1,16 @@
+## Income statement checks, reseller wallet income, small UI fixes — 2026-11-27
+
+Branch `fix/income-integrity`. Uncommitted. Backend part: `isp-backend/.ai/report.md`, same date ("Income flow review fixes").
+
+- Income statement: two new warning lines, for an expense or salary taken from the fund more than once and for one approved but never taken (`checks.expense_duplicates`, `checks.expense_without_debit`). A reseller sees a note with the amount of client bills settled from its wallet (`settled_from_reseller_wallet`). The "matches" line now says it covers expenses too. An API without the new fields still parses.
+- Payments list: the wallet label also shows for `source = reseller_wallet`.
+- Settings → General → Books: "Not set" stays on one line (it wrapped one letter per line next to the long description). The description says the latest day that can be closed is yesterday.
+- Pay dialog: an empty fund shows "Payment method is required" instead of "Expected number, received nan".
+- Translations in `en.json` and `bn.json`: `income_expense.checks.{ok,expense_duplicates,expense_without_debit,settled_from_reseller_wallet}`, `settings.fields.books_closed_until.description`.
+- Tests: 3 new in `tests/unit/reports/income-statement.test.tsx`.
+
+Checks: `scripts/ai/frontend-check`: typecheck passed; unit 1,500 passed, 13 failed in 8 files, the same count as before this change (none in a file this change touches). Browser (Chromium, tenant `cp`, 1440 px and 390 px): statement page renders with no horizontal scroll, the Books row shows "Not set" on one line, the pay dialog shows the fund message. Not checked in the browser: the two new warning lines with real data, a reseller login, Bengali, dark theme.
+
 ## Income statement page and "books closed until" setting — 2026-11-27
 
 Branch `master`. Uncommitted. Backend part (needed first): `isp-backend/.ai/report.md`, same date, branch `fix/income-integrity`.

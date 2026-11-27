@@ -49,6 +49,8 @@ const IncomeExpenseTable = () => {
               { key: "missing_fund_deposit", ...checks.missing_fund_deposit },
               { key: "amount_mismatch", ...checks.amount_mismatch },
               { key: "date_mismatch", ...checks.date_mismatch },
+              { key: "expense_duplicates", ...checks.expense_duplicates },
+              { key: "expense_without_debit", ...checks.expense_without_debit },
           ].filter((problem) => problem.count > 0)
         : [];
 
@@ -121,6 +123,13 @@ const IncomeExpenseTable = () => {
                                 })}
                             </p>
                         ))
+                    )}
+                    {statement && statement.settled_from_reseller_wallet > 0 && (
+                        <p className="text-xs text-muted-foreground">
+                            {t("income_expense.checks.settled_from_reseller_wallet", {
+                                amount: formatMoney(statement.settled_from_reseller_wallet),
+                            })}
+                        </p>
                     )}
                     {statement && statement.paid_from_wallet > 0 && (
                         <p className="text-xs text-muted-foreground">

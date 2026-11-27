@@ -19,7 +19,9 @@ vi.mock("@/hooks/use-api-query", () => ({
     default: (options: unknown) => apiQuery(options),
 }));
 
-const statement = (checks: Partial<Record<"missing_fund_deposit" | "amount_mismatch" | "date_mismatch", { count: number; amount: number }>> = {}) => ({
+type CheckName = "missing_fund_deposit" | "amount_mismatch" | "date_mismatch" | "expense_duplicates" | "expense_without_debit";
+
+const statement = (checks: Partial<Record<CheckName, { count: number; amount: number }>> = {}, extra: Record<string, number> = {}) => ({
     period: { from: "2026-11-01", to: "2026-11-30" },
     income: {
         lines: [
@@ -36,8 +38,11 @@ const statement = (checks: Partial<Record<"missing_fund_deposit" | "amount_misma
         missing_fund_deposit: { count: 0, amount: 0 },
         amount_mismatch: { count: 0, amount: 0 },
         date_mismatch: { count: 0, amount: 0 },
+        expense_duplicates: { count: 0, amount: 0 },
+        expense_without_debit: { count: 0, amount: 0 },
         ...checks,
     },
+    ...extra,
 });
 
 beforeEach(() => {
@@ -86,5 +91,45 @@ describe("IncomeExpenseTable", () => {
 
         expect(screen.getByText("income_expense.checks.missing_fund_deposit")).toBeInTheDocument();
         expect(screen.queryByText("income_expense.checks.ok")).not.toBeInTheDocument();
+    });
+
+    // ইনকাম স্টেটমেন্ট পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «warns about an expense taken from the fund more than once, and one never taken»।
+    it("Income statement page: warn about an expense debited more than once and one never debited", () => {
+        apiQuery.mockReturnValue({
+            data: {
+                success: true,
+                data: statement({ expense_duplicates: { count: 1, amount: 300 }, expense_without_debit: { count: 2, amount: 1250 } }),
+            },
+            isLoading: false,
+            error: null,
+        });
+
+        render(<IncomeExpenseTable />);
+
+        expect(screen.getByText("income_expense.checks.expense_duplicates")).toBeInTheDocument();
+        expect(screen.getByText("income_expense.checks.expense_without_debit")).toBeInTheDocument();
+        expect(screen.queryByText("income_expense.checks.ok")).not.toBeInTheDocument();
+    });
+
+    // ইনকাম স্টেটমেন্ট পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «tells a reseller which income was settled from its wallet, with no warning»।
+    it("Income statement page: tell a reseller what was settled from its wallet without a warning", () => {
+        apiQuery.mockReturnValue({
+            data: { success: true, data: statement({}, { settled_from_reseller_wallet: 700 }) },
+            isLoading: false,
+            error: null,
+        });
+
+        render(<IncomeExpenseTable />);
+
+        expect(screen.getByText("income_expense.checks.settled_from_reseller_wallet")).toBeInTheDocument();
+        expect(screen.getByText("income_expense.checks.ok")).toBeInTheDocument();
+    });
+
+    // পুরনো API উত্তর যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «reads a statement that has no expense checks yet»।
+    it("Income statement response: read a statement from an API without the expense checks", () => {
+        const old = statement();
+        const { expense_duplicates: _a, expense_without_debit: _b, ...checks } = old.checks;
+
+        expect(parseIncomeStatement({ ...old, checks })?.checks.expense_duplicates).toEqual({ count: 0, amount: 0 });
     });
 });

@@ -104,7 +104,14 @@ function TextControl({ settingKey, field, value, saving, disabled, save }: Contr
     const shown = String(value ?? "").trim();
     return (
       <div className="flex min-w-0 items-center gap-3">
-        <span className={cn("min-w-0 break-all text-sm", !shown && "text-muted-foreground")}>
+        <span
+          className={cn(
+            "text-sm",
+            // A value may be long (a URL) and has to break; the placeholder must
+            // stay on one line next to a long description.
+            shown ? "min-w-0 break-all" : "shrink-0 whitespace-nowrap text-muted-foreground",
+          )}
+        >
           {shown || t("settings.common.not_set")}
         </span>
         <MyButton

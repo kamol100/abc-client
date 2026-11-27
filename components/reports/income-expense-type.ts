@@ -58,11 +58,17 @@ export const IncomeStatementSchema = z.object({
     expenses: z.object({ lines: z.array(IncomeStatementLineSchema), total: z.coerce.number() }),
     net: z.coerce.number(),
     paid_from_wallet: z.coerce.number(),
+    // A reseller's client bills settled from the reseller wallet: income with no fund deposit.
+    settled_from_reseller_wallet: z.coerce.number().optional().default(0),
     checks: z.object({
         fund_deposits: z.coerce.number(),
         missing_fund_deposit: IncomeStatementCheckSchema,
         amount_mismatch: IncomeStatementCheckSchema,
         date_mismatch: IncomeStatementCheckSchema,
+        // Expense side: an expense or salary debited more than once, or approved
+        // and never debited.
+        expense_duplicates: IncomeStatementCheckSchema.optional().default({ count: 0, amount: 0 }),
+        expense_without_debit: IncomeStatementCheckSchema.optional().default({ count: 0, amount: 0 }),
     }),
 });
 
