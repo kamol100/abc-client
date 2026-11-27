@@ -1,3 +1,13 @@
+## Reseller settings: "Client Auto Inactive Time" dropdown — 2026-11-27
+
+Branch `feat/reseller-auto-inactive-time` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- `components/resellers/reseller-settings-dialog.tsx`: a second row with the hour dropdown (00–23), under the termination-date switch. It reuses the settings page's `SettingControl` and option list, saves on change through `POST /company/settings` with `reseller_uuid` and `auto_inactive_client_time`, and shows 12 when nothing is saved.
+- The dropdown is always rendered, so the dialog keeps its height; it is disabled while the termination-date switch is off, because the hour only applies then.
+- No new translation keys: it uses the existing `settings.fields.auto_inactive_client_time.*` in `en.json` and `bn.json`.
+- Tests: 2 new in `tests/unit/resellers/reseller-settings.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passed. `tests/unit/resellers` and `tests/unit/settings`: 163 passed, 1 failed (`invoice-print-settings.test.tsx`, amount in words; not touched by this change). Browser (Chromium, tenant `cp`, 1440 px and 390 px): the dialog opens with both rows, no horizontal scroll, and the same size before and after the settings load. Not checked in the browser: choosing an hour, because both local resellers have the switch off and turning it on would let the local scheduler deactivate their clients.
 ## Invoice print: the receipt is about the newest payment — 2026-11-28
 
 Branch `fix/invoice-print-last-payment` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same branch name.

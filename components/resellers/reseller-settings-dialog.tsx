@@ -12,15 +12,22 @@ import type { FormFieldConfig } from "@/components/form-wrapper/form-builder-typ
 import { MyDialog } from "@/components/my-dialog";
 import { ResellerRow } from "@/components/resellers/reseller-type";
 import {
+    clientAutoInactiveTimeSetting,
     readSetting,
     SettingsPayloadSchema,
     toPayload,
     type SettingsApiResponse,
 } from "@/components/settings/core/values";
+import type { SettingValue } from "@/components/settings/registry/define";
+import { fieldOf } from "@/components/settings/registry/fields";
+import { SettingControl } from "@/components/settings/ui/setting-controls";
 import useApiMutation from "@/hooks/use-api-mutation";
 import useApiQuery from "@/hooks/use-api-query";
 
 const SETTING_KEY = "auto_inactive_reseller_client_termination_date" as const;
+/** Hour of day (00–23) when the reseller's clients are made inactive. Same key as the company setting. */
+const TIME_KEY = "auto_inactive_client_time" as const;
+type ResellerSettingKey = typeof SETTING_KEY | typeof TIME_KEY;
 
 const ResellerSettingsFormSchema = z.object({
     [SETTING_KEY]: z.boolean(),
@@ -104,13 +111,17 @@ export const ResellerSettingsDialog: FC<ResellerSettingsDialogProps> = ({
     const remoteValue = Boolean(
         readSetting(SETTING_KEY, remoteSettings?.[SETTING_KEY])
     );
+    const remoteHour = clientAutoInactiveTimeSetting(remoteSettings?.[TIME_KEY]);
     const [syncedValue, setSyncedValue] = useState(false);
+    const [syncedHour, setSyncedHour] = useState<number>(remoteHour);
     const [pending, setPending] = useState(false);
+    const [hourPending, setHourPending] = useState(false);
 
     useEffect(() => {
         if (!settingsResponse) return;
         setSyncedValue(remoteValue);
-    }, [remoteValue, settingsResponse]);
+        setSyncedHour(remoteHour);
+    }, [remoteHour, remoteValue, settingsResponse]);
 
     const { mutateAsync } = useApiMutation<
         unknown,
@@ -121,33 +132,56 @@ export const ResellerSettingsDialog: FC<ResellerSettingsDialogProps> = ({
         invalidateKeys: "settings",
     });
 
-    const commitSetting = useCallback(
-        async (nextValue: boolean) => {
+    const saveSetting = useCallback(
+        async (key: ResellerSettingKey, nextValue: SettingValue) => {
             if (!resellerUuid) return false;
 
-            const payloadValue = toPayload(SETTING_KEY, nextValue);
             const payload = {
                 reseller_uuid: resellerUuid,
                 ...SettingsPayloadSchema.parse({
                     settings: {
-                        [SETTING_KEY]: payloadValue,
+                        [key]: toPayload(key, nextValue),
                     },
                 }),
             };
 
-            setPending(true);
             try {
                 await mutateAsync(payload);
-                setSyncedValue(nextValue);
                 toast.success(t("settings.messages.updated"));
                 return true;
             } catch {
                 return false;
+            }
+        },
+        [mutateAsync, resellerUuid, t]
+    );
+
+    const commitSetting = useCallback(
+        async (nextValue: boolean) => {
+            setPending(true);
+            try {
+                const saved = await saveSetting(SETTING_KEY, nextValue);
+                if (saved) setSyncedValue(nextValue);
+                return saved;
             } finally {
                 setPending(false);
             }
         },
-        [mutateAsync, resellerUuid, t]
+        [saveSetting]
+    );
+
+    const commitHour = useCallback(
+        async (nextValue: SettingValue) => {
+            setHourPending(true);
+            try {
+                const saved = await saveSetting(TIME_KEY, nextValue);
+                if (saved) setSyncedHour(clientAutoInactiveTimeSetting(nextValue));
+                return saved;
+            } finally {
+                setHourPending(false);
+            }
+        },
+        [saveSetting]
     );
 
     return (
@@ -183,6 +217,22 @@ export const ResellerSettingsDialog: FC<ResellerSettingsDialogProps> = ({
                         )}
                     </FormBuilder>
                 ) : null}
+                <div className="rounded-md border p-3 sm:p-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-sm font-medium">
+                            {t(`settings.fields.${TIME_KEY}.label`)}
+                        </p>
+                        {/* Always shown, so the dialog keeps its height; it only applies while the switch is on. */}
+                        <SettingControl
+                            settingKey={TIME_KEY}
+                            field={fieldOf(TIME_KEY)}
+                            value={syncedHour}
+                            saving={hourPending}
+                            disabled={isLoading || pending || !syncedValue}
+                            save={commitHour}
+                        />
+                    </div>
+                </div>
             </div>
         </MyDialog>
     );
