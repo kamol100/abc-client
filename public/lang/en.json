@@ -2251,6 +2251,7 @@
             "paid_and_discount": "Paid & Discount",
             "total_due": "Total Due",
             "advance_in_hand": "Advance in Hand",
+            "previous_paid": "Previous Paid",
             "taka": "Taka",
             "help": "HELP"
         },

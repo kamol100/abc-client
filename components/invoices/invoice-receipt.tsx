@@ -248,7 +248,7 @@ const BasicInvoiceReceipt = ({
                         <div className="pt-[1.15em] text-center">
                             {showAmountInWords && (
                                 <p className="break-words" style={wordsStyle}>
-                                    {amountInWords(totalBill)} {t("invoice.receipt.taka")}.
+                                    {amountInWords(paidAndDiscount)} {t("invoice.receipt.taka")}.
                                 </p>
                             )}
                             {showThankYou && (
@@ -273,11 +273,20 @@ const BasicInvoiceReceipt = ({
 };
 
 /**
- * A bill that used the client's advance is saved with the advance already taken off
- * its amounts (as a minus line). On paper the client reads it the usual way: the full
- * bill, with the advance counted as paid.
+ * The figures of one invoice as the receipt prints them. A receipt is about the newest
+ * payment: what was still to pay before it, what was paid this time, and what is left.
+ *
+ * - previousPaid: everything paid before the newest payment. Already settled, so it
+ *   is taken off the bill.
+ * - currentBill: what was to pay before the newest payment.
+ * - currentPaid: the newest payment.
+ * - currentDiscount: the discount, counted with the first payment only. On later
+ *   receipts it is already behind the client, inside previousPaid's bill.
+ *
+ * A bill that used the client's advance is saved with the advance taken off its
+ * amounts (as a minus line). The advance is the first thing paid on such a bill.
  */
-const getInvoiceTotals = (invoice: InvoiceDetail) => {
+export const getInvoiceTotals = (invoice: InvoiceDetail) => {
     const advance = Math.max(toNumber(invoice.advance_amount), 0);
     const subTotal = toNumber(invoice.total_amount) + advance;
     const totalDiscount =
@@ -285,9 +294,19 @@ const getInvoiceTotals = (invoice: InvoiceDetail) => {
         toNumber(invoice.discount) + toNumber(invoice.line_total_discount);
     const totalAmount =
         toNumber(invoice.after_discount_amount) + advance || Math.max(subTotal - totalDiscount, 0);
-    const amountPaid = toNumber(invoice.amount_paid) + advance;
+    const cashPaid = toNumber(invoice.amount_paid);
+    const amountPaid = cashPaid + advance;
     const amountDue =
         toNumber(invoice.amount_due) || Math.max(toNumber(totalAmount) - amountPaid, 0);
+
+    // Without the newest payment from the API, everything paid counts as one payment.
+    const lastPayment = invoice.last_payment_amount == null
+        ? cashPaid
+        : Math.min(Math.max(toNumber(invoice.last_payment_amount), 0), cashPaid);
+    // No cash payment yet: the advance, if any, is what was paid.
+    const currentPaid = lastPayment > 0 ? lastPayment : amountPaid;
+    const previousPaid = Math.max(amountPaid - currentPaid, 0);
+    const firstReceipt = previousPaid <= 0;
 
     return {
         subTotal,
@@ -295,6 +314,10 @@ const getInvoiceTotals = (invoice: InvoiceDetail) => {
         totalAmount,
         amountPaid,
         amountDue,
+        previousPaid,
+        currentBill: firstReceipt ? subTotal : Math.max(totalAmount - previousPaid, 0),
+        currentPaid,
+        currentDiscount: firstReceipt ? totalDiscount : 0,
     };
 };
 
@@ -403,29 +426,28 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
         return `${invoiceLabel} / ${formatBasicPrintedAt(printedAt ?? new Date())}`;
     }, [invoiceGroups, printedAt]);
 
-    const totals = useMemo(
-        () =>
-            safeInvoices.reduce(
-                (acc, invoice) => {
-                    const currentTotals = getInvoiceTotals(invoice);
-                    return {
-                        subTotal: acc.subTotal + currentTotals.subTotal,
-                        totalDiscount: acc.totalDiscount + currentTotals.totalDiscount,
-                        totalAmount: acc.totalAmount + currentTotals.totalAmount,
-                        amountPaid: acc.amountPaid + currentTotals.amountPaid,
-                        amountDue: acc.amountDue + currentTotals.amountDue,
-                    };
-                },
-                {
-                    subTotal: 0,
-                    totalDiscount: 0,
-                    totalAmount: 0,
-                    amountPaid: 0,
-                    amountDue: 0,
-                },
-            ),
-        [safeInvoices],
-    );
+    const totals = useMemo(() => {
+        const sum = {
+            subTotal: 0,
+            totalDiscount: 0,
+            totalAmount: 0,
+            amountPaid: 0,
+            amountDue: 0,
+            previousPaid: 0,
+            currentBill: 0,
+            currentPaid: 0,
+            currentDiscount: 0,
+        };
+        for (const invoice of safeInvoices) {
+            const current = getInvoiceTotals(invoice);
+            for (const key of Object.keys(sum) as Array<keyof typeof sum>) {
+                sum[key] += current[key];
+            }
+        }
+        return sum;
+    }, [safeInvoices]);
+    // "Paid & Discount": what this receipt settles. The amount in words says the same.
+    const paidAndDiscount = totals.currentPaid + totals.currentDiscount;
 
     // What the clients on this receipt still hold as advance. One wallet per client,
     // so a client with several invoices here is counted once.
@@ -479,8 +501,8 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                 clientNames={clientNames}
                 clientPppoeUsernames={clientPppoeUsernames}
                 clientContacts={clientContacts}
-                totalBill={totals.subTotal}
-                paidAndDiscount={totals.amountPaid + totals.totalDiscount}
+                totalBill={totals.currentBill}
+                paidAndDiscount={paidAndDiscount}
                 totalDue={totals.amountDue}
                 advanceInHand={advanceInHand}
                 showAmountInWords={showAmountInWords}
@@ -631,8 +653,11 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
             >
                 <ReceiptPair label={t("invoice.receipt.sub_total")} value={formatMoney(totals.subTotal)} className={bodyText} />
                 <ReceiptPair label={t("invoice.receipt.discount")} value={formatMoney(totals.totalDiscount)} className={bodyText} />
-                <ReceiptPair label={t("invoice.receipt.total")} value={formatMoney(totals.totalAmount)} className={titleText} />
-                <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.amountPaid)} className={bodyText} />
+                {totals.previousPaid > 0 && (
+                    <ReceiptPair label={t("invoice.receipt.previous_paid")} value={formatMoney(totals.previousPaid)} className={bodyText} />
+                )}
+                <ReceiptPair label={t("invoice.receipt.total")} value={formatMoney(totals.totalAmount - totals.previousPaid)} className={titleText} />
+                <ReceiptPair label={t("invoice.receipt.paid")} value={formatMoney(totals.currentPaid)} className={bodyText} />
                 {totals.amountDue > 0 && (
                     <ReceiptPair label={t("invoice.receipt.due")} value={formatMoney(totals.amountDue)} className={titleText} />
                 )}
@@ -643,7 +668,7 @@ const InvoiceReceipt: FC<InvoiceReceiptProps> = ({
                     <div className={cn("mt-[12px] border-t-[3px] border-solid border-black pt-[12px] text-center text-black", bodyText)}>
                         {showAmountInWords && (
                             <p className="break-words">
-                                {amountInWords(totals.totalAmount)} {t("invoice.receipt.only")}
+                                {amountInWords(paidAndDiscount)} {t("invoice.receipt.only")}
                             </p>
                         )}
                         {showThankYou && (

@@ -2251,6 +2251,7 @@
             "paid_and_discount": "পেইড ও ডিসকাউন্ট",
             "total_due": "মোট বাকি",
             "advance_in_hand": "অগ্রিম জমা আছে",
+            "previous_paid": "আগে পরিশোধিত",
             "taka": "টাকা",
             "help": "হেল্প"
         },

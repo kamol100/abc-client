@@ -68,7 +68,7 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.getByText("invoice.receipt.due:")).toBeInTheDocument();
         expect(screen.getByText("common.help: 09666777888")).toBeInTheDocument();
         expect(screen.queryByText("common.help: 22222222222")).not.toBeInTheDocument();
-        expect(screen.queryByText(/Seven Hundred Fifty/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Five Hundred Fifty/)).not.toBeInTheDocument();
     });
 
     // ইনভয়েস ও পেমেন্ট যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «hides a disabled field and applies typography only when print settings are passed»।
@@ -89,7 +89,7 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.queryByText("VP Net")).not.toBeInTheDocument();
         expect(screen.queryByText("invoice.receipt.thank_you")).not.toBeInTheDocument();
         expect(screen.queryByText("01700000000")).not.toBeInTheDocument();
-        expect(screen.getByText(/Seven Hundred Fifty/)).toBeInTheDocument();
+        expect(screen.getByText(/Five Hundred Fifty/)).toBeInTheDocument();
         expect(screen.getByText("common.help: 09666777888")).toBeInTheDocument();
         expect(container.innerHTML).not.toContain("text-[36px]");
     });
@@ -104,7 +104,7 @@ describe("InvoiceReceipt thermal layout", () => {
         );
 
         const paid = screen.getByText("invoice.receipt.paid:");
-        const words = screen.getByText(/Seven Hundred Fifty invoice\.receipt\.only/);
+        const words = screen.getByText(/Five Hundred Fifty invoice\.receipt\.only/);
         const thanks = screen.getByText("invoice.receipt.thank_you");
 
         expect(screen.queryByText("invoice.receipt.in_words:")).not.toBeInTheDocument();
@@ -185,7 +185,7 @@ describe("InvoiceReceipt thermal layout", () => {
         expect(screen.getByText("550.00")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.total_due")).toBeInTheDocument();
         expect(screen.getByText("250.00")).toBeInTheDocument();
-        expect(screen.getByText("Eight Hundred invoice.receipt.taka.")).toBeInTheDocument();
+        expect(screen.getByText("Five Hundred Fifty invoice.receipt.taka.")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.thank_you")).toBeInTheDocument();
         expect(screen.getByText("invoice.receipt.help - 09666777888")).toBeInTheDocument();
         expect(screen.queryByText("22222222222")).not.toBeInTheDocument();
@@ -205,7 +205,7 @@ describe("InvoiceReceipt thermal layout", () => {
             />,
         );
 
-        expect(screen.queryByText(/Eight Hundred/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Five Hundred Fifty/)).not.toBeInTheDocument();
         expect(screen.queryByText("invoice.receipt.thank_you")).not.toBeInTheDocument();
         expect(screen.queryByText(/09666777888/)).not.toBeInTheDocument();
         expect(screen.getByText("800.00")).toBeInTheDocument();

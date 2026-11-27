@@ -1,3 +1,19 @@
+## Invoice print: the receipt is about the newest payment — 2026-11-28
+
+Branch `fix/invoice-print-last-payment` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same branch name.
+
+- `components/invoices/invoice-receipt.tsx`: an invoice with several part payments printed the whole bill and everything paid so far (bill 900, paid 400, due 500). It now prints what was to pay before the newest payment, that payment, and what is left: bill 700, paid 200, due 500. After one more payment of 300: bill 500, paid 300, due 200.
+  - Basic: Total Bill, Paid & Discount, Total Due as above. The discount counts with the first payment only.
+  - Advanced: the items and Sub Total stay the full bill; a "Previous Paid" row shows what was paid before (only when there is any); Total is the bill less that; Paid is the newest payment.
+  - Amount in words, both modes: always the "paid and discount" figure. Before it was the total bill (basic) or the total (advanced).
+  - A bill that used the client's advance: with no cash payment yet it prints as before (full bill, advance as paid); once cash is paid the advance counts as a previous payment.
+- Needs `last_payment_amount` from the API (backend branch). Without it, everything paid counts as one payment.
+- `InvoiceRowSchema.last_payment_amount`; translation `invoice.receipt.previous_paid` in `en.json` and `bn.json`.
+- Tests: new `tests/unit/invoices/invoice-receipt-last-payment.test.tsx` (8). `invoice-receipt.test.tsx`: the amount-in-words expectations follow the new rule ("Five Hundred Fifty" = paid 500 + discount 50, was the bill or total).
+- Not changed: the on-screen invoice view still shows the whole bill and everything paid.
+
+Checks: `tsc --noEmit` passed; `tests/unit/invoices`: 95 passed. Full suite not rerun. Not checked in a browser or on a printer. Worked in a separate git worktree because the main checkout had other uncommitted work.
+
 ## Pay Invoices dialog: partial amount above the total due is refused at once — 2026-11-28
 
 Branch `master`. Uncommitted.

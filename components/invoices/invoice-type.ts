@@ -107,6 +107,8 @@ export const InvoiceRowSchema = z.object({
     advance_amount: z.coerce.number().nullable().optional(),
     /** The bill before the advance was taken off. */
     bill_amount: z.coerce.number().nullable().optional(),
+    /** The newest payment on the bill, 0 when there is none. The receipt shows it as paid this time. */
+    last_payment_amount: z.coerce.number().nullable().optional(),
     /**
      * What the client still holds in the wallet (advance), at the time of loading. The
      * list sends it with every row, because the print opens straight from a row.
