@@ -1,6 +1,6 @@
 ## Notifications: "Client auto inactive failed" — 2026-11-28
 
-Branch `feat/auto-inactive-daily-limit` (from `master`), not committed. Backend part: `isp-backend/.ai/report.md`, same date.
+Branch `feat/auto-inactive-daily-limit` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
 
 - New in-app notification `client_auto_inactive_failed`, sent when MikroTik did not disable a client and the API stops trying for the day. Added to `notification-catalog.ts` (category client), so it also has its own on/off switch in the notification settings. It opens the client's page.
 - Translations in `en.json` and `bn.json`: `notifications.events.client_auto_inactive_failed.title` and `.message` (`client_name`, `pppoe_username`, `attempts`).
