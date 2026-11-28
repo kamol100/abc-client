@@ -41,7 +41,7 @@ export type ToolbarFilterFeature = DataTableToolbarOptions & {
 /**
  * Built-in toolbar features. Their place and order are fixed for every table:
  * page `end` items → ⚙ settings (from `page`) → columns → layout toggle →
- * filter reset → filter → add.
+ * page `beforeFilter` items → filter reset → filter → add.
  * A table can switch them on or off, never move them.
  */
 export type ToolbarFeatures = {
@@ -70,6 +70,11 @@ type ToolbarConfigBase = {
   center?: ToolbarItem[];
   /** Page actions; always rendered before the built-in features. */
   end?: ToolbarItem[];
+  /**
+   * Page actions placed after the built-in ⚙, columns and layout buttons, right
+   * before the filter button. Not shown in the open desktop filter row.
+   */
+  beforeFilter?: ToolbarItem[];
   features?: ToolbarFeatures;
   /** Mobile: "row" puts the action buttons on their own row under page size. Default "inline". */
   mobileActions?: "inline" | "row";

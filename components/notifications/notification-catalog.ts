@@ -26,6 +26,7 @@ export const NOTIFICATION_EVENTS = [
     { value: "invoice_paid", category: "invoice" },
     { value: "invoice_partially_paid", category: "invoice" },
     { value: "invoices_generated", category: "invoice" },
+    { value: "missing_invoices_generated", category: "invoice" },
     { value: "invoice_overdue", category: "invoice" },
     { value: "sms_not_sent", category: "invoice" },
     { value: "platform_support_issue_created", category: "platform_support" },
