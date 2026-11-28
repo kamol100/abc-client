@@ -8451,6 +8451,10 @@
                 "title": "Client deleted",
                 "message": "{{client_name}} was deleted"
             },
+            "client_auto_inactive_failed": {
+                "title": "Client auto inactive failed",
+                "message": "MikroTik did not disable {{client_name}} ({{pppoe_username}}). Attempts: {{attempts}}. The client is still active and will not be tried again today."
+            },
             "ticket_created": {
                 "title": "Ticket opened",
                 "message": "Ticket {{ticket_no}} opened for {{client_name}}"
