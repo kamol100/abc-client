@@ -24,13 +24,15 @@ type Props = {
     bill: number;
     advance: number;
     payable: number;
+    /** "tag" is the pill; "note" is plain small text with the amount, for a note line under the bill. */
+    variant?: "tag" | "note";
 };
 
 /**
  * A small "Advance paid" tag for the amount cell of a bill that used the client's
  * advance. Hovering shows how the amount came about: the bill, less the advance.
  */
-export default function InvoiceAdvanceTag({ bill, advance, payable }: Props) {
+export default function InvoiceAdvanceTag({ bill, advance, payable, variant = "tag" }: Props) {
     const { t } = useTranslation();
 
     return (
@@ -46,12 +48,18 @@ export default function InvoiceAdvanceTag({ bill, advance, payable }: Props) {
                 </dl>
             }
         >
-            <span
-                tabIndex={0}
-                className="theme-badge-info inline-flex cursor-default items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none whitespace-nowrap"
-            >
-                {t("invoice.advance.tag")}
-            </span>
+            {variant === "note" ? (
+                <span tabIndex={0} className="theme-tone-info cursor-default whitespace-nowrap">
+                    {t("invoice.reports.advance_payment")}:{formatMoney(advance)}
+                </span>
+            ) : (
+                <span
+                    tabIndex={0}
+                    className="theme-badge-info inline-flex cursor-default items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium leading-none whitespace-nowrap"
+                >
+                    {t("invoice.advance.tag")}
+                </span>
+            )}
         </MyTooltip>
     );
 }

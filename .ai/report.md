@@ -1,3 +1,19 @@
+## Invoice list: Amount column redesigned (bill total + small note line) — 2026-11-28
+
+Not committed; working tree changes on `master`. The user chose design "A" from four HTML mockups.
+
+- Amount cell in the invoice list (`components/invoices/invoice-column.tsx`): line 1 is always the bill amount in bold. A small muted line under it appears only when needed:
+  - partly paid: "Paid:250 · Due:250.50" (paid in the success tone, due in the danger tone);
+  - advance used: "Advance:100" in the info tone; hover or focus still shows the bill breakdown tooltip.
+  - Amounts in this line have no ".00/-": whole amounts show no decimals, amounts with paisa show two.
+- The two large Due / Paid badges and the "Advance paid" tag on a third line are gone from this column. A row is 1 or 2 lines tall, never 3.
+- Change in behavior: a partly paid invoice now shows the bill total on line 1 (before, it showed only due and paid).
+- `InvoiceAdvanceTag` has a `variant` prop: `tag` (default, unchanged) and `note` (text with the amount). The client portal invoice list still uses the tag and is unchanged.
+- No new translation keys (`invoice.reports.paid`, `invoice.filter.status_due`, `invoice.reports.advance_payment`).
+- Tests: `invoice-column.test.tsx` partly-paid test rewritten (title changed), 1 new for the advance note; 1 new in `invoice-advance-tag.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/invoices`: all pass. Not browser-checked.
+
 ## Client list: wallet advance shown in place of "Due" — 2026-11-28
 
 Not committed; working tree changes in both repos on `master` / `main`.

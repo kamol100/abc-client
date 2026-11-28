@@ -131,21 +131,40 @@ const renderAmountCell = (invoice: Partial<InvoiceRow>) => {
 };
 
 describe("invoice amount column", () => {
-    // আংশিক পরিশোধে আগে লাল ডিউ ব্যাজ, পরে সবুজ পেইড ব্যাজ দেখায় এবং মূল বিলের পরিমাণ দেখায় না কি না যাচাই করি।
-    it("Invoice column: a partly paid invoice shows a red due badge, then a green paid badge, without the bill total", () => {
+    // আংশিক পরিশোধে উপরে বিলের পরিমাণ, নিচের ছোট লাইনে সবুজ পেইড ও লাল ডিউ লেখা (ব্যাজ নয়) দেখায় কি না যাচাই করি।
+    it("Invoice column: a partly paid invoice shows the bill total, then a note line with paid in green and due in red", () => {
         const view = renderAmountCell({ after_discount_amount: 1000, amount_paid: 400 });
 
-        const due = view?.getByText(/invoice\.filter\.status_due/);
         const paid = view?.getByText(/invoice\.reports\.paid/);
-        expect(due).toHaveClass("theme-badge-danger");
-        expect(due).toHaveTextContent("600.00/-");
-        expect(paid).toHaveClass("theme-badge-success");
-        expect(paid).toHaveTextContent("400.00/-");
-        expect(due && paid && due.compareDocumentPosition(paid) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-        expect(view?.container).not.toHaveTextContent("1,000.00/-");
+        const due = view?.getByText(/invoice\.filter\.status_due/);
+        expect(view?.container).toHaveTextContent("1,000.00/-");
+        expect(paid).toHaveClass("theme-tone-success");
+        expect(paid).toHaveTextContent(/^invoice\.reports\.paid:400$/);
+        expect(due).toHaveClass("theme-tone-danger");
+        expect(due).toHaveTextContent(/^invoice\.filter\.status_due:600$/);
+        expect(paid && due && paid.compareDocumentPosition(due) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(view?.container.querySelector("[class*='theme-badge']")).not.toBeInTheDocument();
     });
 
-    // পুরো ডিউ বা পুরো পরিশোধিত ইনভয়েসে শুধু বিলের পরিমাণ দেখায়, কোনো ডিউ/পেইড ব্যাজ থাকে না কি না যাচাই করি।
+    // নিচের লাইনে পয়সা থাকলে দুই ঘর দশমিক দেখায়, না থাকলে ".00/-" ছাড়া পূর্ণ সংখ্যা দেখায় কি না যাচাই করি।
+    it("Invoice column: the note line shows decimals only when the amount has paisa", () => {
+        const view = renderAmountCell({ after_discount_amount: 500.5, amount_paid: 250 });
+
+        expect(view?.getByText(/invoice\.reports\.paid/)).toHaveTextContent(/:250$/);
+        expect(view?.getByText(/invoice\.filter\.status_due/)).toHaveTextContent(/:250\.50$/);
+    });
+
+    // অগ্রিম ব্যবহার হওয়া বিলে নিচের লাইনে অগ্রিমের পরিমাণ লেখা হিসেবে দেখায়, "Advance paid" ট্যাগ নয়, যাচাই করি।
+    it("Invoice column: a bill that used an advance shows the advance amount in the note line", () => {
+        const view = renderAmountCell({ after_discount_amount: 900, amount_paid: 0, advance_amount: 500 });
+
+        expect(view?.container).toHaveTextContent("900.00/-");
+        expect(view?.getByText(/invoice\.reports\.advance_payment/)).toHaveTextContent(/^invoice\.reports\.advance_payment:500$/);
+        expect(view?.queryByText("invoice.advance.tag")).not.toBeInTheDocument();
+        expect(view?.queryByText(/invoice\.filter\.status_due/)).not.toBeInTheDocument();
+    });
+
+    // পুরো ডিউ বা পুরো পরিশোধিত ইনভয়েসে শুধু বিলের পরিমাণ দেখায়, নিচে কোনো ডিউ/পেইড লাইন থাকে না কি না যাচাই করি।
     it("Invoice column: an unpaid or fully paid invoice shows only the bill total", () => {
         for (const amount_paid of [0, 1000]) {
             const view = renderAmountCell({ after_discount_amount: 1000, amount_paid });

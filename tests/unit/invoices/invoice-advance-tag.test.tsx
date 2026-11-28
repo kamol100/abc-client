@@ -48,6 +48,20 @@ describe("Invoice advance tag", () => {
         expect(tooltip).toHaveTextContent("৳0");
     });
 
+    // "note" রূপে ট্যাগের বদলে অগ্রিমের পরিমাণ লেখা দেখায় এবং focus করলে একই হিসাবের tooltip আসে কি না যাচাই করি।
+    it("Note variant focused: shows the advance amount as text and the same breakdown", async () => {
+        const user = userEvent.setup();
+        render(<InvoiceAdvanceTag bill={1400} advance={500} payable={900} variant="note" />);
+
+        expect(screen.getByText(/invoice\.reports\.advance_payment/)).toHaveTextContent(/:500$/);
+        expect(screen.queryByText("invoice.advance.tag")).not.toBeInTheDocument();
+        await user.tab();
+
+        const tooltip = await screen.findByRole("tooltip");
+        expect(tooltip).toHaveTextContent("invoice.advance.total_bill");
+        expect(tooltip).toHaveTextContent("৳900");
+    });
+
     // Tag ও tooltip-এর লেখা ইংরেজি ও বাংলা দুই ফাইলেই আছে কি না যাচাই করি।
     it("Advance tag labels: exist in both English and Bangla", () => {
         for (const lang of [en, bn]) {
