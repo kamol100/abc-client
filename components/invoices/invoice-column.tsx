@@ -157,18 +157,18 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                             {isPartial ? (
                                 // Partly paid: what is still due, then what was paid. The bill total is not shown.
                                 <>
-                                    <p>
+                                    <div>
                                         <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.danger)}>
                                             {t("invoice.filter.status_due")}:
                                             <DisplayCount amount={toNumber(total) - toNumber(paid)} formatCurrency />
                                         </Badge>
-                                    </p>
-                                    <p>
+                                    </div>
+                                    <div>
                                         <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.success)}>
                                             {t("invoice.reports.paid")}:
                                             <DisplayCount amount={toNumber(paid)} formatCurrency />
                                         </Badge>
-                                    </p>
+                                    </div>
                                 </>
                             ) : (
                                 <p className="font-semibold text-primary">

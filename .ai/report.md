@@ -13,7 +13,7 @@ Checks: `scripts/ai/typecheck` passes. Full unit run: 14 tests in 9 files fail, 
 
 ## Invoice list: a partly paid invoice shows due and paid badges in the amount column — 2026-11-28
 
-On `master`, not committed.
+Branch `feat/invoice-partial-due-paid-badges` (from `master`), commit `f8ab7ce`. In `master` through the merge of `feat/package-dropdown-speed-price`, which was branched from it. Follow-up on branch `fix/invoice-badge-hydration` (from `master`), committed, not merged: each badge was a `<div>` inside a `<p>`, which gave a hydration error in the console; the wrappers are now `<div>`. Typecheck and the 6 invoice column tests pass; not rechecked in a browser.
 
 - Amount column of the invoice list (`components/invoices/invoice-column.tsx`): for a partly paid invoice the bill total is no longer shown. It shows a red "Due" badge (bill after discount minus paid), then a green "Paid" badge under it. Both use the theme badge classes (`theme-badge-danger`, `theme-badge-success`).
 - Unpaid and fully paid invoices are unchanged: the bill total only. The advance tag stays under the amount.
