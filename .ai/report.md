@@ -1,3 +1,16 @@
+## Client list: wallet advance shown in place of "Due" — 2026-11-28
+
+Not committed; working tree changes in both repos on `master` / `main`.
+
+- Client list, "Bill / Payment" column: when a client has no due invoice and holds money in the wallet, the first line reads "Advance: ৳X" in place of "Due: ৳0". A client with a due invoice still shows "Due" and the pay icon, as before. No wallet money and no due: "Due: ৳0", as before.
+- New key `client.table.advance` ("Advance" / "অগ্রিম") in `en.json` and `bn.json`.
+- `ClientRow` type has `wallet.balance`.
+- Backend (`isp-backend`): the client list (`ClientController@index`) now loads `wallet:id,client_id,balance` (one more query per page). The list is cached for 30 minutes, so `Wallets` drops the company's client list cache after each client wallet balance change (add, deduct, withdraw, refund, reverse), after commit.
+- Backend test `client index does not load payments or wallets` is now `client index does not load payments`; a new test covers the wallet balance in the list and its refresh after an advance payment.
+- The line keeps its height and width class, so the row does not shift.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/clients`: 163 pass, 3 fail in `reseller-client-filter-schema.test.ts` and `reseller-client-table.test.tsx`; the same 3 fail without this change. Backend: `ClientControllerTest` (118) and the six wallet test files (155) pass. Not browser-checked.
+
 ## Invoice list toolbar stays on one row on laptops; "Advance" label — 2026-11-28
 
 Branch `feat/invoice-totals-due-advance-chips` (from `master`), merged into `master`. One commit with the two entries below.

@@ -1845,6 +1845,7 @@
             "online_info": "Online / Info",
             "deadline": "Deadline",
             "total_due": "Due",
+            "advance": "Advance",
             "termination_days": "({{count}}-days)",
             "termination_expired_days": "(expired {{count}}-days)"
         },
