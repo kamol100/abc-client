@@ -1,3 +1,58 @@
+## Invoice list toolbar stays on one row on laptops; "Advance" label — 2026-11-28
+
+Branch `feat/invoice-totals-due-advance-chips` (from `master`), merged into `master`. One commit with the two entries below.
+
+- The client view chip is now labelled "Advance" (`invoice.reports.advance_payment`: "Advance" / "অগ্রিম").
+- Invoice list toolbar: the totals no longer break into rows on 14-inch laptop widths. The toolbar measures its own row (`components/data-table/toolbar/use-toolbar-fit.ts`, a `ResizeObserver` on the toolbar row) and gives up room in steps, only as far as needed:
+  1. the title "Invoices (11)" becomes a count chip "11" (the label stays for screen readers and as the hover title);
+  2. the total chips lose their icons;
+  3. the chips get less padding;
+  4. last, the two-column grid, as before.
+  When the row is wide enough again, each step is undone, so the label comes back. It follows the real toolbar width, so a collapsed sidebar counts too.
+- This replaces the fixed 1600px breakpoint from the "Due" chip entry below; the "Open" note there no longer applies.
+- `InvoiceReports` has a `density` prop (`full`, `compact`, `tight`, `grid`) for the toolbar layout. The client view and the other pages use the block layout and are unchanged.
+- Test: 1 new in `tests/unit/invoices/invoice-reports.test.tsx` (densities). The measuring hook has no unit test (jsdom has no layout).
+
+Checks: `scripts/ai/typecheck` passes. `vitest run` on `tests/unit/invoices`, `clients`, `data-table`, `i18n`, `client-area`: 339 passed, 6 failed; the 6 are among the 14 that failed before these changes (reseller client table and filter, column visibility, client dashboard info).
+
+Browser (Chromium, local stack, tenant cp, invoice list, sidebar open, light), resizing down and back up: 1920 to 1512px full title and chips with icons; 1440, 1366 and 1280px count chip and chips without icons, one row, "Add" fully visible; 1152 and 1024px the grid; back at 1920px the full title returns. On a fresh load at 1366 and 1512px the toolbar stayed 36px high and the table top did not move while the data loaded. Not checked: dark, Bengali, the open filter row, and a collapsed sidebar.
+
+Open:
+- Before the page's scripts start (first paint of a hard reload) the toolbar is drawn in full, so on a narrow laptop the "Add" button can sit past the right edge for that moment.
+- While the list is loading there is no count, so the title stays "Invoices" until the count arrives.
+
+## Client view invoices: an "Advance Payment" chip with the client's wallet balance — 2026-11-28
+
+Branch `feat/invoice-totals-due-advance-chips` (from `master`), merged into `master`. No backend change.
+
+- In the client view, the invoice totals end with an "Advance Payment" chip (wallet icon, primary color) showing the client's wallet balance. It is always there in the client view, at 0.00 when the client has no advance.
+- Only the client view has it: `client-view.tsx` passes the balance (`wallet.balance` of the client detail it already loads) to `InvoiceTable` as `advancePayment`, which hands it to `InvoiceReports`. The invoice list, reseller bills and client area do not pass it and show no chip.
+- The balance does not follow the invoice filters; it is the client's current wallet balance.
+- With six chips the phone grid is an even 2x3; the "last chip takes the full row" rule now applies only to an odd number of chips.
+- Translations in `en.json` and `bn.json`: `invoice.reports.advance_payment`.
+- Test: 1 new in `tests/unit/invoices/invoice-reports.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/invoices tests/unit/i18n`: 109 passed. In `tests/unit/clients` the 3 reseller client tests fail as they did before this change. The full unit run was not repeated.
+
+Browser (Chromium, local stack, tenant cp, a client with 500 in the wallet, light): 1440px six chips in one row, 390px a 2x3 grid; the chip shows 500.00. Not checked: dark, Bengali, the modal and drawer client view, and the chip updating right after a new advance payment is saved.
+
+## Invoice totals: a "Due" chip after "Paid" — 2026-11-28
+
+Branch `feat/invoice-totals-due-advance-chips` (from `master`), merged into `master`. No backend change.
+
+- `components/invoices/invoice-reports.tsx` has a fifth chip, "Due", in the destructive color with an alert icon, after "Paid". It shows wherever the totals show: invoice list, a client's invoices, reseller bills, client area invoices.
+- The amount is counted on the page: total after discount minus paid, never below 0 (`invoiceReportsDue`). The API does not send a due total; both figures are sums over the same filtered invoices, so the chip follows the filters.
+- Layout: with five chips, the invoice list toolbar holds them in one row only from 1600px (was 1440px). Below that they are a two-column grid and the due chip takes the full third row, on phones too. At 1440px in one row the "Add" button was pushed off the right edge.
+- Translations in `en.json` and `bn.json`: `invoice.reports.due`.
+- Tests: 2 new in `tests/unit/invoices/invoice-reports.test.tsx`.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/invoices`: 106 passed. `tests/unit/client-area/client-dashboard-info.test.tsx` fails as it did before this change. The full unit run was not repeated.
+
+Browser (Chromium, local stack, tenant cp, invoice list, light): 1600px one row with every toolbar button visible; 1536, 1440 and 1280px a 2-2-1 grid; 390px a 2-2-1 grid with the due chip full width. Sub total 10,850, paid 6,200, due 4,650. No horizontal page scroll. Not checked: dark, Bengali, the client view, reseller bills and client area pages.
+
+Open:
+- Below 1600px the invoice list toolbar is one chip row taller than before (three rows of chips, not two).
+
 ## Dashboard: staff collection card amounts above 0 are underlined — 2026-11-28
 
 Branch `feat/staff-collection-amount-underline` (from `master`), merged into `master`.
