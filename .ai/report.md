@@ -1,3 +1,22 @@
+## Dashboard: staff collection card amounts open the collection list — 2026-11-28
+
+Branch `feat/staff-collection-details` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- On the "Invoice collection by" card, an amount above 0 (today, this month, last month) is now a link. A 0 amount stays plain text. The link has the same box as the text, so the row keeps its 16px height.
+- The link opens a popup (`MyDialog`, 4xl) titled "Invoice collection: {period}" with the staff's own collections of that period, one row per payment: invoice ID, created date, due date, type, client, note, amount. Pagination as in the other lists, and a "Total collected" chip that follows the filters.
+- Filters: one text field for invoice ID, note or amount (`any`), created date and due date (one day each, the invoice's dates), client dropdown, invoice type dropdown. Desktop: inline filter row. Phone: the filter sheet.
+- Data comes from the new `GET dashboard-staff-invoice-collection-details?period=…`. It needs no permission beyond login, like the card.
+- New files: `components/dashboard/items/DashboardStaffCollectionDetails.tsx`, `components/dashboard/dashboard-staff-collection-columns.tsx`, `components/dashboard/dashboard-staff-collection-filter-schema.ts`. Changed: `DashboardStaffInvoiceCollectionCard.tsx`, `dashboard-type.ts`.
+- Translations in `en.json` and `bn.json`: `dashboard.staff_collection.title`, `.view`, `.total`, `.filters.any`. Column and filter labels reuse existing invoice and payment keys.
+- Test: 1 new in `tests/unit/dashboard/dashboard-staff-invoice-collection-card.test.tsx` (amount above 0 opens that period's list; 0 is not clickable).
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/dashboard`: 27 passed. Full unit run: 14 tests in 9 files fail, the same 14 with this change stashed (field markup snapshots, reseller client table, column visibility, menu items, pay page, invoice print settings, client dashboard info, client map rows).
+
+Browser (Chromium, local stack on MySQL, tenant cp, 1440px and 390px): the card rows are 16px high with and without a link; "This month" opened 5 rows with total 2,400, equal to the card; "Last month" with `1200` in the text filter gave 1 row and total 1,200; scroll position stayed at 0 after closing; no page errors. Not checked: dark theme, Bengali, more than one page of rows, and the date, client and type filters in the browser (they were checked through the API).
+
+Open:
+- The client name in the popup is plain text, not a link to the client view.
+
 ## Notifications: "Client phone number missing" — 2026-11-28
 
 Branch `feat/sms-missing-phone-stop` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.

@@ -5029,6 +5029,14 @@
                 "status": "Status"
             }
         },
+        "staff_collection": {
+            "title": "Invoice collection: {{period}}",
+            "view": "View collection list: {{period}}",
+            "total": "Total collected",
+            "filters": {
+                "any": "Invoice ID, note or amount"
+            }
+        },
         "zone_wise_top_invoice_due": {
             "title": "Zone-wise Top Due",
             "total_amount": "Total Amount",

@@ -209,6 +209,25 @@ export function hasStaffInvoiceCollection(
 ): boolean {
   return data.today_amount > 0 || data.this_month_amount > 0 || data.last_month_amount > 0;
 }
+/** The lines of the staff collection card. Each opens the collections of that period. */
+export type DashboardStaffCollectionPeriod = "today" | "this_month" | "last_month";
+
+/** One collection (payment) of the logged-in staff, with the invoice it paid. */
+export type DashboardStaffCollectionDetail = {
+  id: string;
+  pid?: string | null;
+  payment_date?: string | null;
+  amount: number | string;
+  note?: string | null;
+  client?: { id: number; uuid?: string | null; name: string } | null;
+  invoice?: {
+    id: number;
+    trackID?: string | null;
+    create_date?: string | null;
+    due_date?: string | null;
+    invoice_type?: { id: number; name: string } | null;
+  } | null;
+};
 export type DashboardExpenseSummary = z.infer<typeof DashboardExpenseSummarySchema>;
 export type DashboardFundSummary = z.infer<typeof DashboardFundSummarySchema>;
 export type DashboardProductStockCategory = z.infer<typeof DashboardProductStockCategorySchema>;

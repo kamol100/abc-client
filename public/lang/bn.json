@@ -5029,6 +5029,14 @@
                 "status": "স্ট্যাটাস"
             }
         },
+        "staff_collection": {
+            "title": "ইনভয়েস কালেকশন: {{period}}",
+            "view": "কালেকশনের তালিকা দেখুন: {{period}}",
+            "total": "মোট কালেকশন",
+            "filters": {
+                "any": "ইনভয়েস আইডি, নোট বা পরিমাণ"
+            }
+        },
         "zone_wise_top_invoice_due": {
             "title": "জোনভিত্তিক টপ ডিউ ",
             "total_amount": "মোট অ্যামাউন্ট",
