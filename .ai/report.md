@@ -1,6 +1,6 @@
 ## Client list: "Create missing invoices" button and dialog — 2026-11-28
 
-Branch `feat/missing-invoices` (from `master`), committed there, not merged. Backend part: `isp-backend/.ai/report.md`, same date.
+Branch `feat/missing-invoices` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
 
 - Client list toolbar: a new icon button (file with a plus) sits right before the filter button, after ⚙, columns and the layout toggle. It shows only with the permission `invoices.missing.create` and not on the reseller clients report.
 - The button opens a dialog (`components/invoices/missing-invoice-dialog.tsx`) listing the company's own clients with no invoice for this month, from `GET invoices/missing`. Each row has a checkbox, the name, client id, PPPoE username, package, full-month amount and invoice day. "Select all" ticks every client.
