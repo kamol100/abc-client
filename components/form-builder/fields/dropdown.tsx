@@ -57,6 +57,7 @@ export const dropdownField = defineField<DropdownFieldConfig>({
             isSearchable={field.isSearchable}
             optionValueKey={field.valueMapping?.idKey}
             optionLabelKey={field.valueMapping?.labelKey}
+            formatLabel={field.valueMapping?.formatLabel}
             parentFieldName={
                 field.dependsOn ? resolveFieldPath(namePrefix, field.dependsOn.field) : undefined
             }

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "@/app/actions";
-import type { SelectOption } from "@/components/form-builder/types";
+import type { SelectOption, SelectOptionLabelFormatter } from "@/components/form-builder/types";
 
 type DropdownApiItem = {
     id: string | number;
@@ -18,6 +18,7 @@ const toSelectOption = (
     translate: (value: string) => string,
     optionValueKey: string,
     optionLabelKey: string,
+    formatLabel?: SelectOptionLabelFormatter,
 ): SelectOption | null => {
     const rawValue = item[optionValueKey];
     const rawLabel = item[optionLabelKey];
@@ -26,7 +27,7 @@ const toSelectOption = (
 
     return {
         value: rawValue,
-        label: translate(rawLabel),
+        label: formatLabel?.(item) ?? translate(rawLabel),
         // The whole record, so `populate` can copy other values out of it.
         meta: item,
     };
@@ -43,6 +44,8 @@ type SelectOptionsInput = {
     optionValueKey?: string;
     /** Which key of an API record is the option label. Defaults to `name`. */
     optionLabelKey?: string;
+    /** Builds the label from the whole record. Must be a stable function (defined outside render). */
+    formatLabel?: SelectOptionLabelFormatter;
 };
 
 /** The options of a dropdown: loaded from `api` when given, otherwise the static list. */
@@ -52,11 +55,12 @@ export function useSelectOptions({
     staticOptions,
     optionValueKey = "id",
     optionLabelKey = "name",
+    formatLabel,
 }: SelectOptionsInput) {
     const { t } = useTranslation();
 
     const { data: apiOptions, isLoading, isError, refetch } = useQuery({
-        queryKey: [`${name}-dropdown`, api, optionValueKey, optionLabelKey],
+        queryKey: [`${name}-dropdown`, api, optionValueKey, optionLabelKey, Boolean(formatLabel)],
         queryFn: async (): Promise<SelectOption[]> => {
             const result = await useFetch({ url: api as string });
             // A failed request must not look like an endpoint with no records.
@@ -64,7 +68,7 @@ export function useSelectOptions({
             const items: unknown[] = Array.isArray(result?.data) ? result.data : [];
             return items.flatMap((item: unknown) => {
                 if (!item || typeof item !== "object") return [];
-                const option = toSelectOption(item as DropdownApiItem, t, optionValueKey, optionLabelKey);
+                const option = toSelectOption(item as DropdownApiItem, t, optionValueKey, optionLabelKey, formatLabel);
                 return option ? [option] : [];
             });
         },
