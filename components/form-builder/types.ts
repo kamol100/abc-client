@@ -3,7 +3,12 @@ import type { ReactNode } from "react";
 export type ValueMapping = {
     idKey: string;
     labelKey: string;
+    /** Builds the option label from the whole API record, instead of using `labelKey` alone. */
+    formatLabel?: SelectOptionLabelFormatter;
 };
+
+/** Returns the label of an option from its API record, or null to fall back to the label key. */
+export type SelectOptionLabelFormatter = (record: Record<string, unknown>) => string | null;
 
 export type LabelProps = {
     labelText?: string;

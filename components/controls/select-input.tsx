@@ -2,7 +2,7 @@
 
 import { SelectBox, type SelectBoxValue } from "@/components/controls/select-box";
 import { useSelectOptions } from "@/components/controls/use-select-options";
-import type { LabelProps, SelectOption } from "@/components/form-builder/types";
+import type { LabelProps, SelectOption, SelectOptionLabelFormatter } from "@/components/form-builder/types";
 import Label from "@/components/label";
 
 type SelectInputProps = {
@@ -21,6 +21,8 @@ type SelectInputProps = {
     optionValueKey?: string;
     /** Which key of an API record is the option label. Defaults to `name`. */
     optionLabelKey?: string;
+    /** Builds the option label from the whole API record. */
+    formatLabel?: SelectOptionLabelFormatter;
     isMulti?: boolean;
     isDisabled?: boolean;
     isClearable?: boolean;
@@ -45,6 +47,7 @@ export function SelectInput({
     options: staticOptions,
     optionValueKey,
     optionLabelKey,
+    formatLabel,
     isMulti,
     isDisabled,
     isClearable,
@@ -57,6 +60,7 @@ export function SelectInput({
         staticOptions,
         optionValueKey,
         optionLabelKey,
+        formatLabel,
     });
 
     return (

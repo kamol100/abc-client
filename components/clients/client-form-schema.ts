@@ -1,4 +1,5 @@
 import { AccordionSection } from "@/components/form-wrapper/form-builder-type";
+import { packageOptionLabel } from "@/components/packages/package-option-label";
 import { paymentDeadlineSetting } from "@/components/settings/core/values";
 
 export const clientImageFields = [
@@ -188,7 +189,7 @@ export const ClientFormFieldSchema = ({ mode = "create", nextSid, paymentDeadlin
           placeholder: "client.package.placeholder",
           api: "/dropdown-network-packages",
           valueKey: "package",
-          valueMapping: { idKey: "id", labelKey: "name" },
+          valueMapping: { idKey: "id", labelKey: "name", formatLabel: packageOptionLabel },
         },
         {
           type: "dropdown",

@@ -4,6 +4,7 @@ import MyButton from "@/components/my-button";
 import { MyDialog } from "@/components/my-dialog";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { SelectInput } from "@/components/controls/select-input";
+import { packageOptionLabel } from "@/components/packages/package-option-label";
 import useApiMutation from "@/hooks/use-api-mutation";
 import { Package } from "lucide-react";
 import { FC, ReactNode, useState } from "react";
@@ -123,6 +124,7 @@ const ClientChangePackageDialog: FC<ClientChangePackageDialogProps> = ({
                     onChange={(value) => setPackageId(Array.isArray(value) ? null : value)}
                     label={{ labelText: t("client.package.label") }}
                     api="/dropdown-network-packages"
+                    formatLabel={packageOptionLabel}
                     placeholder="client.package.placeholder"
                 />
             </div>

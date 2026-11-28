@@ -19,6 +19,7 @@ import type {
   DropdownPopulate,
   LabelProps,
   SelectOption,
+  SelectOptionLabelFormatter,
 } from "@/components/form-builder/types";
 
 /** Copies values from the chosen option's API record into other form fields. */
@@ -52,6 +53,8 @@ type SelectDropdownProps = {
   optionValueKey?: string;
   /** Which key of an API record is the option label. Defaults to `name`. */
   optionLabelKey?: string;
+  /** Builds the option label from the whole API record. */
+  formatLabel?: SelectOptionLabelFormatter;
   onValueChange?: (value: unknown) => void;
   control?: Control<FieldValues>;
   rules?: RegisterOptions;
@@ -83,6 +86,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
   placeholder = "common.select_option",
   optionValueKey = "id",
   optionLabelKey = "name",
+  formatLabel,
   onValueChange,
   control: controlProp,
   rules,
@@ -146,6 +150,7 @@ const SelectDropdown: FC<SelectDropdownProps> = ({
     staticOptions,
     optionValueKey,
     optionLabelKey,
+    formatLabel,
   });
 
   return (
