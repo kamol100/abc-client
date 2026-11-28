@@ -1,3 +1,12 @@
+## Notifications: "Client auto inactive failed" — 2026-11-28
+
+Branch `feat/auto-inactive-daily-limit` (from `master`), not committed. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- New in-app notification `client_auto_inactive_failed`, sent when MikroTik did not disable a client and the API stops trying for the day. Added to `notification-catalog.ts` (category client), so it also has its own on/off switch in the notification settings. It opens the client's page.
+- Translations in `en.json` and `bn.json`: `notifications.events.client_auto_inactive_failed.title` and `.message` (`client_name`, `pppoe_username`, `attempts`).
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/notifications`: 18 passed. Full `vitest run`: 14 tests in 9 files fail, the same 14 with this change stashed (form markup snapshots, menu order, pay page, client table and others). Not checked in a browser.
+
 ## Client list: "Create missing invoices" button and dialog — 2026-11-28
 
 Branch `feat/missing-invoices` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.

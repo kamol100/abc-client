@@ -16,6 +16,7 @@ export const NOTIFICATION_EVENTS = [
     { value: "client_created", category: "client" },
     { value: "client_updated", category: "client" },
     { value: "client_deleted", category: "client" },
+    { value: "client_auto_inactive_failed", category: "client" },
     { value: "ticket_created", category: "support" },
     { value: "ticket_updated", category: "support" },
     { value: "ticket_status_changed", category: "support" },
