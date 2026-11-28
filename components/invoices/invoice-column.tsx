@@ -6,14 +6,13 @@ import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import DisplayCount from "@/components/display-count";
-import MyBadge, { themeBadgeClass } from "@/components/my-badge";
+import MyBadge, { themeToneClass } from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
 import InvoiceAdvanceTag, { invoiceAdvance } from "@/components/invoices/invoice-advance-tag";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
 import { usePermissions } from "@/context/app-provider";
-import { Badge } from "@/components/ui/badge";
-import { toNumber } from "@/lib/helper/helper";
+import { formatMoney, toNumber } from "@/lib/helper/helper";
 import { cn } from "@/lib/utils";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
@@ -22,6 +21,13 @@ const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     partial: "warning",
     partial_paid: "warning",
 };
+
+/** Amount for the small note line: no "/-", and decimals only when there are paisa (250, 250.50). */
+function noteAmount(value: number): string {
+    const rounded = Math.round(value * 100) / 100;
+
+    return formatMoney(rounded, Number.isInteger(rounded) ? 0 : 2);
+}
 
 /** The reseller an invoice is billed to, marked so it is not read as a client. */
 function InvoiceResellerName({ name }: { name: string }) {
@@ -152,33 +158,30 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
                     const isPartial = paid > 0 && paid < toNumber(total);
                     const advance = invoiceAdvance(row.original);
 
+                    const hasNote = isPartial || advance !== null;
+
                     return (
                         <div className="space-y-0.5">
-                            {isPartial ? (
-                                // Partly paid: what is still due, then what was paid. The bill total is not shown.
-                                <>
-                                    <div>
-                                        <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.danger)}>
-                                            {t("invoice.filter.status_due")}:
-                                            <DisplayCount amount={toNumber(total) - toNumber(paid)} formatCurrency />
-                                        </Badge>
-                                    </div>
-                                    <div>
-                                        <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.success)}>
-                                            {t("invoice.reports.paid")}:
-                                            <DisplayCount amount={toNumber(paid)} formatCurrency />
-                                        </Badge>
-                                    </div>
-                                </>
-                            ) : (
-                                <p className="font-semibold text-primary">
-                                    <DisplayCount amount={toNumber(total)} formatCurrency />
-                                </p>
-                            )}
-                            {/* On its own line under the amount; a block wrapper keeps the tag from stretching. */}
-                            {advance && (
-                                <p>
-                                    <InvoiceAdvanceTag {...advance} />
+                            <p className="font-semibold">
+                                <DisplayCount amount={toNumber(total)} formatCurrency />
+                            </p>
+                            {/* One small line, only when there is something to say: paid and due, and the advance used. */}
+                            {hasNote && (
+                                <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+                                    {isPartial && (
+                                        <>
+                                            <span className={cn("whitespace-nowrap", themeToneClass.success)}>
+                                                {t("invoice.reports.paid")}:{noteAmount(toNumber(paid))}
+                                            </span>
+                                            <span aria-hidden="true">·</span>
+                                            <span className={cn("whitespace-nowrap", themeToneClass.danger)}>
+                                                {t("invoice.filter.status_due")}:
+                                                {noteAmount(toNumber(total) - toNumber(paid))}
+                                            </span>
+                                        </>
+                                    )}
+                                    {isPartial && advance && <span aria-hidden="true">·</span>}
+                                    {advance && <InvoiceAdvanceTag {...advance} variant="note" />}
                                 </p>
                             )}
                         </div>
