@@ -2276,7 +2276,9 @@
             "sub_total": "Sub Total",
             "discount": "Discount",
             "total": "Total",
-            "paid": "Paid"
+            "paid": "Paid",
+            "due": "Due",
+            "advance_payment": "Advance"
         },
         "filter": {
             "track_id": "Invoice ID",

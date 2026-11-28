@@ -86,6 +86,9 @@ const ClientView: FC<Props> = ({ clientId, variant = "page", scrollRoot = null }
 
     if (!isLoading && !client) return null;
 
+    // The detail API sends the wallet; the list row type does not have it.
+    const walletBalance =
+        (client as { wallet?: { balance?: number | string | null } | null } | undefined)?.wallet?.balance ?? 0;
     const isActive = client?.status === 1;
     const isLocked = client?.is_locked === true;
 
@@ -295,7 +298,12 @@ const ClientView: FC<Props> = ({ clientId, variant = "page", scrollRoot = null }
             <div className="border-t pt-4">
                 <div className="text-md font-semibold mb-2">{t('invoice.title_plural')}:</div>
                 <DeferredSection scrollRoot={scrollRoot}>
-                    <InvoiceTable filterValue={`client_uuid=${clientId}`} tableToolBar={false} reportsToolbar={true} />
+                    <InvoiceTable
+                        filterValue={`client_uuid=${clientId}`}
+                        tableToolBar={false}
+                        reportsToolbar={true}
+                        advancePayment={walletBalance}
+                    />
                 </DeferredSection>
             </div>
             <div className="border-t pt-4">
