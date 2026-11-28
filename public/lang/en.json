@@ -8455,6 +8455,10 @@
                 "title": "Client auto inactive failed",
                 "message": "MikroTik did not disable {{client_name}} ({{pppoe_username}}). Attempts: {{attempts}}. The client is still active and will not be tried again today."
             },
+            "sms_phone_missing": {
+                "title": "Client phone number missing",
+                "message": "SMS not sent: {{client_name}} has no phone number."
+            },
             "ticket_created": {
                 "title": "Ticket opened",
                 "message": "Ticket {{ticket_no}} opened for {{client_name}}"
