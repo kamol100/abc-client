@@ -1845,6 +1845,7 @@
             "online_info": "অনলাইন / তথ্য",
             "deadline": "ডেডলাইন",
             "total_due": "ডিউ",
+            "advance": "অগ্রিম",
             "termination_days": "({{count}}-দিন)",
             "termination_expired_days": "(মেয়াদোত্তীর্ণ {{count}}-দিন)"
         },

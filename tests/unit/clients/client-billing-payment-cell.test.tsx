@@ -134,4 +134,22 @@ describe("ClientBillingPaymentCell payment action", () => {
         expect(screen.queryByRole("button", { name: "client.actions.pay" })).not.toBeInTheDocument();
         expect(dialogModule.imports).toBe(0);
     });
+
+    // ক্লায়েন্টের কোনো বকেয়া না থাকলে ওয়ালেটের অগ্রিম টাকা "Due"-এর জায়গায় দেখানো হচ্ছে কি না যাচাই করি।
+    it("Client billing payment cell: shows the wallet advance instead of due when nothing is due", () => {
+        render(<ClientBillingPaymentCell client={{ ...client, invoiceDue: [], wallet: { balance: 500 } }} />);
+
+        expect(screen.getByText("500").parentElement).toHaveTextContent("client.table.advance: 500");
+        expect(screen.queryByText(/client\.table\.total_due/)).not.toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "client.actions.pay" })).not.toBeInTheDocument();
+    });
+
+    // বকেয়া ইনভয়েস থাকলে ওয়ালেটে টাকা থাকলেও আগের মতো বকেয়াই দেখানো হচ্ছে কি না যাচাই করি।
+    it("Client billing payment cell: keeps showing due when the client has a due invoice and a wallet balance", () => {
+        render(<ClientBillingPaymentCell client={{ ...client, wallet: { balance: 500 } }} />);
+
+        expect(screen.getByText("150").parentElement).toHaveTextContent("client.table.total_due: 150");
+        expect(screen.queryByText("500")).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "client.actions.pay" })).toBeInTheDocument();
+    });
 });

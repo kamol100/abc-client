@@ -21,12 +21,16 @@ const ClientBillingPaymentCell: FC<Props> = ({ client }) => {
     const totalDue = client.invoiceDue?.reduce((acc, curr) => acc + curr.total_amount, 0);
     const dueAmount = totalDue && totalDue > 0 ? totalDue : 0;
     const canPay = hasPermission("invoices.pay");
+    // A due invoice wins; the wallet advance is shown only when nothing is due.
+    const advanceAmount = Number(client.wallet?.balance ?? 0);
+    const showAdvance = dueAmount <= 0 && advanceAmount > 0;
 
     return (
         <div className="flex flex-col gap-0.5 min-w-[120px]">
             <div className="flex items-center gap-1">
                 <span className={cn("font-semibold text-sm capitalize", inactive && "text-destructive")}>
-                    {t("client.table.total_due")}: <DisplayCount amount={dueAmount} formatCurrency />
+                    {t(showAdvance ? "client.table.advance" : "client.table.total_due")}:{" "}
+                    <DisplayCount amount={showAdvance ? advanceAmount : dueAmount} formatCurrency />
                 </span>
                 {canPay && dueAmount > 0 && (
                     <MyButton
