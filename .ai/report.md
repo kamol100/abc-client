@@ -1,6 +1,6 @@
 ## Expenses: fund is mandatory, "Expense By" needs a permission, expense choice on fund transaction delete — 2026-11-28
 
-On `master`, not committed. Backend part: `isp-backend/.ai/report.md`, same date.
+Branch `feat/expense-fund-required-expense-by` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
 
 - Expense form: the "Payment Method" label is now "Fund" (`expense.fund.label`, also the list column and filter label) and the field is mandatory ("Fund is required").
 - Expense form: "Expense By" is hidden unless the user has `expenses.expense-by-update`. Hidden or left empty, the API records the logged-in staff. With the permission it is a staff dropdown, not mandatory.
