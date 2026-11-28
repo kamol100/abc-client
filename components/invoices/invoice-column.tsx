@@ -6,13 +6,15 @@ import { useTranslation } from "react-i18next";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import DisplayCount from "@/components/display-count";
-import MyBadge from "@/components/my-badge";
+import MyBadge, { themeBadgeClass } from "@/components/my-badge";
 import MyTooltip from "@/components/my-tooltip";
 import InvoiceAdvanceTag, { invoiceAdvance } from "@/components/invoices/invoice-advance-tag";
 import InvoiceRowActions from "@/components/invoices/invoice-row-actions";
 import { InvoiceRow } from "@/components/invoices/invoice-type";
 import { usePermissions } from "@/context/app-provider";
+import { Badge } from "@/components/ui/badge";
 import { toNumber } from "@/lib/helper/helper";
+import { cn } from "@/lib/utils";
 
 const STATUS_BADGE_TYPE: Record<string, "success" | "decline" | "warning"> = {
     paid: "success",
@@ -152,18 +154,31 @@ export const useInvoiceColumns = (): ColumnDef<InvoiceRow>[] => {
 
                     return (
                         <div className="space-y-0.5">
-                            <p className="font-semibold text-primary">
-                                <DisplayCount amount={toNumber(total)} formatCurrency />
-                            </p>
+                            {isPartial ? (
+                                // Partly paid: what is still due, then what was paid. The bill total is not shown.
+                                <>
+                                    <p>
+                                        <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.danger)}>
+                                            {t("invoice.filter.status_due")}:
+                                            <DisplayCount amount={toNumber(total) - toNumber(paid)} formatCurrency />
+                                        </Badge>
+                                    </p>
+                                    <p>
+                                        <Badge className={cn("gap-1 whitespace-nowrap", themeBadgeClass.success)}>
+                                            {t("invoice.reports.paid")}:
+                                            <DisplayCount amount={toNumber(paid)} formatCurrency />
+                                        </Badge>
+                                    </p>
+                                </>
+                            ) : (
+                                <p className="font-semibold text-primary">
+                                    <DisplayCount amount={toNumber(total)} formatCurrency />
+                                </p>
+                            )}
                             {/* On its own line under the amount; a block wrapper keeps the tag from stretching. */}
                             {advance && (
                                 <p>
                                     <InvoiceAdvanceTag {...advance} />
-                                </p>
-                            )}
-                            {isPartial && (
-                                <p className="text-xs text-green-600">
-                                    {t("invoice.reports.paid")}: <DisplayCount amount={toNumber(paid)} formatCurrency />
                                 </p>
                             )}
                         </div>

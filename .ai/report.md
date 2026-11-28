@@ -1,3 +1,32 @@
+## Client form: package dropdown shows speed and price — 2026-11-28
+
+On `master`, not committed. Backend part is one line in `isp-backend` (also not committed).
+
+- The package dropdown in the client form and in the "Change package" dialog now lists each package as `Name — speed · ৳price`, e.g. `Home 10 — 10 Mbps · ৳500`. The same text shows once a package is chosen, and typing a speed or price in the search finds it.
+- A package with no bandwidth shows `Name — ৳price`.
+- Backend: `GET /dropdown-network-packages` (`NetworksController::networkPackages`) now returns `bandwidth` and `price` beside `id` and `name`. Buying price is not sent.
+- Frontend: `valueMapping` takes an optional `formatLabel(record)`, passed through `SelectDropdown`, `SelectInput` and `useSelectOptions`. The package label is in `components/packages/package-option-label.ts`. Other dropdowns are unchanged.
+- No new translation keys.
+- Tests: 4 new in `tests/unit/packages/package-option-label.test.ts`.
+
+Checks: `scripts/ai/typecheck` passes. Full unit run: 14 tests in 9 files fail, the same set with this change stashed. No backend test was run or added. Not checked in a browser.
+
+## Invoice list: a partly paid invoice shows due and paid badges in the amount column — 2026-11-28
+
+On `master`, not committed.
+
+- Amount column of the invoice list (`components/invoices/invoice-column.tsx`): for a partly paid invoice the bill total is no longer shown. It shows a red "Due" badge (bill after discount minus paid), then a green "Paid" badge under it. Both use the theme badge classes (`theme-badge-danger`, `theme-badge-success`).
+- Unpaid and fully paid invoices are unchanged: the bill total only. The advance tag stays under the amount.
+- No new translation keys: "Due" is `invoice.filter.status_due`, "Paid" is `invoice.reports.paid`.
+- Tests: 2 new in `tests/unit/invoices/invoice-column.test.tsx`; its translation mock now has `i18n.language`, which `DisplayCount` reads.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/invoices tests/unit/client-area/client-invoice-columns.test.tsx`: 108 passed. The full unit run was not repeated.
+
+Browser (Chromium, local stack, tenant cp, 1440px, light and dark): the two partly paid rows show "Due: 1,150.00/-" over "Paid: 1,350.00/-" and "Due: 250.00/-" over "Paid: 250.00/-"; the other rows show the total. Rows keep the height they had with the old two-line cell. Not checked at phone width or in Bengali.
+
+Open:
+- The client area invoice list and the dashboard tables have their own amount cells and are not changed.
+
 ## Dashboard: staff collection card amounts open the collection list — 2026-11-28
 
 Branch `feat/staff-collection-details` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.

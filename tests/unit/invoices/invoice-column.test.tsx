@@ -26,6 +26,7 @@ const permissions = vi.hoisted(() => ({
 vi.mock("react-i18next", () => ({
     useTranslation: () => ({
         t: (key: string) => key,
+        i18n: { language: "en" },
     }),
 }));
 
@@ -114,5 +115,45 @@ describe("invoice client column", () => {
 
         expect(view?.queryByRole("link")).not.toBeInTheDocument();
         expect(view?.getByText("—")).toBeInTheDocument();
+    });
+});
+
+const renderAmountCell = (invoice: Partial<InvoiceRow>) => {
+    const { result } = renderHook(() => useInvoiceColumns());
+    const cell = result.current.find(
+        (column) => "accessorKey" in column && column.accessorKey === "after_discount_amount",
+    )?.cell;
+
+    expect(typeof cell).toBe("function");
+    if (typeof cell !== "function") return;
+
+    return render(cell({ row: { original: invoice } } as never) as ReactElement, { wrapper: QueryWrapper });
+};
+
+describe("invoice amount column", () => {
+    // আংশিক পরিশোধে আগে লাল ডিউ ব্যাজ, পরে সবুজ পেইড ব্যাজ দেখায় এবং মূল বিলের পরিমাণ দেখায় না কি না যাচাই করি।
+    it("Invoice column: a partly paid invoice shows a red due badge, then a green paid badge, without the bill total", () => {
+        const view = renderAmountCell({ after_discount_amount: 1000, amount_paid: 400 });
+
+        const due = view?.getByText(/invoice\.filter\.status_due/);
+        const paid = view?.getByText(/invoice\.reports\.paid/);
+        expect(due).toHaveClass("theme-badge-danger");
+        expect(due).toHaveTextContent("600.00/-");
+        expect(paid).toHaveClass("theme-badge-success");
+        expect(paid).toHaveTextContent("400.00/-");
+        expect(due && paid && due.compareDocumentPosition(paid) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+        expect(view?.container).not.toHaveTextContent("1,000.00/-");
+    });
+
+    // পুরো ডিউ বা পুরো পরিশোধিত ইনভয়েসে শুধু বিলের পরিমাণ দেখায়, কোনো ডিউ/পেইড ব্যাজ থাকে না কি না যাচাই করি।
+    it("Invoice column: an unpaid or fully paid invoice shows only the bill total", () => {
+        for (const amount_paid of [0, 1000]) {
+            const view = renderAmountCell({ after_discount_amount: 1000, amount_paid });
+
+            expect(view?.container).toHaveTextContent("1,000.00/-");
+            expect(view?.queryByText(/invoice\.filter\.status_due/)).not.toBeInTheDocument();
+            expect(view?.queryByText(/invoice\.reports\.paid/)).not.toBeInTheDocument();
+            view?.unmount();
+        }
     });
 });
