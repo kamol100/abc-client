@@ -80,6 +80,24 @@ describe("DataTable toolbar config", () => {
   });
 
   // তালিকার সারি, ফিল্টার ও পেজ যাচাই করি। এই কেসের নির্দিষ্ট শর্ত ও প্রত্যাশা: «switches built-ins off and accepts add as an element»।
+  // beforeFilter আইটেম বিল্ট-ইন বোতামগুলোর পরে, ফিল্টার বোতামের ঠিক আগে বসে; লুকানো আইটেম দেখায় না।
+  it("Toolbar config: renders beforeFilter items after the built-ins and right before the filter button", () => {
+    renderTable({
+      page: null,
+      end: [{ key: "sms", node: <button type="button">Send SMS</button> }],
+      beforeFilter: [
+        { key: "bill", node: <button type="button">Bill</button> },
+        { key: "hidden", node: <button type="button">Hidden</button>, show: false },
+      ],
+      features: { columns: true, filter: { filter }, add: AddButton },
+    });
+
+    const labels = endLabels();
+    expect(labels[0]).toBe("Send SMS");
+    expect(labels.slice(-3)).toEqual(["Bill", "common.filter", "Add"]);
+    expect(labels).not.toContain("Hidden");
+  });
+
   it("Toolbar config: switches built-ins off and accepts add as an element", () => {
     renderTable({ features: { columns: false, layoutToggle: false, add: <AddButton /> } });
 

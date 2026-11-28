@@ -13,6 +13,7 @@ import { useClientColumns } from "@/components/clients/client-column";
 import ClientFilterSchema from "@/components/clients/client-filter-schema";
 import ResellerClientFilterSchema from "@/components/clients/reseller-client-filter-schema";
 import { ClientRow, getClientId } from "@/components/clients/client-type";
+import MissingInvoiceButton from "@/components/invoices/missing-invoice-button";
 import { ClientOnlineStatusProvider } from "@/components/clients/client-online-status-cell";
 import dynamic from "next/dynamic";
 
@@ -42,6 +43,8 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
     const isResellerReport = variant === "reseller-clients";
     const canListClients = isResellerReport || hasPermission("clients.access");
     const canCreateClient = !isResellerReport && hasPermission("clients.create");
+    // The company's own clients only: the API lists no reseller clients.
+    const canCreateMissingInvoices = !isResellerReport && hasPermission("invoices.missing.create");
     const showNewClientsThisMonth = activeCreatedAt === NEW_CLIENTS_THIS_MONTH;
 
     useEffect(() => {
@@ -101,6 +104,9 @@ const ClientTable: FC<ClientTableProps> = ({ createdAt, variant = "default" }) =
         title: toolbarTitle,
         start: [
             { key: "activity", node: <ClientCount />, show: !isResellerReport, mobile: "row" },
+        ],
+        beforeFilter: [
+            { key: "missing-invoices", node: <MissingInvoiceButton />, show: canCreateMissingInvoices },
         ],
         page: "clients",
         features: {

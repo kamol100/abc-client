@@ -176,6 +176,7 @@ export function DataTableToolbar<TData>({
           columns={features.columns ?? false}
           layoutToggle={features.layoutToggle ?? true}
           settings={page ? <SettingsButton section={listSettingsSection(page)} /> : null}
+          beforeFilter={visibleItems(config.beforeFilter, isMobile)}
           filterReset={filterReset}
           filter={filterControl}
           add={addNode}
