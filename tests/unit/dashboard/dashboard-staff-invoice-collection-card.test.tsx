@@ -63,6 +63,9 @@ describe("DashboardStaffInvoiceCollectionCard", () => {
     expect(buttons).toHaveLength(2);
     expect(buttons[0]).toHaveTextContent("40,000.00/-");
     expect(buttons[1]).toHaveTextContent("50,000.00/-");
+    // The underline marks the amount as a link before it is hovered.
+    expect(buttons[0]).toHaveClass("[&_span]:underline");
+    expect(buttons[1]).toHaveClass("[&_span]:underline");
     expect(screen.queryByTestId("collection-list")).not.toBeInTheDocument();
 
     fireEvent.click(buttons[1]);

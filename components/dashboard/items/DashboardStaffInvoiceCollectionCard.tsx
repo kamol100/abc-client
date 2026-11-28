@@ -69,7 +69,8 @@ export default function DashboardStaffInvoiceCollectionCard({
                   <MyButton
                     variant="link"
                     icon={false}
-                    className="h-auto p-0 text-xs font-medium tabular-nums"
+                    // The amount is drawn in its own boxes, which an underline on the button does not reach.
+                    className="h-auto p-0 text-xs font-medium tabular-nums [&_span]:underline [&_span]:underline-offset-2"
                     aria-label={t("dashboard.staff_collection.view", { period: t(labelKey) })}
                     onClick={() => {
                       setPeriod(metricPeriod);

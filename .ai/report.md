@@ -1,3 +1,13 @@
+## Dashboard: staff collection card amounts above 0 are underlined — 2026-11-28
+
+Branch `feat/staff-collection-amount-underline` (from `master`), merged into `master`.
+
+- On the "Invoice collection by" card, an amount above 0 is now always underlined, not only on hover, so it reads as a link. A 0 amount is unchanged.
+- The underline is set on the amount's inner text (`[&_span]:underline`): `DisplayCount` draws the number in its own boxes, which an underline on the button does not reach.
+- Test: the existing card test also checks the underline class on the two links.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/dashboard`: 27 passed. Browser (Chromium, local stack, tenant cp, 1440px, light): "This month" and "Last month" are underlined, "Today" (0) is not, and the three rows are still 16px high. Not checked in dark or at phone width.
+
 ## Client form: package dropdown shows speed and price — 2026-11-28
 
 On `master`, not committed. Backend part is one line in `isp-backend` (also not committed).
