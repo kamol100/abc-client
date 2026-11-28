@@ -1,3 +1,13 @@
+## Notifications: "Client phone number missing" — 2026-11-28
+
+Branch `feat/sms-missing-phone-stop` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- New in-app notification `sms_phone_missing`, sent when an SMS could not be queued because the client has no phone number. Added to `notification-catalog.ts` (category client), so it has its own on/off switch in the notification settings. It opens the client's page.
+- Translations in `en.json` and `bn.json`: `notifications.events.sms_phone_missing.title` and `.message` (`client_name`).
+- The SMS queue page needs no change: the stopped row and its comment show in the existing status and comment columns.
+
+Checks: `scripts/ai/typecheck` passes. `vitest run tests/unit/notifications`: 18 passed. The full unit run was not repeated. Not checked in a browser.
+
 ## Notifications: "Client auto inactive failed" — 2026-11-28
 
 Branch `feat/auto-inactive-daily-limit` (from `master`), merged into `master`. Backend part: `isp-backend/.ai/report.md`, same date.
