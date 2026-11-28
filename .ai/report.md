@@ -1,3 +1,15 @@
+## Table headers: one small uppercase style; short client list labels — 2026-11-28
+
+Not committed; working tree changes on `master`. The user chose design "A" from four HTML mockups.
+
+- `DataTableColumnHeader` (shared by every table, 77 files): all headers, sortable or not, now use one text style: 11px, semibold, uppercase, with letter spacing. Before, plain headers were 14px and sortable ones 12px, so one row had two sizes. Letter spacing is left off in Bengali, where it pulls the letters apart. The style wins over a `className` passed by a column.
+- Client list headers are one word each: Client, Location, Package, Billing, Connection (were "ID / Name / Phone", "Zone / Address / Network", "Termination / Package", "Bill / Payment", "Online / Info"). New keys `client.table.client`, `location`, `package`, `billing`, `connection` in `en.json` and `bn.json`.
+- The old long keys stay: the OLT clients table and the SMS sent table still use them, so those two keep their long labels (in the new text style).
+- Header height is unchanged (40px), so nothing shifts.
+- Test: new `tests/unit/data-table/data-table-column-header.test.tsx` (3 tests).
+
+Checks: `scripts/ai/typecheck` passes. Full `vitest run`: 1561 pass, 14 fail in 9 files; the same 14 fail without this change (`client-map-rows`, `client-dashboard-info`, `reseller-client-*`, `column-visibility-persistence`, `menu-items`, `pay-content`, `invoice-print-settings`, `field-markup`). Not browser-checked.
+
 ## Invoice list: Amount column redesigned (bill total + small note line) — 2026-11-28
 
 Not committed; working tree changes on `master`. The user chose design "A" from four HTML mockups.

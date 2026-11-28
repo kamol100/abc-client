@@ -28,9 +28,15 @@ export function DataTableColumnHeader<TData, TValue>({
   title,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // One text style for every header, sortable or not. Letter spacing is for Latin
+  // capitals only; it pulls Bengali letters apart.
+  const labelClass = cn(
+    "text-[11px] font-semibold uppercase",
+    !i18n.language?.startsWith("bn") && "tracking-wider"
+  );
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{t(title)}</div>;
+    return <div className={cn(className, labelClass)}>{t(title)}</div>;
   }
 
   return (
@@ -40,7 +46,7 @@ export function DataTableColumnHeader<TData, TValue>({
           <MyButton
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
+            className={cn("-ml-3 h-8 data-[state=open]:bg-accent", labelClass)}
           >
             <span>{t(title)}</span>
             {column.getIsSorted() === "desc" ? (

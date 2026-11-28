@@ -29,7 +29,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             id: "id_name_phone",
             accessorKey: "name",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="client.table.id_name_phone" />
+                <DataTableColumnHeader column={column} title="client.table.client" />
             ),
             cell: ({ row }) => <ClientNamePhoneCell client={row.original} />,
             enableSorting: false,
@@ -39,7 +39,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             id: "zone_address_network",
             accessorKey: "zone",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="client.table.zone_address_network" />
+                <DataTableColumnHeader column={column} title="client.table.location" />
             ),
             cell: ({ row }) => <ClientZoneAddressCell client={row.original} />,
             enableSorting: false,
@@ -48,7 +48,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             id: "connection_package",
             accessorKey: "package",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="client.table.connection_package" />
+                <DataTableColumnHeader column={column} title="client.table.package" />
             ),
             cell: ({ row }) => <ClientPackageCell client={row.original} />,
             enableSorting: false,
@@ -57,7 +57,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             id: "bill_payment",
             accessorKey: "payment_deadline",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="client.table.bill_payment" />
+                <DataTableColumnHeader column={column} title="client.table.billing" />
             ),
             cell: ({ row }) => <ClientBillingPaymentCell client={row.original} />,
             enableSorting: false,
@@ -65,7 +65,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
         {
             id: "online_info",
             header: ({ column }) => (
-                <DataTableColumnHeader column={column} title="client.table.online_info" />
+                <DataTableColumnHeader column={column} title="client.table.connection" />
             ),
             cell: ({ row }) => (
                 <ClientOnlineStatusCell
@@ -96,7 +96,7 @@ export function useClientColumns(): ColumnDef<ClientRow>[] {
             header: ({ column }) => (
                 <DataTableColumnHeader
                     column={column}
-                    className="flex justify-end capitalize mr-3"
+                    className="flex justify-end mr-3"
                     title="common.actions"
                 />
             ),
