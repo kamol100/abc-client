@@ -2918,9 +2918,10 @@
             }
         },
         "fund": {
-            "label": "Payment Method",
+            "label": "Fund",
             "placeholder": "Select fund",
             "errors": {
+                "required": "Fund is required",
                 "no_access": "You do not have any fund access"
             }
         },
@@ -4049,6 +4050,19 @@
         "create_title": "Add Fund Transaction",
         "add_transaction": "Add Transaction",
         "delete_confirmation": "Are you sure you want to delete this transaction?",
+        "expense_delete": {
+            "description": "This transaction was made for an expense. Choose what happens to that expense.",
+            "option_label": "What to do with the expense",
+            "pending": {
+                "label": "Change the expense status to pending",
+                "hint": "The expense stays in the list as pending. The amount goes back to the fund."
+            },
+            "delete": {
+                "label": "Delete this expense",
+                "hint": "The expense is deleted with this transaction. The amount goes back to the fund.",
+                "no_permission": "You do not have permission to delete expenses."
+            }
+        },
         "sl": "SL",
         "current_balance": "Current Balance",
         "created_at": {

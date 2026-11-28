@@ -21,7 +21,7 @@ const fundField = (
     return {
         type: "dropdown",
         name: "fund_id",
-        label: { labelText: label },
+        label: { labelText: label, mandatory: true },
         placeholder,
         valueKey: "fund",
         valueMapping: { idKey: "id", labelKey: "name" },
@@ -56,8 +56,10 @@ export const ExpenseFormFieldSchema = ({
         {
             type: "dropdown",
             name: "staff_id",
-            label: { labelText: t("expense.staff.label"), mandatory: true },
+            label: { labelText: t("expense.staff.label") },
             placeholder: t("expense.staff.placeholder"),
+            // Hidden without the permission: the API records the logged-in staff.
+            permission: hasPermission("expenses.expense-by-update"),
             api: "/dropdown-staffs",
             valueKey: "staff",
             valueMapping: { idKey: "id", labelKey: "name" },

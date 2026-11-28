@@ -80,11 +80,12 @@ export const ExpenseFormSchema = z.object({
         required_error: "expense.amount.errors.required",
         invalid_type_error: "expense.amount.errors.required",
     }).min(1, { message: "expense.amount.errors.min" }),
-    staff_id: z.coerce.number({
-        required_error: "expense.staff.errors.required",
-        invalid_type_error: "expense.staff.errors.required",
-    }).min(1, { message: "expense.staff.errors.required" }),
-    fund_id: z.coerce.number().nullable().optional(),
+    /** Empty means the logged-in staff; the API sets it. Sent only with expenses.expense-by-update. */
+    staff_id: z.coerce.number().nullable().optional(),
+    fund_id: z.coerce.number({
+        required_error: "expense.fund.errors.required",
+        invalid_type_error: "expense.fund.errors.required",
+    }).min(1, { message: "expense.fund.errors.required" }),
     expense_type_id: z.coerce.number({
         required_error: "expense.expense_type.errors.required",
         invalid_type_error: "expense.expense_type.errors.required",

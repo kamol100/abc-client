@@ -1,3 +1,17 @@
+## Expenses: fund is mandatory, "Expense By" needs a permission, expense choice on fund transaction delete — 2026-11-28
+
+On `master`, not committed. Backend part: `isp-backend/.ai/report.md`, same date.
+
+- Expense form: the "Payment Method" label is now "Fund" (`expense.fund.label`, also the list column and filter label) and the field is mandatory ("Fund is required").
+- Expense form: "Expense By" is hidden unless the user has `expenses.expense-by-update`. Hidden or left empty, the API records the logged-in staff. With the permission it is a staff dropdown, not mandatory.
+- Fund transactions: deleting a transaction of type "expense" opens a new dialog (`components/fund-transactions/expense-transaction-delete-modal.tsx`) with two choices: "Change the expense status to pending" (selected by default) and "Delete this expense". The second is disabled, with a reason, without `expenses.delete`. The choice is sent as `expense_action` in the DELETE body; the expense list is refreshed too.
+- Translations in `en.json` and `bn.json`: `expense.fund.label`, `expense.fund.errors.required`, `fund_transaction.expense_delete.*`.
+- Tests: new `tests/unit/expenses/expense-form-fields.test.tsx` (6) and `tests/unit/fund-transactions/expense-transaction-delete-modal.test.tsx` (3).
+
+Checks: `scripts/ai/typecheck` passed. `scripts/ai/test`: 1,534 passed, 14 failed in 9 files, the same 14 in 9 files that fail on the clean tree (none is in a file this change touches). Not checked in a browser: the permission `expenses.expense-by-update` is not in the local database until `update:permission` is run, which needs approval.
+
+Open: the status dropdown in the expense form sends `declined`, the API accepts only `pending,approved,rejected` (already so before this change).
+
 ## Invoice list: the "Advance paid" tag sits under the amount — 2026-11-27
 
 Branch `fix/invoice-advance-tag-under-amount` (from `master`), committed there, not merged. No backend change.
